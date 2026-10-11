@@ -9218,25 +9218,27 @@ html[data-theme="dark"] .sticky-iupac-name small {
 .name-result .nomenclature-variants button strong span { display: inline; }
 .name-result .nomenclature-variants strong,
 .name-result .chemical-name-text { overflow-wrap: break-word; word-break: normal; }
-.iupac-dock { position: fixed; z-index: var(--layer-workspace-floating); right: 0; bottom: 0; left: 0; min-height: var(--iupac-dock-height); padding: 6px max(20px, calc((100vw - 1460px) / 2)) calc(6px + env(safe-area-inset-bottom)); border-top: 2px solid var(--brand-primary); background: var(--brand-ink); color: #f8fafc; box-shadow: 0 -8px 26px rgba(0,0,0,.24); backdrop-filter: blur(12px); }
-.iupac-dock-inner { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 42px; }
+.iupac-dock { position: fixed; z-index: var(--layer-workspace-floating); right: 0; bottom: 0; left: 0; min-height: var(--iupac-dock-height); padding: 5px max(20px, calc((100vw - 1460px) / 2)) calc(5px + env(safe-area-inset-bottom)); border-top: 2px solid var(--brand-primary); background: var(--brand-ink); color: #f8fafc; box-shadow: none; }
+.iupac-dock-inner { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 46px; }
 .iupac-dock-label { flex: 0 0 auto; color: var(--brand-accent); font-family: var(--font-ui); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
 .iupac-dock-name-stack { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; gap: 2px; }
-.iupac-dock-name { flex: 1 1 auto; min-width: 0; overflow: visible; color: #f8fafc; font-family: var(--font-ui); font-size: 17px; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; text-overflow: clip; white-space: normal; }
+.iupac-dock-name { flex: 1 1 auto; min-width: 0; overflow: visible; color: #f8fafc; font-family: var(--font-ui); font-size: clamp(18px, 1.35vw, 21px); font-weight: 750; line-height: 1.3; overflow-wrap: anywhere; text-overflow: clip; white-space: normal; }
 .iupac-dock-common-name { overflow: visible; color: #cbd5e1; font-size: 10px; line-height: 1.25; overflow-wrap: anywhere; text-overflow: clip; white-space: normal; }
 .iupac-dock-common-name > span { color: #96c9bb; font-weight: 700; }
 .iupac-dock-name .chemical-name-text { display: block; overflow: visible; overflow-wrap: anywhere; text-overflow: clip; white-space: normal; }
-.iupac-dock button { flex: 0 0 auto; min-width: 38px; min-height: 34px; border: 1px solid rgba(255,255,255,.24); border-radius: 9px; background: rgba(255,255,255,.08); color: #f8fafc; cursor: pointer; font-size: 12px; font-weight: 700; transition: background-color var(--brand-transition), border-color var(--brand-transition), color var(--brand-transition); }
+.iupac-dock button { flex: 0 0 auto; min-width: 40px; min-height: 40px; border: 1px solid rgba(255,255,255,.24); border-radius: 10px; background: rgba(255,255,255,.08); color: #f8fafc; cursor: pointer; font-size: 12px; font-weight: 700; transition: background-color var(--brand-transition), border-color var(--brand-transition), color var(--brand-transition); }
 .iupac-dock button:hover:not(:disabled) { border-color: var(--brand-primary); background: rgba(53,99,255,.2); }
 .iupac-dock button:focus-visible,
-.iupac-dock-profile:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
+.iupac-dock-profile:focus-visible { outline: 3px solid #9bb4ff; outline-offset: 2px; }
 .iupac-dock button:disabled { opacity: .5; cursor: not-allowed; }
 .iupac-dock .iupac-dock-copy { border-color: var(--brand-primary); background: var(--brand-primary); color: var(--brand-surface); }
 .iupac-dock .iupac-dock-copy:hover:not(:disabled) { border-color: var(--brand-primary-hover); background: var(--brand-primary-hover); }
+.iupac-dock .iupac-dock-expand { min-width: 40px; min-height: 40px; }
+.iupac-dock .iupac-dock-copy { min-width: 58px; min-height: 44px; }
 .iupac-dock-detail { position: absolute; right: max(20px, calc((100vw - 1460px) / 2)); bottom: calc(100% + 5px); left: max(20px, calc((100vw - 1460px) / 2)); max-height: 40dvh; overflow-y: auto; padding: 14px 16px; border: 1px solid rgba(255,255,255,.24); border-radius: 14px; background: var(--brand-ink); box-shadow: 0 -8px 24px rgba(0,0,0,.28); }
 .iupac-dock-detail > span { display: block; margin-bottom: 6px; color: #96c9bb; font-size: 10px; font-weight: 800; text-transform: uppercase; }
 .iupac-dock-detail strong span { display: inline; }
-.iupac-dock-detail strong { display: block; overflow-wrap: normal; font-family: Georgia, "Times New Roman", serif; font-size: 20px; line-height: 1.35; }
+.iupac-dock-detail strong { display: block; overflow-wrap: normal; font-family: var(--font-ui); font-size: 21px; font-weight: 700; line-height: 1.35; }
 .settings-overlay { z-index: var(--layer-modal-backdrop); }
 @media (max-width: 1050px) and (min-width: 821px) {
   .workspace-grid { grid-template-columns: minmax(0, 57fr) minmax(0, 43fr); }
@@ -9389,11 +9391,11 @@ html[data-theme="dark"] .canvas-hint-dismiss:focus-visible { background: #243d35
 }
 .iupac-dock-profile {
   flex: 0 0 auto;
-  max-width: 175px;
-  min-height: 34px;
+  max-width: 190px;
+  min-height: 36px;
   padding: 0 28px 0 9px;
   border: 1px solid rgba(255,255,255,.24);
-  border-radius: 9px;
+  border-radius: 10px;
   background: rgba(255,255,255,.08);
   color: #f8fafc;
   font-family: var(--font-ui);
@@ -9434,7 +9436,7 @@ html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { 
 .iupac-dock-origin > strong { min-width: 0; font: inherit; font-weight: 650; }
 .iupac-dock-variants { display: grid; gap: 7px; margin-top: 12px; }
 .iupac-dock-variants > button { display: grid; gap: 3px; min-width: 0; padding: 8px 10px; text-align: left; }
-.iupac-dock-variants > button.active { border-color: #a0dcc7; background: #34735f; }
+.iupac-dock-variants > button.active { border-color: var(--brand-primary); background: #1d315d; }
 .iupac-dock-variants > button > span,
 .iupac-dock-legacy > span { color: #a8d8ca; font-size: 10px; font-weight: 800; }
 .iupac-dock-variants > button > strong,
@@ -9456,12 +9458,54 @@ html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { 
     max-height: min(30dvh, 250px);
     box-shadow: 0 -12px 32px rgba(9, 37, 31, .3);
   }
-  .iupac-dock-inner { gap: 6px; }
-  .iupac-dock-label { display: none; }
-  .iupac-dock-profile { max-width: 130px; min-width: 0; padding-right: 19px; padding-left: 5px; font-size: 10px; }
-  .iupac-dock-name { font-size: 14px; }
-  .iupac-dock-copy { padding: 3px 6px; }
+  .iupac-dock-inner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "label profile profile profile" "name name expand copy"; align-items: center; gap: 4px 7px; }
+  .iupac-dock-label { grid-area: label; font-size: 9px; }
+  .iupac-dock-profile { grid-area: profile; width: min(100%, 190px); max-width: none; min-width: 0; min-height: 34px; padding-right: 19px; padding-left: 7px; font-size: 10px; }
+  .iupac-dock-name-stack { grid-area: name; }
+  .iupac-dock-name { font-size: 16px; }
+  .iupac-dock-expand { grid-area: expand; }
+  .iupac-dock-copy { grid-area: copy; padding: 3px 8px; }
 }
+
+.a11y-high-contrast .iupac-dock {
+  border-top: 3px solid #074f66;
+  background: #ffffff;
+  box-shadow: none;
+  color: #081d18;
+}
+.a11y-high-contrast .iupac-dock-label,
+.a11y-high-contrast .iupac-dock-detail-heading > span { color: #074f66; }
+.a11y-high-contrast .iupac-dock-name,
+.a11y-high-contrast .iupac-dock-detail > strong { color: #081d18; }
+.a11y-high-contrast .iupac-dock .iupac-name-reference { text-decoration-color: #074f66; }
+.a11y-high-contrast .iupac-dock .iupac-name-reference:hover,
+.a11y-high-contrast .iupac-dock .iupac-name-reference.is-active { color: #074f66; }
+.a11y-high-contrast .iupac-dock .iupac-name-reference:focus-visible { outline-color: #074f66; }
+.a11y-high-contrast .iupac-dock-common-name { color: #26463e; }
+.a11y-high-contrast .iupac-dock-common-name > span { color: #075f4e; }
+.a11y-high-contrast .iupac-dock-profile,
+.a11y-high-contrast .iupac-dock button {
+  border-color: #25483f;
+  background: #ffffff;
+  color: #081d18;
+}
+.a11y-high-contrast .iupac-dock .iupac-dock-copy {
+  border: 2px solid #074f66;
+  background: #074f66;
+  color: #ffffff;
+}
+.a11y-high-contrast .iupac-dock-variants > button.active {
+  border-color: #074f66;
+  box-shadow: inset 0 0 0 2px #074f66;
+}
+.a11y-high-contrast .iupac-dock-detail {
+  border: 2px solid #25483f;
+  background: #ffffff;
+  box-shadow: none;
+  color: #081d18;
+}
+.a11y-high-contrast .iupac-dock button:focus-visible,
+.a11y-high-contrast .iupac-dock-profile:focus-visible { outline-color: #074f66; }
 
 /* Compact brand header; keep the existing logo and controls accessible. */
 .site-header { min-height: 56px; gap: 11px; }
