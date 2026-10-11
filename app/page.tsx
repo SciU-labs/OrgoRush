@@ -10452,7 +10452,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "tools" ? "tools" : undefined}
                 data-guided-tour-target={showGuidedTour && guidedTourTarget === "tools" ? "active" : undefined}
               >
-              {!isolatedBuild && <>
+              {!isolatedBuild && <div className="rush-input-group">
               <button
                 className={`name-builder-toggle ${nameBuilderOpen ? "active" : ""}`}
                 onClick={() => {
@@ -10515,7 +10515,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               >
                 {language === "en" ? "Examples" : "Ejemplos"}
               </button>
-              </>}
+              </div>}
               <div className="view-mode-switch" role="group" aria-label={t("Tipo de representación molecular")}>
                 <button
                   className={viewMode === "semi-developed" ? "active" : ""}
@@ -13311,9 +13311,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
         <div className="information-column">
         <section className="intro-strip" aria-label={t("Instrucciones breves")}>
-          <div><span className="step-number">1</span><p><strong>{t("Selecciona")}</strong> {t("un carbono")}</p></div>
-          <div><span className="step-number">2</span><p><strong>{t("Añade")}</strong> {t("C, enlaces y grupos funcionales")}</p></div>
-          <div><span className="step-number">3</span><p><strong>{t("Analiza")}</strong> {t("el nombre IUPAC")}</p></div>
+          <div><span className="step-number">01</span><p><strong>{t("Selecciona")}</strong> {t("un carbono")}</p></div>
+          <div><span className="step-number">02</span><p><strong>{t("Añade")}</strong> {t("C, enlaces y grupos funcionales")}</p></div>
+          <div><span className="step-number">03</span><p><strong>{t("Analiza")}</strong> {t("el nombre IUPAC")}</p></div>
         </section>
         <div className="construction-context-slot" ref={toolPanelSlotRef} />
         <aside
@@ -13359,8 +13359,24 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               <strong>{savedEntries.length}</strong>
             </button>
             <div className="language-switch" role="group" aria-label={language === "en" ? "Language" : "Idioma"}>
-              <button type="button" className={language === "es" ? "active" : ""} aria-pressed={language === "es"} onClick={() => setLanguage("es")} title="Español">ES</button>
-              <button type="button" className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")} title="English">EN</button>
+              <button type="button" className={language === "es" ? "active" : ""} aria-pressed={language === "es"} onClick={() => setLanguage("es")} aria-label="Español" title="Español">
+                <svg className="language-flag" viewBox="0 0 24 16" aria-hidden="true" focusable="false">
+                  <path fill="#aa151b" d="M0 0h24v16H0z" />
+                  <path fill="#f1bf00" d="M0 4h24v8H0z" />
+                  <path fill="#aa151b" d="M6 6h3v4H6z" />
+                  <path fill="#fff" d="M6 6h1.5v2H6z" />
+                  <path fill="#aa151b" d="M5.5 5h4v1h-4zM5 7h.5v3H5zM9.5 7h.5v3h-.5z" />
+                </svg>
+              </button>
+              <button type="button" className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")} aria-label="English" title="English">
+                <svg className="language-flag" viewBox="0 0 24 16" aria-hidden="true" focusable="false">
+                  <path fill="#012169" d="M0 0h24v16H0z" />
+                  <path stroke="#fff" strokeWidth="4" d="m0 0 24 16M24 0 0 16" />
+                  <path stroke="#c8102e" strokeWidth="1.5" d="m0 0 12 8m0 0L24 0M0 16l12-8m0 0 12 8" />
+                  <path stroke="#fff" strokeWidth="6" d="M12 0v16M0 8h24" />
+                  <path stroke="#c8102e" strokeWidth="3" d="M12 0v16M0 8h24" />
+                </svg>
+              </button>
             </div>
             <button
               className="theme-control"
@@ -13463,15 +13479,15 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           )}
 
           <div className="formula-row">
-            <div>
+            <div className="analysis-formula">
               <span>{t("Fórmula molecular")}</span>
               <strong>{analysis.formula}</strong>
             </div>
-            <div>
+            <div className="analysis-carbons">
               <span>{t("Carbonos totales")}</span>
               <strong>{carbonCount}</strong>
             </div>
-            <div>
+            <div className="analysis-group">
               <span>{t("Grupo principal")}</span>
               <strong>{principalGroupLabel ? t(principalGroupLabel) : "—"}</strong>
             </div>

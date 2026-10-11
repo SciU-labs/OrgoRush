@@ -2358,18 +2358,12 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   }
 
   .builder-card .heading-actions {
-    display: grid;
-    grid-template-areas:
-      "name smiles"
-      "formula formula"
-      "examples examples"
-      "view view"
-      "history history";
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
   }
 
-  .builder-card .heading-actions > .name-builder-toggle {
+  .builder-card .rush-input-group > .name-builder-toggle {
     min-width: 0;
     justify-content: center;
   }
@@ -2505,41 +2499,11 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .heading-actions {
-  display: grid;
-  grid-template-areas:
-    "name smiles"
-    "formula view"
-    "examples examples"
-    "history history";
-  grid-template-columns: max-content max-content;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: end;
   gap: 8px 10px;
-}
-
-.heading-actions > .name-builder-toggle:not(.smiles-toggle):not(.formula-toggle) {
-  grid-area: name;
-}
-
-.heading-actions > .smiles-toggle {
-  grid-area: smiles;
-}
-
-.heading-actions > .formula-toggle {
-  grid-area: formula;
-}
-
-.heading-actions > .name-builder-toggle.examples-toggle:not(.smiles-toggle):not(.formula-toggle) {
-  grid-area: examples;
-}
-
-.heading-actions > .view-mode-switch {
-  grid-area: view;
-}
-
-.heading-actions > .history-controls {
-  grid-area: history;
-  justify-self: end;
 }
 
 .view-mode-switch {
@@ -9247,15 +9211,7 @@ html[data-theme="dark"] .sticky-iupac-name small {
 }
 
 @media (max-width: 720px) {
-  .heading-actions {
-    grid-template-areas:
-      "name smiles"
-      "formula view"
-      "history history";
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .heading-actions > .name-builder-toggle {
+  .rush-input-group > .name-builder-toggle {
     min-width: 0;
     justify-content: center;
   }
@@ -9571,6 +9527,181 @@ html[data-theme="dark"] .canvas-hint-dismiss:focus-visible { background: #243d35
 .builder-card .bond-order-picker button { min-height: 28px; }
 .builder-card .structure-actions button { min-height: 30px; }
 .builder-card .notice { margin: 0 10px 6px; }
+/* OrgoRush signature: grouped workbench, hero stage and a restrained Rush Rail. */
+.app-shell .workspace-grid > #structure-panel .heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  width: 100%;
+}
+.app-shell .workspace-grid > #structure-panel .rush-input-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 11px;
+  background: var(--brand-toolbar);
+}
+.app-shell .workspace-grid > #structure-panel :is(.rush-input-group, .view-mode-switch, .history-controls) {
+  position: relative;
+  margin-top: 14px;
+}
+.app-shell .workspace-grid > #structure-panel :is(.rush-input-group, .view-mode-switch, .history-controls)::before {
+  position: absolute;
+  top: -14px;
+  left: 3px;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+.app-shell .workspace-grid > #structure-panel .rush-input-group::before { content: "ENTRADA"; }
+.app-shell .workspace-grid > #structure-panel .view-mode-switch::before { content: "VISTA"; }
+.app-shell .workspace-grid > #structure-panel .history-controls::before { content: "HERRAMIENTAS"; }
+html[lang="en"] .app-shell .workspace-grid > #structure-panel .rush-input-group::before { content: "INPUT"; }
+html[lang="en"] .app-shell .workspace-grid > #structure-panel .view-mode-switch::before { content: "VIEW"; }
+html[lang="en"] .app-shell .workspace-grid > #structure-panel .history-controls::before { content: "TOOLS"; }
+.app-shell .workspace-grid > #structure-panel .view-mode-switch {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.app-shell .workspace-grid > #structure-panel .history-controls {
+  flex: 0 0 auto;
+  margin-inline: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--brand-toolbar);
+}
+.app-shell .workspace-grid > #structure-panel .heading-actions button {
+  position: relative;
+  font-size: 11px;
+}
+.app-shell .workspace-grid > #structure-panel .rush-input-group > button { order: 0; }
+html .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions .rush-input-group > .name-builder-toggle.active {
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
+}
+.app-shell .workspace-grid > #structure-panel .builder-toolbar {
+  grid-template-columns: minmax(115px, 1fr) minmax(175px, 1.1fr) 130px;
+  row-gap: 10px;
+  padding-block: 10px;
+}
+.app-shell .workspace-grid > #structure-panel .structure-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--brand-border);
+}
+.app-shell .workspace-grid > #structure-panel .structure-actions .remove-button {
+  margin-inline-start: 12px;
+  padding-inline: 12px;
+  min-height: 44px;
+}
+.app-shell .workspace-grid > #structure-panel .direction-pad {
+  grid-template: 40px / repeat(4, 30px);
+  width: auto;
+}
+.app-shell .information-column .intro-strip { position: relative; }
+.app-shell .information-column .intro-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--brand-primary);
+}
+.app-shell .information-column .intro-strip::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: 4px;
+  height: 4px;
+  background: var(--brand-accent);
+}
+html .app-shell #analysis-panel .formula-row > .analysis-formula {
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 18px 0 0;
+}
+html .app-shell #analysis-panel .formula-row > .analysis-formula strong {
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+html .app-shell #analysis-panel .formula-row > :is(.analysis-carbons, .analysis-group) {
+  grid-column: 2;
+  border-inline-start: 1px solid var(--brand-border);
+}
+html .app-shell #analysis-panel .formula-row > :is(.analysis-carbons, .analysis-group) strong {
+  font-size: 16px;
+  line-height: 1.25;
+}
+html .app-shell #analysis-panel .formula-row > div:last-child { grid-column: 2; }
+html .app-shell .analysis-utility-bar .language-switch {
+  padding: 2px;
+  border: 0;
+  background: var(--brand-toolbar);
+}
+html .app-shell .analysis-utility-bar .language-switch button {
+  display: grid;
+  position: relative;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.language-flag { display: block; width: 26px; height: 18px; border-radius: 2px; overflow: hidden; }
+html .app-shell .analysis-utility-bar .language-switch button.active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  width: 18px;
+  height: 3px;
+  background: var(--brand-primary);
+}
+html .app-shell.a11y-high-contrast .rush-input-group { background: var(--paper); }
+html .app-shell.a11y-high-contrast .information-column .intro-strip {
+  display: grid;
+  grid-template-columns: .85fr 1.2fr 1fr;
+  gap: 12px;
+}
+html .app-shell.a11y-high-contrast .heading-actions button,
+html .app-shell.a11y-high-contrast .canvas-toolbar-left button,
+html .app-shell.a11y-high-contrast .structure-actions button,
+html .app-shell.a11y-high-contrast .analysis-utility-bar .language-switch button {
+  border: 1px solid var(--brand-border);
+}
+html .app-shell.a11y-high-contrast .analysis-utility-bar .language-switch button.active {
+  outline: 2px solid var(--blue);
+  outline-offset: -3px;
+}
+html .app-shell.a11y-high-contrast .analysis-utility-bar .language-switch button:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .app-shell .workspace-grid > #structure-panel .rush-input-group { flex-basis: 100%; }
+  .app-shell .workspace-grid > #structure-panel .structure-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .app-shell .workspace-grid > #structure-panel .structure-actions .remove-button { grid-column: 1 / -1; justify-self: end; margin: 0; }
+}
+@media (max-width: 820px) {
+  .app-shell .workspace-grid > #structure-panel .builder-toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .app-shell .workspace-grid > #structure-panel .direction-pad { grid-column: 1 / -1; grid-row: auto; justify-content: end; }
+  .app-shell .workspace-grid > #structure-panel .view-mode-switch { flex-basis: 100%; }
+  .app-shell .workspace-grid > #structure-panel .history-controls { width: 100%; }
+  .app-shell .workspace-grid > #structure-panel .rush-input-group > button { flex: 1 1 auto; }
+  .app-shell .information-column .intro-strip { gap: 10px; padding: 12px 0; }
+  .app-shell .information-column .intro-strip > div { grid-template-columns: 1fr; align-items: start; }
+  .app-shell .information-column .intro-strip > div:nth-child(-n + 2)::after { right: -8px; }
+}
+
 .construction-context-slot { position: sticky; top: 10px; z-index: var(--layer-workspace-sticky); align-self: start; min-width: 0; }
 .construction-context-slot:empty { display: none; }
 .construction-context-panel {
@@ -9816,22 +9947,6 @@ html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { 
 .builder-card .view-mode-switch button { padding-right: 3px; padding-left: 3px; }
 .builder-card .view-mode-switch .line-angle-icon { width: 18px; }
 .builder-card .history-controls .new-button { padding-right: 6px; padding-left: 6px; }
-@media (min-width: 1001px) and (max-width: 1365px) {
-  .builder-card .heading-actions {
-    display: grid;
-    grid-template-areas:
-      "name smiles formula examples"
-      "view view history history";
-    grid-template-columns: repeat(4, max-content);
-    justify-content: center;
-    gap: 4px 3px;
-  }
-
-  .builder-card .heading-actions > .view-mode-switch,
-  .builder-card .heading-actions > .history-controls {
-    justify-self: center;
-  }
-}
 @media (max-width: 760px) {
   .app-shell { padding-top: 6px; }
   .construction-context-panel .examples-context-panel .preset-list { grid-template-columns: minmax(0, 1fr); }
@@ -10682,13 +10797,17 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .docx-e
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-column .intro-strip,
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .information-column .intro-strip {
   justify-content: space-between;
-  gap: 12px;
-  min-height: 58px;
-  padding: 9px 12px;
+  gap: 18px;
+  min-height: 70px;
+  padding: 12px 0 8px;
   border-color: #cbd7f5;
-  border-radius: 14px;
-  background: var(--brand-primary-soft);
+  border-radius: 0;
+  background: transparent;
   box-shadow: none;
+  display: grid;
+  grid-template-columns: 0.85fr 1.2fr 1fr;
+  position: relative;
+  border: 0;
 }
 
 .app-shell .information-column .intro-strip > div {
@@ -10696,27 +10815,32 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .information-column 
   align-items: center;
   gap: 8px;
   min-width: 0;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
 }
 
 .app-shell .information-column .intro-strip > div:nth-child(-n + 2)::after {
   content: "";
   flex: 0 0 16px;
-  width: 16px;
+  width: 10px;
   height: 2px;
-  margin-left: 4px;
-  background: #a9baf0;
+  margin-left: 0;
+  background: var(--brand-primary);
+  position: absolute;
+  right: -14px;
+  top: 16px;
 }
 
 .app-shell:not(.a11y-high-contrast) .information-column .intro-strip .step-number {
   flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--brand-primary);
-  border-radius: 9px;
-  background: var(--brand-primary);
-  color: var(--brand-surface);
-  font-family: var(--font-ui);
-  font-size: 12px;
+  width: 34px;
+  height: 36px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--brand-primary);
+  font-family: var(--font-heading);
+  font-size: 22px;
   font-weight: 700;
 }
 
@@ -10755,28 +10879,30 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-c
   .app-shell .information-column .intro-strip {
     gap: 10px;
     min-height: 54px;
-    padding: 8px 10px;
+    padding: 12px 0;
   }
 
   .app-shell .information-column .intro-strip > div {
     flex: 0 0 auto;
     gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
   }
 }
 
 /* OrgoRush Phase 4: refine editor controls without styling molecular marks. */
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel {
   border-color: var(--brand-border);
-  border-top: 3px solid var(--brand-primary);
+  border-top: 0;
   border-radius: var(--brand-card-radius);
   background: var(--brand-surface);
-  box-shadow: var(--brand-shadow);
+  box-shadow: none;
 }
 
 /* Existing toolbar children retain their layout order and interaction targets. */
 .app-shell:not(.a11y-high-contrast) #structure-panel .card-heading {
   border-bottom: 1px solid var(--brand-border);
-  background: var(--brand-toolbar);
+  background: var(--brand-workspace);
 }
 
 .app-shell:not(.a11y-high-contrast) #structure-panel .card-heading .eyebrow {
@@ -10788,12 +10914,12 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
   border-inline-start: 1px solid var(--brand-border);
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle,
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle,
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button {
-  min-height: 34px;
-  border-color: var(--brand-border);
+  min-height: 40px;
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-surface);
+  background: transparent;
   box-shadow: none;
   color: var(--brand-ink);
   font-family: var(--font-ui);
@@ -10802,35 +10928,35 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
     border-color var(--brand-transition), color var(--brand-transition);
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle:hover:not(:disabled),
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle.active,
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle:hover:not(:disabled),
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle.active,
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:hover:not(:disabled) {
-  border-color: var(--brand-primary);
+  border-color: transparent;
   background: var(--brand-primary-soft);
   color: var(--brand-selected-ink);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:not(.new-button) {
-  min-width: 34px;
-  height: 34px;
+  min-width: 40px;
+  height: 40px;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:disabled {
-  border-color: var(--brand-border);
-  background: var(--brand-background);
+  border-color: transparent;
+  background: transparent;
   color: var(--brand-muted);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch {
   gap: 2px;
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 11px;
-  background: #e3e9f4;
+  background: var(--brand-toolbar);
   box-shadow: none;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button {
-  min-height: 30px;
+  min-height: 40px;
   border-radius: 8px;
   color: var(--brand-muted);
   font-family: var(--font-ui);
@@ -10845,9 +10971,10 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button.active {
-  background: var(--brand-primary-soft);
+  background: var(--brand-surface);
   color: var(--brand-selected-ink);
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
+  border-color: transparent;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button:disabled {
@@ -10856,8 +10983,8 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .molecule-stage {
-  border-color: var(--brand-border);
-  border-radius: 16px;
+  border-color: transparent;
+  border-radius: 0;
   background: var(--brand-workspace);
 }
 
@@ -10866,16 +10993,16 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left button {
-  min-height: 36px;
+  min-height: 44px;
   padding: 7px 10px;
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-surface);
+  background: transparent;
   box-shadow: none;
   color: var(--brand-muted);
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   backdrop-filter: none;
   transition: background-color var(--brand-transition),
     border-color var(--brand-transition), color var(--brand-transition);
@@ -10889,8 +11016,8 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left button:disabled {
-  border-color: var(--brand-border);
-  background: var(--brand-background);
+  border-color: transparent;
+  background: transparent;
   color: var(--brand-muted);
 }
 
@@ -10902,9 +11029,9 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker > div {
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-background);
+  background: var(--brand-surface);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button {
@@ -10921,9 +11048,9 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button.active {
-  background: var(--brand-primary-soft);
+  background: var(--brand-surface);
   color: var(--brand-selected-ink);
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .direction-pad button {
@@ -10949,10 +11076,10 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button, .ring-button, .functional-button) {
-  min-height: 36px;
-  border-color: var(--brand-border);
+  min-height: 44px;
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-workspace);
+  background: transparent;
   color: var(--brand-ink);
   font-family: var(--font-ui);
   font-size: 12px;
@@ -10963,10 +11090,10 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button:hover, .ring-button:hover, .functional-button:hover, .alkyl-button.active, .ring-button.active, .functional-button[aria-expanded="true"]) {
-  border-color: var(--brand-primary);
+  border-color: transparent;
   background: var(--brand-primary-soft);
   color: var(--brand-selected-ink);
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions .remove-button {
@@ -11024,10 +11151,11 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading {
   align-items: center;
   gap: 14px;
-  padding: 20px 20px 16px;
-  border-top: 3px solid var(--brand-primary);
-  border-bottom: 1px solid var(--brand-border);
-  background: var(--brand-workspace);
+  padding: 18px 20px 12px 17px;
+  border-top: 0;
+  border-bottom: 0;
+  background: transparent;
+  border-inline-start: 3px solid var(--brand-primary);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading .eyebrow {
@@ -11118,20 +11246,23 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row {
-  gap: 8px;
+  gap: 0;
   margin: 16px 20px 0;
   overflow: visible;
   border: 0;
   border-radius: 0;
   background: transparent;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--brand-border);
+  padding-bottom: 16px;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row > div {
   min-width: 0;
-  padding: 12px 13px;
-  border: 1px solid var(--brand-border);
-  border-radius: 12px;
-  background: var(--brand-toolbar);
+  padding: 8px 0 8px 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row span {
@@ -11289,10 +11420,11 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel {
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading {
   align-items: center;
   gap: 14px;
-  padding: 20px 20px 16px;
-  border-top: 3px solid var(--brand-primary);
-  border-bottom: 1px solid var(--brand-border);
-  background: var(--brand-workspace);
+  padding: 18px 20px 12px 17px;
+  border-top: 0;
+  border-bottom: 0;
+  background: transparent;
+  border-inline-start: 3px solid var(--brand-primary);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading .eyebrow {
@@ -11355,17 +11487,21 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .fun
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row {
-  gap: 8px;
+  gap: 0;
   overflow: visible;
   border: 0;
   background: transparent;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--brand-border);
+  padding-bottom: 16px;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row > div {
   min-width: 0;
-  border: 1px solid var(--brand-border);
-  border-radius: 12px;
-  background: var(--brand-toolbar);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 0 8px 18px;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row span {
@@ -11476,18 +11612,18 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel :is(
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel {
   border-color: var(--brand-border);
-  border-top: 3px solid var(--brand-primary);
+  border-top: 0;
   border-radius: var(--brand-card-radius);
   background: #172130;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
+  box-shadow: none;
 }
 
-html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle,
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button {
-  min-height: 34px;
-  border-color: var(--brand-border);
+  min-height: 40px;
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-workspace);
+  background: transparent;
   box-shadow: none;
   color: var(--ink);
   font-family: var(--font-ui);
@@ -11496,35 +11632,35 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
     border-color var(--brand-transition), color var(--brand-transition);
 }
 
-html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle:hover:not(:disabled),
-html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle.active,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle:hover:not(:disabled),
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .rush-input-group > .name-builder-toggle.active,
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:hover:not(:disabled) {
-  border-color: var(--brand-primary);
-  background: color-mix(in srgb, var(--brand-primary) 20%, var(--paper));
+  border-color: transparent;
+  background: var(--brand-primary-soft);
   color: #c8d3ff;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:not(.new-button) {
-  min-width: 34px;
-  height: 34px;
+  min-width: 40px;
+  height: 40px;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:disabled {
-  border-color: #30443f;
-  background: #14201d;
+  border-color: transparent;
+  background: transparent;
   color: var(--muted);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch {
   gap: 2px;
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 11px;
-  background: var(--brand-workspace);
+  background: var(--brand-toolbar);
   box-shadow: none;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button {
-  min-height: 30px;
+  min-height: 40px;
   border-radius: 8px;
   color: var(--muted);
   font-family: var(--font-ui);
@@ -11535,10 +11671,10 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button:hover:not(:disabled),
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button.active {
-  border-color: var(--brand-primary);
-  background: color-mix(in srgb, var(--brand-primary) 20%, var(--paper));
+  border-color: transparent;
+  background: var(--brand-workspace);
   color: #c8d3ff;
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button:disabled {
@@ -11547,8 +11683,8 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .molecule-stage {
-  border-color: var(--brand-border);
-  border-radius: 16px;
+  border-color: transparent;
+  border-radius: 0;
   background: var(--brand-workspace);
 }
 
@@ -11557,16 +11693,16 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left button {
-  min-height: 36px;
+  min-height: 44px;
   padding: 7px 10px;
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-workspace);
+  background: transparent;
   box-shadow: none;
   color: #b6c9c2;
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   backdrop-filter: none;
   transition: background-color var(--brand-transition),
     border-color var(--brand-transition), color var(--brand-transition);
@@ -11580,8 +11716,8 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left button:disabled {
-  border-color: #30443f;
-  background: #14201d;
+  border-color: transparent;
+  background: transparent;
   color: var(--muted);
 }
 
@@ -11593,7 +11729,7 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker > div {
-  border-color: var(--brand-border);
+  border-color: transparent;
   border-radius: 10px;
   background: var(--brand-workspace);
 }
@@ -11608,9 +11744,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button:hover,
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button.active {
-  background: color-mix(in srgb, var(--brand-primary) 20%, var(--paper));
+  background: var(--brand-workspace);
   color: #c8d3ff;
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .direction-pad button {
@@ -11636,10 +11772,10 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button, .ring-button, .functional-button) {
-  min-height: 36px;
-  border-color: var(--brand-border);
+  min-height: 44px;
+  border-color: transparent;
   border-radius: 10px;
-  background: var(--brand-workspace);
+  background: transparent;
   color: #c1d3cd;
   font-family: var(--font-ui);
   font-size: 12px;
@@ -11650,10 +11786,10 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button:hover, .ring-button:hover, .functional-button:hover, .alkyl-button.active, .ring-button.active, .functional-button[aria-expanded="true"]) {
-  border-color: var(--brand-primary);
+  border-color: transparent;
   background: color-mix(in srgb, var(--brand-primary) 20%, var(--paper));
   color: #c8d3ff;
-  box-shadow: inset 0 0 0 1px var(--brand-primary);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions .remove-button {

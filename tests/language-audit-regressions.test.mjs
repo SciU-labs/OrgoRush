@@ -3,6 +3,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import react from "@vitejs/plugin-react";
 import ts from "typescript";
 import { createServer } from "vite";
@@ -26,6 +28,40 @@ const pageAst = ts.createSourceFile("page.tsx", pageSource, ts.ScriptTarget.Late
 const layoutAst = ts.createSourceFile("layout.tsx", layoutSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const languagePageAst = ts.createSourceFile("[lang]/page.tsx", languagePageSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const i18nAst = ts.createSourceFile("i18n.ts", i18nSource, ts.ScriptTarget.Latest, true);
+
+test("main language flags preserve accessible names, active state and the original locale callbacks", () => {
+  const switchMarkup = openingWithClass(pageAst, "language-switch").parent.getText(pageAst);
+  const compiled = ts.transpileModule(`function make(language, setLanguage) { return (${switchMarkup}); }`, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.React },
+  }).outputText;
+  const make = new Function("React", `${compiled}; return make;`)(React);
+  for (const language of ["es", "en"]) {
+    const changes = [];
+    const control = make(language, (locale) => changes.push(locale));
+    assert.equal(control.props.role, "group");
+    assert.equal(control.props["aria-label"], language === "en" ? "Language" : "Idioma");
+    const buttons = React.Children.toArray(control.props.children);
+    assert.equal(buttons.length, 2);
+    for (const [index, locale, name] of [[0, "es", "Español"], [1, "en", "English"]]) {
+      const button = buttons[index];
+      assert.equal(button.type, "button");
+      assert.equal(button.props.type, "button");
+      assert.equal(button.props["aria-label"], name);
+      assert.equal(button.props.title, name);
+      assert.equal(button.props["aria-pressed"], language === locale);
+      assert.equal(button.props.className, language === locale ? "active" : "");
+      const flag = React.Children.only(button.props.children);
+      assert.equal(flag.type, "svg");
+      assert.equal(flag.props["aria-hidden"], "true");
+      assert.equal(flag.props.focusable, "false");
+      assert.equal(flag.props.viewBox, "0 0 24 16");
+      assert.doesNotMatch(renderToStaticMarkup(button), />\s*(?:ES|EN)\s*</);
+      button.props.onClick();
+      assert.equal(changes.at(-1), locale);
+    }
+    assert.deepEqual(changes, ["es", "en"]);
+  }
+});
 
 function findAll(ast, predicate) {
   const matches = [];

@@ -19,7 +19,8 @@ test("uses the two existing card roots as the only movable panels", () => {
   assert.match(pageSource, /Restablecer posición de paneles/);
   assert.match(pageSource, /onDoubleClick=\{\(event\) => resetPanelPosition\("structure-panel", event\)\}/);
   assert.match(pageSource, /onDoubleClick=\{\(event\) => resetPanelPosition\("analysis-panel", event\)\}/);
-  assert.match(styleSource, /grid-template-areas:\s*\n\s*"name smiles"\s*\n\s*"formula formula"\s*\n\s*"examples examples"\s*\n\s*"view view"\s*\n\s*"history history"/);
+  assert.match(pageSource, /!isolatedBuild && <div className="rush-input-group">/);
+  assert.match(styleSource, /\.rush-input-group\s*\{\s*display: flex;\s*flex-wrap: wrap;/);
   assert.match(styleSource, /\.movable-panel\.is-dragging/);
   assert.match(styleSource, /\.movable-panel\.is-drag-disabled \.panel-drag-handle/);
   assert.match(styleSource, /\.builder-card \.card-heading\s*\{\s*display: grid/);
@@ -48,10 +49,18 @@ test("keeps one live canvas in the sticky left card and all information in the r
 });
 
 test("keeps constructor actions aligned across locales and balances two-column desktop rows", () => {
-  assert.match(styleSource, /\.builder-card \.heading-actions \{ gap: 3px; justify-content: flex-start; \}/);
-  assert.match(styleSource, /\.builder-card \.heading-actions > \.history-controls \{ margin-left: 0; \}/);
-  assert.match(styleSource, /@media \(min-width: 1001px\) and \(max-width: 1365px\) \{[\s\S]*?grid-template-areas:[\s\S]*?"name smiles formula examples"\s*"view view history history"[\s\S]*?\}/);
+  assert.match(styleSource, /\.app-shell \.workspace-grid > #structure-panel \.heading-actions\s*\{\s*display: flex;\s*flex-wrap: wrap;/);
+  assert.match(styleSource, /@media \(max-width: 1100px\)\s*\{\s*\.app-shell \.workspace-grid > #structure-panel \.rush-input-group \{ flex-basis: 100%; \}/);
+  assert.match(styleSource, /@media \(max-width: 820px\)\s*\{[^}]*\}[\s\S]*?\.view-mode-switch \{ flex-basis: 100%; \}/);
   assert.match(pageSource, /t\("Por nombre"\)[\s\S]*?SMILES[\s\S]*?language === "en" \? "Formula" : "Fórmula"[\s\S]*?language === "en" \? "Examples" : "Ejemplos"[\s\S]*?t\("Semides\."\)[\s\S]*?t\("Esquelética"\)[\s\S]*?t\("Redibujar"\)/);
+});
+
+test("analysis presents the unchanged formula and secondary values as one summary", () => {
+  assert.match(pageSource, /className="analysis-formula">\s*<span>\{t\("Fórmula molecular"\)\}<\/span>\s*<strong>\{analysis.formula\}<\/strong>/);
+  assert.match(pageSource, /className="analysis-carbons">\s*<span>\{t\("Carbonos totales"\)\}<\/span>\s*<strong>\{carbonCount\}<\/strong>/);
+  assert.match(pageSource, /className="analysis-group">\s*<span>\{t\("Grupo principal"\)\}<\/span>\s*<strong>\{principalGroupLabel \? t\(principalGroupLabel\) : "—"\}<\/strong>/);
+  assert.match(styleSource, /\.formula-row > \.analysis-formula\s*\{\s*grid-row: span 2;/);
+  assert.match(pageSource, /className="step-number">01<\/span>[\s\S]*?className="step-number">02<\/span>[\s\S]*?className="step-number">03<\/span>/);
 });
 
 test("uses a page scroll, contextual constructors, right-side display settings and a fixed full-name dock", () => {
