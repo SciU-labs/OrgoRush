@@ -19,7 +19,7 @@ test("uses the two existing card roots as the only movable panels", () => {
   assert.match(pageSource, /Restablecer posición de paneles/);
   assert.match(pageSource, /onDoubleClick=\{\(event\) => resetPanelPosition\("structure-panel", event\)\}/);
   assert.match(pageSource, /onDoubleClick=\{\(event\) => resetPanelPosition\("analysis-panel", event\)\}/);
-  assert.match(styleSource, /grid-template-areas:\s*\n\s*"name smiles"\s*\n\s*"formula formula"\s*\n\s*"examples view"/);
+  assert.match(styleSource, /grid-template-areas:\s*\n\s*"name smiles"\s*\n\s*"formula formula"\s*\n\s*"examples examples"\s*\n\s*"view view"\s*\n\s*"history history"/);
   assert.match(styleSource, /\.movable-panel\.is-dragging/);
   assert.match(styleSource, /\.movable-panel\.is-drag-disabled \.panel-drag-handle/);
   assert.match(styleSource, /\.builder-card \.card-heading\s*\{\s*display: grid/);
