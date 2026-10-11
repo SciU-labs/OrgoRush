@@ -183,5 +183,5 @@ test("public UI uses shared canonical IDs; generator versions and scoped wrappin
   const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /\.difficulty-options \{[^}]*flex-wrap: wrap/);
   assert.match(css, /\.difficulty-options label \{[^}]*min-height: 44px/);
-  assert.match(css, /\.difficulty-options label:has\(input:focus-visible\)[^}]*var\(--mint-strong\)/);
+  assert.match(css, /\.difficulty-options label:has\(input:focus-visible\)[^}]*var\(--brand-primary\)/);
 });
