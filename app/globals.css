@@ -25,15 +25,18 @@
   --brand-accent: #c7f36b;
   --brand-ink: #111827;
   --brand-muted: #667085;
-  --brand-background: #f8fafc;
+  --brand-background: #f5f7fb;
+  --brand-workspace: #f8fafc;
+  --brand-toolbar: #edf1f8;
+  --brand-selected-ink: #2344b8;
   --brand-surface: #ffffff;
-  --brand-border: #e2e8f0;
+  --brand-border: #d7dfed;
   --brand-success: #22c55e;
   --brand-error: #ff6b57;
   --brand-warning: #f59e0b;
-  --brand-card-radius: 16px;
+  --brand-card-radius: 18px;
   --brand-control-radius: 11px;
-  --brand-shadow: 0 2px 12px rgb(17 24 39 / 4%);
+  --brand-shadow: 0 4px 16px rgb(17 24 39 / 7%);
   --brand-transition: 160ms ease;
   --font-ui: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
   --font-heading: "Sora", "Inter", "Segoe UI", Arial, sans-serif;
@@ -2241,7 +2244,8 @@ button {
     grid-template-areas:
       "name smiles"
       "formula formula"
-      "examples view"
+      "examples examples"
+      "view view"
       "history history";
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: flex-start;
@@ -6063,6 +6067,12 @@ html[data-theme="dark"] .name-suggestion-tooltip {
 }
 
 html[data-theme="dark"] {
+  --brand-background: #0f172a;
+  --brand-workspace: #111827;
+  --brand-toolbar: #202c40;
+  --brand-border: #3b4960;
+  --brand-primary-soft: #23365f;
+  --brand-selected-ink: #c8d3ff;
   --ink: #e8f2ef;
   --muted: #9bada7;
   --line: #30443f;
@@ -6079,9 +6089,7 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] body {
-  background:
-    radial-gradient(circle at 12% 0%, rgba(48, 93, 80, 0.34), transparent 29rem),
-    #0f1715;
+  background: var(--brand-background);
 }
 
 html[data-theme="dark"] .brand-mark,
@@ -10064,7 +10072,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
 ) {
   border-color: var(--brand-border);
   background: var(--brand-surface);
-  box-shadow: var(--brand-shadow);
+  box-shadow: none;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
@@ -10074,13 +10082,13 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
   border-radius: var(--brand-control-radius);
   background: var(--brand-surface);
   color: var(--brand-ink);
-  box-shadow: var(--brand-shadow);
+  box-shadow: none;
   transition: background-color var(--brand-transition),
     border-color var(--brand-transition), color var(--brand-transition);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
-  .name-builder-toggle > span, .step-number
+  .name-builder-toggle > span
 ) {
   background: var(--brand-primary-soft);
   color: var(--brand-primary);
@@ -10149,14 +10157,15 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
 }
 
 /* OrgoRush Phase 2: refine the existing header without changing its controls. */
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header {
+.app-shell:not(.a11y-high-contrast) .site-header {
   min-height: 62px;
   gap: clamp(12px, 2vw, 24px);
   margin-bottom: 12px;
   padding: 8px 12px;
-  border: 1px solid var(--brand-border);
+  border: 1px solid var(--brand-ink);
   border-radius: var(--brand-card-radius);
-  background: var(--brand-surface);
+  background: var(--brand-ink);
+  box-shadow: var(--brand-shadow);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-mark {
@@ -10178,10 +10187,11 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .
   min-width: 0;
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-copy h1 {
-  color: var(--brand-ink);
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-copy h1,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .brand-copy h1 {
+  color: var(--brand-surface);
   font-family: var(--font-heading);
-  font-size: clamp(20px, 2vw, 24px);
+  font-size: clamp(22px, 2vw, 26px);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 1.15;
@@ -10198,15 +10208,15 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .
   margin-left: auto;
 }
 
-.app-shell .site-header .lab-entry-actions .guided-tour-launch {
+html .app-shell:not(.a11y-high-contrast) .site-header .lab-entry-actions .guided-tour-launch {
   min-height: 40px;
   margin-left: 0;
   padding: 7px 12px;
-  border: 1px solid var(--brand-border);
+  border: 1px solid transparent;
   border-radius: 10px;
-  background: var(--brand-surface);
+  background: transparent;
   box-shadow: none;
-  color: var(--brand-muted);
+  color: #cbd5e1;
   font-family: var(--font-ui);
   font-size: 13px;
   font-weight: 600;
@@ -10226,10 +10236,11 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .
   outline-offset: 2px;
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .practice-launch {
-  border-color: var(--brand-border);
-  background: var(--brand-surface);
-  color: var(--brand-ink);
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .practice-launch,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .practice-launch {
+  border-color: #46536b;
+  background: #253047;
+  color: var(--brand-surface);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .practice-launch:hover:not(:disabled),
@@ -10239,14 +10250,17 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .
   color: var(--brand-primary);
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch {
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch {
   border-color: var(--brand-primary);
   background: var(--brand-primary);
   color: var(--brand-surface);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch:hover:not(:disabled),
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch[aria-expanded="true"] {
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch[aria-expanded="true"],
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch:hover:not(:disabled),
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .docx-export-launch[aria-expanded="true"] {
   border-color: var(--brand-primary-hover);
   background: var(--brand-primary-hover);
   color: var(--brand-surface);
@@ -10278,14 +10292,15 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .
 }
 
 /* OrgoRush Phase 3: make the existing instructional loop easier to scan. */
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-column .intro-strip {
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-column .intro-strip,
+html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .information-column .intro-strip {
   justify-content: space-between;
   gap: 12px;
   min-height: 58px;
   padding: 9px 12px;
-  border-color: var(--brand-border);
+  border-color: #cbd7f5;
   border-radius: 14px;
-  background: var(--brand-surface);
+  background: var(--brand-primary-soft);
   box-shadow: none;
 }
 
@@ -10300,18 +10315,19 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-c
   content: "";
   flex: 0 0 16px;
   width: 16px;
-  height: 1px;
+  height: 2px;
   margin-left: 4px;
-  background: var(--brand-border);
+  background: #a9baf0;
 }
 
-.app-shell .information-column .intro-strip .step-number {
+.app-shell:not(.a11y-high-contrast) .information-column .intro-strip .step-number {
   flex: 0 0 28px;
   width: 28px;
   height: 28px;
-  border: 1px solid #d9e3ff;
-  background: var(--brand-primary-soft);
-  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  border-radius: 9px;
+  background: var(--brand-primary);
+  color: var(--brand-surface);
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 700;
@@ -10327,8 +10343,8 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-c
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-column .intro-strip strong {
-  color: var(--brand-ink);
-  font-weight: 650;
+  color: var(--brand-selected-ink);
+  font-weight: 700;
 }
 
 @media (max-width: 1000px) {
@@ -10364,9 +10380,25 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .information-c
 /* OrgoRush Phase 4: refine editor controls without styling molecular marks. */
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel {
   border-color: var(--brand-border);
+  border-top: 3px solid var(--brand-primary);
   border-radius: var(--brand-card-radius);
   background: var(--brand-surface);
   box-shadow: var(--brand-shadow);
+}
+
+/* Existing toolbar children retain their layout order and interaction targets. */
+.app-shell:not(.a11y-high-contrast) #structure-panel .card-heading {
+  border-bottom: 1px solid var(--brand-border);
+  background: var(--brand-toolbar);
+}
+
+.app-shell:not(.a11y-high-contrast) #structure-panel .card-heading .eyebrow {
+  color: var(--brand-primary);
+}
+
+.app-shell:not(.a11y-high-contrast) #structure-panel .heading-actions > .history-controls {
+  padding-inline-start: 8px;
+  border-inline-start: 1px solid var(--brand-border);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle,
@@ -10388,7 +10420,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:hover:not(:disabled) {
   border-color: var(--brand-primary);
   background: var(--brand-primary-soft);
-  color: var(--brand-primary);
+  color: var(--brand-selected-ink);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button:not(.new-button) {
@@ -10406,7 +10438,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
   gap: 2px;
   border-color: var(--brand-border);
   border-radius: 11px;
-  background: var(--brand-background);
+  background: #e3e9f4;
   box-shadow: none;
 }
 
@@ -10427,7 +10459,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch button.active {
   background: var(--brand-primary-soft);
-  color: var(--brand-primary);
+  color: var(--brand-selected-ink);
   box-shadow: inset 0 0 0 1px var(--brand-primary);
 }
 
@@ -10439,6 +10471,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .molecule-stage {
   border-color: var(--brand-border);
   border-radius: 16px;
+  background: var(--brand-workspace);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left {
@@ -10478,6 +10511,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
   gap: 6px 10px;
   padding: 8px 12px 7px;
   border-top: 1px solid var(--brand-border);
+  background: var(--brand-toolbar);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker > div {
@@ -10501,7 +10535,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button.active {
   background: var(--brand-primary-soft);
-  color: var(--brand-primary);
+  color: var(--brand-selected-ink);
   box-shadow: inset 0 0 0 1px var(--brand-primary);
 }
 
@@ -10531,7 +10565,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
   min-height: 36px;
   border-color: var(--brand-border);
   border-radius: 10px;
-  background: var(--brand-surface);
+  background: var(--brand-workspace);
   color: var(--brand-ink);
   font-family: var(--font-ui);
   font-size: 12px;
@@ -10544,7 +10578,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-gri
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button:hover, .ring-button:hover, .functional-button:hover, .alkyl-button.active, .ring-button.active, .functional-button[aria-expanded="true"]) {
   border-color: var(--brand-primary);
   background: var(--brand-primary-soft);
-  color: var(--brand-primary);
+  color: var(--brand-selected-ink);
   box-shadow: inset 0 0 0 1px var(--brand-primary);
 }
 
@@ -10604,6 +10638,9 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
   align-items: center;
   gap: 14px;
   padding: 20px 20px 16px;
+  border-top: 3px solid var(--brand-primary);
+  border-bottom: 1px solid var(--brand-border);
+  background: var(--brand-workspace);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading .eyebrow {
@@ -10616,8 +10653,8 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading h2 {
   color: var(--brand-ink);
   font-family: var(--font-heading);
-  font-size: 20px;
-  font-weight: 650;
+  font-size: 22px;
+  font-weight: 700;
   letter-spacing: -0.025em;
 }
 
@@ -10707,11 +10744,11 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
   padding: 12px 13px;
   border: 1px solid var(--brand-border);
   border-radius: 12px;
-  background: var(--brand-background);
+  background: var(--brand-toolbar);
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row span {
-  color: var(--brand-muted);
+  color: #52617c;
   font-family: var(--font-ui);
   font-size: 9px;
   letter-spacing: 0.07em;
@@ -10719,6 +10756,8 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row strong {
   color: var(--brand-ink);
+  font-family: var(--font-ui);
+  font-weight: 700;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .real-world-context {
@@ -10727,7 +10766,7 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
   border-color: var(--brand-border);
   border-radius: 14px;
   background: var(--brand-surface);
-  box-shadow: 0 1px 4px rgb(17 24 39 / 3%);
+  box-shadow: none;
 }
 
 html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-panel .info-eyebrow {
@@ -10854,9 +10893,9 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) #analysis-pane
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel {
-  border: 1px solid #334b44;
+  border: 1px solid var(--brand-border);
   border-radius: var(--brand-card-radius);
-  background: var(--paper);
+  background: #172130;
   box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
 }
 
@@ -10864,6 +10903,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .ana
   align-items: center;
   gap: 14px;
   padding: 20px 20px 16px;
+  border-top: 3px solid var(--brand-primary);
+  border-bottom: 1px solid var(--brand-border);
+  background: var(--brand-workspace);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading .eyebrow {
@@ -10876,8 +10918,8 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .ana
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .analysis-heading h2 {
   color: var(--ink);
   font-family: var(--font-heading);
-  font-size: 20px;
-  font-weight: 650;
+  font-size: 22px;
+  font-weight: 700;
   letter-spacing: -0.025em;
 }
 
@@ -10934,9 +10976,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .for
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row > div {
   min-width: 0;
-  border: 1px solid #334b44;
+  border: 1px solid var(--brand-border);
   border-radius: 12px;
-  background: #172521;
+  background: var(--brand-toolbar);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row span {
@@ -10946,6 +10988,8 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .for
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .formula-row strong {
   color: #e4eee9;
+  font-family: var(--font-ui);
+  font-weight: 700;
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel .real-world-context {
@@ -11044,18 +11088,19 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) #analysis-panel :is(
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel {
-  border-color: #334b44;
+  border-color: var(--brand-border);
+  border-top: 3px solid var(--brand-primary);
   border-radius: var(--brand-card-radius);
-  background: var(--paper);
+  background: #172130;
   box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .heading-actions > .name-builder-toggle,
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .history-controls button {
   min-height: 34px;
-  border-color: #3a514a;
+  border-color: var(--brand-border);
   border-radius: 10px;
-  background: #1c2c27;
+  background: var(--brand-workspace);
   box-shadow: none;
   color: var(--ink);
   font-family: var(--font-ui);
@@ -11085,9 +11130,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .view-mode-switch {
   gap: 2px;
-  border-color: #3a504a;
+  border-color: var(--brand-border);
   border-radius: 11px;
-  background: #111d1a;
+  background: var(--brand-workspace);
   box-shadow: none;
 }
 
@@ -11115,8 +11160,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .molecule-stage {
-  border-color: var(--line);
+  border-color: var(--brand-border);
   border-radius: 16px;
+  background: var(--brand-workspace);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left {
@@ -11126,9 +11172,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .canvas-toolbar-left button {
   min-height: 36px;
   padding: 7px 10px;
-  border-color: #3a514a;
+  border-color: var(--brand-border);
   border-radius: 10px;
-  background: #1c2c27;
+  background: var(--brand-workspace);
   box-shadow: none;
   color: #b6c9c2;
   font-family: var(--font-ui);
@@ -11155,13 +11201,14 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .builder-toolbar {
   gap: 6px 10px;
   padding: 8px 12px 7px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--brand-border);
+  background: var(--brand-toolbar);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker > div {
-  border-color: #3a504a;
+  border-color: var(--brand-border);
   border-radius: 10px;
-  background: #111d1a;
+  background: var(--brand-workspace);
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .bond-order-picker button {
@@ -11180,9 +11227,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 }
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .direction-pad button {
-  border-color: #3e5b53;
+  border-color: var(--brand-border);
   border-radius: 9px;
-  background: #1b302a;
+  background: var(--brand-workspace);
   color: #c1d3cd;
   transition: background-color var(--brand-transition),
     border-color var(--brand-transition), color var(--brand-transition);
@@ -11203,9 +11250,9 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 
 html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #structure-panel .structure-actions :is(.alkyl-button, .ring-button, .functional-button) {
   min-height: 36px;
-  border-color: #3e5b53;
+  border-color: var(--brand-border);
   border-radius: 10px;
-  background: #1b302a;
+  background: var(--brand-workspace);
   color: #c1d3cd;
   font-family: var(--font-ui);
   font-size: 12px;
