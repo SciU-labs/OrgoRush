@@ -2157,6 +2157,30 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   letter-spacing: -0.03em;
 }
 
+.app-shell .site-header .brand-lockup {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-shell .site-header .brand-lockup .brand-mark {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.app-shell .site-header .brand-lockup .brand-mark img {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+}
+
 .scope-pill {
   display: flex;
   align-items: center;
@@ -9936,22 +9960,18 @@ html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { 
 .construction-context-panel .alkyl-copy small { height: auto; text-overflow: clip; }
 @media (max-width: 760px) {
   .site-header { min-height: 52px; }
-  .brand-mark { width: 42px; height: 40px; }
-  .brand-mark img { width: 35px; }
+  .app-shell .site-header .brand-lockup { gap: 8px; }
+  .app-shell .site-header .brand-lockup .brand-mark {
+    flex-basis: 42px;
+    width: 42px;
+    height: 40px;
+  }
+  .app-shell .site-header .brand-lockup .brand-mark img { width: 36px; }
   .brand-copy h1 { font-size: 19px; }
   .construction-context-panel .alkyl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .construction-context-panel .alkyl-option { gap: 6px; padding: 6px; }
   .construction-context-panel .alkyl-formula { flex-basis: 48px; }
 }
-@keyframes sciu-eye-blink-once {
-  0%, 24%, 38%, 100% { transform: scaleY(1); }
-  30% { transform: scaleY(.12); }
-}
-.site-header .brand-mark img { transform-origin: center; animation: sciu-eye-blink-once 560ms ease-in-out 1; }
-@media (prefers-reduced-motion: reduce) {
-  .site-header .brand-mark img { animation: none; }
-}
-
 /* Workspace 2.0: keep builders and examples in the shared right-hand slot. */
 .app-shell { padding-top: 8px; }
 .construction-context-panel > :is(.name-builder-panel, .formula-builder-panel, .smiles-interop-panel) {
@@ -10734,17 +10754,17 @@ html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) :is(
   box-shadow: var(--brand-shadow);
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-mark {
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-lockup .brand-mark {
   flex: 0 0 46px;
   width: 46px;
   height: 42px;
   border: 0;
   border-radius: 10px;
-  background: transparent;
+  background: #fff;
   box-shadow: none;
 }
 
-html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-mark img {
+html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-lockup .brand-mark img {
   width: 40px;
 }
 
@@ -10837,6 +10857,22 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .site-header .docx-e
     gap: 8px;
     margin-bottom: 8px;
     padding: 7px 9px;
+  }
+
+  .app-shell .site-header .brand-lockup { gap: 8px; }
+
+  html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-lockup .brand-mark {
+    flex-basis: 42px;
+    width: 42px;
+    height: 40px;
+  }
+
+  html:not([data-theme="dark"]) .app-shell:not(.a11y-high-contrast) .site-header .brand-lockup .brand-mark img {
+    width: 36px;
+  }
+
+  html .app-shell:not(.a11y-high-contrast) .site-header .brand-lockup .brand-copy h1 {
+    font-size: 20px;
   }
 
   .app-shell .site-header .lab-entry-actions {

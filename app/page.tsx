@@ -12386,11 +12386,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       }}
     >
       <header className="site-header">
-        <div className="brand-mark">
-          <img src="../sciu-eye.png" alt="Sciu Science" />
-        </div>
-        <div className="brand-copy">
-          <h1>OrgoRush</h1>
+        <div className="brand-lockup">
+          <div className="brand-mark" aria-hidden="true">
+            <img src="../sciu-eye.png" alt="" />
+          </div>
+          <div className="brand-copy">
+            <h1>OrgoRush</h1>
+          </div>
         </div>
         <div className="lab-entry-actions">
         <button
