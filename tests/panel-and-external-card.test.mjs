@@ -51,7 +51,8 @@ test("keeps one live canvas in the sticky left card and all information in the r
 test("keeps constructor actions aligned across locales and balances two-column desktop rows", () => {
   assert.match(styleSource, /\.app-shell \.workspace-grid > #structure-panel \.heading-actions\s*\{\s*display: flex;\s*flex-wrap: wrap;/);
   assert.match(styleSource, /@media \(max-width: 1100px\)\s*\{\s*\.app-shell \.workspace-grid > #structure-panel \.rush-input-group \{ flex-basis: 100%; \}/);
-  assert.match(styleSource, /@media \(max-width: 820px\)\s*\{[^}]*\}[\s\S]*?\.view-mode-switch \{ flex-basis: 100%; \}/);
+  assert.match(styleSource, /@media \(max-width: 1100px\)\s*\{[^}]*\}[\s\S]*?\.view-mode-switch \{ flex-basis: 250px; \}/);
+  assert.match(styleSource, /\.history-controls \{ flex: 1 1 220px; width: auto; \}/);
   assert.match(pageSource, /t\("Por nombre"\)[\s\S]*?SMILES[\s\S]*?language === "en" \? "Formula" : "Fórmula"[\s\S]*?language === "en" \? "Examples" : "Ejemplos"[\s\S]*?t\("Semides\."\)[\s\S]*?t\("Esquelética"\)[\s\S]*?t\("Redibujar"\)/);
 });
 
@@ -61,6 +62,24 @@ test("analysis presents the unchanged formula and secondary values as one summar
   assert.match(pageSource, /className="analysis-group">\s*<span>\{t\("Grupo principal"\)\}<\/span>\s*<strong>\{principalGroupLabel \? t\(principalGroupLabel\) : "—"\}<\/strong>/);
   assert.match(styleSource, /\.formula-row > \.analysis-formula\s*\{\s*grid-row: span 2;/);
   assert.match(pageSource, /className="step-number">01<\/span>[\s\S]*?className="step-number">02<\/span>[\s\S]*?className="step-number">03<\/span>/);
+});
+
+test("responsive editor touch targets retain separate input groups and four directions", () => {
+  assert.match(styleSource, /\.construction-head \.card-heading \.heading-actions :is\(\.rush-input-group, \.view-mode-switch, \.history-controls\) button,[\s\S]*?\.bond-order-picker button\s*\{\s*min-width: 44px;\s*min-height: 44px;/);
+  assert.match(styleSource, /grid-template: minmax\(44px, auto\) \/ repeat\(4, minmax\(44px, max-content\)\)/);
+  assert.match(styleSource, /\.a11y-high-contrast[^{]*\.direction-pad button\s*\{\s*min-width: 44px;\s*min-height: 44px;/);
+  assert.match(styleSource, /\.settings-scale-actions input\[type="range"\]\s*\{[^}]*min-height: 44px;/);
+  assert.match(styleSource, /\.guided-tour-close\s*\{\s*width: 44px;\s*height: 44px;/);
+  assert.match(styleSource, /\.molecule-workspace\.is-expanded \.expanded-workspace-header\s*\{\s*display: grid;\s*grid-template-columns: minmax\(0, 1fr\) auto;/);
+  assert.match(styleSource, /\.molecule-workspace\.is-expanded \.direction-pad\s*\{\s*grid-column: 1 \/ -1;\s*grid-row: auto;/);
+});
+
+test("mobile analysis keeps valid status visible and reserves the dock touch rows", () => {
+  assert.match(styleSource, /\.analysis-heading > div:first-child\s*\{\s*flex: 1 1 100%;\s*min-width: 0;/);
+  assert.match(styleSource, /\.valid-badge\s*\{\s*display: inline-flex;/);
+  assert.match(styleSource, /@media \(max-width: 760px\)\s*\{\s*:root \{ --iupac-dock-height: 104px; \}/);
+  assert.match(styleSource, /\.iupac-dock-expand \{ min-width: 44px; min-height: 44px; \}/);
+  assert.match(styleSource, /\.iupac-dock-profile \{ grid-area: profile;[^}]*min-height: 44px;/);
 });
 
 test("uses a page scroll, contextual constructors, right-side display settings and a fixed full-name dock", () => {
