@@ -1,0 +1,42 @@
+[
+  {
+    "id": "19",
+    "smiles": "C=CC(CCC)CCC",
+    "blueBook2013": {
+      "en": "4-ethenylheptane",
+      "es": "4-etenilheptano",
+      "parentCarbonCount": 7,
+      "parentDoubleBondLocants": [],
+      "parentTripleBondLocants": [],
+      "unsaturatedSubstituent": "ethenyl at C4"
+    },
+    "legacy1979": {
+      "en": "3-propyl-1-hexene",
+      "es": "3-propil-1-hexeno",
+      "parentCarbonCount": 6,
+      "parentDoubleBondLocants": [1],
+      "parentTripleBondLocants": []
+    },
+    "normativeBasis": ["Blue Book 2013 P-44.3.2", "Blue Book 2013 P-44.4.1.1", "Blue Book 2013 P-45.2", "IUPAC 1979 Rule A-3.4"]
+  },
+  {
+    "id": "20",
+    "smiles": "C#CC(CCC)CCC",
+    "blueBook2013": {
+      "en": "4-ethynylheptane",
+      "es": "4-etinilheptano",
+      "parentCarbonCount": 7,
+      "parentDoubleBondLocants": [],
+      "parentTripleBondLocants": [],
+      "unsaturatedSubstituent": "ethynyl at C4"
+    },
+    "legacy1979": {
+      "en": "3-propyl-1-hexyne",
+      "es": "3-propil-1-hexino",
+      "parentCarbonCount": 6,
+      "parentDoubleBondLocants": [],
+      "parentTripleBondLocants": [1]
+    },
+    "normativeBasis": ["Blue Book 2013 P-44.3.2", "Blue Book 2013 P-44.4.1.1", "Blue Book 2013 P-45.2", "IUPAC 1979 Rule A-3.4"]
+  }
+]

@@ -8,12 +8,18 @@ const alkylRootPattern = IUPAC_ROOTS
   .join("|");
 const spanishAlkylNoun = new RegExp(`(${alkylRootPattern})ilo(?=$|[\\s,.)-])`, "g");
 const spanishAlkylSubstituent = new RegExp(`(${alkylRootPattern})il(?=[a-z]|$|[\\s,.)-])`, "g");
+const spanishUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})(en|in)il`, "g");
+const spanishNumberedUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})-(\\d+)-(en|in)-(\\d+)-il(?=$|[\\s,.)-])`, "g");
 const spanishParentRoot = new RegExp(`(${IUPAC_ROOTS.filter((root) =>
   englishIupacRoot(root) !== root).join("|")})(?=(?:an|en|in)(?:[oa]|$|[-\\d]))`, "g");
 
 function translateSpanishAlkylMorphemes(value: string) {
   const translate = (_match: string, root: string) => `${englishIupacRoot(root)}yl`;
   return value
+    .replace(spanishNumberedUnsaturatedSubstituent, (_match, root: string, bondLocant: string, unsaturation: string, freeValenceLocant: string) =>
+      `${englishIupacRoot(root)}-${bondLocant}-${unsaturation === "en" ? "en" : "yn"}-${freeValenceLocant}-yl`)
+    .replace(spanishUnsaturatedSubstituent, (_match, root: string, unsaturation: string) =>
+      `${englishIupacRoot(root)}${unsaturation === "en" ? "enyl" : "ynyl"}`)
     .replace(spanishAlkylNoun, translate)
     .replace(spanishAlkylSubstituent, translate);
 }

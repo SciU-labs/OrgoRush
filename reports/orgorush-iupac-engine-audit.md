@@ -186,4 +186,46 @@ La omisión del `1` se apoya en la forma Legacy documentada por el motor inglés
 - `npm run build` no pudo iniciar porque `bash` no está disponible en el PATH de PowerShell. Ejecución directa alternativa `npm exec -- vinext build`: transformó 266 módulos y finalizó la fase de build, pero el plugin `sites` terminó con error `EPERM` al retirar `dist/.openai/drizzle`; por eso no se reporta el build completo como PASS.
 - `npm exec tsc -- --noEmit --pretty false` — falla por diagnósticos del proyecto fuera del alcance, incluidos archivos de snapshot bajo `outputs/` y workers. Filtrar la salida por `app/nomenclature-conventions.ts` y la prueba NOM-002 no encontró diagnósticos en el código modificado.
 
-Archivos de este seguimiento: `app/nomenclature-conventions.ts`, `tests/iupac-engine-audit.test.mjs`, `tests/iupac-nom002-cyclic-ketones.test.mjs`, `tests/fixtures/iupac-engine-nom002-cyclic-ketones.json` y este informe. No se tocaron el fixture histórico ni el fixture normativo NOM-001. No se inició NOM-003. No se creó commit ni se hizo push.
+Archivos de este seguimiento: `app/nomenclature-conventions.ts`, `tests/iupac-engine-audit.test.mjs`, `tests/iupac-nom002-cyclic-ketones.test.mjs`, `tests/fixtures/iupac-engine-nom002-cyclic-ketones.json` y este informe. No se tocaron el fixture histórico ni el fixture normativo NOM-001. No se creó commit ni se hizo push.
+
+## Seguimiento — corrección NOM-003 de selección de cadena (2026-10-13)
+
+### Causa, reglas y solución
+
+Estado de partida: rama `main`, HEAD `4386d2ae164182c48ee45b86433196ab29d26412`, árbol limpio. El selector común enumeraba caminos acíclicos en `analyzeHydrocarbonMolecule` y `analyzeFunctionalAcyclic`, numeraba cada marco y los comparaba mediante `compareParentCandidates`. Ese comparador heredado ordena grupo principal, cantidad de enlaces múltiples y longitud; por eso en 2013 los casos 19–20 preferían la cadena de seis carbonos que incorpora la insaturación.
+
+La jerarquía 2013 separa la selección del padre de la selección del PIN. [P-44 del Blue Book 2013](https://iupac.qmul.ac.uk/BlueBook/P4.html) compara cadenas acíclicas primero por heteroátomos y luego por átomos del esqueleto; P-44.3.2 explicita que la longitud precede a la insaturación y contrasta octano frente a hept-1-eno. Si esa etapa no decide, P-44.4.1 compara primero el número de enlaces múltiples y después el de dobles enlaces. Solo una vez seleccionado el padre sénior, P-45.2 decide entre nombres por número y localizadores de sustituyentes. Para 1979, [A-3.4 de IUPAC 1979](https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm) conserva la prioridad del máximo número de enlaces dobles y triples y después, entre cadenas empatadas en insaturación, el mayor número de carbonos.
+
+Se parametrizó el comparador interno de candidatos: `analyzeMolecule` usa por defecto el orden 2013 y permite calcular una segunda `Analysis` con el orden 1979 para los dos nombres Legacy. El comparador 1979 compartido y sus pruebas permanecen intactos. En los casos 19–20, la cadena saturada de siete carbonos gana en 2013 y la insaturación del fragmento lateral se nombra estructuralmente como etenil/etinil; el análisis Legacy conserva la cadena insaturada de seis carbonos. La traducción inglesa tiene reglas léxicas para esas formas. La representación estructural y el grafo no se reescriben.
+
+Las explicaciones 2013 ahora detectan una insaturación que está dentro de un sustituyente y dicen que queda fuera de la cadena principal saturada. La visualización, numeración, localizadores y nombre sugerido 2013 siguen consumiendo el mismo `Analysis` 2013. Se mantuvo la forma heredada `vinil` en análisis no afectados, como vinilciclohexano; el prefijo sistemático etenil se usa en la cadena acíclica para la selección 2013.
+
+### Resultados 19 y 20
+
+La tabla anterior se conserva en el fixture observado original. En ambos, el texto español es la localización sistemática usada por el producto; la referencia Blue Book se publica en inglés. [P-32.3 del Blue Book](https://iupac.qmul.ac.uk/BlueBook/P3.html) prefiere el prefijo sistemático `ethenyl` frente al retenido `vinyl`; P-32.1 describe la formación de prefijos a partir de padres insaturados. Para la traducción española se emplea `etenil`/`etinil`, formas de nomenclatura sistemática en español, no traducciones por reemplazo del nombre completo.
+
+| Caso | Perfil | Antes | Después | Padre/localizadores posteriores |
+|---|---|---|---|---|
+| 19 | 2013 EN | `3-propylhex-1-ene` | `4-ethenylheptane` | heptano, 7 C; doble enlace en sustituyente etenilo unido a C4 |
+| 19 | 2013 ES | `3-propilhex-1-eno` | `4-etenilheptano` | heptano, 7 C; doble enlace en sustituyente etenilo unido a C4 |
+| 19 | 1979 EN | `3-propyl-1-hexene` | `3-propyl-1-hexene` | 6 C; doble enlace del padre en C1 |
+| 19 | 1979 ES | `3-propil-1-hexeno` | `3-propil-1-hexeno` | 6 C; doble enlace del padre en C1 |
+| 20 | 2013 EN | `3-propylhex-1-yne` | `4-ethynylheptane` | heptano, 7 C; triple enlace en sustituyente etinilo unido a C4 |
+| 20 | 2013 ES | `3-propilhex-1-ino` | `4-etinilheptano` | heptano, 7 C; triple enlace en sustituyente etinilo unido a C4 |
+| 20 | 1979 EN | `3-propyl-1-hexyne` | `3-propyl-1-hexyne` | 6 C; triple enlace del padre en C1 |
+| 20 | 1979 ES | `3-propil-1-hexino` | `3-propil-1-hexino` | 6 C; triple enlace del padre en C1 |
+
+### Pruebas y alcance de regresión
+
+`tests/fixtures/iupac-engine-audit-observed.json` permanece sin cambios como evidencia previa. `tests/fixtures/iupac-engine-audit-nom003-conforming.json` añade las salidas normativas y su base normativa. La auditoría de 84 salidas compara el estado histórico excepto las celdas que NOM-001/NOM-002 ya separaban y las cuatro salidas 2013 cambiadas de los casos NOM-003; exige que los cuatro resultados Legacy de los dos casos sigan iguales.
+
+La batería nueva de selección fija 13 estructuras: competencia de distinta longitud con alqueno y alquino, incluidos sustituyentes etenilo/etinilo de dos carbonos y prop-2-en-1-il/prop-2-in-1-il de tres carbonos; cadenas alternativas de igual longitud máxima; dos brazos con la misma longitud máxima con y sin insaturación; y alcohol, aldehído, cetona y ácido con insaturación. Comprueba nombres ES/EN desde el mismo análisis, longitud/localizadores del padre, selección Legacy independiente, inclusión de la función principal en el padre y estabilidad SMILES antes/después. Para los dos casos de la auditoría que dejan insaturación fuera del padre, las explicaciones española e inglesa describen el etenilo/etinilo en C4 y el padre saturado. Los prefijos de tres carbonos llevan localizadores tanto de insaturación como de valencia libre, como requiere P-32.1.
+
+- `node --test --test-concurrency=1 tests/iupac-engine-audit.test.mjs tests/iupac-nom003-parent-selection.test.mjs tests/iupac-nom002-cyclic-ketones.test.mjs tests/legacy-english-nomenclature.test.mjs tests/nomenclature-conventions.test.mjs tests/language-audit-regressions.test.mjs tests/chemistry-regressions.test.mjs tests/name-builder.test.mjs tests/functional-nomenclature.test.mjs tests/halogen-nomenclature.test.mjs tests/reasoning-name-fragments.test.mjs tests/chemistry-document-validation.test.mjs` — **48 PASS, 0 FAIL, 0 omitidas**.
+- `node --test --test-concurrency=1 tests/practice-session.test.mjs tests/exam-session.test.mjs tests/practice-structural-answer.test.mjs` — **47 PASS, 0 FAIL, 0 omitidas**.
+- `npm run build` no inicia porque `bash` no está disponible en PowerShell. `npm exec -- vinext build` transformó 266 módulos y reportó `built in 11.34s`, pero el hook `sites` falló al final con `EPERM` al retirar `dist/.openai/drizzle`; el build completo no es PASS.
+- `npm exec tsc -- --noEmit --pretty false` falla en diagnósticos preexistentes del proyecto (incluye validación de documentos, layout, snapshots de `outputs/` y algunos puntos existentes de `app/page.tsx`). El filtrado de las tres fuentes tocadas encontró solo errores previos en `app/page.tsx` (conversión OpenChemLib, tipos de razonamiento/layout) y en `app/iupac-name-normalization.ts` (grupos de captura nombrados y target); no reportó errores en las nuevas funciones de selección, prefijos insaturados o formato Legacy.
+- Una ejecución de `node --test --test-concurrency=1 tests/*.test.mjs` y una de `npm run test:critical` se interrumpieron manualmente tras largos tramos sin salida nueva; sus resultados parciales no se cuentan como PASS. Las pruebas dedicadas de nomenclatura, química, Practice y Exam anteriores sí concluyeron con los totales informados.
+- `git diff --check` terminó sin errores; Git advierte que normalizará LF a CRLF en el test modificado.
+
+Archivos de NOM-003: `app/page.tsx`, `app/iupac-name-normalization.ts`, `app/legacy-english-nomenclature.ts`, `tests/iupac-engine-audit.test.mjs`, `tests/iupac-nom003-parent-selection.test.mjs`, `tests/fixtures/iupac-engine-audit-nom003-conforming.json` y este informe. NOM-001 y NOM-002 no recibieron cambios de implementación; sus comprobaciones en la suite dedicada siguen PASS. NOM-004 no se abordó ni modificó. No se hizo commit ni push.

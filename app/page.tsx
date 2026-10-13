@@ -1663,6 +1663,8 @@ type AuditableChainCandidate = {
   prefixCount?: number;
 };
 
+type ParentSelectionConvention = "blue-book-2013" | "iupac-1979-legacy";
+
 function candidateAlphabeticalTieBreak(candidate: AuditableChainCandidate) {
   return [...candidate.substituents]
     .sort((left, right) => compareAlphabeticalNames(left.sortName, right.sortName))
@@ -1697,7 +1699,10 @@ function parentCriteria(candidate: AuditableChainCandidate): ParentCandidateCrit
 }
 
 /** Selects numbering for each framework first, then compares parent frameworks. */
-function selectLegacyParentCandidate<T extends AuditableChainCandidate>(candidates: T[]) {
+function selectParentCandidate<T extends AuditableChainCandidate>(
+  candidates: T[],
+  convention: ParentSelectionConvention,
+) {
   const frameworks = new Map<string, T[]>();
   candidates.forEach((candidate) => {
     const forward = candidate.path.join(",");
@@ -1710,7 +1715,24 @@ function selectLegacyParentCandidate<T extends AuditableChainCandidate>(candidat
   const numbered = [...frameworks.values()].map((variants) =>
     numberParent(variants, numberingCriteria),
   );
-  return selectParent(numbered, parentCriteria);
+  if (convention === "iupac-1979-legacy") return selectParent(numbered, parentCriteria);
+  const descending = (left: number, right: number) => right - left;
+  return [...numbered].sort((left, right) => {
+    const a = parentCriteria(left);
+    const b = parentCriteria(right);
+    return descending(a.principalGroupCount, b.principalGroupCount)
+      // Blue Book 2013 P-44.3.2 puts skeletal atom count ahead of unsaturation.
+      || descending(a.carbonCount, b.carbonCount)
+      || descending(a.multipleBondCount, b.multipleBondCount)
+      || descending(a.doubleBondCount, b.doubleBondCount)
+      // The remaining comparison criteria follow P-44.4, then P-45.
+      || compareNumberLists(a.principalGroupLocants, b.principalGroupLocants)
+      || compareNumberLists(a.multipleBondLocants, b.multipleBondLocants)
+      || compareNumberLists(a.doubleBondLocants, b.doubleBondLocants)
+      || descending(a.prefixCount, b.prefixCount)
+      || compareNumberLists(a.prefixLocants, b.prefixLocants)
+      || a.alphabeticalTieBreak.localeCompare(b.alphabeticalTieBreak, "en", { sensitivity: "base" });
+  })[0];
 }
 
 function stripForAlphabetizing(name: string) {
@@ -1834,6 +1856,7 @@ function nameSubstituent(
   parent: number | null,
   adjacency: Map<number, number[]>,
   bondOrders?: ReadonlyMap<string, BondOrder>,
+  preferSystematicUnsaturatedPrefix = false,
 ): Omit<NamedSubstituent, "locant"> {
   const component = collectSubtree(root, new Set(parent === null ? [] : [parent]), adjacency);
   const componentSet = new Set(component);
@@ -1860,7 +1883,7 @@ function nameSubstituent(
       path.forEach((atomId, index) => {
         for (const neighbor of adjacency.get(atomId) ?? []) {
           if (!componentSet.has(neighbor) || pathSet.has(neighbor)) continue;
-          const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders);
+          const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, preferSystematicUnsaturatedPrefix);
           branches.push({ ...named, locant: index + 1 });
         }
       });
@@ -1875,21 +1898,52 @@ function nameSubstituent(
     });
 
   const chosen = candidates[0];
+  const doubleBondLocants: number[] = [];
+  const tripleBondLocants: number[] = [];
+  chosen.path.slice(0, -1).forEach((atomId, index) => {
+    const order = bondOrders?.get(bondKey(atomId, chosen.path[index + 1])) ?? 1;
+    if (order === 2) doubleBondLocants.push(index + 1);
+    if (order === 3) tripleBondLocants.push(index + 1);
+  });
   const internalBondOrder = chosen.path.length === 2
     ? bondOrders?.get(bondKey(chosen.path[0], chosen.path[1]))
     : undefined;
+  const unsaturatedPrefixName = preferSystematicUnsaturatedPrefix
+    ? makeUnsaturatedSubstituentName(chosen.path.length, doubleBondLocants, tripleBondLocants)
+    : undefined;
   const parentName = chosen.path.length === 2 && internalBondOrder === 2
-    ? "vinil"
-    : alkylNames[chosen.path.length] ?? `alquilo de ${chosen.path.length} carbonos`;
+    ? preferSystematicUnsaturatedPrefix ? "etenil" : "vinil"
+    : chosen.path.length === 2 && internalBondOrder === 3 && preferSystematicUnsaturatedPrefix
+      ? "etinil"
+      : unsaturatedPrefixName ?? alkylNames[chosen.path.length] ?? `alquilo de ${chosen.path.length} carbonos`;
   const branchParts = formatSubstituentGroups(chosen.branches);
   const name = branchParts.length ? `${branchParts.join("-")}${parentName}` : parentName;
 
   return {
     name,
     sortName: stripForAlphabetizing(name),
-    complex: branchParts.length > 0,
+    complex: branchParts.length > 0 || Boolean(unsaturatedPrefixName),
     atomIds: component,
   };
+}
+
+function makeUnsaturatedSubstituentName(
+  carbonCount: number,
+  doubleLocants: readonly number[],
+  tripleLocants: readonly number[],
+) {
+  if (!doubleLocants.length && !tripleLocants.length) return undefined;
+  if (carbonCount === 2 && doubleLocants.length === 1 && doubleLocants[0] === 1) return undefined;
+  if (carbonCount === 2 && tripleLocants.length === 1 && tripleLocants[0] === 1) return undefined;
+  const root = alkaneRoots[carbonCount];
+  if (!root) return undefined;
+  const doublePart = doubleLocants.length
+    ? `${doubleLocants.join(",")}-en`
+    : "";
+  const triplePart = tripleLocants.length
+    ? `${tripleLocants.join(",")}-in`
+    : "";
+  return `${root}-${doublePart}${doublePart && triplePart ? "-" : ""}${triplePart}-1-il`;
 }
 
 function makeChainName(length: number, doubleLocants: number[], tripleLocants: number[]) {
@@ -2157,6 +2211,7 @@ function analyzeHydrocarbonMolecule(
   molecule: Molecule,
   enabledAliases: readonly string[] = [],
   externalSubstituents: readonly { anchorId: number; substituent: Omit<NamedSubstituent, "locant"> }[] = [],
+  convention: ParentSelectionConvention = "blue-book-2013",
 ): Analysis {
   if ((molecule.rings?.length ?? 0) > 1) return analyzeMultiRingMolecule(molecule, enabledAliases);
   if (molecule.rings?.length === 1) return analyzeRingMolecule(molecule, enabledAliases);
@@ -2190,7 +2245,7 @@ function analyzeHydrocarbonMolecule(
     path.forEach((atomId, index) => {
       for (const neighbor of adjacency.get(atomId) ?? []) {
         if (pathSet.has(neighbor)) continue;
-        const named = nameSubstituent(neighbor, atomId, adjacency);
+        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true);
         substituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
@@ -2207,7 +2262,7 @@ function analyzeHydrocarbonMolecule(
     };
   });
 
-  const chosen = selectLegacyParentCandidate(candidates);
+  const chosen = selectParentCandidate(candidates, convention);
   const chainName = makeChainName(
     chosen.path.length,
     chosen.doubleBondLocants,
@@ -3292,6 +3347,7 @@ function analyzeFunctionalAcyclic(
   primaryKind: FunctionalGroupKind | undefined,
   enabledAliases: readonly string[] = [],
   externalSubstituents: readonly { anchorId: number; substituent: Omit<NamedSubstituent, "locant"> }[] = [],
+  convention: ParentSelectionConvention = "blue-book-2013",
 ): Analysis {
   const adjacency = buildAdjacency(skeleton);
   const bondOrders = new Map(
@@ -3319,7 +3375,7 @@ function analyzeFunctionalAcyclic(
     path.forEach((atomId, index) => {
       for (const neighbor of adjacency.get(atomId) ?? []) {
         if (pathSet.has(neighbor)) continue;
-        const named = nameSubstituent(neighbor, atomId, adjacency);
+        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true);
         carbonSubstituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
@@ -3358,7 +3414,7 @@ function analyzeFunctionalAcyclic(
     };
   });
 
-  const chosen = selectLegacyParentCandidate(candidates);
+  const chosen = selectParentCandidate(candidates, convention);
   const baseHydrocarbonName = makeChainName(
     chosen.path.length,
     chosen.doubleBondLocants,
@@ -3708,7 +3764,11 @@ function withExplicitGeometricName(molecule: Molecule, analysis: Analysis): Anal
   return name === analysis.name ? analysis : { ...analysis, name };
 }
 
-export function analyzeMolecule(molecule: Molecule, enabledAliases: readonly string[] = []): Analysis {
+export function analyzeMolecule(
+  molecule: Molecule,
+  enabledAliases: readonly string[] = [],
+  convention: ParentSelectionConvention = "blue-book-2013",
+): Analysis {
   const groups = detectFunctionalGroups(molecule);
   const fusedBicyclic = getFusedBicyclicSystem(molecule, groups);
   if (fusedBicyclic) {
@@ -3840,17 +3900,19 @@ export function analyzeMolecule(molecule: Molecule, enabledAliases: readonly str
         primaryKind,
         enabledAliases,
         chainAgainstRing.externalSubstituents,
+        convention,
       ));
     }
     const chainAnalysis = analyzeHydrocarbonMolecule(
       chainAgainstRing.skeleton,
       enabledAliases,
       chainAgainstRing.externalSubstituents,
+      convention,
     );
     return withExplicitGeometricName(molecule, { ...chainAnalysis, formula: molecularFormula(molecule) });
   }
 
-  const baseAnalysis = analyzeHydrocarbonMolecule(skeleton, enabledAliases);
+  const baseAnalysis = analyzeHydrocarbonMolecule(skeleton, enabledAliases, [], convention);
   if (!groups.length) {
     return withExplicitGeometricName(molecule, {
       ...baseAnalysis, formula: molecularFormula(molecule), functionalGroups: [],
@@ -3867,7 +3929,7 @@ export function analyzeMolecule(molecule: Molecule, enabledAliases: readonly str
     );
   }
   return withExplicitGeometricName(
-    molecule, analyzeFunctionalAcyclic(molecule, skeleton, groups, primaryKind, enabledAliases),
+    molecule, analyzeFunctionalAcyclic(molecule, skeleton, groups, primaryKind, enabledAliases, [], convention),
   );
 }
 
@@ -4184,6 +4246,21 @@ function hasImplicitAcyclicAldehydeLocant(analysis: Analysis) {
     && analysis.primaryFunctionalGroup === "aldehyde"
     && analysis.functionalGroups.filter((group) => group.kind === "aldehyde").length === 1
     && /al$/i.test(analysis.chainName);
+}
+
+function unsaturatedSubstituentReasoning(analysis: Analysis, language: AppLanguage) {
+  const substituents = analysis.substituents.filter((item) => /(?:en|in)il$/i.test(item.name));
+  if (!substituents.length) return "";
+  const names = substituents.map((item) => {
+    const name = language === "en" ? translateSpanishIupacToOpsin(item.name) : item.name;
+    return language === "en" ? `${name} at C${item.locant}` : `${name} en C${item.locant}`;
+  });
+  const parentName = language === "en"
+    ? translateSpanishIupacToOpsin(analysis.chainName)
+    : analysis.chainName;
+  return language === "en"
+    ? `The unsaturation is part of the substituent ${names.join(", ")}; it is outside the saturated ${parentName} parent chain.`
+    : `La insaturación forma parte del sustituyente ${names.join(", ")}; queda fuera de la cadena principal saturada ${parentName}.`;
 }
 
 export function buildIupacReasoningSteps(
@@ -4700,16 +4777,17 @@ export function buildIupacReasoningSteps(
     });
   }
 
-  const hasPrimaryChainUnsaturation = analysis.family === "acyclic"
+  const hasParentUnsaturation = analysis.family === "acyclic"
     && analysis.doubleBondLocants.length + analysis.tripleBondLocants.length > 0;
-  if (hasPrimaryChainUnsaturation) {
+  const substituentUnsaturation = unsaturatedSubstituentReasoning(analysis, "es");
+  if (hasParentUnsaturation || substituentUnsaturation) {
     const unsaturationContributions = deriveUnsaturationNameContributions(analysis, analysis.name, "es");
     steps.push({
       number: "07",
       title: "Insaturaciones del nombre",
       explanation: unsaturationContributions.length
         ? unsaturationContributions.map((item) => item.explanation).join(" ")
-        : "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.",
+        : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.",
       nameRole: "unsaturation",
       unsaturationContributions,
     });
@@ -4956,7 +5034,8 @@ export function buildEnglishReasoningSteps(
       unsaturationContributions = deriveUnsaturationNameContributions(analysis, englishName, "en");
       explanation = unsaturationContributions.length
         ? unsaturationContributions.map((item) => item.explanation).join(" ")
-        : "Each multiple bond in the parent chain is represented in the name by its locant and bond type.";
+        : unsaturatedSubstituentReasoning(analysis, "en")
+          || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.";
     } else if (step.number === "01") {
       explanation = retainedReasoning?.function ?? (primaryLabel
         ? exocyclicRingFunction
@@ -6841,6 +6920,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     () => analyzeMolecule(molecule, commonAlkylNameSelections),
     [molecule, commonAlkylNameSelections],
   );
+  const legacyAnalysis = useMemo(
+    () => analyzeMolecule(molecule, commonAlkylNameSelections, "iupac-1979-legacy"),
+    [molecule, commonAlkylNameSelections],
+  );
   const hasHeterocycle = useMemo(() => moleculeContainsHeterocycle(molecule), [molecule]);
   const structureColorStyle = useMemo(() => ({
     "--structure-main": DEFAULT_STRUCTURE_COLORS.main,
@@ -6926,13 +7009,18 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const nameWithSelectedStereochemistry = stereochemistryEnabled && stereochemistryAvailable
     ? stereochemicalName
     : pinName;
+  const legacyNameWithSelectedStereochemistry = stereochemistryEnabled
+    && (getMainChainStereoDescriptors(molecule, legacyAnalysis.mainChain, true).length > 0
+      || getTetrahedralStereoCenters(molecule).length > 0)
+    ? formatStereochemicalName(molecule, legacyAnalysis.mainChain, legacyAnalysis.name, { explicitDoubleBonds: true })
+    : legacyAnalysis.name;
   const legacyEnglishName = useMemo(
     () => localSuggestedNameUnavailable || !legacyEnglishProfileIsSupportedForMolecule(molecule)
       ? "-"
       : generateLegacyEnglishName(
-        buildLegacyEnglishNameModel(molecule, analysis, nameWithSelectedStereochemistry),
+        buildLegacyEnglishNameModel(molecule, legacyAnalysis, legacyNameWithSelectedStereochemistry),
       ).name,
-    [analysis, localSuggestedNameUnavailable, molecule, nameWithSelectedStereochemistry],
+    [legacyAnalysis, legacyNameWithSelectedStereochemistry, localSuggestedNameUnavailable, molecule],
   );
   const nomenclatureVariants = (() => {
     const suggestedName = externalNameIsPrimary
@@ -6943,7 +7031,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       suggestedName,
       spanish1979Name: externalNameIsPrimary || localSuggestedNameUnavailable
         ? "-"
-        : applyNomenclatureConvention(legacySpanishFormatterInput(analysis, nameWithSelectedStereochemistry), "iupac-1979-es", "es"),
+        : applyNomenclatureConvention(legacySpanishFormatterInput(legacyAnalysis, legacyNameWithSelectedStereochemistry), "iupac-1979-es", "es"),
       english1979Name: externalNameIsPrimary || localSuggestedNameUnavailable ? "-" : legacyEnglishName,
     });
     return selectableNomenclatureConventions(language).map((convention) => ({

@@ -12,6 +12,7 @@ import { legacyProfileDisplayName } from "../app/legacy-profile-display.ts";
 import observedResults from "./fixtures/iupac-engine-audit-observed.json" with { type: "json" };
 import nom001Expectations from "./fixtures/iupac-engine-audit-nom001-conforming.json" with { type: "json" };
 import nom002Expectations from "./fixtures/iupac-engine-nom002-cyclic-ketones.json" with { type: "json" };
+import nom003Expectations from "./fixtures/iupac-engine-audit-nom003-conforming.json" with { type: "json" };
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const cases = [
@@ -48,11 +49,12 @@ function evaluate(smiles) {
     bonds: molecule.bonds.map((bond) => [...bond]),
   };
   const analysis = analyzeMolecule(molecule);
+  const legacyAnalysis = analyzeMolecule(molecule, [], "iupac-1979-legacy");
   const legacyEnglishSupported = legacyEnglishProfileIsSupportedForMolecule(molecule);
   const legacyEnglish = legacyEnglishSupported
-    ? generateLegacyEnglishName(buildLegacyEnglishNameModel(molecule, analysis)).name
+    ? generateLegacyEnglishName(buildLegacyEnglishNameModel(molecule, legacyAnalysis)).name
     : "-";
-  const legacySpanishInput = legacySpanishFormatterInput(analysis, analysis.name);
+  const legacySpanishInput = legacySpanishFormatterInput(legacyAnalysis, legacyAnalysis.name);
   const names = {
     "2013-en": translateSpanishIupacToOpsin(analysis.name),
     "2013-es": applyNomenclatureConvention(analysis.name, "current", "es"),
@@ -62,7 +64,7 @@ function evaluate(smiles) {
   assert.deepEqual({ atoms: molecule.atoms.map(({ id: atomId, element }) => [atomId, element]),
     bonds: molecule.bonds.map((bond) => [...bond]) }, graphBeforeNaming,
   `${smiles} must retain the same graph across all language/profile formatting`);
-  return { molecule, analysis, legacyEnglishSupported, names };
+  return { molecule, analysis, legacyAnalysis, legacyEnglishSupported, names };
 }
 
 test("OrgoRush audit: 84 outputs, NOM-001/NOM-002 conformance, historical evidence and unaffected profiles", () => {
@@ -81,15 +83,23 @@ test("OrgoRush audit: 84 outputs, NOM-001/NOM-002 conformance, historical eviden
   assert.equal(rows.length * 4, 84);
   const nom001Ids = new Set(nom001Expectations.map(({ id }) => id));
   const changedIds = new Set([...nom001Ids, "18"]);
-  const omitLegacySpanish = (row) => {
-    const { "1979-es": legacySpanishName, ...unchanged } = row;
-    return unchanged;
+  const omitLegacySpanish = (row) => Object.fromEntries(
+    Object.entries(row).filter(([key]) => key !== "1979-es"),
+  );
+  const omitNom0032013 = (row) => {
+    if (row.id !== "19" && row.id !== "20") return row;
+    return Object.fromEntries(Object.entries(row).filter(([key]) => (
+      key !== "2013-en" && key !== "2013-es" && key !== "parentAtoms"
+    )));
   };
-  assert.deepEqual(rows.map(omitLegacySpanish), observedResults.map(omitLegacySpanish),
-    "historical 2013 and English Legacy outputs remain unchanged for all 21 structures");
-  assert.deepEqual(rows.filter(({ id }) => !changedIds.has(id)),
-    observedResults.filter(({ id }) => !changedIds.has(id)),
-    "the 12 audit structures outside NOM-001 and NOM-002 retain all four historical outputs");
+  assert.deepEqual(rows.map(omitLegacySpanish).map(omitNom0032013),
+    observedResults.map(omitLegacySpanish).map(omitNom0032013),
+    "historical outputs remain unchanged except the separately asserted NOM-001/2 and NOM-003 cells");
+  assert.deepEqual(rows.filter(({ id }) => !changedIds.has(id) && id !== "19" && id !== "20")
+    .map(omitLegacySpanish),
+  observedResults.filter(({ id }) => !changedIds.has(id) && id !== "19" && id !== "20")
+    .map(omitLegacySpanish),
+  "the unaffected audit structures retain historical outputs");
   const historicalAffected = observedResults.filter(({ id }) => nom001Ids.has(id));
   assert.deepEqual(historicalAffected.map(({ id }) => id), nom001Expectations.map(({ id }) => id));
   assert.ok(historicalAffected.every(({ "1979-es": legacySpanishName }) => legacySpanishName === "-"),
@@ -110,8 +120,17 @@ test("OrgoRush audit: 84 outputs, NOM-001/NOM-002 conformance, historical eviden
   assert.equal(rows.find((row) => row.id === "18")["1979-es"],
     nom002Expectations.find(({ id }) => id === "cyclohex-2-en-1-one")["1979-es"],
     "case 18 follows the separate NOM-002 normative expectation");
-  assert.equal(rows.find((row) => row.id === "19")["2013-en"], "3-propylhex-1-ene");
-  assert.equal(rows.find((row) => row.id === "20")["2013-en"], "3-propylhex-1-yne");
+  for (const expected of nom003Expectations) {
+    const row = rows.find(({ id }) => id === expected.id);
+    assert.equal(row.smiles, expected.smiles, `${expected.id} NOM-003 fixture identity`);
+    assert.equal(row["2013-en"], expected.blueBook2013.en, `${expected.id} Blue Book 2013 English`);
+    assert.equal(row["2013-es"], expected.blueBook2013.es, `${expected.id} Blue Book 2013 Spanish`);
+    assert.equal(row["1979-en"], expected.legacy1979.en, `${expected.id} Legacy English`);
+    assert.equal(row["1979-es"], expected.legacy1979.es, `${expected.id} Legacy Spanish`);
+    assert.equal(row.parentAtoms, expected.blueBook2013.parentCarbonCount, `${expected.id} Blue Book parent length`);
+    assert.ok(expected.normativeBasis.includes("Blue Book 2013 P-44.3.2"));
+    assert.ok(expected.normativeBasis.includes("IUPAC 1979 Rule A-3.4"));
+  }
   const enol = evaluate("OC1=CCCCC1");
   const hydroxylCarbon = enol.analysis.functionalGroups.find((group) => group.kind === "alcohol")?.carbonId;
   assert.deepEqual(enol.analysis.doubleBondLocants, [1], "case 17 has C1=C2");

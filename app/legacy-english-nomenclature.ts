@@ -191,6 +191,21 @@ const fixedPrefixTranslations: Readonly<Record<string, string>> = {
 export function englishStructuralSubstituentName(name: string) {
   const exact = fixedPrefixTranslations[name];
   if (exact) return exact;
+  const numberedUnsaturated = name.match(/^([a-z]+)-(\d+)-(en|in)-(\d+)-il$/i);
+  if (numberedUnsaturated) {
+    const root = Array.from({ length: 101 }, (_, count) => iupacRootForCarbonCount(count))
+      .find((candidate) => candidate === numberedUnsaturated[1]);
+    if (root) {
+      const ending = numberedUnsaturated[3] === "en" ? "en" : "yn";
+      return `${englishIupacRoot(root)}-${numberedUnsaturated[2]}-${ending}-${numberedUnsaturated[4]}-yl`;
+    }
+  }
+  const unsaturated = name.match(/^([a-z]+)(en|in)il$/i);
+  if (unsaturated) {
+    const root = Array.from({ length: 101 }, (_, count) => iupacRootForCarbonCount(count))
+      .find((candidate) => candidate === unsaturated[1]);
+    if (root) return `${englishIupacRoot(root)}${unsaturated[2] === "en" ? "enyl" : "ynyl"}`;
+  }
   let translated = name
     .replace(/ciclo/g, "cyclo")
     .replace(/fenil/g, "phenyl")
