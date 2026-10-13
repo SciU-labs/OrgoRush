@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Laboratorio de Hidrocarburos | Sciu Science",
+  title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice",
   description:
-    "Laboratorio interactivo bilingüe para construir hidrocarburos y compuestos con grupos funcionales, validar valencias y explorar nomenclatura IUPAC.",
+    "Build organic molecules, learn IUPAC nomenclature, practice organic chemistry, take exams, and create reproducible worksheets with OrgoRush.",
   other: {
     "codex-preview": "development",
   },

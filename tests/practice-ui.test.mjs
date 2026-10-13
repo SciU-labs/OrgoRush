@@ -329,8 +329,8 @@ test("incorrect feedback uses scoped language, then relocalizes without changing
   const es = htmlFor(state), en = htmlFor(state, "en");
   assert.match(es, /No exactamente\./);
   assert.match(en, /Not quite\./);
-  assert.match(es, /Nombre de referencia de Hydrocarbon Lab:/);
-  assert.match(en, /Hydrocarbon Lab&#x27;s reference name:/);
+  assert.match(es, /Nombre de referencia de OrgoRush:/);
+  assert.match(en, /OrgoRush&#x27;s reference name:/);
   assert.ok(en.includes(state.question.reference.names.en));
   assert.doesNotMatch(en, /Invalid chemical name|Try again|Check answer/);
 });

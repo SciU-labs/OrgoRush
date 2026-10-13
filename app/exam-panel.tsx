@@ -52,7 +52,7 @@ export function ExamSessionView({ state, language, renderStructure, renderBuilde
   const typeLabel = (type: string) => t(type === "build" ? "Construir la molécula" : type === "multiple-choice" ? "Opción múltiple" : "Nomenclatura");
   if (state.phase === "EXAM_ERROR") return <div role="alert" className="practice-error">
     <h3 ref={heading} tabIndex={-1}>{t("No se pudo preparar el examen. Prueba otra semilla o vuelve a la configuración.")}</h3>
-    {state.reason === "insufficient-unique-questions" && <p>{t("Hydrocarbon-Lab no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.")}</p>}
+    {state.reason === "insufficient-unique-questions" && <p>{t("OrgoRush no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.")}</p>}
     <button type="button" onClick={actions.configure}>{t("Volver a la configuración")}</button>
   </div>;
   if (state.phase === "EXAM_RESULTS") return <CompletedSessionReview state={state} language={language}

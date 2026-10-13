@@ -6435,8 +6435,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           ? message.iupacName
           : language === "en" ? `PubChem compound ${message.cid}` : `Compuesto PubChem ${message.cid}`;
         return language === "en"
-          ? `PubChem identity: ${name} · CID ${message.cid} · ${message.formula}. ${message.nameUnavailable ? "Local IUPAC name unavailable for this structure." : "Hydrocarbon Lab's local name is calculated separately from the structure."}`
-          : `Identidad PubChem: ${name} · CID ${message.cid} · ${message.formula}. ${message.nameUnavailable ? "Nombre IUPAC local no disponible para esta estructura." : "El nombre local de Hydrocarbon Lab se calcula por separado desde la estructura."}`;
+          ? `PubChem identity: ${name} · CID ${message.cid} · ${message.formula}. ${message.nameUnavailable ? "Local IUPAC name unavailable for this structure." : "OrgoRush's local name is calculated separately from the structure."}`
+          : `Identidad PubChem: ${name} · CID ${message.cid} · ${message.formula}. ${message.nameUnavailable ? "Nombre IUPAC local no disponible para esta estructura." : "El nombre local de OrgoRush se calcula por separado desde la estructura."}`;
       }
       case "formula.isomer-loaded":
         return language === "en"
@@ -8096,8 +8096,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           ? `PubChem CID ${candidate.cid} structure loaded. Local IUPAC naming is unavailable for this structure.`
           : `Estructura PubChem CID ${candidate.cid} cargada. No hay un nombre IUPAC local disponible para esta estructura.`
         : language === "en"
-          ? `PubChem CID ${candidate.cid} loaded. Hydrocarbon Lab's name is calculated from the structure.`
-          : `Estructura PubChem CID ${candidate.cid} cargada. El nombre de Hydrocarbon Lab se calcula desde la estructura.`,
+          ? `PubChem CID ${candidate.cid} loaded. OrgoRush's name is calculated from the structure.`
+          : `Estructura PubChem CID ${candidate.cid} cargada. El nombre de OrgoRush se calcula desde la estructura.`,
     );
     if (!committed) {
       setFormulaFeedback({

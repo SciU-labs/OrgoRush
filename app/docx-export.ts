@@ -14,7 +14,7 @@ export function createDocxDocument(model: DocxAssessment, audience: DocxAudience
   if (audience !== "student" && audience !== "teacher") throw new TypeError("Invalid DOCX audience.");
   const english = model.locale === "en";
   const children: Paragraph[] = [
-    new Paragraph({ text: "Hydrocarbon Lab", spacing: { after: 80 } }),
+    new Paragraph({ text: "OrgoRush", spacing: { after: 80 } }),
     new Paragraph({ text: model.title, heading: "Title", spacing: { after: 120 }, keepNext: true }),
   ];
   if (audience === "teacher") {
@@ -89,7 +89,7 @@ export function createDocxDocument(model: DocxAssessment, audience: DocxAudience
 
   const version = audience === "teacher" ? (english ? "Teacher Version" : "Versión docente") : "Student Version";
   return new Document({
-    creator: "Hydrocarbon Lab",
+    creator: "OrgoRush",
     title: `${model.title} — ${version}`,
     sections: [{
       properties: { page: {

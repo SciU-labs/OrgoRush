@@ -240,7 +240,7 @@ test("one real assessment gives identical ES/EN chemistry and one shared Student
   const studentText = getWordDocumentText(studentXml);
   const teacherText = getWordDocumentText(teacherXml);
   const answers = studentModel.questions.map(({ referenceAnswer }) => referenceAnswer);
-  assert.ok(studentText.includes("Hydrocarbon Lab"));
+  assert.ok(studentText.includes("OrgoRush"));
   assert.ok(studentText.includes("Nomenclatura orgánica"));
   assert.ok(studentText.includes("Nombre:") && studentText.includes("Curso:") && studentText.includes("Fecha:"));
   assert.equal((studentText.match(/Nombra la siguiente estructura\./g) ?? []).length, 10);

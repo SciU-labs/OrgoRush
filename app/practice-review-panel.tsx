@@ -18,7 +18,7 @@ export function PracticeReviewPanel({ model, language, activeStep, onSelectStep,
     <dl className="practice-review-answers">
       <dt>{t("Tu respuesta")}</dt><dd>{model.studentAnswer}</dd>
       <dt>{t("Idioma de la respuesta enviada")}</dt><dd>{model.submittedLocale.toUpperCase()}</dd>
-      <dt>{t("Nombre de referencia de Hydrocarbon Lab:")}</dt><dd>{model.reference.names[language]}</dd>
+      <dt>{t("Nombre de referencia de OrgoRush:")}</dt><dd>{model.reference.names[language]}</dd>
     </dl>
     {model.issues.map((issue) => <p className="practice-review-issue" data-issue-code={issue.code} key={issue.code}>
       {formatPracticeReviewMessage(issue.messageKey, issue.params, language)}

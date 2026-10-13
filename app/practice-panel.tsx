@@ -122,7 +122,7 @@ export function PracticeSessionView({ state, language, renderStructure, renderBu
   </div>;
   if (state.phase === "ERROR") return <div className="practice-error" role="alert">
     {state.reason === "insufficient-safe-distractors" && <p>{t("No se encontraron suficientes opciones seguras para estos temas. Prueba otra semilla o Nomenclatura.")}</p>}
-    {state.reason === "insufficient-unique-questions" && <p>{t("Hydrocarbon-Lab no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.")}</p>}
+    {state.reason === "insufficient-unique-questions" && <p>{t("OrgoRush no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.")}</p>}
     <p>{t("No se pudo generar esta pregunta. Puedes reintentar o volver a la configuración.")}</p>
     <div className="practice-actions">
       <button type="button" onClick={actions.retry}>{t("Reintentar")}</button>
@@ -210,7 +210,7 @@ export function PracticeSessionView({ state, language, renderStructure, renderBu
     {feedback && !openReview && <div className={`practice-feedback ${state.correct ? "is-correct" : ""}`}
       role="status" aria-live="polite" tabIndex={-1} ref={feedbackRef}>
       <strong>{state.correct ? `✓ ${t(build ? "Estructura correcta" : "Correcto")}` : t("No exactamente.")}</strong>
-      <p>{t("Nombre de referencia de Hydrocarbon Lab:")}</p>
+      <p>{t("Nombre de referencia de OrgoRush:")}</p>
       <p className="practice-reference">{state.question.reference.name}</p>
       <p>{t("Tiempo de respuesta")}: {formatPracticeResponseTime(state.attempts[state.attempts.length - 1].responseTimeMs, language)}</p>
       {reviewError === reviewKey && <p role="alert">{t("No se pudo abrir la revisión. Puedes continuar la práctica; tus resultados se conservan.")}</p>}

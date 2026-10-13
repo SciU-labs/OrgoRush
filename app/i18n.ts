@@ -91,7 +91,7 @@ const ENGLISH_UI: Record<string, string> = {
   "El manifiesto supera el límite de memoria local. Reduce la lista de participantes o la longitud del texto.": "The manifest exceeds the local memory limit. Reduce the participant list or text length.",
   "La semilla o los identificadores contienen caracteres de texto no válidos.": "The seed or IDs contain invalid text characters.",
   "Introduce un número entero positivo de preguntas.": "Enter a positive whole number of questions.",
-  "Hydrocarbon-Lab no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.": "Hydrocarbon-Lab couldn't generate enough unique questions for this configuration. Try fewer questions or select more categories.",
+  "OrgoRush no pudo generar suficientes preguntas únicas para esta configuración. Prueba con menos preguntas o selecciona más categorías.": "OrgoRush couldn't generate enough unique questions for this configuration. Try fewer questions or select more categories.",
   "Puntuación": "Score",
   "Examen completado": "Exam completed",
   "Resultados del examen": "Exam results",
@@ -157,7 +157,7 @@ const ENGLISH_UI: Record<string, string> = {
   "Comprobar respuesta": "Check answer",
   "Correcto": "Correct",
   "No exactamente.": "Not quite.",
-  "Nombre de referencia de Hydrocarbon Lab:": "Hydrocarbon Lab's reference name:",
+  "Nombre de referencia de OrgoRush:": "OrgoRush's reference name:",
   "Siguiente": "Next",
   "Práctica completada": "Practice complete",
   "Resumen de práctica": "Practice summary",
@@ -224,7 +224,6 @@ const ENGLISH_UI: Record<string, string> = {
   "Aromáticos": "Aromatics",
   "Estereoquímica E/Z": "E/Z stereochemistry",
   "Laboratorio interactivo": "Interactive lab",
-  "Laboratorio de Hidrocarburos": "Hydrocarbon Lab",
   "Constructor de química orgánica": "Organic Chemistry Builder",
   "Historial": "History",
   "Guardando…": "Saving…",
@@ -783,14 +782,14 @@ export function languagePath(pathname: string, language: AppLanguage) {
 export function pageMetadata(language: AppLanguage) {
   return language === "en"
     ? {
-        title: "Hydrocarbon Lab | Sciu Science",
+        title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice",
         description:
-          "Interactive organic chemistry laboratory for building hydrocarbons and functional groups, validating valence, and exploring IUPAC nomenclature.",
+          "Build organic molecules, learn IUPAC nomenclature, practice organic chemistry, take exams, and create reproducible worksheets with OrgoRush.",
       }
     : {
-        title: "Laboratorio de Hidrocarburos | Sciu Science",
+        title: "OrgoRush — Química orgánica interactiva y práctica IUPAC",
         description:
-          "Laboratorio interactivo de química orgánica para construir hidrocarburos y grupos funcionales, validar valencias y explorar la nomenclatura IUPAC.",
+          "Construye moléculas orgánicas, aprende nomenclatura IUPAC, practica química orgánica, realiza exámenes y crea guías reproducibles con OrgoRush.",
       };
 }
 
