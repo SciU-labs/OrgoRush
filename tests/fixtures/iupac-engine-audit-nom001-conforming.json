@@ -1,0 +1,10 @@
+[
+  {"id":"01","smiles":"CC(C)CC","1979-es":"2-metilbutano","basis":"1979 A-2.1–2.3: longest parent chain; lowest locants; alphabetized side chains."},
+  {"id":"02","smiles":"CC(Cl)CC(C)C","1979-es":"2-cloro-4-metilpentano","basis":"1979 A-2.1–2.3: halo and alkyl prefixes with locants, cited alphabetically."},
+  {"id":"05","smiles":"O=CC1CCCCC1","1979-es":"ciclohexanocarbaldehído","basis":"1979 C-304.1: add -carbaldehyde to the ring system name; Spanish Legacy morphology."},
+  {"id":"06","smiles":"O=C(O)C1CCCCC1","1979-es":"ácido ciclohexanocarboxílico","basis":"1979 C-401.2: -carboxylic acid suffix on a ring parent; Spanish Legacy morphology."},
+  {"id":"11","smiles":"OCCC=C","1979-es":"3-buten-1-ol","basis":"1979 A-3.1 and C-201.1: unsaturation locant before parent; OH locant before -ol."},
+  {"id":"12","smiles":"CC(O)C=C","1979-es":"3-buten-2-ol","basis":"1979 A-3.1 and C-201.1: unsaturation locant before parent; OH locant before -ol."},
+  {"id":"15","smiles":"C=CCC#C","1979-es":"1-penten-4-ino","basis":"1979 A-3.3: enyne form with separate lowest locants for C=C and C≡C."},
+  {"id":"17","smiles":"OC1=CCCCC1","1979-es":"1-ciclohexen-1-ol","basis":"1979 A-11.3 and C-201.1: cyclic unsaturation prefix and explicit OH suffix locant."}
+]

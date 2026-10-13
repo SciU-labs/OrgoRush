@@ -232,9 +232,62 @@ export function formatTraditionalSystematicName(baseName: string, language: AppL
   return undefined;
 }
 
-/** Spanish IUPAC 1979 output reuses only the existing verified systematic patterns. */
+/** Spanish IUPAC 1979 output applies verified historical forms before the shared formatter. */
 export function formatIupac1979SpanishName(baseName: string) {
-  return formatTraditionalSystematicName(baseName, "es");
+  return formatTraditionalSystematicName(baseName, "es") ?? formatSpanish1979Extension(baseName);
+}
+
+/**
+ * Additional Spanish Legacy forms supported by the graph name grammar but
+ * not covered by the common-name formatter. These rules are scoped to the
+ * IUPAC 1979 selector; they do not change the separate Traditional profile.
+ */
+function formatSpanish1979Extension(baseName: string) {
+  const value = baseName.toLocaleLowerCase("es");
+  const root = traditionalRootPatterns.es;
+  const parent = `(.*?)(${root})`;
+
+  // A-2.1–2.3: substituted saturated parent chains keep locants before
+  // alphabetized substituent names. Accept only the simple prefixes handled
+  // by this formatter instead of treating arbitrary text as a valid name.
+  const simpleSubstituent = "(?:fluoro|cloro|bromo|yodo|metil|etil|propil|butil)";
+  const substituentSequence = new RegExp(
+    `^(?:\\d+(?:,\\d+)*-${simpleSubstituent})(?:-\\d+(?:,\\d+)*-${simpleSubstituent})*$`,
+  );
+  const substitutedAlkane = value.match(new RegExp(`^${parent}ano$`, "i"));
+  if (substitutedAlkane?.[1] && substituentSequence.test(substitutedAlkane[1])) return value;
+
+  // C-304.1 and C-401.2 use these suffixes on a ring parent; the attachment
+  // carbon of the exocyclic group is not included in the ring numbering.
+  if (new RegExp(`^ciclo(?:${root})ano(?:carbaldehído)$`, "i").test(value)) return value;
+  if (new RegExp(`^ácido ciclo(?:${root})ano(?:carboxílico)$`, "i").test(value)) return value;
+
+  // A-3.3 and C-201.1: put the unsaturation locant before the parent and keep
+  // the hydroxyl locant immediately before -ol (e.g. 3-buten-1-ol).
+  const unsaturatedAlcohol = value.match(new RegExp(`^(${root})-(\\d+)-(en|in)-(\\d+)-ol$`, "i"));
+  if (unsaturatedAlcohol) {
+    const [, parentRoot, bondLocant, unsaturation, hydroxylLocant] = unsaturatedAlcohol;
+    return `${bondLocant}-${parentRoot}${unsaturation}-${hydroxylLocant}-ol`;
+  }
+
+  // A-3.3 specifies the historical enyne ending and its independent locants.
+  const enyne = value.match(new RegExp(`^(${root})-(\\d+)-en-(\\d+)-ino$`, "i"));
+  if (enyne) {
+    const [, parentRoot, doubleLocant, tripleLocant] = enyne;
+    return `${doubleLocant}-${parentRoot}en-${tripleLocant}-ino`;
+  }
+
+  // A-11.3, C-201.1: cyclic unsaturated parent plus the principal OH suffix.
+  // Keep the hydroxyl locant even at C1: here C1 is also part of the C=C bond.
+  const unsaturatedRingAlcohol = value.match(
+    new RegExp(`^ciclo(${root})-(\\d+)-(en|in)-(\\d+)-ol$`, "i"),
+  );
+  if (unsaturatedRingAlcohol) {
+    const [, parentRoot, bondLocant, unsaturation, hydroxylLocant] = unsaturatedRingAlcohol;
+    return `${bondLocant}-ciclo${parentRoot}${unsaturation}-${hydroxylLocant}-ol`;
+  }
+
+  return undefined;
 }
 
 function traditionalName(baseName: string, language: AppLanguage) {
