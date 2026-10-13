@@ -142,3 +142,48 @@ La tabla histórica de 84 salidas y los resultados actuales se separan en prueba
 Archivos modificados para este seguimiento: `app/nomenclature-conventions.ts`, `tests/iupac-engine-audit.test.mjs`, `reports/orgorush-iupac-engine-audit.md` y el nuevo `tests/fixtures/iupac-engine-audit-nom001-conforming.json`. El fixture histórico `tests/fixtures/iupac-engine-audit-observed.json` se conservó sin cambios. No se creó commit ni se hizo push.
 
 Fuentes de las formas incorporadas: [1979 A-2](https://www.acdlabs.com/iupac/nomenclature/79/r79_36.htm), [A-3](https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm), [A-11](https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm), [C-201](https://www.acdlabs.com/iupac/nomenclature/79/r79_202.htm), [C-304](https://www.acdlabs.com/iupac/nomenclature/79/r79_255.htm) y [C-401](https://www.acdlabs.com/iupac/nomenclature/79/r79_308.htm). Las terminaciones en español son las formas sistemáticas españolas del perfil del producto; las referencias 1979 citadas están publicadas en inglés.
+
+## Diagnóstico previo — NOM-002 cicloalquenonas (2026-10-13)
+
+Estado de partida: rama `main`, commit `3ed050701eae6f9de7a5308ee75c4f956424189e`, árbol limpio. NOM-001 ya estaba integrado. Se leyeron la batería de auditoría, ambos fixtures y la implementación vigente antes de cambiar producción.
+
+La causa reproducida es la rama `unsaturatedKetone` de `formatTraditionalSystematicName` en `app/nomenclature-conventions.ts`. El patrón compartido construye `parent = (.*?)(root)`. Para `ciclohex-2-en-1-ona`, el grupo inicial captura `ciclo` y la raíz captura `hex`; luego `withTraditionalPrefix` antepone esa captura con guion a `2-hexen-1-ona`. El mismo mecanismo genera `ciclo-2-penten-1-ona`, `ciclo-3-hexen-1-ona`, `ciclo-2-hepten-1-ona` y `4-metilciclo-2-hexen-1-ona`. El localizador del carbonilo `1` se conserva porque la plantilla de cetona insaturada conserva explícitamente el localizador del sufijo `-ona`; el generador Legacy inglés, separado, lo omite en este conjunto.
+
+En la familia probada, la cadena principal siempre es el anillo completo. `analysis.functionalGroups` ubica el carbono del carbonilo como locante 1 y `doubleBondLocants` informa 2 o 3 según el SMILES. No hay selección de cadena que corregir. El defecto afecta cetonas cíclicas insaturadas de cinco, seis y siete átomos, y una forma sustituida. No se reproduce en cetonas saturadas de cinco y seis miembros, cuyos nombres permanecen `ciclopentanona` y `ciclohexanona`. Las reglas NOM-001 para cicloaldehídos, ácidos cíclicos y alcohol cíclico insaturado usan patrones separados; el patrón de cetona puede corregirse en el límite de formato sin tocar el análisis compartido.
+
+Interpretación normativa preliminar, antes del arreglo: IUPAC 1979 C-16.11 enumera `cyclo` entre las sílabas no separables del nombre padre; separar `ciclo` de `hex` no es válido. C-314.1 indica formar cetonas cíclicas clásicas añadiendo `-one` al nombre del sistema de anillo. A-11.3 indica expresar las insaturaciones del monociclo mediante `-ene` y dar números bajos a los enlaces múltiples; C-15.11 da prioridad a los grupos principales citados como sufijo frente a enlaces múltiples al escoger la numeración. Por eso el carbono del grupo cetona es C1 y las posiciones de los dobles enlaces de estos casos son 2 o 3. Para un único carbonilo en una monocetona monocíclica, el 1 resulta inherente al sufijo en esta forma Legacy, y se omite en el generador Legacy inglés, como `2-cyclohexenone`. Las reglas citadas no formulan literalmente en inglés la grafía española ni una regla general aislada de omisión del `1`; por tanto, `2-ciclohexenona` y sus análogos son adaptación morfológica española del formato histórico documentado en inglés, no cita textual ni nombre español publicado por IUPAC 1979. Se mantienen separados de las formas actuales `ciclohex-2-en-1-ona`.
+
+La caracterización previa de las siete moléculas registró: cetonas saturadas correctas; las cinco insaturadas, respectivamente, `ciclo-2-penten-1-ona`, `ciclo-2-hexen-1-ona`, `ciclo-3-hexen-1-ona`, `ciclo-2-hepten-1-ona` y `4-metilciclo-2-hexen-1-ona`. La matriz normativa posterior verifica nombre, grafo, locante del grupo carbonilo y locante de insaturación, y mantiene separados los outputs 2013 e inglés Legacy.
+
+Fuentes verificadas directamente: [IUPAC 1979 C-16.11](https://www.acdlabs.com/iupac/nomenclature/79/r79_879.htm), [C-314.1](https://www.acdlabs.com/iupac/nomenclature/79/r79_276.htm), [C-315.1](https://www.acdlabs.com/iupac/nomenclature/79/r79_278.htm), [C-15.11](https://www.acdlabs.com/iupac/nomenclature/79/r79_869.htm) y [A-11.3](https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm). C-314.1 describe el procedimiento clásico; C-315.1 es una alternativa para policarbociclos y heterociclos, así que no se presenta esa alternativa como la regla aplicable a estos monociclos.
+
+## Seguimiento — corrección NOM-002 cicloalquenonas (2026-10-13)
+
+### Resultado e interpretación
+
+Se añadió una regla previa y exclusiva de `formatIupac1979SpanishName` para la familia estructural `prefijos + ciclo + raíz + localizador-en + localizador-ona`. La reconstrucción mantiene `ciclo` unido a la raíz del anillo, mueve el locante de la insaturación delante del padre y omite el `1` del carbonilo cuando es el locante inherente de la monocetona cíclica. Si el locante del carbonilo no es 1, el patrón lo conserva. No hay ramas por SMILES ni cambios en análisis o selección de padre.
+
+La omisión del `1` se apoya en la forma Legacy documentada por el motor inglés para las siete estructuras y en que C-314.1 forma la cetona cíclica por el sufijo `-one` directamente en el nombre del anillo; la regla C-15.11 da prioridad de numeración al grupo citado como sufijo sobre el enlace múltiple. Con la numeración del grafo, eso fija el carbonilo en C1 y deja locantes de dobles enlaces 2 o 3. La grafía española es adaptación morfológica del Legacy inglés y de las reglas históricas, no prescripción textual española publicada por IUPAC. La forma 2013 moderna se conserva con el localizador explícito (`ciclohex-2-en-1-ona`).
+
+| Molécula | 1979 ES antes | 1979 ES después | 1979 EN después | 2013 EN / ES (sin cambios) |
+|---|---|---|---|---|
+| Ciclopentanona | `ciclopentanona` | `ciclopentanona` | `cyclopentanone` | `cyclopentanone` / `ciclopentanona` |
+| Ciclohexanona | `ciclohexanona` | `ciclohexanona` | `cyclohexanone` | `cyclohexanone` / `ciclohexanona` |
+| Ciclopent-2-en-1-ona | `ciclo-2-penten-1-ona` | `2-ciclopentenona` | `2-cyclopentenone` | `cyclopent-2-en-1-one` / `ciclopent-2-en-1-ona` |
+| Ciclohex-2-en-1-ona | `ciclo-2-hexen-1-ona` | `2-ciclohexenona` | `2-cyclohexenone` | `cyclohex-2-en-1-one` / `ciclohex-2-en-1-ona` |
+| Ciclohex-3-en-1-ona | `ciclo-3-hexen-1-ona` | `3-ciclohexenona` | `3-cyclohexenone` | `cyclohex-3-en-1-one` / `ciclohex-3-en-1-ona` |
+| Ciclohept-2-en-1-ona | `ciclo-2-hepten-1-ona` | `2-cicloheptenona` | `2-cycloheptenone` | `cyclohept-2-en-1-one` / `ciclohept-2-en-1-ona` |
+| 4-Metilciclohex-2-en-1-ona | `4-metilciclo-2-hexen-1-ona` | `4-metil-2-ciclohexenona` | `4-methyl-2-cyclohexenone` | `4-methylcyclohex-2-en-1-one` / `4-metilciclohex-2-en-1-ona` |
+
+`tests/fixtures/iupac-engine-nom002-cyclic-ketones.json` fija estas cuatro salidas por estructura, fórmula y locantes de carbonilo y alqueno, con la base normativa. `tests/iupac-nom002-cyclic-ketones.test.mjs` comprueba además el grafo antes y después de formatear y que el anillo completo siga siendo la cadena principal. El fixture histórico de auditoría no se modificó: caso 18 aún documenta `ciclo-2-hexen-1-ona` como dato observado anterior. La prueba matriz separa ahora esa evidencia de la expectativa normativa nueva.
+
+### Regresiones y validaciones
+
+- NOM-001: se volvieron a evaluar sus ocho nombres; todos siguen conformes y disponibles.
+- Matriz original: las 21 estructuras × cuatro perfiles se recalculan. En los 21 casos, Legacy EN, 2013 EN y 2013 ES permanecen idénticos al fixture histórico; fuera de los nueve casos de NOM-001/NOM-002, las cuatro salidas permanecen idénticas.
+- Comando de suites: `node --test --test-concurrency=1 tests/iupac-engine-audit.test.mjs tests/iupac-nom002-cyclic-ketones.test.mjs tests/legacy-english-nomenclature.test.mjs tests/language-audit-regressions.test.mjs tests/nomenclature-conventions.test.mjs tests/chemistry-regressions.test.mjs` — **94 PASS, 0 FAIL, 0 omitidas**.
+- `git diff --check` — sin errores (Git mostró solo aviso de normalización LF/CRLF en el informe Markdown).
+- `npm run build` no pudo iniciar porque `bash` no está disponible en el PATH de PowerShell. Ejecución directa alternativa `npm exec -- vinext build`: transformó 266 módulos y finalizó la fase de build, pero el plugin `sites` terminó con error `EPERM` al retirar `dist/.openai/drizzle`; por eso no se reporta el build completo como PASS.
+- `npm exec tsc -- --noEmit --pretty false` — falla por diagnósticos del proyecto fuera del alcance, incluidos archivos de snapshot bajo `outputs/` y workers. Filtrar la salida por `app/nomenclature-conventions.ts` y la prueba NOM-002 no encontró diagnósticos en el código modificado.
+
+Archivos de este seguimiento: `app/nomenclature-conventions.ts`, `tests/iupac-engine-audit.test.mjs`, `tests/iupac-nom002-cyclic-ketones.test.mjs`, `tests/fixtures/iupac-engine-nom002-cyclic-ketones.json` y este informe. No se tocaron el fixture histórico ni el fixture normativo NOM-001. No se inició NOM-003. No se creó commit ni se hizo push.

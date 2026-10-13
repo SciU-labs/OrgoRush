@@ -234,7 +234,24 @@ export function formatTraditionalSystematicName(baseName: string, language: AppL
 
 /** Spanish IUPAC 1979 output applies verified historical forms before the shared formatter. */
 export function formatIupac1979SpanishName(baseName: string) {
-  return formatTraditionalSystematicName(baseName, "es") ?? formatSpanish1979Extension(baseName);
+  return formatSpanish1979CyclicKetone(baseName)
+    ?? formatTraditionalSystematicName(baseName, "es")
+    ?? formatSpanish1979Extension(baseName);
+}
+
+/**
+ * 1979 cyclic enones keep "ciclo" attached to the ring parent and omit the
+ * inherent carbonyl locant 1. This is deliberately Spanish Legacy-only.
+ */
+function formatSpanish1979CyclicKetone(baseName: string) {
+  const value = baseName.toLocaleLowerCase("es");
+  const root = traditionalRootPatterns.es;
+  const enone = value.match(new RegExp(`^(.*?)ciclo(${root})-(\\d+)-en-(\\d+)-ona$`, "i"));
+  if (!enone) return undefined;
+
+  const [, substituents, ringRoot, doubleBondLocant, carbonylLocant] = enone;
+  const ketoneSuffix = carbonylLocant === "1" ? "ona" : `-${carbonylLocant}-ona`;
+  return withTraditionalPrefix(substituents, `${doubleBondLocant}-ciclo${ringRoot}en${ketoneSuffix}`);
 }
 
 /**
