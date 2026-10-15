@@ -227,8 +227,10 @@ test("molecular analysis reports heterocycle classes and ring atom composition a
     cyclohexane.molecule,
     cyclohexaneAnalysis,
   ).find((step) => step.number === "02")?.explanation ?? "";
-  assert.match(cyclohexaneSpanish, /anillo continuo de 6 carbonos/);
-  assert.match(cyclohexaneEnglish, /ring chosen as the parent contains 6 carbons/);
+  assert.match(cyclohexaneSpanish, /anillo de 6 carbonos/);
+  assert.match(cyclohexaneSpanish, /esqueleto cíclico aporta «ciclohex»/);
+  assert.match(cyclohexaneEnglish, /ring of 6 carbons/);
+  assert.match(cyclohexaneEnglish, /cyclic scaffold contributes “cyclohex”/);
 
   const unregistered = moleculeFromSmiles("O1CNCCC1");
   assert.equal(unregistered.ok, true);
