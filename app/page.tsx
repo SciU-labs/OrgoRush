@@ -4301,9 +4301,15 @@ function selectedParentNumberingReasoning(analysis: Analysis, language: "es" | "
   const decision = criteria.find((item) => item.selected.length && compareNumberLists(item.selected, item.reverse) !== 0);
   if (!decision) return `${lead} ${en ? "Both directions give the same locant sets." : "Ambos sentidos dan los mismos conjuntos de localizadores."}`;
   const selected = decision.selected.join(", "), reversed = decision.reverse.join(", ");
+  const assignedSubstituents = analysis.substituents.map((item) =>
+    `${en ? translateSpanishIupacToOpsin(item.name) || item.name : item.name} ${en ? "at" : "en"} C${item.locant}`);
+  const substituentResult = assignedSubstituents.length
+    ? en ? ` With this orientation, the substituents are ${assignedSubstituents.join(", ")}.${decision === criteria[3] ? "" : " Their locants do not override the higher-priority decision."}`
+      : ` Con esta orientación, los sustituyentes son ${assignedSubstituents.join(", ")}.${decision === criteria[3] ? "" : " Sus localizadores no modifican la decisión de mayor prioridad."}`
+    : "";
   return `${lead} ${en
     ? `The locants for the ${decision.label} resolve the orientation: ${selected} are lower than ${reversed} in the opposite direction. The first point of difference determines the chosen direction.`
-    : `El criterio de ${decision.label} resuelve la orientación: los localizadores ${selected} son menores que ${reversed} en el sentido opuesto. El primer punto de diferencia determina el sentido elegido.`}`;
+    : `El criterio de ${decision.label} resuelve la orientación: los localizadores ${selected} son menores que ${reversed} en el sentido opuesto. El primer punto de diferencia determina el sentido elegido.`}${substituentResult}`;
 }
 
 function legacyStructuralReasoningText(
@@ -5189,6 +5195,12 @@ export function buildEnglishReasoningSteps(
         : aromaticNitroGroups.length
           ? "The nitro group is detected, but here it is cited with the prefix nitro-. It does not provide a suffix and is not classified as the principal functional group."
           : "Functional-group priority is checked before the parent skeleton is numbered.");
+      if (!retainedReasoning && analysis.family === "cycloalkane" && analysis.primaryFunctionalGroup === "ketone"
+        && analysis.functionalGroups.filter((group) => group.kind === "ketone").length === 1
+        && analysis.functionalGroups.some((group) => group.kind === "ketone"
+          && group.carbonIds.some((id) => analysis.mainChain.includes(id) && analysis.numberedAtoms.get(id) === 1))) {
+        explanation += ` The carbonyl carbon belongs to the ring and is C1.${isLegacyExplanation ? " In this historical monocyclic ketone form, carbonyl locant 1 is implicit in the suffix." : ""}`;
+      }
     } else if (step.number === "02" && isLegacyExplanation) {
       explanation = legacyStructuralReasoningText(molecule, analysis, englishName, "parent", "en");
     } else if (step.number === "03" && isLegacyExplanation) {
@@ -5280,6 +5292,34 @@ export function buildEnglishReasoningSteps(
       ...(unsaturationContributions ? { unsaturationContributions } : {}),
     };
   });
+}
+
+/** Keep every pedagogical projection on the engine result selected by the UI.
+ * Receives existing analyses; never selects or renumbers a chemical parent. */
+export function buildActiveIupacReasoning(input: {
+  molecule: Molecule;
+  analyses: { current: Analysis; legacy: Analysis };
+  convention: NomenclatureConvention;
+  language: AppLanguage;
+  displayedName: string;
+  generatedNames: readonly string[];
+  canHighlight: boolean;
+  enabledAliases?: readonly string[];
+  sourceName?: string | null;
+}) {
+  const { molecule, convention, language, displayedName, generatedNames, canHighlight } = input;
+  const analysis = convention === "current" ? input.analyses.current : input.analyses.legacy;
+  const profile: ReasoningNomenclatureProfile = convention === "current" ? "blue-book-2013" : "iupac-1979-legacy";
+  const presentation = { profile, displayedName, generatedNames };
+  const spanishSteps = buildIupacReasoningSteps(molecule, analysis, input.enabledAliases, input.sourceName, presentation);
+  const steps = language === "en"
+    ? buildEnglishReasoningSteps(spanishSteps, molecule, analysis, presentation)
+    : spanishSteps;
+  const fragments = deriveReasoningNameFragments({
+    analysis, convention, language, displayedName, generatedNames, canHighlight, steps,
+  });
+  return { analysis, profile, displayedName, steps, fragments,
+    links: buildReasoningNameLinkParts(displayedName, fragments, steps) };
 }
 
 const directionOptions = [
@@ -6779,7 +6819,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [showReasoningHelp, setShowReasoningHelp] = useState(true);
   const [reasoningPeekContext, setReasoningPeekContext] = useState<{ key: string; molecule: typeof molecule } | null>(null);
   const [activeReasoningReference, setActiveReasoningReference] = useState<{ key: string; molecule: typeof molecule; step: string } | null>(null);
-  const [selectedUnsaturationReference, setSelectedUnsaturationReference] = useState<{ semanticId: string; smiles: string } | null>(null);
+  const [selectedUnsaturationReference, setSelectedUnsaturationReference] = useState<{ semanticId: string; key: string } | null>(null);
   const reasoningHoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reasoningPointerNavigated = useRef(false);
   const reasoningScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -7135,7 +7175,6 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const effectiveShowNumbering = showNumbering && automaticNumberingAvailable;
   const hasActiveSelection = selectedId !== null;
   const selectedAtom = molecule.atoms.find((atom) => atom.id === selectedId) ?? molecule.atoms[0];
-  const mainChainSet = useMemo(() => new Set(analysis.mainChain), [analysis.mainChain]);
   const pinName = useMemo(
     () => externalNameIsPrimary
       ? pubChemIupacName!
@@ -7464,37 +7503,26 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setPanelPositions(resetPositions);
     persistPanelPositions(resetPositions);
   };
-  const reasoningAnalysis = activeNomenclatureConvention === "current" ? analysis : legacyAnalysis;
-  const reasoningProfile = activeNomenclatureConvention === "current" ? "blue-book-2013" : "iupac-1979-legacy";
-  const reasoningSteps = buildIupacReasoningSteps(
+  const { analysis: activeAnalysis, steps: localizedReasoningSteps, fragments: reasoningNameFragments, links: reasoningNameLinkParts } = buildActiveIupacReasoning({
     molecule,
-    reasoningAnalysis,
-    commonAlkylNameSelections,
-    reasoningSourceName,
-    { profile: reasoningProfile, displayedName: displayedIupacName },
-  );
-  const localizedReasoningSteps = language === "en"
-    ? buildEnglishReasoningSteps(reasoningSteps, molecule, reasoningAnalysis,
-      { profile: reasoningProfile, displayedName: displayedIupacName })
-    : reasoningSteps;
-  const reasoningNameFragments = deriveReasoningNameFragments({
-    analysis: reasoningAnalysis,
+    analyses: { current: analysis, legacy: legacyAnalysis },
+    enabledAliases: commonAlkylNameSelections,
+    sourceName: reasoningSourceName,
     displayedName: displayedIupacName,
     generatedNames: nomenclatureVariants.filter((variant) => variant.available).map((variant) => variant.name),
     convention: activeNomenclatureConvention,
     language,
-    steps: localizedReasoningSteps,
     canHighlight: showIupacName && displayedNameCopyable
       && !externalNameIsPrimary && sourceNameOverride === null
       && (!isPristineInitialMolecule || showPristineMethaneName),
   });
-  const reasoningNameLinkParts = buildReasoningNameLinkParts(displayedIupacName, reasoningNameFragments, localizedReasoningSteps);
-  const selectedUnsaturationSemanticId = selectedUnsaturationReference?.smiles === (currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : "")
+  const mainChainSet = new Set(activeAnalysis.mainChain);
+  const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
+  const selectedUnsaturationSemanticId = selectedUnsaturationReference?.key === reasoningReferenceKey
     ? selectedUnsaturationReference.semanticId
     : null;
   const activeReasoningBondIds = reasoningNameLinkParts
     .find((part) => part.semanticId === selectedUnsaturationSemanticId)?.bondIds ?? [];
-  const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
   const reasoningPeekOpen = reasoningPeekContext?.key === reasoningReferenceKey && reasoningPeekContext.molecule === molecule;
   const activeReasoningStep = activeReasoningReference?.key === reasoningReferenceKey && activeReasoningReference.molecule === molecule ? activeReasoningReference.step : null;
   const setActiveReasoningStep = (step: string | null) => setActiveReasoningReference(step ? { key: reasoningReferenceKey, molecule, step } : null);
@@ -7536,7 +7564,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const selectUnsaturationContribution = (contribution: Pick<UnsaturationNameContribution, "semanticId">, stepNumber = "07") => {
     setSelectedUnsaturationReference({
       semanticId: contribution.semanticId,
-      smiles: currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : "",
+      key: reasoningReferenceKey,
     });
     navigateToReasoningStep(stepNumber, false);
   };
@@ -8570,9 +8598,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       }
       const stereoToggle = toggleDoubleBondGeometry(molecule, a, b);
       if (stereoToggle.ok) {
-        const locantIndex = analysis.mainChain.slice(0, -1).findIndex(
+        const locantIndex = activeAnalysis.mainChain.slice(0, -1).findIndex(
           (atomId, index) => {
-            const nextAtomId = analysis.mainChain[index + 1];
+            const nextAtomId = activeAnalysis.mainChain[index + 1];
             return (atomId === a && nextAtomId === b) || (atomId === b && nextAtomId === a);
           },
         );
@@ -8653,7 +8681,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       setNotice(toggled.error);
       return;
     }
-    const locantIndex = analysis.mainChain.indexOf(atomId);
+    const locantIndex = activeAnalysis.mainChain.indexOf(atomId);
     const descriptor = `${locantIndex >= 0 ? locantIndex + 1 : ""}${toggled.configuration}`;
     if (commit(
       toggled.molecule,
@@ -10052,7 +10080,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const carbonCount = molecule.atoms.filter(isCarbonAtom).length;
   // Derive geometry per representation without changing editor coordinates or
   // the molecular graph. Switching back restores the same skeletal projection.
-  const rawDisplayPositions = calculateMolecule2DLayout(molecule, analysis.mainChain, viewMode);
+  const rawDisplayPositions = calculateMolecule2DLayout(molecule, activeAnalysis.mainChain, viewMode);
   const coordinateScale = canvasCoordinateScaleForCarbonCount(carbonCount);
   const displayPositions = new Map(
     [...rawDisplayPositions].map(([atomId, point]) => [atomId, {
@@ -10076,7 +10104,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     : [];
   const condensedRenderModel = viewMode === "condensed"
     ? buildCondensedRenderModel(molecule, (atomId) => getImplicitHydrogens(atomId, molecule), {
-        numbering: effectiveShowNumbering ? analysis.numberedAtoms : undefined,
+        numbering: effectiveShowNumbering ? activeAnalysis.numberedAtoms : undefined,
         stereoBonds: condensedStereoBonds,
         includeTetrahedralParity: stereochemistryEnabled,
       })
@@ -10165,7 +10193,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const paintedNumberBadgeRadius = numberingGeometry.radius + numberingGeometry.strokeWidth / 2;
   const skeletalNumberBadgeOffsets = new Map<number, { x: number; y: number }>();
   const numberBadgeNeedsLeader = new Set<number>();
-  const numberedAtomsInOrder = [...analysis.numberedAtoms.entries()]
+  const numberedAtomsInOrder = [...activeAnalysis.numberedAtoms.entries()]
     .sort(([, left], [, right]) => left - right)
     .map(([atomId]) => molecule.atoms.find((atom) => atom.id === atomId))
     .filter((atom): atom is CarbonAtom => Boolean(atom));
@@ -10228,7 +10256,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   }
   const numberingBadgeExtents = effectiveShowNumbering
     ? molecule.atoms.flatMap((atom) => {
-        if (!analysis.numberedAtoms.has(atom.id) || carbonCount <= 1) return [];
+        if (!activeAnalysis.numberedAtoms.has(atom.id) || carbonCount <= 1) return [];
         const position = displayPositions.get(atom.id)!;
         const offset = skeletalNumberBadgeOffsets.get(atom.id)!;
         const paintedRadius = paintedNumberBadgeRadius;
@@ -11442,7 +11470,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const startNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomA)
-                  && analysis.numberedAtoms.has(a)
+                  && activeAnalysis.numberedAtoms.has(a)
                   ? {
                       center: {
                         x: positionA.x + skeletalNumberBadgeOffsets.get(a)!.x,
@@ -11454,7 +11482,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const endNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomB)
-                  && analysis.numberedAtoms.has(b)
+                  && activeAnalysis.numberedAtoms.has(b)
                   ? {
                       center: {
                         x: positionB.x + skeletalNumberBadgeOffsets.get(b)!.x,
@@ -11522,8 +11550,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const stereoToggleAvailable = Boolean(stereoInspection?.stereogenic);
                 const stereoInteractionEnabled = stereochemistryEnabled && stereoToggleAvailable;
                 const stereoLocantIndex = stereoToggleAvailable
-                  ? analysis.mainChain.slice(0, -1).findIndex((atomId, index) => {
-                      const nextAtomId = analysis.mainChain[index + 1];
+                  ? activeAnalysis.mainChain.slice(0, -1).findIndex((atomId, index) => {
+                      const nextAtomId = activeAnalysis.mainChain[index + 1];
                       return (atomId === a && nextAtomId === b)
                         || (atomId === b && nextAtomId === a);
                     })
@@ -11767,7 +11795,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const element = getElement(atom);
                 const carbonAtom = isCarbonAtom(atom);
                 const isSelected = atom.id === selectedId;
-                const chainNumber = analysis.numberedAtoms.get(atom.id);
+                const chainNumber = activeAnalysis.numberedAtoms.get(atom.id);
                 const position = displayPositions.get(atom.id)!;
                 const numberBadgeOffset = skeletalNumberBadgeOffsets.get(atom.id)
                   ?? numberingGeometry.offset;
@@ -11999,7 +12027,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     setSelectedId(atomId);
                     if (isCarbonAtom(atom)) dispatchGuidedTour({ type: "carbon-selected" });
                     const selectedElementName = elementNames[getElement(atom)] ?? "Átomo";
-                    setNotice(`${selectedElementName} ${analysis.numberedAtoms.get(atomId) ?? "del grupo funcional"} seleccionado.`);
+                    setNotice(`${selectedElementName} ${activeAnalysis.numberedAtoms.get(atomId) ?? "del grupo funcional"} seleccionado.`);
                   }}
                   onActivateBond={(left, right, toggleStereo = false) => {
                     if (placementTool) return;
@@ -12284,7 +12312,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   <div className="bond-stereochemistry-centers">
                     {selectedBondTetrahedralCandidates.map((atomId) => {
                       const atom = molecule.atoms.find((candidate) => candidate.id === atomId)!;
-                      const locant = analysis.numberedAtoms.get(atomId);
+                      const locant = activeAnalysis.numberedAtoms.get(atomId);
                       const atomLabel = `${getElement(atom)}${locant ?? atomId}`;
                       const current = atom.tetrahedralParity;
                       return (

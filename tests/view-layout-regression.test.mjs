@@ -208,6 +208,8 @@ test("the actual canvas view switch selects derived layouts without touching mol
   const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
   const action = page.slice(page.indexOf("  const changeViewMode ="), page.indexOf("  const redrawMolecule ="));
   const expression = page.match(/const rawDisplayPositions = ([^;]+);/)[1];
+  const numberExpression = page.match(/const chainNumber = ([^;]+);/)[1];
+  const canvasNumber = new Function("atom", "analysis", "activeAnalysis", `return ${numberExpression};`);
   const code = ts.transpileModule(`function run(context, mode) { with (context) {
     ${action}; changeViewMode(mode); return ${expression};
   } }`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
@@ -224,7 +226,7 @@ test("the actual canvas view switch selects derived layouts without touching mol
   assert.equal(smiles.ok, true);
   assert.ok(molecule.atoms.some((atom) => atom.tetrahedralParity), "fixture has R/S metadata");
   const context = {
-    molecule, analysis: chemistry.engine.analyzeMolecule(molecule), calculateMolecule2DLayout, getCondensedUnavailableReason,
+    molecule, activeAnalysis: chemistry.engine.analyzeMolecule(molecule), calculateMolecule2DLayout, getCondensedUnavailableReason,
     viewMode: "skeletal", language: "en", undoStack: [], future: [], setNotice() {},
     setViewMode(mode) { context.viewMode = mode; },
     commit() { assert.fail("view switching must not commit an edit"); },
@@ -232,15 +234,37 @@ test("the actual canvas view switch selects derived layouts without touching mol
   };
   const original = run(context, "skeletal");
   const semiDeveloped = run(context, "semi-developed");
-  assertHorizontal(pointsOn(semiDeveloped, context.analysis.mainChain));
+  assertHorizontal(pointsOn(semiDeveloped, context.activeAnalysis.mainChain));
   const condensed = run(context, "condensed");
   assert.deepEqual(condensed, original, "the textual renderer owns its layout, while graph projection stays safe");
-  assertHorizontal(pointsOn(run(context, "semi-developed"), context.analysis.mainChain));
+  assertHorizontal(pointsOn(run(context, "semi-developed"), context.activeAnalysis.mainChain));
   assert.deepEqual(run(context, "skeletal"), original);
   assert.deepEqual(molecule, snapshot);
   assert.deepEqual(moleculeToSmiles(molecule), smiles);
   assert.deepEqual(context.undoStack, []);
   assert.deepEqual(context.future, []);
+  // The same projection must follow the active engine's parent when the two
+  // conventions select different chains, without rewriting the molecule.
+  for (const smiles of ["C=CC(CCC)CCC", "C#CC(CCC)CCC"]) {
+    const branched = imported(smiles), unchanged = structuredClone(branched);
+    context.molecule = branched;
+    const modern = chemistry.engine.analyzeMolecule(branched);
+    const legacy = chemistry.engine.analyzeMolecule(branched, [], "iupac-1979-legacy");
+    assert.equal(modern.mainChain.length, 7);
+    assert.equal(legacy.mainChain.length, 6);
+    for (const active of [modern, legacy, modern]) {
+      context.activeAnalysis = active;
+      assert.deepEqual(run(context, "semi-developed"),
+        calculateMolecule2DLayout(branched, active.mainChain, "semi-developed"),
+        "the actual view consumes the selected parent's atom order, including unsaturation geometry");
+      assert.deepEqual(branched.atoms.map((atom) => canvasNumber(atom, modern, active)),
+        branched.atoms.map((atom) => active.numberedAtoms.get(atom.id)),
+        "the actual canvas labels use active locants even while the 2013 analysis is available");
+      assert.deepEqual(branched, unchanged);
+      assert.deepEqual(context.undoStack, []);
+      assert.deepEqual(context.future, []);
+    }
+  }
   assert.match(page, /onClick=\{\(\) => changeViewMode\("semi-developed"\)\}/);
   assert.match(page, /aria-pressed=\{viewMode === "semi-developed"\}/);
   assert.match(page, /Semi-developed structural representation/);

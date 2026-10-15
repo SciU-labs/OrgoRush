@@ -9,7 +9,7 @@ import { buildReasoningNameLinkParts } from "../app/reasoning-name-links.ts";
 import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { translateSpanishIupacToOpsin } from "../app/iupac-name-normalization.ts";
 import { generateLegacyEnglishName } from "../app/legacy-english-nomenclature.ts";
-import { applyNomenclatureConvention } from "../app/nomenclature-conventions.ts";
+import { applyNomenclatureConvention, migrateNomenclatureConvention } from "../app/nomenclature-conventions.ts";
 import nom001 from "./fixtures/iupac-engine-audit-nom001-conforming.json" with { type: "json" };
 import nom002 from "./fixtures/iupac-engine-nom002-cyclic-ketones.json" with { type: "json" };
 import nom003 from "./fixtures/iupac-engine-audit-nom003-conforming.json" with { type: "json" };
@@ -267,6 +267,79 @@ test("manual findings: parent, orientation, multiple bond and historical spellin
         if (legacy) assert.ok(result.steps.every((item) => !item.explanation.includes(expected.current[index])), `${name}: no modern spelling leaks`);
       }
     }
+    assert.deepEqual(moleculeToSmiles(molecule), { ok: true, smiles: before });
+  }
+});
+
+test("NOM-004B: the UI model selects one engine result for every step and segment through the five-profile sequence", () => {
+  const cases = [
+    { smiles: "CC(O)C=C", current: ["but-3-en-2-ol", "but-3-en-2-ol"], legacy: ["3-buten-2-ol", "3-buten-2-ol"], count: 4, root: ["but", "but"], bondLocant: 3 },
+    { smiles: "O=C1C=CCCC1", current: ["ciclohex-2-en-1-ona", "cyclohex-2-en-1-one"], legacy: ["2-ciclohexenona", "2-cyclohexenone"], count: 6, root: ["ciclohex", "cyclohex"], bondLocant: 2 },
+    { smiles: "O=C1C=CC(C)CC1", current: ["4-metilciclohex-2-en-1-ona", "4-methylcyclohex-2-en-1-one"], legacy: ["4-metil-2-ciclohexenona", "4-methyl-2-cyclohexenone"], count: 6, root: ["ciclohex", "cyclohex"], bondLocant: 2, methyl: true },
+    { smiles: "C=CC(CCC)CCC", current: ["4-etenilheptano", "4-ethenylheptane"], legacy: ["3-propil-1-hexeno", "3-propyl-1-hexene"], count: 6, root: ["hex", "hex"], bondLocant: 1, branched: true },
+    { smiles: "C#CC(CCC)CCC", current: ["4-etinilheptano", "4-ethynylheptane"], legacy: ["3-propil-1-hexino", "3-propyl-1-hexyne"], count: 6, root: ["hex", "hex"], bondLocant: 1, branched: true, triple: true },
+  ];
+  for (const expected of cases) {
+    const { molecule, before } = parsed(expected.smiles);
+    const analyses = { current: page.analyzeMolecule(molecule), legacy: page.analyzeMolecule(molecule, [], "iupac-1979-legacy") };
+    const originalDecisions = structuredClone(analyses);
+    const legacyNames = getNames(molecule, analyses.legacy);
+    assert.deepEqual([analyses.current.name, translateSpanishIupacToOpsin(analyses.current.name)], expected.current);
+    assert.deepEqual([legacyNames.spanishLegacy, legacyNames.englishLegacy], expected.legacy);
+    for (const [language, selected] of [["es", "current"], ["es", "iupac-1979-es"], ["en", "iupac-1979-es"], ["en", "current"], ["es", "current"]]) {
+      const convention = migrateNomenclatureConvention(selected, language);
+      const historical = convention !== "current", index = language === "es" ? 0 : 1;
+      const name = (historical ? expected.legacy : expected.current)[index];
+      // Exactly the inputs consumed by Home: both real engine results, and the
+      // selected UI convention. The test cannot preselect the correct analysis.
+      const model = page.buildActiveIupacReasoning({ molecule, analyses, convention, language,
+        displayedName: name, generatedNames: [expected.current[index], expected.legacy[index]], canHighlight: true });
+      assert.equal(model.analysis, historical ? analyses.legacy : analyses.current, `${name}: selected engine object is reused`);
+      const step = (role) => model.steps.find((item) => item.nameRole === role);
+      const parentCount = expected.branched && !historical ? 7 : expected.count;
+      assert.equal(model.analysis.mainChain.length, parentCount);
+      const parent = model.links.find((part) => part.stepNumber === "02");
+      assert.ok(parent, `${name}: parent navigation`);
+      assert.deepEqual(parent.atomIds, model.analysis.mainChain, `${name}: root refers to the selected parent atoms`);
+      assert.equal(model.links.map((part) => part.text).join(""), name);
+      assert.ok(model.links.every((part) => !part.stepNumber || model.steps.some((item) => item.number === part.stepNumber)));
+      if (expected.branched) {
+        assert.deepEqual(model.analysis.substituents.map(({ name, locant }) => [name, locant]),
+          historical ? [["propil", 3]] : [[expected.triple ? "etinil" : "etenil", 4]]);
+        assert.deepEqual(model.analysis.doubleBondLocants, historical && !expected.triple ? [1] : []);
+        assert.deepEqual(model.analysis.tripleBondLocants, historical && expected.triple ? [1] : []);
+        const allText = model.steps.map((item) => item.explanation).join(" ");
+        if (historical) {
+          assert.match(step("parent").explanation, /6/);
+          assert.doesNotMatch(allText, /heptan|etinil|ethynyl|etenil|ethenyl/i);
+          assert.match(step("numbering").explanation, language === "es" ? /propil en C3/ : /propyl at C3/);
+          assert.match(step("numbering").explanation, /1.*5/);
+          assert.ok(model.links.some((part) => part.text === "3" && part.stepNumber === "03"),
+            `${name}: the substituent locant directly opens the numbering justification`);
+          assert.ok(model.links.some((part) => part.text === (language === "es" ? "propil" : "propyl") && part.stepNumber === "04"));
+        } else {
+          assert.match(step("unsaturation").explanation, language === "es" ? /sustituyente.*C4|C4.*sustituyente/ : /substituent.*C4|C4.*substituent/);
+          assert.doesNotMatch(allText, /hexino|hexyne|hexeno|hexene/);
+        }
+      }
+      if (!expected.branched || historical) {
+        const bond = model.links.find((part) => part.stepNumber === "07" && part.bondType);
+        assert.ok(bond, `${name}: direct multiple-bond navigation`);
+        assert.equal(bond.locant, expected.bondLocant);
+        assert.equal(bond.bondType, expected.triple ? "triple" : "double");
+        assert.deepEqual(bond.atomIds, model.analysis.mainChain.slice(expected.bondLocant - 1, expected.bondLocant + 1));
+      }
+      if (expected.root[0] === "ciclohex") {
+        assert.match(step("function").explanation, /C1/);
+        assert.match(step("numbering").explanation, /2.*5/);
+        if (historical) assert.match(step("function").explanation, language === "es" ? /implícito/ : /implicit/);
+        if (expected.methyl) {
+          assert.match(step("numbering").explanation, language === "es" ? /metil en C4/ : /methyl at C4/);
+          assert.match(step("numbering").explanation, language === "es" ? /no modifican.*mayor prioridad/ : /do not override.*higher-priority/);
+        }
+      }
+    }
+    assert.deepEqual(analyses, originalDecisions, "building explanations never mutates either chemical decision");
     assert.deepEqual(moleculeToSmiles(molecule), { ok: true, smiles: before });
   }
 });

@@ -16,7 +16,7 @@ const compile = (source) => {
   return new Function(`${compiled}; return run;`)();
 };
 const placeBadges = compile(`function run(scope) {
-  const { molecule, analysis, displayPositions, numberingScale, viewMode,
+  const { molecule, activeAnalysis, displayPositions, numberingScale, viewMode,
     effectiveShowNumbering, functionalGroupScale,
     getSkeletalNumberBadgeGeometry, getSkeletalRingNumberBadgeOffset,
     getSkeletalNumberBadgeOffsetWithClearance } = scope;
@@ -30,7 +30,7 @@ const placeBadges = compile(`function run(scope) {
 }`);
 const renderBond = compile(`function run(scope) {
   const { a, b, order, atomA, atomB, positionA, positionB, viewMode,
-    effectiveShowNumbering, carbonCount, analysis, numberingGeometry,
+    effectiveShowNumbering, carbonCount, activeAnalysis, numberingGeometry,
     paintedNumberBadgeRadius, skeletalNumberBadgeOffsets,
     getParallelBondSegments, clipSkeletalTripleBondSegments,
     clipSkeletalParallelBondSegments, clipSkeletalRingDoubleBondSegments,
@@ -75,7 +75,7 @@ const makeScope = (angle = 0, scale = 2, numbering = true) => {
     ...geometry, clipCondensedBondSegments, molecule,
     viewMode: "skeletal", effectiveShowNumbering: numbering,
     functionalGroupScale: 1, numberingScale: scale, carbonCount: 5,
-    analysis: { numberedAtoms: new Map(molecule.atoms.map((atom, i) => [atom.id, i + 1])) },
+    activeAnalysis: { numberedAtoms: new Map(molecule.atoms.map((atom, i) => [atom.id, i + 1])) },
     displayPositions: new Map(molecule.atoms.map((atom) => [atom.id, { x: atom.x, y: atom.y }])),
     a: 2, b: 3, order: 3,
   };

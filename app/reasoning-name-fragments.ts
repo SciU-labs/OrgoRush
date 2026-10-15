@@ -599,7 +599,8 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
   const add = (role: ReasoningNameFragment["kind"], text: string, label: string, start: number, kind = role) => {
     const step = stepFor(role);
     if (step && text && start >= 0 && name.slice(start, start + text.length) === text) {
-      const fragment = { text, start, label, kind };
+      const fragment: ReasoningNameEvidence = { text, start, label, kind,
+        ...(role === "parent" ? { atomIds: analysis.mainChain } : {}) };
       const previous = fragments[step.number];
       if (previous) {
         if (![previous, ...(previous.additionalFragments ?? [])].some((item) => item.text === text && item.start === start)) {
@@ -778,6 +779,27 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
         previous.additionalFragments ??= [];
         previous.additionalFragments.push(written);
       }
+    }
+  }
+  // Historical prefixes put the attachment locant before the substituent.
+  // Keep both concepts directly reachable: "3" -> numbering, "propil" ->
+  // substituent. Only split spans already supported by the analyzed prefixes.
+  if (numberingStep && (input.convention === "iupac-1979-es" || input.convention === "iupac-1979-legacy-en")) {
+    for (const fragment of Object.values(fragments).flatMap((item) => [item, ...(item.additionalFragments ?? [])])) {
+      if (fragment.kind !== "substituent") continue;
+      const match = /^(\d+(?:,\d+)*)-/.exec(fragment.text);
+      if (!match || !match[1].split(",").every((value) => analysis.substituents.some((item) => item.locant === Number(value)))) continue;
+      const start = fragment.start ?? name.indexOf(fragment.text);
+      const numbered: ReasoningNameEvidence = { text: match[1], start,
+        label: uiText(language, "Numeración razonada"), kind: "numbering" };
+      const previous = fragments[numberingStep.number];
+      if (!previous) fragments[numberingStep.number] = numbered;
+      else if (![previous, ...(previous.additionalFragments ?? [])].some((item) => item.text === numbered.text && item.start === start)) {
+        previous.additionalFragments ??= [];
+        previous.additionalFragments.push(numbered);
+      }
+      fragment.start = start + match[0].length;
+      fragment.text = fragment.text.slice(match[0].length);
     }
   }
   // Retained functional parents (phenol/aniline) are intentionally indivisible.
