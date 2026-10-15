@@ -3,6 +3,7 @@ import { uiText } from "./i18n.ts";
 import { translateSpanishIupacForDisplay } from "./iupac-name-normalization.ts";
 import { functionalNameEvidence, matchFunctionalParentSuffix, type FunctionalContribution, type FunctionalReasoningAnalysis } from "./reasoning-functional-groups.ts";
 import type { StereoDescriptor } from "./double-bond-stereochemistry.ts";
+import { IUPAC_ROOTS } from "./iupac-prefixes.ts";
 
 export type ReasoningNameEvidence = {
   text: string;
@@ -40,6 +41,7 @@ type FragmentInput = {
   language: AppLanguage;
   steps: readonly { number: string; nameRole?: ReasoningNameFragment["kind"]; stereoDescriptors?: readonly StereoDescriptor[] }[];
   canHighlight: boolean;
+  convention?: string;
 };
 
 /** The existing CIP inspection supplies E/Z. Text only verifies its written span;
@@ -68,11 +70,84 @@ export function deriveUnsaturationNameContributions(
   displayedName: string,
   language: AppLanguage,
   generatedNames?: readonly string[],
+  convention?: string,
 ): UnsaturationNameContribution[] {
   const name = displayedName.trim();
   const parent = localizedName(analysis.chainName, language).replace(/^(?:ácido|acid) /, "");
   const root = /^[a-záéíóúüñ]+/i.exec(parent)?.[0] ?? "";
   if (!root) return [];
+  const isLegacy = convention === "iupac-1979-es" || convention === "iupac-1979-legacy-en";
+  if (isLegacy && (!generatedNames || generatedNames.includes(name))) {
+    const unsaturation: { bondType: "double" | "triple"; locant: number }[] = [
+      ...analysis.doubleBondLocants.map((locant) => ({ bondType: "double" as const, locant })),
+      ...analysis.tripleBondLocants.map((locant) => ({ bondType: "triple" as const, locant })),
+    ].sort((a, b) => a.locant - b.locant);
+    const rootByLength = IUPAC_ROOTS[analysis.mainChain.length] ?? "";
+    const fromIndex = (text: string, start: number, bondType: "double" | "triple", locant: number): UnsaturationNameContribution => {
+      const atoms = [analysis.mainChain[locant - 1], analysis.mainChain[locant % analysis.mainChain.length]];
+      const label = language === "en"
+        ? `${bondType === "double" ? "Double" : "Triple"} bond at position ${locant}`
+        : `Enlace ${bondType === "double" ? "doble" : "triple"} en la posición ${locant}`;
+      const next = analysis.family === "cycloalkane" ? locant % analysis.mainChain.length + 1 : locant + 1;
+      const bond = bondType === "double" ? `C${locant}=C${next}` : `C${locant}≡C${next}`;
+      const placement = unsaturation.length === 1
+        ? language === "en" ? "The locant precedes the parent stem." : "El localizador precede al esqueleto."
+        : language === "en" ? "Each locant keeps its position in this historical form." : "Cada localizador conserva su posición en esta forma histórica.";
+      const explanation = language === "en"
+        ? `${bondType === "double" ? "Double" : "Triple"} bond ${bond} is in the selected Legacy parent and carries locant ${locant}. The 1979 form is “${name}”. ${placement} “${bondType === "double" ? "en" : "yn"}” expresses the ${bondType} bond.`
+        : `El enlace ${bondType === "double" ? "doble" : "triple"} ${bond} pertenece al padre Legacy seleccionado y lleva el localizador ${locant}. La forma 1979 es «${name}». ${placement} «${bondType === "double" ? "en" : "in"}» expresa el enlace ${bondType === "double" ? "doble" : "triple"}.`;
+      return { semanticId: `unsaturation:${bondType}:${locant}`, bondType, locant, atomIds: atoms,
+        bondIds: [[Math.min(...atoms), Math.max(...atoms)]], text, start, kind: "unsaturation", label, explanation };
+    };
+    const splitParentSpan = (text: string, start: number, marker: string, bondType: "double" | "triple", locant: number) => [
+      fromIndex(String(locant), start, bondType, locant),
+      fromIndex(marker, start + text.lastIndexOf(marker), bondType, locant),
+    ];
+    if (rootByLength && analysis.family === "acyclic"
+      && unsaturation.length === 1 && ["alcohol", "ketone"].includes(analysis.primaryFunctionalGroup ?? "")) {
+      const { bondType, locant } = unsaturation[0];
+      const marker = bondType === "double" ? "en" : language === "en" ? "yn" : "in";
+      const suffix = analysis.primaryFunctionalGroup === "alcohol" ? "ol" : language === "en" ? "one" : "ona";
+      const match = new RegExp(`(?:^|-)(${locant}-${rootByLength}${marker})-(\\d+)-${suffix}$`, "i").exec(name);
+      if (match && Number(match[2]) === analysis.functionalGroups
+        .filter((group) => group.kind === analysis.primaryFunctionalGroup)
+        .map((group) => analysis.numberedAtoms.get(group.carbonId))
+        .find((value) => value !== undefined)) {
+        const start = match.index + match[0].indexOf(match[1]);
+        return splitParentSpan(match[1], start, marker, bondType, locant);
+      }
+    }
+    if (rootByLength && analysis.family === "cycloalkane" && unsaturation.length === 1) {
+      const { bondType, locant } = unsaturation[0];
+      const marker = bondType === "double" ? "en" : language === "en" ? "yn" : "in";
+      const ringPrefix = language === "en" ? "cyclo" : "ciclo";
+      const match = new RegExp(`(?:^|-)(${locant}-${ringPrefix}${rootByLength}${marker})`, "i").exec(name);
+      if (match) {
+        const start = match.index + match[0].indexOf(match[1]);
+        return splitParentSpan(match[1], start, marker, bondType, locant);
+      }
+    }
+    if (rootByLength && analysis.family === "acyclic" && !analysis.primaryFunctionalGroup && unsaturation.length === 1) {
+      const { bondType, locant } = unsaturation[0];
+      const marker = bondType === "double" ? language === "en" ? "ene" : "eno" : language === "en" ? "yne" : "ino";
+      const written = `${locant}-${rootByLength}${marker}`;
+      const start = name.length - written.length;
+      if (name.endsWith(written) && (start === 0 || name[start - 1] === "-")) {
+        return splitParentSpan(written, start, marker, bondType, locant);
+      }
+    }
+    if (language === "es" && rootByLength && analysis.family === "acyclic"
+      && unsaturation.length === 2 && unsaturation[0].bondType === "double" && unsaturation[1].bondType === "triple") {
+      const [doubleBond, tripleBond] = unsaturation;
+      const match = new RegExp(`(?:^|-)(${doubleBond.locant}-${rootByLength}en)-(${tripleBond.locant}-ino)$`, "i").exec(name);
+      if (match) {
+        const firstStart = match.index + match[0].indexOf(match[1]);
+        const secondStart = firstStart + match[1].length + 1;
+        return [...splitParentSpan(match[1], firstStart, "en", "double", doubleBond.locant),
+          fromIndex(match[2], secondStart, "triple", tripleBond.locant)];
+      }
+    }
+  }
   // D4-REASON-001: the verified legacy EN enyne output moves the double
   // locant before the root. Preserve each analyzed bond's semantic identity;
   // this presentation adapter copies spans and never constructs a name.
@@ -140,7 +215,7 @@ export function deriveUnsaturationNameContributions(
 
   for (const item of groups) {
     const firstAtom = analysis.mainChain[item.locant - 1];
-    const secondAtom = analysis.mainChain[item.locant];
+    const secondAtom = analysis.mainChain[analysis.family === "cycloalkane" ? item.locant % analysis.mainChain.length : item.locant];
     if (firstAtom === undefined || secondAtom === undefined) continue;
     const tokenIndex = tokens.findIndex(({ value }) => /^\d+(?:,\d+)*$/.test(value) && value.split(",").includes(String(item.locant)));
     if (tokenIndex < 0 || tokenIndex + 1 >= tokens.length) continue;
@@ -157,12 +232,18 @@ export function deriveUnsaturationNameContributions(
     const bondLabel = language === "en" ? item.bondType === "double" ? "Double bond" : "Triple bond"
       : item.bondType === "double" ? "Enlace doble" : "Enlace triple";
     const suffixText = isGrouped ? markerToken.value.slice(0, morpheme.length) : text.slice(String(item.locant).length + 1);
+    const nextLocant = analysis.family === "cycloalkane" ? item.locant % analysis.mainChain.length + 1 : item.locant + 1;
     const bondDescription = item.bondType === "double"
-      ? `C${item.locant}=C${item.locant + 1}`
-      : `C${item.locant}≡C${item.locant + 1}`;
+      ? `C${item.locant}=C${nextLocant}`
+      : `C${item.locant}≡C${nextLocant}`;
+    const writtenForm = analysis.family === "cycloalkane" ? `${name[start - 1] === "-" ? "-" : ""}${text}${end < name.length && name[end] === "-" ? "-" : ""}` : suffixText;
     const explanation = language === "en"
-      ? `${bondLabel} ${bondDescription} has locant ${item.locant} and contributes locant ${item.locant} to the parent unsaturation form “${suffixText}”.`
-      : `${bondLabel} ${bondDescription} tiene el localizador ${item.locant} y aporta el localizador ${item.locant} a la forma de insaturación del padre «${suffixText}».`;
+      ? `${bondLabel} ${bondDescription} has locant ${item.locant} and contributes locant ${item.locant} to the parent unsaturation form “${writtenForm}”.`
+      : `${bondLabel} ${bondDescription} tiene el localizador ${item.locant} y aporta el localizador ${item.locant} a la forma de insaturación del padre «${writtenForm}».`;
+    const conventionExplanation = analysis.family === "cycloalkane"
+      ? language === "en" ? ` The 2013 spelling places this component after the ring stem in “${name}”.`
+        : ` La escritura 2013 sitúa este componente después del esqueleto cíclico en «${name}».`
+      : "";
     output.push({
       semanticId: `unsaturation:${item.bondType}:${item.locant}`,
       bondType: item.bondType,
@@ -173,7 +254,7 @@ export function deriveUnsaturationNameContributions(
       start,
       label: language === "en" ? `${bondLabel} at position ${item.locant}` : `${bondLabel} en la posición ${item.locant}`,
       kind: "unsaturation",
-      explanation,
+      explanation: explanation + conventionExplanation,
     });
   }
   return output;
@@ -239,7 +320,10 @@ function deriveExistingReasoningNameFragments({
     // An indivisible functional parent is kept whole, without guessing morphemes.
     const suffixMatch = matchFunctionalParentSuffix(parent, primary, language);
     const scaffoldEnd = suffixMatch?.index ?? parent.length;
-    const scaffold = parent.slice(0, scaffoldEnd).replace(/-$/, "").replace(/^ácido /, "");
+    let scaffold = parent.slice(0, scaffoldEnd).replace(/-$/, "").replace(/^ácido /, "");
+    if (analysis.family === "cycloalkane" && analysis.doubleBondLocants.length + analysis.tripleBondLocants.length) {
+      scaffold = /^[a-záéíóúüñ]+/i.exec(scaffold)?.[0] ?? scaffold;
+    }
     const explicitRing = analysis.family === "aromatic"
       ? scaffold === localizedName("benceno", language)
       : /^(?:ciclo|cyclo)[a-z]+(?:-\d+(?:,\d+)*-[a-z]+)*$/i.test(scaffold);
@@ -502,9 +586,95 @@ function parentNameEvidence(
   return { text, start, label, kind: "parent", atomIds: analysis.mainChain };
 }
 
+/** Legacy display adapters locate literal spans only after the selected profile's
+ * analyzed graph and generated name agree. Chemistry and locants still come from Analysis. */
+function deriveLegacyConventionFragments(input: FragmentInput): Record<string, ReasoningNameFragment> {
+  const { analysis, displayedName, language, steps } = input;
+  const name = displayedName.trim();
+  const legacyProfile = input.convention === "iupac-1979-es" || input.convention === "iupac-1979-legacy-en";
+  if (!input.canHighlight || !legacyProfile || !["acyclic", "cycloalkane"].includes(analysis.family)
+    || !input.generatedNames?.includes(name)) return {};
+  const fragments: Record<string, ReasoningNameFragment> = {};
+  const stepFor = (role: ReasoningNameFragment["kind"]) => steps.find((step) => step.nameRole === role);
+  const add = (role: ReasoningNameFragment["kind"], text: string, label: string, start: number, kind = role) => {
+    const step = stepFor(role);
+    if (step && text && start >= 0 && name.slice(start, start + text.length) === text) {
+      const fragment = { text, start, label, kind };
+      const previous = fragments[step.number];
+      if (previous) {
+        if (![previous, ...(previous.additionalFragments ?? [])].some((item) => item.text === text && item.start === start)) {
+          previous.additionalFragments ??= [];
+          previous.additionalFragments.push(fragment);
+        }
+      } else fragments[step.number] = fragment;
+    }
+  };
+  const root = IUPAC_ROOTS[analysis.mainChain.length] ?? "";
+  if (!root) return fragments;
+  const ring = analysis.family === "cycloalkane";
+  const rootText = ring
+    ? `${language === "en" ? "cyclo" : "ciclo"}${root}`
+    : root;
+  const rootStart = name.lastIndexOf(rootText);
+  if (rootStart < 0) return fragments; // Retained parents keep their existing indivisible evidence.
+  const prefixEnd = rootStart >= 0 ? rootStart : -1;
+  if (rootStart >= 0) {
+    add("parent", rootText,
+      language === "en" ? `${ring ? "Parent ring" : "Parent chain"} · ${analysis.mainChain.length} carbons`
+        : `${ring ? "Anillo principal" : "Cadena principal"} · ${analysis.mainChain.length} carbonos`, rootStart);
+  }
+
+  const unsaturationStep = stepFor("unsaturation");
+  if (unsaturationStep) {
+    const contributions = deriveUnsaturationNameContributions(analysis, name, language, input.generatedNames, input.convention);
+    const [first, ...rest] = contributions;
+    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: rest };
+  }
+
+  const suffixes: Record<string, string> = {
+    alcohol: "ol", ketone: language === "en" ? "one" : "ona",
+    aldehyde: ring ? language === "en" ? "carbaldehyde" : "carbaldehído" : "al",
+    carboxylicAcid: language === "en" ? "carboxylic acid" : "carboxílico",
+  };
+  const suffix = analysis.primaryFunctionalGroup ? suffixes[analysis.primaryFunctionalGroup] : undefined;
+  const suffixStart = suffix ? name.lastIndexOf(suffix) : -1;
+  if (suffix && suffixStart >= 0) {
+    const functionGroupName = language === "en"
+      ? analysis.primaryFunctionalGroup === "alcohol" ? "Alcohol" : analysis.primaryFunctionalGroup === "ketone" ? "Ketone" : analysis.primaryFunctionalGroup === "aldehyde" ? "Aldehyde" : "Carboxylic acid"
+      : analysis.primaryFunctionalGroup === "alcohol" ? "Alcohol" : analysis.primaryFunctionalGroup === "ketone" ? "Cetona" : analysis.primaryFunctionalGroup === "aldehyde" ? "Aldehído" : "Ácido carboxílico";
+    add("function", suffix, language === "en" ? `${functionGroupName} suffix` : `Sufijo: ${functionGroupName.toLowerCase()}`, suffixStart);
+    const locants = analysis.functionalGroups
+      .filter((group) => group.kind === analysis.primaryFunctionalGroup)
+      .map((group) => analysis.numberedAtoms.get(group.carbonId))
+      .filter((locant): locant is number => locant !== undefined);
+    if (locants.length) {
+      const locantText = locants.sort((a, b) => a - b).join(",");
+      const pattern = new RegExp(`(?:^|\\D)(${locantText})(?=\\D|$)`, "g");
+      const matches = [...name.slice(0, suffixStart).matchAll(pattern)];
+      const match = matches.at(-1);
+      if (match?.index !== undefined) {
+        const start = match.index + match[0].indexOf(match[1]);
+        add("numbering", match[1], language === "en" ? `${functionGroupName} locant${locants.length > 1 ? "s" : ""}` : `Localizador${locants.length > 1 ? "es" : ""} de ${functionGroupName.toLowerCase()}`, start);
+      }
+    }
+  }
+
+  if (prefixEnd > 0 && analysis.substituents.length) {
+    for (const item of analysis.substituents) {
+      const substituent = localizedName(item.name, language);
+      const written = `${item.locant}-${substituent}`;
+      const start = name.indexOf(written);
+      if (start < 0 || start >= prefixEnd || start + written.length > prefixEnd) continue;
+      add("substituent", written, language === "en" ? "Substituent and locant" : "Sustituyente y localizador", start);
+      add("numbering", String(item.locant), language === "en" ? "Substituent locant" : "Localizador del sustituyente", start);
+    }
+  }
+  return fragments;
+}
+
 /** Extend the existing evidence/targets; one step can own several disjoint spans. */
 export function deriveReasoningNameFragments(input: FragmentInput): Record<string, ReasoningNameFragment> {
-  const fragments = deriveExistingReasoningNameFragments(input);
+  const fragments = { ...deriveExistingReasoningNameFragments(input), ...deriveLegacyConventionFragments(input) };
   const { analysis, displayedName, language, steps, canHighlight } = input;
   const name = displayedName.trim();
   const complexEther = analysis.substituents.some((item) => item.complex
@@ -534,9 +704,29 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
   }
   const unsaturationStep = steps.find((step) => step.nameRole === "unsaturation");
   if (unsaturationStep) {
-    const contributions = deriveUnsaturationNameContributions(analysis, name, language, input.generatedNames);
+    const contributions = deriveUnsaturationNameContributions(analysis, name, language, input.generatedNames, input.convention);
     const [first, ...rest] = contributions;
-    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: rest };
+    const unsaturatedSubstituentFragments = analysis.substituents
+      .filter((item) => /(?:en|in)il$/i.test(item.name))
+      .flatMap((item) => {
+        const substituentName = localizedName(item.name, language);
+        const text = `${item.locant}-${item.complex ? `(${substituentName})` : substituentName}`;
+        const start = name.indexOf(text);
+        if (!substituentName || start < 0) return [];
+        const displayName = `${substituentName} ${language === "en" ? "at" : "en"} C${item.locant}`;
+        const explanation = language === "en"
+          ? `The graph-derived unsaturated substituent ${displayName} contains the multiple bond outside the selected parent.`
+          : `El sustituyente insaturado ${displayName}, derivado del grafo, contiene el enlace múltiple fuera del padre seleccionado.`;
+        return [{ text, start, kind: "unsaturation" as const,
+          label: language === "en" ? `Unsaturated substituent at C${item.locant}` : `Sustituyente insaturado en C${item.locant}`,
+          explanation }];
+      });
+    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: [...rest, ...unsaturatedSubstituentFragments] };
+    else if (unsaturatedSubstituentFragments.length) {
+      const [substituent, ...others] = unsaturatedSubstituentFragments;
+      fragments[unsaturationStep.number] = { ...substituent, label: substituent.label,
+        additionalFragments: others };
+    }
   }
   const parent = parentNameEvidence(analysis, name, language, evidence);
   const parentStep = steps.find((step) => step.nameRole === "parent");

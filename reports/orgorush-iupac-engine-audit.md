@@ -229,3 +229,102 @@ La batería nueva de selección fija 13 estructuras: competencia de distinta lon
 - `git diff --check` terminó sin errores; Git advierte que normalizará LF a CRLF en el test modificado.
 
 Archivos de NOM-003: `app/page.tsx`, `app/iupac-name-normalization.ts`, `app/legacy-english-nomenclature.ts`, `tests/iupac-engine-audit.test.mjs`, `tests/iupac-nom003-parent-selection.test.mjs`, `tests/fixtures/iupac-engine-audit-nom003-conforming.json` y este informe. NOM-001 y NOM-002 no recibieron cambios de implementación; sus comprobaciones en la suite dedicada siguen PASS. NOM-004 no se abordó ni modificó. No se hizo commit ni push.
+
+## Seguimiento — NOM-004: integración pedagógica de perfiles y segmentos (2026-10-13; revisión manual 2026-10-15)
+
+### A. Causas raíz
+
+La vista ya calculaba un análisis moderno y otro Legacy y usaba el resultado del perfil elegido para mostrar el nombre. Sin embargo, `Home` construía «Cómo se obtiene» con `analysis` (2013) en ambos perfiles. Por eso las explicaciones podían describir el padre moderno aunque el nombre visible proviniera de 1979. Los segmentos se derivaban por separado en `reasoning-name-fragments.ts`; sus reglas morfológicas no reconocían el tramo español Legacy `3-buten` dentro de `3-buten-2-ol`. En los casos NOM-003, tampoco se describía consistentemente el padre de siete carbonos de 2013 frente al padre Legacy de seis carbonos.
+
+### B. Arquitectura revisada (A–K)
+
+- **A–C. Identidad, perfil e idioma:** `Home` conserva el mismo objeto `molecule`, `activeNomenclatureConvention` determina qué análisis alimenta el panel y `language` elige la versión localizada. El nombre visible y las variantes disponibles provienen de los formateadores ya existentes.
+- **D–E. Padre y localizadores:** `analyzeMolecule` entrega `mainChain`, `numberedAtoms`, enlaces múltiples, grupos funcionales y sustituyentes del grafo. NOM-004 no introduce otro selector químico.
+- **F–H. Texto, segmentos y destinos:** `buildIupacReasoningSteps` crea los pasos, `buildEnglishReasoningSteps` localiza el texto y `deriveReasoningNameFragments` asocia spans literales con evidencia del análisis. `buildReasoningNameLinkParts` exige que la unión de los segmentos reproduzca el nombre mostrado y los enlaces nativos llevan al paso relacionado.
+- **I. Cambios de perfil/idioma:** ahora los pasos y fragmentos se vuelven a calcular con el perfil, idioma, nombre y análisis activos; el estado de referencia también está condicionado por esa clave.
+- **J. Evidencia ausente:** el segmentador conserva texto sin enlace si no acredita un tramo. No se crean enlaces hacia pasos inexistentes; los enlaces renderizados son anclas accesibles con teclado y pueden activarse con Enter.
+- **K. Fases previas:** NOM-001/002/003 corrigieron nomenclatura y selección de padre; no originaron el desacuerdo pedagógico. Sus salidas nuevas hicieron visible que la vista seguía usando análisis 2013 para explicar resultados Legacy y cadenas 2013 recién seleccionadas.
+
+### C. Cambios realizados
+
+- `app/page.tsx`: se pasa el análisis del perfil activo y su nombre visible a las funciones de explicación. Se añadieron textos estructurales acotados al perfil Legacy para padre, numeración, sustituyentes e insaturación; los pasos 2013 mantienen su ruta existente. No se modifican generadores de nombres ni selectores de padre.
+- `app/reasoning-name-fragments.ts`: reconocimiento de formas Legacy respaldadas por el análisis para `3-buten-2-ol`, padres cíclicos insaturados y formas españolas enino; evidencia de sustituyentes insaturados en 2013 NOM-003; sufijo completo `carbaldehído/carbaldehyde` para anillos.
+- `tests/reasoning-nom004-profile.test.mjs`: nuevas comprobaciones de perfiles, segmentos, explicaciones, enlaces y persistencia del grafo.
+- Este informe conserva el registro de los archivos. El fixture observado histórico no se modificó.
+
+### D. NOM-001
+
+Los ocho casos (`01`, `02`, `05`, `06`, `11`, `12`, `15`, `17`) conservan los nombres de sus fixtures conformes en los cuatro perfiles. Los ocho se verifican con fragmentos concatenables y justificaciones existentes. Caso 12: el nombre Legacy español antes y después es `3-buten-2-ol`; antes el tramo `3-buten` no tenía asociación de insaturación coherente y el panel podía explicar la escritura moderna `but-3-en-2-ol`; después `3` y `en` apuntan al paso 07 y explican C3=C4/localizador 3, `but` apunta al padre del paso 02 y `2-ol` a la función del paso 01. También se verifica padre de cuatro carbonos.
+
+### E. NOM-002
+
+Las siete cetonas cíclicas conservan los nombres Legacy EN/ES. La explicación se construye desde `family`, átomos del padre, localizador del carbonilo, insaturación y sustituyentes del análisis. La batería comprueba anillo de cinco/seis/siete carbonos, carbonilo C1, locantes 2/3 y, para la forma sustituida, metilo en C4. No se usa la grafía «ciclo» como prueba estructural ni se modifica la lógica química.
+
+### F. NOM-003
+
+Para los casos 19 y 20, 2013 conserva padre de siete carbonos y explica etenilo/etinilo en C4 con insaturación fuera del padre; 1979 conserva padre de seis carbonos, insaturación del padre en C1 y propilo en C3. La prueba cubre inglés y español en ambas convenciones. El texto de padre 2013 sigue la explicación de cadena continua larga existente; Legacy identifica de forma explícita que se usan los resultados de su propio análisis.
+
+### G. Interactividad y accesibilidad
+
+La prueba de integración verifica que los spans se concatenen exactamente en el nombre y que cada enlace apunte a un paso existente. En el navegador local se cargó `CC(O)C=C`, se seleccionó español/1979 y se observó `3-buten-2-ol`; la activación del segmento `3-buten` con ratón y con Enter llevó al paso 07 (scrollY 1422), cuya explicación identifica el enlace C3=C4. Las pruebas existentes cubren retardo de hover, cancelación al salir, clic/tap, desplazamiento y movimiento reducido; los controles son enlaces nativos con nombres accesibles y foco visible existente.
+
+### H. Integridad química
+
+Las pruebas comparan SMILES de la misma molécula antes y después de construir explicaciones y al alternar perfiles/idiomas. No cambiaron nombres generados, selección de cadena, prioridad, valencias, conectividad ni serialización. Los nombres visibles permanecen idénticos a los fixtures normativos de NOM-001/002/003.
+
+### I. Verificaciones
+
+- `node --test --test-concurrency=1 tests/reasoning-nom004-profile.test.mjs tests/reasoning-name-fragments.test.mjs tests/reasoning-name-navigation.test.mjs tests/reasoning-hierarchy.test.mjs tests/reasoning-parent-provenance.test.mjs tests/iupac-engine-audit.test.mjs tests/iupac-nom002-cyclic-ketones.test.mjs tests/iupac-nom003-parent-selection.test.mjs` — **60 PASS, 0 FAIL, 0 omitidas**, incluida la auditoría de 84 salidas y las pruebas de interacción simulada. Tras corregir las claves de renderizado, se repitió `node --test tests/reasoning-nom004-profile.test.mjs`: **6 PASS, 0 FAIL**, con comprobación nueva de claves únicas en los elementos renderizados de toda su matriz.
+- Navegación real local: segmento Legacy español activado por clic y Enter — **PASS**.
+- `npx eslint app/page.tsx app/reasoning-name-fragments.ts app/reasoning-functional-groups.ts tests/reasoning-nom004-profile.test.mjs` — **0 errores, 6 warnings** existentes en otras zonas de `app/page.tsx` (hooks, variables no usadas e `<img>`), en la ejecución concluida anterior al ajuste final de claves React. Una repetición final no produjo salida y se interrumpió: no se cuenta como otra aprobación.
+- `npx tsc --noEmit --pretty false` — **FAIL del proyecto por diagnósticos preexistentes**. El filtrado de rutas modificadas no reportó errores en `app/reasoning-name-fragments.ts`; `app/page.tsx` mantiene diagnósticos en puntos anteriores/no relacionados (interoperabilidad OpenChemLib, tipos de razonamiento aromático/layout, `never` y evidencias semánticas), también presentes en el snapshot baseline bajo `outputs/`.
+- Build: `npm run build` no puede iniciar en PowerShell porque el script requiere `bash`. `npm exec -- vinext build` transforma la app, pero termina con `EPERM` en el hook `sites` al retirar `dist/.openai/drizzle`; no se contabiliza como build aprobado.
+- `git diff --check` — **PASS**.
+- `npm run test:critical` — ejecución interrumpida, sin veredicto final; sus resultados parciales no se cuentan. La comprobación terminada `node --test --test-concurrency=1 tests/practice-session.test.mjs tests/exam-session.test.mjs tests/practice-structural-answer.test.mjs` dio **47 PASS, 0 FAIL, 0 omitidas**.
+
+### J. Riesgos y límites
+
+La traducción Legacy inglesa existente no se amplía como motor general: las asociaciones de forma Legacy solo se crean cuando el nombre exacto y los datos del análisis las respaldan. El proyecto conserva errores TypeScript y bloqueo del build ya mencionados; por ello no se declara compilación completa. NOM-002B (cetonas cíclicas con múltiples dobles enlaces) sigue expresamente fuera de alcance. Las pruebas no sustituyen una revisión normativa independiente de cada morfología histórica.
+
+### K. Git y alcance
+
+Estado al cerrar: rama `main`, HEAD `a712d172f4ee7602f40a9dd5311f576553f0203f`; cambios locales únicamente en `app/page.tsx`, `app/reasoning-name-fragments.ts`, `app/reasoning-functional-groups.ts`, este informe y el nuevo `tests/reasoning-nom004-profile.test.mjs`. No se hizo commit ni push. NOM-002 y NOM-003 no recibieron cambios de implementación durante NOM-004.
+
+### Adenda: hallazgos manuales, causas adicionales y correcciones
+
+1. El paso de insaturación solo admitía familia `acyclic`: las cicloalquenonas carecían de destino 07. Ahora admite también `cycloalkane` con evidencia de enlaces múltiples del padre. La raíz cíclica se explica por separado como `ciclohex`, seis carbonos, en el paso 02.
+2. `selectedParentNumberingReasoning` compara las dos orientaciones del padre ya seleccionado. Con el carbonilo anclado en C1, explica localizadores de doble enlace 2 frente a 5. No enumera ni selecciona padres nuevos. Compara función principal, insaturación y sustituyentes; conserva las rutas existentes fuera de las familias respaldadas.
+3. `functionalContributionReasoning` recibía siempre el nombre moderno. Su parámetro opcional `displayedName` permite explicar el sufijo realmente escrito: `ona`/`one` Legacy con C1 implícito, sin insertar `1-ona`/`1-one` en esa grafía.
+4. Dos spans escritos del mismo enlace compartían `semanticId` y se renderizaban con la misma clave React. La prueba dinámica detectó filas antiguas al cambiar de molécula. `ReasoningNameFragmentView` usa ahora identidad de tramo (identidad química, posición y texto) para la clave; mantiene la asociación química compartida. Una prueba exige claves únicas entre hermanos.
+
+El criterio histórico de cadena insaturada se explica únicamente para hidrocarburos sin función principal, conforme a [A-3.4](https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm). La prioridad de la función al numerar sigue [C-15.11](https://www.acdlabs.com/iupac/nomenclature/79/r79_869.htm); la orientación del anillo insaturado se apoya en [A-11.3](https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm). Estas referencias fundamentan el texto pedagógico; no se alteraron las reglas del motor.
+
+#### Comparación de los cuatro perfiles: nombres idénticos antes y después de NOM-004
+
+| SMILES | 2013 ES | 1979 ES | 2013 EN | 1979 EN |
+|---|---|---|---|---|
+| `CC(O)C=C` | `but-3-en-2-ol` | `3-buten-2-ol` | `but-3-en-2-ol` | `3-buten-2-ol` |
+| `O=C1C=CCCC1` | `ciclohex-2-en-1-ona` | `2-ciclohexenona` | `cyclohex-2-en-1-one` | `2-cyclohexenone` |
+| `O=C1C=CC(C)CC1` | `4-metilciclohex-2-en-1-ona` | `4-metil-2-ciclohexenona` | `4-methylcyclohex-2-en-1-one` | `4-methyl-2-cyclohexenone` |
+| `C=CC(CCC)CCC` | `4-etenilheptano` | `3-propil-1-hexeno` | `4-ethenylheptane` | `3-propyl-1-hexene` |
+| `C#CC(CCC)CCC` | `4-etinilheptano` | `3-propil-1-hexino` | `4-ethynylheptane` | `3-propyl-1-hexyne` |
+
+#### Contenido explicado y destinos comprobados
+
+| Estructura | Contenido posterior, en ambos idiomas | Antes → después en la presentación |
+|---|---|---|
+| Alcohol | Padre de cuatro C; OH en C2; doble C3=C4, localizador 3. La grafía Legacy antepone 3 a `buten`; la moderna escribe `but-3-en`. | Padre y enlace confundidos en un tramo → `but` llega a 02; `3`/`en` a 07; `2-ol` a 01. |
+| Ciclohexenona | Anillo de seis C; carbonilo C1; doble C2=C3; al invertir orientación sería 5, por eso se elige 2. Escritura moderna `-2-en-` y Legacy `2-…en…ona`. | Sin paso 07 cíclico/raíz independiente → `ciclohex` llega a 02, insaturación a 07 y sufijo a 01. |
+| Metilciclohexenona | Mismo anillo, carbonilo y orientación; metilo en C4. Legacy omite el 1 del carbonilo en el nombre mostrado, pero lo explica. | Texto genérico y sufijo moderno infiltrado → raíz, metilo, enlace y sufijo tienen explicación propia conforme al nombre activo. |
+| Hidrocarburo con doble enlace | 2013: padre saturado de siete C, etenilo C4 y doble fuera del padre. Legacy: padre de seis C que incorpora C1=C2, propilo C3; máxima insaturación antes de longitud. | Análisis 2013 usado para explicar Legacy → cada perfil explica su padre ya seleccionado y su criterio. |
+| Análogo triple | 2013: siete C y etinilo C4; Legacy: seis C, triple C1≡C2 y propilo C3. | Igual desacuerdo entre perfiles → explicación independiente del triple enlace y del padre correcto. |
+
+En nombres modernos NOM-003, el prefijo insaturado conserva el enlace principal al paso 04 y evidencia relacionada del paso 07; este último explica expresamente que la insaturación está fuera del padre. En Legacy, el localizador y morfema de insaturación del padre enlazan directamente al 07. Ningún enlace se asigna por SMILES o identificador de caso.
+
+#### Verificación real y límites de cierre
+
+En el navegador se activaron con clic y Enter los enlaces de raíz e insaturación de las cinco estructuras en español, en 2013 y 1979, comprobando texto de destino y foco visible. Después de la corrección React se alternaron anillo, alcohol y cadenas insaturadas: no quedaron filas del anillo ni nombres anteriores. Se comprobó ES→EN→ES, las vistas Esquelética/Condensada/Semidesarrollada y los temas Auto/Claro/Oscuro conservando el nombre y la navegación. No se comprobó un dispositivo móvil físico ni una matriz de tamaños de pantalla.
+
+Evidencia visual: `C:/Users/Alex_/.codex/visualizations/2026/10/13/01a133de-c877-7332-b67a-c546065972e1/nom004-legacy-navigation.png`.
+
+La repetición final de `npm exec -- vinext build` transformó 266 módulos y reportó `built in 2.80s`; volvió a fallar al cerrar con `EPERM` en `sites`, ruta `dist/.openai/drizzle`. Se conserva como **FAIL/bloqueo del entorno**, no como PASS. TypeScript global también conserva los fallos descritos. Durante el navegador las API locales de historial/guardado devolvieron 500; la persistencia remota no forma parte de esta validación y no se modificó. Las comprobaciones de nomenclatura, navegación y Practice/Exam terminadas sí están aprobadas; no se declara una compilación general aprobada.

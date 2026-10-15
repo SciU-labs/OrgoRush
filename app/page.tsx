@@ -589,6 +589,9 @@ export type IupacReasoningStep = {
   stereoDescriptors?: ReturnType<typeof getMainChainStereoDescriptors>;
 };
 
+type ReasoningNomenclatureProfile = "blue-book-2013" | "iupac-1979-legacy";
+type ReasoningPresentation = { profile?: ReasoningNomenclatureProfile; displayedName?: string; generatedNames?: readonly string[] };
+
 export function splitChemicalNameForWrapping(value: string) {
   const descriptorMatch = /(?:bi|tri|tetra|penta|hexa|hepta|octa)(?:cyclo|ciclo)\[[^\]]*\]|(?:spiro|espiro)\[[^\]]*\]/i.exec(value);
   if (descriptorMatch?.index !== undefined) {
@@ -686,7 +689,7 @@ export function ReasoningNameFragmentView({
       {[fragment, ...(fragment.additionalFragments ?? [])].map((part, index) => {
         const selectable = part.semanticId && onSelectContribution;
         return (
-          <div key={part.semanticId ?? index} className={`reasoning-name-fragment reasoning-name-fragment--${part.kind}`}>
+          <div key={part.semanticId ? `${part.semanticId}:${part.start ?? index}:${part.text}` : index} className={`reasoning-name-fragment reasoning-name-fragment--${part.kind}`}>
             {selectable
               ? <button type="button" className={`reasoning-name-fragment-control ${part.semanticId === selectedSemanticId ? "is-selected" : ""}`}
                   aria-label={part.label} aria-pressed={part.semanticId === selectedSemanticId}
@@ -4263,11 +4266,130 @@ function unsaturatedSubstituentReasoning(analysis: Analysis, language: AppLangua
     : `La insaturación forma parte del sustituyente ${names.join(", ")}; queda fuera de la cadena principal saturada ${parentName}.`;
 }
 
+/** Compare the two directions of the selected parent; never select a new parent. */
+function selectedParentNumberingReasoning(analysis: Analysis, language: "es" | "en") {
+  const en = language === "en";
+  const size = analysis.mainChain.length;
+  const primary = normalizeLocants(analysis.functionalGroups
+    .filter((group) => group.kind === analysis.primaryFunctionalGroup)
+    .flatMap((group) => group.carbonIds.map((id) => analysis.numberedAtoms.get(id)))
+    .filter((value): value is number => value !== undefined));
+  const ring = analysis.family === "cycloalkane";
+  // A single suffix-bearing ring atom fixes C1; reverse only the sense around it.
+  if (analysis.family !== "acyclic" && !(ring && primary.length === 1 && primary[0] === 1)) return;
+  const reverseAtom = (locant: number) => ring ? locant === 1 ? 1 : size + 2 - locant : size + 1 - locant;
+  const reverseAtoms = (locants: number[]) => normalizeLocants(locants.map(reverseAtom));
+  const reverseBonds = (locants: number[]) => normalizeLocants(locants.map((locant) => {
+    if (!ring) return size - locant;
+    const ends = [reverseAtom(locant), reverseAtom(locant % size + 1)];
+    return ends.includes(1) && ends.includes(size) ? size : Math.min(...ends);
+  }));
+  const lead = ring
+    ? en ? "The suffix-bearing ring carbon is C1. Both directions around the ring retain that position; multiple bonds are compared next, before substituents."
+      : "El carbono del anillo que porta la función de sufijo es C1. Ambos sentidos conservan esa posición; después se comparan los enlaces múltiples, antes que los sustituyentes."
+    : en ? "The two ends of the selected chain are compared: first the principal suffix group, then multiple bonds, then substituents."
+      : "Se comparan los extremos de la cadena seleccionada: primero la función principal de sufijo, después los enlaces múltiples y por último los sustituyentes.";
+  const multiple = normalizeLocants([...analysis.doubleBondLocants, ...analysis.tripleBondLocants]);
+  const reverseMultiple = normalizeLocants([...reverseBonds(analysis.doubleBondLocants), ...reverseBonds(analysis.tripleBondLocants)]);
+  const substituents = normalizeLocants(analysis.substituents.map((item) => item.locant));
+  const criteria = [
+    { label: en ? "principal group" : "función principal", selected: primary, reverse: reverseAtoms(primary) },
+    { label: en ? "multiple bonds" : "enlaces múltiples", selected: multiple, reverse: reverseMultiple },
+    { label: en ? "double bonds" : "dobles enlaces", selected: normalizeLocants(analysis.doubleBondLocants), reverse: reverseBonds(analysis.doubleBondLocants) },
+    { label: en ? "substituents" : "sustituyentes", selected: substituents, reverse: reverseAtoms(substituents) },
+  ];
+  const decision = criteria.find((item) => item.selected.length && compareNumberLists(item.selected, item.reverse) !== 0);
+  if (!decision) return `${lead} ${en ? "Both directions give the same locant sets." : "Ambos sentidos dan los mismos conjuntos de localizadores."}`;
+  const selected = decision.selected.join(", "), reversed = decision.reverse.join(", ");
+  return `${lead} ${en
+    ? `The locants for the ${decision.label} resolve the orientation: ${selected} are lower than ${reversed} in the opposite direction. The first point of difference determines the chosen direction.`
+    : `El criterio de ${decision.label} resuelve la orientación: los localizadores ${selected} son menores que ${reversed} en el sentido opuesto. El primer punto de diferencia determina el sentido elegido.`}`;
+}
+
+function legacyStructuralReasoningText(
+  molecule: Molecule,
+  analysis: Analysis,
+  displayedName: string,
+  role: "parent" | "numbering" | "substituent" | "unsaturation",
+  language: "es" | "en",
+) {
+  const isEnglish = language === "en";
+  const ring = analysis.family === "cycloalkane";
+  const bonds = [
+    ...analysis.doubleBondLocants.map((locant) => `C${locant}=C${locant + 1}`),
+    ...analysis.tripleBondLocants.map((locant) => `C${locant}≡C${locant + 1}`),
+  ];
+  const functionalLocants = analysis.primaryFunctionalGroup
+    ? analysis.functionalGroups
+      .filter((group) => group.kind === analysis.primaryFunctionalGroup)
+      .flatMap((group) => group.carbonIds.map((atomId) => analysis.numberedAtoms.get(atomId)))
+      .filter((locant): locant is number => locant !== undefined)
+    : [];
+  const groupDescription = analysis.primaryFunctionalGroup === "alcohol" ? (isEnglish ? "alcohol" : "alcohol")
+    : analysis.primaryFunctionalGroup === "ketone" ? (isEnglish ? "ketone" : "cetona")
+      : analysis.primaryFunctionalGroup === "aldehyde" ? (isEnglish ? "aldehyde" : "aldehído")
+        : analysis.primaryFunctionalGroup === "carboxylicAcid" ? (isEnglish ? "carboxylic acid" : "ácido carboxílico")
+          : analysis.primaryFunctionalLabel?.toLowerCase() ?? (isEnglish ? "principal functional group" : "grupo funcional principal");
+  const parentKind = isEnglish ? ring ? "cyclic parent ring" : "parent chain" : ring ? "anillo cíclico progenitor" : "cadena principal";
+  const locantText = (values: number[]) => values.length ? values.join(", ") : (isEnglish ? "none" : "ninguno");
+  if (role === "parent") {
+    const ringKetoneLocants = ring ? analysis.functionalGroups
+      .filter((group) => group.kind === "ketone" && group.carbonIds.some((id) => analysis.mainChain.includes(id)))
+      .flatMap((group) => group.carbonIds.map((id) => analysis.numberedAtoms.get(id)))
+      .filter((locant): locant is number => locant !== undefined) : [];
+    const structure = `${analysis.mainChain.length} ${isEnglish ? "carbon" : "carbono"}${analysis.mainChain.length === 1 ? "" : "s"}`;
+    const ringCarbonyl = ringKetoneLocants.length
+      ? isEnglish ? ` The ring carbonyl is at C${locantText(ringKetoneLocants)}.` : ` El carbonilo forma parte del anillo y está en C${locantText(ringKetoneLocants)}.`
+      : "";
+    const unsaturation = bonds.length
+      ? isEnglish ? ` Parent multiple bonds are ${bonds.join(" and ")}.` : ` Los enlaces múltiples del padre son ${bonds.join(" y ")}.`
+      : "";
+    const functionText = functionalLocants.length
+      ? isEnglish ? ` The principal ${groupDescription} is at C${locantText(functionalLocants)}.` : ` La función principal (${groupDescription}) está en C${locantText(functionalLocants)}.`
+      : "";
+    const historicalSelection = !ring && bonds.length && !analysis.primaryFunctionalGroup
+      ? isEnglish ? " In this 1979 profile, candidate chains are compared by the maximum number of multiple bonds before chain length (A-3.4)."
+        : " En este perfil 1979, las cadenas candidatas se comparan por el máximo número de enlaces múltiples antes que por la longitud (A-3.4)."
+      : "";
+    const scaffold = `${ring ? isEnglish ? "cyclo" : "ciclo" : ""}${alkaneRoots[analysis.mainChain.length] ?? ""}`;
+    return isEnglish
+      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}; its carbon scaffold is “${scaffold}”.${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
+      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}; su esqueleto carbonado es «${scaffold}».${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
+  }
+  if (role === "numbering") {
+    const comparison = selectedParentNumberingReasoning(analysis, language);
+    if (comparison) return comparison;
+    const functional = functionalLocants.length ? `${groupDescription} C${locantText(functionalLocants)}` : "";
+    const multipleBonds = bonds.length ? bonds.join(", ") : "";
+    const substituentLocants = analysis.substituents.map((item) => item.locant).sort((a, b) => a - b);
+    const details = [functional, multipleBonds, substituentLocants.length ? `${isEnglish ? "substituents" : "sustituyentes"} C${locantText(substituentLocants)}` : ""].filter(Boolean).join(isEnglish ? "; " : "; ");
+    return isEnglish
+      ? `Locants shown here come from the selected 1979 Legacy parent: ${details || "no locanted groups"}. The final written form is ${displayedName}.`
+      : `Los localizadores proceden del padre seleccionado por el análisis Legacy de 1979: ${details || "no hay grupos con localizador"}. La forma escrita es ${displayedName}.`;
+  }
+  if (role === "substituent") {
+    const items = analysis.substituents.map((item) => `${isEnglish ? translateSpanishIupacToOpsin(item.name) || item.name : item.name} ${isEnglish ? "at" : "en"} C${item.locant}`);
+    return items.length
+      ? isEnglish ? `The selected parent has these graph-derived substituents: ${items.join(", ")}.`
+        : `El padre seleccionado tiene estos sustituyentes, derivados del grafo: ${items.join(", ")}.`
+      : isEnglish ? "No carbon substituents are added to the selected parent."
+        : "No se añaden sustituyentes de carbono al padre seleccionado.";
+  }
+  const substituentUnsaturation = unsaturatedSubstituentReasoning(analysis, language);
+  if (!bonds.length && substituentUnsaturation) return substituentUnsaturation;
+  return bonds.length
+    ? isEnglish ? `The selected parent's multiple bonds are ${bonds.join(" and ")}; their locants are carried into ${displayedName}.`
+      : `Los enlaces múltiples del padre seleccionado son ${bonds.join(" y ")}; sus localizadores aparecen en ${displayedName}.`
+    : isEnglish ? "No multiple bond lies in the selected parent."
+      : "El padre seleccionado no contiene enlaces múltiples.";
+}
+
 export function buildIupacReasoningSteps(
   molecule: Molecule,
   analysis: Analysis,
   enabledAliases: readonly string[] = [],
   sourceName?: string | null,
+  presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
   if (heterocycleRing(molecule) && localNamerCannotSafelyName(molecule, analysis)) return [];
   if (analysis.steroidSystem?.constitutionNameEs) {
@@ -4502,6 +4624,8 @@ export function buildIupacReasoningSteps(
   }
 
   const steps: IupacReasoningStep[] = [];
+  const displayedName = presentation.displayedName ?? analysis.name;
+  const isLegacyExplanation = presentation.profile === "iupac-1979-legacy";
   const isRingStructure = analysis.family !== "acyclic";
   const chainLength = analysis.mainChain.length;
   const hasMultipleBonds = analysis.doubleBondLocants.length > 0
@@ -4549,6 +4673,8 @@ export function buildIupacReasoningSteps(
       const functionName = primaryKind === "aldehyde" ? "el aldehído" : "el ácido carboxílico";
       positionRule = functionName + " se une al anillo por C" + exocyclicRingFunction.attachmentLocant
         + "; su carbono funcional queda fuera del padre cíclico.";
+    } else if (analysis.family === "cycloalkane" && primaryKind === "ketone" && primaryLocants.length === 1 && primaryLocants[0] === 1) {
+      positionRule = `El carbono del carbonilo pertenece al anillo y se toma como C1 para dar a la cetona el localizador menor.${isLegacyExplanation ? " En esta forma histórica de monocetona cíclica, el 1 del carbonilo queda implícito en el sufijo." : ""}`;
     } else if (terminalCarbonFunctions.has(primaryKind)) {
       positionRule = `El carbono propio de esta función forma parte del esqueleto principal y se fija como C1.`;
     } else if (primaryKind === "ketone" && primaryLocants.some((locant) => locant > 1)) {
@@ -4559,7 +4685,7 @@ export function buildIupacReasoningSteps(
     steps.push({
       number: "01",
       title: "Grupo funcional principal",
-      explanation: retainedReasoning?.function ?? `${priorityLead} Aporta el sufijo del nombre. ${positionRule}${aromaticNitroGroups.length ? " Los grupos nitro se expresan con el prefijo nitro- y no desplazan esta función de sufijo." : ""} ${functionalContributionReasoning(analysis, "function", "es")} ${arylChainReasoning?.function ?? ""}`.trim(),
+      explanation: retainedReasoning?.function ?? `${priorityLead} Aporta el sufijo del nombre. ${positionRule}${aromaticNitroGroups.length ? " Los grupos nitro se expresan con el prefijo nitro- y no desplazan esta función de sufijo." : ""} ${functionalContributionReasoning(analysis, "function", "es", isLegacyExplanation ? displayedName : undefined)} ${arylChainReasoning?.function ?? ""}`.trim(),
       nameRole: "function",
     });
   } else if (aromaticNitroGroups.length) {
@@ -4585,13 +4711,14 @@ export function buildIupacReasoningSteps(
   } else if (analysis.family === "cycloalkane" && exocyclicRingFunction) {
     const functionalGroup = exocyclicRingFunction.kind === "aldehyde" ? "–CHO" : "–COOH";
     const suffix = exocyclicRingFunction.kind === "aldehyde" ? "carbaldehído" : "carboxílico";
-    parentExplanation = "Se elige como padre el anillo continuo de " + chainLength
+    parentExplanation = "Se elige como padre el anillo de " + chainLength
       + " carbonos, que aporta el nombre base " + analysis.chainName + ". El carbono del grupo "
       + functionalGroup + " queda fuera del anillo y se une por C"
       + exocyclicRingFunction.attachmentLocant + "; por eso se expresa con el sufijo "
       + suffix + ". El nombre completo es " + analysis.name + ".";
   } else if (analysis.family === "cycloalkane") {
-    parentExplanation = `Se elige el anillo continuo de ${chainLength} carbonos${analysis.primaryFunctionalLabel ? ` que contiene el grupo ${analysis.primaryFunctionalLabel.toLowerCase()}` : ""}. Este anillo aporta el nombre base ${analysis.chainName}.`;
+    const scaffold = `ciclo${alkaneRoots[chainLength] ?? ""}`;
+    parentExplanation = `Se elige el anillo de ${chainLength} carbonos${analysis.primaryFunctionalLabel ? ` que contiene el grupo ${analysis.primaryFunctionalLabel.toLowerCase()}` : ""}. El esqueleto cíclico aporta «${scaffold}»; los enlaces múltiples y el sufijo funcional se explican por separado.`;
   } else {
     const totalCarbons = molecule.atoms.filter(isCarbonAtom).length;
     const parentSkeleton = alkaneParentName(chainLength);
@@ -4614,7 +4741,9 @@ export function buildIupacReasoningSteps(
   steps.push({
     number: "02",
     title: isRingStructure ? "Anillo principal" : "Cadena principal",
-    explanation: parentExplanation,
+    explanation: isLegacyExplanation
+      ? legacyStructuralReasoningText(molecule, analysis, displayedName, "parent", "es")
+      : parentExplanation,
     nameRole: "parent",
   });
 
@@ -4633,7 +4762,9 @@ export function buildIupacReasoningSteps(
         explanationParts.push(`La numeración asignada sitúa ${assignedPrefixLocants}.`);
       }
     } else if (isRingStructure) {
-      explanationParts.push(
+      const ringNumbering = selectedParentNumberingReasoning(analysis, "es");
+      if (ringNumbering) explanationParts.splice(0, explanationParts.length, ringNumbering);
+      else explanationParts.push(
         `En el anillo se eligen el punto de inicio y el sentido que respetan esa jerarquía${primaryLocants.length ? `; la función principal queda en ${carbonLocantsText(primaryLocants)}` : ""}.`,
       );
     } else {
@@ -4721,7 +4852,9 @@ export function buildIupacReasoningSteps(
     steps.push({
       number: "03",
       title: "Numeración razonada",
-      explanation: explanationParts.join(" "),
+      explanation: isLegacyExplanation
+        ? legacyStructuralReasoningText(molecule, analysis, displayedName, "numbering", "es")
+        : explanationParts.join(" "),
       nameRole: "numbering",
       ...(primaryNumberingComparison ? { numberingComparison: primaryNumberingComparison } : {}),
     });
@@ -4740,7 +4873,9 @@ export function buildIupacReasoningSteps(
     steps.push({
       number: "04",
       title: "Sustituyentes y localizadores",
-      explanation: `Con la orientación ya evaluada, ${analysis.substituents.length === 1 ? "se ubica" : "se ubican"} ${joinSpanishList(localizedSubstituents)}. ${hierarchyReminder} ${functionalContributionReasoning(analysis, "substituent", "es")} ${arylChainReasoning?.substituent ?? ""}`.trim(),
+      explanation: isLegacyExplanation
+        ? legacyStructuralReasoningText(molecule, analysis, displayedName, "substituent", "es")
+        : `Con la orientación ya evaluada, ${analysis.substituents.length === 1 ? "se ubica" : "se ubican"} ${joinSpanishList(localizedSubstituents)}. ${hierarchyReminder} ${functionalContributionReasoning(analysis, "substituent", "es")} ${arylChainReasoning?.substituent ?? ""}`.trim(),
       nameRole: "substituent",
     });
   }
@@ -4777,17 +4912,19 @@ export function buildIupacReasoningSteps(
     });
   }
 
-  const hasParentUnsaturation = analysis.family === "acyclic"
+  const hasParentUnsaturation = ["acyclic", "cycloalkane"].includes(analysis.family)
     && analysis.doubleBondLocants.length + analysis.tripleBondLocants.length > 0;
   const substituentUnsaturation = unsaturatedSubstituentReasoning(analysis, "es");
   if (hasParentUnsaturation || substituentUnsaturation) {
-    const unsaturationContributions = deriveUnsaturationNameContributions(analysis, analysis.name, "es");
+    const unsaturationContributions = deriveUnsaturationNameContributions(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
     steps.push({
       number: "07",
       title: "Insaturaciones del nombre",
       explanation: unsaturationContributions.length
-        ? unsaturationContributions.map((item) => item.explanation).join(" ")
-        : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.",
+        ? [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ")
+        : isLegacyExplanation
+          ? legacyStructuralReasoningText(molecule, analysis, displayedName, "unsaturation", "es")
+          : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.",
       nameRole: "unsaturation",
       unsaturationContributions,
     });
@@ -4800,11 +4937,13 @@ export function buildEnglishReasoningSteps(
   steps: IupacReasoningStep[],
   molecule: Molecule,
   analysis: Analysis,
+  presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "en");
   const exocyclicRingFunction = exocyclicRingCarbonFunction(molecule, analysis);
-  const englishName = translateSpanishIupacForDisplay(analysis.name) || analysis.name;
+  const englishName = presentation.displayedName ?? (translateSpanishIupacForDisplay(analysis.name) || analysis.name);
+  const isLegacyExplanation = presentation.profile === "iupac-1979-legacy";
   const parentName = translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName;
   if (analysis.steroidSystem?.constitutionNameEs) {
     const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
@@ -5031,10 +5170,15 @@ export function buildEnglishReasoningSteps(
     let explanation: string;
     let unsaturationContributions = step.unsaturationContributions;
     if (step.nameRole === "unsaturation") {
-      unsaturationContributions = deriveUnsaturationNameContributions(analysis, englishName, "en");
+      unsaturationContributions = deriveUnsaturationNameContributions(
+        analysis, englishName, "en", presentation.generatedNames,
+        isLegacyExplanation ? "iupac-1979-legacy-en" : undefined,
+      );
       explanation = unsaturationContributions.length
-        ? unsaturationContributions.map((item) => item.explanation).join(" ")
-        : unsaturatedSubstituentReasoning(analysis, "en")
+        ? [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ")
+        : isLegacyExplanation
+          ? legacyStructuralReasoningText(molecule, analysis, englishName, "unsaturation", "en")
+          : unsaturatedSubstituentReasoning(analysis, "en")
           || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.";
     } else if (step.number === "01") {
       explanation = retainedReasoning?.function ?? (primaryLabel
@@ -5045,6 +5189,12 @@ export function buildEnglishReasoningSteps(
         : aromaticNitroGroups.length
           ? "The nitro group is detected, but here it is cited with the prefix nitro-. It does not provide a suffix and is not classified as the principal functional group."
           : "Functional-group priority is checked before the parent skeleton is numbered.");
+    } else if (step.number === "02" && isLegacyExplanation) {
+      explanation = legacyStructuralReasoningText(molecule, analysis, englishName, "parent", "en");
+    } else if (step.number === "03" && isLegacyExplanation) {
+      explanation = legacyStructuralReasoningText(molecule, analysis, englishName, "numbering", "en");
+    } else if (step.number === "04" && isLegacyExplanation) {
+      explanation = legacyStructuralReasoningText(molecule, analysis, englishName, "substituent", "en");
     } else if (step.number === "02") {
       const heterocycleParentRing = heterocycleRing(molecule);
       if (retainedReasoning) {
@@ -5060,12 +5210,12 @@ export function buildEnglishReasoningSteps(
           + ". The complete name is " + englishName + ".";
       } else if (heterocycleParentRing) {
         explanation = `${heterocycleRingCompositionText(molecule, heterocycleParentRing, "en")} The parent name is ${parentName}; the complete IUPAC name is ${englishName}.`;
+      } else if (analysis.family === "cycloalkane") {
+        explanation = `The parent is a ring of ${analysis.mainChain.length} carbons. Its cyclic scaffold contributes “cyclo${alkaneRoots[analysis.mainChain.length] ?? ""}”; multiple bonds and the functional suffix are explained separately.`;
       } else {
         const family = analysis.family === "aromatic"
           ? "aromatic ring"
-          : analysis.family === "cycloalkane"
-            ? "ring"
-            : analysis.family === "polycyclic"
+          : analysis.family === "polycyclic"
               ? "ring system"
               : "continuous carbon chain";
         explanation = `The ${family} chosen as the parent contains ${analysis.mainChain.length} carbon${analysis.mainChain.length === 1 ? "" : "s"}. The parent name is ${parentName}; the complete IUPAC name is ${englishName}.`;
@@ -5079,6 +5229,8 @@ export function buildEnglishReasoningSteps(
         ? `${primaryLabel ? `The suffix function (${primaryLabel}) keeps its numbering priority; prefix locants are considered afterward.` : "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes."}${aromaticPrefixLocantsText(analysis.substituents, "en") ? ` The assigned numbering places ${aromaticPrefixLocantsText(analysis.substituents, "en")}.` : ""}`
         : hasImplicitAcyclicAldehydeLocant(analysis)
         ? "The aldehyde carbon is part of the parent chain and is assigned position C1. Its position is implicit in the suffix -al, so the locant 1 does not need to be written in the name."
+        : analysis.family === "cycloalkane" && selectedParentNumberingReasoning(analysis, "en")
+        ? selectedParentNumberingReasoning(analysis, "en")!
         : primaryLabel && step.numberingComparison?.criterion === "principal-function"
           && step.numberingComparison.comparison !== 0
         ? `The principal group (${primaryLabel}) resolves the numbering direction: the selected locants are ${carbonLocantsText(step.numberingComparison.selectedLocants)}, whereas numbering from the opposite end would give ${carbonLocantsText(step.numberingComparison.reverseLocants)}. The lower locant set determines the orientation.`
@@ -5118,7 +5270,7 @@ export function buildEnglishReasoningSteps(
     }
 
     if ((step.nameRole === "function" && !retainedReasoning) || step.nameRole === "substituent") {
-      explanation = `${explanation} ${functionalContributionReasoning(analysis, step.nameRole, "en")}`.trim();
+      explanation = `${explanation} ${functionalContributionReasoning(analysis, step.nameRole, "en", isLegacyExplanation ? englishName : undefined)}`.trim();
       if (arylChainReasoning) explanation = `${explanation} ${arylChainReasoning[step.nameRole]}`.trim();
     }
     return {
@@ -7312,25 +7464,24 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setPanelPositions(resetPositions);
     persistPanelPositions(resetPositions);
   };
-  const reasoningSteps = useMemo(
-    () => buildIupacReasoningSteps(
-      molecule,
-      analysis,
-      commonAlkylNameSelections,
-      reasoningSourceName,
-    ),
-    [analysis, commonAlkylNameSelections, molecule, reasoningSourceName],
+  const reasoningAnalysis = activeNomenclatureConvention === "current" ? analysis : legacyAnalysis;
+  const reasoningProfile = activeNomenclatureConvention === "current" ? "blue-book-2013" : "iupac-1979-legacy";
+  const reasoningSteps = buildIupacReasoningSteps(
+    molecule,
+    reasoningAnalysis,
+    commonAlkylNameSelections,
+    reasoningSourceName,
+    { profile: reasoningProfile, displayedName: displayedIupacName },
   );
-  const localizedReasoningSteps = useMemo(
-    () => language === "en"
-      ? buildEnglishReasoningSteps(reasoningSteps, molecule, analysis)
-      : reasoningSteps,
-    [analysis, language, molecule, reasoningSteps],
-  );
+  const localizedReasoningSteps = language === "en"
+    ? buildEnglishReasoningSteps(reasoningSteps, molecule, reasoningAnalysis,
+      { profile: reasoningProfile, displayedName: displayedIupacName })
+    : reasoningSteps;
   const reasoningNameFragments = deriveReasoningNameFragments({
-    analysis,
+    analysis: reasoningAnalysis,
     displayedName: displayedIupacName,
     generatedNames: nomenclatureVariants.filter((variant) => variant.available).map((variant) => variant.name),
+    convention: activeNomenclatureConvention,
     language,
     steps: localizedReasoningSteps,
     canHighlight: showIupacName && displayedNameCopyable

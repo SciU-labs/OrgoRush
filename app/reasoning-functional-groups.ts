@@ -203,8 +203,9 @@ export function functionalContributionReasoning(
   analysis: FunctionalReasoningAnalysis,
   role: "function" | "substituent",
   language: AppLanguage,
+  displayedName?: string,
 ) {
-  const evidence = functionalNameEvidence(analysis, localized(analysis.name ?? analysis.chainName, language), language)
+  const evidence = functionalNameEvidence(analysis, displayedName ?? localized(analysis.name ?? analysis.chainName, language), language)
     .filter((item) => item.kind === role);
   const phrases: string[] = [];
   for (const item of evidence) {
