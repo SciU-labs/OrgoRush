@@ -146,8 +146,9 @@ test("NOM-004 C/D: 2013 and 1979 explanations use their selected NOM-003 parent"
     assert.match(modernResult.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "", /cadena continua más larga/i);
     assert.match(legacyResult.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "", /análisis Legacy de 1979/);
     assert.equal(names.spanishLegacy, legacyName);
-    assert.equal(modernResult.fragments["07"]?.text,
-      expected.id === "19" ? "4-etenil" : "4-etinil", "the unsaturated substituent is linked to its explanation");
+    assert.equal(modernResult.fragments["04"]?.text,
+      expected.id === "19" ? "4-etenil" : "4-etinil", "the unsaturated substituent is linked in its assigned section");
+    assert.equal(modernResult.fragments["07"], undefined, "step 07 explains the side-chain bond in prose without a duplicate card");
     for (const [language, convention, analysis, name] of [
       ["en", "current", current, expected.blueBook2013.en], ["en", "iupac-1979-legacy-en", legacy, expected.legacy1979.en],
     ]) {
@@ -159,7 +160,8 @@ test("NOM-004 C/D: 2013 and 1979 explanations use their selected NOM-003 parent"
         assert.ok(unsaturation || result.steps.find(({ nameRole }) => nameRole === "unsaturation"), name);
       }
       if (convention === "current") {
-        assert.equal(unsaturation?.text, expected.id === "19" ? "4-ethenyl" : "4-ethynyl");
+        assert.equal(result.fragments["04"]?.text, expected.id === "19" ? "4-ethenyl" : "4-ethynyl");
+        assert.equal(unsaturation, undefined, "the English side-chain name is not duplicated in step 07");
       }
     }
     assert.deepEqual(moleculeToSmiles(molecule), { ok: true, smiles: before });
@@ -224,6 +226,90 @@ test("NOM-004 D: representative supported functional, unsaturated, cyclic and ha
   }
 });
 
+test("NOM-004C: an unsaturated substituent has one name card while step 07 explains bond placement", () => {
+  const { molecule, before } = parsed("C#CC(CCC)CCC");
+  const analyses = {
+    current: page.analyzeMolecule(molecule, [], "blue-book-2013"),
+    legacy: page.analyzeMolecule(molecule, [], "iupac-1979-legacy"),
+  };
+  const names = {
+    current: [analyses.current.name, translateSpanishIupacToOpsin(analyses.current.name)],
+    legacy: (() => {
+      const generated = getNames(molecule, analyses.legacy);
+      return [generated.spanishLegacy, generated.englishLegacy];
+    })(),
+  };
+  for (const [convention, selected] of [["current", "current"], ["iupac-1979-es", "legacy"]]) {
+    for (const [language, index] of [["es", 0], ["en", 1]]) {
+      const name = names[selected][index];
+      const activeConvention = migrateNomenclatureConvention(convention, language);
+      const model = page.buildActiveIupacReasoning({ molecule, analyses, convention: activeConvention, language,
+        displayedName: name, generatedNames: names[selected], canHighlight: true });
+      const step = (role) => model.steps.find((item) => item.nameRole === role);
+      const cards = model.fragments[step("substituent").number];
+      const cardRows = [cards, ...(cards?.additionalFragments ?? [])].filter(Boolean);
+      const expectedPrefix = selected === "current"
+        ? language === "es" ? "4-etinil" : "4-ethynyl"
+        : language === "es" ? "propil" : "propyl";
+      assert.equal(cardRows.filter((item) => item.text === expectedPrefix).length, 1,
+        `${name}: the substituent is represented once in its assigned section`);
+      const renderedCards = page.ReasoningNameFragmentView({ fragment: cards, onSelectContribution: () => {} }).props.children;
+      assert.equal(renderedCards.filter((row) => row.props.children[0]?.props.children === expectedPrefix).length, 1,
+        `${name}: the rendered section contains exactly one card for that span`);
+      const target = model.links.filter((item) => item.text === expectedPrefix && item.stepNumber);
+      assert.equal(target.length, 1, `${name}: the visible name has one navigational target`);
+      assert.equal(target[0].stepNumber, "04", `${name}: substituent navigation goes to step 04`);
+      assert.equal(model.links.map((item) => item.text).join(""), name, `${name}: links reconstruct the name`);
+
+      const unsaturation = step("unsaturation");
+      assert.ok(unsaturation, `${name}: the unsaturation section remains available`);
+      if (selected === "current") {
+        assert.equal(model.fragments[unsaturation.number], undefined,
+          `${name}: the same substituent span is not rendered as a second step 07 card`);
+        assert.match(unsaturation.explanation, language === "es"
+          ? /enlace triple C≡C.*sustituyente etinilo.*heptano conserva -ano, no -ino/
+          : /C≡C triple bond.*ethynyl substituent.*heptane retains -ane, not -yne/);
+        assert.match(step("substituent").explanation, language === "es"
+          ? /grupo etinilo unido al carbono 4 del heptano/
+          : /ethynyl group attached at C4 of heptane/);
+        assert.doesNotMatch(unsaturation.explanation, /4-etinil|4-ethynyl/,
+          `${name}: step 07 does not repeat the interactive name fragment`);
+      } else {
+        const parentUnsaturation = model.fragments[unsaturation.number];
+        assert.equal(parentUnsaturation?.bondType, "triple",
+          `${name}: the actual Legacy parent triple bond keeps its own interactive evidence`);
+        assert.equal(parentUnsaturation?.locant, 1);
+        assert.match(unsaturation.explanation, language === "es" ? /C1≡C2/ : /C1≡C2/);
+        assert.match(step("substituent").explanation, language === "es" ? /propil/ : /propyl/);
+      }
+    }
+  }
+  const { molecule: mixedMolecule, before: mixedBefore } = parsed("C=CCC(C#C)CCC");
+  const mixedAnalysis = page.analyzeMolecule(mixedMolecule, [], "blue-book-2013");
+  assert.ok(mixedAnalysis.doubleBondLocants.length, "the parent contains its own double bond");
+  assert.ok(mixedAnalysis.substituents.some(({ name }) => /inil$/i.test(name)), "the substituent contains a distinct triple bond");
+  const mixedEnglishName = translateSpanishIupacToOpsin(mixedAnalysis.name);
+  for (const [language, name] of [["es", mixedAnalysis.name], ["en", mixedEnglishName]]) {
+    const mixedModel = page.buildActiveIupacReasoning({ molecule: mixedMolecule,
+      analyses: { current: mixedAnalysis, legacy: page.analyzeMolecule(mixedMolecule, [], "iupac-1979-legacy") },
+      convention: "current", language, displayedName: name, generatedNames: [mixedAnalysis.name, mixedEnglishName], canHighlight: true });
+    const substituent = mixedAnalysis.substituents.find(({ name: itemName }) => /inil$/i.test(itemName));
+    const prefix = `${substituent.locant}-${language === "es" ? "etinil" : "ethynyl"}`;
+    const step04 = mixedModel.fragments["04"];
+    const step07 = mixedModel.steps.find(({ nameRole }) => nameRole === "unsaturation");
+    assert.equal([step04, ...(step04?.additionalFragments ?? [])].filter((item) => item?.text === prefix).length, 1,
+      `${name}: the side-chain substituent remains represented once`);
+    assert.equal(mixedModel.fragments["07"]?.bondType, "double",
+      `${name}: parent unsaturation keeps its distinct interactive bond target`);
+    assert.match(step07.explanation, new RegExp(`C${mixedAnalysis.doubleBondLocants[0]}=C${mixedAnalysis.doubleBondLocants[0] + 1}`));
+    assert.match(step07.explanation, /C≡C/);
+    assert.match(step07.explanation, language === "es" ? /fuera de la cadena principal/ : /outside the selected parent chain/);
+    assert.equal(mixedModel.links.map((item) => item.text).join(""), name);
+  }
+  assert.deepEqual(moleculeToSmiles(mixedMolecule), { ok: true, smiles: mixedBefore }, "distinct parent and substituent bonds leave the graph unchanged");
+  assert.deepEqual(moleculeToSmiles(molecule), { ok: true, smiles: before }, "all profile/language views preserve graph identity");
+});
+
 test("manual findings: parent, orientation, multiple bond and historical spelling have independent explanations and links", () => {
   const cases = [
     { smiles: "CC(O)C=C", current: ["but-3-en-2-ol", "but-3-en-2-ol"], legacy: ["3-buten-2-ol", "3-buten-2-ol"], root: ["but", "but"], bond: "C3=C4", orientation: /2.*3/, function: "alcohol" },
@@ -253,7 +339,7 @@ test("manual findings: parent, orientation, multiple bond and historical spellin
           assert.ok(result.links.some((part) => part.text === expected.root[index] && part.stepNumber === "02"), `${name}: independent parent scaffold`);
         } else {
           assert.match(step("unsaturation").explanation, language === "es" ? /fuera.*cadena principal|sustituyente/ : /outside|substituent/);
-          assert.match(step("unsaturation").explanation, /C4/);
+          assert.match(step("substituent").explanation, language === "es" ? /carbono 4|C4/ : /C4/);
         }
         if (expected.function) assert.ok(result.links.some((part) => part.stepNumber === "01"), `${name}: functional suffix linked`);
         if (expected.root[0] === "ciclohex") {
@@ -318,7 +404,11 @@ test("NOM-004B: the UI model selects one engine result for every step and segmen
             `${name}: the substituent locant directly opens the numbering justification`);
           assert.ok(model.links.some((part) => part.text === (language === "es" ? "propil" : "propyl") && part.stepNumber === "04"));
         } else {
-          assert.match(step("unsaturation").explanation, language === "es" ? /sustituyente.*C4|C4.*sustituyente/ : /substituent.*C4|C4.*substituent/);
+          assert.match(step("substituent").explanation, language === "es" ? /carbono 4|C4/ : /C4/);
+          assert.match(step("unsaturation").explanation, language === "es"
+            ? /enlace (?:doble|triple) C[≡=]C.*fuera de la cadena principal/
+            : /C[≡=]C (?:double|triple) bond.*outside the selected parent chain/);
+          assert.doesNotMatch(step("unsaturation").explanation, /C4/);
           assert.doesNotMatch(allText, /hexino|hexyne|hexeno|hexene/);
         }
       }

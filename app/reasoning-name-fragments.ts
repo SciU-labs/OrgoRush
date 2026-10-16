@@ -707,27 +707,10 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
   if (unsaturationStep) {
     const contributions = deriveUnsaturationNameContributions(analysis, name, language, input.generatedNames, input.convention);
     const [first, ...rest] = contributions;
-    const unsaturatedSubstituentFragments = analysis.substituents
-      .filter((item) => /(?:en|in)il$/i.test(item.name))
-      .flatMap((item) => {
-        const substituentName = localizedName(item.name, language);
-        const text = `${item.locant}-${item.complex ? `(${substituentName})` : substituentName}`;
-        const start = name.indexOf(text);
-        if (!substituentName || start < 0) return [];
-        const displayName = `${substituentName} ${language === "en" ? "at" : "en"} C${item.locant}`;
-        const explanation = language === "en"
-          ? `The graph-derived unsaturated substituent ${displayName} contains the multiple bond outside the selected parent.`
-          : `El sustituyente insaturado ${displayName}, derivado del grafo, contiene el enlace múltiple fuera del padre seleccionado.`;
-        return [{ text, start, kind: "unsaturation" as const,
-          label: language === "en" ? `Unsaturated substituent at C${item.locant}` : `Sustituyente insaturado en C${item.locant}`,
-          explanation }];
-      });
-    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: [...rest, ...unsaturatedSubstituentFragments] };
-    else if (unsaturatedSubstituentFragments.length) {
-      const [substituent, ...others] = unsaturatedSubstituentFragments;
-      fragments[unsaturationStep.number] = { ...substituent, label: substituent.label,
-        additionalFragments: others };
-    }
+    // An unsaturated substituent is already represented under step 04. Step 07
+    // explains the bond's location and naming consequence in prose; duplicating
+    // that same name span here would create a second card for the same entity.
+    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: rest };
   }
   const parent = parentNameEvidence(analysis, name, language, evidence);
   const parentStep = steps.find((step) => step.nameRole === "parent");

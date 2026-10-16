@@ -70,10 +70,12 @@ test("Blue Book 2013 parent selection honors length before unsaturation, then su
       const englishSteps = buildEnglishReasoningSteps(spanishSteps, molecule, blueBook);
       const spanishUnsaturation = spanishSteps.find(({ nameRole }) => nameRole === "unsaturation");
       const englishUnsaturation = englishSteps.find(({ nameRole }) => nameRole === "unsaturation");
-      assert.match(spanishUnsaturation?.explanation ?? "", /cadena principal saturada octano/);
-      assert.match(spanishUnsaturation?.explanation ?? "", /(?:etenil|etinil) en C4/);
-      assert.match(englishUnsaturation?.explanation ?? "", /saturated octane parent chain/);
-      assert.match(englishUnsaturation?.explanation ?? "", /(?:ethenyl|ethynyl) at C4/);
+      const spanishSubstituent = spanishSteps.find(({ nameRole }) => nameRole === "substituent");
+      const englishSubstituent = englishSteps.find(({ nameRole }) => nameRole === "substituent");
+      assert.match(spanishUnsaturation?.explanation ?? "", /enlace (?:doble|triple).*fuera de la cadena principal seleccionada.*octano conserva -ano/);
+      assert.match(englishUnsaturation?.explanation ?? "", /C(?:=|≡)C (?:double|triple) bond.*outside the selected parent chain.*octane retains -ane/);
+      assert.match(spanishSubstituent?.explanation ?? "", /grupo (?:etenilo|etinilo) unido al carbono 4/);
+      assert.match(englishSubstituent?.explanation ?? "", /(?:ethenyl|ethynyl) group attached at C4/);
     }
   });
 });

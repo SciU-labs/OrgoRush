@@ -4254,16 +4254,48 @@ function hasImplicitAcyclicAldehydeLocant(analysis: Analysis) {
 function unsaturatedSubstituentReasoning(analysis: Analysis, language: AppLanguage) {
   const substituents = analysis.substituents.filter((item) => /(?:en|in)il$/i.test(item.name));
   if (!substituents.length) return "";
-  const names = substituents.map((item) => {
-    const name = language === "en" ? translateSpanishIupacToOpsin(item.name) : item.name;
-    return language === "en" ? `${name} at C${item.locant}` : `${name} en C${item.locant}`;
-  });
   const parentName = language === "en"
-    ? translateSpanishIupacToOpsin(analysis.chainName)
+    ? translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName
     : analysis.chainName;
+  const bondTypes = [...new Set(substituents.map((item) => /inil$/i.test(item.name) ? "triple" : "double"))];
+  const bondText = bondTypes.map((type) => language === "en"
+    ? type === "triple" ? "the C≡C triple bond" : "the C=C double bond"
+    : type === "triple" ? "el enlace triple C≡C" : "el enlace doble C=C").join(language === "en" ? " and " : " y ");
+  const groupText = bondTypes.length === 1
+    ? language === "en"
+      ? bondTypes[0] === "triple" ? "the ethynyl substituent" : "the ethenyl substituent"
+      : bondTypes[0] === "triple" ? "sustituyente etinilo" : "sustituyente etenilo"
+    : language === "en" ? "the unsaturated substituents" : "sustituyentes insaturados";
+  const groupRelation = language === "en" ? `belongs to ${groupText}`
+    : `pertenece ${bondTypes.length === 1 ? "al" : "a los"} ${groupText}`;
+  const saturatedEnding = language === "en" ? /ane$/i : /ano$/i;
+  if (!analysis.primaryFunctionalGroup && saturatedEnding.test(parentName)) {
+    const parentEnding = language === "en" ? "-ane" : "-ano";
+    const alternativeEnding = language === "en"
+      ? bondTypes.includes("triple") ? "-yne" : "-ene"
+      : bondTypes.includes("triple") ? "-ino" : "-eno";
+    return language === "en"
+      ? `${bondText} ${groupRelation}, which lies outside the selected parent chain. Therefore, ${parentName} retains ${parentEnding}, not ${alternativeEnding}.`
+      : `${bondText} ${groupRelation}, que queda fuera de la cadena principal seleccionada. Por eso, ${parentName} conserva ${parentEnding}, no ${alternativeEnding}.`;
+  }
   return language === "en"
-    ? `The unsaturation is part of the substituent ${names.join(", ")}; it is outside the saturated ${parentName} parent chain.`
-    : `La insaturación forma parte del sustituyente ${names.join(", ")}; queda fuera de la cadena principal saturada ${parentName}.`;
+    ? `${bondText} ${groupRelation} and lies outside the selected parent chain, so it does not contribute a parent-chain unsaturation suffix.`
+    : `${bondText} ${groupRelation} y queda fuera de la cadena principal seleccionada, por lo que no aporta una terminación de insaturación al padre.`;
+}
+
+function unsaturatedSubstituentIdentityReasoning(analysis: Analysis, language: AppLanguage) {
+  const substituents = analysis.substituents.filter((item) => /(?:en|in)il$/i.test(item.name));
+  if (!substituents.length) return "";
+  const parent = language === "en" ? translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName : analysis.chainName;
+  const items = substituents.map((item) => {
+    const name = language === "en" ? translateSpanishIupacToOpsin(item.name) || item.name : `${item.name}o`;
+    return language === "en"
+      ? `an ${name} group attached at C${item.locant} of ${parent}`
+      : `un grupo ${name} unido al carbono ${item.locant} del ${parent}`;
+  });
+  return language === "en"
+    ? `With the parent chain selected, the name identifies ${items.join(" and ")}.`
+    : `Con la cadena principal ya seleccionada, se identifica ${joinSpanishList(items)}.`;
 }
 
 /** Compare the two directions of the selected parent; never select a new parent. */
@@ -4881,7 +4913,8 @@ export function buildIupacReasoningSteps(
       title: "Sustituyentes y localizadores",
       explanation: isLegacyExplanation
         ? legacyStructuralReasoningText(molecule, analysis, displayedName, "substituent", "es")
-        : `Con la orientación ya evaluada, ${analysis.substituents.length === 1 ? "se ubica" : "se ubican"} ${joinSpanishList(localizedSubstituents)}. ${hierarchyReminder} ${functionalContributionReasoning(analysis, "substituent", "es")} ${arylChainReasoning?.substituent ?? ""}`.trim(),
+        : unsaturatedSubstituentIdentityReasoning(analysis, "es")
+          || `Con la orientación ya evaluada, ${analysis.substituents.length === 1 ? "se ubica" : "se ubican"} ${joinSpanishList(localizedSubstituents)}. ${hierarchyReminder} ${functionalContributionReasoning(analysis, "substituent", "es")} ${arylChainReasoning?.substituent ?? ""}`.trim(),
       nameRole: "substituent",
     });
   }
@@ -4923,14 +4956,15 @@ export function buildIupacReasoningSteps(
   const substituentUnsaturation = unsaturatedSubstituentReasoning(analysis, "es");
   if (hasParentUnsaturation || substituentUnsaturation) {
     const unsaturationContributions = deriveUnsaturationNameContributions(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
+    const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
+    const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
+      ? legacyStructuralReasoningText(molecule, analysis, displayedName, "unsaturation", "es")
+      : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.");
     steps.push({
       number: "07",
       title: "Insaturaciones del nombre",
-      explanation: unsaturationContributions.length
-        ? [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ")
-        : isLegacyExplanation
-          ? legacyStructuralReasoningText(molecule, analysis, displayedName, "unsaturation", "es")
-          : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.",
+      explanation: [baseUnsaturationText, parentUnsaturationText && substituentUnsaturation ? substituentUnsaturation : ""]
+        .filter(Boolean).join(" "),
       nameRole: "unsaturation",
       unsaturationContributions,
     });
@@ -5180,12 +5214,13 @@ export function buildEnglishReasoningSteps(
         analysis, englishName, "en", presentation.generatedNames,
         isLegacyExplanation ? "iupac-1979-legacy-en" : undefined,
       );
-      explanation = unsaturationContributions.length
-        ? [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ")
-        : isLegacyExplanation
-          ? legacyStructuralReasoningText(molecule, analysis, englishName, "unsaturation", "en")
-          : unsaturatedSubstituentReasoning(analysis, "en")
-          || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.";
+      const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
+      const substituentUnsaturationText = unsaturatedSubstituentReasoning(analysis, "en");
+      const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
+        ? legacyStructuralReasoningText(molecule, analysis, englishName, "unsaturation", "en")
+        : substituentUnsaturationText || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.");
+      explanation = [baseUnsaturationText, parentUnsaturationText && substituentUnsaturationText ? substituentUnsaturationText : ""]
+        .filter(Boolean).join(" ");
     } else if (step.number === "01") {
       explanation = retainedReasoning?.function ?? (primaryLabel
         ? exocyclicRingFunction
@@ -5259,6 +5294,8 @@ export function buildEnglishReasoningSteps(
           ? " The hydroxyl group is attached to C1. In this two-carbon chain, locant 1 is omitted from the preferred IUPAC name because its position is unambiguous."
           : ` The ${analysis.tripleBondLocants.length ? "triple" : "double"} bond joins C1 and C2. In this unsubstituted three-carbon chain, locant 1 is omitted from the preferred IUPAC name because its position is unambiguous.`;
       }
+    } else if (step.number === "04" && !isLegacyExplanation && unsaturatedSubstituentIdentityReasoning(analysis, "en")) {
+      explanation = unsaturatedSubstituentIdentityReasoning(analysis, "en");
     } else if (step.number === "04") {
       explanation = substituentList
         ? `Substituent names and locants are assigned from the numbered parent skeleton: ${substituentList}. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once.${substituentLocantsTie ? " Both directions are equivalent for these locants." : ""}`
