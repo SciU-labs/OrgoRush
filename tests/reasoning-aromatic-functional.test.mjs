@@ -95,6 +95,35 @@ for (const fixture of arylFunctionalCases) {
   });
 }
 
+test("phenyl is aromatic while side-chain ethenyl/ethynyl unsaturation remains graph-derived", () => {
+  for (const fixture of arylFunctionalCases) {
+    const compound = analyzed(fixture.smiles);
+    for (const language of ["es", "en"]) {
+      const result = presented(compound, language);
+      const unsaturation = result.steps.find((step) => step.nameRole === "unsaturation");
+      assert.doesNotMatch(unsaturation?.explanation ?? "", /sustituyente etenilo|sustituyente etinilo|ethenyl substituent|ethynyl substituent/i,
+        `${fixture.label} (${language}): aromatic bonds are not aliphatic side-chain unsaturation`);
+    }
+  }
+
+  // The longer saturated path is the functional parent; ethenyl and phenyl
+  // are distinct substituents attached to it and must retain separate origins.
+  const mixed = analyzed("OCC(CCC)(C=C)c1ccccc1");
+  assert.equal(mixed.analysis.primaryFunctionalGroup, "alcohol");
+  assert.ok(mixed.analysis.substituents.some(({ name }) => name === "fenil"));
+  assert.ok(mixed.analysis.substituents.some(({ name }) => name === "etenil"));
+  for (const language of ["es", "en"]) {
+    const result = presented(mixed, language);
+    const substituent = result.steps.find((step) => step.nameRole === "substituent");
+    const unsaturation = result.steps.find((step) => step.nameRole === "unsaturation");
+    assert.match(substituent.explanation, language === "es"
+      ? /hidrógeno.*bencénico.*arilo.*fenil/ : /hydrogen.*benzene.*aryl.*phenyl/);
+    assert.match(substituent.explanation, language === "es" ? /etenil/ : /ethenyl/);
+    assert.match(unsaturation.explanation, language === "es"
+      ? /enlace doble C=C.*sustituyente etenilo/ : /C=C double bond.*ethenyl substituent/);
+  }
+});
+
 test("benzaldehyde stays a retained benz/aldehyde parent rather than a phenyl chain", () => {
   const compound = analyzed("O=Cc1ccccc1");
   for (const language of ["en", "es", "en"]) {
