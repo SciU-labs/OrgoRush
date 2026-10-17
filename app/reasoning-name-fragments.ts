@@ -64,6 +64,13 @@ function unsaturationMorpheme(token: string, bondType: "double" | "triple") {
   return marker.exec(normalized)?.[0] ?? "";
 }
 
+function unsaturationBondExplanation(bondType: "double" | "triple", locant: number, next: number, language: AppLanguage) {
+  const bond = `C${locant}${bondType === "double" ? "=" : "≡"}C${next}`;
+  return language === "en"
+    ? `${bondType === "double" ? "Double" : "Triple"} bond ${bond}.`
+    : `Enlace ${bondType === "double" ? "doble" : "triple"} ${bond}.`;
+}
+
 /** Map analyzed parent-chain bonds onto the exact visible unsaturation morpheme. */
 export function deriveUnsaturationNameContributions(
   analysis: FragmentAnalysis,
@@ -89,13 +96,7 @@ export function deriveUnsaturationNameContributions(
         ? `${bondType === "double" ? "Double" : "Triple"} bond at position ${locant}`
         : `Enlace ${bondType === "double" ? "doble" : "triple"} en la posición ${locant}`;
       const next = analysis.family === "cycloalkane" ? locant % analysis.mainChain.length + 1 : locant + 1;
-      const bond = bondType === "double" ? `C${locant}=C${next}` : `C${locant}≡C${next}`;
-      const placement = unsaturation.length === 1
-        ? language === "en" ? "The locant precedes the parent stem." : "El localizador precede al esqueleto."
-        : language === "en" ? "Each locant keeps its position in this historical form." : "Cada localizador conserva su posición en esta forma histórica.";
-      const explanation = language === "en"
-        ? `${bondType === "double" ? "Double" : "Triple"} bond ${bond} is in the selected Legacy parent and carries locant ${locant}. The 1979 form is “${name}”. ${placement} “${bondType === "double" ? "en" : "yn"}” expresses the ${bondType} bond.`
-        : `El enlace ${bondType === "double" ? "doble" : "triple"} ${bond} pertenece al padre Legacy seleccionado y lleva el localizador ${locant}. La forma 1979 es «${name}». ${placement} «${bondType === "double" ? "en" : "in"}» expresa el enlace ${bondType === "double" ? "doble" : "triple"}.`;
+      const explanation = unsaturationBondExplanation(bondType, locant, next, language);
       return { semanticId: `unsaturation:${bondType}:${locant}`, bondType, locant, atomIds: atoms,
         bondIds: [[Math.min(...atoms), Math.max(...atoms)]], text, start, kind: "unsaturation", label, explanation };
     };
@@ -184,7 +185,7 @@ export function deriveUnsaturationNameContributions(
           atomIds: atoms, bondIds: [[Math.min(...atoms), Math.max(...atoms)]] as [number, number][],
           text: span.text, start: span.start, kind: "unsaturation" as const,
           label: `${span.type === "double" ? "Double" : "Triple"} bond at position ${span.locant}`,
-          explanation: `The ${span.type} bond C${span.locant}${span.type === "double" ? "=" : "≡"}C${span.locant + 1} contributes its locant and parent unsaturation form.` };
+          explanation: unsaturationBondExplanation(span.type, span.locant, span.locant + 1, language) };
       });
     }
   }
@@ -206,7 +207,7 @@ export function deriveUnsaturationNameContributions(
         bondIds: [[Math.min(...atoms), Math.max(...atoms)]] as [number, number][],
         label: `${bondType === "double" ? "Double" : "Triple"} bond at position ${locant}`,
         kind: "unsaturation" as const,
-        explanation: `The ${bondType} bond C${locant}${bondType === "double" ? "=" : "≡"}C${locant + 1} contributes locant ${locant} and the parent form “${marker}”.` };
+        explanation: unsaturationBondExplanation(bondType, locant, locant + 1, language) };
       return [{ ...common, text: String(locant), start },
         { ...common, text: marker, start: start + String(locant).length + 1 + root.length }];
     }
@@ -245,20 +246,7 @@ export function deriveUnsaturationNameContributions(
     const text = name.slice(start, end);
     const bondLabel = language === "en" ? item.bondType === "double" ? "Double bond" : "Triple bond"
       : item.bondType === "double" ? "Enlace doble" : "Enlace triple";
-    const suffixText = isGrouped ? markerToken.value.slice(0, morpheme.length) : text.slice(String(item.locant).length + 1);
     const nextLocant = analysis.family === "cycloalkane" ? item.locant % analysis.mainChain.length + 1 : item.locant + 1;
-    const bondDescription = item.bondType === "double"
-      ? `C${item.locant}=C${nextLocant}`
-      : `C${item.locant}≡C${nextLocant}`;
-    const writtenForm = isGrouped && analysis.family === "cycloalkane" ? `${locantToken.value}-${morpheme}`
-      : analysis.family === "cycloalkane" ? `${name[start - 1] === "-" ? "-" : ""}${text}${end < name.length && name[end] === "-" ? "-" : ""}` : suffixText;
-    const explanation = language === "en"
-      ? `${bondLabel} ${bondDescription} has locant ${item.locant} and contributes locant ${item.locant} to the parent unsaturation form “${writtenForm}”.`
-      : `${bondLabel} ${bondDescription} tiene el localizador ${item.locant} y aporta el localizador ${item.locant} a la forma de insaturación del padre «${writtenForm}».`;
-    const conventionExplanation = analysis.family === "cycloalkane"
-      ? language === "en" ? ` The 2013 spelling places this component after the ring stem in “${name}”.`
-        : ` La escritura 2013 sitúa este componente después del esqueleto cíclico en «${name}».`
-      : "";
     output.push({
       semanticId: `unsaturation:${item.bondType}:${item.locant}`,
       bondType: item.bondType,
@@ -269,7 +257,7 @@ export function deriveUnsaturationNameContributions(
       start,
       label: language === "en" ? `${bondLabel} at position ${item.locant}` : `${bondLabel} en la posición ${item.locant}`,
       kind: "unsaturation",
-      explanation: explanation + conventionExplanation,
+      explanation: unsaturationBondExplanation(item.bondType, item.locant, nextLocant, language),
     });
   }
   return output;
@@ -291,13 +279,16 @@ export function deriveCyclicKetoneMultiplicityEvidence(
   const start = name.lastIndexOf(marker);
   if (start < 0) return;
   const locants = analysis.doubleBondLocants.join(",");
+  const countWord = language === "en"
+    ? ["", "", "two", "three", "four", "five", "six", "seven", "eight"][count]
+    : ["", "", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho"][count];
   return { text: marker, start, kind: "unsaturation", semanticId: `unsaturation:double:group:${locants}`,
     bondType: "double", atomIds: [...new Set(bonds.flatMap((bond) => [...bond.atomIds]))],
     bondIds: bonds.flatMap((bond) => [...bond.bondIds]),
     label: language === "en" ? `${multiplier} + en · ${count} double bonds` : `${multiplier} + en · ${count} enlaces dobles`,
     explanation: language === "en"
-      ? `The multiplier “${multiplier}” indicates ${count} double bonds; “en” denotes carbon–carbon double bonds. “${marker}”, with locants ${locants}, expresses these ${count} double bonds in the parent ring.`
-      : `El multiplicador «${multiplier}» indica ${count} enlaces dobles; «en» corresponde a enlaces dobles carbono-carbono. «${marker}», junto a los localizadores ${locants}, expresa estos ${count} enlaces dobles en el anillo principal.` };
+      ? `“${multiplier}” means ${countWord}; “en” identifies C=C double bonds.`
+      : `«${multiplier}» significa ${countWord}; «en» identifica enlaces dobles C=C.` };
 }
 
 function localizedName(name: string, language: AppLanguage) {

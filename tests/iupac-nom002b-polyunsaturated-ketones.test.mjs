@@ -70,6 +70,9 @@ for (const fixture of cases) test(`NOM-002B ${fixture.smiles}: four profiles, li
       assert.ok(step("numbering").explanation.includes(fixture.locants.join(", ")));
       assert.ok(step("numbering").explanation.includes(fixture.reverse.join(", ")));
       assert.match(step("numbering").explanation, language === "es" ? /primer punto de diferencia/ : /first point of difference/);
+    } else {
+      assert.doesNotMatch(step("numbering").explanation, /primer punto de diferencia|first point of difference/,
+        "equivalent 2,5 directions must not claim a difference");
     }
     const fragment = model.fragments[step("unsaturation").number];
     const cards = [fragment, ...(fragment.additionalFragments ?? [])];
@@ -82,14 +85,20 @@ for (const fixture of cases) test(`NOM-002B ${fixture.smiles}: four profiles, li
       assert.deepEqual(card.bondIds, [[...atoms].sort((a, b) => a - b)]);
       assert.ok(molecule.bonds.some(([a, b, order]) => order === 2 && atoms.includes(a) && atoms.includes(b)));
       assert.ok(step("unsaturation").explanation.includes(`C${locant}=C${locant + 1}`));
-      assert.ok(card.explanation.includes(historical ? "1979" : "2013"));
-      if (!historical) assert.ok(card.explanation.includes(`${positions}-${marker}`), "a grouped locant explains the actual shared written form");
+      assert.equal(card.explanation, language === "es" ? `Enlace doble C${locant}=C${locant + 1}.` : `Double bond C${locant}=C${locant + 1}.`);
+      assert.ok(!card.explanation.includes(name), "bond cards do not repeat the full name");
     }
     const shared = cards.at(-1);
     assert.match(shared.explanation, new RegExp(`(?:«|“)${marker === "dien" ? "di" : "tri"}(?:»|”)`));
     assert.match(shared.explanation, /«en»|“en”/);
     assert.equal(shared.bondIds.length, fixture.locants.length);
-    assert.ok(step("unsaturation").explanation.includes(shared.explanation));
+    const overview = step("unsaturation").explanation;
+    assert.ok(!overview.includes(shared.explanation), "overview must not concatenate the multiplier card");
+    assert.ok(overview.includes(marker) && overview.includes(positions));
+    assert.ok(overview.length < 300, "overview stays concise for two or three bonds");
+    assert.equal(shared.explanation, language === "es"
+      ? `«${marker === "dien" ? "di" : "tri"}» significa ${marker === "dien" ? "dos" : "tres"}; «en» identifica enlaces dobles C=C.`
+      : `“${marker === "dien" ? "di" : "tri"}” means ${marker === "dien" ? "two" : "three"}; “en” identifies C=C double bonds.`);
     if (historical) assert.doesNotMatch(step("unsaturation").explanation, /2013/);
     assert.equal(model.links.map(({ text }) => text).join(""), name);
     const sharedLink = model.links.filter(({ text }) => text === marker);
@@ -122,6 +131,43 @@ for (const fixture of cases) test(`NOM-002B ${fixture.smiles}: four profiles, li
   const reimported = moleculeFromSmiles(smiles.smiles);
   assert.equal(reimported.ok, true);
   assert.deepEqual(moleculeToSmiles(reimported.molecule), smiles);
+});
+
+for (const smiles of ["O=C1C=CCCC1", "C#CC(CCC)CCC"]) test(`AUD-001 ${smiles}: concise single-bond evidence follows the selected parent`, () => {
+  const { molecule } = moleculeFromSmiles(smiles);
+  const original = structuredClone(molecule);
+  const analyses = { current: page.analyzeMolecule(molecule), legacy: page.analyzeMolecule(molecule, [], "iupac-1979-legacy") };
+  for (const historical of [false, true]) {
+    const analysis = historical ? analyses.legacy : analyses.current;
+    const names = historical ? [
+      applyNomenclatureConvention(page.legacySpanishFormatterInput(analysis, analysis.name), "iupac-1979-es", "es"),
+      generateLegacyEnglishName(page.buildLegacyEnglishNameModel(molecule, analysis)).name,
+    ] : [analysis.name, translateSpanishIupacToOpsin(analysis.name)];
+    for (const [index, language] of ["es", "en"].entries()) {
+      const name = names[index];
+      const model = page.buildActiveIupacReasoning({ molecule, analyses, language, displayedName: name,
+        convention: migrateNomenclatureConvention(historical ? "iupac-1979-es" : "current", language), generatedNames: names, canHighlight: true });
+      const step = model.steps.find(({ nameRole }) => nameRole === "unsaturation");
+      assert.equal(model.links.map(({ text }) => text).join(""), name);
+      if (!historical && smiles.startsWith("C#")) {
+        assert.deepEqual(analysis.tripleBondLocants, []);
+        assert.match(step.explanation, language === "es" ? /fuera.*cadena principal/ : /outside.*parent chain/);
+      } else {
+        const fragment = model.fragments[step.number];
+        const cards = [fragment, ...(fragment.additionalFragments ?? [])];
+        assert.equal(new Set(cards.map(({ start, text }) => `${start}:${text}`)).size, cards.length);
+        for (const card of cards) {
+          assert.equal(card.bondIds.length, 1);
+          assert.deepEqual(card.atomIds, analysis.mainChain.slice(card.locant - 1, card.locant + 1));
+          assert.match(card.explanation, language === "es" ? /^Enlace (doble|triple) C\d+[=≡]C\d+\.$/ : /^(Double|Triple) bond C\d+[=≡]C\d+\.$/);
+          assert.ok(!card.explanation.includes(name));
+          assert.ok(model.links.some(({ semanticId, stepNumber }) => semanticId === card.semanticId && stepNumber === step.number));
+        }
+        assert.ok(step.explanation.length < 200);
+      }
+    }
+  }
+  assert.deepEqual(molecule, original);
 });
 
 test("NOM-002B formatter rejects mismatched multiplicity and unsupported ketone grammars", () => {

@@ -4136,6 +4136,32 @@ function multipleUnsaturationReasoningText(analysis: Analysis, language: AppLang
   }).join(" ");
 }
 
+function unsaturationOverviewText(analysis: Analysis, contributions: UnsaturationNameContribution[], language: AppLanguage, marker?: string) {
+  const bonds = [...new Map(contributions.map((item) => [item.semanticId, item])).values()];
+  if (!bonds.length) return "";
+  const en = language === "en";
+  const subject = analysis.family === "cycloalkane" ? en ? "The ring" : "El anillo" : en ? "The parent chain" : "La cadena principal";
+  const groups = (["double", "triple"] as const).flatMap((type) => {
+    const items = bonds.filter((item) => item.bondType === type);
+    if (!items.length) return [];
+    const symbol = type === "double" ? "=" : "≡";
+    const positions = items.map(({ locant }) => `C${locant}${symbol}C${analysis.family === "cycloalkane" ? locant % analysis.mainChain.length + 1 : locant + 1}`);
+    const count = items.length === 1 ? en ? "one" : "un" : uiText(language, spanishCardinal(items.length));
+    const kind = en ? `${type} bond${items.length === 1 ? "" : "s"}`
+      : `enlace${items.length === 1 ? "" : "s"} ${type === "double" ? items.length === 1 ? "doble" : "dobles" : items.length === 1 ? "triple" : "triples"}`;
+    const list = en ? positions.join(" and ") : joinSpanishList(positions);
+    return [`${subject} ${en ? "contains" : "contiene"} ${count} ${kind} ${en ? "at" : "en"} ${list}.`];
+  });
+  if (marker) {
+    const locants = bonds.map(({ locant }) => locant).join(",");
+    const count = uiText(language, spanishCardinal(bonds.length));
+    groups.push(en
+      ? `Locants ${locants} indicate their positions; “${marker}” expresses ${count} C=C bonds.`
+      : `Los localizadores ${locants} indican sus posiciones; «${marker}» expresa ${count} enlaces C=C.`);
+  }
+  return groups.join(" ");
+}
+
 function fusedMultipleBondLocationsText(
   system: FusedTricyclicSystem,
   language: AppLanguage,
@@ -4972,15 +4998,15 @@ export function buildIupacReasoningSteps(
   const substituentUnsaturation = unsaturatedSubstituentReasoning(molecule, analysis, "es");
   if (hasParentUnsaturation || substituentUnsaturation) {
     const unsaturationContributions = deriveUnsaturationNameContributions(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
-    const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
     const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
+    const parentUnsaturationText = unsaturationOverviewText(analysis, unsaturationContributions, "es", multiplicity?.text);
     const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
       ? legacyStructuralReasoningText(molecule, analysis, displayedName, "unsaturation", "es")
       : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.");
     steps.push({
       number: "07",
       title: "Insaturaciones del nombre",
-      explanation: [baseUnsaturationText, multiplicity?.explanation, parentUnsaturationText && substituentUnsaturation ? substituentUnsaturation : ""]
+      explanation: [baseUnsaturationText, parentUnsaturationText && substituentUnsaturation ? substituentUnsaturation : ""]
         .filter(Boolean).join(" "),
       nameRole: "unsaturation",
       unsaturationContributions,
@@ -5231,14 +5257,14 @@ export function buildEnglishReasoningSteps(
         analysis, englishName, "en", presentation.generatedNames,
         isLegacyExplanation ? "iupac-1979-legacy-en" : undefined,
       );
-      const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
       const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, englishName, "en", presentation.generatedNames,
         isLegacyExplanation ? "iupac-1979-legacy-en" : undefined);
+      const parentUnsaturationText = unsaturationOverviewText(analysis, unsaturationContributions, "en", multiplicity?.text);
       const substituentUnsaturationText = unsaturatedSubstituentReasoning(molecule, analysis, "en");
       const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
         ? legacyStructuralReasoningText(molecule, analysis, englishName, "unsaturation", "en")
         : substituentUnsaturationText || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.");
-      explanation = [baseUnsaturationText, multiplicity?.explanation, parentUnsaturationText && substituentUnsaturationText ? substituentUnsaturationText : ""]
+      explanation = [baseUnsaturationText, parentUnsaturationText && substituentUnsaturationText ? substituentUnsaturationText : ""]
         .filter(Boolean).join(" ");
     } else if (step.number === "01") {
       explanation = retainedReasoning?.function ?? (primaryLabel
