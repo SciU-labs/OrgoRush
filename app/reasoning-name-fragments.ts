@@ -103,6 +103,20 @@ export function deriveUnsaturationNameContributions(
       fromIndex(String(locant), start, bondType, locant),
       fromIndex(marker, start + text.lastIndexOf(marker), bondType, locant),
     ];
+    if (rootByLength && analysis.family === "cycloalkane" && analysis.primaryFunctionalGroup === "ketone"
+      && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length) {
+      const locants = analysis.doubleBondLocants.join(",");
+      const multiplier = ["", "", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa"][analysis.doubleBondLocants.length];
+      const tail = `${locants}-${language === "en" ? "cyclo" : "ciclo"}${rootByLength}a${multiplier}en${language === "en" ? "one" : "ona"}`;
+      if (multiplier && name.endsWith(tail) && (name.length === tail.length || name[name.length - tail.length - 1] === "-")) {
+        let offset = name.length - tail.length;
+        return analysis.doubleBondLocants.map((locant) => {
+          const item = fromIndex(String(locant), offset, "double", locant);
+          offset += String(locant).length + 1;
+          return item;
+        });
+      }
+    }
     if (rootByLength && analysis.family === "acyclic"
       && unsaturation.length === 1 && ["alcohol", "ketone"].includes(analysis.primaryFunctionalGroup ?? "")) {
       const { bondType, locant } = unsaturation[0];
@@ -236,7 +250,8 @@ export function deriveUnsaturationNameContributions(
     const bondDescription = item.bondType === "double"
       ? `C${item.locant}=C${nextLocant}`
       : `C${item.locant}≡C${nextLocant}`;
-    const writtenForm = analysis.family === "cycloalkane" ? `${name[start - 1] === "-" ? "-" : ""}${text}${end < name.length && name[end] === "-" ? "-" : ""}` : suffixText;
+    const writtenForm = isGrouped && analysis.family === "cycloalkane" ? `${locantToken.value}-${morpheme}`
+      : analysis.family === "cycloalkane" ? `${name[start - 1] === "-" ? "-" : ""}${text}${end < name.length && name[end] === "-" ? "-" : ""}` : suffixText;
     const explanation = language === "en"
       ? `${bondLabel} ${bondDescription} has locant ${item.locant} and contributes locant ${item.locant} to the parent unsaturation form “${writtenForm}”.`
       : `${bondLabel} ${bondDescription} tiene el localizador ${item.locant} y aporta el localizador ${item.locant} a la forma de insaturación del padre «${writtenForm}».`;
@@ -258,6 +273,31 @@ export function deriveUnsaturationNameContributions(
     });
   }
   return output;
+}
+
+/** One shared written morpheme, alongside the separate graph targets of its locants. */
+export function deriveCyclicKetoneMultiplicityEvidence(
+  analysis: FragmentAnalysis, name: string, language: AppLanguage,
+  generatedNames?: readonly string[], convention?: string,
+): ReasoningNameEvidence | undefined {
+  const count = analysis.doubleBondLocants.length;
+  if (analysis.family !== "cycloalkane" || analysis.primaryFunctionalGroup !== "ketone"
+    || count < 2 || analysis.tripleBondLocants.length) return;
+  const multiplier = ["", "", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa"][count];
+  if (!multiplier) return;
+  const bonds = deriveUnsaturationNameContributions(analysis, name, language, generatedNames, convention);
+  if (bonds.length !== count || !analysis.doubleBondLocants.every((locant) => bonds.some((bond) => bond.locant === locant))) return;
+  const marker = `${multiplier}en`;
+  const start = name.lastIndexOf(marker);
+  if (start < 0) return;
+  const locants = analysis.doubleBondLocants.join(",");
+  return { text: marker, start, kind: "unsaturation", semanticId: `unsaturation:double:group:${locants}`,
+    bondType: "double", atomIds: [...new Set(bonds.flatMap((bond) => [...bond.atomIds]))],
+    bondIds: bonds.flatMap((bond) => [...bond.bondIds]),
+    label: language === "en" ? `${multiplier} + en · ${count} double bonds` : `${multiplier} + en · ${count} enlaces dobles`,
+    explanation: language === "en"
+      ? `The multiplier “${multiplier}” indicates ${count} double bonds; “en” denotes carbon–carbon double bonds. “${marker}”, with locants ${locants}, expresses these ${count} double bonds in the parent ring.`
+      : `El multiplicador «${multiplier}» indica ${count} enlaces dobles; «en» corresponde a enlaces dobles carbono-carbono. «${marker}», junto a los localizadores ${locants}, expresa estos ${count} enlaces dobles en el anillo principal.` };
 }
 
 function localizedName(name: string, language: AppLanguage) {
@@ -629,7 +669,8 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
   if (unsaturationStep) {
     const contributions = deriveUnsaturationNameContributions(analysis, name, language, input.generatedNames, input.convention);
     const [first, ...rest] = contributions;
-    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: rest };
+    const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, name, language, input.generatedNames, input.convention);
+    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: [...rest, ...(multiplicity ? [multiplicity] : [])] };
   }
 
   const suffixes: Record<string, string> = {
@@ -710,7 +751,8 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
     // An unsaturated substituent is already represented under step 04. Step 07
     // explains the bond's location and naming consequence in prose; duplicating
     // that same name span here would create a second card for the same entity.
-    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: rest };
+    const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, name, language, input.generatedNames, input.convention);
+    if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: [...rest, ...(multiplicity ? [multiplicity] : [])] };
   }
   const parent = parentNameEvidence(analysis, name, language, evidence);
   const parentStep = steps.find((step) => step.nameRole === "parent");

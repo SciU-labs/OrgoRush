@@ -246,6 +246,16 @@ export function formatIupac1979SpanishName(baseName: string) {
 function formatSpanish1979CyclicKetone(baseName: string) {
   const value = baseName.toLocaleLowerCase("es");
   const root = traditionalRootPatterns.es;
+  // A-11.3: -adiene/-atriene; C-314.1: cyclic parent + -one.
+  // Scope the added grammar to monocyclic monoketones with inherent C1.
+  const polyenone = value.match(new RegExp(`^(.*?)ciclo(${root})a-(\\d+(?:,\\d+)+)-(di|tri|tetra|penta|hexa|hepta|octa)en-1-ona$`, "i"));
+  if (polyenone) {
+    const [, substituents, ringRoot, locants, multiplier] = polyenone;
+    const positions = locants.split(",");
+    const multiplicity = ["", "", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa"].indexOf(multiplier);
+    if (positions.length !== multiplicity || new Set(positions).size !== positions.length) return undefined;
+    return withTraditionalPrefix(substituents, `${locants}-ciclo${ringRoot}a${multiplier}enona`);
+  }
   const enone = value.match(new RegExp(`^(.*?)ciclo(${root})-(\\d+)-en-(\\d+)-ona$`, "i"));
   if (!enone) return undefined;
 

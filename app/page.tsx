@@ -182,7 +182,7 @@ import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry";
 import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName } from "./legacy-profile-display";
-import { deriveReasoningNameFragments, deriveUnsaturationNameContributions, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
+import { deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
@@ -4973,13 +4973,14 @@ export function buildIupacReasoningSteps(
   if (hasParentUnsaturation || substituentUnsaturation) {
     const unsaturationContributions = deriveUnsaturationNameContributions(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
     const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
+    const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, displayedName, "es", undefined, isLegacyExplanation ? "iupac-1979-es" : undefined);
     const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
       ? legacyStructuralReasoningText(molecule, analysis, displayedName, "unsaturation", "es")
       : substituentUnsaturation || "Cada enlace múltiple de la cadena principal se representa con su localizador y su tipo de enlace en el nombre.");
     steps.push({
       number: "07",
       title: "Insaturaciones del nombre",
-      explanation: [baseUnsaturationText, parentUnsaturationText && substituentUnsaturation ? substituentUnsaturation : ""]
+      explanation: [baseUnsaturationText, multiplicity?.explanation, parentUnsaturationText && substituentUnsaturation ? substituentUnsaturation : ""]
         .filter(Boolean).join(" "),
       nameRole: "unsaturation",
       unsaturationContributions,
@@ -5231,11 +5232,13 @@ export function buildEnglishReasoningSteps(
         isLegacyExplanation ? "iupac-1979-legacy-en" : undefined,
       );
       const parentUnsaturationText = [...new Map(unsaturationContributions.map((item) => [item.semanticId, item.explanation])).values()].join(" ");
+      const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, englishName, "en", presentation.generatedNames,
+        isLegacyExplanation ? "iupac-1979-legacy-en" : undefined);
       const substituentUnsaturationText = unsaturatedSubstituentReasoning(molecule, analysis, "en");
       const baseUnsaturationText = parentUnsaturationText || (isLegacyExplanation
         ? legacyStructuralReasoningText(molecule, analysis, englishName, "unsaturation", "en")
         : substituentUnsaturationText || "Each multiple bond in the parent chain is represented in the name by its locant and bond type.");
-      explanation = [baseUnsaturationText, parentUnsaturationText && substituentUnsaturationText ? substituentUnsaturationText : ""]
+      explanation = [baseUnsaturationText, multiplicity?.explanation, parentUnsaturationText && substituentUnsaturationText ? substituentUnsaturationText : ""]
         .filter(Boolean).join(" ");
     } else if (step.number === "01") {
       explanation = retainedReasoning?.function ?? (primaryLabel
@@ -14172,7 +14175,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       key={`${index}-${part.text}`}
                       className={`iupac-name-reference ${(part.semanticId ? part.semanticId === selectedUnsaturationSemanticId : activeReasoningStep === part.stepNumber) ? "is-active" : ""}`}
                       href={`#iupac-reasoning-step-${part.stepNumber}`}
-                      aria-label={part.semanticId
+                      aria-label={part.semanticId && part.locant === undefined
+                        ? `${part.text}: ${part.explanation ?? ""}`
+                        : part.semanticId
                         ? `${language === "en" ? "Explain" : "Explicar"} ${part.bondType === "double" ? language === "en" ? "double bond" : "enlace doble" : language === "en" ? "triple bond" : "enlace triple"} ${part.locant}, ${part.text}: ${part.explanation ?? ""}`
                         : `${part.text}: ${language === "en" ? "explain in step" : "explicar en el paso"} ${part.stepNumber}, ${localizedReasoningSteps.find((step) => step.number === part.stepNumber)?.title ?? ""}${part.relatedStepNumbers?.length ? `; ${language === "en" ? "also related to step" : "también relacionado con el paso"} ${part.relatedStepNumbers.join(", ")}` : ""}`}
                       title={`${language === "en" ? "Explain" : "Explicar"} ${part.text} · ${language === "en" ? "step" : "paso"} ${part.stepNumber}`}
