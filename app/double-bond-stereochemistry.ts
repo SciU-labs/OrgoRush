@@ -1,4 +1,5 @@
 import { getMainChainTetrahedralDescriptors } from "./tetrahedral-stereochemistry.ts";
+import { stripStereochemicalDescriptors } from "./nomenclature-conventions.ts";
 
 export type StereoConfiguration = "E" | "Z";
 
@@ -530,6 +531,9 @@ export function formatStereochemicalName(
   baseName: string,
   options: { explicitDoubleBonds?: boolean; includeTetrahedral?: boolean } = {},
 ) {
+  // Analysis may already include explicit E/Z. Rebuild one descriptor set from
+  // the graph rather than prefixing a previously formatted stereochemical name.
+  const constitutionalName = stripStereochemicalDescriptors(baseName);
   const descriptors = [
     ...getMainChainStereoDescriptors(molecule, mainChain, options.explicitDoubleBonds).map((descriptor) => ({
       locant: descriptor.locant,
@@ -541,14 +545,14 @@ export function formatStereochemicalName(
     })),
   ].sort((left, right) => left.locant - right.locant
     || left.configuration.localeCompare(right.configuration));
-  if (!descriptors.length) return baseName;
+  if (!descriptors.length) return constitutionalName;
   const prefix = descriptors
     .map((descriptor) => `${descriptor.locant}${descriptor.configuration}`)
     .join(",");
-  if (baseName.startsWith("ácido ")) {
-    return `ácido (${prefix})-${baseName.slice("ácido ".length)}`;
+  if (constitutionalName.startsWith("ácido ")) {
+    return `ácido (${prefix})-${constitutionalName.slice("ácido ".length)}`;
   }
-  return `(${prefix})-${baseName}`;
+  return `(${prefix})-${constitutionalName}`;
 }
 
 export function getAromaticStereochemicalNameOptions(

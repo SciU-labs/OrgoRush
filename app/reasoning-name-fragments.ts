@@ -223,6 +223,8 @@ export function deriveUnsaturationNameContributions(
   }
 
   const output: UnsaturationNameContribution[] = [];
+  const functionBoundary = functionalNameEvidence(analysis, name, language)
+    .find((item) => item.contributions.some((origin) => origin.role === "suffix"))?.start ?? name.length;
   const groups: { bondType: "double" | "triple"; locant: number }[] = [
     ...analysis.doubleBondLocants.map((locant) => ({ bondType: "double" as const, locant })),
     ...analysis.tripleBondLocants.map((locant) => ({ bondType: "triple" as const, locant })),
@@ -236,7 +238,9 @@ export function deriveUnsaturationNameContributions(
     if (tokenIndex < 0 || tokenIndex + 1 >= tokens.length) continue;
     const locantToken = tokens[tokenIndex];
     const markerToken = tokens[tokenIndex + 1];
-    const morpheme = unsaturationMorpheme(markerToken.value, item.bondType);
+    // The recognized functional suffix owns its characters (oic/oico,
+    // oate/oato, etc.). An optional alkene ending cannot consume that span.
+    const morpheme = unsaturationMorpheme(markerToken.value.slice(0, Math.max(0, functionBoundary - markerToken.start)), item.bondType);
     if (!morpheme) continue;
     const locantsInToken = locantToken.value.split(",");
     const isGrouped = locantsInToken.length > 1;
@@ -660,10 +664,17 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
   const rootText = ring
     ? `${language === "en" ? "cyclo" : "ciclo"}${root}`
     : root;
-  const radicalStart = name.lastIndexOf(rootText);
+  const functionalEvidence = functionalNameEvidence(analysis, name, language);
+  const parentEvidence = parentNameEvidence(analysis, name, language, functionalEvidence);
+  const functionalSuffixStart = functionalEvidence.find((item) => item.contributions.some((origin) => origin.role === "suffix"))?.start;
+  // Prefer the morphologically verified parent position. In a legacy nonanone,
+  // the last "non" crosses into "one" and cannot identify the parent root.
+  const radicalStart = parentEvidence && name.startsWith(rootText, parentEvidence.start)
+    ? parentEvidence.start!
+    : name.lastIndexOf(rootText, functionalSuffixStart === undefined ? name.length : functionalSuffixStart - rootText.length);
   const writtenRootText = radicalStart >= 0 && hasWrittenCyclicKetoneLinkingVowel(analysis, name, rootText, radicalStart)
     ? `${rootText}a` : rootText;
-  const rootStart = name.lastIndexOf(writtenRootText);
+  const rootStart = radicalStart;
   if (rootStart < 0) return fragments; // Retained parents keep their existing indivisible evidence.
   const prefixEnd = rootStart;
   if (rootStart >= 0) {
@@ -826,7 +837,9 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
         label: uiText(language, "Numeración razonada"), kind: "numbering" };
       const previous = fragments[numberingStep.number];
       if (!previous) fragments[numberingStep.number] = numbered;
-      else if (![previous, ...(previous.additionalFragments ?? [])].some((item) => item.text === numbered.text && item.start === start)) {
+      else if (![previous, ...(previous.additionalFragments ?? [])].some((item) =>
+        item.kind === "numbering" && item.text === numbered.text
+          && (item.start ?? name.indexOf(item.text)) === start)) {
         previous.additionalFragments ??= [];
         previous.additionalFragments.push(numbered);
       }
@@ -841,6 +854,41 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
     retained.contributions = analysis.functionalGroups
       .filter((group) => group.kind === analysis.primaryFunctionalGroup)
       .map((group) => ({ group: group.kind, role: "suffix", atomIds: group.atomIds ?? [group.carbonId] }));
+  }
+  for (const fragment of Object.values(fragments)) {
+    const candidates = [fragment, ...(fragment.additionalFragments ?? [])];
+    const unique: ReasoningNameEvidence[] = [];
+    for (const candidate of candidates) {
+      const start = candidate.start ?? name.indexOf(candidate.text);
+      const duplicate = start >= 0 && start + candidate.text.length <= name.length
+        ? unique.find((item) => item.kind === candidate.kind
+        && (item.start ?? name.indexOf(item.text)) === start
+        && item.text === candidate.text && item.semanticId === candidate.semanticId)
+        : undefined;
+      if (!duplicate) {
+        unique.push(candidate);
+        continue;
+      }
+      if (candidate.contributions?.length) {
+        duplicate.contributions = [...(duplicate.contributions ?? []), ...candidate.contributions]
+          .filter((item, index, all) => all.findIndex((other) => other.group === item.group
+            && other.role === item.role && other.atomIds.join(",") === item.atomIds.join(",")) === index);
+      }
+      if (candidate.atomIds?.length) duplicate.atomIds = [...new Set([...(duplicate.atomIds ?? []), ...candidate.atomIds])];
+      if (candidate.bondIds?.length) duplicate.bondIds = [...(duplicate.bondIds ?? []), ...candidate.bondIds]
+        .filter((item, index, all) => all.findIndex((other) => other.join(",") === item.join(",")) === index);
+    }
+    fragment.additionalFragments = unique.slice(1);
+    if (unique[0]) {
+      fragment.text = unique[0].text;
+      fragment.start = unique[0].start;
+      fragment.kind = unique[0].kind;
+      fragment.semanticId = unique[0].semanticId;
+      fragment.contributions = unique[0].contributions;
+      fragment.atomIds = unique[0].atomIds;
+      fragment.bondIds = unique[0].bondIds;
+    }
+    if (!fragment.additionalFragments.length) delete fragment.additionalFragments;
   }
   return fragments;
 }

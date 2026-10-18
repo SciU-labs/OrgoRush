@@ -4148,7 +4148,36 @@ function multipleBondLocantsText(doubleLocants: number[], tripleLocants: number[
   return joinSpanishList(parts);
 }
 
-function multipleUnsaturationReasoningText(analysis: Analysis, language: AppLanguage) {
+function multipleUnsaturationReasoningText(molecule: Molecule, analysis: Analysis, language: AppLanguage) {
+  if (analysis.family === "aromatic") {
+    const elementNames: Record<string, { es: string; en: string }> = {
+      C: { es: "carbono", en: "carbon" }, N: { es: "nitrógeno", en: "nitrogen" },
+      O: { es: "oxígeno", en: "oxygen" }, S: { es: "azufre", en: "sulfur" },
+      P: { es: "fósforo", en: "phosphorus" },
+    };
+    const atoms = analysis.mainChain.map((id, index) => ({
+      atom: molecule.atoms.find((item) => item.id === id),
+      locant: analysis.numberedAtoms.get(id) ?? index + 1,
+    })).filter((item): item is { atom: CarbonAtom; locant: number } => Boolean(item.atom));
+    const composition = new Map<string, number>();
+    for (const { atom } of atoms) {
+      const element = atom.element ?? "C";
+      composition.set(element, (composition.get(element) ?? 0) + 1);
+    }
+    const english = language === "en";
+    const parts = [...composition].map(([element, count]) => {
+      const label = elementNames[element]?.[language] ?? element;
+      const positions = atoms.filter((item) => (item.atom.element ?? "C") === element);
+      const position = element === "C" ? "" : english
+        ? ` at ${positions.map((item) => `position ${item.locant}`).join(", ")}`
+        : ` en ${positions.map((item) => `la posición ${item.locant}`).join(", ")}`;
+      return english ? `${count} ${label}${element === "C" ? "" : " atom"}${count === 1 && element === "C" ? "" : count === 1 && element !== "C" ? "" : "s"}${position}`
+        : `${count} ${label}${count === 1 ? "" : "s"}${position}`;
+    });
+    return english
+      ? `The aromatic parent ring has ${atoms.length} positions: ${parts.join(" and ")}. Its π system is delocalized, so this explanation assigns no individual double-bond positions.`
+      : `El anillo aromático progenitor tiene ${atoms.length} posiciones: ${joinSpanishList(parts)}. Su sistema π está deslocalizado, por lo que esta explicación no asigna localizadores a enlaces dobles individuales.`;
+  }
   const groups = [
     {
       locants: analysis.doubleBondLocants,
@@ -4164,7 +4193,19 @@ function multipleUnsaturationReasoningText(analysis: Analysis, language: AppLang
     },
   ];
   return groups.filter(({ locants }) => locants.length > 0).map(({ locants, plural, singular, symbol }) => {
-    const bonds = locants.map((locant) => `C${locant}${symbol}C${locant + 1}`);
+    const atomAtLocant = new Map(analysis.mainChain.map((id, index) => [analysis.numberedAtoms.get(id) ?? index + 1, id]));
+    const cyclic = analysis.family === "cycloalkane";
+    const order = symbol === "=" ? 2 : 3;
+    const bonds = locants.map((locant) => {
+      const nextLocant = cyclic ? locant % analysis.mainChain.length + 1 : locant + 1;
+      const left = atomAtLocant.get(locant), right = atomAtLocant.get(nextLocant);
+      const bond = left === undefined || right === undefined ? undefined
+        : molecule.bonds.find(([a, b]) => a === left && b === right || a === right && b === left);
+      if (!bond || (bond[2] ?? 1) !== order) return `${language === "en" ? "bond" : "enlace"} ${locant}`;
+      const leftElement = molecule.atoms.find((atom) => atom.id === left)?.element ?? "C";
+      const rightElement = molecule.atoms.find((atom) => atom.id === right)?.element ?? "C";
+      return `${leftElement}${locant}${symbol}${rightElement}${nextLocant}`;
+    });
     const bondList = language === "en" ? bonds.join(", ") : joinSpanishList(bonds);
     const bondType = uiText(language, locants.length === 1 ? singular : plural);
     if (locants.length === 1) {
@@ -4468,11 +4509,14 @@ function legacyStructuralReasoningText(
       .flatMap((group) => group.carbonIds.map((atomId) => analysis.numberedAtoms.get(atomId)))
       .filter((locant): locant is number => locant !== undefined)
     : [];
-  const groupDescription = analysis.primaryFunctionalGroup === "alcohol" ? (isEnglish ? "alcohol" : "alcohol")
-    : analysis.primaryFunctionalGroup === "ketone" ? (isEnglish ? "ketone" : "cetona")
-      : analysis.primaryFunctionalGroup === "aldehyde" ? (isEnglish ? "aldehyde" : "aldehído")
-        : analysis.primaryFunctionalGroup === "carboxylicAcid" ? (isEnglish ? "carboxylic acid" : "ácido carboxílico")
-          : analysis.primaryFunctionalLabel?.toLowerCase() ?? (isEnglish ? "principal functional group" : "grupo funcional principal");
+  const englishFunctionalLabels: Record<FunctionalGroupKind, string> = {
+    halogen: "halide", alcohol: "alcohol", ether: "ether", aldehyde: "aldehyde", ketone: "ketone",
+    carboxylicAcid: "carboxylic acid", ester: "ester", amine: "amine", amide: "amide", nitrile: "nitrile", nitro: "nitro",
+  };
+  const groupDescription = analysis.primaryFunctionalGroup
+    ? isEnglish ? englishFunctionalLabels[analysis.primaryFunctionalGroup]
+      : functionalGroupLabels[analysis.primaryFunctionalGroup].toLocaleLowerCase("es")
+    : isEnglish ? "principal functional group" : "grupo funcional principal";
   const parentKind = isEnglish ? ring ? "cyclic parent ring" : "parent chain" : ring ? "anillo cíclico progenitor" : "cadena principal";
   const locantText = (values: number[]) => values.length ? values.join(", ") : (isEnglish ? "none" : "ninguno");
   if (role === "parent") {
@@ -4992,7 +5036,7 @@ export function buildIupacReasoningSteps(
         : `El enlace ${analysis.tripleBondLocants.length ? "triple" : "doble"} une C1 y C2. En esta cadena no sustituida de tres carbonos, el localizador 1 se omite en el nombre IUPAC preferido porque la posición es inequívoca.`);
     }
     if (analysis.doubleBondLocants.length + analysis.tripleBondLocants.length >= 2) {
-      explanationParts.push(multipleUnsaturationReasoningText(analysis, "es"));
+      explanationParts.push(multipleUnsaturationReasoningText(molecule, analysis, "es"));
     }
     steps.push({
       number: "03",
@@ -5397,7 +5441,7 @@ export function buildEnglishReasoningSteps(
         ? `Both numbering directions give the same substituent locants (${substituentLocants.join(",")}); neither direction wins this comparison.`
         : `Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents.${unsaturation}`;
       if (analysis.doubleBondLocants.length + analysis.tripleBondLocants.length >= 2) {
-        explanation += ` ${multipleUnsaturationReasoningText(analysis, "en")}`;
+        explanation += ` ${multipleUnsaturationReasoningText(molecule, analysis, "en")}`;
       }
       if (suggestedIupacNameWithOmittedLocants(analysis) !== analysis.name) {
         explanation += analysis.primaryFunctionalGroup === "alcohol"
@@ -7397,8 +7441,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const legacyNameWithSelectedStereochemistry = stereochemistryEnabled
     && (getMainChainStereoDescriptors(molecule, legacyAnalysis.mainChain, true).length > 0
       || getTetrahedralStereoCenters(molecule).length > 0)
-    ? formatStereochemicalName(molecule, legacyAnalysis.mainChain, legacyAnalysis.name, { explicitDoubleBonds: true })
-    : legacyAnalysis.name;
+    ? formatStereochemicalName(molecule, legacyAnalysis.mainChain, stripStereochemicalDescriptors(legacyAnalysis.name), { explicitDoubleBonds: true })
+    : stripStereochemicalDescriptors(legacyAnalysis.name);
   const legacyEnglishName = useMemo(
     () => localSuggestedNameUnavailable || !legacyEnglishProfileIsSupportedForMolecule(molecule)
       ? "-"
