@@ -1,0 +1,70 @@
+{
+  "reviewDate": "2026-10-18",
+  "checks": [
+    {
+      "command": "node scripts/naming-audit/run.mjs",
+      "result": "COMPLETED",
+      "exitCode": 0,
+      "durationMs": 186873,
+      "detail": "440 estructuras, 18 lotes, cuatro perfiles; las señales y los nombres sin oráculo se informan, no se convierten en PASS de nomenclatura."
+    },
+    {
+      "command": "node --test tests/naming-audit/diagnostics.test.mjs",
+      "result": "5 PASS; 11 FAIL diagnósticos confirmados; 0 SKIP; 0 TODO",
+      "exitCode": 1,
+      "durationMs": 91146.6784,
+      "detail": "16 pruebas. Carga producción real y reproduce los 11 grupos; esta fase no repara el motor ni ajusta expectativas para ocultarlos."
+    },
+    {
+      "command": "npm run test:reference-corpus",
+      "result": "792 PASS; 0 FAIL; 5 SKIP",
+      "exitCode": 0,
+      "durationMs": 141173.8064,
+      "detail": "797 pruebas. Las cinco omisiones son los casos silver ya documentados; se verifican esquema, referencias, identidad y protección del manifiesto."
+    },
+    {
+      "command": "npm run report:reference-corpus",
+      "result": "PASS",
+      "exitCode": 0,
+      "durationMs": 91446,
+      "detail": "184 entradas: 179 gold exactos PASS, cinco silver SKIP; 184 estructuras esperadas y 184 observadas PASS, cero peticiones de red. Resultado nuevo copiado aquí y archivo histórico restaurado byte por byte."
+    },
+    {
+      "command": "npm run build:pages",
+      "result": "PASS",
+      "exitCode": 0,
+      "durationMs": 12586,
+      "detail": "Avisos de importación dinámica compartida y tamaño de bundle, sin error de compilación. Ningún código de producción fue cambiado."
+    },
+    {
+      "command": "npm run validate:pages",
+      "result": "PASS",
+      "exitCode": 0,
+      "durationMs": 1608,
+      "detail": "Tres entradas, seis assets, base /Hydrocarbon-Lab/."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "exitCode": 0,
+      "durationMs": 397,
+      "detail": "No hay cambios en archivos rastreados; los artefactos de auditoría son nuevos y están sin seguimiento."
+    }
+  ],
+  "externalCapture": {
+    "receipts": 245,
+    "newIndependentReceipts": 240,
+    "reusedProtectedReceipts": 5,
+    "initialFailedNetworkAttempts": 4,
+    "note": "Captura acotada y dirigida al riesgo. Tras un bloqueo de E/S de OneDrive se continuó con los recibos persistidos y escritura atómica. Los fallos de transporte no se clasifican como evidencia química."
+  },
+  "fullNpmTestExecuted": false,
+  "productionRepairPerformed": false,
+  "commitOrPushPerformed": false,
+  "gitStatus": [
+    "?? reports/naming-audit/",
+    "?? reports/orgorush-aud001-repair.md",
+    "?? scripts/naming-audit/",
+    "?? tests/naming-audit/"
+  ]
+}

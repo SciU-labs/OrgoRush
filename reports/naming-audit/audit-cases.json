@@ -1,0 +1,5776 @@
+{
+  "version": "AUD-NOM-001-v1",
+  "seed": 10539009,
+  "targets": {
+    "alkanes": 35,
+    "alkenes": 30,
+    "alkynes": 25,
+    "multi-unsaturated": 25,
+    "carbocycles": 40,
+    "aromatics": 35,
+    "halogenated": 25,
+    "alcohols-polyols": 30,
+    "carbonyls": 40,
+    "carboxylic-acids": 20,
+    "ethers-esters": 35,
+    "nitrogen-functions": 40,
+    "mixed-functions": 30,
+    "stereo-polycycles-limits": 30
+  },
+  "protectedEntries": 184,
+  "records": [
+    {
+      "id": "AUDCASE-0001",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCC",
+      "features": [
+        "linear-chain",
+        "homologous-series"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUVjj`@"
+    },
+    {
+      "id": "AUDCASE-0002",
+      "family": "alkanes",
+      "smiles": "CCCCCC(CCC)CCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "fha@@@DjUUWWZjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0003",
+      "family": "alkanes",
+      "smiles": "CC(C)(C)CCCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@LddUUUT@@"
+    },
+    {
+      "id": "AUDCASE-0004",
+      "family": "alkanes",
+      "smiles": "CCCCCCC(C)(C)C",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@LddURUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0005",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCC(C)CCCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "fha@@@LdbVRRbJRjjjjj`@@"
+    },
+    {
+      "id": "AUDCASE-0006",
+      "family": "alkanes",
+      "smiles": "CCCC(C)CCCCCCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@DjWWUjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0007",
+      "family": "alkanes",
+      "smiles": "CCCCC(CC)C",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DjWzjh@@"
+    },
+    {
+      "id": "AUDCASE-0008",
+      "family": "alkanes",
+      "smiles": "CCCCCCCC(C)(C)C",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@LddURRjjj`@"
+    },
+    {
+      "id": "AUDCASE-0009",
+      "family": "alkanes",
+      "smiles": "CCCCCC(C)CCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@DjWUUvjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0010",
+      "family": "alkanes",
+      "smiles": "CCC(CCC)CCCCCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "fha@@@DjUWuUZjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0011",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCCC(C)(C)C",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@LddURRRUUUUT@@"
+    },
+    {
+      "id": "AUDCASE-0012",
+      "family": "alkanes",
+      "smiles": "CCCC(C)(C)CCCCCCCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@LddRJVRUUUUT@@"
+    },
+    {
+      "id": "AUDCASE-0013",
+      "family": "alkanes",
+      "smiles": "CCCCCC(C)CC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@LdbVbJjjj`@"
+    },
+    {
+      "id": "AUDCASE-0014",
+      "family": "alkanes",
+      "smiles": "CCCCC(CCC)CCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@DjUUWvjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0015",
+      "family": "alkanes",
+      "smiles": "CCCC(C)CCCCCCCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@DjWWUZjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0016",
+      "family": "alkanes",
+      "smiles": "CCCCC(C)CCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DjWU]jjjj@@"
+    },
+    {
+      "id": "AUDCASE-0017",
+      "family": "alkanes",
+      "smiles": "CCC(C)(C)CCCCCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@LddRNRjjj`@"
+    },
+    {
+      "id": "AUDCASE-0018",
+      "family": "alkanes",
+      "smiles": "CCC(CCC)CCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DjUWjjj@@"
+    },
+    {
+      "id": "AUDCASE-0019",
+      "family": "alkanes",
+      "smiles": "CCCC(CCC)CCCCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "fha@@@LdbRRRJRRjjjjj`@@"
+    },
+    {
+      "id": "AUDCASE-0020",
+      "family": "alkanes",
+      "smiles": "CCC(CC)CCCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@LdbRQRRUUUUT@@"
+    },
+    {
+      "id": "AUDCASE-0021",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCCCC",
+      "features": [
+        "linear-chain",
+        "homologous-series"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUUVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0022",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCC(C)CCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@LdbVRbJRjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0023",
+      "family": "alkanes",
+      "smiles": "CC(C)(C)CCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@LddUjj@@"
+    },
+    {
+      "id": "AUDCASE-0024",
+      "family": "alkanes",
+      "smiles": "CCCCCCC(C)(C)CCCCCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@LddRJRRRjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0025",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCC(C)CCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "f`~@@@LdbVRbJRUUUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0026",
+      "family": "alkanes",
+      "smiles": "CCCC(C)CCCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@DjWWUZjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0027",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCC(C)CCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@DjWU]Vjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0028",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCCCCCC(C)C",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "f`~@@@LdbJRRRRUUUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0029",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCCCC(C)CC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\@@DjWuUVjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0030",
+      "family": "alkanes",
+      "smiles": "CCCCC(C)CCCCCCCCC(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "fha@@@DjWU]Ujjjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0031",
+      "family": "alkanes",
+      "smiles": "CCCC(CCC)CCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@LdbRRRJjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0032",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCCCCC(C)C(C)C",
+      "features": [
+        "repeated-substituents",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "f`~@@@LdbbjRRRUUUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0033",
+      "family": "alkanes",
+      "smiles": "CCCC(C)(C)CCCC",
+      "features": [
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@LddRJUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0034",
+      "family": "alkanes",
+      "smiles": "CCCCCCCCC(C)CCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DjWWUjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0035",
+      "family": "alkanes",
+      "smiles": "CCCCCC(C)CCCCCCCCC",
+      "features": [
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "f`~@@@DjWUUujjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0036",
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCCCC=CCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DiUuVZjjj@@"
+    },
+    {
+      "id": "AUDCASE-0037",
+      "family": "alkenes",
+      "smiles": "CC(C)CCC=CC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@Di]fjh@@"
+    },
+    {
+      "id": "AUDCASE-0038",
+      "family": "alkenes",
+      "smiles": "CCCC=CCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DiUVjh@@"
+    },
+    {
+      "id": "AUDCASE-0039",
+      "family": "alkenes",
+      "smiles": "CCCCC=CCCCCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUU]jjj`@"
+    },
+    {
+      "id": "AUDCASE-0040",
+      "family": "alkenes",
+      "smiles": "CC(C)CCCC=CCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DiUvZjj@@"
+    },
+    {
+      "id": "AUDCASE-0041",
+      "family": "alkenes",
+      "smiles": "CC=CC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiYj`@"
+    },
+    {
+      "id": "AUDCASE-0042",
+      "family": "alkenes",
+      "smiles": "CCCCCCCCCC=CC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@Di]UUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0043",
+      "family": "alkenes",
+      "smiles": "CC=CCCCCCC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@Di]Ufjjh@@"
+    },
+    {
+      "id": "AUDCASE-0044",
+      "family": "alkenes",
+      "smiles": "CC(C)C=CCCCCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@LdRbJSUUP@@"
+    },
+    {
+      "id": "AUDCASE-0045",
+      "family": "alkenes",
+      "smiles": "CCCC=C",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJP@DkVh@"
+    },
+    {
+      "id": "AUDCASE-0046",
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCCC=C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DkUVZjj@@"
+    },
+    {
+      "id": "AUDCASE-0047",
+      "family": "alkenes",
+      "smiles": "CCCCC=CC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@Di]Zj@@"
+    },
+    {
+      "id": "AUDCASE-0048",
+      "family": "alkenes",
+      "smiles": "C=CCC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DkYj`@"
+    },
+    {
+      "id": "AUDCASE-0049",
+      "family": "alkenes",
+      "smiles": "CCCC=CCCCCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DiUWVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0050",
+      "family": "alkenes",
+      "smiles": "CC(C)CCC=CCCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DiUVZjj@@"
+    },
+    {
+      "id": "AUDCASE-0051",
+      "family": "alkenes",
+      "smiles": "CC=CCCCCCCC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@Di]UYjjj`@"
+    },
+    {
+      "id": "AUDCASE-0052",
+      "family": "alkenes",
+      "smiles": "CCC=CCCCCCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DiUuVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0053",
+      "family": "alkenes",
+      "smiles": "CC=CCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@Di]j`@"
+    },
+    {
+      "id": "AUDCASE-0054",
+      "family": "alkenes",
+      "smiles": "CCCCCCCC=CCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUWUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0055",
+      "family": "alkenes",
+      "smiles": "C=CCCCCCCCCC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DkUUVZjjj@@"
+    },
+    {
+      "id": "AUDCASE-0056",
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCC=CCCCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DiUU^Zjjj@@"
+    },
+    {
+      "id": "AUDCASE-0057",
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCCCCC=C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DkUUYjjj`@"
+    },
+    {
+      "id": "AUDCASE-0058",
+      "family": "alkenes",
+      "smiles": "CC(C)CCC=C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@DkVZj@@"
+    },
+    {
+      "id": "AUDCASE-0059",
+      "family": "alkenes",
+      "smiles": "CCCCCCCC=C",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DkUUjj`@"
+    },
+    {
+      "id": "AUDCASE-0060",
+      "family": "alkenes",
+      "smiles": "C=CCCCCCCCCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DkUUUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0061",
+      "family": "alkenes",
+      "smiles": "CC(C)CC=CCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DiUfjh@@"
+    },
+    {
+      "id": "AUDCASE-0062",
+      "family": "alkenes",
+      "smiles": "CC=CCCCCC(C)C",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@Di]VZjj@@"
+    },
+    {
+      "id": "AUDCASE-0063",
+      "family": "alkenes",
+      "smiles": "CCCCC=CCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUUjj`@"
+    },
+    {
+      "id": "AUDCASE-0064",
+      "family": "alkenes",
+      "smiles": "C=CCCCCCC",
+      "features": [
+        "single-double-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DkUVjh@@"
+    },
+    {
+      "id": "AUDCASE-0065",
+      "family": "alkenes",
+      "smiles": "CC(C)CCC=CCC",
+      "features": [
+        "single-double-bond",
+        "branching",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUyjj`@"
+    },
+    {
+      "id": "AUDCASE-0066",
+      "family": "alkynes",
+      "smiles": "CC(CC)CC#CCCCCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUejjj`@"
+    },
+    {
+      "id": "AUDCASE-0067",
+      "family": "alkynes",
+      "smiles": "C#CCCCCCCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@DkUUV^jjjh@@"
+    },
+    {
+      "id": "AUDCASE-0068",
+      "family": "alkynes",
+      "smiles": "CC#CCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@Di]zj@@"
+    },
+    {
+      "id": "AUDCASE-0069",
+      "family": "alkynes",
+      "smiles": "CCCCCCCCC#CCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUuWjjj`@"
+    },
+    {
+      "id": "AUDCASE-0070",
+      "family": "alkynes",
+      "smiles": "CCCC#CCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUWjj`@"
+    },
+    {
+      "id": "AUDCASE-0071",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCC#CCCCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUVWjjj`@"
+    },
+    {
+      "id": "AUDCASE-0072",
+      "family": "alkynes",
+      "smiles": "CC#CCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@Di_j`@"
+    },
+    {
+      "id": "AUDCASE-0073",
+      "family": "alkynes",
+      "smiles": "CCCCCCCC#CC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@Di]Uzjj@@"
+    },
+    {
+      "id": "AUDCASE-0074",
+      "family": "alkynes",
+      "smiles": "C#CCCCCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DkUWjj`@"
+    },
+    {
+      "id": "AUDCASE-0075",
+      "family": "alkynes",
+      "smiles": "C#CCCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DkUYzjj@@"
+    },
+    {
+      "id": "AUDCASE-0076",
+      "family": "alkynes",
+      "smiles": "CC(CC)CC#C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@DkYzj@@"
+    },
+    {
+      "id": "AUDCASE-0077",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCCCC#CCCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DiUWYzjjj@@"
+    },
+    {
+      "id": "AUDCASE-0078",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCCCCCCC#C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DkUUYzjjj@@"
+    },
+    {
+      "id": "AUDCASE-0079",
+      "family": "alkynes",
+      "smiles": "CC#CCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@Di]Yzjj@@"
+    },
+    {
+      "id": "AUDCASE-0080",
+      "family": "alkynes",
+      "smiles": "CCC#CCCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUwjj`@"
+    },
+    {
+      "id": "AUDCASE-0081",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCC#CCCCCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DiUVWzjjj@@"
+    },
+    {
+      "id": "AUDCASE-0082",
+      "family": "alkynes",
+      "smiles": "C#CCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DkWj`@"
+    },
+    {
+      "id": "AUDCASE-0083",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCCCCC#C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DkUV^jjh@@"
+    },
+    {
+      "id": "AUDCASE-0084",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCCC#CCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DiUv^jjh@@"
+    },
+    {
+      "id": "AUDCASE-0085",
+      "family": "alkynes",
+      "smiles": "CCCCCC#CCCCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUUWjjj`@"
+    },
+    {
+      "id": "AUDCASE-0086",
+      "family": "alkynes",
+      "smiles": "CC(CC)CCCCCC#CCCC",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@DiUWV^jjjh@@"
+    },
+    {
+      "id": "AUDCASE-0087",
+      "family": "alkynes",
+      "smiles": "CC#CCCCCCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgl@@Di]UV^jjjh@@"
+    },
+    {
+      "id": "AUDCASE-0088",
+      "family": "alkynes",
+      "smiles": "CC#CCCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@Di]V^jjh@@"
+    },
+    {
+      "id": "AUDCASE-0089",
+      "family": "alkynes",
+      "smiles": "CC#CCCCCCC(CC)C",
+      "features": [
+        "single-triple-bond",
+        "branching",
+        "parent-selection"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@Di]Ugjjj`@"
+    },
+    {
+      "id": "AUDCASE-0090",
+      "family": "alkynes",
+      "smiles": "CCCC#CCCC",
+      "features": [
+        "single-triple-bond",
+        "locant-neighbor"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DiU^jh@@"
+    },
+    {
+      "id": "AUDCASE-0091",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC(CCCC)CCCC",
+      "features": [
+        "parent-convention-switch",
+        "unsaturated-substituent",
+        "equal-longest-paths"
+      ],
+      "expected": {
+        "2013-en": "5-ethenylnonane",
+        "1979-en": "3-butyl-1-heptene"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Two four-carbon arms meet the carbon bonded to a two-carbon ethenyl arm. Modern longest parent: 4+1+4=9 carbons, ethenyl at 5. Historical parent containing C=C: 2+1+4=7, double bond at 1 and butyl at 3.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm"
+        ]
+      },
+      "identity": "dmT@@DkeUVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0092",
+      "family": "multi-unsaturated",
+      "smiles": "C#CC(CCCC)CCCC",
+      "features": [
+        "parent-convention-switch",
+        "unsaturated-substituent",
+        "equal-longest-paths"
+      ],
+      "expected": {
+        "2013-en": "5-ethynylnonane",
+        "1979-en": "3-butyl-1-heptyne"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Same three-arm graph as the preceding case, with a triple bond. Nine-carbon modern parent has ethynyl at 5; seven-carbon historical unsaturated parent has triple bond at 1 and butyl at 3.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm"
+        ]
+      },
+      "identity": "dmT@@DkeU^jjh@@"
+    },
+    {
+      "id": "AUDCASE-0093",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CC=C",
+      "features": [
+        "three-double-bonds",
+        "connecting-vowel"
+      ],
+      "expected": {
+        "2013-en": "hexa-1,3,5-triene",
+        "1979-en": "1,3,5-hexatriene"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Unbranched six-carbon chain with three alternating double bonds at 1,3,5. The a connecting vowel precedes triene; locants move before the parent in the recorded historical convention.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P2.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm"
+        ]
+      },
+      "identity": "gGP@DiUiP@"
+    },
+    {
+      "id": "AUDCASE-0094",
+      "family": "multi-unsaturated",
+      "smiles": "C#CCC#C",
+      "features": [
+        "two-triple-bonds",
+        "connecting-vowel"
+      ],
+      "expected": {
+        "2013-en": "penta-1,4-diyne",
+        "1979-en": "1,4-pentadiyne"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Five-carbon chain with C1#C2 and C4#C5, equivalent directions, a retained before diyne. Historical locants precede parent.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P2.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm"
+        ]
+      },
+      "identity": "gJP@Dk^l@"
+    },
+    {
+      "id": "AUDCASE-0095",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CCCCC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@Di]YZh@@"
+    },
+    {
+      "id": "AUDCASE-0096",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC=CCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@DiU^Zij@@"
+    },
+    {
+      "id": "AUDCASE-0097",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC#C",
+      "features": [
+        "multiple-unsaturations",
+        "poly-yne-or-enyne"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJP@Dk^d@"
+    },
+    {
+      "id": "AUDCASE-0098",
+      "family": "multi-unsaturated",
+      "smiles": "CC=CC=CCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@@DiUzVj`@"
+    },
+    {
+      "id": "AUDCASE-0099",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CC=CCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiUuYiZj`@"
+    },
+    {
+      "id": "AUDCASE-0100",
+      "family": "multi-unsaturated",
+      "smiles": "C#CC#CC",
+      "features": [
+        "multiple-unsaturations",
+        "poly-yne-or-enyne"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJP@Di[x@"
+    },
+    {
+      "id": "AUDCASE-0101",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC=CCCCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DiU]VZijj@@"
+    },
+    {
+      "id": "AUDCASE-0102",
+      "family": "multi-unsaturated",
+      "smiles": "CC=CC=CC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiVV`@"
+    },
+    {
+      "id": "AUDCASE-0103",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@@Di]Vejj@@"
+    },
+    {
+      "id": "AUDCASE-0104",
+      "family": "multi-unsaturated",
+      "smiles": "C#CCC=CCCCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@DkUUVzZjj@@"
+    },
+    {
+      "id": "AUDCASE-0105",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC=CCCC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DiUVjX@@"
+    },
+    {
+      "id": "AUDCASE-0106",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CCCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@Di]UiZjh@@"
+    },
+    {
+      "id": "AUDCASE-0107",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CC=CCCCCC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DiUuVejh@@"
+    },
+    {
+      "id": "AUDCASE-0108",
+      "family": "multi-unsaturated",
+      "smiles": "C#CCC=CCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DkUUnfjh@@"
+    },
+    {
+      "id": "AUDCASE-0109",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC#CCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@@DiU]njZh@@"
+    },
+    {
+      "id": "AUDCASE-0110",
+      "family": "multi-unsaturated",
+      "smiles": "CC=CC=CCC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@DiUej@@"
+    },
+    {
+      "id": "AUDCASE-0111",
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CCCC",
+      "features": [
+        "multiple-unsaturations",
+        "polyene"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp@Di]ej@@"
+    },
+    {
+      "id": "AUDCASE-0112",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC#CC",
+      "features": [
+        "multiple-unsaturations",
+        "poly-yne-or-enyne"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@Di_jP@"
+    },
+    {
+      "id": "AUDCASE-0113",
+      "family": "multi-unsaturated",
+      "smiles": "C#CC#CCCCCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkL@@Di]UVojjj@@"
+    },
+    {
+      "id": "AUDCASE-0114",
+      "family": "multi-unsaturated",
+      "smiles": "C#CCC=CCCC",
+      "features": [
+        "multiple-unsaturations",
+        "poly-yne-or-enyne"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@@DkU^fh@@"
+    },
+    {
+      "id": "AUDCASE-0115",
+      "family": "multi-unsaturated",
+      "smiles": "C=CCC=CCCCCC(C)C",
+      "features": [
+        "multiple-unsaturations",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@@DiU]Yjfj`@"
+    },
+    {
+      "id": "AUDCASE-0116",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)C=CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@DiYU~ejjj`@"
+    },
+    {
+      "id": "AUDCASE-0117",
+      "family": "carbocycles",
+      "smiles": "C1(CC)C=CCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@DiYUYUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0118",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)C=CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@LdRbRK\\uUU@@"
+    },
+    {
+      "id": "AUDCASE-0119",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)CCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@LdbRIUUUP@@"
+    },
+    {
+      "id": "AUDCASE-0120",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=C(CC)CCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@@DjUZnZjj@@"
+    },
+    {
+      "id": "AUDCASE-0121",
+      "family": "carbocycles",
+      "smiles": "C1(C)CCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp@DjTvjh@"
+    },
+    {
+      "id": "AUDCASE-0122",
+      "family": "carbocycles",
+      "smiles": "C1=CC=CCC(C)C1",
+      "features": [
+        "cyclic-diene",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DiUzZVj`@"
+    },
+    {
+      "id": "AUDCASE-0123",
+      "family": "carbocycles",
+      "smiles": "C1CCCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@@DiUWajjj@@"
+    },
+    {
+      "id": "AUDCASE-0124",
+      "family": "carbocycles",
+      "smiles": "C1=CC=CCCCCC(C)C1",
+      "features": [
+        "cyclic-diene",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@DiUVQVVjj`@"
+    },
+    {
+      "id": "AUDCASE-0125",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=C(CC)CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@DjUYyUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0126",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DiYVyjj`@"
+    },
+    {
+      "id": "AUDCASE-0127",
+      "family": "carbocycles",
+      "smiles": "C1CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOp@DiUkjj`@"
+    },
+    {
+      "id": "AUDCASE-0128",
+      "family": "carbocycles",
+      "smiles": "C1(C)C(C)CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@DjY}FZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0129",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=CCCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@DiY]YUjjj`@"
+    },
+    {
+      "id": "AUDCASE-0130",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)CCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@LddRJPsUUU@@"
+    },
+    {
+      "id": "AUDCASE-0131",
+      "family": "carbocycles",
+      "smiles": "C1(CC)CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DjUZzjj`@"
+    },
+    {
+      "id": "AUDCASE-0132",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKP@DiUfj@@"
+    },
+    {
+      "id": "AUDCASE-0133",
+      "family": "carbocycles",
+      "smiles": "C1(C)CCCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@DjWUFZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0134",
+      "family": "carbocycles",
+      "smiles": "C1C=CCCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@DiUUFVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0135",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)C=CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@LdRdRHruUU@@"
+    },
+    {
+      "id": "AUDCASE-0136",
+      "family": "carbocycles",
+      "smiles": "C1(CC)C=CCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DiYrYjj`@"
+    },
+    {
+      "id": "AUDCASE-0137",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)C=C1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp@DkVIjh@"
+    },
+    {
+      "id": "AUDCASE-0138",
+      "family": "carbocycles",
+      "smiles": "C1C=CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gBP@DiVZ`@"
+    },
+    {
+      "id": "AUDCASE-0139",
+      "family": "carbocycles",
+      "smiles": "C1C=CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DiUVyjj`@"
+    },
+    {
+      "id": "AUDCASE-0140",
+      "family": "carbocycles",
+      "smiles": "C1CCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gBP@DiVj`@"
+    },
+    {
+      "id": "AUDCASE-0141",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=CCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp@Di[Ejh@"
+    },
+    {
+      "id": "AUDCASE-0142",
+      "family": "carbocycles",
+      "smiles": "C1C=CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOp@DiUkZj`@"
+    },
+    {
+      "id": "AUDCASE-0143",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)C=CCCCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkl@@DiYUUTvjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0144",
+      "family": "carbocycles",
+      "smiles": "C1(C)CC(CC)CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcL@@DjUY}]jjjj@@"
+    },
+    {
+      "id": "AUDCASE-0145",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)C=CCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DiZRyjj`@"
+    },
+    {
+      "id": "AUDCASE-0146",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)C=CCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOp@DiZqZj`@"
+    },
+    {
+      "id": "AUDCASE-0147",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=C(CC)CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DjURijj`@"
+    },
+    {
+      "id": "AUDCASE-0148",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)C=CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp@DiYYjh@"
+    },
+    {
+      "id": "AUDCASE-0149",
+      "family": "carbocycles",
+      "smiles": "C1(CC)C=CCCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@@DiYUzVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0150",
+      "family": "carbocycles",
+      "smiles": "C1(CCC)CCCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@@DjU^njjj@@"
+    },
+    {
+      "id": "AUDCASE-0151",
+      "family": "carbocycles",
+      "smiles": "C1(C)(C)CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKP@H~Jj`@"
+    },
+    {
+      "id": "AUDCASE-0152",
+      "family": "carbocycles",
+      "smiles": "C1(C)C(C)=CC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp@DjUEjh@"
+    },
+    {
+      "id": "AUDCASE-0153",
+      "family": "carbocycles",
+      "smiles": "C1(C)C(C)CCCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "saturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@@DjYvzjj`@"
+    },
+    {
+      "id": "AUDCASE-0154",
+      "family": "carbocycles",
+      "smiles": "C1(C)C=C1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gBP@DkbZ`@"
+    },
+    {
+      "id": "AUDCASE-0155",
+      "family": "carbocycles",
+      "smiles": "C1(C)C(C)=CCC1",
+      "features": [
+        "carbocycle",
+        "ring-orientation",
+        "unsaturated-ring"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOp@DjVMZj`@"
+    },
+    {
+      "id": "AUDCASE-0156",
+      "family": "aromatics",
+      "smiles": "c1(CCO)ccccc1",
+      "features": [
+        "aromatic",
+        "attachment-sensitive"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didH@@RUe^Fh@@@@"
+    },
+    {
+      "id": "AUDCASE-0157",
+      "family": "aromatics",
+      "smiles": "c1(C(=O)O)cc(C)ccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTD@@QInUnEh@H@@"
+    },
+    {
+      "id": "AUDCASE-0158",
+      "family": "aromatics",
+      "smiles": "c1(CC)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@`@bDfYUn`HH@@"
+    },
+    {
+      "id": "AUDCASE-0159",
+      "family": "aromatics",
+      "smiles": "c1(CCC)ccccc1",
+      "features": [
+        "aromatic",
+        "attachment-sensitive"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@@DjU^nBBH@@"
+    },
+    {
+      "id": "AUDCASE-0160",
+      "family": "aromatics",
+      "smiles": "c1(C=C)ccc(Cl)cc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@`@bDfUvf`@d@@"
+    },
+    {
+      "id": "AUDCASE-0161",
+      "family": "aromatics",
+      "smiles": "c1(C=O)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didH`ABHRYeVz@`P@@"
+    },
+    {
+      "id": "AUDCASE-0162",
+      "family": "aromatics",
+      "smiles": "c1(O)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daDH@@RYe[hB@@@"
+    },
+    {
+      "id": "AUDCASE-0163",
+      "family": "aromatics",
+      "smiles": "c1(Br)cc(C)ccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@`@qDfUjZ@B@@"
+    },
+    {
+      "id": "AUDCASE-0164",
+      "family": "aromatics",
+      "smiles": "c1(C(=O)O)ccccc1",
+      "features": [
+        "aromatic",
+        "attachment-sensitive"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didD@@QInUxV`@@@"
+    },
+    {
+      "id": "AUDCASE-0165",
+      "family": "aromatics",
+      "smiles": "c1(C(=O)O)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTD`NDHaIfVVfBA`@@"
+    },
+    {
+      "id": "AUDCASE-0166",
+      "family": "aromatics",
+      "smiles": "c1(C)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@`@bDfYVz@`@@"
+    },
+    {
+      "id": "AUDCASE-0167",
+      "family": "aromatics",
+      "smiles": "c1(C(=O)O)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTD@@QInYQehB@@@"
+    },
+    {
+      "id": "AUDCASE-0168",
+      "family": "aromatics",
+      "smiles": "c1(O)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daDH`BBHRYg[hH@@@"
+    },
+    {
+      "id": "AUDCASE-0169",
+      "family": "aromatics",
+      "smiles": "c1(Cl)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@P@bBbDfYvzB@@@"
+    },
+    {
+      "id": "AUDCASE-0170",
+      "family": "aromatics",
+      "smiles": "c1(C#N)ccccc1",
+      "features": [
+        "aromatic",
+        "attachment-sensitive"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daF@@@RVU[n@@@@"
+    },
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH@@RUfTYj@`@@"
+    },
+    {
+      "id": "AUDCASE-0172",
+      "family": "aromatics",
+      "smiles": "c1(CCC)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deT@`@bLbbbRK]@PT@@"
+    },
+    {
+      "id": "AUDCASE-0173",
+      "family": "aromatics",
+      "smiles": "c1(Cl)ccc(Cl)cc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@P@bNbDfUzZ@B@@"
+    },
+    {
+      "id": "AUDCASE-0174",
+      "family": "aromatics",
+      "smiles": "c1(C=C)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@@DjYUaBHP@@"
+    },
+    {
+      "id": "AUDCASE-0175",
+      "family": "aromatics",
+      "smiles": "c1(C#C)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@`@bDfUnn`BL@@"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH@@RUe_aj@B@@"
+    },
+    {
+      "id": "AUDCASE-0177",
+      "family": "aromatics",
+      "smiles": "c1(C#N)c(Cl)cccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dif@`NBHRYeVFBC@@@"
+    },
+    {
+      "id": "AUDCASE-0178",
+      "family": "aromatics",
+      "smiles": "c1(C(=O)O)ccc(Cl)cc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTD`AdHaIe]jZ@BX@@"
+    },
+    {
+      "id": "AUDCASE-0179",
+      "family": "aromatics",
+      "smiles": "c1(Cl)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@P@bFbDfUjz@H@@"
+    },
+    {
+      "id": "AUDCASE-0180",
+      "family": "aromatics",
+      "smiles": "c1(C#N)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dif@`ABHRYVzz@Hp@@"
+    },
+    {
+      "id": "AUDCASE-0181",
+      "family": "aromatics",
+      "smiles": "c1(CO)cc(C)ccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didH@@RVUfz`@`@@"
+    },
+    {
+      "id": "AUDCASE-0182",
+      "family": "aromatics",
+      "smiles": "c1(C)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daD@`@bDfUjZ@B@@"
+    },
+    {
+      "id": "AUDCASE-0183",
+      "family": "aromatics",
+      "smiles": "c1(O)ccccc1",
+      "features": [
+        "aromatic",
+        "attachment-sensitive"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOq@@drm\\@@@@"
+    },
+    {
+      "id": "AUDCASE-0184",
+      "family": "aromatics",
+      "smiles": "c1(O)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daDH`FBHRYVkh@`@@"
+    },
+    {
+      "id": "AUDCASE-0185",
+      "family": "aromatics",
+      "smiles": "c1(CCO)cc(Cl)ccc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH`IBHrJIJETt@EP@@"
+    },
+    {
+      "id": "AUDCASE-0186",
+      "family": "aromatics",
+      "smiles": "c1(CCCC)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@LdbbRNXPbHh@@"
+    },
+    {
+      "id": "AUDCASE-0187",
+      "family": "aromatics",
+      "smiles": "c1(CCO)ccc(Cl)cc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH`IBHRYWVf`@j@@"
+    },
+    {
+      "id": "AUDCASE-0188",
+      "family": "aromatics",
+      "smiles": "c1(C#C)ccc(Cl)cc1",
+      "features": [
+        "aromatic",
+        "mixed-prefixes",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "did@`@bDfUvf`@l@@"
+    },
+    {
+      "id": "AUDCASE-0189",
+      "family": "aromatics",
+      "smiles": "c1(CCCC)cc(C)ccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmt@@LdbRTqk``bh@@"
+    },
+    {
+      "id": "AUDCASE-0190",
+      "family": "aromatics",
+      "smiles": "c1(C#N)c(C)cccc1",
+      "features": [
+        "aromatic",
+        "positional-isomer",
+        "numbering-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dif@@@RVY^G`H@@@"
+    },
+    {
+      "id": "AUDCASE-0191",
+      "family": "halogenated",
+      "smiles": "CCCCCC(Cl)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@P@bBbDfWVjj`@"
+    },
+    {
+      "id": "AUDCASE-0192",
+      "family": "halogenated",
+      "smiles": "CC(I)CCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@P@kAbDf]Vjj`@"
+    },
+    {
+      "id": "AUDCASE-0193",
+      "family": "halogenated",
+      "smiles": "CC(Cl)CCCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@P@bIbDf]Ujjj@@"
+    },
+    {
+      "id": "AUDCASE-0194",
+      "family": "halogenated",
+      "smiles": "CC(F)(F)CCCCCCCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@P@dDdDfoUVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0195",
+      "family": "halogenated",
+      "smiles": "CC(Cl)(Cl)CCCCCCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@P@bDbDfoUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0196",
+      "family": "halogenated",
+      "smiles": "C(Br)CCCCCCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@P@qMbDeUUVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0197",
+      "family": "halogenated",
+      "smiles": "CC(I)(I)CCCCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@P@kDkDfoVjj`@"
+    },
+    {
+      "id": "AUDCASE-0198",
+      "family": "halogenated",
+      "smiles": "CCCCCCCC(I)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@P@kBbDfWUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0199",
+      "family": "halogenated",
+      "smiles": "C(Br)CCCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@P@qAbDeUVjj`@"
+    },
+    {
+      "id": "AUDCASE-0200",
+      "family": "halogenated",
+      "smiles": "CC(I)(I)C",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJPDAVJlRZj`@"
+    },
+    {
+      "id": "AUDCASE-0201",
+      "family": "halogenated",
+      "smiles": "CCC(Br)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAbFHRYZj@@"
+    },
+    {
+      "id": "AUDCASE-0202",
+      "family": "halogenated",
+      "smiles": "C(I)CCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAVVHRUZj@@"
+    },
+    {
+      "id": "AUDCASE-0203",
+      "family": "halogenated",
+      "smiles": "CCCCC(F)(F)C",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@P@dDdDfoZjh@@"
+    },
+    {
+      "id": "AUDCASE-0204",
+      "family": "halogenated",
+      "smiles": "CCCC(Br)(Br)C",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNpDAbKDRZ~jh@"
+    },
+    {
+      "id": "AUDCASE-0205",
+      "family": "halogenated",
+      "smiles": "C(I)CCCCCCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dct@P@kMbDeUUVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0206",
+      "family": "halogenated",
+      "smiles": "CCC(F)(F)C",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAHJPRZzj@@"
+    },
+    {
+      "id": "AUDCASE-0207",
+      "family": "halogenated",
+      "smiles": "CC(Br)(Br)CC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAbKDRZzj@@"
+    },
+    {
+      "id": "AUDCASE-0208",
+      "family": "halogenated",
+      "smiles": "C(F)CCCCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diD@P@bAdDeUVjj`@"
+    },
+    {
+      "id": "AUDCASE-0209",
+      "family": "halogenated",
+      "smiles": "CC(Br)(Br)CCCCCCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmT@P@qDqDfoUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0210",
+      "family": "halogenated",
+      "smiles": "CC(Cl)(Cl)CCCCCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "ded@P@bDbDfoUjjj@@"
+    },
+    {
+      "id": "AUDCASE-0211",
+      "family": "halogenated",
+      "smiles": "CCC(Cl)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDADFHRYZj@@"
+    },
+    {
+      "id": "AUDCASE-0212",
+      "family": "halogenated",
+      "smiles": "CCCCC(Cl)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@P@bBbDfWZjh@@"
+    },
+    {
+      "id": "AUDCASE-0213",
+      "family": "halogenated",
+      "smiles": "CC(F)(F)CCC",
+      "features": [
+        "halogen",
+        "geminal",
+        "repeated-substituents"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNpDAHJPRZ~jh@"
+    },
+    {
+      "id": "AUDCASE-0214",
+      "family": "halogenated",
+      "smiles": "CC(Cl)CCCC(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dax@P@bNbDf]Zjh@@"
+    },
+    {
+      "id": "AUDCASE-0215",
+      "family": "halogenated",
+      "smiles": "CC(I)C(Cl)",
+      "features": [
+        "halogen",
+        "multiple-prefixes",
+        "alphabetical-tie"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJPDAVFHRYj`@"
+    },
+    {
+      "id": "AUDCASE-0216",
+      "family": "alcohols-polyols",
+      "smiles": "CCC(O)C=CC",
+      "features": [
+        "suffix-before-unsaturation"
+      ],
+      "expected": {
+        "2013-en": "hex-4-en-3-ol"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Six-carbon chain; OH at C3 rather than C4 controls direction despite C=C receiving C4 rather than C2.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P3.html"
+        ]
+      },
+      "identity": "gNq@@drmSP@"
+    },
+    {
+      "id": "AUDCASE-0217",
+      "family": "alcohols-polyols",
+      "smiles": "OCCC1CCCCC1",
+      "features": [
+        "functional-chain-versus-ring"
+      ],
+      "expected": {
+        "2013-en": "2-cyclohexylethan-1-ol"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "OH lies on an external two-carbon chain. Parent containing suffix OH is ethan-1-ol; the separate six-carbon ring is cyclohexyl at C2.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "didH@@RUe^Fjjh@@"
+    },
+    {
+      "id": "AUDCASE-0218",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CC=CCCCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RUUUjZj`@"
+    },
+    {
+      "id": "AUDCASE-0219",
+      "family": "alcohols-polyols",
+      "smiles": "CCC(O)CCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@RYWZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0220",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CC=CCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RUUZfj@@"
+    },
+    {
+      "id": "AUDCASE-0221",
+      "family": "alcohols-polyols",
+      "smiles": "CCC=C(O)CCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RYUyjj@@"
+    },
+    {
+      "id": "AUDCASE-0222",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCCCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@UIgUVjjj@@"
+    },
+    {
+      "id": "AUDCASE-0223",
+      "family": "alcohols-polyols",
+      "smiles": "CCCC(O)CCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYU^jjj`@"
+    },
+    {
+      "id": "AUDCASE-0224",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@eIgUZjj`@"
+    },
+    {
+      "id": "AUDCASE-0225",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)C=CCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNq@@dsmSP@"
+    },
+    {
+      "id": "AUDCASE-0226",
+      "family": "alcohols-polyols",
+      "smiles": "CCC(O)CCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RYWjjj@@"
+    },
+    {
+      "id": "AUDCASE-0227",
+      "family": "alcohols-polyols",
+      "smiles": "CCC(O)CCCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYWVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0228",
+      "family": "alcohols-polyols",
+      "smiles": "CCC=C(O)CCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@RYUvZjh@@"
+    },
+    {
+      "id": "AUDCASE-0229",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp`@tf]jj@@"
+    },
+    {
+      "id": "AUDCASE-0230",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CC=CCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxH@@RUUjZ`@"
+    },
+    {
+      "id": "AUDCASE-0231",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCCCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RYuUjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0232",
+      "family": "alcohols-polyols",
+      "smiles": "CCC=C(O)CCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxH@@RYUfj`@"
+    },
+    {
+      "id": "AUDCASE-0233",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJP`@TeZh@"
+    },
+    {
+      "id": "AUDCASE-0234",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@RYuZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0235",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGQ@@dkUT@@"
+    },
+    {
+      "id": "AUDCASE-0236",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP`ATeVj`@"
+    },
+    {
+      "id": "AUDCASE-0237",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCCCCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@uIgUUjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0238",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp`@teUjj@@"
+    },
+    {
+      "id": "AUDCASE-0239",
+      "family": "alcohols-polyols",
+      "smiles": "CCC(O)CCCCCC(C)C",
+      "features": [
+        "alcohol",
+        "branching",
+        "suffix-numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RYWUjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0240",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)C=CCCCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYuUjZj`@"
+    },
+    {
+      "id": "AUDCASE-0241",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CCCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxD@@yIUVjj@@"
+    },
+    {
+      "id": "AUDCASE-0242",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)CCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxD@@yIgVjj@@"
+    },
+    {
+      "id": "AUDCASE-0243",
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)C=CCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RYuZfj@@"
+    },
+    {
+      "id": "AUDCASE-0244",
+      "family": "alcohols-polyols",
+      "smiles": "CCC=CC(O)CCCCC",
+      "features": [
+        "unsaturated-alcohol",
+        "suffix-before-unsaturation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYUWjZj`@"
+    },
+    {
+      "id": "AUDCASE-0245",
+      "family": "alcohols-polyols",
+      "smiles": "C(O)CCCCCCC(O)",
+      "features": [
+        "diol",
+        "suffix-multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@eIUUZjj`@"
+    },
+    {
+      "id": "AUDCASE-0246",
+      "family": "carbonyls",
+      "smiles": "CC(=O)C=CC",
+      "features": [
+        "suffix-before-unsaturation"
+      ],
+      "expected": {
+        "2013-en": "pent-3-en-2-one"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Five-carbon unbranched chain; carbonyl is assigned C2 rather than C4, placing C=C at C3. Terminal e of ene is elided before one.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P3.html"
+        ]
+      },
+      "identity": "gGQ@@dsmL@@"
+    },
+    {
+      "id": "AUDCASE-0247",
+      "family": "carbonyls",
+      "smiles": "O=C1C=CC=CCC1",
+      "features": [
+        "cyclic-ketone",
+        "two-double-bonds",
+        "connecting-vowel"
+      ],
+      "expected": {
+        "2013-en": "cyclohepta-2,4-dien-1-one",
+        "1979-en": "2,4-cycloheptadienone"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Seven-carbon ring, carbonyl C1. Double-bond sets 2,4 and 4,6 select 2,4. Modern locants separate parent/ene/one; A-11.3 and C-314.1 give historical adienone with carbonyl C1 implicit.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_276.htm"
+        ]
+      },
+      "identity": "daDH@@RYU[ffi@@"
+    },
+    {
+      "id": "AUDCASE-0248",
+      "family": "carbonyls",
+      "smiles": "O=C1C=CC=CC=CC1",
+      "features": [
+        "cyclic-ketone",
+        "three-double-bonds",
+        "connecting-vowel"
+      ],
+      "expected": {
+        "2013-en": "cycloocta-2,4,6-trien-1-one",
+        "1979-en": "2,4,6-cyclooctatrienone"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Eight-carbon ring with one ring ketone, numbered from carbonyl C1. Double bonds at 2,4,6 are preferred to 3,5,7. Historical a+trienone retains C1 as the inherent ketone position.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm",
+          "https://www.acdlabs.com/iupac/nomenclature/79/r79_276.htm"
+        ]
+      },
+      "identity": "didH@@RYU^EiiX@@"
+    },
+    {
+      "id": "AUDCASE-0249",
+      "family": "carbonyls",
+      "smiles": "CCCCCC(=O)CC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@rJIJHijjj@@"
+    },
+    {
+      "id": "AUDCASE-0250",
+      "family": "carbonyls",
+      "smiles": "C(=O)CCC(C)C",
+      "features": [
+        "branched-aldehyde"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNq@@djsUP@"
+    },
+    {
+      "id": "AUDCASE-0251",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CC=C1",
+      "features": [
+        "cyclic-ketone",
+        "carbonyl-C1",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFq@@drfmK@@"
+    },
+    {
+      "id": "AUDCASE-0252",
+      "family": "carbonyls",
+      "smiles": "CCCC(=O)CCCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@eIeUyjjf@@"
+    },
+    {
+      "id": "AUDCASE-0253",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)C(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNq@@dsKUP@"
+    },
+    {
+      "id": "AUDCASE-0254",
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@RYuYjjh@@"
+    },
+    {
+      "id": "AUDCASE-0255",
+      "family": "carbonyls",
+      "smiles": "CCCCCC(=O)C(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@rJJHiMUU@@"
+    },
+    {
+      "id": "AUDCASE-0256",
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCCCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RYuUfjjj@@"
+    },
+    {
+      "id": "AUDCASE-0257",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxD@@YIeYjf@@"
+    },
+    {
+      "id": "AUDCASE-0258",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CCCCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@eIe]Yjjf@@"
+    },
+    {
+      "id": "AUDCASE-0259",
+      "family": "carbonyls",
+      "smiles": "CC(C)CCCC(=O)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RYufjj@@"
+    },
+    {
+      "id": "AUDCASE-0260",
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxH@@RYvZj`@"
+    },
+    {
+      "id": "AUDCASE-0261",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CCCCCCC(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcLH@@RYUeuuijjh@@"
+    },
+    {
+      "id": "AUDCASE-0262",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CC=C(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daDH@@RYUiffi@@"
+    },
+    {
+      "id": "AUDCASE-0263",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CCCCC(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH@@RYUgiZZj`@"
+    },
+    {
+      "id": "AUDCASE-0264",
+      "family": "carbonyls",
+      "smiles": "C(=O)CCC(=O)",
+      "features": [
+        "dialdehyde",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP`ATeUjP@"
+    },
+    {
+      "id": "AUDCASE-0265",
+      "family": "carbonyls",
+      "smiles": "C1(=O)CCCCCCC(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmtH@@RYVWeVjjj@@"
+    },
+    {
+      "id": "AUDCASE-0266",
+      "family": "carbonyls",
+      "smiles": "CCCC(=O)CCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYU^Zjj`@"
+    },
+    {
+      "id": "AUDCASE-0267",
+      "family": "carbonyls",
+      "smiles": "C1(=O)CCCCC(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didH@@RYVVEjjh@@"
+    },
+    {
+      "id": "AUDCASE-0268",
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCCCCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@UIgUVZjjX@@"
+    },
+    {
+      "id": "AUDCASE-0269",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CCCCCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@UIe]VZjjX@@"
+    },
+    {
+      "id": "AUDCASE-0270",
+      "family": "carbonyls",
+      "smiles": "CCCCCCC(=O)C(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@rJJHiIjjj@@"
+    },
+    {
+      "id": "AUDCASE-0271",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CCCCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RYWUfjjj@@"
+    },
+    {
+      "id": "AUDCASE-0272",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CCCC1",
+      "features": [
+        "cyclic-ketone",
+        "carbonyl-C1",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOq@@drm[ST@@"
+    },
+    {
+      "id": "AUDCASE-0273",
+      "family": "carbonyls",
+      "smiles": "C(=O)CCCCCCCCC(=O)",
+      "features": [
+        "dialdehyde",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@uIUUUZjjd@@"
+    },
+    {
+      "id": "AUDCASE-0274",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@RYWfjj@@"
+    },
+    {
+      "id": "AUDCASE-0275",
+      "family": "carbonyls",
+      "smiles": "C1(=O)C=CC=CCCC1",
+      "features": [
+        "cyclic-ketone",
+        "carbonyl-C1",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "didH@@RYU^EijX@@"
+    },
+    {
+      "id": "AUDCASE-0276",
+      "family": "carbonyls",
+      "smiles": "CCCCC(=O)CCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYUYZjj`@"
+    },
+    {
+      "id": "AUDCASE-0277",
+      "family": "carbonyls",
+      "smiles": "CCCCCCCC(=O)C(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@rJJHiIMUUT@@"
+    },
+    {
+      "id": "AUDCASE-0278",
+      "family": "carbonyls",
+      "smiles": "C(=O)CCCC(=O)",
+      "features": [
+        "dialdehyde",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp`@teUZi@@"
+    },
+    {
+      "id": "AUDCASE-0279",
+      "family": "carbonyls",
+      "smiles": "C1(=O)CCCCCC(C)C1",
+      "features": [
+        "cyclic-ketone",
+        "methylated",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTH@@RYVTYZjj`@"
+    },
+    {
+      "id": "AUDCASE-0280",
+      "family": "carbonyls",
+      "smiles": "CCCC(=O)CCCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RYU]fjjj@@"
+    },
+    {
+      "id": "AUDCASE-0281",
+      "family": "carbonyls",
+      "smiles": "CCCCC(=O)CCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@EIeUejjZ@@"
+    },
+    {
+      "id": "AUDCASE-0282",
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCCC(=O)C",
+      "features": [
+        "diketone",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@EIgUfji`@"
+    },
+    {
+      "id": "AUDCASE-0283",
+      "family": "carbonyls",
+      "smiles": "C(=O)CCCCCCC(=O)",
+      "features": [
+        "dialdehyde",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@eIUUVjjP@"
+    },
+    {
+      "id": "AUDCASE-0284",
+      "family": "carbonyls",
+      "smiles": "C1(=O)CCCCC1",
+      "features": [
+        "cyclic-ketone",
+        "carbonyl-C1",
+        "ring-orientation"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOq@@drm[UT@@"
+    },
+    {
+      "id": "AUDCASE-0285",
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CCCCC(C)C",
+      "features": [
+        "ketone",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RYWVZjj`@"
+    },
+    {
+      "id": "AUDCASE-0286",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCC1",
+      "features": [
+        "exocyclic-functional-carbon"
+      ],
+      "expected": {
+        "2013-en": "cyclohexanecarboxylic acid"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "COOH carbon is outside the saturated six-carbon ring; carboxylic acid is appended to cyclohexane without counting that carbon as a seventh ring atom.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "didD@@QInUxVjj`@"
+    },
+    {
+      "id": "AUDCASE-0287",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daDD@@QInUnZjh@@"
+    },
+    {
+      "id": "AUDCASE-0288",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCCCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dglB@@P{R[UUVZjji`@"
+    },
+    {
+      "id": "AUDCASE-0289",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOp`@dfykZj`@"
+    },
+    {
+      "id": "AUDCASE-0290",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCCCCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcLD@@QInUUWVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0291",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCCCCCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dklD@@QInUU]Mjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0292",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxB@@QnR[VZi`@"
+    },
+    {
+      "id": "AUDCASE-0293",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C=CCC",
+      "features": [
+        "unsaturated-acid",
+        "suffix-priority"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp`@dfuZZ@@"
+    },
+    {
+      "id": "AUDCASE-0294",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLB@@SSR[UUYjjjX@@"
+    },
+    {
+      "id": "AUDCASE-0295",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTB@@RUR[UVZji`@"
+    },
+    {
+      "id": "AUDCASE-0296",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deTD@@QInUQejjj@@"
+    },
+    {
+      "id": "AUDCASE-0297",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCCCC1",
+      "features": [
+        "ring-carboxylic-acid",
+        "exocyclic-functional-carbon"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmtD@@QInUVUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0298",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedB@@PYR[UYjjX@@"
+    },
+    {
+      "id": "AUDCASE-0299",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CC(C)CCCCCC",
+      "features": [
+        "acid",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@QImgUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0300",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C=CCCCC",
+      "features": [
+        "unsaturated-acid",
+        "suffix-priority"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDD@@QImUZZh@@"
+    },
+    {
+      "id": "AUDCASE-0301",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CC(C)CCC",
+      "features": [
+        "acid",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDD@@QImgZjh@@"
+    },
+    {
+      "id": "AUDCASE-0302",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C=CCCC",
+      "features": [
+        "unsaturated-acid",
+        "suffix-priority"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxD@@QImUij@@"
+    },
+    {
+      "id": "AUDCASE-0303",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCC(=O)O",
+      "features": [
+        "diacid",
+        "multiplicity"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctB@@Q]R[UUfjjf@@"
+    },
+    {
+      "id": "AUDCASE-0304",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C=CCCCCC",
+      "features": [
+        "unsaturated-acid",
+        "suffix-priority"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@QImUVfj`@"
+    },
+    {
+      "id": "AUDCASE-0305",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C=CCCCCCC",
+      "features": [
+        "unsaturated-acid",
+        "suffix-priority"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@QImUUijj@@"
+    },
+    {
+      "id": "AUDCASE-0306",
+      "family": "ethers-esters",
+      "smiles": "CCCCCC(=O)OC(C)CC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@QIeY_Zjjh@@"
+    },
+    {
+      "id": "AUDCASE-0307",
+      "family": "ethers-esters",
+      "smiles": "COC(=O)CC(C)CCC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@QIeyvjj`@"
+    },
+    {
+      "id": "AUDCASE-0308",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(=O)CC(C)",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@QIeUujjj@@"
+    },
+    {
+      "id": "AUDCASE-0309",
+      "family": "ethers-esters",
+      "smiles": "CCC(=O)OC(C)CC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDD@@QIe[Zjh@@"
+    },
+    {
+      "id": "AUDCASE-0310",
+      "family": "ethers-esters",
+      "smiles": "CCC(=O)OC(C)CCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@QIe[ujjj@@"
+    },
+    {
+      "id": "AUDCASE-0311",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(=O)CC(C)CC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@QIeVUjjj@@"
+    },
+    {
+      "id": "AUDCASE-0312",
+      "family": "ethers-esters",
+      "smiles": "COC(=O)CC(C)",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNp`@dfWZj@@"
+    },
+    {
+      "id": "AUDCASE-0313",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(C)CCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RfWUZjjj@@"
+    },
+    {
+      "id": "AUDCASE-0314",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(C)CC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@RfWvjjh@@"
+    },
+    {
+      "id": "AUDCASE-0315",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(=O)CC(C)",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDD@@QIeUZjh@@"
+    },
+    {
+      "id": "AUDCASE-0316",
+      "family": "ethers-esters",
+      "smiles": "COC(=O)CC(C)CC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDD@@QIeyZjh@@"
+    },
+    {
+      "id": "AUDCASE-0317",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(=O)CC(C)C",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@SHhdeDTuUUP@@"
+    },
+    {
+      "id": "AUDCASE-0318",
+      "family": "ethers-esters",
+      "smiles": "CCOC(C)CCCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@rQQHiJjjj@@"
+    },
+    {
+      "id": "AUDCASE-0319",
+      "family": "ethers-esters",
+      "smiles": "CCOC(C)CCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedH@@rQQHiUUU@@"
+    },
+    {
+      "id": "AUDCASE-0320",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(=O)CC(C)CCCC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLD@@SHhdeDbfjjj`@"
+    },
+    {
+      "id": "AUDCASE-0321",
+      "family": "ethers-esters",
+      "smiles": "CCC(=O)OC(C)CCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@QIe[vjj`@"
+    },
+    {
+      "id": "AUDCASE-0322",
+      "family": "ethers-esters",
+      "smiles": "CCCC(=O)OC(C)CCCCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dglD@@SHhdhdTduUUU@@"
+    },
+    {
+      "id": "AUDCASE-0323",
+      "family": "ethers-esters",
+      "smiles": "CCOC(=O)CC(C)CC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedD@@QIeVvjj`@"
+    },
+    {
+      "id": "AUDCASE-0324",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(=O)CC(C)CC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLD@@QIeVWvjjj`@"
+    },
+    {
+      "id": "AUDCASE-0325",
+      "family": "ethers-esters",
+      "smiles": "CCOC(C)CCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@rQQHjjj`@"
+    },
+    {
+      "id": "AUDCASE-0326",
+      "family": "ethers-esters",
+      "smiles": "CCCC(=O)OC(C)CCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@SHhdhdTuUUP@@"
+    },
+    {
+      "id": "AUDCASE-0327",
+      "family": "ethers-esters",
+      "smiles": "CCCCCC(=O)OC(C)CCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLD@@QIeY]Vjjj`@"
+    },
+    {
+      "id": "AUDCASE-0328",
+      "family": "ethers-esters",
+      "smiles": "COC(C)CCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxH@@Rf}jj`@"
+    },
+    {
+      "id": "AUDCASE-0329",
+      "family": "ethers-esters",
+      "smiles": "CCC(=O)OC(C)CCCCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLD@@QIe[uVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0330",
+      "family": "ethers-esters",
+      "smiles": "CCCC(=O)OC(C)CCCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLD@@SHhdhdTfjjj`@"
+    },
+    {
+      "id": "AUDCASE-0331",
+      "family": "ethers-esters",
+      "smiles": "COC(C)CCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDH@@Rf}Zjj@@"
+    },
+    {
+      "id": "AUDCASE-0332",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(C)CCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTH@@RfW]jjj`@"
+    },
+    {
+      "id": "AUDCASE-0333",
+      "family": "ethers-esters",
+      "smiles": "COC(C)CCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNq@@eM}UP@"
+    },
+    {
+      "id": "AUDCASE-0334",
+      "family": "ethers-esters",
+      "smiles": "CCCCOC(C)CCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RfWUzjjj@@"
+    },
+    {
+      "id": "AUDCASE-0335",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(=O)CC(C)CCC",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctD@@SHhdeDbuUUP@@"
+    },
+    {
+      "id": "AUDCASE-0336",
+      "family": "ethers-esters",
+      "smiles": "CCCOC(C)CCCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctH@@RfW]Zjjj@@"
+    },
+    {
+      "id": "AUDCASE-0337",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(C)CCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLH@@RfWUVjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0338",
+      "family": "ethers-esters",
+      "smiles": "CCCCCOC(C)CCCCCC",
+      "features": [
+        "ether",
+        "secondary-attachment",
+        "numbering"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dglH@@RfWUWjjjj`@"
+    },
+    {
+      "id": "AUDCASE-0339",
+      "family": "ethers-esters",
+      "smiles": "CCCCOC(=O)CC(C)C",
+      "features": [
+        "ester",
+        "branched-acid-component"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTD@@SHhdeDVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0340",
+      "family": "ethers-esters",
+      "smiles": "CCCCC(=O)OC(C)CCCCCC",
+      "features": [
+        "ester",
+        "secondary-organyl",
+        "exact-spelling-unadjudicated"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do\\D@@QIeY]uZjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0341",
+      "family": "nitrogen-functions",
+      "smiles": "N#CC1CCCCC1",
+      "features": [
+        "exocyclic-functional-carbon"
+      ],
+      "expected": {
+        "2013-en": "cyclohexanecarbonitrile"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Nitrile carbon lies outside a saturated six-carbon ring. The ring parent takes carbonitrile rather than counting the CN carbon in the ring.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6a.html"
+        ]
+      },
+      "identity": "daF@@@RVU[njj@@"
+    },
+    {
+      "id": "AUDCASE-0342",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CC",
+      "features": [
+        "N-substitution",
+        "secondary-amide"
+      ],
+      "expected": {
+        "2013-en": "N-ethylpropanamide"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Three-carbon acyl chain includes carbonyl as C1; the ethyl group attaches to nitrogen and must receive an N locant.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6a.html"
+        ]
+      },
+      "identity": "gNy@DDfUZj@@"
+    },
+    {
+      "id": "AUDCASE-0343",
+      "family": "nitrogen-functions",
+      "smiles": "CN(C)CCC",
+      "features": [
+        "N-substitution",
+        "tertiary-amine"
+      ],
+      "expected": {
+        "2013-en": "N,N-dimethylpropan-1-amine"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Longest carbon group directly attached to N is propyl, making propan-1-amine. The two remaining methyl groups attach to N and require N,N locants.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P6a.html"
+        ]
+      },
+      "identity": "gGX@AddQjh@"
+    },
+    {
+      "id": "AUDCASE-0344",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcvH@DAIfW]Zjjh@@"
+    },
+    {
+      "id": "AUDCASE-0345",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkNH@DAIfWUVjjj`@"
+    },
+    {
+      "id": "AUDCASE-0346",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNy@DDf[Zj@@"
+    },
+    {
+      "id": "AUDCASE-0347",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIeUUjjj@@"
+    },
+    {
+      "id": "AUDCASE-0348",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCNC(=O)CCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcvH@DAIeUWZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0349",
+      "family": "nitrogen-functions",
+      "smiles": "CCCN(C)CCCC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diF@@@Ri]Zjj@@"
+    },
+    {
+      "id": "AUDCASE-0350",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dgnH@DAIfWUUjjjj@@"
+    },
+    {
+      "id": "AUDCASE-0351",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CC",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNx@@dkOUP@"
+    },
+    {
+      "id": "AUDCASE-0352",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CCCC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daz@@@Ri_jj`@"
+    },
+    {
+      "id": "AUDCASE-0353",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CCCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "defH@DAIeWVjj`@"
+    },
+    {
+      "id": "AUDCASE-0354",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)C",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGX@@dk]T@@"
+    },
+    {
+      "id": "AUDCASE-0355",
+      "family": "nitrogen-functions",
+      "smiles": "CCCNC(=O)CCCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIeU]jjj@@"
+    },
+    {
+      "id": "AUDCASE-0356",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCC(=O)N(C)CCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIfWUjjj@@"
+    },
+    {
+      "id": "AUDCASE-0357",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CCCCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkNH@DAIeUUvjjj`@"
+    },
+    {
+      "id": "AUDCASE-0358",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGX@@eRuT@@"
+    },
+    {
+      "id": "AUDCASE-0359",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCNC(=O)CC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "defH@DAIe]Vjj`@"
+    },
+    {
+      "id": "AUDCASE-0360",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIfWujjj@@"
+    },
+    {
+      "id": "AUDCASE-0361",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "defH@DAIf}Vjj`@"
+    },
+    {
+      "id": "AUDCASE-0362",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkNH@DAIfW]Vjjj`@"
+    },
+    {
+      "id": "AUDCASE-0363",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diFH@DAIfWZjh@@"
+    },
+    {
+      "id": "AUDCASE-0364",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCC",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "def@@@RUgWjjh@@"
+    },
+    {
+      "id": "AUDCASE-0365",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "do^H@DAIfWUWZjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0366",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dazH@DAIeUjj@@"
+    },
+    {
+      "id": "AUDCASE-0367",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CCCCCC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "def@@@Ri_Vjjh@@"
+    },
+    {
+      "id": "AUDCASE-0368",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diFH@DAIe]Zjh@@"
+    },
+    {
+      "id": "AUDCASE-0369",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCCCCC",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkN@@@RUgUWjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0370",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diFH@DAIf}Zjh@@"
+    },
+    {
+      "id": "AUDCASE-0371",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIfW]jjj@@"
+    },
+    {
+      "id": "AUDCASE-0372",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCC(=O)N(C)CCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcvH@DAIfWUZjjh@@"
+    },
+    {
+      "id": "AUDCASE-0373",
+      "family": "nitrogen-functions",
+      "smiles": "CNC(=O)CCCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diFH@DAIeuZjh@@"
+    },
+    {
+      "id": "AUDCASE-0374",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCCCC",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dcv@@@RUgU^jjj@@"
+    },
+    {
+      "id": "AUDCASE-0375",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCN(C)CCCC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmV@@@Ri]Ujjj`@"
+    },
+    {
+      "id": "AUDCASE-0376",
+      "family": "nitrogen-functions",
+      "smiles": "CCCNC(=O)CCCC",
+      "features": [
+        "secondary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "defH@DAIeUVjj`@"
+    },
+    {
+      "id": "AUDCASE-0377",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCCCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@DAIf}Ujjj@@"
+    },
+    {
+      "id": "AUDCASE-0378",
+      "family": "nitrogen-functions",
+      "smiles": "CN(C)CC",
+      "features": [
+        "tertiary-amine",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJX@@eSU@@"
+    },
+    {
+      "id": "AUDCASE-0379",
+      "family": "nitrogen-functions",
+      "smiles": "CCC(=O)N(C)CCC",
+      "features": [
+        "tertiary-amide",
+        "N-substitution"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diFH@DCHhhdVjj@@"
+    },
+    {
+      "id": "AUDCASE-0380",
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCCC",
+      "features": [
+        "nitrile",
+        "branching"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmV@@@RUgUzjj`@"
+    },
+    {
+      "id": "AUDCASE-0381",
+      "family": "mixed-functions",
+      "smiles": "OCCC(=O)N",
+      "features": [
+        "amide-over-alcohol",
+        "published-rule-example"
+      ],
+      "expected": {
+        "2013-en": "3-hydroxypropanamide"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "HO-CH2-CH2-CONH2 is the explicit P-41 example: amide is senior to alcohol; carbonyl carbon is C1 and hydroxy is at C3.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html"
+        ]
+      },
+      "identity": "gGX`DJdvmT@@"
+    },
+    {
+      "id": "AUDCASE-0382",
+      "family": "mixed-functions",
+      "smiles": "O=CCCC#N",
+      "features": [
+        "nitrile-over-aldehyde",
+        "published-rule-example"
+      ],
+      "expected": {
+        "2013-en": "4-oxobutanenitrile"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "OHC-CH2-CH2-CN is the explicit P-41 example: nitrile is senior to aldehyde. Nitrile carbon is C1, aldehyde oxygen is represented by oxo at C4.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html"
+        ]
+      },
+      "identity": "gGY@JDeUjp@"
+    },
+    {
+      "id": "AUDCASE-0383",
+      "family": "mixed-functions",
+      "smiles": "CC(=O)CC(=O)O",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "expected": {
+        "2013-en": "3-oxobutanoic acid"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Four-carbon acid chain includes the carboxyl carbon as C1; ketone at C3 becomes oxo. Carboxylic acid is senior to ketone.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "gNq`@jdvsTp@"
+    },
+    {
+      "id": "AUDCASE-0384",
+      "family": "mixed-functions",
+      "smiles": "OCCC(=O)O",
+      "features": [
+        "acid-over-alcohol"
+      ],
+      "expected": {
+        "2013-en": "3-hydroxypropanoic acid"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Three-carbon acid parent, carboxyl at C1, hydroxyl at C3; acid suffix and hydroxy prefix.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "gGQ`@jdvmT@@"
+    },
+    {
+      "id": "AUDCASE-0385",
+      "family": "mixed-functions",
+      "smiles": "CC(O)CC=O",
+      "features": [
+        "aldehyde-over-alcohol"
+      ],
+      "expected": {
+        "2013-en": "3-hydroxybutanal"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Unbranched four-carbon chain, terminal CHO is C1; the secondary hydroxyl is at C3 and is a hydroxy prefix.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "gGP`@TeYj`@"
+    },
+    {
+      "id": "AUDCASE-0386",
+      "family": "mixed-functions",
+      "smiles": "O=CCCC(=O)C",
+      "features": [
+        "aldehyde-over-ketone"
+      ],
+      "expected": {
+        "2013-en": "4-oxopentanal"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Five-carbon chain counted from aldehyde carbon C1. Internal ketone carbon is C4 and contributes oxo, because aldehyde is senior.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "gNp`@tf]Zi@@"
+    },
+    {
+      "id": "AUDCASE-0387",
+      "family": "mixed-functions",
+      "smiles": "CC(=O)C(O)C",
+      "features": [
+        "ketone-over-alcohol"
+      ],
+      "expected": {
+        "2013-en": "3-hydroxybutan-2-one"
+      },
+      "evidenceLevel": "GOLD",
+      "review": {
+        "method": "individual-rule-derivation",
+        "derivation": "Four-carbon chain; suffix ketone receives C2 rather than C3, placing subordinate hydroxy at C3.",
+        "sources": [
+          "https://iupac.qmul.ac.uk/BlueBook/P4.html",
+          "https://iupac.qmul.ac.uk/BlueBook/P6.html"
+        ]
+      },
+      "identity": "gGP`@TfYj`@"
+    },
+    {
+      "id": "AUDCASE-0388",
+      "family": "mixed-functions",
+      "smiles": "O=CCCC(N)C",
+      "features": [
+        "aldehyde-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNy@JDeVZj@@"
+    },
+    {
+      "id": "AUDCASE-0389",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CC(O)CCCC",
+      "features": [
+        "acid-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dedL@@RdfvuZjj@@"
+    },
+    {
+      "id": "AUDCASE-0390",
+      "family": "mixed-functions",
+      "smiles": "NC(=O)CC(N)CCC",
+      "features": [
+        "amide-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diEH@DhDfvujj`@"
+    },
+    {
+      "id": "AUDCASE-0391",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CC(=O)CCCCCC",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctL@@RdfvuUjZj`@"
+    },
+    {
+      "id": "AUDCASE-0392",
+      "family": "mixed-functions",
+      "smiles": "N#CCCC(O)CCCCC",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@AAIeU^jjz@@"
+    },
+    {
+      "id": "AUDCASE-0393",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CC(=O)CC",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "daxL@@Rdfvvih@@"
+    },
+    {
+      "id": "AUDCASE-0394",
+      "family": "mixed-functions",
+      "smiles": "NC(=O)CCC(N)CC",
+      "features": [
+        "amide-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diEH@DXDfumjj`@"
+    },
+    {
+      "id": "AUDCASE-0395",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CCCC(=O)C",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "diDL@@SdfuYji`@"
+    },
+    {
+      "id": "AUDCASE-0396",
+      "family": "mixed-functions",
+      "smiles": "NC(=O)CC(N)CCCC",
+      "features": [
+        "amide-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deeH@DhDfvuZjj@@"
+    },
+    {
+      "id": "AUDCASE-0397",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CCC(=O)CCCCCC",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLL@@QdfumUZijj@@"
+    },
+    {
+      "id": "AUDCASE-0398",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CCCCCC(=O)C",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTL@@RTfuUfjjX@@"
+    },
+    {
+      "id": "AUDCASE-0399",
+      "family": "mixed-functions",
+      "smiles": "NC(=O)CCCCCC(N)C",
+      "features": [
+        "amide-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmUH@DdDfuUfjjh@@"
+    },
+    {
+      "id": "AUDCASE-0400",
+      "family": "mixed-functions",
+      "smiles": "N#CCCCCCCC(O)C",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@EAIgUVjjk@@"
+    },
+    {
+      "id": "AUDCASE-0401",
+      "family": "mixed-functions",
+      "smiles": "N#CCC(O)CCCCC",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "defH@FAIeWZjz`@"
+    },
+    {
+      "id": "AUDCASE-0402",
+      "family": "mixed-functions",
+      "smiles": "NC(=O)CCC(N)C",
+      "features": [
+        "amide-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dayH@DXDfufjh@@"
+    },
+    {
+      "id": "AUDCASE-0403",
+      "family": "mixed-functions",
+      "smiles": "O=CCCC(N)CC",
+      "features": [
+        "aldehyde-over-amine"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dazH@JAIUmjj@@"
+    },
+    {
+      "id": "AUDCASE-0404",
+      "family": "mixed-functions",
+      "smiles": "N#CCCC(O)C",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gNy@FDf]jk@@"
+    },
+    {
+      "id": "AUDCASE-0405",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CCC(O)CCCC",
+      "features": [
+        "acid-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmTL@@QdfumVjjh@@"
+    },
+    {
+      "id": "AUDCASE-0406",
+      "family": "mixed-functions",
+      "smiles": "CCOC(=O)CCC(O)CCCC",
+      "features": [
+        "ester-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkLL@@PTfU^uZjjj@@"
+    },
+    {
+      "id": "AUDCASE-0407",
+      "family": "mixed-functions",
+      "smiles": "N#CCC(O)CCCCCCCC",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dkNH@FAIeWUZjzj`@"
+    },
+    {
+      "id": "AUDCASE-0408",
+      "family": "mixed-functions",
+      "smiles": "N#CCC(O)CCCCCC",
+      "features": [
+        "nitrile-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dmVH@FAIeWVjnj@@"
+    },
+    {
+      "id": "AUDCASE-0409",
+      "family": "mixed-functions",
+      "smiles": "CCOC(=O)CCCCCCC(O)C",
+      "features": [
+        "ester-over-alcohol"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dglL@@PtfU]Ufjjjh@@"
+    },
+    {
+      "id": "AUDCASE-0410",
+      "family": "mixed-functions",
+      "smiles": "O=C(O)CCCCCCC(=O)C",
+      "features": [
+        "acid-over-ketone"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dctL@@QTfuUYjji`@"
+    },
+    {
+      "id": "AUDCASE-0411",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C/C=C/C",
+      "features": [
+        "explicit-E",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gC`@DiZDD@"
+    },
+    {
+      "id": "AUDCASE-0412",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C/C=C\\C",
+      "features": [
+        "explicit-Z",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gC`@DiZDB@"
+    },
+    {
+      "id": "AUDCASE-0413",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC/C=C/CC",
+      "features": [
+        "explicit-E",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiUjaA@"
+    },
+    {
+      "id": "AUDCASE-0414",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC/C=C\\CC",
+      "features": [
+        "explicit-Z",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiUja@`"
+    },
+    {
+      "id": "AUDCASE-0415",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C/C=C/C=C/C",
+      "features": [
+        "multiple-EZ",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiVV`iJ@"
+    },
+    {
+      "id": "AUDCASE-0416",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C/C=C\\C=C/C",
+      "features": [
+        "multiple-EZ",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGP@DiVV`hi@"
+    },
+    {
+      "id": "AUDCASE-0417",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](O)CC",
+      "features": [
+        "explicit-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJQ@@dsURH@"
+    },
+    {
+      "id": "AUDCASE-0418",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@@H](O)CC",
+      "features": [
+        "explicit-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJQ@@dsURP@"
+    },
+    {
+      "id": "AUDCASE-0419",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N[C@H](C)C(=O)O",
+      "features": [
+        "explicit-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGX`BDdwMUL`@"
+    },
+    {
+      "id": "AUDCASE-0420",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N[C@@H](C)C(=O)O",
+      "features": [
+        "explicit-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGX`BDdwMUM@@"
+    },
+    {
+      "id": "AUDCASE-0421",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](Cl)[C@H](Br)C",
+      "features": [
+        "multiple-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAbFHRYjjTb`@"
+    },
+    {
+      "id": "AUDCASE-0422",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](Cl)[C@@H](Br)C",
+      "features": [
+        "multiple-tetrahedral",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gGPDAbFHRYjjTR`@"
+    },
+    {
+      "id": "AUDCASE-0423",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "eOHBNZ`@"
+    },
+    {
+      "id": "AUDCASE-0424",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCNCC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFy@JDiTvjh@"
+    },
+    {
+      "id": "AUDCASE-0425",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CNCCC1",
+      "features": [
+        "heterocycle-isomer",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFy@LDiTvjh@"
+    },
+    {
+      "id": "AUDCASE-0426",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N1CCCCC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFx@@eJfuU@@"
+    },
+    {
+      "id": "AUDCASE-0427",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKP`Adi\\Zj@@"
+    },
+    {
+      "id": "AUDCASE-0428",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOCC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp`ATiTvjh@"
+    },
+    {
+      "id": "AUDCASE-0429",
+      "family": "stereo-polycycles-limits",
+      "smiles": "OC1CCNCC1",
+      "features": [
+        "functionalized-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOy@FDfUkjj`@"
+    },
+    {
+      "id": "AUDCASE-0430",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccncc1",
+      "features": [
+        "aromatic-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFx@@eJf`@@@"
+    },
+    {
+      "id": "AUDCASE-0431",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccsc1",
+      "features": [
+        "sulfur-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKPH@DIRxtl@@"
+    },
+    {
+      "id": "AUDCASE-0432",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2CCCCC2C1",
+      "features": [
+        "fused-bicyclic",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjYUX^fjjj`@"
+    },
+    {
+      "id": "AUDCASE-0433",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccc2ccccc2c1",
+      "features": [
+        "fused-aromatic",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjYUX^d@@@@@"
+    },
+    {
+      "id": "AUDCASE-0434",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CC2CCC1C2",
+      "features": [
+        "bridged",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dnD@@DjUJbZjj`@"
+    },
+    {
+      "id": "AUDCASE-0435",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2(CC1)CCCC2",
+      "features": [
+        "spiro",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjeUZ^Fjjj`@"
+    },
+    {
+      "id": "AUDCASE-0436",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1C2CC3CC1CC(C2)C3",
+      "features": [
+        "adamantane",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deL@@DjUYkfEijjjj@@"
+    },
+    {
+      "id": "AUDCASE-0437",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[N+](C)(C)C",
+      "features": [
+        "quaternary-ammonium",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJXA@Iczh@"
+    },
+    {
+      "id": "AUDCASE-0438",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC[NH2+]CC",
+      "features": [
+        "charged-nitrogen",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJXA@IRej`@"
+    },
+    {
+      "id": "AUDCASE-0439",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC(=O)[O-]",
+      "features": [
+        "carboxylate",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gC`a@erSM@@"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "smiles": "[13CH3]CO",
+      "features": [
+        "isotope",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "eMHAIhFIl@"
+    }
+  ],
+  "excluded": [
+    {
+      "family": "alkanes",
+      "smiles": "CC(C)(C)CCCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0004"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC(C)C=CCC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALKENE-0011"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC=CCCCCCCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0042"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCCC=CC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0043"
+    },
+    {
+      "family": "alkynes",
+      "smiles": "CC#CCC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALKYNE-0005"
+    },
+    {
+      "family": "alkynes",
+      "smiles": "CCCCC#CCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0070"
+    },
+    {
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CC=C",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0093"
+    },
+    {
+      "family": "carbocycles",
+      "smiles": "C1(C)CC1",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "RING-0003"
+    },
+    {
+      "family": "aromatics",
+      "smiles": "c1(CC)c(C)cccc1",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "AROMATIC-0007"
+    },
+    {
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALCOHOL-0008"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)C(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0005"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0009"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0006"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCC(C)C",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0259"
+    },
+    {
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCC1",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0286"
+    },
+    {
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ACID-0007"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "CC(=O)OC(C)CC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0012"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "CCOC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0011"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "COC(C)CC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ETHER-0013"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "COC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0006"
+    },
+    {
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0364"
+    },
+    {
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0351"
+    }
+  ],
+  "generationPolicy": "Seeded stratified graph templates; OCL canonical identity excludes protected and intra-audit duplicates. GOLD is per reviewed profile only. Remaining profiles are GENERATED, not exact oracles."
+}

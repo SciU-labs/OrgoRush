@@ -1,0 +1,10 @@
+{
+  "version": "AUD-NOM-001-v1",
+  "seed": 10539009,
+  "completed": 440,
+  "total": 440,
+  "lastBatch": "0426-0440.json",
+  "sourceHash": "45004c3098481d22dac0460f6c267978857f3217ea724a6158dcc5853851abaf",
+  "planHash": "ca215c2d1bb0b0d003c35041fefaa6775073bdd4e5128054eeb417152b1c0db3",
+  "harnessHash": "61fdd1186524e65b274471b3b320a4ef8de4fbbc5685668476b8760cf2101899"
+}

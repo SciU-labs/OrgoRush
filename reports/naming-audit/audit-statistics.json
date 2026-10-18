@@ -1,0 +1,383 @@
+{
+  "structures": 440,
+  "imported": 433,
+  "distinctConstitutionsIgnoringStereoAndIsotopes": 433,
+  "newConstitutionsOutsideProtected": 430,
+  "newImportedConstitutionsOutsideProtected": 423,
+  "rejectedAtImport": 7,
+  "namedOutputs": 1481,
+  "attemptedProfiles": 1760,
+  "protectedCorpus": {
+    "entries": 184,
+    "authority": {
+      "gold": 179,
+      "silver": 5
+    },
+    "identicalNewGraphs": 0,
+    "protectedAndProductionHashesUnchanged": true
+  },
+  "evidence": {
+    "perRecord": {
+      "GENERATED": 420,
+      "GOLD": 20
+    },
+    "exactExpectedOutputs": 26,
+    "exactExpectedInterpretations": {
+      "MATCH": 26
+    },
+    "noExactReferenceStructures": 420,
+    "namedOutputsWithoutExactReference": 1455,
+    "receipts": 245,
+    "receiptOrigins": {
+      "live-independent-OPSIN": 240,
+      "existing-frozen-reference-receipt": 5
+    },
+    "capturedNetworkFailures": 4,
+    "observedEnglishInterpretations": {
+      "MATCH": 279,
+      "UNVERIFIED": 519,
+      "MISMATCH": 51
+    }
+  },
+  "properties": {
+    "importExportIdentity": {
+      "PASS": 432,
+      "SKIP": 7,
+      "FAIL": 1
+    },
+    "determinism": {
+      "PASS": 433,
+      "NOT_APPLICABLE": 7
+    },
+    "nameDeterminism": {
+      "PASS": 433,
+      "NOT_APPLICABLE": 7
+    },
+    "profileLanguageReturn": {
+      "PASS": 428,
+      "SKIP": 5,
+      "NOT_APPLICABLE": 7
+    },
+    "analysisImmutability": {
+      "PASS": 433,
+      "NOT_APPLICABLE": 7
+    },
+    "coordinateIndependence": {
+      "PASS": 433,
+      "NOT_APPLICABLE": 7
+    },
+    "themeDOM": {
+      "SKIP": 433,
+      "NOT_APPLICABLE": 7
+    },
+    "equivalentRepresentations": {
+      "SKIP": 27,
+      "PASS": 406,
+      "NOT_APPLICABLE": 7
+    },
+    "roundTripIdentity": {
+      "PASS": 432,
+      "NOT_APPLICABLE": 7,
+      "FAIL": 1
+    },
+    "graphImmutability": {
+      "PASS": 433,
+      "NOT_APPLICABLE": 7
+    }
+  },
+  "equivalentVariantCount": 565,
+  "byFamily": {
+    "alkanes": {
+      "structures": 35,
+      "imported": 35,
+      "namedOutputs": {
+        "2013-es": 35,
+        "2013-en": 35,
+        "1979-es": 16,
+        "1979-en": 35
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 17
+    },
+    "alkenes": {
+      "structures": 30,
+      "imported": 30,
+      "namedOutputs": {
+        "2013-es": 30,
+        "2013-en": 30,
+        "1979-es": 30,
+        "1979-en": 30
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 0
+    },
+    "alkynes": {
+      "structures": 25,
+      "imported": 25,
+      "namedOutputs": {
+        "2013-es": 25,
+        "2013-en": 25,
+        "1979-es": 25,
+        "1979-en": 25
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 0
+    },
+    "multi-unsaturated": {
+      "structures": 25,
+      "imported": 25,
+      "namedOutputs": {
+        "2013-es": 25,
+        "2013-en": 25,
+        "1979-es": 5,
+        "1979-en": 25
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 0
+    },
+    "carbocycles": {
+      "structures": 40,
+      "imported": 40,
+      "namedOutputs": {
+        "2013-es": 40,
+        "2013-en": 40,
+        "1979-es": 25,
+        "1979-en": 40
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 4
+    },
+    "aromatics": {
+      "structures": 35,
+      "imported": 35,
+      "namedOutputs": {
+        "2013-es": 32,
+        "2013-en": 32,
+        "1979-es": 3,
+        "1979-en": 32
+      },
+      "independentlyMismatchedOutputs": 4,
+      "casesWithFindings": 2
+    },
+    "halogenated": {
+      "structures": 25,
+      "imported": 25,
+      "namedOutputs": {
+        "2013-es": 25,
+        "2013-en": 25,
+        "1979-es": 8,
+        "1979-en": 25
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 9
+    },
+    "alcohols-polyols": {
+      "structures": 30,
+      "imported": 30,
+      "namedOutputs": {
+        "2013-es": 30,
+        "2013-en": 30,
+        "1979-es": 30,
+        "1979-en": 30
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 0
+    },
+    "carbonyls": {
+      "structures": 40,
+      "imported": 40,
+      "namedOutputs": {
+        "2013-es": 40,
+        "2013-en": 40,
+        "1979-es": 29,
+        "1979-en": 40
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 5
+    },
+    "carboxylic-acids": {
+      "structures": 20,
+      "imported": 20,
+      "namedOutputs": {
+        "2013-es": 20,
+        "2013-en": 20,
+        "1979-es": 9,
+        "1979-en": 20
+      },
+      "independentlyMismatchedOutputs": 6,
+      "casesWithFindings": 11
+    },
+    "ethers-esters": {
+      "structures": 35,
+      "imported": 35,
+      "namedOutputs": {
+        "2013-es": 35,
+        "2013-en": 35,
+        "1979-es": 0,
+        "1979-en": 35
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 22
+    },
+    "nitrogen-functions": {
+      "structures": 40,
+      "imported": 40,
+      "namedOutputs": {
+        "2013-es": 40,
+        "2013-en": 40,
+        "1979-es": 0,
+        "1979-en": 40
+      },
+      "independentlyMismatchedOutputs": 33,
+      "casesWithFindings": 39
+    },
+    "mixed-functions": {
+      "structures": 30,
+      "imported": 30,
+      "namedOutputs": {
+        "2013-es": 30,
+        "2013-en": 30,
+        "1979-es": 15,
+        "1979-en": 30
+      },
+      "independentlyMismatchedOutputs": 0,
+      "casesWithFindings": 15
+    },
+    "stereo-polycycles-limits": {
+      "structures": 30,
+      "imported": 23,
+      "namedOutputs": {
+        "2013-es": 21,
+        "2013-en": 21,
+        "1979-es": 9,
+        "1979-en": 14
+      },
+      "independentlyMismatchedOutputs": 8,
+      "casesWithFindings": 12
+    }
+  },
+  "byProfile": {
+    "2013-es": {
+      "outputs": {
+        "NAMED": 428,
+        "UNSUPPORTED": 12
+      },
+      "exact": {
+        "UNVERIFIED": 428,
+        "UNSUPPORTED": 12
+      },
+      "structural": {
+        "UNVERIFIED": 428,
+        "UNSUPPORTED": 12
+      }
+    },
+    "2013-en": {
+      "outputs": {
+        "NAMED": 428,
+        "UNSUPPORTED": 12
+      },
+      "exact": {
+        "UNVERIFIED": 408,
+        "PASS": 20,
+        "UNSUPPORTED": 12
+      },
+      "structural": {
+        "MATCH": 164,
+        "UNVERIFIED": 261,
+        "MISMATCH": 3,
+        "UNSUPPORTED": 12
+      }
+    },
+    "1979-es": {
+      "outputs": {
+        "UNSUPPORTED": 236,
+        "NAMED": 204
+      },
+      "exact": {
+        "UNSUPPORTED": 236,
+        "UNVERIFIED": 204
+      },
+      "structural": {
+        "UNSUPPORTED": 236,
+        "UNVERIFIED": 204
+      }
+    },
+    "1979-en": {
+      "outputs": {
+        "NAMED": 421,
+        "UNSUPPORTED": 19
+      },
+      "exact": {
+        "UNVERIFIED": 415,
+        "PASS": 6,
+        "UNSUPPORTED": 19
+      },
+      "structural": {
+        "MATCH": 115,
+        "UNVERIFIED": 258,
+        "MISMATCH": 48,
+        "UNSUPPORTED": 19
+      }
+    }
+  },
+  "findingClusters": 11,
+  "findingSeverities": {
+    "P0": 1,
+    "P1": 4,
+    "P2": 6
+  },
+  "casesWithConfirmedFindings": 136,
+  "classifications": {
+    "NAME_STRUCTURE_MISMATCH": {
+      "clusters": [
+        "AUDNOM-001",
+        "AUDNOM-002",
+        "AUDNOM-003",
+        "AUDNOM-004",
+        "AUDNOM-005"
+      ]
+    },
+    "WRONG_SUBSTITUENT": {
+      "clusters": [
+        "AUDNOM-002",
+        "AUDNOM-003"
+      ]
+    },
+    "WRONG_LEGACY_NAME": {
+      "clusters": [
+        "AUDNOM-002",
+        "AUDNOM-004",
+        "AUDNOM-006"
+      ]
+    },
+    "WRONG_STEREOCHEMISTRY": {
+      "clusters": [
+        "AUDNOM-005",
+        "AUDNOM-006"
+      ]
+    },
+    "FRAGMENT_MAPPING_ERROR": {
+      "clusters": [
+        "AUDNOM-007",
+        "AUDNOM-008",
+        "AUDNOM-009"
+      ]
+    },
+    "EXPLANATION_CONTRADICTION": {
+      "clusters": [
+        "AUDNOM-010"
+      ]
+    },
+    "WRONG_TRANSLATION": {
+      "clusters": [
+        "AUDNOM-011"
+      ]
+    }
+  },
+  "practiceEnvelope": {
+    "ACCEPTED": 199,
+    "OUTSIDE_ALL_CURRENT_CATEGORIES": 233,
+    "NOT_ASSESSED": 8
+  },
+  "namedCasesOutsidePractice": 228
+}

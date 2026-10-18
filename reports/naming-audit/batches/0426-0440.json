@@ -1,0 +1,3305 @@
+{
+  "version": "AUD-NOM-001-v1",
+  "seed": 10539009,
+  "planHash": "ca215c2d1bb0b0d003c35041fefaa6775073bdd4e5128054eeb417152b1c0db3",
+  "sourceHash": "45004c3098481d22dac0460f6c267978857f3217ea724a6158dcc5853851abaf",
+  "harnessHash": "61fdd1186524e65b274471b3b320a4ef8de4fbbc5685668476b8760cf2101899",
+  "completedAt": "2026-10-18T04:27:31.940Z",
+  "durationMs": 362,
+  "results": [
+    {
+      "id": "AUDCASE-0426",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N1CCCCC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFx@@eJfuU@@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 6,
+        "bondCount": 6,
+        "elements": [
+          "C",
+          "N"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "piperidina",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "piperidina"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El anillo principal contiene 6 átomos: 5 carbonos y 1 nitrógeno. El nombre del padre es piperidina; el nombre IUPAC completo es piperidina."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "piperidine",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "piperidine"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent ring contains 6 atoms: 5 carbons and 1 nitrogen. The parent name is piperidine; the complete IUPAC name is piperidine."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "C1CCNCC1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "PASS",
+          "comparisons": [
+            {
+              "smiles": "C1CCNCC1",
+              "status": "PASS",
+              "changed": []
+            }
+          ]
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "C1CCNCC1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0427",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKP`Adi\\Zj@@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 5,
+        "bondCount": 5,
+        "elements": [
+          "C",
+          "O"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1,3-dioxolano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,3-dioxolano",
+            "chainName": "1,3-dioxolano",
+            "family": "cycloalkane",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "1,3-dioxolano"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El anillo principal contiene 5 átomos: 3 carbonos y 2 oxígenos. El nombre del padre es 1,3-dioxolano; el nombre IUPAC completo es 1,3-dioxolano."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1,3-dioxolane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,3-dioxolano",
+            "chainName": "1,3-dioxolano",
+            "family": "cycloalkane",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "1,3-dioxolane"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent ring contains 5 atoms: 3 carbons and 2 oxygens. The parent name is 1,3-dioxolane; the complete IUPAC name is 1,3-dioxolane."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "1,3-dioxolano",
+            "chainName": "1,3-dioxolano",
+            "family": "cycloalkane",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "1,3-dioxolano",
+            "chainName": "1,3-dioxolano",
+            "family": "cycloalkane",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "C1OCOC1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "PASS",
+          "comparisons": [
+            {
+              "smiles": "C1OCOC1",
+              "status": "PASS",
+              "changed": []
+            }
+          ]
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "C1OCOC1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0428",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOCC1",
+      "features": [
+        "registered-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFp`ATiTvjh@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 6,
+        "bondCount": 6,
+        "elements": [
+          "C",
+          "O"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1,4-dioxano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,4-dioxano",
+            "chainName": "1,4-dioxano",
+            "family": "cycloalkane",
+            "formula": "C₄H₈O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "1,4-dioxano"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El anillo principal contiene 6 átomos: 4 carbonos y 2 oxígenos. El nombre del padre es 1,4-dioxano; el nombre IUPAC completo es 1,4-dioxano."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1,4-dioxane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,4-dioxano",
+            "chainName": "1,4-dioxano",
+            "family": "cycloalkane",
+            "formula": "C₄H₈O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "1,4-dioxane"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent ring contains 6 atoms: 4 carbons and 2 oxygens. The parent name is 1,4-dioxane; the complete IUPAC name is 1,4-dioxane."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "1,4-dioxano",
+            "chainName": "1,4-dioxano",
+            "family": "cycloalkane",
+            "formula": "C₄H₈O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "1,4-dioxano",
+            "chainName": "1,4-dioxano",
+            "family": "cycloalkane",
+            "formula": "C₄H₈O₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "C1OCCOC1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "PASS",
+          "comparisons": [
+            {
+              "smiles": "C1OCCOC1",
+              "status": "PASS",
+              "changed": []
+            }
+          ]
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "C1OCCOC1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0429",
+      "family": "stereo-polycycles-limits",
+      "smiles": "OC1CCNCC1",
+      "features": [
+        "functionalized-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gOy@FDfUkjj`@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 7,
+        "bondCount": 7,
+        "elements": [
+          "C",
+          "N",
+          "O"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁NO",
+            "parentAtomIds": [
+              5,
+              6,
+              7,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ],
+              [
+                4,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "UI safety gate blocks local naming for this graph"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁NO",
+            "parentAtomIds": [
+              5,
+              6,
+              7,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ],
+              [
+                4,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "UI safety gate blocks local naming for this graph"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁NO",
+            "parentAtomIds": [
+              5,
+              6,
+              7,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ],
+              [
+                4,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "UI safety gate blocks local naming for this graph"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piperidina",
+            "chainName": "piperidina",
+            "family": "cycloalkane",
+            "formula": "C₅H₁₁NO",
+            "parentAtomIds": [
+              5,
+              6,
+              7,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ],
+              [
+                4,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "UI safety gate blocks local naming for this graph"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "OC1CCNCC1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "SKIP",
+          "detail": "Current profile unavailable"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "SKIP",
+          "detail": "No distinct verified equivalent SMILES in this bounded run"
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "OC1CCNCC1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0430",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccncc1",
+      "features": [
+        "aromatic-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gFx@@eJf`@@@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 6,
+        "bondCount": 6,
+        "elements": [
+          "C",
+          "N"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "piridina",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4,
+              6
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "piridina"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El anillo principal contiene 6 átomos: 5 carbonos y 1 nitrógeno. El nombre del padre es piridina; el nombre IUPAC completo es piridina."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. El multiplicador tri- significa tres dobles enlaces en C2=C3, C4=C5 y C6=C7."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "pyridine",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4,
+              6
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "pyridine"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent ring contains 6 atoms: 5 carbons and 1 nitrogen. The parent name is pyridine; the complete IUPAC name is pyridine."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The tri- multiplier means three double bonds at C2=C3, C4=C5, C6=C7."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4,
+              6
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4,
+              6
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "c1ccncc1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "SKIP",
+          "detail": "No distinct verified equivalent SMILES in this bounded run"
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "c1ccncc1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [
+        {
+          "profile": "2013-es",
+          "code": "ANALYSIS_BOND_LOCANT",
+          "detail": "Analyzed parent locant does not match the actual bond",
+          "evidence": {
+            "type": "double",
+            "locant": 6,
+            "from": 3,
+            "order": null
+          }
+        },
+        {
+          "profile": "2013-en",
+          "code": "ANALYSIS_BOND_LOCANT",
+          "detail": "Analyzed parent locant does not match the actual bond",
+          "evidence": {
+            "type": "double",
+            "locant": 6,
+            "from": 3,
+            "order": null
+          }
+        }
+      ],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0431",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccsc1",
+      "features": [
+        "sulfur-heterocycle",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gKPH@DIRxtl@@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 5,
+        "bondCount": 5,
+        "elements": [
+          "C",
+          "S"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "tiofeno",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "tiofeno",
+            "chainName": "tiofeno",
+            "family": "aromatic",
+            "formula": "C₄H₄S",
+            "parentAtomIds": [
+              4,
+              5,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "tiofeno"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El anillo principal contiene 5 átomos: 4 carbonos y 1 azufre. El nombre del padre es tiofeno; el nombre IUPAC completo es tiofeno."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. El multiplicador di- significa dos dobles enlaces en C2=C3 y C4=C5."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "thiophene",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "tiofeno",
+            "chainName": "tiofeno",
+            "family": "aromatic",
+            "formula": "C₄H₄S",
+            "parentAtomIds": [
+              4,
+              5,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "thiophene"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent ring contains 5 atoms: 4 carbons and 1 sulfur. The parent name is thiophene; the complete IUPAC name is thiophene."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The di- multiplier means two double bonds at C2=C3, C4=C5."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "tiofeno",
+            "chainName": "tiofeno",
+            "family": "aromatic",
+            "formula": "C₄H₄S",
+            "parentAtomIds": [
+              4,
+              5,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "tiofeno",
+            "chainName": "tiofeno",
+            "family": "aromatic",
+            "formula": "C₄H₄S",
+            "parentAtomIds": [
+              4,
+              5,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 5,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                5
+              ]
+            ],
+            "doubleBondLocants": [
+              2,
+              4
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "c1c[s]cc1"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "PASS",
+          "comparisons": [
+            {
+              "smiles": "c1c[s]cc1",
+              "status": "PASS",
+              "changed": []
+            }
+          ]
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "c1c[s]cc1"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0432",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2CCCCC2C1",
+      "features": [
+        "fused-bicyclic",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjYUX^fjjj`@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 10,
+        "bondCount": 11,
+        "elements": [
+          "C"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "biciclo[4.4.0]decano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "biciclo[4.4.0]decano",
+            "chainName": "biciclo[4.4.0]decano",
+            "family": "polycyclic",
+            "formula": "C₁₀H₁₈",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 10,
+            "parentCarbonCount": 10,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                8,
+                5
+              ],
+              [
+                9,
+                6
+              ],
+              [
+                10,
+                7
+              ],
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                3,
+                10
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "biciclo[4.4.0]decano"
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "explanation": "Los dos ciclos comparten exactamente dos átomos y un enlace; por ello son fusionados y no dos anillos unidos por un enlace externo."
+              },
+              {
+                "number": "02",
+                "explanation": "Entre las dos cabezas de puente existen tres rutas con 4, 4 y 0 átomos intermedios. Ordenadas de mayor a menor forman el descriptor biciclo[4.4.0]."
+              },
+              {
+                "number": "03",
+                "explanation": "La numeración comienza en una cabeza de puente y recorre primero el camino más largo. Finalmente se consideran los prefijos y sustituyentes."
+              },
+              {
+                "number": "04",
+                "explanation": "Las rutas contienen 10 carbonos en total; el nombre del padre con la función principal es biciclo[4.4.0]decano."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "bicyclo[4.4.0]decane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "biciclo[4.4.0]decano",
+            "chainName": "biciclo[4.4.0]decano",
+            "family": "polycyclic",
+            "formula": "C₁₀H₁₈",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 10,
+            "parentCarbonCount": 10,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                8,
+                5
+              ],
+              [
+                9,
+                6
+              ],
+              [
+                10,
+                7
+              ],
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                3,
+                10
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "bicyclo[4.4.0]decane"
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "explanation": "The two rings share exactly two adjacent carbon atoms and their common bond, so they form one fused bicyclic parent."
+              },
+              {
+                "number": "02",
+                "explanation": "The shared atoms are the bridgeheads. The three paths between them contain 4, 4, and 0 atoms, giving the descriptor [4.4.0]."
+              },
+              {
+                "number": "03",
+                "explanation": "Numbering starts at a bridgehead and follows the longest path first. Prefixes and substituents are considered last."
+              },
+              {
+                "number": "04",
+                "explanation": "The paths contain 10 carbon atoms in total; the parent name with its principal group is bicyclo[4.4.0]decane."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "evidenceLevel": "GENERATED",
+          "exact": "UNSUPPORTED",
+          "analysis": {
+            "name": "biciclo[4.4.0]decano",
+            "chainName": "biciclo[4.4.0]decano",
+            "family": "polycyclic",
+            "formula": "C₁₀H₁₈",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 10,
+            "parentCarbonCount": 10,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                8,
+                5
+              ],
+              [
+                9,
+                6
+              ],
+              [
+                10,
+                7
+              ],
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                3,
+                10
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "unsupportedReason": "Selected production formatter has no admitted grammar"
+        },
+        "1979-en": {
+          "status": "NAMED",
+          "name": "bicyclo[4.4.0]decane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "biciclo[4.4.0]decano",
+            "chainName": "biciclo[4.4.0]decano",
+            "family": "polycyclic",
+            "formula": "C₁₀H₁₈",
+            "parentAtomIds": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              1,
+              2,
+              3
+            ],
+            "parentAtomCount": 10,
+            "parentCarbonCount": 10,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                8,
+                5
+              ],
+              [
+                9,
+                6
+              ],
+              [
+                10,
+                7
+              ],
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                3,
+                10
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "bicyclo[4.4.0]decane"
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "explanation": "The two rings share exactly two adjacent carbon atoms and their common bond, so they form one fused bicyclic parent."
+              },
+              {
+                "number": "02",
+                "explanation": "The shared atoms are the bridgeheads. The three paths between them contain 4, 4, and 0 atoms, giving the descriptor [4.4.0]."
+              },
+              {
+                "number": "03",
+                "explanation": "Numbering starts at a bridgehead and follows the longest path first. Prefixes and substituents are considered last."
+              },
+              {
+                "number": "04",
+                "explanation": "The paths contain 10 carbon atoms in total; the parent name with its principal group is bicyclo[4.4.0]decane."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "PASS",
+          "detail": "C(CC1)CC2C1CCCC2"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "PASS",
+          "comparisons": [
+            {
+              "smiles": "C(CC1)CC2C1CCCC2",
+              "status": "PASS",
+              "changed": []
+            }
+          ]
+        },
+        "roundTripIdentity": {
+          "status": "PASS",
+          "detail": "C(CC1)CC2C1CCCC2"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0433",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccc2ccccc2c1",
+      "features": [
+        "fused-aromatic",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjYUX^d@@@@@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0434",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CC2CCC1C2",
+      "features": [
+        "bridged",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "dnD@@DjUJbZjj`@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0435",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2(CC1)CCCC2",
+      "features": [
+        "spiro",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "det@@DjeUZ^Fjjj`@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (espiro). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0436",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1C2CC3CC1CC(C2)C3",
+      "features": [
+        "adamantane",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "deL@@DjUYkfEijjjj@@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0437",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[N+](C)(C)C",
+      "features": [
+        "quaternary-ammonium",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJXA@Iczh@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0438",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC[NH2+]CC",
+      "features": [
+        "charged-nitrogen",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gJXA@IRej`@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0439",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC(=O)[O-]",
+      "features": [
+        "carboxylate",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "gC`a@erSM@@",
+      "admission": {
+        "status": "UNSUPPORTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "independentlyParseable": true
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "exact": "UNSUPPORTED",
+          "evidenceLevel": "GENERATED"
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "SKIP",
+          "detail": "Production import explicitly rejected this independently parseable boundary graph"
+        }
+      },
+      "signals": [],
+      "findings": []
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "smiles": "[13CH3]CO",
+      "features": [
+        "isotope",
+        "laboratory-boundary"
+      ],
+      "evidenceLevel": "GENERATED",
+      "expected": {},
+      "identity": "eMHAIhFIl@",
+      "admission": {
+        "status": "IMPORTED",
+        "atomCount": 3,
+        "bondCount": 2,
+        "elements": [
+          "C",
+          "O"
+        ],
+        "charge": 0
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "etanol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etan-1-ol",
+            "chainName": "etan-1-ol",
+            "family": "acyclic",
+            "formula": "C₂H₆O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "etan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "etan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica alcohol como el grupo de mayor prioridad. Aporta el sufijo del nombre. Esta función no obliga automáticamente a usar C1. El carbono que la porta debe recibir el menor localizador que permita la cadena principal; aquí recibe el localizador 1. En esta estructura, el grupo hidroxilo –OH aporta el sufijo «1-ol»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etan-1-ol. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C2. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión. El hidroxilo está unido a C1. En esta cadena de dos carbonos, el localizador 1 se omite en el nombre IUPAC preferido porque su posición es inequívoca."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "ethanol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etan-1-ol",
+            "chainName": "etan-1-ol",
+            "family": "acyclic",
+            "formula": "C₂H₆O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "ethan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "ethan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Alcohol has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the hydroxyl group –OH contributes the suffix “1-ol”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 2 carbons. The parent name is ethan-1-ol; the complete IUPAC name is ethanol."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Alcohol) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C2. The lower locant set determines the orientation. The hydroxyl group is attached to C1. In this two-carbon chain, locant 1 is omitted from the preferred IUPAC name because its position is unambiguous."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "1979-es": {
+          "status": "NAMED",
+          "name": "etanol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etan-1-ol",
+            "chainName": "etan-1-ol",
+            "family": "acyclic",
+            "formula": "C₂H₆O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ol",
+                "start": 4,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "et",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "et",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "an"
+              },
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica alcohol como el grupo de mayor prioridad. Aporta el sufijo del nombre. Esta función no obliga automáticamente a usar C1. El carbono que la porta debe recibir el menor localizador que permita la cadena principal; aquí recibe el localizador 1. En esta estructura, el grupo hidroxilo –OH aporta el sufijo «ol»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "El análisis Legacy de 1979 selecciona la cadena principal de 2 carbonos; su esqueleto carbonado es «et». La función principal (alcohol) está en C1. El nombre seleccionado se escribe etanol."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan los extremos de la cadena seleccionada: primero la función principal de sufijo, después los enlaces múltiples y por último los sustituyentes. El criterio de función principal resuelve la orientación: los localizadores 1 son menores que 2 en el sentido opuesto. El primer punto de diferencia determina el sentido elegido."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "1979-en": {
+          "status": "NAMED",
+          "name": "ethanol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etan-1-ol",
+            "chainName": "etan-1-ol",
+            "family": "acyclic",
+            "formula": "C₂H₆O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ol",
+                "start": 5,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "et",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "et",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "han"
+              },
+              {
+                "text": "ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Alcohol has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the hydroxyl group –OH contributes the suffix “ol”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The 1979 Legacy analysis selects a parent chain of 2 carbons; its carbon scaffold is “et”. The principal alcohol is at C1. Its selected name is ethanol."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The two ends of the selected chain are compared: first the principal suffix group, then multiple bonds, then substituents. The locants for the principal group resolve the orientation: 1 are lower than 2 in the opposite direction. The first point of difference determines the chosen direction."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "properties": {
+        "importExportIdentity": {
+          "status": "FAIL",
+          "detail": "CCO"
+        },
+        "determinism": {
+          "status": "PASS"
+        },
+        "nameDeterminism": {
+          "status": "PASS"
+        },
+        "profileLanguageReturn": {
+          "status": "PASS"
+        },
+        "analysisImmutability": {
+          "status": "PASS"
+        },
+        "coordinateIndependence": {
+          "status": "PASS"
+        },
+        "themeDOM": {
+          "status": "SKIP",
+          "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+        },
+        "equivalentRepresentations": {
+          "status": "SKIP",
+          "detail": "No distinct verified equivalent SMILES in this bounded run"
+        },
+        "roundTripIdentity": {
+          "status": "FAIL",
+          "detail": "CCO"
+        },
+        "graphImmutability": {
+          "status": "PASS"
+        }
+      },
+      "signals": [
+        {
+          "code": "PROPERTY_importExportIdentity",
+          "detail": "importExportIdentity failed",
+          "evidence": {
+            "status": "FAIL",
+            "detail": "CCO"
+          }
+        },
+        {
+          "code": "PROPERTY_roundTripIdentity",
+          "detail": "roundTripIdentity failed",
+          "evidence": {
+            "status": "FAIL",
+            "detail": "CCO"
+          }
+        }
+      ],
+      "findings": []
+    }
+  ]
+}

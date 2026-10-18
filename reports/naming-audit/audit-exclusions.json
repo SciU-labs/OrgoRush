@@ -1,0 +1,139 @@
+{
+  "version": "AUD-NOM-001-v1",
+  "seed": 10539009,
+  "reasons": "Rejected graph duplicates are not named again; structures outside Practice/Exam remain in the Lab audit.",
+  "cases": [
+    {
+      "family": "alkanes",
+      "smiles": "CC(C)(C)CCCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0004"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC(C)C=CCC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALKENE-0011"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC=CCCCCCCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0042"
+    },
+    {
+      "family": "alkenes",
+      "smiles": "CC(C)CCCCCC=CC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0043"
+    },
+    {
+      "family": "alkynes",
+      "smiles": "CC#CCC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALKYNE-0005"
+    },
+    {
+      "family": "alkynes",
+      "smiles": "CCCCC#CCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0070"
+    },
+    {
+      "family": "multi-unsaturated",
+      "smiles": "C=CC=CC=C",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0093"
+    },
+    {
+      "family": "carbocycles",
+      "smiles": "C1(C)CC1",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "RING-0003"
+    },
+    {
+      "family": "aromatics",
+      "smiles": "c1(CC)c(C)cccc1",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "AROMATIC-0007"
+    },
+    {
+      "family": "alcohols-polyols",
+      "smiles": "CC(O)(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ALCOHOL-0008"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)C(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0005"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CCC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0009"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "KETONE-0006"
+    },
+    {
+      "family": "carbonyls",
+      "smiles": "CC(=O)CCCC(C)C",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0259"
+    },
+    {
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)C1CCCCC1",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0286"
+    },
+    {
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ACID-0007"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "CC(=O)OC(C)CC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0012"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "CCOC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0011"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "COC(C)CC",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ETHER-0013"
+    },
+    {
+      "family": "ethers-esters",
+      "smiles": "COC(=O)CC(C)C",
+      "reason": "PROTECTED_CORPUS_DUPLICATE",
+      "referenceId": "ESTER-0006"
+    },
+    {
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CCCCC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0364"
+    },
+    {
+      "family": "nitrogen-functions",
+      "smiles": "N#CCC(C)CC",
+      "reason": "AUDIT_DUPLICATE",
+      "selectedId": "AUDCASE-0351"
+    }
+  ]
+}

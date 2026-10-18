@@ -1,0 +1,129 @@
+{
+  "reviewDate": "2026-10-18",
+  "policy": "Permanent IDs describe cause clusters. Counts of affected cases/outputs are computed separately. Structural constraints do not impose an unverified exact historical spelling.",
+  "findings": [
+    {
+      "id": "AUDNOM-001", "selector": "isotope-loss", "severity": "P0", "classifications": ["NAME_STRUCTURE_MISMATCH"],
+      "title": "Importación aceptada elimina silenciosamente la etiqueta isotópica",
+      "representatives": ["AUDCASE-0440"],
+      "observed": "[13CH3]CO se importa sin error, pero la exportación inicial y la posterior al análisis son CCO; los cuatro perfiles muestran etanol/ethanol sin el isótopo.",
+      "expectedConstraint": "Preservar la masa isotópica o rechazar explícitamente esta capacidad no representada. No se exige una grafía isotópica exacta nueva.",
+      "evidence": "Identidades canónicas OCL distintas antes de cualquier nomenclatura. OPSIN también interpreta ethanol como etanol sin especificación isotópica. La conectividad ordinaria permanece igual.",
+      "causeHypothesis": "El DTO editable no transfiere getAtomMass durante moleculeFromSmiles, ni buildOpenChemLibStereoGraph lo restaura al exportar. El límite no se rechaza como sí ocurre con cargas no soportadas.",
+      "sourcePaths": ["app/openchemlib-adapter.ts", "app/tetrahedral-stereochemistry.ts"],
+      "recommendedTest": "Importar y exportar 13C y vecinos no isotópicos: igualdad OCL completa o rechazo explícito, nunca aceptación con pérdida. P0 acotado a fidelidad de identidad isotópica; no se observó corrupción generalizada de conectividad."
+    },
+    {
+      "id": "AUDNOM-002", "selector": "N-substitution-loss", "severity": "P1", "classifications": ["WRONG_SUBSTITUENT", "NAME_STRUCTURE_MISMATCH", "WRONG_LEGACY_NAME"],
+      "title": "Legacy EN omite los sustituyentes unidos al nitrógeno",
+      "representatives": ["AUDCASE-0342", "AUDCASE-0343"],
+      "observed": "CCNC(=O)CC produce propanamide; CN(C)CCC produce 1-propanamine en Legacy EN. El análisis moderno sí conserva N-ethyl y N,N-dimethyl.",
+      "expectedConstraint": "Todo nombre admitido debe representar los carbonos enlazados a N. N-ethylpropanamide y N,N-dimethylpropan-1-amine son referencias estructurales verificadas para 2013; no se imponen automáticamente como la grafía histórica preferida.",
+      "evidence": "OPSIN de los textos Legacy reales representa amida/amina primaria y omite los grupos N-alquilo. Contraste individual de conectividad, número de carbonos y recibos completos.",
+      "causeHypothesis": "nitrogenSubstituentPrefixes genera prefijos fuera de analysis.substituents. buildLegacyEnglishNameModel solo transporta analysis.substituents y attachedAlkylName para ésteres; se pierden los prefijos N en el DTO.",
+      "sourcePaths": ["app/page.tsx", "app/legacy-english-nomenclature.ts"],
+      "relatedManifestation": "En el modelo pedagógico 2013 de los representantes, N-ethyl/N,N-dimethyl queda como texto plano y no tiene paso de sustitución propio. Se vincula a este grupo causal sin contarlo como otro nombre químicamente erróneo.",
+      "recommendedTest": "Aminas secundaria/terciaria y amidas N-mono/N,N-disustituidas con ramas de distinto tamaño; interpretar cada salida admitida y exigir preservación de N-alquilo, además de evidencia pedagógica de los prefijos."
+    },
+    {
+      "id": "AUDNOM-003", "selector": "substituted-aryl-loss", "severity": "P1", "classifications": ["WRONG_SUBSTITUENT", "NAME_STRUCTURE_MISMATCH"],
+      "title": "Una cadena funcional unida a un arilo metilado se nombra como fenilo sin sustituir",
+      "representatives": ["AUDCASE-0171", "AUDCASE-0176"],
+      "observed": "Los arilos orto/para-metilados unidos a CH2CH2OH reciben 2-phenylethan-1-ol/2-phenylethanol y sus formas españolas, sin el metilo del anillo.",
+      "expectedConstraint": "Conservar el metilo del arilo mediante una gramática admitida o activar el aviso de nombre local no disponible. No se fija un nombre completo histórico exacto para estos límites.",
+      "evidence": "El SMILES contiene nueve carbonos y los nombres ingleses interpretados por OPSIN contienen ocho. Los perfiles actuales aceptan el nombre, aunque la gramática de arilo sustituido no esté implementada.",
+      "causeHypothesis": "functionalChainAttachedToRing llama ringSubstituentName, que devuelve fenil por identidad del anillo; al escoger la cadena funcional se omite el componente metilo que también cuelga del anillo. La puerta de seguridad no detecta este sustituyente carbonado perdido.",
+      "sourcePaths": ["app/page.tsx"],
+      "recommendedTest": "Vecinos orto/meta/para con cadenas de uno y dos carbonos: no perder sustituyentes del arilo; hasta disponer de gramática completa, mantener el rechazo seguro de nombres incompletos."
+    },
+    {
+      "id": "AUDNOM-004", "selector": "diacid-loss", "severity": "P1", "classifications": ["WRONG_LEGACY_NAME", "NAME_STRUCTURE_MISMATCH"],
+      "title": "Legacy EN reduce ácidos dicarboxílicos a monocarboxílicos",
+      "representatives": ["AUDCASE-0288", "AUDCASE-0292"],
+      "observed": "El ácido decanodioico produce decanoic acid y el ácido butanodioico produce butanoic acid en Legacy EN; el motor detecta dos grupos carboxilo.",
+      "expectedConstraint": "El nombre debe representar ambos carboxilos. P-14.3.4.1 incluye butanedioic acid como ejemplo; esto corrobora la estructura, sin convertir automáticamente la grafía 2013 en exigencia histórica exacta.",
+      "evidence": "Seis homólogos tienen recibos OPSIN independientes con dos oxígenos menos que el grafo de entrada. El análisis y la conectividad editables siguen conteniendo los dos carboxilos.",
+      "causeHypothesis": "functionalParent calcula count pero la rama carboxylicAcid devuelve siempre stem + oic acid, sin una variante dioic acid.",
+      "sourcePaths": ["app/legacy-english-nomenclature.ts"],
+      "recommendedTest": "Series de diácidos simétricos/no simétricos y vecinos monocarboxílicos, conservando multiplicidad de sufijos y equivalencia estructural en cada perfil."
+    },
+    {
+      "id": "AUDNOM-005", "selector": "RS-loss", "severity": "P1", "classifications": ["WRONG_STEREOCHEMISTRY", "NAME_STRUCTURE_MISMATCH"],
+      "title": "Legacy EN elimina R/S aun con estereoquímica explícita activada",
+      "representatives": ["AUDCASE-0417", "AUDCASE-0418", "AUDCASE-0421"],
+      "observed": "Ambos enantiómeros del butan-2-ol muestran 2-butanol en Legacy EN; también desaparecen los descriptores de aminoácidos y dos centros halogenados.",
+      "expectedConstraint": "Con la opción estereoquímica activada, conservar los descriptores que identifica la estructura. Es legítimo ofrecer un nombre constitucional en otro modo, pero este recorrido solicita explícitamente la variante estereoquímica.",
+      "evidence": "Seis salidas inglesas Legacy tienen la misma constitución OCL y diferente estado estereoquímico respecto al SMILES configurado. Los perfiles modernos sí conservan la configuración y el SMILES exportado no cambia.",
+      "causeHypothesis": "traditionalStereochemicalPrefix solo admite E/Z en su expresión regular; buildLegacyEnglishNameModel descarta los prefijos R/S que acaba de producir formatStereochemicalName.",
+      "sourcePaths": ["app/page.tsx"],
+      "recommendedTest": "Parejas R/S y sistemas con dos centros; activar la opción estereoquímica, comprobar ambos modelos y comparar identidades OCL con y sin información estéreo por separado."
+    },
+    {
+      "id": "AUDNOM-006", "selector": "duplicated-EZ-es", "severity": "P2", "classifications": ["WRONG_LEGACY_NAME", "WRONG_STEREOCHEMISTRY"],
+      "title": "Legacy ES duplica el prefijo E/Z al activar la variante estereoquímica",
+      "representatives": ["AUDCASE-0411", "AUDCASE-0412"],
+      "observed": "C/C=C/C muestra (2E)-(2e)--2-buteno; el vecino Z y la pareja hex-3-eno presentan la misma duplicación.",
+      "expectedConstraint": "Un único prefijo E/Z correspondiente al grafo, sin el descriptor repetido en minúscula ni guion doble. No se promueve una traducción automática a referencia exacta española.",
+      "evidence": "El análisis ya contiene (2E)- y la ruta de interfaz llama formatStereochemicalName sobre ese texto antes del formateo Legacy. Se conservan los cuatro nombres observados y los recibos de las salidas inglesas equivalentes.",
+      "causeHypothesis": "La ruta moderna elimina primero los descriptores del nombre base; legacyNameWithSelectedStereochemistry no lo hace. El formateador añade un segundo prefijo y el adaptador español procesa el prefijo interior como texto base.",
+      "sourcePaths": ["app/page.tsx", "app/nomenclature-conventions.ts", "app/double-bond-stereochemistry.ts"],
+      "recommendedTest": "E/Z activado/desactivado, alternancia ES/EN y dos convenciones; exigir un único conjunto de descriptores para cada variante admitida."
+    },
+    {
+      "id": "AUDNOM-007", "selector": "legacy-non-root", "severity": "P2", "classifications": ["FRAGMENT_MAPPING_ERROR"],
+      "title": "El radical non Legacy se localiza dentro de la terminación y cruza el sufijo",
+      "representatives": ["AUDCASE-0249"],
+      "observed": "En 2-metil-4-nonanona / 2-methyl-4-nonanone, el fragmento non apunta a la última coincidencia, solapada con ona/one. El enlace renderizado del padre queda reducido a una n.",
+      "expectedConstraint": "El fragmento del padre debe señalar la raíz inicial del padre nonanona/nonanone, con un intervalo distinto al sufijo funcional. La reconstrucción global exacta del nombre por sí sola no detecta este error.",
+      "evidence": "Cinco estructuras y ambos idiomas Legacy contienen intervalos parcialmente cruzados, offsets y atomIds almacenados en audit-matrix.json.",
+      "causeHypothesis": "deriveLegacyConventionFragments usa name.lastIndexOf(rootText) sin límites morfológicos; non vuelve a aparecer dentro de nonanona/nonanone.",
+      "sourcePaths": ["app/reasoning-name-fragments.ts", "app/reasoning-name-links.ts"],
+      "recommendedTest": "Padres non y vecinos oct/dec, con cetonas y sustituyentes; verificar límites exactos del padre y sufijo antes de construir enlaces, además de concatenación y atomIds."
+    },
+    {
+      "id": "AUDNOM-008", "selector": "acid-en-overlap", "severity": "P2", "classifications": ["FRAGMENT_MAPPING_ERROR"],
+      "title": "En ácidos insaturados modernos, eno invade el sufijo oic/oico",
+      "representatives": ["AUDCASE-0293"],
+      "observed": "pent-2-enoic acid tiene el fragmento 2-eno, solapado con oic; el enlace funcional visible se recorta a ic. En español, oico se recorta a ico.",
+      "expectedConstraint": "Separar en y oic/oico según su función en este nombre; no tomar la o de la función como parte de un eno autónomo.",
+      "evidence": "Cinco homólogos en ES/EN muestran el cruce de intervalos. Los nombres y los pares C2=C3 del análisis son correctos; el defecto es semántico e interactivo.",
+      "causeHypothesis": "unsaturationMorpheme acepta en seguido opcionalmente de o/e sin distinguir el comienzo del sufijo funcional oic/oico.",
+      "sourcePaths": ["app/reasoning-name-fragments.ts", "app/reasoning-name-links.ts"],
+      "recommendedTest": "Ácidos y ésteres insaturados, incluidos polienos, con límites de morfemas y enlaces independientes para insaturación y función."
+    },
+    {
+      "id": "AUDNOM-009", "selector": "duplicated-fragments", "severity": "P2", "classifications": ["FRAGMENT_MAPPING_ERROR"],
+      "title": "Localizadores repetidos se emiten dos veces en la misma sección Legacy",
+      "representatives": ["AUDCASE-0003", "AUDCASE-0005"],
+      "observed": "La sección 03 de 2,2-dimethylhexane contiene dos evidencias para el mismo intervalo 2,2; ocurre también con conjuntos de localizadores distintos.",
+      "expectedConstraint": "Una sola evidencia por sección e intervalo literal, conservando las relaciones legítimas entre numeración y sufijos. No confundir fragmentos disjuntos de un mismo enlace con duplicación del mismo span.",
+      "evidence": "Los registros incluyen claves step:start:text idénticas dentro del mismo paso. Se agrupan todas las manifestaciones bajo un identificador causal.",
+      "causeHypothesis": "El adaptador Legacy inserta numeración y la pasada posterior de functionalNameEvidence vuelve a añadir la misma evidencia sin deduplicar todas las combinaciones.",
+      "sourcePaths": ["app/reasoning-name-fragments.ts"],
+      "recommendedTest": "Geminales y sustituyentes repetidos, uno y varios localizadores, ES/EN Legacy; comprobar unicidad de step/start/text sin borrar las evidencias válidas compartidas entre papeles."
+    },
+    {
+      "id": "AUDNOM-010", "selector": "pyridine-explanation", "severity": "P2", "classifications": ["EXPLANATION_CONTRADICTION"],
+      "title": "La explicación de piridina inventa C7 al describir el cierre del anillo",
+      "representatives": ["AUDCASE-0430"],
+      "observed": "El padre se explica correctamente como seis átomos, cinco C y un N; el paso 03 escribe dobles enlaces C2=C3, C4=C5 y C6=C7.",
+      "expectedConstraint": "No existe posición 7. El cierre representado une las posiciones 6 y 1, siendo N el átomo de posición 1; una descripción de enlaces debe ser consciente del cierre y de los elementos.",
+      "evidence": "Lista parentAtomIds de seis elementos, numberedAtoms y explicación literal ES/EN. El nombre pyridine sí pasa la interpretación estructural independiente.",
+      "causeHypothesis": "multipleUnsaturationReasoningText usa locant + 1 y el prefijo C para todos los extremos, sin cierre cíclico ni tipo de átomo.",
+      "sourcePaths": ["app/page.tsx"],
+      "auditCheckerCaveat": "Las dos señales ANALYSIS_BOND_LOCANT de este caso no prueban que el análisis esté mal: el comprobador inicial solo cerraba cycloalkane, no aromatic. Se adjudican como aviso de comprobador; el defecto confirmado está en el texto C6=C7, no en la selección del análisis.",
+      "recommendedTest": "Heterociclos aromáticos con dobles enlaces de cierre; contrastar cada extremo numerado explicado con un átomo existente y su elemento real."
+    },
+    {
+      "id": "AUDNOM-011", "selector": "untranslated-Legacy-labels", "severity": "P2", "classifications": ["WRONG_TRANSLATION"],
+      "title": "Etiquetas funcionales españolas aparecen en explicaciones Legacy EN",
+      "representatives": ["AUDCASE-0342", "AUDCASE-0312"],
+      "observed": "The principal amida is at C1 y The principal éster is at C1, junto con amina/nitrilo en otras estructuras.",
+      "expectedConstraint": "Usar amide, ester, amine y nitrile en el texto inglés, conservando los datos del análisis activo.",
+      "evidence": "Textos parent del perfil 1979-en almacenados; no se requiere un oráculo de grafía normativa del nombre para demostrar la mezcla de idiomas.",
+      "causeHypothesis": "legacyStructuralReasoningText traduce cuatro clases y para las restantes usa analysis.primaryFunctionalLabel en español como fallback.",
+      "sourcePaths": ["app/page.tsx"],
+      "recommendedTest": "Tabla bilingüe de etiquetas para todas las clases funcionales admitidas por las explicaciones Legacy."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "reviewDate": "2026-10-18",
+  "reviewer": "Codex; individual rule and graph review, not human expert certification",
+  "method": "Primary pages opened with web tools during this audit. These notes are paraphrases, not a claim of archived full-source receipts.",
+  "sources": [
+    { "id": "BB2013-P4", "url": "https://iupac.qmul.ac.uk/BlueBook/P4.html", "sections": ["P-41 / Table 4.1", "P-44.3.2"], "application": "Class seniority and modern principal-chain length before unsaturation. P-41 explicitly illustrates 3-hydroxypropanamide and 4-oxobutanenitrile." },
+    { "id": "BB2013-P1", "url": "https://iupac.qmul.ac.uk/BlueBook/P1.html", "sections": ["P-14.3.4", "P-14.4", "P-14.5"], "application": "Permitted locant omissions, ordered numbering criteria and prefix citation. General systematic names and preferred names must not be conflated." },
+    { "id": "BB2013-P2", "url": "https://iupac.qmul.ac.uk/BlueBook/P2.html", "sections": ["acyclic and cyclic parent hydrides"], "application": "Hydrocarbon roots and parent identity; no claim of independent expected text for every generated graph." },
+    { "id": "BB2013-P3", "url": "https://iupac.qmul.ac.uk/BlueBook/P3.html", "sections": ["P-31"], "application": "Unsaturation endings and multiplicity." },
+    { "id": "BB2013-P6", "url": "https://iupac.qmul.ac.uk/BlueBook/P6.html", "sections": ["P-62", "P-64", "P-65"], "application": "Amines, carbonyls, acids and subordinate prefixes; 3-oxobutanoic acid is a printed example in P-64.5 and P-65." },
+    { "id": "BB2013-P6A", "url": "https://iupac.qmul.ac.uk/BlueBook/P6a.html", "sections": ["P-66"], "application": "Nitrogen functions, amide N substitution, nitriles; linked P-62 rules apply to substituted amines." },
+    { "id": "IUPAC1979-A3", "url": "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm", "sections": ["A-3.1", "A-3.2", "A-3.3", "A-3.4"], "application": "Historical unsaturated-chain selection and placement of unsaturation locants. Unlike 2013, unsaturation controls parent selection before chain length." },
+    { "id": "IUPAC1979-A11", "url": "https://www.acdlabs.com/iupac/nomenclature/79/r79_60.htm", "sections": ["A-11.3"], "application": "Historical unsaturated monocyclic hydrides." },
+    { "id": "IUPAC1979-C314", "url": "https://www.acdlabs.com/iupac/nomenclature/79/r79_276.htm", "sections": ["C-314.1"], "application": "Classical cyclic-ketone suffix construction." },
+    { "id": "OPSIN", "url": "https://www.ebi.ac.uk/opsin/", "application": "Independent name-to-structure parser; English output receipts are captured separately with exact URLs, raw bodies and SHA-256. Parsing does not adjudicate PIN or 1979 preference." }
+  ],
+  "limits": [
+    "No newly generated Spanish text is promoted to an exact normative reference by translation.",
+    "No fresh PubChem cross-check is claimed.",
+    "Production group detection is reused; applying the published seniority order to its output does not independently validate the detector.",
+    "The corpus's independently reviewed existing expectations and frozen receipts remain separate and unmodified."
+  ]
+}
