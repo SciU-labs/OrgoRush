@@ -137,6 +137,8 @@ export function buildOpenChemLibStereoGraph(
 }
 
 export function getTetrahedralStereoCenters(source: GeneratedMolecule): TetrahedralStereoCenter[] {
+  // This query returns assigned R/S only. Potential centers are inspected separately.
+  if (!source.atoms.some((atom) => atom.tetrahedralParity)) return [];
   const graph = buildOpenChemLibStereoGraph(source, false);
   return source.atoms.flatMap((atom) => {
     const atomIndex = graph.atomIdToIndex.get(atom.id);

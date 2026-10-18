@@ -1,0 +1,1073 @@
+{
+  "task": "AUD-NOM-003",
+  "historicalHead": "812f72547a6b02d55d4c600f648893376ac742fc",
+  "generatedAt": "2026-10-18T07:13:16.829Z",
+  "sourceHashes": {
+    "app/page.tsx": "1807a900e52012250db62a6fca68c0006131be17b2b2c9063dd45d117505268a",
+    "app/legacy-english-nomenclature.ts": "92946a4ee73cafd79b2621b7cafde92f6aff92037e969bc37dd3af1bf2a8d110"
+  },
+  "policy": "OPSIN MATCH establishes structural interpretation, not preferred historical spelling. Original audit artifacts are immutable.",
+  "summary": [
+    {
+      "finding": "AUDNOM-002",
+      "structures": 33,
+      "fixedOutputs": 33,
+      "safeRejectionOutputs": 0,
+      "matches": 33,
+      "pending": 0,
+      "mismatches": 0
+    },
+    {
+      "finding": "AUDNOM-003",
+      "structures": 2,
+      "fixedOutputs": 0,
+      "safeRejectionOutputs": 8,
+      "matches": 0,
+      "pending": 0,
+      "mismatches": 0
+    },
+    {
+      "finding": "AUDNOM-004",
+      "structures": 6,
+      "fixedOutputs": 6,
+      "safeRejectionOutputs": 0,
+      "matches": 6,
+      "pending": 0,
+      "mismatches": 0
+    },
+    {
+      "finding": "AUDNOM-005",
+      "structures": 6,
+      "fixedOutputs": 6,
+      "safeRejectionOutputs": 0,
+      "matches": 6,
+      "pending": 0,
+      "mismatches": 0
+    }
+  ],
+  "records": [
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0342",
+      "smiles": "CCNC(=O)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "propanamide",
+          "after": "N-ethylpropanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethylpropanamide",
+            "receiptSha256": "0e31f877463b177898ceff968f9f7c3f59d38b4ce4de0dadbf4119c35c609697",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:03.637Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0343",
+      "smiles": "CN(C)CCC",
+      "profiles": {
+        "1979-en": {
+          "before": "1-propanamine",
+          "after": "N,N-dimethyl-1-propanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N,N-dimethyl-1-propanamine",
+            "receiptSha256": "f9d54073954a7f4a8e3db61aa18c40a6974e71719f4de69125bf9e68a405e82c",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:38.179Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0344",
+      "smiles": "CCCC(=O)N(C)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "butanamide",
+          "after": "N-methyl-N-pentylbutanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-pentylbutanamide",
+            "receiptSha256": "1f76e6d4c8b774ba663d3fedb67d54bc6455abd004ce54c10694c6a11e9128f3",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:35.205Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0345",
+      "smiles": "CCCCCC(=O)N(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-butyl-N-methylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butyl-N-methylhexanamide",
+            "receiptSha256": "5b47a4d7bd79ce7f6cb286780268061de12cb417fb07518fc74a4544f53c7f7b",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:34.889Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0346",
+      "smiles": "CC(=O)N(C)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamide",
+          "after": "N-ethyl-N-methylethanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methylethanamide",
+            "receiptSha256": "1f692960d94d9e1b414a559e6a6cd49071a4400acee3cddb698b1c11a03eea7b",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:35.343Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0347",
+      "smiles": "CCCCNC(=O)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "pentanamide",
+          "after": "N-butylpentanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butylpentanamide",
+            "receiptSha256": "eb5e39126ce4c2ee0d73dc2db1917b43f90df94b94a8a35c36c6eef94fddfc58",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:35.703Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0348",
+      "smiles": "CCCCCNC(=O)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "pentanamide",
+          "after": "N-pentylpentanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-pentylpentanamide",
+            "receiptSha256": "b8ab1dc54c7aadedc1950917045309e8e377b00e37344c9b23576ca5420377a9",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:36.292Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0349",
+      "smiles": "CCCN(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "1-butanamine",
+          "after": "N-methyl-N-propyl-1-butanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-propyl-1-butanamine",
+            "receiptSha256": "91b2e9f33a79845234639cd62f82d67fa1c82afddb1ced7522933ca364db0c09",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:38.426Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0350",
+      "smiles": "CCCCCC(=O)N(C)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-methyl-N-pentylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-pentylhexanamide",
+            "receiptSha256": "e8a56d7f4792e320d09adb9bbcf71c221757e6519cc8b6b202391a9eb06bd4ae",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:36.774Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0352",
+      "smiles": "CCN(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "1-butanamine",
+          "after": "N-ethyl-N-methyl-1-butanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methyl-1-butanamine",
+            "receiptSha256": "512c0d1afc09bf525d92e3aa62b21f33846cb35d127ef4911eefb0c4a62ee1d3",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:38.665Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0353",
+      "smiles": "CCNC(=O)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-ethylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethylhexanamide",
+            "receiptSha256": "e5e58f1fe539aec11618dcab84e17532434c1900c2ae3d440cbec10c97c7ccb5",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:37.285Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0355",
+      "smiles": "CCCNC(=O)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-propylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-propylhexanamide",
+            "receiptSha256": "8fb11466e7cc1562b9da88ffe1f81cf4a183775dac8bc41890faaf312292e344",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:37.703Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0356",
+      "smiles": "CCCCC(=O)N(C)CCC",
+      "profiles": {
+        "1979-en": {
+          "before": "pentanamide",
+          "after": "N-methyl-N-propylpentanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-propylpentanamide",
+            "receiptSha256": "53b3aeba8e75b5798e9d6df452acb6d1a47d1bb724eafddb919c3cbe54a7208d",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:37.855Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0357",
+      "smiles": "CCCCNC(=O)CCCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "heptanamide",
+          "after": "N-butylheptanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butylheptanamide",
+            "receiptSha256": "53bc45fe69a3771ba455752814a4ae483036660e292fe19a3822b09b96d70110",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:38.077Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0358",
+      "smiles": "CCN(C)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamine",
+          "after": "N-ethyl-N-methylethanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methylethanamine",
+            "receiptSha256": "25ce73b5df9fd033893c8603ce0f458429e010a2a73ab81138442f53f5101d90",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:38.631Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0359",
+      "smiles": "CCCCCNC(=O)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "propanamide",
+          "after": "N-pentylpropanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-pentylpropanamide",
+            "receiptSha256": "80ae4875a4ed3dae19d53cc0bfe7581d8f26614011a952ae23ee94799cf35568",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:38.684Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0360",
+      "smiles": "CCCCCC(=O)N(C)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-ethyl-N-methylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methylhexanamide",
+            "receiptSha256": "18202635b2660269f968e092eb41a1a14f9715e2556f1d9a932e1c7659d16651",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:39.026Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0361",
+      "smiles": "CC(=O)N(C)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamide",
+          "after": "N-methyl-N-pentylethanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-pentylethanamide",
+            "receiptSha256": "4b327e11a634f4b092eb2a40b3042937fbd68c59ba7e8899627820080686f939",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:39.155Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0362",
+      "smiles": "CCCC(=O)N(C)CCCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "butanamide",
+          "after": "N-hexyl-N-methylbutanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-hexyl-N-methylbutanamide",
+            "receiptSha256": "fdaefecb75f6a6384271b72ebfab4e1c67375614bf862a1b75b3bbd58fd25f17",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:39.419Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0363",
+      "smiles": "CCCC(=O)N(C)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "butanamide",
+          "after": "N-ethyl-N-methylbutanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methylbutanamide",
+            "receiptSha256": "1a236e5552d081b804c236fe375734cf9b1fdf59cd9cceb3edac05e94ce94c85",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:39.582Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0365",
+      "smiles": "CCCCCC(=O)N(C)CCCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-hexyl-N-methylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-hexyl-N-methylhexanamide",
+            "receiptSha256": "5eb667756d1996bc99954c3782fa173a95a5559c7565141d4ad8f598404d5ca0",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:40.209Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0366",
+      "smiles": "CCNC(=O)CCC",
+      "profiles": {
+        "1979-en": {
+          "before": "butanamide",
+          "after": "N-ethylbutanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethylbutanamide",
+            "receiptSha256": "f4525738ec12278741cfdce264c542bfac60bc734a4071388aaf18bc4d18ba06",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:40.035Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0367",
+      "smiles": "CCN(C)CCCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "1-hexanamine",
+          "after": "N-ethyl-N-methyl-1-hexanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-ethyl-N-methyl-1-hexanamine",
+            "receiptSha256": "3f7506754df68ad535824e13391a1cbb9c23c976eb9a69f94b3778b99519e684",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:38.894Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0368",
+      "smiles": "CCCCNC(=O)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "propanamide",
+          "after": "N-butylpropanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butylpropanamide",
+            "receiptSha256": "b1bf090dae421b41d23e20673f8d21067f10aab18e51465d0fb3731939511a2a",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:41.277Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0370",
+      "smiles": "CC(=O)N(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamide",
+          "after": "N-butyl-N-methylethanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butyl-N-methylethanamide",
+            "receiptSha256": "5afff240c25746dc46a896efee3e83f3f68117d4230a09dcb61f98168c2f96ca",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:41.486Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0371",
+      "smiles": "CCCC(=O)N(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "butanamide",
+          "after": "N-butyl-N-methylbutanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butyl-N-methylbutanamide",
+            "receiptSha256": "45f8ea5e851cbf8a05cd8109a12498379c205d727ca60ca737993e491726c37c",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:41.715Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0372",
+      "smiles": "CCCCC(=O)N(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "pentanamide",
+          "after": "N-butyl-N-methylpentanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butyl-N-methylpentanamide",
+            "receiptSha256": "8867de834135c02602db0b2c63abd8584c31d7fb0c6ec9c7ad34f8cdaca2edf5",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:41.888Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0373",
+      "smiles": "CNC(=O)CCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanamide",
+          "after": "N-methylhexanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methylhexanamide",
+            "receiptSha256": "75c6e7e00467239c2ade7a0684b0f72a9a1882677ec1b7189a95f0786a60c461",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:42.293Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0375",
+      "smiles": "CCCCCN(C)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "1-pentanamine",
+          "after": "N-butyl-N-methyl-1-pentanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-butyl-N-methyl-1-pentanamine",
+            "receiptSha256": "980f5486983b5437c0106c86d90832ca7f99d7412c4a7c45c97694ab6d76dd81",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:39.123Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0376",
+      "smiles": "CCCNC(=O)CCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "pentanamide",
+          "after": "N-propylpentanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-propylpentanamide",
+            "receiptSha256": "a70c6eb3ca73554d6f23a4e576e172445b0a7b24117da382c219d51ac4ea5e33",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:39.358Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0377",
+      "smiles": "CC(=O)N(C)CCCCCC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamide",
+          "after": "N-hexyl-N-methylethanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-hexyl-N-methylethanamide",
+            "receiptSha256": "83461ae99f4b43e1846cb0d07fedf888a7374ca7a16320b413a18c590cde2f63",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:39.589Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0378",
+      "smiles": "CN(C)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "ethanamine",
+          "after": "N,N-dimethylethanamine",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N,N-dimethylethanamine",
+            "receiptSha256": "f0aecc427b009fa25c84c654d77d7fe8e2f3c9ca922ed09c8c3078bc22da5805",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:39.821Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-002",
+      "id": "AUDCASE-0379",
+      "smiles": "CCC(=O)N(C)CCC",
+      "profiles": {
+        "1979-en": {
+          "before": "propanamide",
+          "after": "N-methyl-N-propylpropanamide",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "N-methyl-N-propylpropanamide",
+            "receiptSha256": "032887694cae57e92680ca48ce259e875a816bb750d8aa69bfda5f6d09242c34",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:40.058Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-003",
+      "id": "AUDCASE-0171",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "profiles": {
+        "2013-es": {
+          "before": "2-feniletan-1-ol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "2013-en": {
+          "before": "2-phenylethan-1-ol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "1979-es": {
+          "before": "2-feniletanol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "1979-en": {
+          "before": "2-phenylethanol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-003",
+      "id": "AUDCASE-0176",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "profiles": {
+        "2013-es": {
+          "before": "2-feniletan-1-ol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "2013-en": {
+          "before": "2-phenylethan-1-ol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "1979-es": {
+          "before": "2-feniletanol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        },
+        "1979-en": {
+          "before": "2-phenylethanol",
+          "after": null,
+          "state": "SAFE_REJECTION",
+          "evidence": {
+            "status": "UNSUPPORTED"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0288",
+      "smiles": "O=C(O)CCCCCCCCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "decanoic acid",
+          "after": "decanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "decanedioic acid",
+            "receiptSha256": "2df2395b575a9d4723c0c68ccdafa4464f5e7b6a2ade1aeb7bcc232a574dea46",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:32.128Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0292",
+      "smiles": "O=C(O)CCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "butanoic acid",
+          "after": "butanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "butanedioic acid",
+            "receiptSha256": "8a33becb2552cb1ef57bba71a13a1089a2350fb1a5cab4cc4774732b33349abc",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:32.311Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0294",
+      "smiles": "O=C(O)CCCCCCCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "nonanoic acid",
+          "after": "nonanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "nonanedioic acid",
+            "receiptSha256": "5e177826ad3cb05eee1876e5e63d2bb1b80095ea8af8b564a5a80bef5a9fca25",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:32.814Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0295",
+      "smiles": "O=C(O)CCCCCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "heptanoic acid",
+          "after": "heptanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "heptanedioic acid",
+            "receiptSha256": "7385d2ab3ca8e6947fed53da443c35e8cd80e3fb7ace2e93510feb96e3b42e90",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:33.242Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0298",
+      "smiles": "O=C(O)CCCCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "hexanoic acid",
+          "after": "hexanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "hexanedioic acid",
+            "receiptSha256": "d3d63b4c15f05d682f9f6a1316b8f38ce061d810be2062ce5ea15c19958c1ea2",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:33.648Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-004",
+      "id": "AUDCASE-0303",
+      "smiles": "O=C(O)CCCCCCC(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "octanoic acid",
+          "after": "octanedioic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "octanedioic acid",
+            "receiptSha256": "c96aaefb78502e7ded3bffd39e214f00353dfd9e4367c66dd1d87f14356c9036",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:32:34.341Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0417",
+      "smiles": "C[C@H](O)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "2-butanol",
+          "after": "(2S)-2-butanol",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2S)-2-butanol",
+            "receiptSha256": "d29026301ae8317d9ac029c8c13287d45e5dabe3d0a48fec218ac8db4a8d396c",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:40.291Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0418",
+      "smiles": "C[C@@H](O)CC",
+      "profiles": {
+        "1979-en": {
+          "before": "2-butanol",
+          "after": "(2R)-2-butanol",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2R)-2-butanol",
+            "receiptSha256": "a7333ed1523abd5ec03ba713385753b3b0d413d965ec6e686b6586776128c2d6",
+            "origin": "AUD-NOM-003-live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T07:06:40.527Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0419",
+      "smiles": "N[C@H](C)C(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "2-aminopropanoic acid",
+          "after": "(2R)-2-aminopropanoic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2R)-2-aminopropanoic acid",
+            "receiptSha256": "5983ba474701f57c1dc82a533d016c14af756acfb0266e56e0ad44302bb12542",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:23.027Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0420",
+      "smiles": "N[C@@H](C)C(=O)O",
+      "profiles": {
+        "1979-en": {
+          "before": "2-aminopropanoic acid",
+          "after": "(2S)-2-aminopropanoic acid",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2S)-2-aminopropanoic acid",
+            "receiptSha256": "f036a6f66163025ae3f75b330ae9c8be6597c8e238770107fb2843e1daa3305f",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:23.591Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0421",
+      "smiles": "C[C@H](Cl)[C@H](Br)C",
+      "profiles": {
+        "1979-en": {
+          "before": "2-bromo-3-chlorobutane",
+          "after": "(2R,3S)-2-bromo-3-chlorobutane",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2R,3S)-2-bromo-3-chlorobutane",
+            "receiptSha256": "21de80e9976a142a31b23754bfc1d724830e6c9eb7d7f449102ca7877719e140",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:17.890Z"
+          }
+        }
+      }
+    },
+    {
+      "finding": "AUDNOM-005",
+      "id": "AUDCASE-0422",
+      "smiles": "C[C@H](Cl)[C@@H](Br)C",
+      "profiles": {
+        "1979-en": {
+          "before": "2-bromo-3-chlorobutane",
+          "after": "(2S,3S)-2-bromo-3-chlorobutane",
+          "state": "FIXED",
+          "evidence": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "(2S,3S)-2-bromo-3-chlorobutane",
+            "receiptSha256": "b6713ef316138d3dc6e8d23323e3a7209526b88d730530deabbfc280c5d97bc0",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:18.281Z"
+          }
+        }
+      }
+    }
+  ]
+}
