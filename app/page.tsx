@@ -2860,6 +2860,16 @@ function traditionalStereochemicalPrefix(name: string) {
   return name.match(/^ácido (\((?:\d+[EZ](?:,\d+[EZ])*)\)-)/i)?.[1];
 }
 
+/** The selected display requests stereo; the descriptors themselves come from CIP. */
+function legacyEnglishStereochemicalPrefix(molecule: Molecule, analysis: Analysis, requested: boolean) {
+  if (!requested) return;
+  const descriptors = [
+    ...getMainChainStereoDescriptors(molecule, analysis.mainChain, true),
+    ...getMainChainTetrahedralDescriptors(molecule, analysis.mainChain),
+  ].sort((a, b) => a.locant - b.locant || a.configuration.localeCompare(b.configuration));
+  return descriptors.length ? `(${descriptors.map((item) => `${item.locant}${item.configuration}`).join(",")})-` : undefined;
+}
+
 /** Adapts the simulator's local graph analysis to the standalone engine DTO. */
 export function buildTraditionalMoleculeStructure(
   molecule: Molecule,
@@ -3070,6 +3080,7 @@ export function buildLegacyEnglishNameModel(
   molecule: Molecule,
   analysis: Analysis,
   displayedSourceName = analysis.name,
+  options: { stereochemistry?: boolean } = {},
 ): LegacyEnglishNameModel {
   const skeleton = carbonSkeleton(molecule);
   const heterocycle = heterocycleRing(molecule);
@@ -3108,8 +3119,17 @@ export function buildLegacyEnglishNameModel(
     : parentKind === "polycyclic"
       ? translateSpanishIupacToOpsin(stripStereochemicalDescriptors(displayedSourceName))
       : undefined;
+  const stereochemistryRequested = options.stereochemistry
+    ?? /^(?:ácido )?\((?:\d+[EZRS])(?:,\d+[EZRS])*\)-/.test(displayedSourceName);
+  const unrepresentedTetrahedralCenter = stereochemistryRequested
+    && getTetrahedralStereoCenters(molecule).some((center) => !analysis.mainChain.includes(center.atomId));
   return {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+    unavailableReason: nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)
+      || hasUnrepresentedArylSubstitution(molecule, analysis)
+      || unrepresentedTetrahedralCenter
+      ? "The local naming grammar cannot represent the requested structure safely."
+      : undefined,
     parent: {
       kind: parentKind,
       carbonCount: parentAtomIds.filter((atomId) => {
@@ -3136,9 +3156,10 @@ export function buildLegacyEnglishNameModel(
       systematicName: substituent.name,
       complex: substituent.complex,
     })),
+    nitrogenSubstituents: unsupportedHeterocycleLocalName ? [] : nitrogenSubstituentsForParent(molecule, analysis),
     stereochemicalPrefix: unsupportedHeterocycleLocalName
       ? undefined
-      : traditionalStereochemicalPrefix(displayedSourceName),
+      : legacyEnglishStereochemicalPrefix(molecule, analysis, stereochemistryRequested),
   };
 }
 
@@ -3341,6 +3362,31 @@ function nitrogenSubstituentPrefixes(
     const prefix = simplePrefixes[count] ?? `${count}`;
     return `${Array.from({ length: count }, () => "N").join(",")}-${prefix}${name}`;
   });
+}
+
+/** N-locants describe bonds to the functional nitrogen, never carbon numbering. */
+function nitrogenSubstituentsForParent(molecule: Molecule, analysis: Analysis) {
+  const group = analysis.functionalGroups.find((item) => item.kind === analysis.primaryFunctionalGroup);
+  if (!group || (group.kind !== "amine" && group.kind !== "amide")) return [];
+  const skeleton = carbonSkeleton(molecule);
+  const adjacency = buildAdjacency(skeleton);
+  return atomNeighbors(group.heteroAtomId, molecule)
+    .filter(({ atomId }) => getAtom(atomId, molecule) && isCarbonAtom(getAtom(atomId, molecule)!)
+      && !analysis.mainChain.includes(atomId) && (group.kind !== "amide" || atomId !== group.carbonId))
+    .map(({ atomId }) => {
+      const atomIds = carbonComponent(atomId, skeleton);
+      const length = simpleAlkylLength(atomId, skeleton);
+      // The existing N-prefix grammar admits unbranched alkyl groups attached
+      // through an end atom. Other N branches require their own grammar.
+      const supported = length > 0 && Boolean(alkylNames[length])
+        && (adjacency.get(atomId)?.length ?? 0) <= 1
+        && !molecule.rings?.some((ring) => ring.atomIds.some((id) => atomIds.includes(id)))
+        && skeleton.bonds.every(([a, b, order = 1]) => !atomIds.includes(a) || !atomIds.includes(b) || order === 1)
+        && atomIds.every((id) => atomNeighbors(id, molecule).every(({ atomId: neighbor }) =>
+          atomIds.includes(neighbor) || neighbor === group.heteroAtomId));
+      return { systematicName: alkylNames[length] ?? "alquil", complex: false,
+        atomIds, nitrogenAtomId: group.heteroAtomId, supported };
+    });
 }
 
 function analyzeFunctionalAcyclic(
@@ -5416,9 +5462,44 @@ export function buildActiveIupacReasoning(input: {
   const steps = language === "en"
     ? buildEnglishReasoningSteps(spanishSteps, molecule, analysis, presentation)
     : spanishSteps;
+  const nitrogenSubstituents = nitrogenSubstituentsForParent(molecule, analysis).filter((item) => item.supported);
+  const nitrogenExplanation = language === "en"
+    ? "N locants identify alkyl groups bonded directly to the functional nitrogen, outside the numbered carbon parent."
+    : "Los localizadores N identifican grupos alquilo enlazados directamente al nitrógeno funcional, fuera del padre carbonado numerado.";
+  if (nitrogenSubstituents.length) {
+    const substituentStep = steps.find((step) => step.nameRole === "substituent");
+    if (substituentStep) substituentStep.explanation += ` ${nitrogenExplanation}`;
+    else {
+      const nextStep = steps.findIndex((step) => step.number > "04");
+      steps.splice(nextStep < 0 ? steps.length : nextStep, 0, { number: "04", nameRole: "substituent",
+        title: language === "en" ? "Substituents on nitrogen" : "Sustituyentes sobre nitrógeno",
+        explanation: nitrogenExplanation });
+    }
+  }
   const fragments = deriveReasoningNameFragments({
     analysis, convention, language, displayedName, generatedNames, canHighlight, steps,
   });
+  if (canHighlight && nitrogenSubstituents.length
+    && (displayedName === analysis.name || generatedNames.includes(displayedName))) {
+    const step = steps.find((item) => item.nameRole === "substituent")!;
+    for (const match of displayedName.matchAll(/\bN(?:,N)*(?=,|-)/g)) {
+      const tail = displayedName.slice(match.index! + match[0].length);
+      const linkedSubstituents = nitrogenSubstituents.filter((item) => {
+        const name = language === "en" ? translateSpanishIupacToOpsin(item.systematicName) : item.systematicName;
+        return new RegExp(`^(?:,\\d+)*-(?:di|tri|tetra)?${name}`).test(tail);
+      });
+      if (!linkedSubstituents.length) continue;
+      const evidence: ReasoningNameFragment = {
+        text: match[0], start: match.index, kind: "substituent",
+        label: language === "en" ? "Substitution on nitrogen" : "Sustitución sobre nitrógeno",
+        explanation: nitrogenExplanation,
+        atomIds: [...new Set(linkedSubstituents.flatMap((item) => [item.nitrogenAtomId, ...item.atomIds]))],
+      };
+      const previous = fragments[step.number];
+      if (previous) (previous.additionalFragments ??= []).push(evidence);
+      else fragments[step.number] = evidence;
+    }
+  }
   return { analysis, profile, displayedName, steps, fragments,
     links: buildReasoningNameLinkParts(displayedName, fragments, steps) };
 }
@@ -5605,7 +5686,19 @@ const COMPLEX_NAME_LIMIT_MESSAGE = "El motor no puede interpretar esta estructur
 const COMPLEX_NAME_UNAVAILABLE_MESSAGE = "Nombre no disponible para estructuras complejas";
 const STEREOCHEMISTRY_STORAGE_KEY = "hydrocarbon-lab-show-stereochemistry";
 
+/** A bare phenyl prefix accounts for the ring, but not additional ring branches. */
+function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis) {
+  if (analysis.family !== "acyclic") return false;
+  return analysis.substituents.some((substituent) => substituent.name === "fenil"
+    && molecule.rings?.some((ring) => ring.kind === "aromatic"
+      && ring.atomIds.every((id) => substituent.atomIds.includes(id))
+      && ring.atomIds.some((id) => atomNeighbors(id, molecule).some(({ atomId }) =>
+        !ring.atomIds.includes(atomId) && !analysis.mainChain.includes(atomId)))));
+}
+
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
+  if (hasUnrepresentedArylSubstitution(molecule, analysis)) return true;
+  if (nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)) return true;
   if (heterocycleHasUnrepresentedHydroxylGroups(molecule)) return true;
   const heterocycle = heterocycleRing(molecule);
   if (heterocycle && !registeredHeterocycleParentForRing(molecule, heterocycle)) return true;
@@ -7310,9 +7403,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     () => localSuggestedNameUnavailable || !legacyEnglishProfileIsSupportedForMolecule(molecule)
       ? "-"
       : generateLegacyEnglishName(
-        buildLegacyEnglishNameModel(molecule, legacyAnalysis, legacyNameWithSelectedStereochemistry),
+        buildLegacyEnglishNameModel(molecule, legacyAnalysis, legacyNameWithSelectedStereochemistry,
+          { stereochemistry: stereochemistryEnabled }),
       ).name,
-    [legacyAnalysis, legacyNameWithSelectedStereochemistry, localSuggestedNameUnavailable, molecule],
+    [legacyAnalysis, legacyNameWithSelectedStereochemistry, localSuggestedNameUnavailable, molecule, stereochemistryEnabled],
   );
   const nomenclatureVariants = (() => {
     const suggestedName = externalNameIsPrimary

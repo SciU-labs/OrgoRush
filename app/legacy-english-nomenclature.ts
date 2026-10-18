@@ -67,7 +67,14 @@ export type LegacyEnglishNameModel = {
   tripleBondLocants: number[];
   functionalGroups: LegacyFunctionalGroup[];
   substituents: LegacySubstituent[];
+  nitrogenSubstituents?: Array<{
+    systematicName: string;
+    complex: boolean;
+    atomIds: number[];
+    nitrogenAtomId: number;
+  }>;
   stereochemicalPrefix?: string;
+  unavailableReason?: string;
 };
 
 export type ParentCandidateCriteria = {
@@ -229,8 +236,8 @@ export function englishStructuralSubstituentName(name: string) {
   return translated;
 }
 
-export function nameSubstituents(substituents: readonly LegacySubstituent[]) {
-  const groups = new Map<string, { name: string; complex: boolean; locants: number[] }>();
+export function nameSubstituents(substituents: readonly (Omit<LegacySubstituent, "locant"> & { locant: number | "N" })[]) {
+  const groups = new Map<string, { name: string; complex: boolean; locants: Array<number | "N"> }>();
   for (const substituent of substituents) {
     const name = englishStructuralSubstituentName(substituent.systematicName);
     const key = `${substituent.complex}:${name}`;
@@ -242,7 +249,7 @@ export function nameSubstituents(substituents: readonly LegacySubstituent[]) {
     .sort((a, b) => getAlphabetizationKey(a.name).localeCompare(getAlphabetizationKey(b.name), "en")
       || a.name.localeCompare(b.name, "en"))
     .map((group) => {
-      const locants = [...group.locants].sort((a, b) => a - b).join(",");
+      const locants = [...group.locants].sort((a, b) => a === "N" ? b === "N" ? 0 : -1 : b === "N" ? 1 : a - b).join(",");
       if (group.locants.length === 1) return group.complex ? `${locants}-(${group.name})` : `${locants}-${group.name}`;
       const multiplier = group.complex
         ? COMPLEX_MULTIPLIERS[group.locants.length] ?? `${group.locants.length}x`
@@ -336,7 +343,7 @@ function functionalParent(model: LegacyEnglishNameModel, principal: LegacyFuncti
 
   const stem = unsaturatedStem(model.parent.carbonCount, model.doubleBondLocants, model.tripleBondLocants) ?? `${root}an`;
   const saturated = !model.doubleBondLocants.length && !model.tripleBondLocants.length;
-  if (principal === "carboxylicAcid") return `${stem}oic acid`;
+  if (principal === "carboxylicAcid") return count === 1 ? `${stem}oic acid` : `${stem}edioic acid`;
   if (principal === "ester") {
     const alkylNames = groups
       .map((group) => group.attachedAlkylName ? englishStructuralSubstituentName(group.attachedAlkylName) : "alkyl")
@@ -379,15 +386,31 @@ export type LegacyEnglishReasoning = {
     substituentLocants: number[];
   };
   substituents: Array<{ locant: number; name: string }>;
+  nitrogenSubstituents: Array<{ locant: "N"; name: string; atomIds: number[]; nitrogenAtomId: number }>;
   finalName: string;
 };
 
 export function formatName(model: LegacyEnglishNameModel) {
+  if (model.unavailableReason) return "-";
   const hierarchy = resolveFunctionalHierarchy(model.functionalGroups);
+  if (hierarchy.principalKind === "carboxylicAcid" && hierarchy.principalGroups.length > 1) {
+    const groups = hierarchy.principalGroups;
+    const terminalDiacid = model.parent.kind === "chain" && groups.length === 2
+      && groups.every((group) => group.carbonIncludedInParent)
+      && groups.some((group) => group.locant === 1)
+      && groups.some((group) => group.locant === model.parent.carbonCount);
+    // C-401.1 applies to two terminal carboxyl carbons in the parent chain.
+    // The existing benzene-carboxylic grammar represents exocyclic groups;
+    // other multiple-acid layouts must not fall through to a monoacid suffix.
+    if (!terminalDiacid && !(model.parent.kind === "aromatic" && model.parent.carbonCount === 6)) return "-";
+  }
   const parentName = hierarchy.principalKind
     ? functionalParent(model, hierarchy.principalKind, hierarchy.principalGroups)
     : hydrocarbonParent(model);
-  let prefixParts = nameSubstituents(model.substituents);
+  let prefixParts = nameSubstituents([
+    ...model.substituents,
+    ...(model.nitrogenSubstituents ?? []).map((item) => ({ ...item, locant: "N" as const })),
+  ]);
   if (
     !hierarchy.principalKind
     && (model.parent.kind === "ring" || model.parent.kind === "aromatic")
@@ -432,6 +455,10 @@ export function generateLegacyEnglishName(model: LegacyEnglishNameModel) {
     substituents: model.substituents.map((substituent) => ({
       locant: substituent.locant,
       name: englishStructuralSubstituentName(substituent.systematicName),
+    })),
+    nitrogenSubstituents: (model.nitrogenSubstituents ?? []).map((substituent) => ({
+      locant: "N", name: englishStructuralSubstituentName(substituent.systematicName),
+      atomIds: [...substituent.atomIds], nitrogenAtomId: substituent.nitrogenAtomId,
     })),
     finalName,
   };
