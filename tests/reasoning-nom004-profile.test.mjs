@@ -175,15 +175,47 @@ test("same ring analysis remains active across language and convention changes w
   const legacyName = getNames(molecule, legacy);
   const sequence = [
     ["es", "current", current, current.name],
-    ["en", "iupac-1979-legacy-en", legacy, legacyName.englishLegacy],
-    ["es", "iupac-1979-es", legacy, legacyName.spanishLegacy],
     ["en", "current", current, translateSpanishIupacToOpsin(current.name)],
+    ["es", "iupac-1979-es", legacy, legacyName.spanishLegacy],
+    ["en", "iupac-1979-legacy-en", legacy, legacyName.englishLegacy],
+    ["es", "current", current, current.name],
   ];
+  let previous;
   for (const [language, convention, analysis, name] of sequence) {
     const result = inspectProfile(molecule, analysis, name, language, convention);
-    assert.ok(result.steps.some((step) => step.explanation.includes(name)), `${convention}/${language} reasoning uses its active name`);
-    assert.ok(!result.steps.some((step) => step.explanation.includes(sequence[0][3]) && name !== sequence[0][3]),
-      `${convention}/${language} has no stale 2013 name`);
+    assert.equal(result.links.map(({ text }) => text).join(""), name, `${convention}/${language} fragments reconstruct the active name`);
+    assert.equal(analysis.doubleBondLocants[0], 2, `${convention}/${language} uses the selected ring analysis`);
+    assert.equal(analysis.mainChain.length, 6, `${convention}/${language} retains the six-carbon ring parent`);
+    assert.match(result.steps.find(({ nameRole }) => nameRole === "unsaturation").explanation, /C2=C3/,
+      `${convention}/${language} explains the active double bond`);
+    assert.ok(result.links.every(({ stepNumber }) => !stepNumber || result.steps.some((step) => step.number === stepNumber)),
+      `${convention}/${language} navigation targets exist`);
+    const bondEvidence = result.links.filter(({ bondType, locant }) => bondType === "double" && locant === 2);
+    assert.ok(bondEvidence.length, `${convention}/${language} exposes the active double-bond evidence in the visible name`);
+    assert.ok(bondEvidence.every(({ atomIds }) => !atomIds || atomIds.every((id, index) => id === analysis.mainChain[1 + index])),
+      `${convention}/${language} bond links use the selected ring atoms`);
+    const functionLink = result.links.find(({ stepNumber }) => stepNumber === "01");
+    assert.ok(functionLink, `${convention}/${language} links the active ketone function`);
+    assert.ok(functionLink.contributions?.some(({ group }) => group === "ketone"),
+      `${convention}/${language} function link reflects the analyzed ketone`);
+    const parentLink = result.links.find(({ stepNumber }) => stepNumber === "02");
+    assert.ok(parentLink, `${convention}/${language} links the active ring parent`);
+    assert.deepEqual(parentLink.atomIds, analysis.mainChain, `${convention}/${language} parent link uses the active ring atoms`);
+    if (previous) {
+      const activeFragments = Object.values(result.fragments)
+        .flatMap((fragment) => [fragment, ...(fragment.additionalFragments ?? [])]);
+      const oldExclusiveFragments = Object.values(previous.fragments)
+        .flatMap((fragment) => [fragment, ...(fragment.additionalFragments ?? [])])
+        .map(({ text }) => text)
+        .filter((text) => text && /\d/.test(text) && text.length >= 3 && !name.includes(text)
+          && !activeFragments.some((fragment) => fragment.text === text));
+      const explanationText = result.steps.map(({ explanation }) => explanation).join(" ");
+      assert.ok(!explanationText.includes(previous.name), `${convention}/${language} has no stale prior name`);
+      for (const text of oldExclusiveFragments) {
+        assert.ok(!explanationText.includes(text), `${convention}/${language} does not retain prior-only fragment ${text}`);
+      }
+    }
+    previous = { ...result, name };
   }
   assert.deepEqual(moleculeToSmiles(molecule), { ok: true, smiles: before });
 });
@@ -346,8 +378,25 @@ test("manual findings: parent, orientation, multiple bond and historical spellin
           assert.match(step("parent").explanation, /6/);
           assert.match(step("numbering").explanation, /C1/);
           assert.doesNotMatch(step("parent").explanation, /anillo continuo/);
-          if (!legacy) assert.match(step("unsaturation").explanation, /-2-en-/);
-          else assert.doesNotMatch(step("function").explanation, /[«“]1-(?:ona|one)/, "an implicit Legacy carbonyl locant is not taught as a written suffix");
+          if (!legacy) {
+            assert.match(step("unsaturation").explanation, /C2=C3/);
+            assert.ok(!step("unsaturation").explanation.includes(name), "the overview identifies the bond without repeating the modern name");
+            const locantEvidence = result.links.find(({ text, stepNumber, bondType, locant }) =>
+              text.startsWith("2") && stepNumber === "07" && bondType === "double" && locant === 2);
+            const unsaturationEvidence = result.links.find(({ semanticId, bondType, locant }) =>
+              semanticId === "unsaturation:double:2" && bondType === "double" && locant === 2);
+            assert.ok(name.includes("-2-en-"), `${name}: 2013 spelling remains in the visible name`);
+            assert.ok(locantEvidence, `${name}: the written locant links to active evidence`);
+            assert.ok(unsaturationEvidence?.stepNumber, `${name}: the unsaturation spelling links to active evidence`);
+            assert.ok(result.links.some(({ stepNumber, bondType, locant, atomIds }) => stepNumber === "07"
+              && bondType === "double" && locant === 2
+              && (!atomIds || atomIds.every((id, index) => id === analysis.mainChain[1 + index]))),
+            `${name}: the visible unsaturation navigates to the analyzed C2=C3 bond`);
+          } else {
+            assert.equal(name, expected.legacy[index], `${name}: the Legacy spelling is preserved`);
+            assert.match(step("parent").explanation, /Legacy/);
+          }
+          if (legacy) assert.doesNotMatch(step("function").explanation, /[«“]1-(?:ona|one)/, "an implicit Legacy carbonyl locant is not taught as a written suffix");
         }
         if (legacy && !expected.function) assert.match(step("parent").explanation, language === "es" ? /enlaces múltiples antes.*longitud/ : /multiple bonds before chain length/);
         if (legacy) assert.ok(result.steps.every((item) => !item.explanation.includes(expected.current[index])), `${name}: no modern spelling leaks`);
