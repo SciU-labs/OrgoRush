@@ -165,6 +165,18 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     return { ok: false, error: "OpenChemLib no pudo convertir la estructura recibida." };
   }
 
+  // OCL reports 0 for natural abundance, otherwise the explicit isotope's mass
+  // number. Check all atoms before omitting hydrogens: D/T must also be rejected
+  // because GeneratedAtom cannot preserve isotope identity.
+  for (let atomIndex = 0; atomIndex < oclMolecule.getAllAtoms(); atomIndex += 1) {
+    if (oclMolecule.getAtomMass(atomIndex) !== 0) {
+      return {
+        ok: false,
+        error: "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+      };
+    }
+  }
+
   if (oclMolecule.getAllAtoms() > 120 || oclMolecule.getAllBonds() > 150) {
     return {
       ok: false,

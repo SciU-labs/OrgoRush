@@ -84,11 +84,11 @@ test("audit properties: deterministic projections preserve editable graphs and s
   }
 });
 
-test("AUDNOM-001: accepted isotope import must preserve full identity or reject explicitly", () => {
+test("AUDNOM-001: isotope import rejects explicitly before editable identity can be lost", () => {
   const r = live("AUDCASE-0440");
-  if (r.admission.status === "UNSUPPORTED") { assert.ok(r.admission.reason); return; }
-  assert.equal(r.properties.importExportIdentity.status, "PASS", `13C identity lost: ${r.properties.importExportIdentity.detail}`);
-  assert.equal(r.properties.roundTripIdentity.status, "PASS");
+  assert.equal(r.admission.independentlyParseable, true);
+  assert.equal(r.admission.status, "UNSUPPORTED");
+  assert.match(r.admission.reason, /isótopos explícitos.*No se importó.*identidad química/);
 });
 
 test("AUDNOM-002: Legacy EN retains N-substituted amide and tertiary-amine connectivity", () => {
