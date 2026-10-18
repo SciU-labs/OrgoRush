@@ -1,0 +1,60 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "date": "2026-10-18",
+  "commands": [
+    {
+      "command": "node --test tests/naming-audit/aud-nom-005.test.mjs",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "todo": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "node --test --test-concurrency=1 tests/smiles-isotope-integrity.test.mjs tests/iupac-nom002-cyclic-ketones.test.mjs tests/iupac-nom002b-polyunsaturated-ketones.test.mjs tests/iwupac-nom003-parent-selection.test.mjs tests/audnom003-n-substitution.test.mjs tests/audnom003-dicarboxylic-acids.test.mjs tests/audnom003-aryl-substitution.test.mjs tests/audnom003-stereochemistry.test.mjs tests/audnom003-current-diagnostics.test.mjs tests/audnom003b-ci-integrity.test.mjs tests/audnom004-explained-nomenclature.test.mjs tests/reasoning-nom004-profile.test.mjs tests/reasoning-name-fragments.test.mjs tests/reasoning-name-navigation.test.mjs tests/tetrahedral-stereochemistry.test.mjs tests/double-bond-stereochemistry.test.mjs",
+      "pass": 205,
+      "fail": 0,
+      "skip": 0,
+      "todo": 0,
+      "exitCode": 0,
+      "note": "The parent-selection path in this command contains a typo. The intended file was run separately and passed: node --test tests/iupac-nom003-parent-selection.test.mjs (1 PASS, 0 FAIL, exit 0)."
+    },
+    {
+      "command": "node --test tests/iupac-nom003-parent-selection.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "todo": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:reference-corpus",
+      "pass": 792,
+      "fail": 0,
+      "skip": 5,
+      "todo": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "npm run build:pages",
+      "exitCode": 0,
+      "result": "PASS",
+      "notes": [
+        "Vite reported an ineffective dynamic import for openchemlib-adapter.ts.",
+        "Vite warned that some minified chunks exceed 500 kB."
+      ]
+    },
+    {
+      "command": "npm run validate:pages",
+      "exitCode": 0,
+      "result": "PASS",
+      "artifact": { "entries": 3, "assets": 6, "base": "/Hydrocarbon-Lab/" }
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "notRun": ["npm test"]
+}

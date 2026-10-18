@@ -1,0 +1,50 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "method": "Expected forms fixed from cited IUPAC rules before comparing to current output; OPSIN is used only to independently interpret candidate strings against the input structure.",
+  "candidates": [
+    {
+      "id": "AUDCASE-0160",
+      "text": "1-chloro-4-ethenylbenzene",
+      "profiles": [
+        "2013-en",
+        "1979-en"
+      ],
+      "sources": [
+        "https://iupac.qmul.ac.uk/BlueBook/P1.html#P12",
+        "https://iupac.qmul.ac.uk/BlueBook/P5.html"
+      ],
+      "rule": "P-12.3 identifies ethenylbenzene as PIN; apply the halogen prefix and P-14 locant tie-break to the para-substituted ring.",
+      "inputSmiles": "c1(C=C)ccc(Cl)cc1",
+      "structuralInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "1-chloro-4-ethenylbenzene",
+        "receiptSha256": "d6c3f5b9664faddcd844b1c7c6506540249ba8cc34dfc34540072bd23e2ea138",
+        "retrievedAt": "2026-10-18T19:41:55.976Z"
+      }
+    },
+    {
+      "id": "AUDCASE-0337",
+      "text": "2-pentyloxyheptane",
+      "profiles": [
+        "2013-en",
+        "1979-en"
+      ],
+      "sources": [
+        "https://iupac.qmul.ac.uk/BlueBook/P6.html#P6322",
+        "https://iupac.qmul.ac.uk/BlueBook/P6.html#P6324"
+      ],
+      "rule": "P-63.2.2.1.1 gives the R′-O– prefix by concatenating oxy to the substituent-prefix name and lists pentyloxy; P-63.2.4 permits substitutive ether naming.",
+      "inputSmiles": "CCCCCOC(C)CCCCC",
+      "structuralInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "2-pentyloxyheptane",
+        "receiptSha256": "5f76bce587716aa5f33d5b1d419dfc218e86c8cd4944edae17d6c7500ae19dfa",
+        "retrievedAt": "2026-10-18T19:41:56.024Z"
+      }
+    }
+  ]
+}

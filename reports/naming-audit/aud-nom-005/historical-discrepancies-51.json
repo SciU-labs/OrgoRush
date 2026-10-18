@@ -1,0 +1,1366 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "source": "AUD-NOM-001 audit-matrix.json; 51 originally MISMATCH English outputs, not presumed current",
+  "counts": {
+    "RESOLVED_MATCH": 45,
+    "RESOLVED_SAFE_REJECTION": 2,
+    "STILL_MISMATCH": 0,
+    "UNVERIFIED_CURRENT_OUTPUT": 0,
+    "NEEDS_MANUAL_REVIEW": 4
+  },
+  "records": [
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "profile": "2013-en",
+      "oldName": "2-phenylethan-1-ol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C1(=CC=CC=C1)CCO",
+        "constitutionalMatch": false,
+        "receiptSha256": "f023a56e02376c4061548e803fb8b0e2ece52de5b8384256a975e1380e1897ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:26.849Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "NEEDS_MANUAL_REVIEW",
+      "reason": "UI safety gate blocks local naming for this graph"
+    },
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "profile": "1979-en",
+      "oldName": "2-phenylethanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C1(=CC=CC=C1)CCO",
+        "constitutionalMatch": false,
+        "receiptSha256": "206b78f9f8dee60946b026c9c42cc8bf1cb4531c569e90f2396862c8df2788c2",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:27.484Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "NEEDS_MANUAL_REVIEW",
+      "reason": "UI safety gate blocks local naming for this graph"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "profile": "2013-en",
+      "oldName": "2-phenylethan-1-ol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C1(=CC=CC=C1)CCO",
+        "constitutionalMatch": false,
+        "receiptSha256": "f023a56e02376c4061548e803fb8b0e2ece52de5b8384256a975e1380e1897ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:26.849Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "NEEDS_MANUAL_REVIEW",
+      "reason": "UI safety gate blocks local naming for this graph"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "profile": "1979-en",
+      "oldName": "2-phenylethanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C1(=CC=CC=C1)CCO",
+        "constitutionalMatch": false,
+        "receiptSha256": "206b78f9f8dee60946b026c9c42cc8bf1cb4531c569e90f2396862c8df2788c2",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:27.484Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "NEEDS_MANUAL_REVIEW",
+      "reason": "UI safety gate blocks local naming for this graph"
+    },
+    {
+      "id": "AUDCASE-0288",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCCCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "decanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCCCCCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "76fb1ecda1daf627ae8533d9616b2ab3c67022943358aeb5f2628c4cbdd40b78",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:32.379Z"
+      },
+      "currentName": "decanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "decanedioic acid",
+        "receiptSha256": "2df2395b575a9d4723c0c68ccdafa4464f5e7b6a2ade1aeb7bcc232a574dea46",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:32.128Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0292",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "butanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "6237212dfeb671d5fcd3bc398317de039fbb875430b2be5bf3f5dfdda93f6b7e",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:32.665Z"
+      },
+      "currentName": "butanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "butanedioic acid",
+        "receiptSha256": "8a33becb2552cb1ef57bba71a13a1089a2350fb1a5cab4cc4774732b33349abc",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:32.311Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0294",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "nonanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCCCCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "a567f5e1d598bd9990eab1933b58aa00d1ef3b7de02ed8f9ac6711fd3e7e8797",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:33.167Z"
+      },
+      "currentName": "nonanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "nonanedioic acid",
+        "receiptSha256": "5e177826ad3cb05eee1876e5e63d2bb1b80095ea8af8b564a5a80bef5a9fca25",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:32.814Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0295",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "heptanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "3b21b821f8feb2ae0580c70bd8e7daad2ac7a99e2c2b20b4c8f97eb24ef43101",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:33.558Z"
+      },
+      "currentName": "heptanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "heptanedioic acid",
+        "receiptSha256": "7385d2ab3ca8e6947fed53da443c35e8cd80e3fb7ace2e93510feb96e3b42e90",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:33.242Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0298",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "hexanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "26ca964048a439d74c42e457b5ed5358066ce7fe4809760856cffe39153cd6a4",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:34.252Z"
+      },
+      "currentName": "hexanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "hexanedioic acid",
+        "receiptSha256": "d3d63b4c15f05d682f9f6a1316b8f38ce061d810be2062ce5ea15c19958c1ea2",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:33.648Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0303",
+      "family": "carboxylic-acids",
+      "smiles": "O=C(O)CCCCCCC(=O)O",
+      "profile": "1979-en",
+      "oldName": "octanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCCCC)(=O)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "5a6e013cf7cb6db424eaff5dfcc395fc842e8774dce8074410df9e4829cdbe73",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:34.821Z"
+      },
+      "currentName": "octanedioic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "octanedioic acid",
+        "receiptSha256": "c96aaefb78502e7ded3bffd39e214f00353dfd9e4367c66dd1d87f14356c9036",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:34.341Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0342",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CC",
+      "profile": "1979-en",
+      "oldName": "propanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "925e409f99d46e0b0921e75918d0fecce11acfd00f656f1fb00ec531f711fff7",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.203Z"
+      },
+      "currentName": "N-ethylpropanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethylpropanamide",
+        "receiptSha256": "0e31f877463b177898ceff968f9f7c3f59d38b4ce4de0dadbf4119c35c609697",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:03.637Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0343",
+      "family": "nitrogen-functions",
+      "smiles": "CN(C)CCC",
+      "profile": "1979-en",
+      "oldName": "1-propanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CC)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f7f6366cecaae927a5453300becf821849176610bc11f7d4e3ba235d5e754b58",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:19.269Z"
+      },
+      "currentName": "N,N-dimethyl-1-propanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N,N-dimethyl-1-propanamine",
+        "receiptSha256": "f9d54073954a7f4a8e3db61aa18c40a6974e71719f4de69125bf9e68a405e82c",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:38.179Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0344",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCCC",
+      "profile": "1979-en",
+      "oldName": "butanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "383672c39ddd25f1014eda73a14e6ef16f40cfc7c038d0c54093280a632409fd",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.599Z"
+      },
+      "currentName": "N-methyl-N-pentylbutanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-pentylbutanamide",
+        "receiptSha256": "1f76e6d4c8b774ba663d3fedb67d54bc6455abd004ce54c10694c6a11e9128f3",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:35.205Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0345",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-butyl-N-methylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butyl-N-methylhexanamide",
+        "receiptSha256": "5b47a4d7bd79ce7f6cb286780268061de12cb417fb07518fc74a4544f53c7f7b",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:34.889Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0346",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CC",
+      "profile": "1979-en",
+      "oldName": "ethanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "470953d9ec0ed583ea4f86abc6f6546af9244ed288e4ce260366302af10bdee5",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:41.405Z"
+      },
+      "currentName": "N-ethyl-N-methylethanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methylethanamide",
+        "receiptSha256": "1f692960d94d9e1b414a559e6a6cd49071a4400acee3cddb698b1c11a03eea7b",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.343Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0347",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CCCC",
+      "profile": "1979-en",
+      "oldName": "pentanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f0e9749c205cc1595195f6125956417842dd497cdb35369a1af6e9a1c6a374ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.743Z"
+      },
+      "currentName": "N-butylpentanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butylpentanamide",
+        "receiptSha256": "eb5e39126ce4c2ee0d73dc2db1917b43f90df94b94a8a35c36c6eef94fddfc58",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.703Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0348",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCNC(=O)CCCC",
+      "profile": "1979-en",
+      "oldName": "pentanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f0e9749c205cc1595195f6125956417842dd497cdb35369a1af6e9a1c6a374ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.743Z"
+      },
+      "currentName": "N-pentylpentanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-pentylpentanamide",
+        "receiptSha256": "b8ab1dc54c7aadedc1950917045309e8e377b00e37344c9b23576ca5420377a9",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:36.292Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0349",
+      "family": "nitrogen-functions",
+      "smiles": "CCCN(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "1-butanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "4555e9d94bd897426245eec47a9c3dcd6ed70d27fe77fcbbc86daab30b893c80",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:36.754Z"
+      },
+      "currentName": "N-methyl-N-propyl-1-butanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-propyl-1-butanamine",
+        "receiptSha256": "91b2e9f33a79845234639cd62f82d67fa1c82afddb1ced7522933ca364db0c09",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:38.426Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0350",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-methyl-N-pentylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-pentylhexanamide",
+        "receiptSha256": "e8a56d7f4792e320d09adb9bbcf71c221757e6519cc8b6b202391a9eb06bd4ae",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:36.774Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0352",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "1-butanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "4555e9d94bd897426245eec47a9c3dcd6ed70d27fe77fcbbc86daab30b893c80",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:36.754Z"
+      },
+      "currentName": "N-ethyl-N-methyl-1-butanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methyl-1-butanamine",
+        "receiptSha256": "512c0d1afc09bf525d92e3aa62b21f33846cb35d127ef4911eefb0c4a62ee1d3",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:38.665Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0353",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CCCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-ethylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethylhexanamide",
+        "receiptSha256": "e5e58f1fe539aec11618dcab84e17532434c1900c2ae3d440cbec10c97c7ccb5",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:37.285Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0355",
+      "family": "nitrogen-functions",
+      "smiles": "CCCNC(=O)CCCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-propylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-propylhexanamide",
+        "receiptSha256": "8fb11466e7cc1562b9da88ffe1f81cf4a183775dac8bc41890faaf312292e344",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:37.703Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0356",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCC(=O)N(C)CCC",
+      "profile": "1979-en",
+      "oldName": "pentanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f0e9749c205cc1595195f6125956417842dd497cdb35369a1af6e9a1c6a374ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.743Z"
+      },
+      "currentName": "N-methyl-N-propylpentanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-propylpentanamide",
+        "receiptSha256": "53b3aeba8e75b5798e9d6df452acb6d1a47d1bb724eafddb919c3cbe54a7208d",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:37.855Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0357",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CCCCCC",
+      "profile": "1979-en",
+      "oldName": "heptanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "ba7fbcebead5eee530db5b4ebab2342d1286594c38d4993bf6627a39e5b6ddc6",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:38.238Z"
+      },
+      "currentName": "N-butylheptanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butylheptanamide",
+        "receiptSha256": "53bc45fe69a3771ba455752814a4ae483036660e292fe19a3822b09b96d70110",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:38.077Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0358",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CC",
+      "profile": "1979-en",
+      "oldName": "ethanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "ac691732d03deceb728bfa42254377ecb7c8c665792046709d4c846c310f8868",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:38.186Z"
+      },
+      "currentName": "N-ethyl-N-methylethanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methylethanamine",
+        "receiptSha256": "25ce73b5df9fd033893c8603ce0f458429e010a2a73ab81138442f53f5101d90",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:38.631Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0359",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCNC(=O)CC",
+      "profile": "1979-en",
+      "oldName": "propanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "925e409f99d46e0b0921e75918d0fecce11acfd00f656f1fb00ec531f711fff7",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.203Z"
+      },
+      "currentName": "N-pentylpropanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-pentylpropanamide",
+        "receiptSha256": "80ae4875a4ed3dae19d53cc0bfe7581d8f26614011a952ae23ee94799cf35568",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:38.684Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0360",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-ethyl-N-methylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methylhexanamide",
+        "receiptSha256": "18202635b2660269f968e092eb41a1a14f9715e2556f1d9a932e1c7659d16651",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:39.026Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0361",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCCC",
+      "profile": "1979-en",
+      "oldName": "ethanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "470953d9ec0ed583ea4f86abc6f6546af9244ed288e4ce260366302af10bdee5",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:41.405Z"
+      },
+      "currentName": "N-methyl-N-pentylethanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-pentylethanamide",
+        "receiptSha256": "4b327e11a634f4b092eb2a40b3042937fbd68c59ba7e8899627820080686f939",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:39.155Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0362",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCCCC",
+      "profile": "1979-en",
+      "oldName": "butanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "383672c39ddd25f1014eda73a14e6ef16f40cfc7c038d0c54093280a632409fd",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.599Z"
+      },
+      "currentName": "N-hexyl-N-methylbutanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-hexyl-N-methylbutanamide",
+        "receiptSha256": "fdaefecb75f6a6384271b72ebfab4e1c67375614bf862a1b75b3bbd58fd25f17",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:39.419Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0363",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CC",
+      "profile": "1979-en",
+      "oldName": "butanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "383672c39ddd25f1014eda73a14e6ef16f40cfc7c038d0c54093280a632409fd",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.599Z"
+      },
+      "currentName": "N-ethyl-N-methylbutanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methylbutanamide",
+        "receiptSha256": "1a236e5552d081b804c236fe375734cf9b1fdf59cd9cceb3edac05e94ce94c85",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:39.582Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0365",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCC(=O)N(C)CCCCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-hexyl-N-methylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-hexyl-N-methylhexanamide",
+        "receiptSha256": "5eb667756d1996bc99954c3782fa173a95a5559c7565141d4ad8f598404d5ca0",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:40.209Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0366",
+      "family": "nitrogen-functions",
+      "smiles": "CCNC(=O)CCC",
+      "profile": "1979-en",
+      "oldName": "butanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "383672c39ddd25f1014eda73a14e6ef16f40cfc7c038d0c54093280a632409fd",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.599Z"
+      },
+      "currentName": "N-ethylbutanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethylbutanamide",
+        "receiptSha256": "f4525738ec12278741cfdce264c542bfac60bc734a4071388aaf18bc4d18ba06",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:40.035Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0367",
+      "family": "nitrogen-functions",
+      "smiles": "CCN(C)CCCCCC",
+      "profile": "1979-en",
+      "oldName": "1-hexanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "d599cce10175ce9cc69de492a20b9a6c369787ea62d76c601bf408d6f27fe4e2",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:40.890Z"
+      },
+      "currentName": "N-ethyl-N-methyl-1-hexanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-ethyl-N-methyl-1-hexanamine",
+        "receiptSha256": "3f7506754df68ad535824e13391a1cbb9c23c976eb9a69f94b3778b99519e684",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:38.894Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0368",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCNC(=O)CC",
+      "profile": "1979-en",
+      "oldName": "propanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "925e409f99d46e0b0921e75918d0fecce11acfd00f656f1fb00ec531f711fff7",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.203Z"
+      },
+      "currentName": "N-butylpropanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butylpropanamide",
+        "receiptSha256": "b1bf090dae421b41d23e20673f8d21067f10aab18e51465d0fb3731939511a2a",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:41.277Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0370",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "ethanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "470953d9ec0ed583ea4f86abc6f6546af9244ed288e4ce260366302af10bdee5",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:41.405Z"
+      },
+      "currentName": "N-butyl-N-methylethanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butyl-N-methylethanamide",
+        "receiptSha256": "5afff240c25746dc46a896efee3e83f3f68117d4230a09dcb61f98168c2f96ca",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:41.486Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0371",
+      "family": "nitrogen-functions",
+      "smiles": "CCCC(=O)N(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "butanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "383672c39ddd25f1014eda73a14e6ef16f40cfc7c038d0c54093280a632409fd",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.599Z"
+      },
+      "currentName": "N-butyl-N-methylbutanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butyl-N-methylbutanamide",
+        "receiptSha256": "45f8ea5e851cbf8a05cd8109a12498379c205d727ca60ca737993e491726c37c",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:41.715Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0372",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCC(=O)N(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "pentanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f0e9749c205cc1595195f6125956417842dd497cdb35369a1af6e9a1c6a374ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.743Z"
+      },
+      "currentName": "N-butyl-N-methylpentanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butyl-N-methylpentanamide",
+        "receiptSha256": "8867de834135c02602db0b2c63abd8584c31d7fb0c6ec9c7ad34f8cdaca2edf5",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:41.888Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0373",
+      "family": "nitrogen-functions",
+      "smiles": "CNC(=O)CCCCC",
+      "profile": "1979-en",
+      "oldName": "hexanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "dcbd2001edb609aa00f0c7fcb066a9284aaca81ea3103f1caf36a9199bb37183",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.314Z"
+      },
+      "currentName": "N-methylhexanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methylhexanamide",
+        "receiptSha256": "75c6e7e00467239c2ade7a0684b0f72a9a1882677ec1b7189a95f0786a60c461",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:42.293Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0375",
+      "family": "nitrogen-functions",
+      "smiles": "CCCCCN(C)CCCC",
+      "profile": "1979-en",
+      "oldName": "1-pentanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "76932b8161e87e768bf2dc12b70df578115d09197f9c04f3384276d4d29898db",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:42.790Z"
+      },
+      "currentName": "N-butyl-N-methyl-1-pentanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-butyl-N-methyl-1-pentanamine",
+        "receiptSha256": "980f5486983b5437c0106c86d90832ca7f99d7412c4a7c45c97694ab6d76dd81",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:39.123Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0376",
+      "family": "nitrogen-functions",
+      "smiles": "CCCNC(=O)CCCC",
+      "profile": "1979-en",
+      "oldName": "pentanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CCCC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "f0e9749c205cc1595195f6125956417842dd497cdb35369a1af6e9a1c6a374ee",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:32:35.743Z"
+      },
+      "currentName": "N-propylpentanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-propylpentanamide",
+        "receiptSha256": "a70c6eb3ca73554d6f23a4e576e172445b0a7b24117da382c219d51ac4ea5e33",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:39.358Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0377",
+      "family": "nitrogen-functions",
+      "smiles": "CC(=O)N(C)CCCCCC",
+      "profile": "1979-en",
+      "oldName": "ethanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "470953d9ec0ed583ea4f86abc6f6546af9244ed288e4ce260366302af10bdee5",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:41.405Z"
+      },
+      "currentName": "N-hexyl-N-methylethanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-hexyl-N-methylethanamide",
+        "receiptSha256": "83461ae99f4b43e1846cb0d07fedf888a7374ca7a16320b413a18c590cde2f63",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:39.589Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0378",
+      "family": "nitrogen-functions",
+      "smiles": "CN(C)CC",
+      "profile": "1979-en",
+      "oldName": "ethanamine",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "ac691732d03deceb728bfa42254377ecb7c8c665792046709d4c846c310f8868",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:38.186Z"
+      },
+      "currentName": "N,N-dimethylethanamine",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N,N-dimethylethanamine",
+        "receiptSha256": "f0aecc427b009fa25c84c654d77d7fe8e2f3c9ca922ed09c8c3078bc22da5805",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:39.821Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0379",
+      "family": "nitrogen-functions",
+      "smiles": "CCC(=O)N(C)CCC",
+      "profile": "1979-en",
+      "oldName": "propanamide",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(CC)(=O)N",
+        "constitutionalMatch": false,
+        "receiptSha256": "925e409f99d46e0b0921e75918d0fecce11acfd00f656f1fb00ec531f711fff7",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:42.203Z"
+      },
+      "currentName": "N-methyl-N-propylpropanamide",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "N-methyl-N-propylpropanamide",
+        "receiptSha256": "032887694cae57e92680ca48ce259e875a816bb750d8aa69bfda5f6d09242c34",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:40.058Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0417",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](O)CC",
+      "profile": "1979-en",
+      "oldName": "2-butanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "CC(CC)O",
+        "constitutionalMatch": true,
+        "receiptSha256": "d7e5316996f313a7257eb68622a514da2ef0bc7d891fdc834b0934a58054e871",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:22.469Z"
+      },
+      "currentName": "(2S)-2-butanol",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2S)-2-butanol",
+        "receiptSha256": "d29026301ae8317d9ac029c8c13287d45e5dabe3d0a48fec218ac8db4a8d396c",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:40.291Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0418",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@@H](O)CC",
+      "profile": "1979-en",
+      "oldName": "2-butanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "CC(CC)O",
+        "constitutionalMatch": true,
+        "receiptSha256": "d7e5316996f313a7257eb68622a514da2ef0bc7d891fdc834b0934a58054e871",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:22.469Z"
+      },
+      "currentName": "(2R)-2-butanol",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2R)-2-butanol",
+        "receiptSha256": "a7333ed1523abd5ec03ba713385753b3b0d413d965ec6e686b6586776128c2d6",
+        "origin": "AUD-NOM-003-live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T07:06:40.527Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0419",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N[C@H](C)C(=O)O",
+      "profile": "1979-en",
+      "oldName": "2-aminopropanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "NC(C(=O)O)C",
+        "constitutionalMatch": true,
+        "receiptSha256": "27f022c7d07710688a357c1061f19b877614b2181e14f8a62759d27849f987f5",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:23.578Z"
+      },
+      "currentName": "(2R)-2-aminopropanoic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2R)-2-aminopropanoic acid",
+        "receiptSha256": "5983ba474701f57c1dc82a533d016c14af756acfb0266e56e0ad44302bb12542",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:23.027Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0420",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N[C@@H](C)C(=O)O",
+      "profile": "1979-en",
+      "oldName": "2-aminopropanoic acid",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "NC(C(=O)O)C",
+        "constitutionalMatch": true,
+        "receiptSha256": "27f022c7d07710688a357c1061f19b877614b2181e14f8a62759d27849f987f5",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:23.578Z"
+      },
+      "currentName": "(2S)-2-aminopropanoic acid",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2S)-2-aminopropanoic acid",
+        "receiptSha256": "f036a6f66163025ae3f75b330ae9c8be6597c8e238770107fb2843e1daa3305f",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:23.591Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0421",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](Cl)[C@H](Br)C",
+      "profile": "1979-en",
+      "oldName": "2-bromo-3-chlorobutane",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "BrC(C)C(C)Cl",
+        "constitutionalMatch": true,
+        "receiptSha256": "e811a6a51af7cbcedc99960f21c49f755d305c32ff15c3bedc885f9b391d5f77",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:18.064Z"
+      },
+      "currentName": "(2R,3S)-2-bromo-3-chlorobutane",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2R,3S)-2-bromo-3-chlorobutane",
+        "receiptSha256": "21de80e9976a142a31b23754bfc1d724830e6c9eb7d7f449102ca7877719e140",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:17.890Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0422",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[C@H](Cl)[C@@H](Br)C",
+      "profile": "1979-en",
+      "oldName": "2-bromo-3-chlorobutane",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "BrC(C)C(C)Cl",
+        "constitutionalMatch": true,
+        "receiptSha256": "e811a6a51af7cbcedc99960f21c49f755d305c32ff15c3bedc885f9b391d5f77",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:18.064Z"
+      },
+      "currentName": "(2S,3S)-2-bromo-3-chlorobutane",
+      "currentAvailability": "NAMED",
+      "currentOpsinInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "(2S,3S)-2-bromo-3-chlorobutane",
+        "receiptSha256": "b6713ef316138d3dc6e8d23323e3a7209526b88d730530deabbfc280c5d97bc0",
+        "origin": "live-independent-OPSIN",
+        "retrievedAt": "2026-10-18T04:28:18.281Z"
+      },
+      "classification": "RESOLVED_MATCH"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "smiles": "[13CH3]CO",
+      "profile": "2013-en",
+      "oldName": "ethanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "80f5c5b106a3ff8573ae4846c6c536f9352c9dcd1251fa1ff718ebb0d1ec4290",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:12.013Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "RESOLVED_SAFE_REJECTION",
+      "reason": "AUD-NOM-002 explicitly rejects this isotope to preserve identity."
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "smiles": "[13CH3]CO",
+      "profile": "1979-en",
+      "oldName": "ethanol",
+      "oldOpsinInterpretation": {
+        "status": "MISMATCH",
+        "interpretedSmiles": "C(C)O",
+        "constitutionalMatch": false,
+        "receiptSha256": "80f5c5b106a3ff8573ae4846c6c536f9352c9dcd1251fa1ff718ebb0d1ec4290",
+        "origin": "existing-frozen-reference-receipt",
+        "retrievedAt": "2026-09-30T22:31:12.013Z"
+      },
+      "currentName": null,
+      "currentAvailability": "UNSUPPORTED",
+      "currentOpsinInterpretation": {
+        "status": "UNSUPPORTED",
+        "reason": "No exact profile output"
+      },
+      "classification": "RESOLVED_SAFE_REJECTION",
+      "reason": "AUD-NOM-002 explicitly rejects this isotope to preserve identity."
+    }
+  ]
+}

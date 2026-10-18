@@ -1,0 +1,5631 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "batch": "0426-0440.json",
+  "planHash": "90c952191ece65bbdb0e768825e21f9c6961047b007a9a82e0a328d5f65dbbeb",
+  "sourceHash": "39fc9715f095fed9c71a902b4e060022d53561dd7ac3541aaa8e3a98235692cc",
+  "harnessHash": "3083baa9c2d3f033cb821841ece53524a89100c0cadfb3fc46c1a7634bc5f76c",
+  "completedAt": "2026-10-18T19:33:30.933Z",
+  "records": [
+    {
+      "id": "AUDCASE-0426",
+      "family": "stereo-polycycles-limits",
+      "smiles": "N1CCCCC1",
+      "historicalIdentity": "gFx@@eJfuU@@",
+      "independentInput": {
+        "fullIdentity": "gFx@@eJfuU@@",
+        "constitutionIdentity": "gFx@@eJfuU@@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "C1CCNCC1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "N",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 6,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                5,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0426",
+        "family": "stereo-polycycles-limits",
+        "smiles": "N1CCCCC1",
+        "features": [
+          "registered-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gFx@@eJfuU@@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 6,
+          "bondCount": 6,
+          "elements": [
+            "C",
+            "N"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "piperidina",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁N",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "piperidina"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "El anillo principal contiene 6 átomos: 5 carbonos y 1 nitrógeno. El nombre del padre es piperidina; el nombre IUPAC completo es piperidina."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "piperidine",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁N",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "piperidine"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "The parent ring contains 6 atoms: 5 carbons and 1 nitrogen. The parent name is piperidine; the complete IUPAC name is piperidine."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁N",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁N",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "C1CCNCC1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "PASS",
+            "comparisons": [
+              {
+                "smiles": "C1CCNCC1",
+                "status": "PASS",
+                "changed": []
+              }
+            ]
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "C1CCNCC1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "piperidina",
+          "2013-en": "piperidine",
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0426",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "heterocycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "piperidina",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "piperidine",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "piperidine",
+            "receiptSha256": "d0062667cbd146f7851446af44d18c619dc61b4b2917b7197de848d95518e7f3",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:24.460Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0427",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOC1",
+      "historicalIdentity": "gKP`Adi\\Zj@@",
+      "independentInput": {
+        "fullIdentity": "gKP`Adi\\Zj@@",
+        "constitutionIdentity": "gKP`Adi\\Zj@@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "C1OCOC1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "O",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "O",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0427",
+        "family": "stereo-polycycles-limits",
+        "smiles": "O1CCOC1",
+        "features": [
+          "registered-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gKP`Adi\\Zj@@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 5,
+          "bondCount": 5,
+          "elements": [
+            "C",
+            "O"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "1,3-dioxolano",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "1,3-dioxolano",
+              "chainName": "1,3-dioxolano",
+              "family": "cycloalkane",
+              "formula": "C₃H₆O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 3,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "1,3-dioxolano"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "El anillo principal contiene 5 átomos: 3 carbonos y 2 oxígenos. El nombre del padre es 1,3-dioxolano; el nombre IUPAC completo es 1,3-dioxolano."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "1,3-dioxolane",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "1,3-dioxolano",
+              "chainName": "1,3-dioxolano",
+              "family": "cycloalkane",
+              "formula": "C₃H₆O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 3,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "1,3-dioxolane"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "The parent ring contains 5 atoms: 3 carbons and 2 oxygens. The parent name is 1,3-dioxolane; the complete IUPAC name is 1,3-dioxolane."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "1,3-dioxolano",
+              "chainName": "1,3-dioxolano",
+              "family": "cycloalkane",
+              "formula": "C₃H₆O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 3,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "1,3-dioxolano",
+              "chainName": "1,3-dioxolano",
+              "family": "cycloalkane",
+              "formula": "C₃H₆O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 3,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "C1OCOC1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "PASS",
+            "comparisons": [
+              {
+                "smiles": "C1OCOC1",
+                "status": "PASS",
+                "changed": []
+              }
+            ]
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "C1OCOC1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "1,3-dioxolano",
+          "2013-en": "1,3-dioxolane",
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0427",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "heterocycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1,3-dioxolano",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1,3-dioxolane",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "1,3-dioxolane",
+            "receiptSha256": "93d4d8ee16a2dfeae793ee0c82853fd2cc7dfa9c18e8c6ad05e3e0d4c1c7fe59",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:24.494Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0428",
+      "family": "stereo-polycycles-limits",
+      "smiles": "O1CCOCC1",
+      "historicalIdentity": "gFp`ATiTvjh@",
+      "independentInput": {
+        "fullIdentity": "gFp`ATiTvjh@",
+        "constitutionIdentity": "gFp`ATiTvjh@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "C1OCCOC1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "O",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "O",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 6,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                5,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0428",
+        "family": "stereo-polycycles-limits",
+        "smiles": "O1CCOCC1",
+        "features": [
+          "registered-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gFp`ATiTvjh@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 6,
+          "bondCount": 6,
+          "elements": [
+            "C",
+            "O"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "1,4-dioxano",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "1,4-dioxano",
+              "chainName": "1,4-dioxano",
+              "family": "cycloalkane",
+              "formula": "C₄H₈O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "1,4-dioxano"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "El anillo principal contiene 6 átomos: 4 carbonos y 2 oxígenos. El nombre del padre es 1,4-dioxano; el nombre IUPAC completo es 1,4-dioxano."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "1,4-dioxane",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "1,4-dioxano",
+              "chainName": "1,4-dioxano",
+              "family": "cycloalkane",
+              "formula": "C₄H₈O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "1,4-dioxane"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "The parent ring contains 6 atoms: 4 carbons and 2 oxygens. The parent name is 1,4-dioxane; the complete IUPAC name is 1,4-dioxane."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "1,4-dioxano",
+              "chainName": "1,4-dioxano",
+              "family": "cycloalkane",
+              "formula": "C₄H₈O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "1,4-dioxano",
+              "chainName": "1,4-dioxano",
+              "family": "cycloalkane",
+              "formula": "C₄H₈O₂",
+              "parentAtomIds": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "C1OCCOC1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "PASS",
+            "comparisons": [
+              {
+                "smiles": "C1OCCOC1",
+                "status": "PASS",
+                "changed": []
+              }
+            ]
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "C1OCCOC1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "1,4-dioxano",
+          "2013-en": "1,4-dioxane",
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0428",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "heterocycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1,4-dioxano",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1,4-dioxane",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "1,4-dioxane",
+            "receiptSha256": "248ffd602a488987b83985f43d4c67589df1e2773f29b287a20fbb12d7650a92",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:24.836Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0429",
+      "family": "stereo-polycycles-limits",
+      "smiles": "OC1CCNCC1",
+      "historicalIdentity": "gOy@FDfUkjj`@",
+      "independentInput": {
+        "fullIdentity": "gOy@FDfUkjj`@",
+        "constitutionIdentity": "gOy@FDfUkjj`@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "OC1CCNCC1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "O",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "N",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 6,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 7,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                5,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                6,
+                7
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                7
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0429",
+        "family": "stereo-polycycles-limits",
+        "smiles": "OC1CCNCC1",
+        "features": [
+          "functionalized-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gOy@FDfUkjj`@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 7,
+          "bondCount": 7,
+          "elements": [
+            "C",
+            "N",
+            "O"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁NO",
+              "parentAtomIds": [
+                5,
+                6,
+                7,
+                2,
+                3,
+                4
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "UI safety gate blocks local naming for this graph"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁NO",
+              "parentAtomIds": [
+                5,
+                6,
+                7,
+                2,
+                3,
+                4
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "UI safety gate blocks local naming for this graph"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁NO",
+              "parentAtomIds": [
+                5,
+                6,
+                7,
+                2,
+                3,
+                4
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "UI safety gate blocks local naming for this graph"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piperidina",
+              "chainName": "piperidina",
+              "family": "cycloalkane",
+              "formula": "C₅H₁₁NO",
+              "parentAtomIds": [
+                5,
+                6,
+                7,
+                2,
+                3,
+                4
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "UI safety gate blocks local naming for this graph"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "OC1CCNCC1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "SKIP",
+            "detail": "Current profile unavailable"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "SKIP",
+            "detail": "No distinct verified equivalent SMILES in this bounded run"
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "OC1CCNCC1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0429",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "heterocycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0430",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccncc1",
+      "historicalIdentity": "gFx@@eJf`@@@",
+      "independentInput": {
+        "fullIdentity": "gFx@@eJf`@@@",
+        "constitutionIdentity": "gFx@@eJf`@@@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "c1ccncc1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "N",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 6,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 2,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 2,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                5,
+                6
+              ],
+              "order": 2,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0430",
+        "family": "stereo-polycycles-limits",
+        "smiles": "c1ccncc1",
+        "features": [
+          "aromatic-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gFx@@eJf`@@@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 6,
+          "bondCount": 6,
+          "elements": [
+            "C",
+            "N"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "piridina",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "piridina",
+              "chainName": "piridina",
+              "family": "aromatic",
+              "formula": "C₅H₅N",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  2,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4,
+                6
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "piridina"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "El anillo principal contiene 6 átomos: 5 carbonos y 1 nitrógeno. El nombre del padre es piridina; el nombre IUPAC completo es piridina."
+                },
+                {
+                  "number": "03",
+                  "nameRole": "numbering",
+                  "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. El anillo aromático progenitor tiene 6 posiciones: 1 nitrógeno en la posición 1 y 5 carbonos. Su sistema π está deslocalizado, por lo que esta explicación no asigna localizadores a enlaces dobles individuales."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "pyridine",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "piridina",
+              "chainName": "piridina",
+              "family": "aromatic",
+              "formula": "C₅H₅N",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  2,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4,
+                6
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "pyridine"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "The parent ring contains 6 atoms: 5 carbons and 1 nitrogen. The parent name is pyridine; the complete IUPAC name is pyridine."
+                },
+                {
+                  "number": "03",
+                  "nameRole": "numbering",
+                  "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The aromatic parent ring has 6 positions: 1 nitrogen atom at position 1 and 5 carbons. Its π system is delocalized, so this explanation assigns no individual double-bond positions."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piridina",
+              "chainName": "piridina",
+              "family": "aromatic",
+              "formula": "C₅H₅N",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  2,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4,
+                6
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "piridina",
+              "chainName": "piridina",
+              "family": "aromatic",
+              "formula": "C₅H₅N",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 6,
+              "parentCarbonCount": 5,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  2,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4,
+                6
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "c1ccncc1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "SKIP",
+            "detail": "No distinct verified equivalent SMILES in this bounded run"
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "c1ccncc1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [
+          {
+            "profile": "2013-es",
+            "code": "ANALYSIS_BOND_LOCANT",
+            "detail": "Analyzed parent locant does not match the actual bond",
+            "evidence": {
+              "type": "double",
+              "locant": 6,
+              "from": 3,
+              "order": null
+            }
+          },
+          {
+            "profile": "2013-en",
+            "code": "ANALYSIS_BOND_LOCANT",
+            "detail": "Analyzed parent locant does not match the actual bond",
+            "evidence": {
+              "type": "double",
+              "locant": 6,
+              "from": 3,
+              "order": null
+            }
+          }
+        ],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "piridina",
+          "2013-en": "pyridine",
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0430",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "heterocycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "heterocycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "piridina",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "pyridine",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "pyridine",
+            "receiptSha256": "1d2f323fc6522a5ba806c86e6e8d770b6da08e3e5206ce9fc227a0698a303fb8",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:18.456Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0431",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccsc1",
+      "historicalIdentity": "gKPH@DIRxtl@@",
+      "independentInput": {
+        "fullIdentity": "gKPH@DIRxtl@@",
+        "constitutionIdentity": "gKPH@DIRxtl@@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "c1c[s]cc1",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "S",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 2,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                5
+              ],
+              "order": 2,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0431",
+        "family": "stereo-polycycles-limits",
+        "smiles": "c1ccsc1",
+        "features": [
+          "sulfur-heterocycle",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gKPH@DIRxtl@@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 5,
+          "bondCount": 5,
+          "elements": [
+            "C",
+            "S"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "tiofeno",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "tiofeno",
+              "chainName": "tiofeno",
+              "family": "aromatic",
+              "formula": "C₄H₄S",
+              "parentAtomIds": [
+                4,
+                5,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "tiofeno"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "El anillo principal contiene 5 átomos: 4 carbonos y 1 azufre. El nombre del padre es tiofeno; el nombre IUPAC completo es tiofeno."
+                },
+                {
+                  "number": "03",
+                  "nameRole": "numbering",
+                  "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. El anillo aromático progenitor tiene 5 posiciones: 1 azufre en la posición 1 y 4 carbonos. Su sistema π está deslocalizado, por lo que esta explicación no asigna localizadores a enlaces dobles individuales."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "thiophene",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "tiofeno",
+              "chainName": "tiofeno",
+              "family": "aromatic",
+              "formula": "C₄H₄S",
+              "parentAtomIds": [
+                4,
+                5,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "thiophene"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "02",
+                  "nameRole": "parent",
+                  "explanation": "The parent ring contains 5 atoms: 4 carbons and 1 sulfur. The parent name is thiophene; the complete IUPAC name is thiophene."
+                },
+                {
+                  "number": "03",
+                  "nameRole": "numbering",
+                  "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The aromatic parent ring has 5 positions: 1 sulfur atom at position 1 and 4 carbons. Its π system is delocalized, so this explanation assigns no individual double-bond positions."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "tiofeno",
+              "chainName": "tiofeno",
+              "family": "aromatic",
+              "formula": "C₄H₄S",
+              "parentAtomIds": [
+                4,
+                5,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "tiofeno",
+              "chainName": "tiofeno",
+              "family": "aromatic",
+              "formula": "C₄H₄S",
+              "parentAtomIds": [
+                4,
+                5,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 5,
+              "parentCarbonCount": 4,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              "doubleBondLocants": [
+                2,
+                4
+              ],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Legacy EN explicitly excludes heterocycles"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "c1c[s]cc1"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "PASS",
+            "comparisons": [
+              {
+                "smiles": "c1c[s]cc1",
+                "status": "PASS",
+                "changed": []
+              }
+            ]
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "c1c[s]cc1"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "tiofeno",
+          "2013-en": "thiophene",
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0431",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "alkene",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "alkyne",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "halogenated",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "alcohol",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "ketone",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "ether",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "ester",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "amine",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "amide",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "aromatic",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "ez",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "nitrile",
+              "reason": "excluded-element"
+            },
+            {
+              "category": "nitro",
+              "reason": "excluded-element"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "tiofeno",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "thiophene",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "thiophene",
+            "receiptSha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:24.893Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0432",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2CCCCC2C1",
+      "historicalIdentity": "det@@DjYUX^fjjj`@",
+      "independentInput": {
+        "fullIdentity": "det@@DjYUX^fjjj`@",
+        "constitutionIdentity": "det@@DjYUX^fjjj`@"
+      },
+      "editable": {
+        "status": "IMPORTED",
+        "exported": "C(CC1)CC2C1CCCC2",
+        "fullIdentityMatches": true,
+        "constitutionMatches": true,
+        "stereo": "NOT_APPLICABLE",
+        "isotope": "NOT_APPLICABLE",
+        "graph": {
+          "atoms": [
+            {
+              "id": 1,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 2,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 3,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 4,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 5,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 6,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 7,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 8,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 9,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            },
+            {
+              "id": 10,
+              "element": "C",
+              "charge": 0,
+              "isotope": null,
+              "tetrahedralParity": null
+            }
+          ],
+          "bonds": [
+            {
+              "atoms": [
+                1,
+                2
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                2,
+                3
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                3,
+                4
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                5
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                5,
+                6
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                6,
+                7
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                7,
+                8
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                8,
+                9
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                4,
+                9
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                9,
+                10
+              ],
+              "order": 1,
+              "stereo": false
+            },
+            {
+              "atoms": [
+                1,
+                10
+              ],
+              "order": 1,
+              "stereo": false
+            }
+          ]
+        }
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0432",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C1CCC2CCCCC2C1",
+        "features": [
+          "fused-bicyclic",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "det@@DjYUX^fjjj`@",
+        "admission": {
+          "status": "IMPORTED",
+          "atomCount": 10,
+          "bondCount": 11,
+          "elements": [
+            "C"
+          ],
+          "charge": 0
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "NAMED",
+            "name": "biciclo[4.4.0]decano",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "biciclo[4.4.0]decano",
+              "chainName": "biciclo[4.4.0]decano",
+              "family": "polycyclic",
+              "formula": "C₁₀H₁₈",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 10,
+              "parentCarbonCount": 10,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ],
+                [
+                  10,
+                  7
+                ],
+                [
+                  1,
+                  8
+                ],
+                [
+                  2,
+                  9
+                ],
+                [
+                  3,
+                  10
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "biciclo[4.4.0]decano"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "01",
+                  "explanation": "Los dos ciclos comparten exactamente dos átomos y un enlace; por ello son fusionados y no dos anillos unidos por un enlace externo."
+                },
+                {
+                  "number": "02",
+                  "explanation": "Entre las dos cabezas de puente existen tres rutas con 4, 4 y 0 átomos intermedios. Ordenadas de mayor a menor forman el descriptor biciclo[4.4.0]."
+                },
+                {
+                  "number": "03",
+                  "explanation": "La numeración comienza en una cabeza de puente y recorre primero el camino más largo. Finalmente se consideran los prefijos y sustituyentes."
+                },
+                {
+                  "number": "04",
+                  "explanation": "Las rutas contienen 10 carbonos en total; el nombre del padre con la función principal es biciclo[4.4.0]decano."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "2013-en": {
+            "status": "NAMED",
+            "name": "bicyclo[4.4.0]decane",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "biciclo[4.4.0]decano",
+              "chainName": "biciclo[4.4.0]decano",
+              "family": "polycyclic",
+              "formula": "C₁₀H₁₈",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 10,
+              "parentCarbonCount": 10,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ],
+                [
+                  10,
+                  7
+                ],
+                [
+                  1,
+                  8
+                ],
+                [
+                  2,
+                  9
+                ],
+                [
+                  3,
+                  10
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "bicyclo[4.4.0]decane"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "01",
+                  "explanation": "The two rings share exactly two adjacent carbon atoms and their common bond, so they form one fused bicyclic parent."
+                },
+                {
+                  "number": "02",
+                  "explanation": "The shared atoms are the bridgeheads. The three paths between them contain 4, 4, and 0 atoms, giving the descriptor [4.4.0]."
+                },
+                {
+                  "number": "03",
+                  "explanation": "Numbering starts at a bridgehead and follows the longest path first. Prefixes and substituents are considered last."
+                },
+                {
+                  "number": "04",
+                  "explanation": "The paths contain 10 carbon atoms in total; the parent name with its principal group is bicyclo[4.4.0]decane."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "evidenceLevel": "GENERATED",
+            "exact": "UNSUPPORTED",
+            "analysis": {
+              "name": "biciclo[4.4.0]decano",
+              "chainName": "biciclo[4.4.0]decano",
+              "family": "polycyclic",
+              "formula": "C₁₀H₁₈",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 10,
+              "parentCarbonCount": 10,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ],
+                [
+                  10,
+                  7
+                ],
+                [
+                  1,
+                  8
+                ],
+                [
+                  2,
+                  9
+                ],
+                [
+                  3,
+                  10
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "unsupportedReason": "Selected production formatter has no admitted grammar"
+          },
+          "1979-en": {
+            "status": "NAMED",
+            "name": "bicyclo[4.4.0]decane",
+            "evidenceLevel": "GENERATED",
+            "exact": "UNVERIFIED",
+            "analysis": {
+              "name": "biciclo[4.4.0]decano",
+              "chainName": "biciclo[4.4.0]decano",
+              "family": "polycyclic",
+              "formula": "C₁₀H₁₈",
+              "parentAtomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                1,
+                2,
+                3
+              ],
+              "parentAtomCount": 10,
+              "parentCarbonCount": 10,
+              "primaryFunctionalGroup": null,
+              "numberedAtoms": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ],
+                [
+                  10,
+                  7
+                ],
+                [
+                  1,
+                  8
+                ],
+                [
+                  2,
+                  9
+                ],
+                [
+                  3,
+                  10
+                ]
+              ],
+              "doubleBondLocants": [],
+              "tripleBondLocants": [],
+              "functionalGroups": [],
+              "substituents": []
+            },
+            "structuralNameInterpretation": {
+              "status": "UNVERIFIED"
+            },
+            "reasoning": {
+              "problems": [],
+              "fragments": [],
+              "links": [
+                {
+                  "text": "bicyclo[4.4.0]decane"
+                }
+              ],
+              "steps": [
+                {
+                  "number": "01",
+                  "explanation": "The two rings share exactly two adjacent carbon atoms and their common bond, so they form one fused bicyclic parent."
+                },
+                {
+                  "number": "02",
+                  "explanation": "The shared atoms are the bridgeheads. The three paths between them contain 4, 4, and 0 atoms, giving the descriptor [4.4.0]."
+                },
+                {
+                  "number": "03",
+                  "explanation": "Numbering starts at a bridgehead and follows the longest path first. Prefixes and substituents are considered last."
+                },
+                {
+                  "number": "04",
+                  "explanation": "The paths contain 10 carbon atoms in total; the parent name with its principal group is bicyclo[4.4.0]decane."
+                }
+              ],
+              "fragmentCount": 0,
+              "linkedSegments": 0
+            }
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "PASS",
+            "detail": "C(CC1)CC2C1CCCC2"
+          },
+          "determinism": {
+            "status": "PASS"
+          },
+          "nameDeterminism": {
+            "status": "PASS"
+          },
+          "profileLanguageReturn": {
+            "status": "PASS"
+          },
+          "analysisImmutability": {
+            "status": "PASS"
+          },
+          "coordinateIndependence": {
+            "status": "PASS"
+          },
+          "themeDOM": {
+            "status": "SKIP",
+            "detail": "UI theme/browser state not exercised; positive coordinate scale/translation tested separately"
+          },
+          "equivalentRepresentations": {
+            "status": "PASS",
+            "comparisons": [
+              {
+                "smiles": "C(CC1)CC2C1CCCC2",
+                "status": "PASS",
+                "changed": []
+              }
+            ]
+          },
+          "roundTripIdentity": {
+            "status": "PASS",
+            "detail": "C(CC1)CC2C1CCCC2"
+          },
+          "graphImmutability": {
+            "status": "PASS"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "biciclo[4.4.0]decano",
+          "2013-en": "bicyclo[4.4.0]decane",
+          "1979-es": null,
+          "1979-en": "bicyclo[4.4.0]decane"
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNVERIFIED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0432",
+          "status": "OUTSIDE_ALL_CURRENT_CATEGORIES",
+          "rejected": [
+            {
+              "category": "alkane",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "alkene",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "alkyne",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "halogenated",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "alcohol",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "aldehyde",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "ketone",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "carboxylic-acid",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "ether",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "ester",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "amine",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "amide",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "simple-carbocycle",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "aromatic",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "ez",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "nitrile",
+              "reason": "polycycle-outside-domain"
+            },
+            {
+              "category": "nitro",
+              "reason": "polycycle-outside-domain"
+            }
+          ]
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "biciclo[4.4.0]decano",
+          "structural": {
+            "status": "UNVERIFIED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "bicyclo[4.4.0]decane",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "bicyclo[4.4.0]decane",
+            "receiptSha256": "ad1b3b7fce55c5ca418aa9a1b04da4e93332d7e828b400a9796c8997aedee453",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:25.233Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "NAMED",
+          "name": "bicyclo[4.4.0]decane",
+          "structural": {
+            "status": "MATCH",
+            "constitutionalMatch": true,
+            "parserStatus": "SUCCESS",
+            "name": "bicyclo[4.4.0]decane",
+            "receiptSha256": "ad1b3b7fce55c5ca418aa9a1b04da4e93332d7e828b400a9796c8997aedee453",
+            "origin": "live-independent-OPSIN",
+            "retrievedAt": "2026-10-18T04:28:25.233Z"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0433",
+      "family": "stereo-polycycles-limits",
+      "smiles": "c1ccc2ccccc2c1",
+      "historicalIdentity": "det@@DjYUX^d@@@@@",
+      "independentInput": {
+        "fullIdentity": "det@@DjYUX^d@@@@@",
+        "constitutionIdentity": "det@@DjYUX^d@@@@@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0433",
+        "family": "stereo-polycycles-limits",
+        "smiles": "c1ccc2ccccc2c1",
+        "features": [
+          "fused-aromatic",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "det@@DjYUX^d@@@@@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0433",
+          "status": "NOT_ASSESSED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0434",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CC2CCC1C2",
+      "historicalIdentity": "dnD@@DjUJbZjj`@",
+      "independentInput": {
+        "fullIdentity": "dnD@@DjUJbZjj`@",
+        "constitutionIdentity": "dnD@@DjUJbZjj`@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0434",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C1CC2CCC1C2",
+        "features": [
+          "bridged",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "dnD@@DjUJbZjj`@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0434",
+          "status": "NOT_ASSESSED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0435",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1CCC2(CC1)CCCC2",
+      "historicalIdentity": "det@@DjeUZ^Fjjj`@",
+      "independentInput": {
+        "fullIdentity": "det@@DjeUZ^Fjjj`@",
+        "constitutionIdentity": "det@@DjeUZ^Fjjj`@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (espiro). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0435",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C1CCC2(CC1)CCCC2",
+        "features": [
+          "spiro",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "det@@DjeUZ^Fjjj`@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (espiro). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0435",
+          "status": "NOT_ASSESSED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (espiro). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0436",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C1C2CC3CC1CC(C2)C3",
+      "historicalIdentity": "deL@@DjUYkfEijjjj@@",
+      "independentInput": {
+        "fullIdentity": "deL@@DjUYkfEijjjj@@",
+        "constitutionIdentity": "deL@@DjUYkfEijjjj@@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0436",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C1C2CC3CC1CC(C2)C3",
+        "features": [
+          "adamantane",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "deL@@DjUYkfEijjjj@@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0436",
+          "status": "NOT_ASSESSED",
+          "reason": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0437",
+      "family": "stereo-polycycles-limits",
+      "smiles": "C[N+](C)(C)C",
+      "historicalIdentity": "gJXA@Iczh@",
+      "independentInput": {
+        "fullIdentity": "gJXA@Iczh@",
+        "constitutionIdentity": "gJXA@Iczh@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0437",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C[N+](C)(C)C",
+        "features": [
+          "quaternary-ammonium",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gJXA@Iczh@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0437",
+          "status": "NOT_ASSESSED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0438",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC[NH2+]CC",
+      "historicalIdentity": "gJXA@IRej`@",
+      "independentInput": {
+        "fullIdentity": "gJXA@IRej`@",
+        "constitutionIdentity": "gJXA@IRej`@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0438",
+        "family": "stereo-polycycles-limits",
+        "smiles": "CC[NH2+]CC",
+        "features": [
+          "charged-nitrogen",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gJXA@IRej`@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0438",
+          "status": "NOT_ASSESSED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0439",
+      "family": "stereo-polycycles-limits",
+      "smiles": "CC(=O)[O-]",
+      "historicalIdentity": "gC`a@erSM@@",
+      "independentInput": {
+        "fullIdentity": "gC`a@erSM@@",
+        "constitutionIdentity": "gC`a@erSM@@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": false,
+      "currentEvaluation": {
+        "id": "AUDCASE-0439",
+        "family": "stereo-polycycles-limits",
+        "smiles": "CC(=O)[O-]",
+        "features": [
+          "carboxylate",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "gC`a@erSM@@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": null,
+          "2013-en": null,
+          "1979-es": null,
+          "1979-en": null
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNSUPPORTED",
+          "2013-en": "UNSUPPORTED",
+          "1979-es": "UNSUPPORTED",
+          "1979-en": "UNSUPPORTED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0439",
+          "status": "NOT_ASSESSED",
+          "reason": "La estructura contiene cargas formales que este canvas todavía no representa fuera de grupos nitro."
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "smiles": "[13CH3]CO",
+      "historicalIdentity": "eMHAIhFIl@",
+      "independentInput": {
+        "fullIdentity": "eMHAIhFIl@",
+        "constitutionIdentity": "eMHAIhFIl@"
+      },
+      "editable": {
+        "status": "REJECTED",
+        "reason": "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+        "exported": null,
+        "graph": null
+      },
+      "safeRejection": true,
+      "currentEvaluation": {
+        "id": "AUDCASE-0440",
+        "family": "stereo-polycycles-limits",
+        "smiles": "[13CH3]CO",
+        "features": [
+          "isotope",
+          "laboratory-boundary"
+        ],
+        "evidenceLevel": "GENERATED",
+        "expected": {},
+        "identity": "eMHAIhFIl@",
+        "admission": {
+          "status": "UNSUPPORTED",
+          "reason": "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+          "independentlyParseable": true
+        },
+        "profiles": {
+          "2013-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "2013-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-es": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          },
+          "1979-en": {
+            "status": "UNSUPPORTED",
+            "name": null,
+            "exact": "UNSUPPORTED",
+            "evidenceLevel": "GENERATED"
+          }
+        },
+        "properties": {
+          "importExportIdentity": {
+            "status": "SKIP",
+            "detail": "Production import explicitly rejected this independently parseable boundary graph"
+          }
+        },
+        "signals": [],
+        "findings": [],
+        "profilesChecked": [
+          "2013-es",
+          "2013-en",
+          "1979-es",
+          "1979-en"
+        ],
+        "namesObtained": {
+          "2013-es": "etanol",
+          "2013-en": "ethanol",
+          "1979-es": "etanol",
+          "1979-en": "ethanol"
+        },
+        "exactNamingStatus": {
+          "2013-es": "UNVERIFIED",
+          "2013-en": "UNVERIFIED",
+          "1979-es": "UNVERIFIED",
+          "1979-en": "UNVERIFIED"
+        },
+        "practiceEnvelope": {
+          "id": "AUDCASE-0440",
+          "status": "NOT_ASSESSED",
+          "reason": "Lossy Lab import must not establish admission for the original graph"
+        }
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "2013-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-es": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        },
+        "1979-en": {
+          "status": "UNSUPPORTED",
+          "name": null,
+          "structural": {
+            "status": "UNSUPPORTED",
+            "reason": "Spanish/current exact text has no independent OPSIN receipt"
+          },
+          "exactHistoricalExpectation": {
+            "status": "NO_EXACT_EXPECTATION"
+          },
+          "normative": {
+            "status": "UNADJUDICATED",
+            "reason": "OPSIN and generated output do not establish IUPAC preference or Spanish editorial convention"
+          }
+        }
+      }
+    }
+  ]
+}

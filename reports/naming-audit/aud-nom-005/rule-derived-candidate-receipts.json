@@ -1,0 +1,75 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "capturedAt": "2026-10-18T19:41:57.205Z",
+  "maximumQueries": 2,
+  "candidateSelection": "Rule-derived names fixed in this script from cited IUPAC primary sources before comparison with OrgoRush output.",
+  "responses": [
+    {
+      "name": "1-chloro-4-ethenylbenzene",
+      "url": "https://www.ebi.ac.uk/opsin/ws/1-chloro-4-ethenylbenzene.json",
+      "retrievedAt": "2026-10-18T19:41:55.976Z",
+      "httpStatus": 200,
+      "statusText": "",
+      "body": "{\"status\":\"SUCCESS\",\"message\":\"\",\"cml\":\"<cml xmlns=\\\"http://www.xml-cml.org/schema\\\" convention=\\\"conventions:molecular\\\" xmlns:conventions=\\\"http://www.xml-cml.org/convention/\\\" xmlns:cmlDict=\\\"http://www.xml-cml.org/dictionary/cml/\\\" xmlns:nameDict=\\\"http://www.xml-cml.org/dictionary/cml/name/\\\">\\n  <molecule id=\\\"m1\\\">\\n    <name dictRef=\\\"nameDict:unknown\\\">1-chloro-4-ethenylbenzene<\\/name>\\n    <atomArray>\\n      <atom id=\\\"a1\\\" elementType=\\\"Cl\\\" hydrogenCount=\\\"0\\\">\\n        <label value=\\\"Cl\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a2\\\" elementType=\\\"C\\\">\\n        <label value=\\\"1\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"alpha\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a3\\\" elementType=\\\"C\\\">\\n        <label value=\\\"2\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"beta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a10\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a11\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a12\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a4\\\" elementType=\\\"C\\\" hydrogenCount=\\\"0\\\">\\n        <label value=\\\"1\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a5\\\" elementType=\\\"C\\\">\\n        <label value=\\\"2\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"ortho\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a6\\\" elementType=\\\"C\\\">\\n        <label value=\\\"3\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"meta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a7\\\" elementType=\\\"C\\\" hydrogenCount=\\\"0\\\">\\n        <label value=\\\"4\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"para\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a8\\\" elementType=\\\"C\\\">\\n        <label value=\\\"5\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a9\\\" elementType=\\\"C\\\">\\n        <label value=\\\"6\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a13\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a14\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a15\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a16\\\" elementType=\\\"H\\\"/>\\n    <\\/atomArray>\\n    <bondArray>\\n      <bond id=\\\"a1_a4\\\" atomRefs2=\\\"a1 a4\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a2_a3\\\" atomRefs2=\\\"a2 a3\\\" order=\\\"D\\\"/>\\n      <bond id=\\\"a2_a10\\\" atomRefs2=\\\"a2 a10\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a3_a11\\\" atomRefs2=\\\"a3 a11\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a3_a12\\\" atomRefs2=\\\"a3 a12\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a2_a7\\\" atomRefs2=\\\"a2 a7\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a4_a5\\\" atomRefs2=\\\"a4 a5\\\" order=\\\"D\\\"/>\\n      <bond id=\\\"a5_a6\\\" atomRefs2=\\\"a5 a6\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a6_a7\\\" atomRefs2=\\\"a6 a7\\\" order=\\\"D\\\"/>\\n      <bond id=\\\"a7_a8\\\" atomRefs2=\\\"a7 a8\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a8_a9\\\" atomRefs2=\\\"a8 a9\\\" order=\\\"D\\\"/>\\n      <bond id=\\\"a4_a9\\\" atomRefs2=\\\"a4 a9\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a5_a13\\\" atomRefs2=\\\"a5 a13\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a6_a14\\\" atomRefs2=\\\"a6 a14\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a8_a15\\\" atomRefs2=\\\"a8 a15\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a9_a16\\\" atomRefs2=\\\"a9 a16\\\" order=\\\"S\\\"/>\\n    <\\/bondArray>\\n  <\\/molecule>\\n<\\/cml>\",\"inchi\":\"InChI=1/C8H7Cl/c1-2-7-3-5-8(9)6-4-7/h2-6H,1H2\",\"stdinchi\":\"InChI=1S/C8H7Cl/c1-2-7-3-5-8(9)6-4-7/h2-6H,1H2\",\"stdinchikey\":\"KTZVZZJJVJQZHV-UHFFFAOYSA-N\",\"smiles\":\"ClC1=CC=C(C=C1)C=C\"}",
+      "sha256": "d6c3f5b9664faddcd844b1c7c6506540249ba8cc34dfc34540072bd23e2ea138",
+      "parsedStatus": "SUCCESS"
+    },
+    {
+      "name": "2-pentyloxyheptane",
+      "url": "https://www.ebi.ac.uk/opsin/ws/2-pentyloxyheptane.json",
+      "retrievedAt": "2026-10-18T19:41:56.024Z",
+      "httpStatus": 200,
+      "statusText": "",
+      "body": "{\"status\":\"SUCCESS\",\"message\":\"\",\"cml\":\"<cml xmlns=\\\"http://www.xml-cml.org/schema\\\" convention=\\\"conventions:molecular\\\" xmlns:conventions=\\\"http://www.xml-cml.org/convention/\\\" xmlns:cmlDict=\\\"http://www.xml-cml.org/dictionary/cml/\\\" xmlns:nameDict=\\\"http://www.xml-cml.org/dictionary/cml/name/\\\">\\n  <molecule id=\\\"m1\\\">\\n    <name dictRef=\\\"nameDict:unknown\\\">2-pentyloxyheptane<\\/name>\\n    <atomArray>\\n      <atom id=\\\"a1\\\" elementType=\\\"C\\\">\\n        <label value=\\\"1\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"alpha\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a2\\\" elementType=\\\"C\\\">\\n        <label value=\\\"2\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"beta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a3\\\" elementType=\\\"C\\\">\\n        <label value=\\\"3\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"gamma\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a4\\\" elementType=\\\"C\\\">\\n        <label value=\\\"4\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"delta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a5\\\" elementType=\\\"C\\\">\\n        <label value=\\\"5\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"epsilon\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a14\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a15\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a16\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a17\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a18\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a19\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a20\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a21\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a22\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a23\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a24\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a6\\\" elementType=\\\"O\\\" hydrogenCount=\\\"0\\\">\\n        <label value=\\\"O\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a7\\\" elementType=\\\"C\\\">\\n        <label value=\\\"1\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"alpha\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a8\\\" elementType=\\\"C\\\">\\n        <label value=\\\"2\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"beta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a9\\\" elementType=\\\"C\\\">\\n        <label value=\\\"3\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"gamma\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a10\\\" elementType=\\\"C\\\">\\n        <label value=\\\"4\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"delta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a11\\\" elementType=\\\"C\\\">\\n        <label value=\\\"5\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"epsilon\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a12\\\" elementType=\\\"C\\\">\\n        <label value=\\\"6\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n        <label value=\\\"zeta\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a13\\\" elementType=\\\"C\\\">\\n        <label value=\\\"7\\\" dictRef=\\\"cmlDict:locant\\\"/>\\n      <\\/atom>\\n      <atom id=\\\"a25\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a26\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a27\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a28\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a29\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a30\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a31\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a32\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a33\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a34\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a35\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a36\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a37\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a38\\\" elementType=\\\"H\\\"/>\\n      <atom id=\\\"a39\\\" elementType=\\\"H\\\"/>\\n    <\\/atomArray>\\n    <bondArray>\\n      <bond id=\\\"a1_a2\\\" atomRefs2=\\\"a1 a2\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a2_a3\\\" atomRefs2=\\\"a2 a3\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a3_a4\\\" atomRefs2=\\\"a3 a4\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a4_a5\\\" atomRefs2=\\\"a4 a5\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a1_a14\\\" atomRefs2=\\\"a1 a14\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a1_a15\\\" atomRefs2=\\\"a1 a15\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a2_a16\\\" atomRefs2=\\\"a2 a16\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a2_a17\\\" atomRefs2=\\\"a2 a17\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a3_a18\\\" atomRefs2=\\\"a3 a18\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a3_a19\\\" atomRefs2=\\\"a3 a19\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a4_a20\\\" atomRefs2=\\\"a4 a20\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a4_a21\\\" atomRefs2=\\\"a4 a21\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a5_a22\\\" atomRefs2=\\\"a5 a22\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a5_a23\\\" atomRefs2=\\\"a5 a23\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a5_a24\\\" atomRefs2=\\\"a5 a24\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a1_a6\\\" atomRefs2=\\\"a1 a6\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a6_a8\\\" atomRefs2=\\\"a6 a8\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a7_a8\\\" atomRefs2=\\\"a7 a8\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a8_a9\\\" atomRefs2=\\\"a8 a9\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a9_a10\\\" atomRefs2=\\\"a9 a10\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a10_a11\\\" atomRefs2=\\\"a10 a11\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a11_a12\\\" atomRefs2=\\\"a11 a12\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a12_a13\\\" atomRefs2=\\\"a12 a13\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a7_a25\\\" atomRefs2=\\\"a7 a25\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a7_a26\\\" atomRefs2=\\\"a7 a26\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a7_a27\\\" atomRefs2=\\\"a7 a27\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a8_a28\\\" atomRefs2=\\\"a8 a28\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a9_a29\\\" atomRefs2=\\\"a9 a29\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a9_a30\\\" atomRefs2=\\\"a9 a30\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a10_a31\\\" atomRefs2=\\\"a10 a31\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a10_a32\\\" atomRefs2=\\\"a10 a32\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a11_a33\\\" atomRefs2=\\\"a11 a33\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a11_a34\\\" atomRefs2=\\\"a11 a34\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a12_a35\\\" atomRefs2=\\\"a12 a35\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a12_a36\\\" atomRefs2=\\\"a12 a36\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a13_a37\\\" atomRefs2=\\\"a13 a37\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a13_a38\\\" atomRefs2=\\\"a13 a38\\\" order=\\\"S\\\"/>\\n      <bond id=\\\"a13_a39\\\" atomRefs2=\\\"a13 a39\\\" order=\\\"S\\\"/>\\n    <\\/bondArray>\\n  <\\/molecule>\\n<\\/cml>\",\"inchi\":\"InChI=1/C12H26O/c1-4-6-8-10-12(3)13-11-9-7-5-2/h12H,4-11H2,1-3H3\",\"stdinchi\":\"InChI=1S/C12H26O/c1-4-6-8-10-12(3)13-11-9-7-5-2/h12H,4-11H2,1-3H3\",\"stdinchikey\":\"WIYXFYLUKNJSAB-UHFFFAOYSA-N\",\"smiles\":\"C(CCCC)OC(C)CCCCC\"}",
+      "sha256": "5f76bce587716aa5f33d5b1d419dfc218e86c8cd4944edae17d6c7500ae19dfa",
+      "parsedStatus": "SUCCESS"
+    }
+  ],
+  "failedRequests": [],
+  "evaluated": [
+    {
+      "id": "AUDCASE-0160",
+      "text": "1-chloro-4-ethenylbenzene",
+      "profiles": [
+        "2013-en",
+        "1979-en"
+      ],
+      "sources": [
+        "https://iupac.qmul.ac.uk/BlueBook/P1.html#P12",
+        "https://iupac.qmul.ac.uk/BlueBook/P5.html"
+      ],
+      "rule": "P-12.3 identifies ethenylbenzene as PIN; apply the halogen prefix and P-14 locant tie-break to the para-substituted ring.",
+      "inputSmiles": "c1(C=C)ccc(Cl)cc1",
+      "structuralInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "1-chloro-4-ethenylbenzene",
+        "receiptSha256": "d6c3f5b9664faddcd844b1c7c6506540249ba8cc34dfc34540072bd23e2ea138",
+        "retrievedAt": "2026-10-18T19:41:55.976Z"
+      }
+    },
+    {
+      "id": "AUDCASE-0337",
+      "text": "2-pentyloxyheptane",
+      "profiles": [
+        "2013-en",
+        "1979-en"
+      ],
+      "sources": [
+        "https://iupac.qmul.ac.uk/BlueBook/P6.html#P6322",
+        "https://iupac.qmul.ac.uk/BlueBook/P6.html#P6324"
+      ],
+      "rule": "P-63.2.2.1.1 gives the R′-O– prefix by concatenating oxy to the substituent-prefix name and lists pentyloxy; P-63.2.4 permits substitutive ether naming.",
+      "inputSmiles": "CCCCCOC(C)CCCCC",
+      "structuralInterpretation": {
+        "status": "MATCH",
+        "constitutionalMatch": true,
+        "parserStatus": "SUCCESS",
+        "name": "2-pentyloxyheptane",
+        "receiptSha256": "5f76bce587716aa5f33d5b1d419dfc218e86c8cd4944edae17d6c7500ae19dfa",
+        "retrievedAt": "2026-10-18T19:41:56.024Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2041 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "createdAt": "2026-10-18T19:29:41.696Z",
+  "historicalInventory": "reports/naming-audit/audit-matrix.json",
+  "inventoryHash": "00a6dfb1533212f575f38e391e21b8b3322834b1bdb7a22e722d6984805cc61f",
+  "inventory": {
+    "count": 440,
+    "firstId": "AUDCASE-0001",
+    "lastId": "AUDCASE-0440",
+    "uniqueIds": 440
+  },
+  "batchSize": 25,
+  "ids": [
+    "AUDCASE-0001",
+    "AUDCASE-0002",
+    "AUDCASE-0003",
+    "AUDCASE-0004",
+    "AUDCASE-0005",
+    "AUDCASE-0006",
+    "AUDCASE-0007",
+    "AUDCASE-0008",
+    "AUDCASE-0009",
+    "AUDCASE-0010",
+    "AUDCASE-0011",
+    "AUDCASE-0012",
+    "AUDCASE-0013",
+    "AUDCASE-0014",
+    "AUDCASE-0015",
+    "AUDCASE-0016",
+    "AUDCASE-0017",
+    "AUDCASE-0018",
+    "AUDCASE-0019",
+    "AUDCASE-0020",
+    "AUDCASE-0021",
+    "AUDCASE-0022",
+    "AUDCASE-0023",
+    "AUDCASE-0024",
+    "AUDCASE-0025",
+    "AUDCASE-0026",
+    "AUDCASE-0027",
+    "AUDCASE-0028",
+    "AUDCASE-0029",
+    "AUDCASE-0030",
+    "AUDCASE-0031",
+    "AUDCASE-0032",
+    "AUDCASE-0033",
+    "AUDCASE-0034",
+    "AUDCASE-0035",
+    "AUDCASE-0036",
+    "AUDCASE-0037",
+    "AUDCASE-0038",
+    "AUDCASE-0039",
+    "AUDCASE-0040",
+    "AUDCASE-0041",
+    "AUDCASE-0042",
+    "AUDCASE-0043",
+    "AUDCASE-0044",
+    "AUDCASE-0045",
+    "AUDCASE-0046",
+    "AUDCASE-0047",
+    "AUDCASE-0048",
+    "AUDCASE-0049",
+    "AUDCASE-0050",
+    "AUDCASE-0051",
+    "AUDCASE-0052",
+    "AUDCASE-0053",
+    "AUDCASE-0054",
+    "AUDCASE-0055",
+    "AUDCASE-0056",
+    "AUDCASE-0057",
+    "AUDCASE-0058",
+    "AUDCASE-0059",
+    "AUDCASE-0060",
+    "AUDCASE-0061",
+    "AUDCASE-0062",
+    "AUDCASE-0063",
+    "AUDCASE-0064",
+    "AUDCASE-0065",
+    "AUDCASE-0066",
+    "AUDCASE-0067",
+    "AUDCASE-0068",
+    "AUDCASE-0069",
+    "AUDCASE-0070",
+    "AUDCASE-0071",
+    "AUDCASE-0072",
+    "AUDCASE-0073",
+    "AUDCASE-0074",
+    "AUDCASE-0075",
+    "AUDCASE-0076",
+    "AUDCASE-0077",
+    "AUDCASE-0078",
+    "AUDCASE-0079",
+    "AUDCASE-0080",
+    "AUDCASE-0081",
+    "AUDCASE-0082",
+    "AUDCASE-0083",
+    "AUDCASE-0084",
+    "AUDCASE-0085",
+    "AUDCASE-0086",
+    "AUDCASE-0087",
+    "AUDCASE-0088",
+    "AUDCASE-0089",
+    "AUDCASE-0090",
+    "AUDCASE-0091",
+    "AUDCASE-0092",
+    "AUDCASE-0093",
+    "AUDCASE-0094",
+    "AUDCASE-0095",
+    "AUDCASE-0096",
+    "AUDCASE-0097",
+    "AUDCASE-0098",
+    "AUDCASE-0099",
+    "AUDCASE-0100",
+    "AUDCASE-0101",
+    "AUDCASE-0102",
+    "AUDCASE-0103",
+    "AUDCASE-0104",
+    "AUDCASE-0105",
+    "AUDCASE-0106",
+    "AUDCASE-0107",
+    "AUDCASE-0108",
+    "AUDCASE-0109",
+    "AUDCASE-0110",
+    "AUDCASE-0111",
+    "AUDCASE-0112",
+    "AUDCASE-0113",
+    "AUDCASE-0114",
+    "AUDCASE-0115",
+    "AUDCASE-0116",
+    "AUDCASE-0117",
+    "AUDCASE-0118",
+    "AUDCASE-0119",
+    "AUDCASE-0120",
+    "AUDCASE-0121",
+    "AUDCASE-0122",
+    "AUDCASE-0123",
+    "AUDCASE-0124",
+    "AUDCASE-0125",
+    "AUDCASE-0126",
+    "AUDCASE-0127",
+    "AUDCASE-0128",
+    "AUDCASE-0129",
+    "AUDCASE-0130",
+    "AUDCASE-0131",
+    "AUDCASE-0132",
+    "AUDCASE-0133",
+    "AUDCASE-0134",
+    "AUDCASE-0135",
+    "AUDCASE-0136",
+    "AUDCASE-0137",
+    "AUDCASE-0138",
+    "AUDCASE-0139",
+    "AUDCASE-0140",
+    "AUDCASE-0141",
+    "AUDCASE-0142",
+    "AUDCASE-0143",
+    "AUDCASE-0144",
+    "AUDCASE-0145",
+    "AUDCASE-0146",
+    "AUDCASE-0147",
+    "AUDCASE-0148",
+    "AUDCASE-0149",
+    "AUDCASE-0150",
+    "AUDCASE-0151",
+    "AUDCASE-0152",
+    "AUDCASE-0153",
+    "AUDCASE-0154",
+    "AUDCASE-0155",
+    "AUDCASE-0156",
+    "AUDCASE-0157",
+    "AUDCASE-0158",
+    "AUDCASE-0159",
+    "AUDCASE-0160",
+    "AUDCASE-0161",
+    "AUDCASE-0162",
+    "AUDCASE-0163",
+    "AUDCASE-0164",
+    "AUDCASE-0165",
+    "AUDCASE-0166",
+    "AUDCASE-0167",
+    "AUDCASE-0168",
+    "AUDCASE-0169",
+    "AUDCASE-0170",
+    "AUDCASE-0171",
+    "AUDCASE-0172",
+    "AUDCASE-0173",
+    "AUDCASE-0174",
+    "AUDCASE-0175",
+    "AUDCASE-0176",
+    "AUDCASE-0177",
+    "AUDCASE-0178",
+    "AUDCASE-0179",
+    "AUDCASE-0180",
+    "AUDCASE-0181",
+    "AUDCASE-0182",
+    "AUDCASE-0183",
+    "AUDCASE-0184",
+    "AUDCASE-0185",
+    "AUDCASE-0186",
+    "AUDCASE-0187",
+    "AUDCASE-0188",
+    "AUDCASE-0189",
+    "AUDCASE-0190",
+    "AUDCASE-0191",
+    "AUDCASE-0192",
+    "AUDCASE-0193",
+    "AUDCASE-0194",
+    "AUDCASE-0195",
+    "AUDCASE-0196",
+    "AUDCASE-0197",
+    "AUDCASE-0198",
+    "AUDCASE-0199",
+    "AUDCASE-0200",
+    "AUDCASE-0201",
+    "AUDCASE-0202",
+    "AUDCASE-0203",
+    "AUDCASE-0204",
+    "AUDCASE-0205",
+    "AUDCASE-0206",
+    "AUDCASE-0207",
+    "AUDCASE-0208",
+    "AUDCASE-0209",
+    "AUDCASE-0210",
+    "AUDCASE-0211",
+    "AUDCASE-0212",
+    "AUDCASE-0213",
+    "AUDCASE-0214",
+    "AUDCASE-0215",
+    "AUDCASE-0216",
+    "AUDCASE-0217",
+    "AUDCASE-0218",
+    "AUDCASE-0219",
+    "AUDCASE-0220",
+    "AUDCASE-0221",
+    "AUDCASE-0222",
+    "AUDCASE-0223",
+    "AUDCASE-0224",
+    "AUDCASE-0225",
+    "AUDCASE-0226",
+    "AUDCASE-0227",
+    "AUDCASE-0228",
+    "AUDCASE-0229",
+    "AUDCASE-0230",
+    "AUDCASE-0231",
+    "AUDCASE-0232",
+    "AUDCASE-0233",
+    "AUDCASE-0234",
+    "AUDCASE-0235",
+    "AUDCASE-0236",
+    "AUDCASE-0237",
+    "AUDCASE-0238",
+    "AUDCASE-0239",
+    "AUDCASE-0240",
+    "AUDCASE-0241",
+    "AUDCASE-0242",
+    "AUDCASE-0243",
+    "AUDCASE-0244",
+    "AUDCASE-0245",
+    "AUDCASE-0246",
+    "AUDCASE-0247",
+    "AUDCASE-0248",
+    "AUDCASE-0249",
+    "AUDCASE-0250",
+    "AUDCASE-0251",
+    "AUDCASE-0252",
+    "AUDCASE-0253",
+    "AUDCASE-0254",
+    "AUDCASE-0255",
+    "AUDCASE-0256",
+    "AUDCASE-0257",
+    "AUDCASE-0258",
+    "AUDCASE-0259",
+    "AUDCASE-0260",
+    "AUDCASE-0261",
+    "AUDCASE-0262",
+    "AUDCASE-0263",
+    "AUDCASE-0264",
+    "AUDCASE-0265",
+    "AUDCASE-0266",
+    "AUDCASE-0267",
+    "AUDCASE-0268",
+    "AUDCASE-0269",
+    "AUDCASE-0270",
+    "AUDCASE-0271",
+    "AUDCASE-0272",
+    "AUDCASE-0273",
+    "AUDCASE-0274",
+    "AUDCASE-0275",
+    "AUDCASE-0276",
+    "AUDCASE-0277",
+    "AUDCASE-0278",
+    "AUDCASE-0279",
+    "AUDCASE-0280",
+    "AUDCASE-0281",
+    "AUDCASE-0282",
+    "AUDCASE-0283",
+    "AUDCASE-0284",
+    "AUDCASE-0285",
+    "AUDCASE-0286",
+    "AUDCASE-0287",
+    "AUDCASE-0288",
+    "AUDCASE-0289",
+    "AUDCASE-0290",
+    "AUDCASE-0291",
+    "AUDCASE-0292",
+    "AUDCASE-0293",
+    "AUDCASE-0294",
+    "AUDCASE-0295",
+    "AUDCASE-0296",
+    "AUDCASE-0297",
+    "AUDCASE-0298",
+    "AUDCASE-0299",
+    "AUDCASE-0300",
+    "AUDCASE-0301",
+    "AUDCASE-0302",
+    "AUDCASE-0303",
+    "AUDCASE-0304",
+    "AUDCASE-0305",
+    "AUDCASE-0306",
+    "AUDCASE-0307",
+    "AUDCASE-0308",
+    "AUDCASE-0309",
+    "AUDCASE-0310",
+    "AUDCASE-0311",
+    "AUDCASE-0312",
+    "AUDCASE-0313",
+    "AUDCASE-0314",
+    "AUDCASE-0315",
+    "AUDCASE-0316",
+    "AUDCASE-0317",
+    "AUDCASE-0318",
+    "AUDCASE-0319",
+    "AUDCASE-0320",
+    "AUDCASE-0321",
+    "AUDCASE-0322",
+    "AUDCASE-0323",
+    "AUDCASE-0324",
+    "AUDCASE-0325",
+    "AUDCASE-0326",
+    "AUDCASE-0327",
+    "AUDCASE-0328",
+    "AUDCASE-0329",
+    "AUDCASE-0330",
+    "AUDCASE-0331",
+    "AUDCASE-0332",
+    "AUDCASE-0333",
+    "AUDCASE-0334",
+    "AUDCASE-0335",
+    "AUDCASE-0336",
+    "AUDCASE-0337",
+    "AUDCASE-0338",
+    "AUDCASE-0339",
+    "AUDCASE-0340",
+    "AUDCASE-0341",
+    "AUDCASE-0342",
+    "AUDCASE-0343",
+    "AUDCASE-0344",
+    "AUDCASE-0345",
+    "AUDCASE-0346",
+    "AUDCASE-0347",
+    "AUDCASE-0348",
+    "AUDCASE-0349",
+    "AUDCASE-0350",
+    "AUDCASE-0351",
+    "AUDCASE-0352",
+    "AUDCASE-0353",
+    "AUDCASE-0354",
+    "AUDCASE-0355",
+    "AUDCASE-0356",
+    "AUDCASE-0357",
+    "AUDCASE-0358",
+    "AUDCASE-0359",
+    "AUDCASE-0360",
+    "AUDCASE-0361",
+    "AUDCASE-0362",
+    "AUDCASE-0363",
+    "AUDCASE-0364",
+    "AUDCASE-0365",
+    "AUDCASE-0366",
+    "AUDCASE-0367",
+    "AUDCASE-0368",
+    "AUDCASE-0369",
+    "AUDCASE-0370",
+    "AUDCASE-0371",
+    "AUDCASE-0372",
+    "AUDCASE-0373",
+    "AUDCASE-0374",
+    "AUDCASE-0375",
+    "AUDCASE-0376",
+    "AUDCASE-0377",
+    "AUDCASE-0378",
+    "AUDCASE-0379",
+    "AUDCASE-0380",
+    "AUDCASE-0381",
+    "AUDCASE-0382",
+    "AUDCASE-0383",
+    "AUDCASE-0384",
+    "AUDCASE-0385",
+    "AUDCASE-0386",
+    "AUDCASE-0387",
+    "AUDCASE-0388",
+    "AUDCASE-0389",
+    "AUDCASE-0390",
+    "AUDCASE-0391",
+    "AUDCASE-0392",
+    "AUDCASE-0393",
+    "AUDCASE-0394",
+    "AUDCASE-0395",
+    "AUDCASE-0396",
+    "AUDCASE-0397",
+    "AUDCASE-0398",
+    "AUDCASE-0399",
+    "AUDCASE-0400",
+    "AUDCASE-0401",
+    "AUDCASE-0402",
+    "AUDCASE-0403",
+    "AUDCASE-0404",
+    "AUDCASE-0405",
+    "AUDCASE-0406",
+    "AUDCASE-0407",
+    "AUDCASE-0408",
+    "AUDCASE-0409",
+    "AUDCASE-0410",
+    "AUDCASE-0411",
+    "AUDCASE-0412",
+    "AUDCASE-0413",
+    "AUDCASE-0414",
+    "AUDCASE-0415",
+    "AUDCASE-0416",
+    "AUDCASE-0417",
+    "AUDCASE-0418",
+    "AUDCASE-0419",
+    "AUDCASE-0420",
+    "AUDCASE-0421",
+    "AUDCASE-0422",
+    "AUDCASE-0423",
+    "AUDCASE-0424",
+    "AUDCASE-0425",
+    "AUDCASE-0426",
+    "AUDCASE-0427",
+    "AUDCASE-0428",
+    "AUDCASE-0429",
+    "AUDCASE-0430",
+    "AUDCASE-0431",
+    "AUDCASE-0432",
+    "AUDCASE-0433",
+    "AUDCASE-0434",
+    "AUDCASE-0435",
+    "AUDCASE-0436",
+    "AUDCASE-0437",
+    "AUDCASE-0438",
+    "AUDCASE-0439",
+    "AUDCASE-0440"
+  ],
+  "referenceSample": {
+    "audit": "AUD-NOM-005-v1",
+    "method": "Stratified before reading any production name; family quotas fixed in AUD-NOM-005-v1 and deterministic coverage of structure feature tags, then SHA-256 tie break.",
+    "namesWereRead": false,
+    "total": 50,
+    "quotas": {
+      "alkanes": 3,
+      "alkenes": 3,
+      "alkynes": 3,
+      "multi-unsaturated": 4,
+      "carbocycles": 4,
+      "aromatics": 4,
+      "halogenated": 3,
+      "alcohols-polyols": 3,
+      "carbonyls": 3,
+      "carboxylic-acids": 4,
+      "ethers-esters": 4,
+      "nitrogen-functions": 4,
+      "mixed-functions": 4,
+      "stereo-polycycles-limits": 4
+    },
+    "families": {
+      "alkanes": {
+        "inventory": 35,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0023",
+          "AUDCASE-0027",
+          "AUDCASE-0034"
+        ]
+      },
+      "alkenes": {
+        "inventory": 30,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0041",
+          "AUDCASE-0052",
+          "AUDCASE-0060"
+        ]
+      },
+      "alkynes": {
+        "inventory": 25,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0074",
+          "AUDCASE-0078",
+          "AUDCASE-0080"
+        ]
+      },
+      "multi-unsaturated": {
+        "inventory": 25,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0094",
+          "AUDCASE-0098",
+          "AUDCASE-0104",
+          "AUDCASE-0109"
+        ]
+      },
+      "carbocycles": {
+        "inventory": 40,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0119",
+          "AUDCASE-0124",
+          "AUDCASE-0134",
+          "AUDCASE-0143"
+        ]
+      },
+      "aromatics": {
+        "inventory": 35,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0156",
+          "AUDCASE-0158",
+          "AUDCASE-0160",
+          "AUDCASE-0162"
+        ]
+      },
+      "halogenated": {
+        "inventory": 25,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0199",
+          "AUDCASE-0200",
+          "AUDCASE-0202"
+        ]
+      },
+      "alcohols-polyols": {
+        "inventory": 30,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0217",
+          "AUDCASE-0223",
+          "AUDCASE-0230"
+        ]
+      },
+      "carbonyls": {
+        "inventory": 40,
+        "quota": 3,
+        "selectedIds": [
+          "AUDCASE-0247",
+          "AUDCASE-0255",
+          "AUDCASE-0275"
+        ]
+      },
+      "carboxylic-acids": {
+        "inventory": 20,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0291",
+          "AUDCASE-0294",
+          "AUDCASE-0299",
+          "AUDCASE-0305"
+        ]
+      },
+      "ethers-esters": {
+        "inventory": 35,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0319",
+          "AUDCASE-0329",
+          "AUDCASE-0337",
+          "AUDCASE-0340"
+        ]
+      },
+      "nitrogen-functions": {
+        "inventory": 40,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0352",
+          "AUDCASE-0359",
+          "AUDCASE-0369",
+          "AUDCASE-0374"
+        ]
+      },
+      "mixed-functions": {
+        "inventory": 30,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0385",
+          "AUDCASE-0398",
+          "AUDCASE-0400",
+          "AUDCASE-0409"
+        ]
+      },
+      "stereo-polycycles-limits": {
+        "inventory": 30,
+        "quota": 4,
+        "selectedIds": [
+          "AUDCASE-0412",
+          "AUDCASE-0415",
+          "AUDCASE-0420",
+          "AUDCASE-0422"
+        ]
+      }
+    },
+    "records": [
+      {
+        "id": "AUDCASE-0023",
+        "family": "alkanes",
+        "smiles": "CC(C)(C)CCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "geminal",
+            "repeated-substituents"
+          ]
+        },
+        "features": [
+          "geminal",
+          "repeated-substituents"
+        ]
+      },
+      {
+        "id": "AUDCASE-0027",
+        "family": "alkanes",
+        "smiles": "CCCCCCCCCC(C)CCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "parent-selection"
+          ]
+        },
+        "features": [
+          "branching",
+          "parent-selection"
+        ]
+      },
+      {
+        "id": "AUDCASE-0034",
+        "family": "alkanes",
+        "smiles": "CCCCCCCCC(C)CCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "parent-selection"
+          ]
+        },
+        "features": [
+          "branching",
+          "parent-selection"
+        ]
+      },
+      {
+        "id": "AUDCASE-0041",
+        "family": "alkenes",
+        "smiles": "CC=CC(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "numbering",
+            "single-double-bond"
+          ]
+        },
+        "features": [
+          "branching",
+          "numbering",
+          "single-double-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0052",
+        "family": "alkenes",
+        "smiles": "CCC=CCCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "locant-neighbor",
+            "single-double-bond"
+          ]
+        },
+        "features": [
+          "locant-neighbor",
+          "single-double-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0060",
+        "family": "alkenes",
+        "smiles": "C=CCCCCCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "locant-neighbor",
+            "single-double-bond"
+          ]
+        },
+        "features": [
+          "locant-neighbor",
+          "single-double-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0074",
+        "family": "alkynes",
+        "smiles": "C#CCCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "locant-neighbor",
+            "single-triple-bond"
+          ]
+        },
+        "features": [
+          "locant-neighbor",
+          "single-triple-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0078",
+        "family": "alkynes",
+        "smiles": "CC(CC)CCCCCCCC#C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "parent-selection",
+            "single-triple-bond"
+          ]
+        },
+        "features": [
+          "branching",
+          "parent-selection",
+          "single-triple-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0080",
+        "family": "alkynes",
+        "smiles": "CCC#CCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "locant-neighbor",
+            "single-triple-bond"
+          ]
+        },
+        "features": [
+          "locant-neighbor",
+          "single-triple-bond"
+        ]
+      },
+      {
+        "id": "AUDCASE-0094",
+        "family": "multi-unsaturated",
+        "smiles": "C#CCC#C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "connecting-vowel",
+            "two-triple-bonds"
+          ]
+        },
+        "features": [
+          "connecting-vowel",
+          "two-triple-bonds"
+        ]
+      },
+      {
+        "id": "AUDCASE-0098",
+        "family": "multi-unsaturated",
+        "smiles": "CC=CC=CCC(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "multiple-unsaturations"
+          ]
+        },
+        "features": [
+          "branching",
+          "multiple-unsaturations"
+        ]
+      },
+      {
+        "id": "AUDCASE-0104",
+        "family": "multi-unsaturated",
+        "smiles": "C#CCC=CCCCCCC(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "multiple-unsaturations"
+          ]
+        },
+        "features": [
+          "branching",
+          "multiple-unsaturations"
+        ]
+      },
+      {
+        "id": "AUDCASE-0109",
+        "family": "multi-unsaturated",
+        "smiles": "C=CCC#CCCCC(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "multiple-unsaturations"
+          ]
+        },
+        "features": [
+          "branching",
+          "multiple-unsaturations"
+        ]
+      },
+      {
+        "id": "AUDCASE-0119",
+        "family": "carbocycles",
+        "smiles": "C1(CCC)CCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "carbocycle",
+            "ring-orientation",
+            "saturated-ring"
+          ]
+        },
+        "features": [
+          "carbocycle",
+          "ring-orientation",
+          "saturated-ring"
+        ]
+      },
+      {
+        "id": "AUDCASE-0124",
+        "family": "carbocycles",
+        "smiles": "C1=CC=CCCCCC(C)C1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "cyclic-diene"
+          ]
+        },
+        "features": [
+          "branching",
+          "cyclic-diene"
+        ]
+      },
+      {
+        "id": "AUDCASE-0134",
+        "family": "carbocycles",
+        "smiles": "C1C=CCCCCCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "carbocycle",
+            "ring-orientation",
+            "unsaturated-ring"
+          ]
+        },
+        "features": [
+          "carbocycle",
+          "ring-orientation",
+          "unsaturated-ring"
+        ]
+      },
+      {
+        "id": "AUDCASE-0143",
+        "family": "carbocycles",
+        "smiles": "C1(CCC)C=CCCCCCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "carbocycle",
+            "ring-orientation",
+            "unsaturated-ring"
+          ]
+        },
+        "features": [
+          "carbocycle",
+          "ring-orientation",
+          "unsaturated-ring"
+        ]
+      },
+      {
+        "id": "AUDCASE-0156",
+        "family": "aromatics",
+        "smiles": "c1(CCO)ccccc1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": true,
+          "featureTags": [
+            "aromatic",
+            "attachment-sensitive"
+          ]
+        },
+        "features": [
+          "aromatic",
+          "attachment-sensitive"
+        ]
+      },
+      {
+        "id": "AUDCASE-0158",
+        "family": "aromatics",
+        "smiles": "c1(CC)c(Cl)cccc1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": true,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": true,
+          "featureTags": [
+            "aromatic",
+            "mixed-prefixes",
+            "numbering-tie"
+          ]
+        },
+        "features": [
+          "aromatic",
+          "mixed-prefixes",
+          "numbering-tie"
+        ]
+      },
+      {
+        "id": "AUDCASE-0160",
+        "family": "aromatics",
+        "smiles": "c1(C=C)ccc(Cl)cc1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": true,
+          "featureTags": [
+            "aromatic",
+            "mixed-prefixes",
+            "numbering-tie"
+          ]
+        },
+        "features": [
+          "aromatic",
+          "mixed-prefixes",
+          "numbering-tie"
+        ]
+      },
+      {
+        "id": "AUDCASE-0162",
+        "family": "aromatics",
+        "smiles": "c1(O)c(C)cccc1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": true,
+          "featureTags": [
+            "aromatic",
+            "numbering-tie",
+            "positional-isomer"
+          ]
+        },
+        "features": [
+          "aromatic",
+          "numbering-tie",
+          "positional-isomer"
+        ]
+      },
+      {
+        "id": "AUDCASE-0199",
+        "family": "halogenated",
+        "smiles": "C(Br)CCCCCC(Cl)",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "alphabetical-tie",
+            "halogen",
+            "multiple-prefixes"
+          ]
+        },
+        "features": [
+          "alphabetical-tie",
+          "halogen",
+          "multiple-prefixes"
+        ]
+      },
+      {
+        "id": "AUDCASE-0200",
+        "family": "halogenated",
+        "smiles": "CC(I)(I)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "geminal",
+            "halogen",
+            "repeated-substituents"
+          ]
+        },
+        "features": [
+          "geminal",
+          "halogen",
+          "repeated-substituents"
+        ]
+      },
+      {
+        "id": "AUDCASE-0202",
+        "family": "halogenated",
+        "smiles": "C(I)CCC(Cl)",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "alphabetical-tie",
+            "halogen",
+            "multiple-prefixes"
+          ]
+        },
+        "features": [
+          "alphabetical-tie",
+          "halogen",
+          "multiple-prefixes"
+        ]
+      },
+      {
+        "id": "AUDCASE-0217",
+        "family": "alcohols-polyols",
+        "smiles": "OCCC1CCCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "functional-chain-versus-ring"
+          ]
+        },
+        "features": [
+          "functional-chain-versus-ring"
+        ]
+      },
+      {
+        "id": "AUDCASE-0223",
+        "family": "alcohols-polyols",
+        "smiles": "CCCC(O)CCCC(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "alcohol",
+            "branching",
+            "suffix-numbering"
+          ]
+        },
+        "features": [
+          "alcohol",
+          "branching",
+          "suffix-numbering"
+        ]
+      },
+      {
+        "id": "AUDCASE-0230",
+        "family": "alcohols-polyols",
+        "smiles": "C(O)CC=CCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "suffix-before-unsaturation",
+            "unsaturated-alcohol"
+          ]
+        },
+        "features": [
+          "suffix-before-unsaturation",
+          "unsaturated-alcohol"
+        ]
+      },
+      {
+        "id": "AUDCASE-0247",
+        "family": "carbonyls",
+        "smiles": "O=C1C=CC=CCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "connecting-vowel",
+            "cyclic-ketone",
+            "two-double-bonds"
+          ]
+        },
+        "features": [
+          "connecting-vowel",
+          "cyclic-ketone",
+          "two-double-bonds"
+        ]
+      },
+      {
+        "id": "AUDCASE-0255",
+        "family": "carbonyls",
+        "smiles": "CCCCCC(=O)C(C)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "ketone"
+          ]
+        },
+        "features": [
+          "branching",
+          "ketone"
+        ]
+      },
+      {
+        "id": "AUDCASE-0275",
+        "family": "carbonyls",
+        "smiles": "C1(=O)C=CC=CCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "carbonyl-C1",
+            "cyclic-ketone",
+            "ring-orientation"
+          ]
+        },
+        "features": [
+          "carbonyl-C1",
+          "cyclic-ketone",
+          "ring-orientation"
+        ]
+      },
+      {
+        "id": "AUDCASE-0291",
+        "family": "carboxylic-acids",
+        "smiles": "O=C(O)C1CCCCCCCCC1",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": true,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "exocyclic-functional-carbon",
+            "ring-carboxylic-acid"
+          ]
+        },
+        "features": [
+          "exocyclic-functional-carbon",
+          "ring-carboxylic-acid"
+        ]
+      },
+      {
+        "id": "AUDCASE-0294",
+        "family": "carboxylic-acids",
+        "smiles": "O=C(O)CCCCCCCC(=O)O",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "diacid",
+            "multiplicity"
+          ]
+        },
+        "features": [
+          "diacid",
+          "multiplicity"
+        ]
+      },
+      {
+        "id": "AUDCASE-0299",
+        "family": "carboxylic-acids",
+        "smiles": "O=C(O)CC(C)CCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "acid",
+            "branching"
+          ]
+        },
+        "features": [
+          "acid",
+          "branching"
+        ]
+      },
+      {
+        "id": "AUDCASE-0305",
+        "family": "carboxylic-acids",
+        "smiles": "O=C(O)C=CCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "suffix-priority",
+            "unsaturated-acid"
+          ]
+        },
+        "features": [
+          "suffix-priority",
+          "unsaturated-acid"
+        ]
+      },
+      {
+        "id": "AUDCASE-0319",
+        "family": "ethers-esters",
+        "smiles": "CCOC(C)CCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "ether",
+            "numbering",
+            "secondary-attachment"
+          ]
+        },
+        "features": [
+          "ether",
+          "numbering",
+          "secondary-attachment"
+        ]
+      },
+      {
+        "id": "AUDCASE-0329",
+        "family": "ethers-esters",
+        "smiles": "CCC(=O)OC(C)CCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "ester",
+            "exact-spelling-unadjudicated",
+            "secondary-organyl"
+          ]
+        },
+        "features": [
+          "ester",
+          "exact-spelling-unadjudicated",
+          "secondary-organyl"
+        ]
+      },
+      {
+        "id": "AUDCASE-0337",
+        "family": "ethers-esters",
+        "smiles": "CCCCCOC(C)CCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "ether",
+            "numbering",
+            "secondary-attachment"
+          ]
+        },
+        "features": [
+          "ether",
+          "numbering",
+          "secondary-attachment"
+        ]
+      },
+      {
+        "id": "AUDCASE-0340",
+        "family": "ethers-esters",
+        "smiles": "CCCCC(=O)OC(C)CCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "ester",
+            "exact-spelling-unadjudicated",
+            "secondary-organyl"
+          ]
+        },
+        "features": [
+          "ester",
+          "exact-spelling-unadjudicated",
+          "secondary-organyl"
+        ]
+      },
+      {
+        "id": "AUDCASE-0352",
+        "family": "nitrogen-functions",
+        "smiles": "CCN(C)CCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "N-substitution",
+            "tertiary-amine"
+          ]
+        },
+        "features": [
+          "N-substitution",
+          "tertiary-amine"
+        ]
+      },
+      {
+        "id": "AUDCASE-0359",
+        "family": "nitrogen-functions",
+        "smiles": "CCCCCNC(=O)CC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "N-substitution",
+            "secondary-amide"
+          ]
+        },
+        "features": [
+          "N-substitution",
+          "secondary-amide"
+        ]
+      },
+      {
+        "id": "AUDCASE-0369",
+        "family": "nitrogen-functions",
+        "smiles": "N#CCC(C)CCCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "nitrile"
+          ]
+        },
+        "features": [
+          "branching",
+          "nitrile"
+        ]
+      },
+      {
+        "id": "AUDCASE-0374",
+        "family": "nitrogen-functions",
+        "smiles": "N#CCC(C)CCCCCCC",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "branching",
+            "nitrile"
+          ]
+        },
+        "features": [
+          "branching",
+          "nitrile"
+        ]
+      },
+      {
+        "id": "AUDCASE-0385",
+        "family": "mixed-functions",
+        "smiles": "CC(O)CC=O",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "aldehyde-over-alcohol"
+          ]
+        },
+        "features": [
+          "aldehyde-over-alcohol"
+        ]
+      },
+      {
+        "id": "AUDCASE-0398",
+        "family": "mixed-functions",
+        "smiles": "O=C(O)CCCCCC(=O)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "acid-over-ketone"
+          ]
+        },
+        "features": [
+          "acid-over-ketone"
+        ]
+      },
+      {
+        "id": "AUDCASE-0400",
+        "family": "mixed-functions",
+        "smiles": "N#CCCCCCCC(O)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "nitrile-over-alcohol"
+          ]
+        },
+        "features": [
+          "nitrile-over-alcohol"
+        ]
+      },
+      {
+        "id": "AUDCASE-0409",
+        "family": "mixed-functions",
+        "smiles": "CCOC(=O)CCCCCCC(O)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "ester-over-alcohol"
+          ]
+        },
+        "features": [
+          "ester-over-alcohol"
+        ]
+      },
+      {
+        "id": "AUDCASE-0412",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C/C=C\\C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": true,
+          "aromatic": false,
+          "featureTags": [
+            "explicit-Z",
+            "laboratory-boundary"
+          ]
+        },
+        "features": [
+          "explicit-Z",
+          "laboratory-boundary"
+        ]
+      },
+      {
+        "id": "AUDCASE-0415",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C/C=C/C=C/C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": true,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": false,
+          "doubleBondStereo": true,
+          "aromatic": false,
+          "featureTags": [
+            "laboratory-boundary",
+            "multiple-EZ"
+          ]
+        },
+        "features": [
+          "laboratory-boundary",
+          "multiple-EZ"
+        ]
+      },
+      {
+        "id": "AUDCASE-0420",
+        "family": "stereo-polycycles-limits",
+        "smiles": "N[C@@H](C)C(=O)O",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": true,
+          "oxygen": true,
+          "sulfur": false,
+          "halogen": false,
+          "ring": false,
+          "multipleBond": true,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": true,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "explicit-tetrahedral",
+            "laboratory-boundary"
+          ]
+        },
+        "features": [
+          "explicit-tetrahedral",
+          "laboratory-boundary"
+        ]
+      },
+      {
+        "id": "AUDCASE-0422",
+        "family": "stereo-polycycles-limits",
+        "smiles": "C[C@H](Cl)[C@@H](Br)C",
+        "marks": {
+          "heteroatom": true,
+          "nitrogen": false,
+          "oxygen": false,
+          "sulfur": false,
+          "halogen": true,
+          "ring": false,
+          "multipleBond": false,
+          "multipleMultipleBonds": false,
+          "charge": false,
+          "isotope": false,
+          "tetrahedralStereo": true,
+          "doubleBondStereo": false,
+          "aromatic": false,
+          "featureTags": [
+            "laboratory-boundary",
+            "multiple-tetrahedral"
+          ]
+        },
+        "features": [
+          "laboratory-boundary",
+          "multiple-tetrahedral"
+        ]
+      }
+    ]
+  }
+}

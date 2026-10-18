@@ -1,0 +1,141 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "totalStructures": 440,
+  "profiles": {
+    "2013-es": {
+      "availability": {
+        "NAMED": 425,
+        "UNSUPPORTED": 15,
+        "ERROR": 0
+      },
+      "structuralInterpretations": {
+        "MATCH": 0,
+        "MISMATCH": 0,
+        "REJECTED": 0,
+        "UNVERIFIED": 425,
+        "UNSUPPORTED": 15
+      },
+      "exactReference": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNVERIFIED": 425,
+        "UNSUPPORTED": 15
+      }
+    },
+    "2013-en": {
+      "availability": {
+        "NAMED": 425,
+        "UNSUPPORTED": 15,
+        "ERROR": 0
+      },
+      "structuralInterpretations": {
+        "MATCH": 198,
+        "MISMATCH": 0,
+        "REJECTED": 2,
+        "UNVERIFIED": 225,
+        "UNSUPPORTED": 15
+      },
+      "exactReference": {
+        "PASS": 20,
+        "FAIL": 0,
+        "UNVERIFIED": 405,
+        "UNSUPPORTED": 15
+      }
+    },
+    "1979-es": {
+      "availability": {
+        "NAMED": 201,
+        "UNSUPPORTED": 239,
+        "ERROR": 0
+      },
+      "structuralInterpretations": {
+        "MATCH": 0,
+        "MISMATCH": 0,
+        "REJECTED": 0,
+        "UNVERIFIED": 201,
+        "UNSUPPORTED": 239
+      },
+      "exactReference": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNVERIFIED": 201,
+        "UNSUPPORTED": 239
+      }
+    },
+    "1979-en": {
+      "availability": {
+        "NAMED": 418,
+        "UNSUPPORTED": 22,
+        "ERROR": 0
+      },
+      "structuralInterpretations": {
+        "MATCH": 190,
+        "MISMATCH": 0,
+        "REJECTED": 2,
+        "UNVERIFIED": 226,
+        "UNSUPPORTED": 22
+      },
+      "exactReference": {
+        "PASS": 6,
+        "FAIL": 0,
+        "UNVERIFIED": 412,
+        "UNSUPPORTED": 22
+      }
+    }
+  },
+  "properties": {
+    "importExportIdentity": {
+      "PASS": 432,
+      "SKIP": 8
+    },
+    "determinism": {
+      "PASS": 432
+    },
+    "nameDeterminism": {
+      "PASS": 432
+    },
+    "profileLanguageReturn": {
+      "PASS": 425,
+      "SKIP": 7
+    },
+    "analysisImmutability": {
+      "PASS": 432
+    },
+    "coordinateIndependence": {
+      "PASS": 432
+    },
+    "themeDOM": {
+      "SKIP": 432
+    },
+    "equivalentRepresentations": {
+      "SKIP": 26,
+      "PASS": 406
+    },
+    "roundTripIdentity": {
+      "PASS": 432
+    },
+    "graphImmutability": {
+      "PASS": 432
+    }
+  },
+  "signalReview": [
+    {
+      "id": "AUDCASE-0430",
+      "smiles": "c1ccncc1",
+      "profile": "2013-es",
+      "code": "ANALYSIS_BOND_LOCANT",
+      "detail": "Analyzed parent locant does not match the actual bond",
+      "evidence": "The inherited helper assumes only family=cycloalkane is cyclic. Aromatic Kekulé locants are not constitutional double-bond locants; the displayed explanation is audited separately against actual atoms and bonds.",
+      "auditDisposition": "AUDITOR_FALSE_POSITIVE_AROMATIC_KEKULE_CLOSURE"
+    },
+    {
+      "id": "AUDCASE-0430",
+      "smiles": "c1ccncc1",
+      "profile": "2013-en",
+      "code": "ANALYSIS_BOND_LOCANT",
+      "detail": "Analyzed parent locant does not match the actual bond",
+      "evidence": "The inherited helper assumes only family=cycloalkane is cyclic. Aromatic Kekulé locants are not constitutional double-bond locants; the displayed explanation is audited separately against actual atoms and bonds.",
+      "auditDisposition": "AUDITOR_FALSE_POSITIVE_AROMATIC_KEKULE_CLOSURE"
+    }
+  ]
+}

@@ -1,0 +1,618 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "baseline": "AUD-NOM-001 audit-matrix.json",
+  "currentSnapshot": "AUD-NOM-004-after.json",
+  "currentToAUDNOM004Differences": [],
+  "baselineDifferences": [
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "profile": "2013-es",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "beforeAUDNOM001": "2-feniletan-1-ol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "profile": "2013-en",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "beforeAUDNOM001": "2-phenylethan-1-ol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "profile": "1979-es",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "beforeAUDNOM001": "2-feniletanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0171",
+      "family": "aromatics",
+      "profile": "1979-en",
+      "smiles": "c1(CCO)c(C)cccc1",
+      "beforeAUDNOM001": "2-phenylethanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "profile": "2013-es",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "beforeAUDNOM001": "2-feniletan-1-ol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "profile": "2013-en",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "beforeAUDNOM001": "2-phenylethan-1-ol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "profile": "1979-es",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "beforeAUDNOM001": "2-feniletanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0176",
+      "family": "aromatics",
+      "profile": "1979-en",
+      "smiles": "c1(CCO)ccc(C)cc1",
+      "beforeAUDNOM001": "2-phenylethanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0288",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCCCCCCCC(=O)O",
+      "beforeAUDNOM001": "decanoic acid",
+      "current": "decanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0292",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCC(=O)O",
+      "beforeAUDNOM001": "butanoic acid",
+      "current": "butanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0294",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCCCCCCC(=O)O",
+      "beforeAUDNOM001": "nonanoic acid",
+      "current": "nonanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0295",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCCCCC(=O)O",
+      "beforeAUDNOM001": "heptanoic acid",
+      "current": "heptanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0298",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCCCC(=O)O",
+      "beforeAUDNOM001": "hexanoic acid",
+      "current": "hexanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0303",
+      "family": "carboxylic-acids",
+      "profile": "1979-en",
+      "smiles": "O=C(O)CCCCCCC(=O)O",
+      "beforeAUDNOM001": "octanoic acid",
+      "current": "octanedioic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0342",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCNC(=O)CC",
+      "beforeAUDNOM001": "propanamide",
+      "current": "N-ethylpropanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0343",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CN(C)CCC",
+      "beforeAUDNOM001": "1-propanamine",
+      "current": "N,N-dimethyl-1-propanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0344",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCC(=O)N(C)CCCCC",
+      "beforeAUDNOM001": "butanamide",
+      "current": "N-methyl-N-pentylbutanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0345",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCC(=O)N(C)CCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-butyl-N-methylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0346",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CC(=O)N(C)CC",
+      "beforeAUDNOM001": "ethanamide",
+      "current": "N-ethyl-N-methylethanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0347",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCNC(=O)CCCC",
+      "beforeAUDNOM001": "pentanamide",
+      "current": "N-butylpentanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0348",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCNC(=O)CCCC",
+      "beforeAUDNOM001": "pentanamide",
+      "current": "N-pentylpentanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0349",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCN(C)CCCC",
+      "beforeAUDNOM001": "1-butanamine",
+      "current": "N-methyl-N-propyl-1-butanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0350",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCC(=O)N(C)CCCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-methyl-N-pentylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0352",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCN(C)CCCC",
+      "beforeAUDNOM001": "1-butanamine",
+      "current": "N-ethyl-N-methyl-1-butanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0353",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCNC(=O)CCCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-ethylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0355",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCNC(=O)CCCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-propylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0356",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCC(=O)N(C)CCC",
+      "beforeAUDNOM001": "pentanamide",
+      "current": "N-methyl-N-propylpentanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0357",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCNC(=O)CCCCCC",
+      "beforeAUDNOM001": "heptanamide",
+      "current": "N-butylheptanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0358",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCN(C)CC",
+      "beforeAUDNOM001": "ethanamine",
+      "current": "N-ethyl-N-methylethanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0359",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCNC(=O)CC",
+      "beforeAUDNOM001": "propanamide",
+      "current": "N-pentylpropanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0360",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCC(=O)N(C)CC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-ethyl-N-methylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0361",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CC(=O)N(C)CCCCC",
+      "beforeAUDNOM001": "ethanamide",
+      "current": "N-methyl-N-pentylethanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0362",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCC(=O)N(C)CCCCCC",
+      "beforeAUDNOM001": "butanamide",
+      "current": "N-hexyl-N-methylbutanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0363",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCC(=O)N(C)CC",
+      "beforeAUDNOM001": "butanamide",
+      "current": "N-ethyl-N-methylbutanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0365",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCC(=O)N(C)CCCCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-hexyl-N-methylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0366",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCNC(=O)CCC",
+      "beforeAUDNOM001": "butanamide",
+      "current": "N-ethylbutanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0367",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCN(C)CCCCCC",
+      "beforeAUDNOM001": "1-hexanamine",
+      "current": "N-ethyl-N-methyl-1-hexanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0368",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCNC(=O)CC",
+      "beforeAUDNOM001": "propanamide",
+      "current": "N-butylpropanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0370",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CC(=O)N(C)CCCC",
+      "beforeAUDNOM001": "ethanamide",
+      "current": "N-butyl-N-methylethanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0371",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCC(=O)N(C)CCCC",
+      "beforeAUDNOM001": "butanamide",
+      "current": "N-butyl-N-methylbutanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0372",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCC(=O)N(C)CCCC",
+      "beforeAUDNOM001": "pentanamide",
+      "current": "N-butyl-N-methylpentanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0373",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CNC(=O)CCCCC",
+      "beforeAUDNOM001": "hexanamide",
+      "current": "N-methylhexanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0375",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCCCN(C)CCCC",
+      "beforeAUDNOM001": "1-pentanamine",
+      "current": "N-butyl-N-methyl-1-pentanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0376",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCCNC(=O)CCCC",
+      "beforeAUDNOM001": "pentanamide",
+      "current": "N-propylpentanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0377",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CC(=O)N(C)CCCCCC",
+      "beforeAUDNOM001": "ethanamide",
+      "current": "N-hexyl-N-methylethanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0378",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CN(C)CC",
+      "beforeAUDNOM001": "ethanamine",
+      "current": "N,N-dimethylethanamine",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0379",
+      "family": "nitrogen-functions",
+      "profile": "1979-en",
+      "smiles": "CCC(=O)N(C)CCC",
+      "beforeAUDNOM001": "propanamide",
+      "current": "N-methyl-N-propylpropanamide",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0411",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-es",
+      "smiles": "C/C=C/C",
+      "beforeAUDNOM001": "(2E)-(2e)--2-buteno",
+      "current": "(2E)-2-buteno",
+      "availability": "NAMED",
+      "status": "DOCUMENTED_AUDNOM004_CORRECTION"
+    },
+    {
+      "id": "AUDCASE-0412",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-es",
+      "smiles": "C/C=C\\C",
+      "beforeAUDNOM001": "(2Z)-(2z)--2-buteno",
+      "current": "(2Z)-2-buteno",
+      "availability": "NAMED",
+      "status": "DOCUMENTED_AUDNOM004_CORRECTION"
+    },
+    {
+      "id": "AUDCASE-0413",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-es",
+      "smiles": "CC/C=C/CC",
+      "beforeAUDNOM001": "(3E)-(3e)--3-hexeno",
+      "current": "(3E)-3-hexeno",
+      "availability": "NAMED",
+      "status": "DOCUMENTED_AUDNOM004_CORRECTION"
+    },
+    {
+      "id": "AUDCASE-0414",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-es",
+      "smiles": "CC/C=C\\CC",
+      "beforeAUDNOM001": "(3Z)-(3z)--3-hexeno",
+      "current": "(3Z)-3-hexeno",
+      "availability": "NAMED",
+      "status": "DOCUMENTED_AUDNOM004_CORRECTION"
+    },
+    {
+      "id": "AUDCASE-0417",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "C[C@H](O)CC",
+      "beforeAUDNOM001": "2-butanol",
+      "current": "(2S)-2-butanol",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0418",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "C[C@@H](O)CC",
+      "beforeAUDNOM001": "2-butanol",
+      "current": "(2R)-2-butanol",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0419",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "N[C@H](C)C(=O)O",
+      "beforeAUDNOM001": "2-aminopropanoic acid",
+      "current": "(2R)-2-aminopropanoic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0420",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "N[C@@H](C)C(=O)O",
+      "beforeAUDNOM001": "2-aminopropanoic acid",
+      "current": "(2S)-2-aminopropanoic acid",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0421",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "C[C@H](Cl)[C@H](Br)C",
+      "beforeAUDNOM001": "2-bromo-3-chlorobutane",
+      "current": "(2R,3S)-2-bromo-3-chlorobutane",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0422",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "C[C@H](Cl)[C@@H](Br)C",
+      "beforeAUDNOM001": "2-bromo-3-chlorobutane",
+      "current": "(2S,3S)-2-bromo-3-chlorobutane",
+      "availability": "NAMED",
+      "status": "CHANGE_MATCHES_AUDNOM004_SNAPSHOT; EARLIER_ATTRIBUTION_REQUIRES_REVIEW"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "profile": "2013-es",
+      "smiles": "[13CH3]CO",
+      "beforeAUDNOM001": "etanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "DOCUMENTED_AUDNOM002_SAFE_ISOTOPE_REJECTION"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "profile": "2013-en",
+      "smiles": "[13CH3]CO",
+      "beforeAUDNOM001": "ethanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "DOCUMENTED_AUDNOM002_SAFE_ISOTOPE_REJECTION"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-es",
+      "smiles": "[13CH3]CO",
+      "beforeAUDNOM001": "etanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "DOCUMENTED_AUDNOM002_SAFE_ISOTOPE_REJECTION"
+    },
+    {
+      "id": "AUDCASE-0440",
+      "family": "stereo-polycycles-limits",
+      "profile": "1979-en",
+      "smiles": "[13CH3]CO",
+      "beforeAUDNOM001": "ethanol",
+      "current": null,
+      "availability": "UNSUPPORTED",
+      "status": "DOCUMENTED_AUDNOM002_SAFE_ISOTOPE_REJECTION"
+    }
+  ]
+}

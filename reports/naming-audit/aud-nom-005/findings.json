@@ -1,0 +1,65 @@
+{
+  "audit": "AUD-NOM-005-v1",
+  "findings": [
+    {
+      "id": "AUDNOM-012",
+      "severity": "P2",
+      "status": "CONFIRMED_IN_TWO_CASES",
+      "title": "Modern English outputs retain Spanish substituent morphology",
+      "cases": [
+        "AUDCASE-0160",
+        "AUDCASE-0337"
+      ],
+      "evidence": [
+        {
+          "id": "AUDCASE-0160",
+          "smiles": "c1(C=C)ccc(Cl)cc1",
+          "profiles": {
+            "2013-en": {
+              "observed": "1-chloro4-vinilbenzene",
+              "expectedRuleDerived": "1-chloro-4-ethenylbenzene",
+              "observedOpsin": "REJECTED",
+              "expectedOpsin": "MATCH",
+              "reference": "https://iupac.qmul.ac.uk/BlueBook/P1.html (P-12.3, P-14.4, P-14.5.2); https://iupac.qmul.ac.uk/BlueBook/P5.html"
+            },
+            "1979-en": {
+              "observed": "1-chloro-4-vinilbenzene",
+              "expectedRuleDerived": null,
+              "observedOpsin": "REJECTED",
+              "expectedOpsin": "MATCH",
+              "reference": null,
+              "note": "English/Spanish morphology leakage is visible; no exact 1979 name is claimed from the 2013 rule."
+            }
+          },
+          "rule": "P-12.3 identifies ethenylbenzene as a PIN form; apply the halogen prefix and complete locants. Candidate exact string independently matches the input structure in OPSIN."
+        },
+        {
+          "id": "AUDCASE-0337",
+          "smiles": "CCCCCC(C)OCCCCC",
+          "profiles": {
+            "2013-en": {
+              "observed": "2-pentoxiheptane",
+              "expectedRuleDerived": "2-pentyloxyheptane",
+              "observedOpsin": "REJECTED",
+              "expectedOpsin": "MATCH",
+              "reference": "https://iupac.qmul.ac.uk/BlueBook/P6.html (P-63.2.2.1.1, P-63.2.4)"
+            },
+            "1979-en": {
+              "observed": "2-pentoxiheptane",
+              "expectedRuleDerived": null,
+              "observedOpsin": "REJECTED",
+              "expectedOpsin": "MATCH",
+              "reference": null,
+              "note": "Spanish morphology is visible; no exact 1979 name is claimed from the 2013 rule."
+            }
+          },
+          "rule": "P-63.2.2.1.1 forms oxy substituent prefixes by concatenation and gives pentyloxy as the worked C5 form; P-63.2.4 permits substitutive ether nomenclature. Candidate exact string independently matches the input structure in OPSIN."
+        }
+      ],
+      "expectedName": null,
+      "causeHypothesis": "The English output path appears to reuse Spanish vinil/pentoxi morphology; the modern aryl form also omits the separator before locant 4. This is localized to language formatting, but not yet to a single function. Structural identity remains intact.",
+      "impact": "P2 terminology and exact-name usability in 2013 EN. OPSIN rejection of observed strings supports parser incompatibility, while the independent Blue Book derivation plus OPSIN MATCH of each candidate supports the specific modern expectation. The same 2013 expectation is not imposed on Legacy 1979.",
+      "proposedRegression": "Assert exact rule-derived modern English forms for both structures and independent candidate interpretation; preserve separate Legacy expectations until supported by historical evidence."
+    }
+  ]
+}
