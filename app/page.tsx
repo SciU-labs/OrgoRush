@@ -4386,6 +4386,23 @@ function selectedParentNumberingReasoning(analysis: Analysis, language: "es" | "
     : `El criterio de ${decision.label} resuelve la orientación: los localizadores ${selected} son menores que ${reversed} en el sentido opuesto. El primer punto de diferencia determina el sentido elegido.`}${substituentResult}`;
 }
 
+function legacyCyclicKetoneLinkingVowelExplanation(analysis: Analysis, displayedName: string, language: "es" | "en") {
+  const count = analysis.doubleBondLocants.length;
+  const marker = count === 2 ? "dien" : count === 3 ? "trien" : undefined;
+  const root = alkaneRoots[analysis.mainChain.length];
+  if (analysis.family !== "cycloalkane" || analysis.primaryFunctionalGroup !== "ketone"
+    || !marker || !root || analysis.tripleBondLocants.length) return;
+  const radical = `${language === "en" ? "cyclo" : "ciclo"}${root}`;
+  const locants = analysis.doubleBondLocants.join(",");
+  const suffix = language === "en" ? "one" : "ona";
+  const escaped = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (!new RegExp(`(?:^|-)${escaped(locants)}-${escaped(radical)}a${marker}${suffix}$`, "i").test(displayedName)) return;
+  const writtenStem = `${radical}a`;
+  return language === "en"
+    ? `The parent ring contains ${analysis.mainChain.length} carbons. In this historical name, the stem “${radical}” appears as “${writtenStem}” with a connecting vowel before “${marker}”.`
+    : `El anillo principal contiene ${analysis.mainChain.length} carbonos. En este nombre histórico, el radical «${radical}» aparece como «${writtenStem}» mediante una vocal de enlace antes de «${marker}».`;
+}
+
 function legacyStructuralReasoningText(
   molecule: Molecule,
   analysis: Analysis,
@@ -4413,6 +4430,8 @@ function legacyStructuralReasoningText(
   const parentKind = isEnglish ? ring ? "cyclic parent ring" : "parent chain" : ring ? "anillo cíclico progenitor" : "cadena principal";
   const locantText = (values: number[]) => values.length ? values.join(", ") : (isEnglish ? "none" : "ninguno");
   if (role === "parent") {
+    const linkingVowelExplanation = legacyCyclicKetoneLinkingVowelExplanation(analysis, displayedName, language);
+    if (linkingVowelExplanation) return linkingVowelExplanation;
     const ringKetoneLocants = ring ? analysis.functionalGroups
       .filter((group) => group.kind === "ketone" && group.carbonIds.some((id) => analysis.mainChain.includes(id)))
       .flatMap((group) => group.carbonIds.map((id) => analysis.numberedAtoms.get(id)))

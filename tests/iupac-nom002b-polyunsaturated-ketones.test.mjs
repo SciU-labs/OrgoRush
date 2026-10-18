@@ -66,6 +66,37 @@ for (const fixture of cases) test(`NOM-002B ${fixture.smiles}: four profiles, li
     assert.match(step("function").explanation, language === "es" ? /cetona/i : /ketone/i);
     assert.match(step("parent").explanation, new RegExp(`${fixture.size}.*carbon`));
     assert.match(step("parent").explanation, /anillo|ring/);
+    if (fixture.locants.length >= 2) {
+      const parentStep = step("parent");
+      const parentFragment = model.fragments[parentStep.number];
+      const expectedStem = `${language === "es" ? "ciclo" : "cyclo"}${fixture.root}a`;
+      assert.equal(parentFragment?.text, expectedStem, `${language}/${historical ? "Legacy" : "2013"} ring fragment`);
+      assert.equal(parentFragment.start, name.indexOf(expectedStem), "ring fragment uses the visible name offset");
+      assert.deepEqual(parentFragment.atomIds, analysis.mainChain, "ring fragment highlights the analyzed ring atoms");
+      assert.equal([parentFragment, ...(parentFragment.additionalFragments ?? [])]
+        .filter(({ text, start }) => text === expectedStem && start === name.indexOf(expectedStem)).length, 1,
+      "ring stem has one nonduplicated evidence span");
+      const parentLink = model.links.find(({ text, stepNumber }) => text === expectedStem && stepNumber === parentStep.number);
+      assert.ok(parentLink, "visible ring stem navigates to the parent step");
+      assert.deepEqual(parentLink.atomIds, analysis.mainChain);
+      const markerStart = name.indexOf(marker, name.indexOf(expectedStem) + expectedStem.length);
+      assert.ok(markerStart >= parentFragment.start + parentFragment.text.length, "multiplicity marker does not overlap the ring stem");
+      assert.equal(name.slice(markerStart, markerStart + marker.length), marker);
+      const unsaturationFragments = model.fragments[step("unsaturation").number];
+      const markerFragments = [unsaturationFragments, ...(unsaturationFragments.additionalFragments ?? [])]
+        .filter((fragment) => fragment.text === marker);
+      assert.equal(markerFragments.length, 1, "the multiplicity marker has one independent evidence span");
+      assert.equal(markerFragments[0].start, markerStart, "multiplicity evidence uses the visible name offset");
+      assert.ok(markerFragments[0].start >= parentFragment.start + parentFragment.text.length,
+        "multiplicity evidence does not overlap the ring fragment");
+      assert.ok(model.links.some(({ text, stepNumber }) => text === marker && stepNumber === step("unsaturation").number),
+        "dien or trien remains an independent selectable segment");
+      if (historical) {
+        assert.match(parentStep.explanation, language === "es"
+          ? /radical «ciclo(?:pent|hex|hept|oct)» aparece como «ciclo(?:pent|hex|hept|oct)a» mediante una vocal de enlace antes de «(?:dien|trien)»/
+          : /stem “cyclo(?:pent|hex|hept|oct)” appears as “cyclo(?:pent|hex|hept|oct)a” with a connecting vowel before “(?:dien|trien)”/);
+      }
+    }
     if (fixture.reverse) {
       assert.ok(step("numbering").explanation.includes(fixture.locants.join(", ")));
       assert.ok(step("numbering").explanation.includes(fixture.reverse.join(", ")));
@@ -149,6 +180,13 @@ for (const smiles of ["O=C1C=CCCC1", "C#CC(CCC)CCC"]) test(`AUD-001 ${smiles}: c
         convention: migrateNomenclatureConvention(historical ? "iupac-1979-es" : "current", language), generatedNames: names, canHighlight: true });
       const step = model.steps.find(({ nameRole }) => nameRole === "unsaturation");
       assert.equal(model.links.map(({ text }) => text).join(""), name);
+      if (smiles === "O=C1C=CCCC1") {
+        const parent = model.steps.find(({ nameRole }) => nameRole === "parent");
+        const fragment = model.fragments[parent.number];
+        assert.equal(fragment.text, `${language === "es" ? "ciclo" : "cyclo"}hex`, "single-bond ring names do not gain a linking a");
+        assert.equal(fragment.start, name.indexOf(fragment.text));
+        assert.deepEqual(fragment.atomIds, analysis.mainChain);
+      }
       if (!historical && smiles.startsWith("C#")) {
         assert.deepEqual(analysis.tripleBondLocants, []);
         assert.match(step.explanation, language === "es" ? /fuera.*cadena principal/ : /outside.*parent chain/);

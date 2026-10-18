@@ -295,6 +295,17 @@ function localizedName(name: string, language: AppLanguage) {
   return language === "en" ? translateSpanishIupacForDisplay(name) : name;
 }
 
+function hasWrittenCyclicKetoneLinkingVowel(
+  analysis: FragmentAnalysis, name: string, rootText: string, rootStart: number,
+) {
+  const count = analysis.doubleBondLocants.length;
+  const marker = count === 2 ? "dien" : count === 3 ? "trien" : undefined;
+  if (analysis.family !== "cycloalkane" || analysis.primaryFunctionalGroup !== "ketone"
+    || !marker || analysis.tripleBondLocants.length) return false;
+  const locants = analysis.doubleBondLocants.join(",");
+  return new RegExp(`^a(?:-${locants}-)?${marker}`, "i").test(name.slice(rootStart + rootText.length));
+}
+
 /** Presentation only: every emitted text is copied from the currently displayed name. */
 function deriveExistingReasoningNameFragments({
   analysis,
@@ -587,8 +598,9 @@ function parentNameEvidence(
     if (start < 0) return;
     // A locanted unsaturation may intervene between the root and final function.
     const intervening = name.slice(start + root.length, suffix.start);
-    if (!/^(?:-(?:\d+(?:,\d+)*-)?[a-z]+)*-?$/i.test(intervening)) return;
-    text = name.slice(start, start + root.length);
+    const linkingVowel = hasWrittenCyclicKetoneLinkingVowel(analysis, name, root, start);
+    if (!/^(?:-(?:\d+(?:,\d+)*-)?[a-z]+)*-?$/i.test(intervening) && !linkingVowel) return;
+    text = name.slice(start, start + root.length + Number(linkingVowel));
   } else if (!analysis.primaryFunctionalGroup
     && (analysis.family === "acyclic" || analysis.family === "aromatic" && analysis.chainName === "benceno")
     && name.endsWith(parent)) {
@@ -610,6 +622,7 @@ function parentNameEvidence(
     if (!/^[a-z]+$/i.test(text)) return;
   } else return;
   if (!text) return;
+  if (!text.endsWith("a") && hasWrittenCyclicKetoneLinkingVowel(analysis, name, text, start)) text += "a";
   const ring = analysis.family !== "acyclic";
   const label = language === "en"
     ? `${analysis.family === "aromatic" ? "Aromatic parent ring" : ring ? "Parent ring" : "Parent chain"} · ${analysis.mainChain.length} carbons`
@@ -647,11 +660,14 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
   const rootText = ring
     ? `${language === "en" ? "cyclo" : "ciclo"}${root}`
     : root;
-  const rootStart = name.lastIndexOf(rootText);
+  const radicalStart = name.lastIndexOf(rootText);
+  const writtenRootText = radicalStart >= 0 && hasWrittenCyclicKetoneLinkingVowel(analysis, name, rootText, radicalStart)
+    ? `${rootText}a` : rootText;
+  const rootStart = name.lastIndexOf(writtenRootText);
   if (rootStart < 0) return fragments; // Retained parents keep their existing indivisible evidence.
-  const prefixEnd = rootStart >= 0 ? rootStart : -1;
+  const prefixEnd = rootStart;
   if (rootStart >= 0) {
-    add("parent", rootText,
+    add("parent", writtenRootText,
       language === "en" ? `${ring ? "Parent ring" : "Parent chain"} · ${analysis.mainChain.length} carbons`
         : `${ring ? "Anillo principal" : "Cadena principal"} · ${analysis.mainChain.length} carbonos`, rootStart);
   }
