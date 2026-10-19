@@ -82,6 +82,7 @@ test("the English translator handles ring-position neighbors and root-derived al
     ["2-decoxiheptano", "2-decyloxyheptane"],
     ["2-etoxi-4-metilpentano", "2-ethoxy-4-methylpentane"],
     ["2-pentoxi-4-metilheptano", "2-pentyloxy-4-methylheptane"],
+    ["1-(1-metiletoxi)butano", "1-(1-methylethoxy)butane"],
     ["(2R,4E)-2-pentoxihept-4-eno", "(2R,4E)-2-pentyloxyhept-4-ene"],
   ]) {
     assert.equal(translateSpanishIupacForDisplay(spanish), english, spanish);

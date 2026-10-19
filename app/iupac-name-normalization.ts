@@ -11,6 +11,13 @@ const spanishAlkoxyPrefix = new RegExp(
   `(^|[-,(])((?:${alkoxyMultipliers})?)(${alkylRootPattern})oxi(?=[a-z-]|$)`,
   "g",
 );
+// A locanted alkyl branch can be written directly before the alkoxy root in a
+// complex substituent (for example, 1-metiletoxi). Translate this complete
+// chemical construction before the generic alkyl pass splits its morphemes.
+const spanishLocantedBranchedAlkoxy = new RegExp(
+  `(^|[-,(])(\\d+(?:,\\d+)*-)(${alkylRootPattern})il(${alkylRootPattern})oxi(?=[a-z),.-]|$)`,
+  "g",
+);
 const spanishAlkylNoun = new RegExp(`(${alkylRootPattern})ilo(?=$|[\\s,.)-])`, "g");
 const spanishAlkylSubstituent = new RegExp(`(${alkylRootPattern})il(?=[a-z]|$|[\\s,.)-])`, "g");
 const spanishUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})(en|in)il`, "g");
@@ -279,7 +286,15 @@ function translateCore(value: string) {
     .replace(/(^|[-(])acetil(?=[a-z-]|$)/g, "$1acetyl")
     .replace(/(^|[-(])propionil(?=[a-z-]|$)/g, "$1propionyl")
     .replace(/(^|[-(])butiril(?=[a-z-]|$)/g, "$1butyryl");
-  let translated = translateSpanishAlkylMorphemes(aliasesAndAcylGroups)
+  const bridgedAlkoxy = aliasesAndAcylGroups.replace(
+    spanishLocantedBranchedAlkoxy,
+    (_match, boundary: string, locants: string, branchRoot: string, alkoxyRoot: string) => {
+      const alkoxyCarbonCount = IUPAC_ROOTS.indexOf(alkoxyRoot);
+      const connector = alkoxyCarbonCount >= 5 ? "yloxy" : "oxy";
+      return `${boundary}${locants}${englishIupacRoot(branchRoot)}yl${englishIupacRoot(alkoxyRoot)}${connector}`;
+    },
+  );
+  let translated = translateSpanishAlkylMorphemes(bridgedAlkoxy)
     // Retained and systematic nitrogen parent names need to be translated
     // before the generic suffix rules. This also covers substituted parents
     // such as 4-nitroanilina and N-metilanilina.
