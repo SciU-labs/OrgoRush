@@ -274,15 +274,33 @@ function formatSpanish1979Extension(baseName: string) {
   const root = traditionalRootPatterns.es;
   const parent = `(.*?)(${root})`;
 
+  // Saturated acyclic parent alkanes keep the same valid systematic spelling
+  // in the 1979 and 2013 profiles. Recognize only a project-supported root.
+  if (new RegExp(`^(?:${root})ano$`, "i").test(value)) return value;
+
   // A-2.1–2.3: substituted saturated parent chains keep locants before
   // alphabetized substituent names. Accept only the simple prefixes handled
   // by this formatter instead of treating arbitrary text as a valid name.
-  const simpleSubstituent = "(?:fluoro|cloro|bromo|yodo|metil|etil|propil|butil)";
-  const substituentSequence = new RegExp(
-    `^(?:\\d+(?:,\\d+)*-${simpleSubstituent})(?:-\\d+(?:,\\d+)*-${simpleSubstituent})*$`,
-  );
+  const substituentNames = "fluoro|cloro|bromo|yodo|metil|etil|propil|butil";
+  const substituentMultipliers: Record<string, number> = {
+    di: 2, tri: 3, tetra: 4, penta: 5, hexa: 6, hepta: 7, octa: 8, nona: 9, deca: 10,
+  };
+  const hasSupportedSubstituentSequence = (prefix: string) => {
+    const parts = prefix.split("-");
+    if (!parts.length || parts.length % 2 !== 0) return false;
+    for (let index = 0; index < parts.length; index += 2) {
+      const locants = parts[index].split(",");
+      if (!locants.every((locant) => /^\d+$/.test(locant))) return false;
+      const substituent = new RegExp(`^(di|tri|tetra|penta|hexa|hepta|octa|nona|deca)?(${substituentNames})$`, "i")
+        .exec(parts[index + 1]);
+      if (!substituent) return false;
+      const count = substituentMultipliers[substituent[1]?.toLocaleLowerCase("en") ?? ""] ?? 1;
+      if (locants.length !== count) return false;
+    }
+    return true;
+  };
   const substitutedAlkane = value.match(new RegExp(`^${parent}ano$`, "i"));
-  if (substitutedAlkane?.[1] && substituentSequence.test(substitutedAlkane[1])) return value;
+  if (substitutedAlkane?.[1] && hasSupportedSubstituentSequence(substitutedAlkane[1])) return value;
 
   // C-304.1 and C-401.2 use these suffixes on a ring parent; the attachment
   // carbon of the exocyclic group is not included in the ring numbering.
