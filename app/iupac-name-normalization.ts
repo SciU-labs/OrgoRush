@@ -6,6 +6,11 @@ const alkylRootPattern = IUPAC_ROOTS
   .filter(Boolean)
   .sort((left, right) => right.length - left.length)
   .join("|");
+const alkoxyMultipliers = "di|tri|tetra|penta|hexa|hepta|octa|nona|deca";
+const spanishAlkoxyPrefix = new RegExp(
+  `(^|[-,(])((?:${alkoxyMultipliers})?)(${alkylRootPattern})oxi(?=[a-z-]|$)`,
+  "g",
+);
 const spanishAlkylNoun = new RegExp(`(${alkylRootPattern})ilo(?=$|[\\s,.)-])`, "g");
 const spanishAlkylSubstituent = new RegExp(`(${alkylRootPattern})il(?=[a-z]|$|[\\s,.)-])`, "g");
 const spanishUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})(en|in)il`, "g");
@@ -282,10 +287,18 @@ function translateCore(value: string) {
     .replace(/bencenamina/g, "benzenamine")
     .replace(/benzonitrilo/g, "benzonitrile")
     .replace(/benzamida/g, "benzamide")
-    .replace(/metoxi/g, "methoxy")
-    .replace(/etoxi/g, "ethoxy")
-    .replace(/propoxi/g, "propoxy")
-    .replace(/butoxi/g, "butoxy")
+    // Alkoxy prefixes are a chemical morpheme, not an arbitrary substring.
+    // The Spanish root set is shared with parent/alkyl translation; from C5
+    // onward the English connector is yloxy (pentyloxy, hexyloxy, ...).
+    .replace(spanishAlkoxyPrefix, (_match, boundary: string, multiplier: string, root: string) => {
+      const carbonCount = IUPAC_ROOTS.indexOf(root);
+      const englishRoot = englishIupacRoot(root);
+      return `${boundary}${multiplier}${englishRoot}${carbonCount >= 5 ? "yloxy" : "oxy"}`;
+    })
+    // Vinyl is admitted as a Spanish substituent name; the current English
+    // display uses its systematic ethenyl form. Keep translation at the
+    // lexical substituent boundary so unrelated words are not rewritten.
+    .replace(/(^|[-,(])vinil(?=[a-z]|$)/g, "$1ethenyl")
     .replace(/carbonil/g, "carbonyl")
     .replace(/hidroxi/g, "hydroxy")
     .replace(/amino/g, "__amino_prefix__")
@@ -441,7 +454,9 @@ function alphabetizeEnglishHalogenPrefixes(value: string) {
     name: match.groups!.name,
     alphabeticalKey: match.groups!.name.replace(ignoredMultipliers, "").toLocaleLowerCase("en"),
   }));
-  const parent = value.slice(prefixEnd).replace(/^-+/, "");
+  // Any remaining hyphen can introduce another locanted part (for example
+  // 1-chloro-4-ethenylbenzene). It is not a disposable prefix/parent joiner.
+  const parent = value.slice(prefixEnd);
   prefixGroups.sort((left, right) => left.alphabeticalKey.localeCompare(right.alphabeticalKey, "en")
     || left.locants.localeCompare(right.locants, "en", { numeric: true }));
   return `${prefixGroups.map(({ locants, name }) => `${locants}-${name}`).join("-")}${parent}`;
