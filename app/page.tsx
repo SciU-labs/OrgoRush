@@ -185,6 +185,7 @@ import { legacyProfileDisplayName } from "./legacy-profile-display";
 import { deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
+import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { activateReasoningReference, cancelReasoningHover, scheduleReasoningHover, scrollToReasoningStep } from "./reasoning-name-navigation";
 import {
@@ -551,6 +552,7 @@ type NamedSubstituent = {
   sortName: string;
   complex: boolean;
   atomIds: number[];
+  aryl?: MonomethylPhenyl;
 };
 
 type Analysis = {
@@ -2999,6 +3001,7 @@ function selectChainAgainstMonocycle(
   skeleton: Molecule,
   groups: FunctionalGroup[],
   primaryKind: FunctionalGroupKind | undefined,
+  molecule: Molecule,
 ) {
   const ring = skeleton.rings?.length === 1 ? skeleton.rings[0] : undefined;
   if (!ring) return undefined;
@@ -3063,13 +3066,23 @@ function selectChainAgainstMonocycle(
     ? chosen.atomIds.includes(attachment[0]) ? attachment[0] : attachment[1]
     : undefined;
   const ringName = ringSubstituentName(ring);
+  // AUD-NOM-008 admits only neutral monomethylphenyl/ethan-1-ol here.
+  // Other side-chain lengths, functions and ring branches keep their safety gate.
+  const aryl = primaryKind === "alcohol" && groups.length === 1
+    && chosen.atomIds.length === 2 && chosen.subgraph.bonds.length === 1
+    && getBondOrder(chosen.subgraph.bonds[0]) === 1
+    && anchorId !== undefined && groups[0].carbonId !== anchorId
+    && chosen.atomIds.includes(groups[0].carbonId)
+    && molecule.atoms.length === 10 && molecule.atoms.every((atom) => !atom.charge)
+    ? describeMonomethylPhenyl(molecule, ring, chosen.atomIds) : undefined;
   const externalSubstituents = anchorId === undefined ? [] : [{
     anchorId,
     substituent: {
-      name: ringName,
-      sortName: stripForAlphabetizing(ringName),
-      complex: false,
-      atomIds: [...ring.atomIds],
+      name: aryl ? monomethylPhenylNameEs(aryl) : ringName,
+      sortName: stripForAlphabetizing(aryl ? monomethylPhenylNameEs(aryl) : ringName),
+      complex: Boolean(aryl),
+      atomIds: aryl ? [...aryl.atomIds] : [...ring.atomIds],
+      ...(aryl ? { aryl } : {}),
     },
   }];
   return { skeleton: chosen.subgraph, externalSubstituents };
@@ -3127,6 +3140,8 @@ export function buildLegacyEnglishNameModel(
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
     unavailableReason: nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)
       || hasUnrepresentedArylSubstitution(molecule, analysis)
+      // The 2013 methylphenyl spelling does not adjudicate a historical output.
+      || analysis.substituents.some((item) => Boolean(item.aryl))
       || unrepresentedTetrahedralCenter
       ? "The local naming grammar cannot represent the requested structure safely."
       : undefined,
@@ -3478,7 +3493,7 @@ function analyzeFunctionalAcyclic(
   // so preserve both the phenyl locant and the short amine's suffix locant.
   // Scope this correction to the existing aromatic-functional chain grammar.
   const twoCarbonPhenylFunction = chosen.path.length === 2 && Boolean(primaryKind)
-    && chosen.carbonSubstituents.some((item) => item.name === "fenil" && item.atomIds?.length === 6);
+    && chosen.carbonSubstituents.some((item) => item.name === "fenil" && item.atomIds?.length === 6 || item.aryl);
   const chainName = primaryKind
     ? makeFunctionalParentName(
         chosen.path.length,
@@ -3939,7 +3954,7 @@ export function analyzeMolecule(
 
   const skeleton = carbonSkeleton(molecule);
   const primaryKind = selectPrimaryFunctionalGroup(groups);
-  const chainAgainstRing = selectChainAgainstMonocycle(skeleton, groups, primaryKind);
+  const chainAgainstRing = selectChainAgainstMonocycle(skeleton, groups, primaryKind, molecule);
   if (chainAgainstRing) {
     if (groups.length) {
       return withExplicitGeometricName(molecule, analyzeFunctionalAcyclic(
@@ -4009,6 +4024,8 @@ export function suggestedIupacNameWithOmittedLocants(analysis: Analysis) {
 
 /** Keeps the graph-derived locant for the older Spanish formatter when Suggested omits it. */
 export function legacySpanishFormatterInput(analysis: Analysis, selectedDisplayName: string) {
+  // Keep the exact historical substituted-aryl wording unavailable until adjudicated.
+  if (analysis.substituents.some((item) => Boolean(item.aryl))) return "-";
   if (suggestedIupacNameWithOmittedLocants(analysis) === analysis.name) return selectedDisplayName;
   const selectedBase = stripStereochemicalDescriptors(selectedDisplayName);
   const stereoPrefix = selectedDisplayName.slice(0, selectedDisplayName.length - selectedBase.length);
@@ -5730,14 +5747,25 @@ const COMPLEX_NAME_LIMIT_MESSAGE = "El motor no puede interpretar esta estructur
 const COMPLEX_NAME_UNAVAILABLE_MESSAGE = "Nombre no disponible para estructuras complejas";
 const STEREOCHEMISTRY_STORAGE_KEY = "hydrocarbon-lab-show-stereochemistry";
 
-/** A bare phenyl prefix accounts for the ring, but not additional ring branches. */
+/** Every extra ring branch must belong to a complete graph-derived aryl proof. */
 function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis) {
   if (analysis.family !== "acyclic") return false;
-  return analysis.substituents.some((substituent) => substituent.name === "fenil"
-    && molecule.rings?.some((ring) => ring.kind === "aromatic"
-      && ring.atomIds.every((id) => substituent.atomIds.includes(id))
-      && ring.atomIds.some((id) => atomNeighbors(id, molecule).some(({ atomId }) =>
-        !ring.atomIds.includes(atomId) && !analysis.mainChain.includes(atomId)))));
+  for (const ring of molecule.rings ?? []) {
+    if (ring.kind !== "aromatic" || ring.atomIds.some((id) => analysis.mainChain.includes(id))
+      || !ring.atomIds.some((id) => atomNeighbors(id, molecule).some(({ atomId }) =>
+        !ring.atomIds.includes(atomId) && !analysis.mainChain.includes(atomId)))) continue;
+    const expected = describeMonomethylPhenyl(molecule, ring, analysis.mainChain);
+    if (!expected) return true;
+    const substituent = analysis.substituents.find((item) => item.aryl?.attachmentAtomId === expected.attachmentAtomId);
+    if (!substituent?.aryl || !substituent.complex
+          || substituent.name !== monomethylPhenylNameEs(expected)
+          || JSON.stringify(substituent.aryl) !== JSON.stringify(expected)
+          || substituent.atomIds.length !== expected.atomIds.length
+          || expected.atomIds.some((id) => !substituent.atomIds.includes(id))
+          || analysis.mainChain[substituent.locant - 1] !== expected.parentAttachmentAtomId
+          || !analysis.name.includes(`${substituent.locant}-(${monomethylPhenylNameEs(expected)})`)) return true;
+  }
+  return false;
 }
 
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {

@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { before, after, test } from "node:test";
 import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
 import { affected, observe, assertIndependentName, historicalResults } from "./helpers/audnom003-repair.mjs";
+import { methylPhenylCases, assertValidatedArylProfiles } from "./helpers/audnom008-aryl.mjs";
 
 let chemistry;
 before(async () => { chemistry = await loadExerciseChemistry(); });
@@ -27,10 +28,10 @@ for (const [id, expectedCount] of [["AUDNOM-002", 33], ["AUDNOM-004", 6], ["AUDN
   });
 }
 
-test("AUDNOM-003: historical aryl failures are explicit unavailability, not alleged name matches", () => {
+test("AUDNOM-003: AUD-NOM-008 validates complete modern aryl names and preserves explicit Legacy unavailability", () => {
   for (const record of affected("AUDNOM-003")) {
     const { profiles } = observe(chemistry.engine, record.smiles);
-    assert.deepEqual(Object.values(profiles).map((item) => item.name), [null, null, null, null]);
+    assertValidatedArylProfiles(profiles, methylPhenylCases.find((item) => item.id === record.id));
   }
 });
 

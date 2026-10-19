@@ -1,6 +1,7 @@
 import type { AppLanguage } from "./i18n.ts";
 import { uiText } from "./i18n.ts";
 import { translateSpanishIupacForDisplay } from "./iupac-name-normalization.ts";
+import { monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl.ts";
 
 export type FunctionalContribution = {
   group: string;
@@ -21,7 +22,7 @@ export type FunctionalReasoningAnalysis = {
     alkylCarbonId?: number;
     label?: string;
   }[];
-  substituents: { name: string; locant: number; complex?: boolean; atomIds?: readonly number[] }[];
+  substituents: { name: string; locant: number; complex?: boolean; atomIds?: readonly number[]; aryl?: MonomethylPhenyl }[];
   numberedAtoms: ReadonlyMap<number, number>;
 };
 
@@ -77,7 +78,10 @@ function prefixGroups(analysis: FunctionalReasoningAnalysis) {
     const origins = analysis.functionalGroups.filter((group) => group.atomIds?.length
       && item.atomIds?.length === group.atomIds.length
       && group.atomIds.every((id) => item.atomIds!.includes(id)));
-    if (item.complex && !origins.some((group) => group.kind === "ether")) continue;
+    const representedAryl = item.aryl && item.name === monomethylPhenylNameEs(item.aryl)
+      && item.atomIds?.length === item.aryl.atomIds.length
+      && item.aryl.atomIds.every((id) => item.atomIds!.includes(id));
+    if (item.complex && !representedAryl && !origins.some((group) => group.kind === "ether")) continue;
     const entry = groups.get(item.name) ?? { locants: [], contributions: [], atomIds: [], complex: Boolean(item.complex) };
     entry.locants.push(item.locant);
     entry.atomIds.push(...item.atomIds ?? []);

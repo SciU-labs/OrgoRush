@@ -1,0 +1,49 @@
+{
+  "task": "AUD-NOM-008",
+  "baselineHead": "f5f0072adc8884c1f352fe1ae38a4ec957cd8daa",
+  "baselineWorkflow": { "id": 39309485398, "status": "completed", "conclusion": "success" },
+  "overall": "PARTIAL",
+  "stateCriteria": {
+    "VALIDATED_NAME": "Exact output adjudicated for its profile and language, independent full-graph interpretation (English counterpart explicitly identified for Spanish), distinct isomers, literal interactive evidence and directed regressions pass.",
+    "SAFE_REJECTION": "No local profile name is available or copyable; graph and structural export remain intact. Does not assert a normative name has been resolved.",
+    "PENDING_NORMATIVE_ADJUDICATION": "A candidate or naming family lacks an exact profile/language adjudication; it must not be published as a validated name.",
+    "STRUCTURAL_MISMATCH": "An independently interpreted published name differs from the full original graph.",
+    "UNVERIFIED": "No independent full-identity evidence or conclusive directed checks are available."
+  },
+  "spanishEvidencePolicy": "Spanish spellings are derived independently from the RSEQ/IUPAC Spanish guide sections 3-7 and 10, including its metilfenil example. OPSIN interprets only the separately adjudicated English counterpart; it is not a Spanish spelling or PIN oracle.",
+  "sources": {
+    "parent": "https://iupac.qmul.ac.uk/BlueBook/P4.html#P-44.1.1",
+    "aryl": "https://iupac.qmul.ac.uk/BlueBook/P2.html#P-29.6.1",
+    "locants": "https://iupac.qmul.ac.uk/BlueBook/P1.html#P-14.3.4",
+    "alcohol": "https://iupac.qmul.ac.uk/BlueBook/P6.html#P-63.1.2",
+    "spanish": "https://rseq.org/wp-content/uploads/2018/05/2021-Guia-Breve-para-la-Nomenclatura-en-Quimica-Organica.pdf",
+    "legacyAryl": "https://www.acdlabs.com/iupac/nomenclature/79/r79_62.htm",
+    "legacyAlcohol": "https://www.acdlabs.com/iupac/nomenclature/79/r79_202.htm"
+  },
+  "records": [
+    {
+      "id": "AUDCASE-0171", "smiles": "c1(CCO)c(C)cccc1", "formula": "C₉H₁₂O", "ringMethylLocant": 2,
+      "identity": "deTH@@RUfTYj@`@@",
+      "profiles": {
+        "2013-es": { "state": "VALIDATED_NAME", "delivery": "FIXED", "name": "2-(2-metilfenil)etan-1-ol", "englishCounterpart": "2-(2-methylphenyl)ethan-1-ol", "sources": ["spanish", "parent", "aryl", "locants", "alcohol"] },
+        "2013-en": { "state": "VALIDATED_NAME", "delivery": "FIXED", "name": "2-(2-methylphenyl)ethan-1-ol", "opsinStatus": "MATCH", "receiptSha256": "235f9045febcb473a8f6f8878b352195d6daa88d2ef034ea7c035000425ca5e5", "sources": ["parent", "aryl", "locants", "alcohol"] },
+        "1979-es": { "state": "SAFE_REJECTION", "delivery": "BLOCKED", "name": null, "normativeStatus": "PENDING_NORMATIVE_ADJUDICATION", "reason": "Exact historical Spanish aryl/alcohol wording has not been adjudicated; no automatic transfer from 2013." },
+        "1979-en": { "state": "SAFE_REJECTION", "delivery": "BLOCKED", "name": null, "normativeStatus": "PENDING_NORMATIVE_ADJUDICATION", "reason": "A-13.1 includes retained tolyl names. Exact historical spelling, grouping and alcohol locant treatment remain unadjudicated; modern numeric methylphenyl output is not transferred." }
+      }
+    },
+    {
+      "id": "AUDCASE-0176", "smiles": "c1(CCO)ccc(C)cc1", "formula": "C₉H₁₂O", "ringMethylLocant": 4,
+      "identity": "deTH@@RUe_aj@B@@",
+      "profiles": {
+        "2013-es": { "state": "VALIDATED_NAME", "delivery": "FIXED", "name": "2-(4-metilfenil)etan-1-ol", "englishCounterpart": "2-(4-methylphenyl)ethan-1-ol", "sources": ["spanish", "parent", "aryl", "locants", "alcohol"] },
+        "2013-en": { "state": "VALIDATED_NAME", "delivery": "FIXED", "name": "2-(4-methylphenyl)ethan-1-ol", "opsinStatus": "MATCH", "receiptSha256": "2de339b1502d8efbdbe4c6a4ae1879f61ecfc28dfbb57959d5259ffbe4592cf9", "sources": ["parent", "aryl", "locants", "alcohol"] },
+        "1979-es": { "state": "SAFE_REJECTION", "delivery": "BLOCKED", "name": null, "normativeStatus": "PENDING_NORMATIVE_ADJUDICATION", "reason": "Exact historical Spanish aryl/alcohol wording has not been adjudicated; no automatic transfer from 2013." },
+        "1979-en": { "state": "SAFE_REJECTION", "delivery": "BLOCKED", "name": null, "normativeStatus": "PENDING_NORMATIVE_ADJUDICATION", "reason": "A-13.1 includes retained tolyl names. Exact historical spelling, grouping and alcohol locant treatment remain unadjudicated; modern numeric methylphenyl output is not transferred." }
+      }
+    }
+  ],
+  "controls": [
+    { "smiles": "c1(CCO)ccccc1", "scope": "unsubstituted phenylethanol, existing four profiles preserved" },
+    { "smiles": "c1(CCO)cc(C)ccc1", "ringMethylLocant": 3, "englishName": "2-(3-methylphenyl)ethan-1-ol", "receiptSha256": "5cd71ae022a57ec48d1fad95181437bace512d3da07befbe368a0186a9b3e88f", "identity": "deTH@@RUe[aj@B@@" }
+  ]
+}

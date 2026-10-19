@@ -5,6 +5,7 @@ import { evidenceMap, interpretName } from "../scripts/naming-audit/evidence.mjs
 import { translateSpanishIupacForDisplay, translateSpanishIupacToOpsin } from "../app/iupac-name-normalization.ts";
 import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
 import { assertReasoningIntegrity, project, observe } from "./helpers/reasoning-integrity.mjs";
+import { methylPhenylCases, assertValidatedArylProfiles } from "./helpers/audnom008-aryl.mjs";
 
 const isotopeAuditPath = new URL("../reports/naming-audit/aud-nom-005/rule-derived-candidate-receipts.json", import.meta.url);
 const candidateReceipts = evidenceMap(JSON.parse(readFileSync(isotopeAuditPath, "utf8")));
@@ -103,13 +104,13 @@ test("the English translator handles ring-position neighbors and root-derived al
   }
 });
 
-test("unsupported historical AUDCASE-0171 and AUDCASE-0176 remain unavailable in all profiles", () => {
+test("historical AUDCASE-0171/0176 require complete validated modern names after AUD-NOM-008; Legacy remains unavailable", () => {
   for (const id of ["AUDCASE-0171", "AUDCASE-0176"]) {
     const source = historicalMatrix.records.find((record) => record.id === id);
     assert.ok(source, `${id}: historical structure exists`);
     const { profiles } = observe(chemistry.engine, source.smiles);
-    assert.deepEqual(Object.fromEntries(Object.entries(profiles).map(([key, profile]) => [key, profile.name])), {
-      "2013-es": null, "2013-en": null, "1979-es": null, "1979-en": null,
-    }, `${id}: no incomplete local name is published`);
+    // Explicitly supersedes the earlier blanket gate with exact structural
+    // evidence; the old methyl-omitting name can never satisfy this assertion.
+    assertValidatedArylProfiles(profiles, methylPhenylCases.find((item) => item.id === id));
   }
 });

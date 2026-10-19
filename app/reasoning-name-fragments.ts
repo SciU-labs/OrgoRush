@@ -741,10 +741,11 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
     && analysis.functionalGroups.some((group) => group.kind === "ether" && group.atomIds?.length
       && item.atomIds?.length === group.atomIds.length
       && group.atomIds.every((id) => item.atomIds!.includes(id))));
+  const complexAryl = analysis.substituents.some((item) => item.complex && item.aryl);
   const stereo = verifiedStereoPrefix(input);
   const supportedText = /^[a-záéíóúüñ0-9, -]+$/i.test(name)
     || stereo && /^[a-záéíóúüñ0-9, -]+$/i.test(name.slice(stereo.text.length + 1))
-    || complexEther && /^[a-záéíóúüñ0-9(), -]+$/i.test(name);
+    || (complexEther || complexAryl) && /^[a-záéíóúüñ0-9(), -]+$/i.test(name);
   if (!canHighlight || !supportedText
     || !["acyclic", "cycloalkane", "aromatic"].includes(analysis.family)) return fragments;
   // Consume the analyzed result or an available local profile output. The caller

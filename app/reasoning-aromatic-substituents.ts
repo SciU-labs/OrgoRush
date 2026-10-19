@@ -25,7 +25,9 @@ export function aromaticFunctionalChainReasoning(
     && molecule.bonds.some(([a, b, order]) => (order ?? 1) === 1
       && (a === analysis.mainChain[substituent.locant - 1] && substituent.atomIds!.includes(b)
         || b === analysis.mainChain[substituent.locant - 1] && substituent.atomIds!.includes(a))));
-  if (!phenyl.length) return;
+  const methylphenyl = analysis.substituents.find((substituent) => substituent.aryl
+    && substituent.atomIds?.length === 7 && substituent.aryl.atomIds.every((id) => substituent.atomIds!.includes(id)));
+  if (!phenyl.length && !methylphenyl) return;
   const count = analysis.mainChain.length;
   const group = uiText(language, primary.label ?? "Grupo funcional principal").toLocaleLowerCase(language);
   const parent = language === "en" ? translateSpanishIupacForDisplay(analysis.chainName) : analysis.chainName;
@@ -34,6 +36,19 @@ export function aromaticFunctionalChainReasoning(
   const nitrogen = primary.atomIds?.find((id) => id !== primary.carbonId);
   const primaryAmine = primary.kind === "amine" && nitrogen !== undefined
     && molecule.bonds.filter(([a, b]) => a === nitrogen || b === nitrogen).length === 1;
+  if (methylphenyl?.aryl) {
+    const aryl = methylphenyl.aryl;
+    const arylName = language === "en" ? `${aryl.methyl.locant}-methylphenyl` : `${aryl.methyl.locant}-metilfenil`;
+    return language === "en" ? {
+      parent: `The parent is the ${count}-carbon chain containing the principal ${group} function; its base name is ${parent}. The aromatic ring and its methyl carbon belong to the substituted aryl group.`,
+      substituent: `The ring attachment to chain C${methylphenyl.locant} is ring C1. Its methyl is at ring C${aryl.methyl.locant}, giving “${arylName}”. Ring locants are independent of the alcohol-chain numbering. The aryl fragment contains all six ring carbons and its methyl carbon.`,
+      function: "",
+    } : {
+      parent: `El padre es la cadena de ${count} carbonos que contiene la función principal ${group}; su nombre base es ${parent}. El anillo aromático y el carbono de su metilo pertenecen al grupo arilo sustituido.`,
+      substituent: `El carbono de unión del anillo a C${methylphenyl.locant} de la cadena es C1 del anillo. Su metilo está en C${aryl.methyl.locant} del anillo y aporta «${arylName}». Los localizadores del anillo son independientes de la numeración de la cadena del alcohol. El fragmento arilo contiene los seis carbonos del anillo y el carbono de su metilo.`,
+      function: "",
+    };
+  }
   return language === "en" ? {
     parent: `The parent is the ${count}-carbon chain containing the principal ${group} function; its base name is ${parent}. The six benzene-ring carbons belong to the phenyl substituent.`,
     substituent: "Replacing one hydrogen of a benzene ring with its bond to the parent gives the aryl substituent “phenyl”. Its ring atoms are separate from the functional parent chain.",
