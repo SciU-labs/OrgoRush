@@ -32,6 +32,14 @@ const pureAlkaneNames = new Set(
   IUPAC_ROOTS.slice(1).flatMap((root) => [`${root}ano`, `${englishIupacRoot(root)}ane`]),
 );
 
+// A-31.1 (1979). This is a spelling whitelist, not a molecular recognizer;
+// legacySpanishFormatterInput requires the corresponding graph proof.
+export function isSpanish1979SaturatedFusedParentName(name: string) {
+  return name === "biciclo[3.3.0]octano"
+    || name === "biciclo[4.3.0]nonano"
+    || name === "biciclo[4.4.0]decano";
+}
+
 const traditionalRoots: Record<AppLanguage, readonly string[]> = {
   es: IUPAC_ROOTS.slice(1),
   en: IUPAC_ROOTS.slice(1).map(englishIupacRoot),
@@ -273,6 +281,8 @@ function formatSpanish1979Extension(baseName: string) {
   const value = baseName.toLocaleLowerCase("es");
   const root = traditionalRootPatterns.es;
   const parent = `(.*?)(${root})`;
+
+  if (isSpanish1979SaturatedFusedParentName(value)) return value;
 
   // Saturated acyclic parent alkanes keep the same valid systematic spelling
   // in the 1979 and 2013 profiles. Recognize only a project-supported root.

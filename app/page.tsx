@@ -69,6 +69,7 @@ import {
 } from "./bond-interaction-hints";
 import {
   applyNomenclatureConvention,
+  isSpanish1979SaturatedFusedParentName,
   getCuratedCommonName,
   migrateNomenclatureConvention,
   nomenclatureConventionLabel,
@@ -571,6 +572,7 @@ type Analysis = {
   primaryFunctionalGroup?: FunctionalGroupKind;
   primaryFunctionalLabel?: string;
   fusedBicyclic?: FusedBicyclicSystem;
+  spanish1979SaturatedFusedParent?: string;
   fusedTricyclic?: FusedTricyclicSystem;
   fusedTetracyclic?: FusedTetracyclicSystem;
   steroidSystem?: SteroidLikeRingSystem;
@@ -3748,6 +3750,31 @@ function analyzeFunctionalRing(
   };
 }
 
+/** A-31.1 admission only; numbering and the name still come from the existing recognizer. */
+function validatedSpanish1979SaturatedFusedParent(molecule: Molecule, system: FusedBicyclicSystem) {
+  const rings = molecule.rings ?? [];
+  const atomIds = new Set(molecule.atoms.map((atom) => atom.id));
+  const edgeKeys = new Set(molecule.bonds.map(([a, b]) => [a, b].sort((left, right) => left - right).join("-")));
+  if (!isSpanish1979SaturatedFusedParentName(system.parentName)
+    || system.systematicName !== system.parentName
+    || system.substituents.length || system.functionalGroups.length
+    || system.doubleBondLocants.length || system.tripleBondLocants.length
+    || rings.length !== 2
+    || rings.some((ring) => ring.kind !== "cycloalkane" || ![5, 6].includes(ring.atomIds.length)
+      || new Set(ring.atomIds).size !== ring.atomIds.length || ring.atomIds.some((id) => !atomIds.has(id)))
+    || atomIds.size !== molecule.atoms.length || system.atomIds.length !== atomIds.size
+    || system.atomIds.some((id) => !atomIds.has(id))
+    || molecule.atoms.some((atom) => !Number.isSafeInteger(atom.id) || !isCarbonAtom(atom)
+      || (atom.charge ?? 0) !== 0 || atom.tetrahedralParity !== undefined || atom.tetrahedralBondTo !== undefined)
+    || molecule.bonds.length !== atomIds.size + 1 || edgeKeys.size !== molecule.bonds.length
+    || molecule.bonds.some((bond) => getBondOrder(bond) !== 1 || bond[3]
+      || bond[0] === bond[1] || !atomIds.has(bond[0]) || !atomIds.has(bond[1]))
+    || findMoleculeValenceViolation(molecule)) return undefined;
+  // getFusedBicyclicSystem already proves two complete cycles sharing one edge.
+  // Their full atom union above therefore also proves the graph is connected.
+  return system.parentName;
+}
+
 function analyzeFusedBicyclicMolecule(
   molecule: Molecule,
   system: FusedBicyclicSystem,
@@ -3783,6 +3810,7 @@ function analyzeFusedBicyclicMolecule(
       ? functionalGroupLabels[system.primaryFunctionalGroup]
       : undefined,
     fusedBicyclic: system,
+    spanish1979SaturatedFusedParent: validatedSpanish1979SaturatedFusedParent(molecule, system),
     ringSystem: `Sistema bicíclico fusionado [${system.paths.join(".")}]`,
   };
 }
@@ -4025,6 +4053,10 @@ export function suggestedIupacNameWithOmittedLocants(analysis: Analysis) {
 
 /** Keeps the graph-derived locant for the older Spanish formatter when Suggested omits it. */
 export function legacySpanishFormatterInput(analysis: Analysis, selectedDisplayName: string) {
+  if (isSpanish1979SaturatedFusedParentName(stripStereochemicalDescriptors(selectedDisplayName))) {
+    return analysis.fusedBicyclic && selectedDisplayName === analysis.spanish1979SaturatedFusedParent
+      && selectedDisplayName === analysis.name ? selectedDisplayName : "-";
+  }
   // Keep the exact historical substituted-aryl wording unavailable until adjudicated.
   if (analysis.substituents.some((item) => Boolean(item.aryl))) return "-";
   if (suggestedIupacNameWithOmittedLocants(analysis) === analysis.name) return selectedDisplayName;
