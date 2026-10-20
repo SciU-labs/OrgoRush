@@ -400,6 +400,7 @@ test("substituent undo and redo preserve graph, formula and geometry exactly", (
 
   const context = { molecule: initial, undoStack: [], future: [],
     undoPristineStates: [], futurePristineStates: [], isPristineInitialMolecule: true, cloneMolecule,
+    smilesFeedback: { kind: "success" },
     findMoleculeValenceViolation: () => null, retainValidManualDisplayPlacements,
     getCondensedUnavailableReason, viewMode: "semi-developed", language: "en",
     setViewMode(mode) { context.viewMode = mode; } };
@@ -407,8 +408,10 @@ test("substituent undo and redo preserve graph, formula and geometry exactly", (
     context[`set${key[0].toUpperCase()}${key.slice(1)}`] = value => { context[key] = typeof value === "function" ? value(context[key]) : value; };
   }
   for (const name of ["setPlacementTool", "setReasoningSourceName", "setSourceNameOverride", "setNotice", "setSelectedId"]) context[name] = () => {};
+  context.setSmilesFeedback = (value) => { context.smilesFeedback = value; };
   context.commit = action("commit", context);
   assert.equal(context.commit(next, "Propil añadido."), true);
+  assert.equal(context.smilesFeedback, null, "committing a graph change clears stale SMILES feedback");
   assert.deepEqual(context.undoPristineStates, [true]);
   assert.equal(context.isPristineInitialMolecule, false);
   // React handlers read the state snapshot from their render while setters queue updates.
@@ -461,6 +464,7 @@ test("actual commit, fusion, undo and redo preserve exact snapshots as one edit"
   const initial = { ...makeRing(6, "cycloalkane"), isMirrored: true };
   const context = { molecule: initial, undoStack: [], future: [],
     undoPristineStates: [], futurePristineStates: [], isPristineInitialMolecule: true,
+    smilesFeedback: { kind: "success" },
     cloneMolecule, fuseRingOnBond, retainValidManualDisplayPlacements,
     getCondensedUnavailableReason, viewMode: "semi-developed",
     setViewMode(mode) { context.viewMode = mode; },
@@ -471,18 +475,24 @@ test("actual commit, fusion, undo and redo preserve exact snapshots as one edit"
     context[`set${key[0].toUpperCase()}${key.slice(1)}`] = value => { context[key] = typeof value === "function" ? value(context[key]) : value; };
   }
   for (const name of ["setPlacementTool", "setReasoningSourceName", "setSourceNameOverride", "setNotice", "setSelectedId"]) context[name] = () => {};
+  context.setSmilesFeedback = (value) => { context.smilesFeedback = value; };
   context.commit = action("commit", context);
   action("fuseSelectedBond", context)(6);
   const fused = structuredClone(context.molecule);
+  assert.equal(context.smilesFeedback, null, "fusion clears stale SMILES feedback through commit");
   assert.equal(context.undoStack.length, 1);
   assert.deepEqual(context.undoPristineStates, [true]);
   assert.equal(context.isPristineInitialMolecule, false);
+  context.smilesFeedback = { kind: "success" };
   action("undo", { ...context })();
   assert.deepEqual(context.molecule, cloneMolecule(initial));
+  assert.equal(context.smilesFeedback, null);
   assert.deepEqual(context.futurePristineStates, [false]);
   assert.equal(context.isPristineInitialMolecule, true);
+  context.smilesFeedback = { kind: "success" };
   action("redo", { ...context })();
   assert.deepEqual(context.molecule, cloneMolecule(fused));
+  assert.equal(context.smilesFeedback, null);
   assert.equal(context.isPristineInitialMolecule, false);
 });
 

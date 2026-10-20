@@ -79,6 +79,7 @@ function harness(sourceGraph = graphWithChain(), selectedId = 2, viewMode = "sem
     viewMode,
     newBondOrder: 1,
     isPristineInitialMolecule: false,
+    smilesFeedback: { kind: "success" },
     undoStack: [],
     undoPristineStates: [],
     future: [],
@@ -103,6 +104,7 @@ function harness(sourceGraph = graphWithChain(), selectedId = 2, viewMode = "sem
     setFuture(update) { context.future = typeof update === "function" ? update(context.future) : update; },
     setFuturePristineStates(update) { context.futurePristineStates = typeof update === "function" ? update(context.futurePristineStates) : update; },
     setMolecule(value) { context.molecule = value; },
+    setSmilesFeedback(value) { context.smilesFeedback = value; },
     setIsPristineInitialMolecule(value) { context.isPristineInitialMolecule = value; },
     setReasoningSourceName() {},
     setSourceNameOverride() {},
@@ -215,11 +217,16 @@ test("the existing valence rejection blocks direction actions before graph mutat
 test("the real commit, undo and redo path restores the directional hint and its placement", () => {
   const context = harness(graphWithChain(), 2);
   addWithDirection(context, "up");
+  assert.equal(context.smilesFeedback, null, "committing the new graph clears stale SMILES feedback");
   const afterAdd = structuredClone(context.molecule);
   assertDirection(afterAdd, 2, 4, "up", [1, 2, 3]);
+  context.smilesFeedback = { kind: "success" };
   context.undo();
+  assert.equal(context.smilesFeedback, null);
   assert.equal(context.molecule.atoms.length, 3);
+  context.smilesFeedback = { kind: "success" };
   context.redo();
+  assert.equal(context.smilesFeedback, null);
   assert.deepEqual(context.molecule.atoms, afterAdd.atoms);
   assert.deepEqual(context.molecule.bonds, afterAdd.bonds);
   assert.deepEqual(context.molecule.manualDisplayDirections, afterAdd.manualDisplayDirections);
