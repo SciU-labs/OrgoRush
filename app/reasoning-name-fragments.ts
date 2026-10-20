@@ -310,6 +310,14 @@ function hasWrittenCyclicKetoneLinkingVowel(
   return new RegExp(`^a(?:-${locants}-)?${marker}`, "i").test(name.slice(rootStart + rootText.length));
 }
 
+/** Full parent spans are reserved for analyzed, saturated acyclic alkane parents. */
+function isSaturatedAcyclicAlkaneParent(analysis: FragmentAnalysis, parent: string) {
+  return analysis.family === "acyclic" && !analysis.primaryFunctionalGroup
+    && analysis.functionalGroups.length === 0
+    && analysis.doubleBondLocants.length === 0 && analysis.tripleBondLocants.length === 0
+    && analysis.mainChain.length > 0 && /(?:ano|ane)$/i.test(parent);
+}
+
 /** Presentation only: every emitted text is copied from the currently displayed name. */
 function deriveExistingReasoningNameFragments({
   analysis,
@@ -608,7 +616,8 @@ function parentNameEvidence(
   } else if (!analysis.primaryFunctionalGroup
     && (analysis.family === "acyclic" || analysis.family === "aromatic" && analysis.chainName === "benceno")
     && name.endsWith(parent)) {
-    text = /^[a-z]+/i.exec(parent)?.[0] ?? "";
+    text = isSaturatedAcyclicAlkaneParent(analysis, parent)
+      ? parent : /^[a-z]+/i.exec(parent)?.[0] ?? "";
     start = name.length - parent.length;
   } else if (!analysis.primaryFunctionalGroup && analysis.family === "acyclic" && analysis.name?.endsWith(analysis.chainName)
     && name === localizedName(analysis.name, language)) {
@@ -672,7 +681,10 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
   const radicalStart = parentEvidence && name.startsWith(rootText, parentEvidence.start)
     ? parentEvidence.start!
     : name.lastIndexOf(rootText, functionalSuffixStart === undefined ? name.length : functionalSuffixStart - rootText.length);
-  const writtenRootText = radicalStart >= 0 && hasWrittenCyclicKetoneLinkingVowel(analysis, name, rootText, radicalStart)
+  const writtenRootText = isSaturatedAcyclicAlkaneParent(analysis, parentEvidence?.text ?? "")
+      && parentEvidence?.start === radicalStart
+    ? parentEvidence.text
+    : radicalStart >= 0 && hasWrittenCyclicKetoneLinkingVowel(analysis, name, rootText, radicalStart)
     ? `${rootText}a` : rootText;
   const rootStart = radicalStart;
   if (rootStart < 0) return fragments; // Retained parents keep their existing indivisible evidence.
