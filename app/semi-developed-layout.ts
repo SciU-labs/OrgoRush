@@ -515,31 +515,53 @@ function placeRingSystems(
   const first = rings[0].atomIds;
   for (const [id, point] of regularRingPositions(first, { x: 0, y: 0 })) positions.set(id, point);
 
-  // Fused rings reuse their shared vertices and are placed on the free side of
-  // their shared edge. This keeps every ring edge cyclic and avoids importing
-  // line-angle coordinates from the editor or skeletal view.
-  for (const ring of rings.slice(1)) {
-    const shared = ring.atomIds.filter((id) => positions.has(id));
-    if (shared.length < 2) continue;
-    const start = positions.get(shared[0])!;
-    const end = positions.get(shared[1])!;
-    const dx = end.x - start.x, dy = end.y - start.y;
-    const length = Math.hypot(dx, dy) || BOND;
-    const midpoint = { x: (start.x + end.x) / 2, y: (start.y + end.y) / 2 };
-    const offset = Math.sqrt(Math.max(0, BOND * BOND - length * length / 4));
-    const normal = { x: -dy / length, y: dx / length };
-    const candidates = [
-      { x: midpoint.x + normal.x * offset, y: midpoint.y + normal.y * offset },
-      { x: midpoint.x - normal.x * offset, y: midpoint.y - normal.y * offset },
-    ];
-    const occupied = [...positions.values()];
-    const center = candidates.sort((a, b) => {
-      const clearance = (point: SemiDevelopedPoint) => Math.min(...occupied.map((other) => Math.hypot(point.x - other.x, point.y - other.y)));
-      return clearance(b) - clearance(a);
-    })[0];
-    const centerAngle = Math.atan2(start.y - center.y, start.x - center.x);
-    const polygon = regularRingPositions(ring.atomIds, center, centerAngle);
-    for (const [id, point] of polygon) if (!positions.has(id)) positions.set(id, point);
+  const placedRings = [rings[0]];
+  const pending = rings.slice(1);
+  // Traverse connected rings, even when metadata lists a distant ring before
+  // its parent. Anchor each polygon to a consecutive, already placed edge.
+  while (pending.length) {
+    let progressed = false;
+    for (let index = 0; index < pending.length; index += 1) {
+      const ring = pending[index];
+      const startIndex = ring.atomIds.findIndex((a, i) => {
+        const b = ring.atomIds[(i + 1) % ring.atomIds.length];
+        return positions.has(a) && positions.has(b) && placedRings.some((parent) =>
+          parent.atomIds.some((id, j) => id === a && (
+            parent.atomIds[(j + 1) % parent.atomIds.length] === b
+            || parent.atomIds[(j + parent.atomIds.length - 1) % parent.atomIds.length] === b)));
+      });
+      if (startIndex < 0) continue;
+      const a = ring.atomIds[startIndex], b = ring.atomIds[(startIndex + 1) % ring.atomIds.length];
+      const start = positions.get(a)!, end = positions.get(b)!;
+      const parent = placedRings.find(({ atomIds }) => atomIds.includes(a) && atomIds.includes(b))!;
+      const parentCenter = parent.atomIds.reduce((sum, id) => ({
+        x: sum.x + positions.get(id)!.x / parent.atomIds.length,
+        y: sum.y + positions.get(id)!.y / parent.atomIds.length,
+      }), { x: 0, y: 0 });
+      const dx = end.x - start.x, dy = end.y - start.y;
+      const length = Math.hypot(dx, dy);
+      const parentSide = dx * (parentCenter.y - start.y) - dy * (parentCenter.x - start.x);
+      const side = parentSide > 0 ? -1 : 1;
+      const count = ring.atomIds.length;
+      // Apothem and circumradius depend on N (pentagons and hexagons differ).
+      const apothem = length / (2 * Math.tan(Math.PI / count));
+      const radius = length / (2 * Math.sin(Math.PI / count));
+      const center = {
+        x: (start.x + end.x) / 2 - side * dy / length * apothem,
+        y: (start.y + end.y) / 2 + side * dx / length * apothem,
+      };
+      const firstAngle = Math.atan2(start.y - center.y, start.x - center.x);
+      ring.atomIds.forEach((id, i) => {
+        if (positions.has(id)) return;
+        const steps = (i - startIndex + count) % count;
+        const angle = firstAngle + side * steps * 2 * Math.PI / count;
+        positions.set(id, { x: center.x + radius * Math.cos(angle), y: center.y + radius * Math.sin(angle) });
+      });
+      placedRings.push(ring);
+      pending.splice(index--, 1);
+      progressed = true;
+    }
+    if (!progressed) break;
   }
   return ringAtomIds;
 }
