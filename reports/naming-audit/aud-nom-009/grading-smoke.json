@@ -1,0 +1,103 @@
+{
+  "audit": "AUD-NOM-009",
+  "capturedAt": "2026-10-19T23:59:18.752Z",
+  "wallSeconds": 21.1850141,
+  "status": "PASS",
+  "records": [
+    {
+      "reference": "CCCC",
+      "submission": "CCCC",
+      "category": "alkane",
+      "expectedCorrect": true,
+      "result": {
+        "version": 1,
+        "correct": true,
+        "status": "EQUIVALENT",
+        "referenceIdentity": "gC`@Dij@@|ez:unspecified",
+        "submittedIdentity": "gC`@Dij@@|ez:unspecified",
+        "submittedSmiles": "CCCC",
+        "checks": {
+          "referenceValid": true,
+          "submissionValid": true,
+          "constitutionEqual": true,
+          "stereoEqual": true
+        }
+      }
+    },
+    {
+      "reference": "CCCC",
+      "submission": "CC(C)C",
+      "category": "alkane",
+      "expectedCorrect": false,
+      "result": {
+        "version": 1,
+        "correct": false,
+        "status": "DIFFERENT_STRUCTURE",
+        "referenceIdentity": "gC`@Dij@@|ez:unspecified",
+        "submittedIdentity": "gC`@H}P@|ez:unspecified",
+        "submittedSmiles": "CC(C)C",
+        "checks": {
+          "referenceValid": true,
+          "submissionValid": true,
+          "constitutionEqual": false,
+          "stereoEqual": true
+        }
+      }
+    },
+    {
+      "reference": "C/C=C/C",
+      "submission": "C/C=C/C",
+      "category": "ez",
+      "expectedCorrect": true,
+      "result": {
+        "version": 1,
+        "correct": true,
+        "status": "EQUIVALENT",
+        "referenceIdentity": "gC`@DiZ@@|ez:E",
+        "submittedIdentity": "gC`@DiZ@@|ez:E",
+        "submittedSmiles": "C/C=C/C",
+        "checks": {
+          "referenceValid": true,
+          "submissionValid": true,
+          "constitutionEqual": true,
+          "stereoEqual": true
+        }
+      }
+    },
+    {
+      "reference": "C/C=C/C",
+      "submission": "C/C=C\\C",
+      "category": "ez",
+      "expectedCorrect": false,
+      "result": {
+        "version": 1,
+        "correct": false,
+        "status": "DIFFERENT_STEREOCHEMISTRY",
+        "referenceIdentity": "gC`@DiZ@@|ez:E",
+        "submittedIdentity": "gC`@DiZ@@|ez:Z",
+        "submittedSmiles": "C/C=C\\C",
+        "checks": {
+          "referenceValid": true,
+          "submissionValid": true,
+          "constitutionEqual": true,
+          "stereoEqual": false
+        }
+      }
+    },
+    {
+      "answer": " BUTANO ",
+      "reference": "butano",
+      "locale": "es",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "answer": "butane",
+      "reference": "butano",
+      "locale": "es",
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "limit": "Fixed controls only. Naming grading normalizes typography; it is not a general synonym or IUPAC equivalence adjudicator."
+}

@@ -1,0 +1,154 @@
+Browser tab: 1, Title: "OrgoRush — Química orgánica interactiva y práctica IUPAC", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/es/".
+1 AXWebArea OrgoRush — Química orgánica interactiva y práctica IUPAC, URL: sciu-lab.github.io/Hydrocarbon-Lab/es/
+	2 container
+		3 heading OrgoRush, Value: 1
+			4 text OrgoRush
+		5 button (collapsed) ¿Cómo se usa?, Secondary Actions: Expand
+		6 button (collapsed) Práctica / Examen, Secondary Actions: Expand
+		7 pop up button (collapsed) Crear guía, Secondary Actions: Expand
+		8 container structure-panel
+			9 container
+				10 text ESTRUCTURA MOLECULAR
+				11 heading Construye la estructura orgánica, Value: 2
+					12 text Construye la estructura orgánica
+				13 text ENTRADA
+				14 button (collapsed) Por nombre, Secondary Actions: Expand
+				15 button (collapsed) SMILES, Help: Importar o exportar la molécula mediante SMILES, Secondary Actions: Expand
+				16 button (collapsed) Fórmula, Help: Generar isómeros desde una fórmula molecular, Secondary Actions: Expand
+				17 button (collapsed) Ejemplos, Secondary Actions: Expand
+				18 container Tipo de representación molecular
+					19 text VISTA
+					20 checkbox Semides., Help: Vista semidesarrollada, Value: 1
+					21 checkbox Condensada, Help: Fórmula estructural condensada, Value: 0
+					22 checkbox Esquelética, Help: Vista esquelética o de líneas, Value: 0
+				23 container Historial de cambios
+					24 text HERRAMIENTAS
+					25 button Redibujar la estructura en espejo
+						26 text Redibujar
+					27 button (disabled) ↶, Help: Deshacer
+					28 button (disabled) ↷, Help: Rehacer
+					29 button Nueva
+			30 container
+				31 container Acciones del canvas
+					32 button (collapsed) Description: Ampliar canvas, Secondary Actions: Expand
+					33 button Exportar canvas como imagen PNG o SVG
+					34 button Description: Quitar la selección del canvas, Help: Cancelar herramienta / limpiar selección — Atajo: Esc
+				35 image
+					36 button Description: Enlace simple. Activa para cambiar su orden; Mayús-activar abre opciones estereoquímicas., Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+					37 button Description: Enlace simple fijado para conservar el grupo funcional, Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+					38 text 1
+					39 text 2
+				40 text ALCOHOL · ALCANO
+				41 container
+					42 text ↻ Toca un enlace · cambiar orden de enlace
+					43 button Description: Cerrar ayuda de edición de enlace, Help: Cerrar ayuda
+				44 container Leyenda
+					45 text Cadena principal Sustituyente
+				46 text C CARBONO SELECCIONADO 2 H implícitos  ·  valencia 2 / 4
+				47 container Orden del próximo enlace
+					48 text PRÓXIMO ENLACE
+					49 checkbox SIMPLE, Help: Crear enlace simple, Value: 1
+						50 text SIMPLE
+					51 checkbox DOBLE, Help: Crear enlace doble, Value: 0
+						52 text DOBLE
+					53 checkbox TRIPLE, Help: Crear enlace triple, Value: 0
+						54 text TRIPLE
+				55 container Añadir carbono
+					56 button Description: Añadir carbono hacia arriba, Help: Añadir hacia arriba
+					57 button Description: Añadir carbono hacia izquierda, Help: Añadir hacia izquierda
+					58 button Description: Añadir carbono hacia derecha, Help: Añadir hacia derecha
+					59 button Description: Añadir carbono hacia abajo, Help: Añadir hacia abajo
+				60 button (collapsed) + Grupos alquilo, Secondary Actions: Expand
+					61 text +
+					62 text Grupos alquilo
+				63 button (collapsed) Anillos, Help: Añadir anillo — Atajo: R, Secondary Actions: Expand
+				64 button (collapsed) Grupos funcionales, Secondary Actions: Expand
+				65 button − Retirar terminal
+					66 text −
+					67 text Retirar terminal
+				68 text i Continuamos donde quedaste: etanol.
+		69 container Instrucciones breves
+			70 container
+				71 text 01
+				72 text Selecciona
+				73 text un carbono
+			74 container
+				75 text 02
+				76 text Añade
+				77 text C, enlaces y grupos funcionales
+			78 container
+				79 text 03
+				80 text Analiza
+				81 text el nombre IUPAC
+		82 container analysis-panel
+			83 container Preferencias
+				84 pop up button Abrir mi historial. 6 versiones recientes
+					85 text Historial
+					86 text Siempre disponible
+					87 text 6
+				88 pop up button Abrir Guardados. 0 estructuras elegidas
+					89 text Guardados
+					90 text Elegidos por ti
+					91 text 0
+				92 container Idioma
+					93 checkbox Description: Español, Value: 1
+					94 checkbox Description: English, Value: 0
+				95 button Description: Tema Claro. Cambiar modo de color, Help: Alternar entre automático, claro y oscuro
+					96 text Tema
+					97 text Claro
+				98 pop up button (collapsed) Description: Abrir configuración, Help: Configuración, Secondary Actions: Expand
+				99 text Hidrocarburos · grupos funcionales
+			100 text ANÁLISIS EN TIEMPO REAL
+			101 heading Análisis molecular, Value: 2
+				102 text Análisis molecular
+			103 text ESTRUCTURA VÁLIDA
+			104 switch (disabled) ESTEREOQUÍMICA, Help: No hay centros E/Z o R/S definidos en esta estructura, Value: 0
+			105 container Grupos funcionales detectados
+				106 text DETECTADOS
+				107 text Alcohol
+			108 text FÓRMULA MOLECULAR
+			109 text C₂H₆O
+			110 text CARBONOS TOTALES
+			111 text 2
+			112 text GRUPO PRINCIPAL
+			113 text Alcohol
+			114 heading Cómo se obtiene, Value: 3
+				115 text Cómo se obtiene
+			116 text PRIORIDADES QUE APLICAN
+			117 button (expanded) Description: Ocultar ayuda de nomenclatura, Secondary Actions: Collapse
+			118 content list
+				119 container iupac-reasoning-step-01
+					120 text 01
+					121 text Grupo funcional principal
+					122 text Se identifica alcohol como el grupo de mayor prioridad. Aporta el sufijo del nombre. Esta función no obliga automáticamente a usar C1. El carbono que la porta debe recibir el menor localizador que permita la cadena principal; aquí recibe el localizador 1. En esta estructura, el grupo hidroxilo –OH aporta el sufijo «1-ol».
+					123 text ol
+					124 text Sufijo del alcohol
+				125 container iupac-reasoning-step-02
+					126 text 02
+					127 text Cadena principal
+					128 text Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etan-1-ol. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas.
+					129 text etan
+					130 text Cadena principal · 2 carbonos
+				131 container iupac-reasoning-step-03
+					132 text 03
+					133 text Numeración razonada
+					134 text Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C2. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión. El hidroxilo está unido a C1. En esta cadena de dos carbonos, el localizador 1 se omite en el nombre IUPAC preferido porque su posición es inequívoca.
+		135 container
+			136 text Alcance actual: hidrocarburos y nueve familias funcionales con O, N y halógenos.
+		137 link Description: Síguenos en Instagram: @sciu.science, Value: instagram.com/sciu.science/
+		138 text Los hidrógenos se completan automáticamente respetando las valencias de C, O, N y halógenos.
+		139 button (collapsed) Description: Descubrir crédito del autor, Help: Hay algo escondido aquí, Secondary Actions: Expand
+		140 container Nombre IUPAC
+			141 text IUPAC
+			142 pop up button (collapsed, settable) Description: Perfil de nomenclatura, Value: IUPAC sugerido (Blue Book 2013+), Secondary Actions: Expand
+				143 menu
+					144 (selected) IUPAC sugerido (Blue Book 2013+)
+					145 IUPAC 1979 (Legacy)
+			146 container
+				147 link Description: etan: explicar en el paso 02, Cadena principal, Help: Explicar etan · paso 02, Value: sciu-lab.github.io/Hydrocarbon-Lab/es/#iupac-reasoning-step-02
+				148 link Description: ol: explicar en el paso 01, Grupo funcional principal, Help: Explicar ol · paso 01, Value: sciu-lab.github.io/Hydrocarbon-Lab/es/#iupac-reasoning-step-01
+			149 text También conocido como: alcohol etílico
+			150 button (collapsed) ⌃, Help: Mostrar nombre completo, Secondary Actions: Expand
+			151 button Copiar
+
+The focused UI element is 1 AXWebArea OrgoRush — Química orgánica interactiva y práctica IUPAC, URL: sciu-lab.github.io/Hydrocarbon-Lab/es/

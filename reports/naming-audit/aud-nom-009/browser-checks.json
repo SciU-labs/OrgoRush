@@ -1,0 +1,134 @@
+{
+  "audit": "AUD-NOM-009",
+  "source": "Current deployed public app, IAB browser, real DOM/AX/screenshots; existing local storage (not a clean first-user profile).",
+  "observationMethod": "Agent-controlled UI automation using IAB/CUA, DOM/AX inspection and stored screenshots during AUD-NOM-009; interpreted by the auditing agent. Not manual external-user testing. No new browser actions in AUD-NOM-009B.",
+  "documentaryLimit": "en-isotope-error-1280.jpg is contextual: the viewport does not show the isotope error text. The original observed rejection is summarized in this JSON and its adapter message is saved in smoke-matrix.json S38. A screenshot filename alone does not prove viewport geometry or an error's visibility.",
+  "urls": [
+    "https://sciu-lab.github.io/Hydrocarbon-Lab/en/",
+    "https://sciu-lab.github.io/Hydrocarbon-Lab/es/",
+    "https://sciu-lab.github.io/Hydrocarbon-Lab/en/#iupac-reasoning-step-02"
+  ],
+  "viewportMetrics": [
+    {
+      "view": "Main desktop",
+      "innerWidth": 1280,
+      "clientWidth": 1265,
+      "scrollWidth": 1265
+    },
+    {
+      "view": "Main dark aryl",
+      "innerWidth": 390,
+      "clientWidth": 375,
+      "scrollWidth": 375
+    },
+    {
+      "view": "Main dark aryl",
+      "innerWidth": 320,
+      "clientWidth": 305,
+      "scrollWidth": 305
+    },
+    {
+      "view": "Reviewer light",
+      "innerWidth": 320,
+      "clientWidth": 305,
+      "scrollWidth": 305
+    },
+    {
+      "view": "Exam Reviewer light",
+      "innerWidth": 390,
+      "clientWidth": 375,
+      "scrollWidth": 375
+    }
+  ],
+  "checks": [
+    {
+      "id": "builder",
+      "status": "PARTIAL_PASS",
+      "currentEvidence": "SMILES import; Add C: 2-methylpropane→2-methylbutane; Undo/Redo reverse/restore name and formula; terminal deletion butane→propane. Unsupported dimethylphenyl alcohol has unavailable name and disabled copy.",
+      "limits": "SVG bond locator click/press attempts timed out without visible change; not classified as product failure. New ring insertion, full selection workflow not exercised."
+    },
+    {
+      "id": "naming",
+      "status": "PASS_WITH_FINDINGS",
+      "currentEvidence": "Modern ortho aryl full name, independent chain/ring explanation. Legacy unavailable and copy disabled. Reload drops complex-name links (AUD009-004).",
+      "limits": "Live checks on selected molecules only; full 39-case model smoke is local."
+    },
+    {
+      "id": "import",
+      "status": "PASS_WITH_TRANSLATION_FINDING",
+      "currentEvidence": "C1CC rejected with English syntax error. [13CH3]CO rejected with Spanish error; initial ethanol name/formula and history count unchanged.",
+      "limits": "File upload import not exercised; source routes to same adapter."
+    },
+    {
+      "id": "practice",
+      "status": "PASS_FIXED_CONTROLS",
+      "config": {
+        "seed": "aud-nom-009",
+        "difficulty": "Easy",
+        "category": "Alkanes",
+        "questionsPerSession": 1
+      },
+      "currentEvidence": "Naming: hexane reference, ethanol rejected, correction hexane accepted; initial score stays 0/1 and final mastery becomes 1/1. MCQ A.hexane accepted, score 1/1. Build target 2-methylpentane: methane rejected. Reviewer shows reference, original answer, attempt history and detailed parent explanation.",
+      "limits": "No complete category/difficulty sweep; Build correct submission covered by pure structural evaluator, not a second live Build attempt."
+    },
+    {
+      "id": "exam",
+      "status": "PASS_FIXED_CONTROLS",
+      "config": {
+        "seed": "aud-nom-009",
+        "difficulty": "Easy",
+        "category": "Alkanes",
+        "questionType": "Naming",
+        "questionCount": 2
+      },
+      "currentEvidence": "Draft hexane persists Q1→Q2→Q1 and ES→EN. No reference answer in either captured pre-submit question. Review confirms 2/2 answered; separate confirm submission states answers cannot change. Keyboard Tab focused confirmation with 3px blue outline; Return submits. Score 0/2; first reference ethane, submitted hexane, correctly rejected. Results and Reviewer show stored attempts; editable question inputs absent post-submit.",
+      "limits": "No runtime Exam MCQ/Build, no fraud/security evaluation, no extensive generation."
+    },
+    {
+      "id": "class",
+      "status": "PARTIAL_PASS",
+      "currentEvidence": "Two anonymous IDs 001/002 receive different fully framed session seeds; device-only and possible-overlap wording present.",
+      "limits": "No remote accounts implied. CSV download and repeat generation not redone; deterministic implementation inspected and current CI passes."
+    },
+    {
+      "id": "persistence",
+      "status": "PARTIAL_PASS_WITH_FINDINGS",
+      "currentEvidence": "Aryl draft survives reload with same name/formula. Existing ethanol restored from History. Saved tab remains empty (0). Old SMILES success for butane remains after restoring ethanol (AUD009-007).",
+      "limits": "No .quimica import/export or Saved-write/recovery round-trip; no original Saved data changed. Active-session reload not directly performed; temporariness is documented and supported by component state inspection."
+    },
+    {
+      "id": "export",
+      "status": "PNG_PASS_SVG_PENDING",
+      "currentEvidence": "Actual aryl PNG downloaded, 70281 bytes, visually inspected; copied into exported-aryl.png. SVG option and export controls inspected.",
+      "limits": "Browser download call took 208.7s including tool/download mediation despite requested event timeout. Not an app performance measurement. No second download attempted; SVG download unverified."
+    },
+    {
+      "id": "clipboard",
+      "status": "UNVERIFIED",
+      "currentEvidence": "Copy button enabled for current aryl name; UI says copied. Session clipboard reader returned an empty string.",
+      "limits": "Native/session clipboard boundary not established. Do not classify as PASS or confirmed copy defect."
+    },
+    {
+      "id": "accessibility",
+      "status": "PARTIAL_WITH_FINDING",
+      "currentEvidence": "Labeled controls, English settings, explicit text feedback beyond color. Keyboard confirmation focus outline observed. Escape with SMILES behind Settings leaves foreground open (AUD009-008).",
+      "limits": "No real screen reader, touch device, complete keyboard traversal, axe scan or computed contrast audit; AA setting label is not certification."
+    },
+    {
+      "id": "routes",
+      "status": "PASS_FIXED_CONTROLS",
+      "currentEvidence": "Direct /es/ and /en/#iupac-reasoning-step-02 load correct localized title, lang and ethanol fragments. In-session language switch retained Exam draft.",
+      "limits": "Anchor links share a view, not a molecule/session. No molecular share-URL feature found or assumed."
+    }
+  ],
+  "console": {
+    "scope": "Captured warn/error entries in this browser tab",
+    "entries": [],
+    "limitation": "Not a network HAR or global no-error proof."
+  },
+  "sideEffects": {
+    "initial": "Existing ethanol draft, history 2, Saved 0, automatic dark theme.",
+    "final": "Restored original ethanol from History, Saved remains 0, automatic theme and default viewport restored. Four audit-derived History entries remain; no existing entries deleted. Browser exported one PNG in Downloads and an evidence copy in audit folder.",
+    "sourceFilesChanged": false
+  }
+}

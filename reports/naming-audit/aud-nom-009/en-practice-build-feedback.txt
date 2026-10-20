@@ -1,0 +1,43 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+0 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	1 container
+		2 heading OrgoRush, Value: 1
+			3 text OrgoRush
+		4 button (disabled, collapsed) How to use?, Secondary Actions: Expand
+		5 button (expanded) Practice / Exam, Secondary Actions: Collapse
+		6 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		7 container Practice / Exam, ID: practice-panel
+			8 container
+				9 heading Practice / Exam, Value: 2, ID: practice-title
+					10 text Practice / Exam
+				11 container Language
+					12 checkbox ES, Value: 0
+					13 checkbox EN, Value: 1
+				14 button Back to Lab
+			15 container Practice mode
+				16 checkbox (disabled) Practice, Value: 1
+				17 checkbox (disabled) Exam, Value: 0
+			18 container
+				19 text Seed :  aud-nom-009
+			20 heading Question 1 of 1, Value: 3
+				21 text Question 1 of 1
+			22 text Alkanes
+			23 heading Build the molecule, Value: 3
+				24 text Build the molecule
+			25 container
+				26 text Target :  2-methylpentane
+			74 heading Your structure, Value: 3
+				75 text Your structure
+			76 container Question molecular structure
+			77 text Each vertex represents a carbon; its hydrogens are implicit.
+			78 container
+				79 text Not quite.
+				80 text OrgoRush's reference name:
+				81 text 2-methylpentane
+				82 container
+					83 text Response time :  6.9 s
+				84 button Review answer
+				85 button Next
+			73 button End practice
+
+The focused UI element is 78 container

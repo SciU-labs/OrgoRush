@@ -1,0 +1,30 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+0 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	1 container
+		2 heading OrgoRush, Value: 1
+			3 text OrgoRush
+		4 button (disabled, collapsed) How to use?, Secondary Actions: Expand
+		5 button (expanded) Practice / Exam, Secondary Actions: Collapse
+		6 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		7 container Exam, ID: practice-panel
+			8 container
+				9 heading Exam, Value: 2, ID: exam-title
+					10 text Exam
+				11 container Language
+					12 checkbox ES, Value: 0
+					13 checkbox EN, Value: 1
+				14 button Back to configuration
+				15 button Back to Lab
+			16 container
+				17 text Seed :  aud-nom-009
+			18 heading Question 2 of 2, Value: 3
+				19 text Question 2 of 2
+			20 image Question molecular structure
+			21 text Each vertex represents a carbon; its hydrogens are implicit.
+			22 text What is the IUPAC name?
+			23 text field (settable) What is the IUPAC name?, ID: exam-answer
+			24 button Previous
+			25 button Next
+			26 button Review before submitting
+
+The focused UI element is 23 text field (settable) What is the IUPAC name?, ID: exam-answer

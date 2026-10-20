@@ -1,0 +1,116 @@
+{
+  "audit": "AUD-NOM-009",
+  "head": "63d8a8e7ef1df0ccafa62378fa6ebb2a30a49b31",
+  "branch": "main",
+  "remoteMain": "63d8a8e7ef1df0ccafa62378fa6ebb2a30a49b31",
+  "initialUntracked": [
+    "reports/orgorush-aud001-repair.md",
+    "tatus --short"
+  ],
+  "trackedModifications": [],
+  "workflow": {
+    "id": 39317378866,
+    "url": "https://github.com/sciu-lab/Hydrocarbon-Lab/actions/runs/39317378866",
+    "status": "completed",
+    "conclusion": "success",
+    "started": "2026-10-19T20:12:30Z",
+    "updated": "2026-10-19T20:39:00Z",
+    "jobs": [
+      {
+        "id": 118282265845,
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 39317378866,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Descargar el proyecto",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Preparar Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Instalar dependencias",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Ejecutar regresiones críticas",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Ejecutar la batería completa antes de publicar",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Construir la versión estática",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Validar rutas y recursos del artefacto",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Configurar GitHub Pages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Preparar archivos para publicación",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Publicar",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Post Preparar Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21
+          },
+          {
+            "name": "Post Descargar el proyecto",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23
+          }
+        ]
+      }
+    ]
+  },
+  "source": "GitHub connector GET commits/main and actions/runs?head_sha plus workflow jobs; observed during AUD-NOM-009."
+}

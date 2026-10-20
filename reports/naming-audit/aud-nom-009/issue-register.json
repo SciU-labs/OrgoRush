@@ -1,0 +1,394 @@
+{
+  "audit": "AUD-NOM-009",
+  "head": "63d8a8e7ef1df0ccafa62378fa6ebb2a30a49b31",
+  "status": "AUDIT_COMPLETE_WITH_LIMITS",
+  "readiness": {
+    "TECHNICAL_READINESS": "READY_WITH_LIMITATIONS",
+    "SHOW_HN_READINESS": "READY_AFTER_FIXES",
+    "PRODUCT_HUNT_READINESS": "READY_AFTER_FIXES"
+  },
+  "counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 8,
+    "P3": 2
+  },
+  "classificationPolicy": "Availability, interpretation and normative preference are independent. No confirmed CHEMICAL_ERROR or newly adjudicated NOMENCLATURE_ERROR. AUD009-005 retains UNVERIFIED normative status.",
+  "findings": [
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-001",
+      "findingNature": "REPRODUCIBLE_PRESENTATION_DEFECT",
+      "evidenceBoundary": "La captura PNG conserva contexto inglés y la molécula, pero no muestra el texto del error dentro del viewport. El mensaje consta en S38 de la matriz y la observación automatizada original resumida en browser-checks.json; no se creó una nueva captura en 009B.",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "bilingualCategory": "UNTRANSLATED",
+      "module": "SMILES / English errors",
+      "title": "El rechazo isotópico aparece en español en /en/",
+      "steps": [
+        "Open /en/",
+        "SMILES → paste [13CH3]CO → Load SMILES"
+      ],
+      "observed": "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+      "impact": "An English-speaking student cannot read why a safe import was rejected.",
+      "evidence": [
+        "en-isotope-error-1280.jpg",
+        "smoke-matrix.json#S38",
+        "app/openchemlib-adapter.ts:175",
+        "app/page.tsx:9824"
+      ],
+      "recommendation": "Localizar el mensaje por identidad de error en ES/EN y conservar el rechazo seguro.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": true,
+        "productHunt": true
+      }
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-002",
+      "findingNature": "OBSERVED_COVERAGE_LIMITATION",
+      "priority": "P2",
+      "category": "MISSING_COVERAGE",
+      "module": "IUPAC 1979 ES",
+      "title": "Falta cobertura Legacy ES para familias sencillas dentro del dominio general",
+      "steps": [
+        "Run the frozen smoke",
+        "Compare 1979-es with 2013-es and 1979-en"
+      ],
+      "observed": "18/38 imported molecules named in 1979-es; 20 blocked. Four are deliberate substituted-aryl scope gates; 16 other outputs are missing coverage.",
+      "examples": [
+        {
+          "smiles": "C1CCCCC1",
+          "formula": "C6H12",
+          "profile": "1979-es",
+          "observed": null,
+          "expected": null
+        },
+        {
+          "smiles": "c1ccccc1",
+          "formula": "C6H6",
+          "profile": "1979-es",
+          "observed": null,
+          "expected": null
+        },
+        {
+          "smiles": "CCOCC",
+          "formula": "C4H10O",
+          "profile": "1979-es",
+          "observed": null,
+          "expected": null
+        }
+      ],
+      "impact": "A learner may assume the historical profile covers the same families as the modern profile.",
+      "evidence": [
+        "smoke-matrix.json",
+        "smoke-summary.json",
+        "app/nomenclature-conventions.ts",
+        "reports/naming-audit/aud-nom-007-legacy-alkanes.md"
+      ],
+      "recommendation": "Publicar una tabla de cobertura por idioma/perfil. Ampliar solo con adjudicación y regresiones propias; no copiar 2013 por defecto.",
+      "cost": "medio",
+      "costNote": "Documentar la cobertura cuesta poco; ampliar familias requiere trabajo y adjudicación separados.",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      },
+      "novelty": "Existing limitation, re-observed. Not a regression of AUD-NOM-007."
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-003",
+      "findingNature": "COMMUNICATION_IMPROVEMENT_BASED_ON_OBSERVED_OMISSION",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "module": "Practice / Exam / persistence",
+      "title": "La pérdida de sesión al recargar se explica en README pero no junto al inicio de la actividad",
+      "steps": [
+        "Open English Practice / Exam setup",
+        "Start a one-question activity or two-question exam",
+        "Inspect setup, question and results text"
+      ],
+      "observed": "No reload/session-temporariness warning in the captured setup/question/results. README states that sessions, drafts, attempts and Dashboard end on reload.",
+      "impact": "Users can expect durable results from Dashboard or confuse in-session drafts with saved drafts.",
+      "evidence": [
+        "en-practice-setup.txt",
+        "en-exam-setup.txt",
+        "en-exam-results.txt",
+        "README.md:79",
+        "app/practice-panel.tsx",
+        "app/exam-panel.tsx"
+      ],
+      "recommendation": "Aviso breve y bilingüe junto a Start: resultados y borradores solo durante esta sesión; recargar los pierde. Mantener separada la persistencia de la biblioteca.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": true,
+        "productHunt": true
+      },
+      "novelty": "Known persistence design; finding concerns current communication, not missing remote storage."
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-004",
+      "findingNature": "REPRODUCIBLE_PRESENTATION_DEFECT",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "module": "Draft/History restoration / reasoning",
+      "title": "Recargar un nombre local con sustituyente entre paréntesis elimina sus enlaces pedagógicos",
+      "steps": [
+        "Import c1(CCO)c(C)cccc1 in current English profile",
+        "Observe three name links",
+        "Reload",
+        "Observe the same name/formula with no name links"
+      ],
+      "observed": "Before reload, aryl/ethan/1-ol links exist. After reload the name is plain text; only external links remain.",
+      "impact": "A supported educational explanation loses interactive access after returning to the lab.",
+      "evidence": [
+        "en-lab-before-reload.txt",
+        "en-lab-after-reload.txt",
+        "en-restored-name-no-links.txt",
+        "app/page.tsx:5880",
+        "app/page.tsx:8063",
+        "app/page.tsx:7782"
+      ],
+      "recommendation": "Distinguir nombres externos preservados de nombres locales recalculables; reactivar evidencia solo cuando nombre, grafo y perfil coincidan exactamente. Conservar el bloqueo para fuentes ajenas.",
+      "cost": "medio",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      },
+      "chemicalEvidence": {
+        "smiles": "c1(CCO)c(C)cccc1",
+        "formula": "C9H12O",
+        "name": "2-(2-methylphenyl)ethan-1-ol",
+        "profile": "2013-en",
+        "expectedName": "2-(2-methylphenyl)ethan-1-ol",
+        "identityError": false
+      }
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-005",
+      "findingNature": "OBSERVED_LEXICAL_RISK_WITH_UNVERIFIED_NORMATIVE_ADJUDICATION",
+      "evidenceBoundary": "CONFIRMED se refiere al texto observado y al rechazo del parser guardado. La corrección normativa histórica permanece UNVERIFIED; no es un error químico confirmado.",
+      "priority": "P2",
+      "category": "UNVERIFIED",
+      "bilingualCategory": "UNTRANSLATED",
+      "module": "Legacy English lexical forms",
+      "title": "Dos salidas Legacy EN siguen mezclando morfología española",
+      "steps": [
+        "Run frozen S14 and S28",
+        "Read exact 1979-en names and original exact-text OPSIN receipts"
+      ],
+      "observed": "1-chloro-4-vinilbenzene; 2-pentoxiheptane. Exact stored OPSIN responses reject both.",
+      "impact": "The English historical profile presents uncertain lexical forms as available.",
+      "evidence": [
+        "smoke-matrix.json#S14",
+        "smoke-matrix.json#S28",
+        "reports/naming-audit/aud-nom-006-repair.md",
+        "reports/naming-audit/aud-nom-005/rule-derived-candidate-receipts.json"
+      ],
+      "recommendation": "Adjudicar el texto histórico inglés antes de corregirlo o habilitar otra forma; comunicar incertidumbre. No copiar automáticamente los nombres modernos.",
+      "cost": "medio",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      },
+      "novelty": "Known residual Legacy issue documented in AUD-NOM-006; not a reopened modern regression.",
+      "certainty": "HIGH that the exact mixed-language texts are current and parser-rejected; UNVERIFIED normative historical spelling and no proven chemical mismatch.",
+      "examples": [
+        {
+          "smiles": "c1(C=C)ccc(Cl)cc1",
+          "formula": "C8H7Cl",
+          "profile": "1979-en",
+          "observed": "1-chloro-4-vinilbenzene",
+          "expected": null
+        },
+        {
+          "smiles": "CCCCCC(C)OCCCCC",
+          "formula": "C12H26O",
+          "profile": "1979-en",
+          "observed": "2-pentoxiheptane",
+          "expected": null
+        }
+      ]
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-006",
+      "findingNature": "PUBLIC_COMMUNICATION_IMPROVEMENT",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "bilingualCategory": "AMBIGUOUS",
+      "module": "Public documentation / English launch / privacy",
+      "title": "Falta una entrada pública breve en inglés a límites, privacidad y reporte de errores",
+      "steps": [
+        "Read README opening/product/privacy sections",
+        "Inspect English main UI links and help"
+      ],
+      "observed": "Product and privacy documentation is primarily Spanish; English sections describe the Sites scaffold. Main UI exposes Instagram and chemical sources, but no observed direct bug-report/privacy/scope-documentation entry.",
+      "impact": "International visitors cannot readily find scope differences, temporary sessions, third-party services or a useful bug-report channel.",
+      "evidence": [
+        "README.md",
+        "en-help.txt",
+        "en-direct-anchor.txt",
+        "pages-src/en/index.html:15",
+        "app/page.tsx:7611",
+        ".github/ISSUE_TEMPLATE/bug_report.md"
+      ],
+      "recommendation": "Añadir introducción breve en inglés con enlace /en/, límites por perfil, sesiones locales/temporales, terceros y GitHub Issues. Enlazar esa información desde la aplicación. No afirmar open source sin licencia explícita.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": true,
+        "productHunt": true
+      },
+      "privacyLimit": "Analytics script is unconditional in HTML. Compound-context resolver can run when a name/identity is visible; do not describe all third-party access as manually initiated. No consent-law adjudication performed."
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-007",
+      "findingNature": "REPRODUCIBLE_PRESENTATION_DEFECT",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "module": "History restore / SMILES feedback",
+      "title": "Al recuperar History queda visible la confirmación SMILES de otra molécula",
+      "steps": [
+        "Import CCCC from SMILES",
+        "Open History and load the pre-existing ethanol entry",
+        "Leave SMILES panel expanded"
+      ],
+      "observed": "Canvas/formula/name show ethanol C2H6O, but panel still says 'SMILES imported with OpenChemLib. Suggested IUPAC name: butane.'",
+      "impact": "Two conflicting chemical identities appear in one screen although the graph and active name are correct.",
+      "evidence": [
+        "en-history-ethanol-restored.txt",
+        "app/page.tsx:9424",
+        "app/page.tsx:9815"
+      ],
+      "recommendation": "Invalidar el feedback de importación al restaurar o cambiar la molécula, o asociarlo a la identidad exacta de la importación.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": true,
+        "productHunt": true
+      },
+      "chemicalEvidence": {
+        "activeSmiles": "CCO",
+        "activeFormula": "C2H6O",
+        "activeName": "ethanol",
+        "staleName": "butane",
+        "chemicalGraphCorrupted": false
+      }
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-008",
+      "findingNature": "REPRODUCIBLE_KEYBOARD_PRESENTATION_DEFECT",
+      "priority": "P2",
+      "category": "UI_PRESENTATION_ERROR",
+      "module": "Keyboard / Settings overlay",
+      "title": "Escape atiende el panel de fondo antes que el diálogo Settings",
+      "steps": [
+        "Expand SMILES in lab",
+        "Open Settings",
+        "Press Escape once"
+      ],
+      "observed": "Settings stays open. Global shortcut branch clears SMILES/tool panels before testing settingsOpen.",
+      "impact": "Keyboard dismissal requires a second Escape when a background panel is open; foreground overlay behavior is inconsistent.",
+      "evidence": [
+        "en-settings-actual.txt",
+        "en-settings-escape.txt",
+        "app/page.tsx:10160",
+        "app/page.tsx:10178"
+      ],
+      "recommendation": "Dar prioridad al overlay activo al resolver Escape. Mantener foco y restauración al disparador.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      },
+      "scope": "Localized usability issue: labeled Close button remains available. Not a claim of complete keyboard or screen-reader failure."
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-009",
+      "findingNature": "PRESENTATION_INCONSISTENCY",
+      "priority": "P3",
+      "category": "UI_PRESENTATION_ERROR",
+      "bilingualCategory": "INCONSISTENT",
+      "module": "README / branding",
+      "title": "README sigue encabezado Hydrocarbon Lab mientras la aplicación se llama OrgoRush",
+      "steps": [
+        "Compare README headings with live browser title/H1"
+      ],
+      "observed": "README: Hydrocarbon Lab / Laboratorio de Hidrocarburos; live title/H1: OrgoRush.",
+      "impact": "Visitors may not immediately recognize the repository as the same product.",
+      "evidence": [
+        "README.md:1",
+        "pages-src/en/index.html:13",
+        "en-direct-anchor.txt"
+      ],
+      "recommendation": "Alinear el encabezado y explicar que Hydrocarbon-Lab sigue siendo la ruta del repositorio; no requiere cambiar URLs ni arquitectura.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      }
+    },
+    {
+      "status": "CONFIRMED",
+      "reproducibility": "Reproducible in the cited current UI snapshot or fixed engine sample",
+      "confidence": "HIGH",
+      "launchBlockerType": "No P0/P1 technical blocker",
+      "id": "AUD009-010",
+      "findingNature": "SCOPE_COMMUNICATION_INCONSISTENCY",
+      "priority": "P3",
+      "category": "UI_PRESENTATION_ERROR",
+      "bilingualCategory": "INCONSISTENT",
+      "module": "Scope footer",
+      "title": "El texto de alcance aún dice nueve familias funcionales",
+      "steps": [
+        "Read footer in ES/EN",
+        "Compare with current Practice category list"
+      ],
+      "observed": "Footer says nine functional-group families; current categories include alcohol, aldehyde, ketone, acid, ether, ester, amine, amide, nitrile and nitro, plus halogenated compounds.",
+      "impact": "A fixed count obscures the current coverage and differences between tools/profiles.",
+      "evidence": [
+        "app/page.tsx:14268",
+        "app/i18n.ts:573",
+        "en-practice-setup.txt"
+      ],
+      "recommendation": "Usar una enumeración o enlace de alcance mantenido y distinguir categorías de ejercicio de soporte de nomenclatura.",
+      "cost": "bajo",
+      "blocks": {
+        "showHN": false,
+        "productHunt": false
+      }
+    }
+  ]
+}

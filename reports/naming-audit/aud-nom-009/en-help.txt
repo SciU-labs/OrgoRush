@@ -1,0 +1,174 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 container
+			4 heading OrgoRush, Value: 1
+				5 text OrgoRush
+			6 button (expanded) How to use?, Secondary Actions: Collapse
+			7 button (collapsed) Practice / Exam, Secondary Actions: Expand
+			8 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+			9 container structure-panel
+				10 container
+					11 text MOLECULAR STRUCTURE
+					12 heading Build the organic structure, Value: 2
+						13 text Build the organic structure
+					14 text INPUT
+					15 button (collapsed) By name, Secondary Actions: Expand
+					16 button (collapsed) SMILES, Help: Import or export the molecule using SMILES, Secondary Actions: Expand
+					17 button (collapsed) Formula, Help: Generate isomers from a molecular formula, Secondary Actions: Expand
+					18 button (collapsed) Examples, Secondary Actions: Expand
+					19 container Molecular representation type
+						20 text VIEW
+						21 checkbox Semi-dev., Help: Semi-developed structural view, Value: 1
+						22 checkbox (disabled) Condensed, Help: Condensed view for cyclic structures is not available yet., Value: 0
+						23 checkbox Skeletal, Help: Skeletal or line-angle view, Value: 0
+					24 container Change history
+						25 text TOOLS
+						26 button Re-draw the structure as a mirror image
+							27 text Re-draw
+						28 button (disabled) ↶, Help: Undo
+						29 button (disabled) ↷, Help: Redo
+						30 button New
+				31 container
+					32 container Canvas actions
+						33 button (collapsed) Description: Expand canvas, Secondary Actions: Expand
+						34 button Export canvas as a PNG or SVG image
+						35 button Description: Clear the canvas selection, Help: Cancel tool / clear selection — Shortcut: Esc
+					36 image
+						37 button Description: single bond locked to preserve the ring structure, Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+						38 button Description: single bond locked to preserve the ring structure, Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+						39 button Description: single bond locked to preserve the functional group, Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+						40 button Description: Ring bond 1–5. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+						41 button Description: single bond locked to preserve the ring structure, Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+						42 button Description: Ring bond 5–7. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+						43 button Description: Ring bond 7–8. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+						44 button Description: Ring bond 8–9. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+						45 button Description: Ring bond 9–10. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+						46 button Description: Ring bond 1–10. Activate to edit; Shift-activate opens fusion and stereochemistry options., Help: Click to edit bond. Shift-click opens ring fusion and R/S options. Shortcuts: 1 single, 2 double, 3 triple while focused.
+					47 text ALCOHOL · ALKANE
+					48 container
+						49 text ↻ Tap a bond · change bond order
+						50 button Description: Close bond editing hint, Help: Close hint
+					51 container Legend
+						52 text Parent chain Substituent
+					53 text C CARBON SELECTED 0 implicit H  ·  valence 4 / 4
+					54 container Next bond order
+						55 text NEXT BOND
+						56 checkbox SINGLE, Help: Create bond single, Value: 1
+							57 text SINGLE
+						58 checkbox DOUBLE, Help: Create bond double, Value: 0
+							59 text DOUBLE
+						60 checkbox TRIPLE, Help: Create bond triple, Value: 0
+							61 text TRIPLE
+					62 container Add carbon
+						63 button Description: Add carbon up, Help: Add up
+						64 button Description: Add carbon left, Help: Add left
+						65 button Description: Add carbon right, Help: Add right
+						66 button Description: Add carbon down, Help: Add down
+					67 button (collapsed) + Alkyl groups, Secondary Actions: Expand
+						68 text +
+						69 text Alkyl groups
+					70 button (collapsed) Rings, Help: Add ring — Shortcut: R, Secondary Actions: Expand
+					71 button (collapsed) Functional groups, Secondary Actions: Expand
+					72 button − Remove terminal atom
+						73 text −
+						74 text Remove terminal atom
+					75 text i Continuing where you left off: 2-(2-methylphenyl)ethan-1-ol.
+			76 container Quick instructions
+				77 container
+					78 text 01
+					79 text Select
+					80 text a carbon
+				81 container
+					82 text 02
+					83 text Add
+					84 text C, bonds, and functional groups
+				85 container
+					86 text 03
+					87 text Analyze
+					88 text the IUPAC name
+			89 container analysis-panel
+				90 container Preferences
+					91 pop up button Open my history. 3 recent versions
+						92 text History
+						93 text Always available
+						94 text 3
+					95 pop up button Open Saved. 0 selected structures
+						96 text Saved
+						97 text Selected by you
+						98 text 0
+					99 container Language
+						100 checkbox Description: Español, Value: 0
+						101 checkbox Description: English, Value: 1
+					102 button Description: Theme Light. Change color mode, Help: Switch between automatic, light, and dark
+						103 text Theme
+						104 text Light
+					105 pop up button (collapsed) Description: Open settings, Help: Settings, Secondary Actions: Expand
+					106 text Hydrocarbons · functional groups
+				107 text REAL-TIME ANALYSIS
+				108 heading Molecular analysis, Value: 2
+					109 text Molecular analysis
+				110 text VALID STRUCTURE
+				111 switch (disabled) STEREOCHEMISTRY, Help: No E/Z or R/S centers are defined in this structure., Value: 0
+				112 container Detected functional groups
+					113 text DETECTED
+					114 text Alcohol
+				115 text MOLECULAR FORMULA
+				116 text C₉H₁₂O
+				117 text TOTAL CARBONS
+				118 text 9
+				119 text PRINCIPAL GROUP
+				120 text Alcohol
+				121 container external-info-card
+					122 text 🌍 IN THE REAL WORLD
+					123 heading 2-(2-methylphenyl)ethan-1-ol, Value: 3
+						124 text 2-(2-methylphenyl)ethan-1-ol
+					125 button (expanded) Description: Hide external information, Secondary Actions: Collapse
+					126 text No verified external information was found for this structure.
+				127 heading How it is derived, Value: 3
+					128 text How it is derived
+				129 text APPLIED PRIORITIES
+				130 button (expanded) Description: Hide nomenclature help, Secondary Actions: Collapse
+				131 content list
+					132 container iupac-reasoning-step-01
+						133 text 01
+						134 text Principal functional group
+						135 text Alcohol has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the hydroxyl group –OH contributes the suffix “1-ol”.
+					136 container iupac-reasoning-step-02
+						137 text 02
+						138 text Parent chain
+						139 text The parent is the 2-carbon chain containing the principal alcohol function; its base name is ethan-1-ol. The aromatic ring and its methyl carbon belong to the substituted aryl group.
+					140 container iupac-reasoning-step-03
+						141 text 03
+						142 text Numbering
+						143 text The principal group (Alcohol) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C2. The lower locant set determines the orientation.
+					144 container iupac-reasoning-step-04
+						145 text 04
+						146 text Substituents and locants
+						147 text Substituent names and locants are assigned from the numbered parent skeleton: 2-(2-methylphenyl). Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once. The ring attachment to chain C2 is ring C1. Its methyl is at ring C2, giving “2-methylphenyl”. Ring locants are independent of the alcohol-chain numbering. The aryl fragment contains all six ring carbons and its methyl carbon.
+			148 container
+				149 text Current scope: hydrocarbons and nine functional-group families containing O, N, and halogens.
+			150 link Description: Follow us on Instagram: @sciu.science, Value: instagram.com/sciu.science/
+			151 text Hydrogens are completed automatically while respecting the valences of C, O, N, and halogens.
+			152 button (collapsed) Description: Reveal author credit, Help: There is something hidden here, Secondary Actions: Expand
+			153 container IUPAC name
+				154 text IUPAC
+				155 pop up button (collapsed, settable) Description: Nomenclature profile, Value: IUPAC Suggested (Blue Book 2013+), Secondary Actions: Expand
+					156 menu
+						157 (selected) IUPAC Suggested (Blue Book 2013+)
+						158 IUPAC 1979 (Legacy)
+				159 container
+					160 text 2- (2- methylphenyl)ethan- 1- ol
+				161 button (collapsed) ⌃, Help: Show full name, Secondary Actions: Expand
+				162 button Copy
+		163 container Build a molecule, ID: guided-tour-panel
+			164 text Step 1 of 7
+			165 button Close guide
+			166 heading Build a molecule, Value: 2, ID: guided-tour-title
+				167 text Build a molecule
+			168 text Click a carbon in the canvas to select it, then choose an Add C arrow below the canvas. The new carbon appears in that direction.
+			169 button Skip
+			170 button (disabled) Previous
+			171 button Next
+
+The focused UI element is 6 button (expanded) How to use?, Secondary Actions: Collapse

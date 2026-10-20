@@ -1,0 +1,91 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 button Close history
+		4 container My chemistry lab
+			5 text PERSONAL LIBRARY
+			6 heading My chemistry lab, Value: 2, ID: history-title
+				7 text My chemistry lab
+			8 button Close history
+			9 tab group My laboratory sections
+				10 tab (selected, settable, boolean) History Automatic 6, Value: 1
+History
+Automatic
+6
+				11 tab (selectable, settable, boolean) Saved Selected by you 0, Value: 0
+Saved
+Selected by you
+0
+			12 container Export or clear chemistry history
+				13 button Export history, Help: Download history as a single document
+				14 button Description: Clear all history without deleting Saved structures, Help: Clear history only; Saved structures will be preserved
+			15 container
+				16 text Saved in this browser Your history is restored when you return from this browser.
+			17 search text field (settable) Search my history
+			18 text Recent versions
+			19 text A unique version is saved after each pause.
+			20 text 6
+			21 container
+				22 button Open propane
+					23 text propane
+					24 text C₃H₈
+					25 text  · 
+					26 text Hydrocarbon
+					27 container
+						28 text Oct 19, 09:04 PM  ·  3 atoms
+				29 container
+					30 button Description: Download propane as a chemistry document, Help: Download .quimica file
+					31 button Description: Remove propane from my history, Help: Remove from history
+				32 button Open Local IUPAC name unavailable for this structure
+					33 text Local IUPAC name unavailable for this structure
+					34 text C₁₀H₁₄O
+					35 text  · 
+					36 text Alcohol
+					37 container
+						38 text Oct 19, 09:03 PM  ·  11 atoms
+				39 container
+					40 button Description: Download Local IUPAC name unavailable for this structure as a chemistry document, Help: Download .quimica file
+					41 button Description: Remove Local IUPAC name unavailable for this structure from my history, Help: Remove from history
+				42 button Open 2-methylbutane
+					43 text 2-methylbutane
+					44 text C₅H₁₂
+					45 text  · 
+					46 text Hydrocarbon
+					47 container
+						48 text Oct 19, 09:03 PM  ·  5 atoms
+				49 container
+					50 button Description: Download 2-methylbutane as a chemistry document, Help: Download .quimica file
+					51 button Description: Remove 2-methylbutane from my history, Help: Remove from history
+				52 button Open 2-(2-methylphenyl)ethan-1-ol
+					53 text 2-(2-methylphenyl)ethan-1-ol
+					54 text C₉H₁₂O
+					55 text  · 
+					56 text Alcohol
+					57 container
+						58 text Oct 19, 08:55 PM  ·  10 atoms
+				59 container
+					60 button Description: Download 2-(2-methylphenyl)ethan-1-ol as a chemistry document, Help: Download .quimica file
+					61 button Description: Remove 2-(2-methylphenyl)ethan-1-ol from my history, Help: Remove from history
+				62 button Open ethanol
+					63 text ethanol
+					64 text C₂H₆O
+					65 text  · 
+					66 text Alcohol
+					67 container
+						68 text Oct 11, 06:55 PM  ·  3 atoms
+				69 container
+					70 button Description: Download ethanol as a chemistry document, Help: Download .quimica file
+					71 button Description: Remove ethanol from my history, Help: Remove from history
+				72 button Open methane
+					73 text methane
+					74 text C₁H₄
+					75 text  · 
+					76 text Hydrocarbon
+					77 container
+						78 text Oct 11, 06:54 PM  ·  1 atom
+				79 container
+					80 button Description: Download methane as a chemistry document, Help: Download .quimica file
+					81 button Description: Remove methane from my history, Help: Remove from history
+			82 text History and Saved remain separate, and each visitor sees only their own structures.
+
+The focused UI element is 8 button Close history

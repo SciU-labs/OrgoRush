@@ -1,0 +1,169 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 heading OrgoRush, Value: 1
+			4 text OrgoRush
+		5 button (collapsed) How to use?, Secondary Actions: Expand
+		6 button (collapsed) Practice / Exam, Secondary Actions: Expand
+		7 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		8 container structure-panel
+			9 container
+				10 text MOLECULAR STRUCTURE
+				11 heading Build the organic structure, Value: 2
+					12 text Build the organic structure
+				162 text INPUT
+				14 button (collapsed) By name, Secondary Actions: Expand
+				15 button (expanded) SMILES, Help: Import or export the molecule using SMILES, Secondary Actions: Collapse
+				16 button (collapsed) Formula, Help: Generate isomers from a molecular formula, Secondary Actions: Expand
+				17 button (collapsed) Examples, Secondary Actions: Expand
+				18 container Molecular representation type
+					163 text VIEW
+					20 checkbox Semi-dev., Help: Semi-developed structural view, Value: 1
+					21 checkbox Condensed, Help: Condensed structural formula, Value: 0
+					22 checkbox Skeletal, Help: Skeletal or line-angle view, Value: 0
+				23 container Change history
+					164 text TOOLS
+					25 button Re-draw the structure as a mirror image
+						26 text Re-draw
+					27 button ↶, Help: Undo
+					28 button (disabled) ↷, Help: Redo
+					29 button New
+			30 container
+				31 container Canvas actions
+					32 button (collapsed) Description: Expand canvas, Secondary Actions: Expand
+					33 button Export canvas as a PNG or SVG image
+					34 button Description: Clear the canvas selection, Help: Cancel tool / clear selection — Shortcut: Esc
+				35 image
+					36 button Description: single bond. Activate to change its order; Shift-activate opens stereochemistry options., Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+					37 button Description: single bond. Activate to change its order; Shift-activate opens stereochemistry options., Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+					179 button Description: single bond. Activate to change its order; Shift-activate opens stereochemistry options., Help: Click to edit bond. Shift-click opens R/S options; Alt-click switches E/Z when available.
+					180 text 1
+					181 text 2
+					182 text 3
+				46 text ALKANE
+				47 container
+					48 text ↻ Tap a bond · change bond order
+					49 button Description: Close bond editing hint, Help: Close hint
+				50 container Legend
+					51 text Parent chain Substituent
+				52 text C CARBON SELECTED 3 implicit H  ·  valence 1 / 4
+				53 container Next bond order
+					54 text NEXT BOND
+					55 checkbox SINGLE, Help: Create bond single, Value: 1
+						56 text SINGLE
+					57 checkbox DOUBLE, Help: Create bond double, Value: 0
+						58 text DOUBLE
+					59 checkbox TRIPLE, Help: Create bond triple, Value: 0
+						60 text TRIPLE
+				61 container Add carbon
+					62 button Description: Add carbon up, Help: Add up
+					63 button Description: Add carbon left, Help: Add left
+					64 button Description: Add carbon right, Help: Add right
+					65 button Description: Add carbon down, Help: Add down
+				66 button (collapsed) + Alkyl groups, Secondary Actions: Expand
+					67 text +
+					68 text Alkyl groups
+				69 button (collapsed) Rings, Help: Add ring — Shortcut: R, Secondary Actions: Expand
+				70 button (collapsed) Functional groups, Secondary Actions: Expand
+				71 button − Remove terminal atom
+					72 text −
+					73 text Remove terminal atom
+				74 text i Structure loaded from SMILES text. You can keep editing it atom by atom.
+		75 container Quick instructions
+			76 container
+				77 text 01
+				78 text Select
+				79 text a carbon
+			80 container
+				81 text 02
+				82 text Add
+				83 text C, bonds, and functional groups
+			84 container
+				85 text 03
+				86 text Analyze
+				87 text the IUPAC name
+		165 container SMILES
+			166 container Description: SMILES compatibility, ID: smiles-interop-panel
+				167 text SMILES compatibility
+				168 text .quimica remains SciU's native format; SMILES lets you exchange the molecule with other chemistry tools.
+				169 button Export SMILES (.smi)
+				170 container
+					171 text Import SMILES
+					172 button Import SMILES file into the canvas
+				173 container
+					174 text Paste or type a SMILES
+					175 text field (settable) Paste or type a SMILES, Value: CC(C)C, ID: smiles-text-input
+					176 button Load SMILES
+				177 text .smi
+				178 text Exports an isomeric SMILES string as plain text. .smiles and .txt files are also accepted on import.
+				183 text SMILES imported with OpenChemLib. Suggested IUPAC name: 2-methylpropane.
+		88 container analysis-panel
+			89 container Preferences
+				90 pop up button Open my history. 3 recent versions
+					91 text History
+					92 text Always available
+					93 text 3
+				94 pop up button Open Saved. 0 selected structures
+					95 text Saved
+					96 text Selected by you
+					97 text 0
+				98 container Language
+					99 checkbox Description: Español, Value: 0
+					100 checkbox Description: English, Value: 1
+				101 button Description: Theme Light. Change color mode, Help: Switch between automatic, light, and dark
+					102 text Theme
+					103 text Light
+				104 pop up button (collapsed) Description: Open settings, Help: Settings, Secondary Actions: Expand
+				105 text Hydrocarbons · functional groups
+			106 text REAL-TIME ANALYSIS
+			107 heading Molecular analysis, Value: 2
+				108 text Molecular analysis
+			109 text VALID STRUCTURE
+			110 switch (disabled) STEREOCHEMISTRY, Help: No E/Z or R/S centers are defined in this structure., Value: 0
+			114 text MOLECULAR FORMULA
+			115 text C₄H₁₀
+			116 text TOTAL CARBONS
+			117 text 4
+			118 text PRINCIPAL GROUP
+			119 text Hydrocarbon
+			126 heading How it is derived, Value: 3
+				127 text How it is derived
+			128 text APPLIED PRIORITIES
+			129 button (expanded) Description: Hide nomenclature help, Secondary Actions: Collapse
+			130 content list
+				135 container iupac-reasoning-step-02
+					136 text 02
+					137 text Parent chain
+					184 text The continuous carbon chain chosen as the parent contains 3 carbons. The parent name is propane; the complete IUPAC name is 2-methylpropane.
+					185 text propane
+					186 text Parent chain · 3 carbons
+				139 container iupac-reasoning-step-03
+					140 text 03
+					141 text Numbering
+					187 text Both numbering directions give the same substituent locants (2); neither direction wins this comparison.
+					188 text 2
+					189 text Substituent locant
+				143 container iupac-reasoning-step-04
+					144 text 04
+					145 text Substituents and locants
+					190 text Substituent names and locants are assigned from the numbered parent skeleton: 2-methyl. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once. Both directions are equivalent for these locants.
+					191 text 2-methyl
+					192 text Substituent and locants
+		147 container
+			148 text Current scope: hydrocarbons and nine functional-group families containing O, N, and halogens.
+		149 link Description: Follow us on Instagram: @sciu.science, Value: instagram.com/sciu.science/
+		150 text Hydrogens are completed automatically while respecting the valences of C, O, N, and halogens.
+		151 button (collapsed) Description: Reveal author credit, Help: There is something hidden here, Secondary Actions: Expand
+		152 container IUPAC name
+			153 text IUPAC
+			154 pop up button (collapsed, settable) Description: Nomenclature profile, Value: IUPAC Suggested (Blue Book 2013+), Secondary Actions: Expand
+				155 menu
+					156 (selected) IUPAC Suggested (Blue Book 2013+)
+					157 IUPAC 1979 (Legacy)
+			158 container
+				193 link Description: 2-methyl: explain in step 04, Substituents and locants; also related to step 03, Help: Explain 2-methyl · step 04, Value: sciu-lab.github.io/Hydrocarbon-Lab/en/#iupac-reasoning-step-04
+				194 link Description: propane: explain in step 02, Parent chain, Help: Explain propane · step 02, Value: sciu-lab.github.io/Hydrocarbon-Lab/en/#iupac-reasoning-step-02
+			160 button (collapsed) ⌃, Help: Show full name, Secondary Actions: Expand
+			161 button Copy
+
+The focused UI element is 176 button Load SMILES

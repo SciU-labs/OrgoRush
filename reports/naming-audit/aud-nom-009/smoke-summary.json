@@ -1,0 +1,82 @@
+{
+  "sampleSize": 39,
+  "accepted": 38,
+  "rejected": 1,
+  "identities": 38,
+  "unmutated": 38,
+  "reasoning": {
+    "PASS": 126,
+    "FAIL": 0
+  },
+  "profiles": {
+    "2013-es": {
+      "available": 37,
+      "blocked": 1,
+      "interpretations": {
+        "UNVERIFIED": 37,
+        "UNSUPPORTED": 1
+      },
+      "blockedIDs": [
+        "S19"
+      ]
+    },
+    "2013-en": {
+      "available": 37,
+      "blocked": 1,
+      "interpretations": {
+        "MATCH": 24,
+        "UNVERIFIED": 13,
+        "UNSUPPORTED": 1
+      },
+      "blockedIDs": [
+        "S19"
+      ]
+    },
+    "1979-es": {
+      "available": 18,
+      "blocked": 20,
+      "interpretations": {
+        "UNVERIFIED": 18,
+        "UNSUPPORTED": 20
+      },
+      "blockedIDs": [
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S19",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S36",
+        "S37"
+      ]
+    },
+    "1979-en": {
+      "available": 34,
+      "blocked": 4,
+      "interpretations": {
+        "MATCH": 14,
+        "UNVERIFIED": 18,
+        "REJECTED": 2,
+        "UNSUPPORTED": 4
+      },
+      "blockedIDs": [
+        "S15",
+        "S16",
+        "S17",
+        "S19"
+      ]
+    }
+  }
+}

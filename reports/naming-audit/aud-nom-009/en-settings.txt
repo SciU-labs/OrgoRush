@@ -1,0 +1,37 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 button Close history
+		4 container My chemistry lab
+			5 text PERSONAL LIBRARY
+			6 heading My chemistry lab, Value: 2, ID: history-title
+				7 text My chemistry lab
+			8 button Close history
+			9 tab group My laboratory sections
+				10 tab (selectable, settable, boolean) History Automatic 6, Value: 0
+History
+Automatic
+6
+				11 tab (selected, settable, boolean) Saved Selected by you 0, Value: 1
+Saved
+Selected by you
+0
+			12 container Import and export saved structures
+				13 container
+					14 text Import .quimica
+					15 button Import chemistry document into Saved
+				16 button (disabled) Export saved, Help: Add a structure to Saved before exporting
+			17 text CURRENT STRUCTURE
+			18 text ethanol
+			19 container
+				20 text C₂H₆O  ·  Alcohol
+			21 button Add to Saved
+			22 search text field (settable) Search Saved
+			23 text Saved structures
+			24 text This section only contains what you choose to keep.
+			25 text 0
+			26 text You do not have any saved structures yet
+			27 text Add the current structure or import a .quimica file to keep it separately from history.
+			28 text History and Saved remain separate, and each visitor sees only their own structures.
+
+The focused UI element is 1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/

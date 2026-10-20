@@ -1,0 +1,77 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+0 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	1 container
+		2 heading OrgoRush, Value: 1
+			3 text OrgoRush
+		4 button (disabled, collapsed) How to use?, Secondary Actions: Expand
+		5 button (expanded) Practice / Exam, Secondary Actions: Collapse
+		6 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		7 container Practice / Exam, ID: practice-panel
+			8 container
+				9 heading Practice / Exam, Value: 2, ID: practice-title
+					10 text Practice / Exam
+				11 container Language
+					12 checkbox ES, Value: 0
+					13 checkbox EN, Value: 1
+				14 button Back to Lab
+			15 container Practice mode
+				16 checkbox Practice, Value: 1
+				17 checkbox Exam, Value: 0
+			18 container
+				19 text Practice names with generated structures. Your lab molecule is preserved.
+				20 heading Topics, Value: 3
+					21 text Topics
+				22 container Hydrocarbons
+					23 text Hydrocarbons
+					24 checkbox (settable, integer) Description: Alkanes, Value: 1
+					25 checkbox (settable, integer) Description: Alkenes, Value: 0
+					26 checkbox (settable, integer) Description: Alkynes, Value: 0
+				27 container Functional groups
+					28 text Functional groups
+					29 checkbox (settable, integer) Description: Halogenated compounds, Value: 0
+					30 checkbox (settable, integer) Description: Alcohols, Value: 0
+					31 checkbox (settable, integer) Description: Aldehydes, Value: 0
+					32 checkbox (settable, integer) Description: Ketones, Value: 0
+					33 checkbox (settable, integer) Description: Carboxylic acids, Value: 0
+					34 checkbox (settable, integer) Description: Ethers, Value: 0
+					35 checkbox (settable, integer) Description: Esters, Value: 0
+					36 checkbox (settable, integer) Description: Amines, Value: 0
+					37 checkbox (settable, integer) Description: Amides, Value: 0
+					38 checkbox (settable, integer) Description: Nitriles, Value: 0
+					39 checkbox (settable, integer) Description: Nitro compounds, Value: 0
+				40 container Cyclic / Aromatic
+					41 text Cyclic / Aromatic
+					42 checkbox (settable, integer) Description: Simple carbocyclic compounds, Value: 0
+					43 checkbox (settable, integer) Description: Aromatics, Value: 0
+				44 container Stereochemistry
+					45 text Stereochemistry
+					46 checkbox (settable, integer) Description: E/Z stereochemistry, Value: 0
+				47 container Question types
+					48 text Question types
+					49 checkbox (settable, integer) Description: Naming, Value: 1
+					50 checkbox (settable, integer) Description: Multiple choice, Value: 0
+					51 checkbox (settable, integer) Description: Build the molecule, Value: 0
+				52 container Difficulty
+					53 text Difficulty
+					54 container
+						55 radio button (settable, integer) Description: Easy, Value: 1
+						56 text Easy
+					57 container
+						58 radio button (settable, integer) Description: Intermediate, Value: 0
+						59 text Intermediate
+					60 container
+						61 radio button (settable, integer) Description: Hard, Value: 0
+						62 text Hard
+					63 text One main naming idea at a time.
+				64 text Questions
+				65 stepper (settable, integer) Questions, Value: 10
+				66 checkbox (settable, integer) Description: Endless, Value: 0
+				67 text Seed (optional)
+				68 text field (settable) Seed (optional)
+				69 container Class variants
+					70 heading Class variants, Value: 3, ID: class-variants-title
+						71 text Class variants
+					72 checkbox (settable, integer) Description: Generate variants for a class, Value: 0
+				73 button Start Practice
+
+The focused UI element is 9 heading Practice / Exam, Value: 2, ID: practice-title

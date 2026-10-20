@@ -1,0 +1,1102 @@
+{
+  "audit": "AUD-NOM-009B",
+  "status": "PASS",
+  "capturedAt": "2026-10-20T01:02:48.129Z",
+  "scope": "Documentary verification of already recorded results; no chemistry, grading, suites or browser executed.",
+  "head": "63d8a8e7ef1df0ccafa62378fa6ebb2a30a49b31",
+  "branch": "main",
+  "matrixReconstructed": false,
+  "expectedDeliverables": [
+    {
+      "path": "reports/naming-audit/aud-nom-009-prelaunch-audit.md",
+      "exists": true,
+      "bytes": 37261
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/issue-register.json",
+      "exists": true,
+      "bytes": 17402
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/smoke-matrix.json",
+      "exists": true,
+      "bytes": 626686
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/sample-plan.json",
+      "exists": true,
+      "bytes": 1967
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/baseline.json",
+      "exists": true,
+      "bytes": 3281
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/browser-checks.json",
+      "exists": true,
+      "bytes": 7368
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/run-bounded.ps1",
+      "exists": true,
+      "bytes": 936
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/smoke.mjs",
+      "exists": true,
+      "bytes": 5058
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/grading-smoke.mjs",
+      "exists": true,
+      "bytes": 2097
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/summarize.mjs",
+      "exists": true,
+      "bytes": 1865
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/validate-evidence.mjs",
+      "exists": true,
+      "bytes": 3273
+    }
+  ],
+  "counts": {
+    "sampleSize": 39,
+    "accepted": 38,
+    "rejected": 1,
+    "identities": 38,
+    "unmutated": 38,
+    "reasoning": {
+      "PASS": 126,
+      "FAIL": 0
+    },
+    "profiles": {
+      "2013-es": {
+        "available": 37,
+        "blocked": 1,
+        "interpretations": {
+          "UNVERIFIED": 37,
+          "UNSUPPORTED": 1
+        },
+        "blockedIDs": [
+          "S19"
+        ]
+      },
+      "2013-en": {
+        "available": 37,
+        "blocked": 1,
+        "interpretations": {
+          "MATCH": 24,
+          "UNVERIFIED": 13,
+          "UNSUPPORTED": 1
+        },
+        "blockedIDs": [
+          "S19"
+        ]
+      },
+      "1979-es": {
+        "available": 18,
+        "blocked": 20,
+        "interpretations": {
+          "UNVERIFIED": 18,
+          "UNSUPPORTED": 20
+        },
+        "blockedIDs": [
+          "S09",
+          "S10",
+          "S11",
+          "S12",
+          "S13",
+          "S14",
+          "S15",
+          "S16",
+          "S17",
+          "S19",
+          "S27",
+          "S28",
+          "S29",
+          "S30",
+          "S31",
+          "S32",
+          "S33",
+          "S34",
+          "S36",
+          "S37"
+        ]
+      },
+      "1979-en": {
+        "available": 34,
+        "blocked": 4,
+        "interpretations": {
+          "MATCH": 14,
+          "UNVERIFIED": 18,
+          "REJECTED": 2,
+          "UNSUPPORTED": 4
+        },
+        "blockedIDs": [
+          "S15",
+          "S16",
+          "S17",
+          "S19"
+        ]
+      }
+    }
+  },
+  "profilePositions": {
+    "totalFrozen": 156,
+    "imported": 152,
+    "available": 126,
+    "blockedAfterImport": 26,
+    "notExecutedDueToRejectedInput": 4
+  },
+  "unitDefinitions": {
+    "structures": "39 frozen inputs = 38 accepted graphs + one rejected isotope input",
+    "reasoning": "126 available case/profile models checked in AUD-NOM-009; not 126 distinct structures or an exact assertion count",
+    "grading": "Six saved comparisons, separately counted; not rerun",
+    "statuses": "PASS/FAIL: recorded check result; UNSUPPORTED/BLOCKED: unavailable name; UNVERIFIED: insufficient evidence, not FAIL; no SKIP count inferred for absent profile execution"
+  },
+  "findingCounts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 8,
+    "P3": 2
+  },
+  "readiness": {
+    "TECHNICAL_READINESS": "READY_WITH_LIMITATIONS",
+    "SHOW_HN_READINESS": "READY_AFTER_FIXES",
+    "PRODUCT_HUNT_READINESS": "READY_AFTER_FIXES"
+  },
+  "gradingComparisons": 6,
+  "evidencePaths": [
+    {
+      "ref": "en-isotope-error-1280.jpg",
+      "resolved": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.jpg"
+    },
+    {
+      "ref": "smoke-matrix.json#S38",
+      "resolved": "reports/naming-audit/aud-nom-009/smoke-matrix.json"
+    },
+    {
+      "ref": "app/openchemlib-adapter.ts:175",
+      "resolved": "app/openchemlib-adapter.ts"
+    },
+    {
+      "ref": "app/page.tsx:9824",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "smoke-matrix.json",
+      "resolved": "reports/naming-audit/aud-nom-009/smoke-matrix.json"
+    },
+    {
+      "ref": "smoke-summary.json",
+      "resolved": "reports/naming-audit/aud-nom-009/smoke-summary.json"
+    },
+    {
+      "ref": "app/nomenclature-conventions.ts",
+      "resolved": "app/nomenclature-conventions.ts"
+    },
+    {
+      "ref": "reports/naming-audit/aud-nom-007-legacy-alkanes.md",
+      "resolved": "reports/naming-audit/aud-nom-007-legacy-alkanes.md"
+    },
+    {
+      "ref": "en-practice-setup.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-practice-setup.txt"
+    },
+    {
+      "ref": "en-exam-setup.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-exam-setup.txt"
+    },
+    {
+      "ref": "en-exam-results.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-exam-results.txt"
+    },
+    {
+      "ref": "README.md:79",
+      "resolved": "README.md"
+    },
+    {
+      "ref": "app/practice-panel.tsx",
+      "resolved": "app/practice-panel.tsx"
+    },
+    {
+      "ref": "app/exam-panel.tsx",
+      "resolved": "app/exam-panel.tsx"
+    },
+    {
+      "ref": "en-lab-before-reload.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-lab-before-reload.txt"
+    },
+    {
+      "ref": "en-lab-after-reload.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-lab-after-reload.txt"
+    },
+    {
+      "ref": "en-restored-name-no-links.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-restored-name-no-links.txt"
+    },
+    {
+      "ref": "app/page.tsx:5880",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "app/page.tsx:8063",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "app/page.tsx:7782",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "smoke-matrix.json#S14",
+      "resolved": "reports/naming-audit/aud-nom-009/smoke-matrix.json"
+    },
+    {
+      "ref": "smoke-matrix.json#S28",
+      "resolved": "reports/naming-audit/aud-nom-009/smoke-matrix.json"
+    },
+    {
+      "ref": "reports/naming-audit/aud-nom-006-repair.md",
+      "resolved": "reports/naming-audit/aud-nom-006-repair.md"
+    },
+    {
+      "ref": "reports/naming-audit/aud-nom-005/rule-derived-candidate-receipts.json",
+      "resolved": "reports/naming-audit/aud-nom-005/rule-derived-candidate-receipts.json"
+    },
+    {
+      "ref": "README.md",
+      "resolved": "README.md"
+    },
+    {
+      "ref": "en-help.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-help.txt"
+    },
+    {
+      "ref": "en-direct-anchor.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-direct-anchor.txt"
+    },
+    {
+      "ref": "pages-src/en/index.html:15",
+      "resolved": "pages-src/en/index.html"
+    },
+    {
+      "ref": "app/page.tsx:7611",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "resolved": ".github/ISSUE_TEMPLATE/bug_report.md"
+    },
+    {
+      "ref": "en-history-ethanol-restored.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-history-ethanol-restored.txt"
+    },
+    {
+      "ref": "app/page.tsx:9424",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "app/page.tsx:9815",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "en-settings-actual.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-settings-actual.txt"
+    },
+    {
+      "ref": "en-settings-escape.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-settings-escape.txt"
+    },
+    {
+      "ref": "app/page.tsx:10160",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "app/page.tsx:10178",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "README.md:1",
+      "resolved": "README.md"
+    },
+    {
+      "ref": "pages-src/en/index.html:13",
+      "resolved": "pages-src/en/index.html"
+    },
+    {
+      "ref": "en-direct-anchor.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-direct-anchor.txt"
+    },
+    {
+      "ref": "app/page.tsx:14268",
+      "resolved": "app/page.tsx"
+    },
+    {
+      "ref": "app/i18n.ts:573",
+      "resolved": "app/i18n.ts"
+    },
+    {
+      "ref": "en-practice-setup.txt",
+      "resolved": "reports/naming-audit/aud-nom-009/en-practice-setup.txt"
+    }
+  ],
+  "images": [
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-class-390-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 35183,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-320-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 21194,
+      "width": 305,
+      "height": 705
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-results-320-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 20515,
+      "width": 305,
+      "height": 705
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.jpg",
+      "mime": "image/jpeg",
+      "bytes": 41093,
+      "width": 811,
+      "height": 889
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-main-320-dark.jpg",
+      "mime": "image/jpeg",
+      "bytes": 24818,
+      "width": 305,
+      "height": 705
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-main-390-dark.jpg",
+      "mime": "image/jpeg",
+      "bytes": 31584,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 24547,
+      "width": 305,
+      "height": 705
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-reviewer-320-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 20757,
+      "width": 305,
+      "height": 705
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-unsupported-390-light.jpg",
+      "mime": "image/jpeg",
+      "bytes": 35642,
+      "width": 375,
+      "height": 812
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/exported-aryl.png",
+      "mime": "image/png",
+      "bytes": 70281,
+      "width": 629,
+      "height": 650
+    }
+  ],
+  "originalArtifactChecks": [
+    {
+      "path": "reports/naming-audit/aud-nom-009-prelaunch-audit.md",
+      "bytes": 35699,
+      "sha256": "b302289140222b78afe1c02fffaf57fc25cd01dca4e877f30f9828b8d146252a",
+      "currentPath": "reports/naming-audit/aud-nom-009-prelaunch-audit.md",
+      "currentSHA256": "9650f88c6be51e0d37b943d0e396628bc0dfe713075f34953432d20d9eaa2962",
+      "unchanged": false
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/baseline.json",
+      "bytes": 3281,
+      "sha256": "2b474d98b913a20475dcaff71da8ed94968f0cf0f055e78e713f560ce48ea8b6",
+      "currentPath": "reports/naming-audit/aud-nom-009/baseline.json",
+      "currentSHA256": "2b474d98b913a20475dcaff71da8ed94968f0cf0f055e78e713f560ce48ea8b6",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/browser-checks.json",
+      "bytes": 6804,
+      "sha256": "c355d75c7bdec4b4c6684028ab5dd14de7e32c696cb17d1f0a3d0a249587cd8f",
+      "currentPath": "reports/naming-audit/aud-nom-009/browser-checks.json",
+      "currentSHA256": "0b69366db42a737c8342cb48a0bd827130b25880fcda2a9813ed559288caf0f4",
+      "unchanged": false
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-alkane-after-edit.txt",
+      "bytes": 8754,
+      "sha256": "e6682be8687211d869fe0487a1666b96f8720aac60afc8b41366bda89b3c9168",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-alkane-after-edit.txt",
+      "currentSHA256": "e6682be8687211d869fe0487a1666b96f8720aac60afc8b41366bda89b3c9168",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-alkane-before-edit.txt",
+      "bytes": 8491,
+      "sha256": "480199e82965e6fc416cd6cbd117a897556380116e96bc60b836f2f79bc3095a",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-alkane-before-edit.txt",
+      "currentSHA256": "480199e82965e6fc416cd6cbd117a897556380116e96bc60b836f2f79bc3095a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-bond-order-observation.txt",
+      "bytes": 7849,
+      "sha256": "09bccd2023b1667cd9ac711134fc18d4740f99c75be1fcb037d4e75eb98e013e",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-bond-order-observation.txt",
+      "currentSHA256": "09bccd2023b1667cd9ac711134fc18d4740f99c75be1fcb037d4e75eb98e013e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-class-390-light.png",
+      "bytes": 35183,
+      "sha256": "b5268f7aec1cc607cdee7cf7aee3534f181ed9988171508cb1ab4a1842c115a6",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-class-390-light.jpg",
+      "currentSHA256": "b5268f7aec1cc607cdee7cf7aee3534f181ed9988171508cb1ab4a1842c115a6",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-class-seed.txt",
+      "bytes": 4511,
+      "sha256": "4f1969cc6a63922b4d1f2b74e9244c5011d96bafe59f77b0cf4c868e64441254",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-class-seed.txt",
+      "currentSHA256": "4f1969cc6a63922b4d1f2b74e9244c5011d96bafe59f77b0cf4c868e64441254",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-class-two-variants.txt",
+      "bytes": 5359,
+      "sha256": "d01a94f33b762d3a3cd9269d66138e6848c17c6afc31d7d36b09ef8640d218e8",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-class-two-variants.txt",
+      "currentSHA256": "d01a94f33b762d3a3cd9269d66138e6848c17c6afc31d7d36b09ef8640d218e8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-delete-terminal-success.txt",
+      "bytes": 7317,
+      "sha256": "29999243bbca43fddff6360369aee7a90b44d909d3f41c1832054dad419c8fbe",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-delete-terminal-success.txt",
+      "currentSHA256": "29999243bbca43fddff6360369aee7a90b44d909d3f41c1832054dad419c8fbe",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-delete-terminal.txt",
+      "bytes": 9289,
+      "sha256": "b8ee77ffd17a6b84b4fe2ff13ab29a3f5e9d8f145d0e2e61d5ae12df2a51a970",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-delete-terminal.txt",
+      "currentSHA256": "b8ee77ffd17a6b84b4fe2ff13ab29a3f5e9d8f145d0e2e61d5ae12df2a51a970",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-direct-anchor.txt",
+      "bytes": 7863,
+      "sha256": "2dbe12e7d72698f94e0cd5f4bff4ee0564a5a04b606d8f423fdd486db4bc2e6e",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-direct-anchor.txt",
+      "currentSHA256": "2dbe12e7d72698f94e0cd5f4bff4ee0564a5a04b606d8f423fdd486db4bc2e6e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-320-light.png",
+      "bytes": 21194,
+      "sha256": "ac932878e64df69cf435026d3da6c14b18897c304e251180715a0a1d28a558d3",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-320-light.jpg",
+      "currentSHA256": "ac932878e64df69cf435026d3da6c14b18897c304e251180715a0a1d28a558d3",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-confirm.txt",
+      "bytes": 1255,
+      "sha256": "231ec27e69eb85c4b45d9984f7958820d0f62a9efd21b8320623efc4f27a7d5a",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-confirm.txt",
+      "currentSHA256": "231ec27e69eb85c4b45d9984f7958820d0f62a9efd21b8320623efc4f27a7d5a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-draft-restored.txt",
+      "bytes": 1343,
+      "sha256": "e13b789926a332387bada84ef3843eeca15e429a02dc40c2a01f854d3a7c284f",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-draft-restored.txt",
+      "currentSHA256": "e13b789926a332387bada84ef3843eeca15e429a02dc40c2a01f854d3a7c284f",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-question-1.txt",
+      "bytes": 1313,
+      "sha256": "232fa3da78f9b57f70d8944fbc493750b4287d6c2186c93472b466e28b57952e",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-question-1.txt",
+      "currentSHA256": "232fa3da78f9b57f70d8944fbc493750b4287d6c2186c93472b466e28b57952e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-question-2.txt",
+      "bytes": 1302,
+      "sha256": "86828994d8eaf1eb1d7cf66d669c19a759233c47a4df3e2221e3ad8a1026e610",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-question-2.txt",
+      "currentSHA256": "86828994d8eaf1eb1d7cf66d669c19a759233c47a4df3e2221e3ad8a1026e610",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-results-320-light.png",
+      "bytes": 20515,
+      "sha256": "da28a8dec1a9db0981b3f99ef1f9e16c5eecc5857c6eddc9ebda4afdb548f365",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-results-320-light.jpg",
+      "currentSHA256": "da28a8dec1a9db0981b3f99ef1f9e16c5eecc5857c6eddc9ebda4afdb548f365",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-results.txt",
+      "bytes": 4435,
+      "sha256": "6144991c02b308f901b74098792e49eb2f90319e1d7bb9784b3bdda282e1bf8f",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-results.txt",
+      "currentSHA256": "6144991c02b308f901b74098792e49eb2f90319e1d7bb9784b3bdda282e1bf8f",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-reviewer.txt",
+      "bytes": 5105,
+      "sha256": "3e4a8ef3dbd81c0cb21cfd6f653a559da3ae10f6ba8adf72459785c0cb1d4a4f",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-reviewer.txt",
+      "currentSHA256": "3e4a8ef3dbd81c0cb21cfd6f653a559da3ae10f6ba8adf72459785c0cb1d4a4f",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-setup.txt",
+      "bytes": 3759,
+      "sha256": "4044b7bd59c174a63062650504daa63b8b89ce5db44b6ea2d6996be568ee20c8",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-setup.txt",
+      "currentSHA256": "4044b7bd59c174a63062650504daa63b8b89ce5db44b6ea2d6996be568ee20c8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-exam-submit-dialog.txt",
+      "bytes": 1471,
+      "sha256": "79f6b26b01621b78ec05a2dbf9be1f6cfd75604f8571871dc749a18444091f93",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-submit-dialog.txt",
+      "currentSHA256": "79f6b26b01621b78ec05a2dbf9be1f6cfd75604f8571871dc749a18444091f93",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-export-dialog.txt",
+      "bytes": 3899,
+      "sha256": "6e52b0c1774fc68698d4942c6e4b51a258b6a718da7d299cb8b4a015958f54f6",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-export-dialog.txt",
+      "currentSHA256": "6e52b0c1774fc68698d4942c6e4b51a258b6a718da7d299cb8b4a015958f54f6",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-export-png-result.txt",
+      "bytes": 9901,
+      "sha256": "3a61a98197fe559cab64f87a86b9abace121ef7f4010224249f3c86558b2553b",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-export-png-result.txt",
+      "currentSHA256": "3a61a98197fe559cab64f87a86b9abace121ef7f4010224249f3c86558b2553b",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-final-state.txt",
+      "bytes": 8506,
+      "sha256": "0086e39084a9e94e62dd8046f38f83521f63babdcfbe57c9ce83164dfa174743",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-final-state.txt",
+      "currentSHA256": "0086e39084a9e94e62dd8046f38f83521f63babdcfbe57c9ce83164dfa174743",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-help.txt",
+      "bytes": 10516,
+      "sha256": "a0a956b85ddc156decf1ca57f515498eb8aeb25f72130670356340210d21284a",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-help.txt",
+      "currentSHA256": "a0a956b85ddc156decf1ca57f515498eb8aeb25f72130670356340210d21284a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-history-ethanol-restored.txt",
+      "bytes": 8490,
+      "sha256": "86784563a2292fc2ff270f69c176ac1d9e089362a4827cd69761aa1e6c479aad",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-history-ethanol-restored.txt",
+      "currentSHA256": "86784563a2292fc2ff270f69c176ac1d9e089362a4827cd69761aa1e6c479aad",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-history.txt",
+      "bytes": 3918,
+      "sha256": "fa24b7adf87c41da072e23dfda72b07135c35214118de3a0178d494b4abca30e",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-history.txt",
+      "currentSHA256": "fa24b7adf87c41da072e23dfda72b07135c35214118de3a0178d494b4abca30e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.png",
+      "bytes": 41093,
+      "sha256": "31eed7cee2ea308d6da641f453c75ab529f5be232f1758c0bdb2603de1f22cfd",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.jpg",
+      "currentSHA256": "31eed7cee2ea308d6da641f453c75ab529f5be232f1758c0bdb2603de1f22cfd",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-lab-after-reload.txt",
+      "bytes": 9643,
+      "sha256": "07ee96c300967c507e5cd1b8fb0754f28164cccc3e6c5c5c387f3ad073e23761",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-lab-after-reload.txt",
+      "currentSHA256": "07ee96c300967c507e5cd1b8fb0754f28164cccc3e6c5c5c387f3ad073e23761",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-lab-before-reload.txt",
+      "bytes": 10767,
+      "sha256": "d7f06f286e169336d0ac425cc2f5c4f097313ce134635a1ca67ecffb90dd9f01",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-lab-before-reload.txt",
+      "currentSHA256": "d7f06f286e169336d0ac425cc2f5c4f097313ce134635a1ca67ecffb90dd9f01",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-lab-restored.txt",
+      "bytes": 10767,
+      "sha256": "d7f06f286e169336d0ac425cc2f5c4f097313ce134635a1ca67ecffb90dd9f01",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-lab-restored.txt",
+      "currentSHA256": "d7f06f286e169336d0ac425cc2f5c4f097313ce134635a1ca67ecffb90dd9f01",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-main-320-dark.png",
+      "bytes": 24818,
+      "sha256": "63169418af5d384f5049facd88d9caac7771ec1ec699763843a9b05d44c0cfe9",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-main-320-dark.jpg",
+      "currentSHA256": "63169418af5d384f5049facd88d9caac7771ec1ec699763843a9b05d44c0cfe9",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-main-390-dark.png",
+      "bytes": 31584,
+      "sha256": "3822d3889951f649a9f2094a46dc4a4f8fe298421baa6d54779c00b2be022482",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-main-390-dark.jpg",
+      "currentSHA256": "3822d3889951f649a9f2094a46dc4a4f8fe298421baa6d54779c00b2be022482",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-build-feedback.txt",
+      "bytes": 1635,
+      "sha256": "cbb8938a78fc09b5ab3a930d772b254b1f182db329e781e23505bd440c3dcfce",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-build-feedback.txt",
+      "currentSHA256": "cbb8938a78fc09b5ab3a930d772b254b1f182db329e781e23505bd440c3dcfce",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-build-question.txt",
+      "bytes": 3409,
+      "sha256": "cced38335927c183d5a51fd728db291996252459f5f1360befbfa5a90631dc4f",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-build-question.txt",
+      "currentSHA256": "cced38335927c183d5a51fd728db291996252459f5f1360befbfa5a90631dc4f",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-build-summary.txt",
+      "bytes": 5049,
+      "sha256": "1c9d69ffd89b90bcbf058190e2e2fcc180a0ee4f110c37a50ebc77b686b7e6f7",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-build-summary.txt",
+      "currentSHA256": "1c9d69ffd89b90bcbf058190e2e2fcc180a0ee4f110c37a50ebc77b686b7e6f7",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.png",
+      "bytes": 24547,
+      "sha256": "d9eab0e0c109d45e5fa8536cd0aefd3c4f31130ee3921192fda67ad53e394ff0",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.jpg",
+      "currentSHA256": "d9eab0e0c109d45e5fa8536cd0aefd3c4f31130ee3921192fda67ad53e394ff0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-practice-setup.txt",
+      "bytes": 3804,
+      "sha256": "ea31e668bf0b234cbd47c50168f959b5be9972c72afcb435f654c68ca207f56f",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-setup.txt",
+      "currentSHA256": "ea31e668bf0b234cbd47c50168f959b5be9972c72afcb435f654c68ca207f56f",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-redo.txt",
+      "bytes": 8745,
+      "sha256": "8a0d4cd82a6b644e1ddae74346de47f3419a23bb0fc357a3fa63241aaa0098f0",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-redo.txt",
+      "currentSHA256": "8a0d4cd82a6b644e1ddae74346de47f3419a23bb0fc357a3fa63241aaa0098f0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-restored-name-no-links.txt",
+      "bytes": 9924,
+      "sha256": "653c20172c62a4289ded23788750b34ab00ed935337f679d7527f78d24bd71a3",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-restored-name-no-links.txt",
+      "currentSHA256": "653c20172c62a4289ded23788750b34ab00ed935337f679d7527f78d24bd71a3",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-reviewer-320-light.png",
+      "bytes": 20757,
+      "sha256": "c3b794a4b4d3d561d93595012926b45c84f6faef95ecc776eb2872732a803164",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-reviewer-320-light.jpg",
+      "currentSHA256": "c3b794a4b4d3d561d93595012926b45c84f6faef95ecc776eb2872732a803164",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-saved-empty.txt",
+      "bytes": 1505,
+      "sha256": "baed1c617375a77bae67ec59be14c9be91489159a122ae995c84ff3d21e2daa6",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-saved-empty.txt",
+      "currentSHA256": "baed1c617375a77bae67ec59be14c9be91489159a122ae995c84ff3d21e2daa6",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-settings-actual.txt",
+      "bytes": 4099,
+      "sha256": "6e3f1c96599e238000660486a5696bd523a2a6446a3303cc3cff6dbab87e0779",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-settings-actual.txt",
+      "currentSHA256": "6e3f1c96599e238000660486a5696bd523a2a6446a3303cc3cff6dbab87e0779",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-settings-escape.txt",
+      "bytes": 4099,
+      "sha256": "6e3f1c96599e238000660486a5696bd523a2a6446a3303cc3cff6dbab87e0779",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-settings-escape.txt",
+      "currentSHA256": "6e3f1c96599e238000660486a5696bd523a2a6446a3303cc3cff6dbab87e0779",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-settings.txt",
+      "bytes": 1599,
+      "sha256": "c9cca1557d290cdccdf110de45843dbaeff3706f6966f2f761a79434c1e271c5",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-settings.txt",
+      "currentSHA256": "c9cca1557d290cdccdf110de45843dbaeff3706f6966f2f761a79434c1e271c5",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-setup-before-class.txt",
+      "bytes": 3785,
+      "sha256": "a4d5a07a5d9f057b1a2ff2a05c054bc33408df75f435d7aeec0446bdee5140ed",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-setup-before-class.txt",
+      "currentSHA256": "a4d5a07a5d9f057b1a2ff2a05c054bc33408df75f435d7aeec0446bdee5140ed",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-smiles-after-reload.txt",
+      "bytes": 10643,
+      "sha256": "6240dcb917e594a76a8852c856a96ce0b204e5574c3569864686bbf8b7900340",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-smiles-after-reload.txt",
+      "currentSHA256": "6240dcb917e594a76a8852c856a96ce0b204e5574c3569864686bbf8b7900340",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-undo.txt",
+      "bytes": 8430,
+      "sha256": "dfd857ac2282ec72532c49daa3ce963c541ad9a640338d967723eb5842c4dcac",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-undo.txt",
+      "currentSHA256": "dfd857ac2282ec72532c49daa3ce963c541ad9a640338d967723eb5842c4dcac",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-unsupported-390-light.png",
+      "bytes": 35642,
+      "sha256": "5effc535068393955a2b97f4a511f658a9ebea88459fe38ffa648bc1f21db3f2",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-unsupported-390-light.jpg",
+      "currentSHA256": "5effc535068393955a2b97f4a511f658a9ebea88459fe38ffa648bc1f21db3f2",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/en-unsupported.txt",
+      "bytes": 8880,
+      "sha256": "27d8b60c8888a721c425a1c0147b0488ee8e3a9cf64d218dcb5e851e0eb6852e",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-unsupported.txt",
+      "currentSHA256": "27d8b60c8888a721c425a1c0147b0488ee8e3a9cf64d218dcb5e851e0eb6852e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/es-direct-route.txt",
+      "bytes": 8623,
+      "sha256": "2ddd8495522441d6e18017e11e84f0d58b887639ee518ece6f455b44f40d3171",
+      "currentPath": "reports/naming-audit/aud-nom-009/es-direct-route.txt",
+      "currentSHA256": "2ddd8495522441d6e18017e11e84f0d58b887639ee518ece6f455b44f40d3171",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/es-exam-draft-restored.txt",
+      "bytes": 1343,
+      "sha256": "77314b4daa20c5c236d97e589246852064d64683902be5c98e838e08e4216571",
+      "currentPath": "reports/naming-audit/aud-nom-009/es-exam-draft-restored.txt",
+      "currentSHA256": "77314b4daa20c5c236d97e589246852064d64683902be5c98e838e08e4216571",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/exported-aryl.png",
+      "bytes": 70281,
+      "sha256": "78373e9bb80ee411064c2dcb51b108c7762475ab974ea5654cf3ac776becc8c6",
+      "currentPath": "reports/naming-audit/aud-nom-009/exported-aryl.png",
+      "currentSHA256": "78373e9bb80ee411064c2dcb51b108c7762475ab974ea5654cf3ac776becc8c6",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/grading-smoke.json",
+      "bytes": 2743,
+      "sha256": "2f237d74638cf3c7e542394c50d138de21ee34cd3d009c39ea3bb4cdc5010a98",
+      "currentPath": "reports/naming-audit/aud-nom-009/grading-smoke.json",
+      "currentSHA256": "2f237d74638cf3c7e542394c50d138de21ee34cd3d009c39ea3bb4cdc5010a98",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/grading-smoke.mjs",
+      "bytes": 2097,
+      "sha256": "fa10aaddb515510ec7a57092c2f4b40ab80f6b1c0ff8866d016291246d04479e",
+      "currentPath": "reports/naming-audit/aud-nom-009/grading-smoke.mjs",
+      "currentSHA256": "fa10aaddb515510ec7a57092c2f4b40ab80f6b1c0ff8866d016291246d04479e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/issue-register.json",
+      "bytes": 16275,
+      "sha256": "6a39220c735b04b8b9430a006583f93f6f91c97f282f7c8c0bc04a345fb06321",
+      "currentPath": "reports/naming-audit/aud-nom-009/issue-register.json",
+      "currentSHA256": "bbfedd2f2687ca40dc2a7abaeb1361d5e62480ed91cd514d0d75783fed744f17",
+      "unchanged": false
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/run-bounded.ps1",
+      "bytes": 936,
+      "sha256": "649c3629b68fd7e643b2632a0ca0c5f64095896db052d1c14b9d7360a660b50b",
+      "currentPath": "reports/naming-audit/aud-nom-009/run-bounded.ps1",
+      "currentSHA256": "649c3629b68fd7e643b2632a0ca0c5f64095896db052d1c14b9d7360a660b50b",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/sample-plan.json",
+      "bytes": 1967,
+      "sha256": "9a15732a13b02b7cf10743fe6bfe56c1dc6c35dd8388b9961ab953bdbfa45f5e",
+      "currentPath": "reports/naming-audit/aud-nom-009/sample-plan.json",
+      "currentSHA256": "9a15732a13b02b7cf10743fe6bfe56c1dc6c35dd8388b9961ab953bdbfa45f5e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/smoke-matrix.json",
+      "bytes": 626686,
+      "sha256": "8c1e825c4f887a2b3176c34474c6b494e3e9a5ff65e40c5f67f48c9588a99885",
+      "currentPath": "reports/naming-audit/aud-nom-009/smoke-matrix.json",
+      "currentSHA256": "8c1e825c4f887a2b3176c34474c6b494e3e9a5ff65e40c5f67f48c9588a99885",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/smoke-summary.json",
+      "bytes": 1359,
+      "sha256": "aed54c489ae0169e7444af5e5bc80c3af6791fdb5ad98076584fc11d0dca9f9c",
+      "currentPath": "reports/naming-audit/aud-nom-009/smoke-summary.json",
+      "currentSHA256": "aed54c489ae0169e7444af5e5bc80c3af6791fdb5ad98076584fc11d0dca9f9c",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/smoke.mjs",
+      "bytes": 5058,
+      "sha256": "b781c7690f617ee972af55712ffba58d9ee5b946f386e04268f903ad4bf2fb84",
+      "currentPath": "reports/naming-audit/aud-nom-009/smoke.mjs",
+      "currentSHA256": "b781c7690f617ee972af55712ffba58d9ee5b946f386e04268f903ad4bf2fb84",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/summarize.mjs",
+      "bytes": 1865,
+      "sha256": "75689b723ce03b29a6620b2b8ef3791712554509b7f1638ae9c67273fc2965c2",
+      "currentPath": "reports/naming-audit/aud-nom-009/summarize.mjs",
+      "currentSHA256": "75689b723ce03b29a6620b2b8ef3791712554509b7f1638ae9c67273fc2965c2",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/validate-evidence.mjs",
+      "bytes": 3273,
+      "sha256": "599513bf40d1b06dfbbe6948f414e67cd8456a0158d77cca8170d00061016a37",
+      "currentPath": "reports/naming-audit/aud-nom-009/validate-evidence.mjs",
+      "currentSHA256": "599513bf40d1b06dfbbe6948f414e67cd8456a0158d77cca8170d00061016a37",
+      "unchanged": true
+    },
+    {
+      "path": "reports/naming-audit/aud-nom-009/validation.json",
+      "bytes": 675,
+      "sha256": "4d3178460ce346aa69cf2dff38945dc87764ab8c4adc8931be9e3f71baa353bd",
+      "currentPath": "reports/naming-audit/aud-nom-009/validation.json",
+      "currentSHA256": "4d3178460ce346aa69cf2dff38945dc87764ab8c4adc8931be9e3f71baa353bd",
+      "unchanged": true
+    }
+  ],
+  "unrelatedUntracked": [
+    {
+      "path": "reports/orgorush-aud001-repair.md",
+      "sha256": "67d8cff92048cc3c15fa85d606e11da618ab6bab3f14e17e888991dc4facb820"
+    },
+    {
+      "path": "tatus --short",
+      "sha256": "ef8549a27c03dbdc2bad0b2a4a73c09f8beab5e963003c02a6451bb54244296d"
+    }
+  ],
+  "corrections": [
+    "reports/naming-audit/aud-nom-009-prelaunch-audit.md",
+    "reports/naming-audit/aud-nom-009/browser-checks.json",
+    "reports/naming-audit/aud-nom-009/issue-register.json"
+  ],
+  "renamedEvidence": [
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-class-390-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-class-390-light.jpg",
+      "sha256": "b5268f7aec1cc607cdee7cf7aee3534f181ed9988171508cb1ab4a1842c115a6",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-exam-320-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-320-light.jpg",
+      "sha256": "ac932878e64df69cf435026d3da6c14b18897c304e251180715a0a1d28a558d3",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-exam-results-320-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-exam-results-320-light.jpg",
+      "sha256": "da28a8dec1a9db0981b3f99ef1f9e16c5eecc5857c6eddc9ebda4afdb548f365",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-isotope-error-1280.jpg",
+      "sha256": "31eed7cee2ea308d6da641f453c75ab529f5be232f1758c0bdb2603de1f22cfd",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-main-320-dark.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-main-320-dark.jpg",
+      "sha256": "63169418af5d384f5049facd88d9caac7771ec1ec699763843a9b05d44c0cfe9",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-main-390-dark.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-main-390-dark.jpg",
+      "sha256": "3822d3889951f649a9f2094a46dc4a4f8fe298421baa6d54779c00b2be022482",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.jpg",
+      "sha256": "d9eab0e0c109d45e5fa8536cd0aefd3c4f31130ee3921192fda67ad53e394ff0",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-reviewer-320-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-reviewer-320-light.jpg",
+      "sha256": "c3b794a4b4d3d561d93595012926b45c84f6faef95ecc776eb2872732a803164",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    },
+    {
+      "originalPath": "reports/naming-audit/aud-nom-009/en-unsupported-390-light.png",
+      "currentPath": "reports/naming-audit/aud-nom-009/en-unsupported-390-light.jpg",
+      "sha256": "5effc535068393955a2b97f4a511f658a9ebea88459fe38ffa648bc1f21db3f2",
+      "reason": "Original screenshot bytes are JPEG; extension corrected without recompression."
+    }
+  ],
+  "remainingLimits": [
+    "Isotope screenshot shows context, not the error text in its viewport; error text is recorded in matrix/browser-checks and original interaction record.",
+    "Persisted browser evidence is agent-controlled automation, not external-user research.",
+    "Clipboard/SVG/Saved and other pending checks retain their original uncertainty."
+  ],
+  "commitPreparation": {
+    "paths": [
+      "reports/naming-audit/aud-nom-009-prelaunch-audit.md",
+      "reports/naming-audit/aud-nom-009/aud-nom-009b-closure.md",
+      "reports/naming-audit/aud-nom-009/baseline.json",
+      "reports/naming-audit/aud-nom-009/browser-checks.json",
+      "reports/naming-audit/aud-nom-009/commit-files.txt",
+      "reports/naming-audit/aud-nom-009/document-baseline.json",
+      "reports/naming-audit/aud-nom-009/document-integrity.json",
+      "reports/naming-audit/aud-nom-009/en-alkane-after-edit.txt",
+      "reports/naming-audit/aud-nom-009/en-alkane-before-edit.txt",
+      "reports/naming-audit/aud-nom-009/en-bond-order-observation.txt",
+      "reports/naming-audit/aud-nom-009/en-class-390-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-class-seed.txt",
+      "reports/naming-audit/aud-nom-009/en-class-two-variants.txt",
+      "reports/naming-audit/aud-nom-009/en-delete-terminal-success.txt",
+      "reports/naming-audit/aud-nom-009/en-delete-terminal.txt",
+      "reports/naming-audit/aud-nom-009/en-direct-anchor.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-320-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-exam-confirm.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-draft-restored.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-question-1.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-question-2.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-results-320-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-exam-results.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-reviewer.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-setup.txt",
+      "reports/naming-audit/aud-nom-009/en-exam-submit-dialog.txt",
+      "reports/naming-audit/aud-nom-009/en-export-dialog.txt",
+      "reports/naming-audit/aud-nom-009/en-export-png-result.txt",
+      "reports/naming-audit/aud-nom-009/en-final-state.txt",
+      "reports/naming-audit/aud-nom-009/en-help.txt",
+      "reports/naming-audit/aud-nom-009/en-history-ethanol-restored.txt",
+      "reports/naming-audit/aud-nom-009/en-history.txt",
+      "reports/naming-audit/aud-nom-009/en-isotope-error-1280.jpg",
+      "reports/naming-audit/aud-nom-009/en-lab-after-reload.txt",
+      "reports/naming-audit/aud-nom-009/en-lab-before-reload.txt",
+      "reports/naming-audit/aud-nom-009/en-lab-restored.txt",
+      "reports/naming-audit/aud-nom-009/en-main-320-dark.jpg",
+      "reports/naming-audit/aud-nom-009/en-main-390-dark.jpg",
+      "reports/naming-audit/aud-nom-009/en-practice-build-feedback.txt",
+      "reports/naming-audit/aud-nom-009/en-practice-build-question.txt",
+      "reports/naming-audit/aud-nom-009/en-practice-build-summary.txt",
+      "reports/naming-audit/aud-nom-009/en-practice-feedback-320-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-practice-setup.txt",
+      "reports/naming-audit/aud-nom-009/en-redo.txt",
+      "reports/naming-audit/aud-nom-009/en-restored-name-no-links.txt",
+      "reports/naming-audit/aud-nom-009/en-reviewer-320-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-saved-empty.txt",
+      "reports/naming-audit/aud-nom-009/en-settings-actual.txt",
+      "reports/naming-audit/aud-nom-009/en-settings-escape.txt",
+      "reports/naming-audit/aud-nom-009/en-settings.txt",
+      "reports/naming-audit/aud-nom-009/en-setup-before-class.txt",
+      "reports/naming-audit/aud-nom-009/en-smiles-after-reload.txt",
+      "reports/naming-audit/aud-nom-009/en-undo.txt",
+      "reports/naming-audit/aud-nom-009/en-unsupported-390-light.jpg",
+      "reports/naming-audit/aud-nom-009/en-unsupported.txt",
+      "reports/naming-audit/aud-nom-009/es-direct-route.txt",
+      "reports/naming-audit/aud-nom-009/es-exam-draft-restored.txt",
+      "reports/naming-audit/aud-nom-009/exported-aryl.png",
+      "reports/naming-audit/aud-nom-009/grading-smoke.json",
+      "reports/naming-audit/aud-nom-009/grading-smoke.mjs",
+      "reports/naming-audit/aud-nom-009/issue-register.json",
+      "reports/naming-audit/aud-nom-009/run-bounded.ps1",
+      "reports/naming-audit/aud-nom-009/sample-plan.json",
+      "reports/naming-audit/aud-nom-009/smoke-matrix.json",
+      "reports/naming-audit/aud-nom-009/smoke-summary.json",
+      "reports/naming-audit/aud-nom-009/smoke.mjs",
+      "reports/naming-audit/aud-nom-009/staging-command.ps1",
+      "reports/naming-audit/aud-nom-009/summarize.mjs",
+      "reports/naming-audit/aud-nom-009/validate-evidence.mjs",
+      "reports/naming-audit/aud-nom-009/validation.json",
+      "reports/naming-audit/aud-nom-009/verify-documents.mjs"
+    ],
+    "stagingExecuted": false,
+    "commitExecuted": false,
+    "pushExecuted": false
+  },
+  "wallSeconds": 0.41136649999999997,
+  "gitChecks": {
+    "allStagingPathsAddable": true,
+    "diffCheck": "PASS",
+    "trackedDiff": "EMPTY",
+    "stagingExecuted": false
+  }
+}

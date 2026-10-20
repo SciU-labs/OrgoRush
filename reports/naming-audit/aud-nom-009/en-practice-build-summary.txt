@@ -1,0 +1,158 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+0 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	1 container
+		2 heading OrgoRush, Value: 1
+			3 text OrgoRush
+		4 button (disabled, collapsed) How to use?, Secondary Actions: Expand
+		5 button (expanded) Practice / Exam, Secondary Actions: Collapse
+		6 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		7 container Practice / Exam, ID: practice-panel
+			8 container
+				9 heading Practice / Exam, Value: 2, ID: practice-title
+					10 text Practice / Exam
+				11 container Language
+					12 checkbox ES, Value: 0
+					13 checkbox EN, Value: 1
+				14 button Back to Lab
+			15 container Practice mode
+				16 checkbox (disabled) Practice, Value: 1
+				17 checkbox (disabled) Exam, Value: 0
+			18 container
+				19 text Seed :  aud-nom-009
+			20 container
+				21 heading Practice complete, Value: 3
+					22 text Practice complete
+				23 heading Initial results, Value: 4
+					24 text Initial results
+				25 definition list
+					26 container Initial score
+						27 text Initial score
+					28 text 0 / 1
+					29 container First-attempt accuracy
+						30 text First-attempt accuracy
+					31 text 0%
+					32 container Answered questions
+						33 text Answered questions
+					34 text 1
+					35 container Correct answers
+						36 text Correct answers
+					37 text 0
+					38 container Incorrect answers
+						39 text Incorrect answers
+					40 text 1
+					41 container Questions to review
+						42 text Questions to review
+					43 text 1
+					44 container Average response time
+						45 text Average response time
+					46 text 6.9 s
+					47 container Median response time
+						48 text Median response time
+					49 text 6.9 s
+				50 text Time measures the interval between showing the question and submitting the answer.
+				51 container Session review
+					52 heading Session review, Value: 3, ID: session-dashboard-title
+						53 text Session review
+					54 definition list
+						55 container Final mastery
+							56 text Final mastery
+						57 container
+							58 text 0  /  1  ·  0%
+						59 container Fixed
+							60 text Fixed
+						61 text 0
+						62 container Unresolved
+							63 text Unresolved
+						64 text 1
+						65 container Total initial active response time
+							66 text Total initial active response time
+						67 text 6.9 s
+						68 container Total attempts
+							69 text Total attempts
+						70 text 1
+						71 container Correction response time
+							72 text Correction response time
+						73 text 0.0 s
+					74 table Accuracy by category
+						75 text Accuracy by category
+						76 row
+							77 cell
+								78 text Category
+							79 cell
+								80 text Correct / Answered
+							81 cell
+								82 text Initial accuracy
+							83 cell
+								84 text Average first response
+							85 cell
+								86 text Final mastery
+						87 row
+							88 cell
+								89 text Alkanes
+							90 cell
+								91 text 0  /  1
+							92 cell
+								93 text 0%
+							94 cell
+								95 text 6.9 s
+							96 cell
+								97 text 0  /  1  ·  0%
+					98 table Accuracy by question type
+						99 text Accuracy by question type
+						100 row
+							101 cell
+								102 text Question type
+							103 cell
+								104 text Correct / Answered
+							105 cell
+								106 text Initial accuracy
+							107 cell
+								108 text Average first response
+							109 cell
+								110 text Final mastery
+						111 row
+							112 cell
+								113 text Build the molecule
+							114 cell
+								115 text 0  /  1
+							116 cell
+								117 text 0%
+							118 cell
+								119 text 6.9 s
+							120 cell
+								121 text 0  /  1  ·  0%
+					122 container
+						123 text Status
+						124 pop up button (collapsed, settable) Status, Value: All, Secondary Actions: Expand
+							125 menu
+								126 (selected) All
+								127 Correct first try
+								128 Corrected
+								129 Unresolved
+					130 container
+						131 text Question type
+						132 pop up button (collapsed, settable) Question type, Value: All, Secondary Actions: Expand
+							133 menu
+								134 (selected) All
+								135 Build the molecule
+					136 container
+						137 text Category
+						138 pop up button (collapsed, settable) Category, Value: All, Secondary Actions: Expand
+							139 menu
+								140 (selected) All
+								141 Alkanes
+					142 content list
+						143 container
+							144 heading Question 1, Value: 4
+								145 text Question 1
+							146 text Alkanes  ·  Build the molecule Initial result :  Incorrect  · 
+							147 text Unresolved
+							148 text Attempts :  1  ·  First response :  6.9 s
+							149 button Review question, ID: session-review-question-1
+					150 button (collapsed) Session details, Secondary Actions: Expand
+						151 text Session details
+				152 button Correct mistakes
+				153 button Start another practice
+				154 button Back to Lab
+
+The focused UI element is 9 heading Practice / Exam, Value: 2, ID: practice-title

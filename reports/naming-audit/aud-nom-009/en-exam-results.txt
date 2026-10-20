@@ -1,0 +1,138 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+0 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	1 container
+		2 heading OrgoRush, Value: 1
+			3 text OrgoRush
+		4 button (disabled, collapsed) How to use?, Secondary Actions: Expand
+		5 button (expanded) Practice / Exam, Secondary Actions: Collapse
+		6 pop up button (collapsed) Create worksheet, Secondary Actions: Expand
+		7 container Exam, ID: practice-panel
+			8 container
+				9 heading Exam, Value: 2, ID: exam-title
+					10 text Exam
+				11 container Language
+					12 checkbox ES, Value: 0
+					13 checkbox EN, Value: 1
+				14 button Back to configuration
+				15 button Back to Lab
+			16 container
+				17 text Seed :  aud-nom-009
+			18 container
+				19 heading Exam completed, Value: 3
+					20 text Exam completed
+				21 heading Exam results, Value: 4
+					22 text Exam results
+				23 definition list
+					24 container Score
+						25 text Score
+					26 text 0 / 2
+					27 container Accuracy
+						28 text Accuracy
+					29 text 0%
+					30 container Answered questions
+						31 text Answered questions
+					32 text 2
+					33 container Correct answers
+						34 text Correct answers
+					35 text 0
+					36 container Incorrect answers
+						37 text Incorrect answers
+					38 text 2
+					39 container Average response time
+						40 text Average response time
+					41 text 8.7 s
+					42 container Median response time
+						43 text Median response time
+					44 text 8.7 s
+				45 text Time accumulates visits to each question; pre-submit review is excluded.
+				46 container Session review
+					47 heading Session review, Value: 3, ID: session-dashboard-title
+						48 text Session review
+					49 definition list
+						50 container Total initial active response time
+							51 text Total initial active response time
+						52 text 17.4 s
+						53 container Total attempts
+							54 text Total attempts
+						55 text 2
+					56 table Accuracy by category
+						57 text Accuracy by category
+						58 row
+							59 cell
+								60 text Category
+							61 cell
+								62 text Correct / Answered
+							63 cell
+								64 text Initial accuracy
+							65 cell
+								66 text Average first response
+						67 row
+							68 cell
+								69 text Alkanes
+							70 cell
+								71 text 0  /  2
+							72 cell
+								73 text 0%
+							74 cell
+								75 text 8.7 s
+					76 table Accuracy by question type
+						77 text Accuracy by question type
+						78 row
+							79 cell
+								80 text Question type
+							81 cell
+								82 text Correct / Answered
+							83 cell
+								84 text Initial accuracy
+							85 cell
+								86 text Average first response
+						87 row
+							88 cell
+								89 text Naming
+							90 cell
+								91 text 0  /  2
+							92 cell
+								93 text 0%
+							94 cell
+								95 text 8.7 s
+					96 container
+						97 text Status
+						98 pop up button (collapsed, settable) Status, Value: All, Secondary Actions: Expand
+							99 menu
+								100 (selected) All
+								101 Correct
+								102 Incorrect
+					103 container
+						104 text Question type
+						105 pop up button (collapsed, settable) Question type, Value: All, Secondary Actions: Expand
+							106 menu
+								107 (selected) All
+								108 Naming
+					109 container
+						110 text Category
+						111 pop up button (collapsed, settable) Category, Value: All, Secondary Actions: Expand
+							112 menu
+								113 (selected) All
+								114 Alkanes
+					115 content list
+						116 container
+							117 heading Question 1, Value: 4
+								118 text Question 1
+							119 text Alkanes  ·  Naming Initial result :  Incorrect  · 
+							120 text Incorrect
+							121 text Attempts :  1  ·  First response :  13.3 s
+							122 button Review question, ID: session-review-question-1
+						123 container
+							124 heading Question 2, Value: 4
+								125 text Question 2
+							126 text Alkanes  ·  Naming Initial result :  Incorrect  · 
+							127 text Incorrect
+							128 text Attempts :  1  ·  First response :  4.1 s
+							129 button Review question, ID: session-review-question-2
+					130 button (collapsed) Session details, Secondary Actions: Expand
+						131 text Session details
+				132 button Review answers
+				133 button Start another exam
+				134 button Back to Lab
+
+The focused UI element is 9 heading Exam, Value: 2, ID: exam-title

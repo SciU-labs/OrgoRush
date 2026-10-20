@@ -1,0 +1,26 @@
+{
+  "audit": "AUD-NOM-009",
+  "status": "PASS",
+  "capturedAt": "2026-10-20T00:12:02.542Z",
+  "wallSeconds": 0.10198660000000001,
+  "sampleCases": 39,
+  "acceptedIdentities": 38,
+  "reasoningModels": 126,
+  "gradingComparisons": 6,
+  "findingCounts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 8,
+    "P3": 2
+  },
+  "checks": [
+    "plan SHA256 unchanged",
+    "sample order/SMILES unchanged",
+    "safe isotope rejection without graph",
+    "38 identity and immutability PASS",
+    "126 reasoning PASS",
+    "counts and JSON consistent",
+    "new source/report whitespace clean"
+  ],
+  "scope": "Audit artifact validation only; not a new production test suite or Pages build."
+}

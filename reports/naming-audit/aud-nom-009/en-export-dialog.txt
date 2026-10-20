@@ -1,0 +1,83 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 button Close image export options
+		4 container Export image
+			5 text PNG
+			6 heading Export image, Value: 2, ID: png-export-title
+				7 text Export image
+			8 text Choose the format, size, background, and color mode before downloading.
+			9 button Close image export options
+			10 container Export preview
+			11 container FORMAT
+				12 text FORMAT
+				13 container
+					14 radio button (settable, integer) Description: PNG Pixel image, Value: 1
+					15 text PNG Pixel image
+				16 container
+					17 radio button (settable, integer) Description: SVG Scalable vector, Value: 0
+					18 text SVG Scalable vector
+			19 container ACTIVE SELECTION
+				20 text ACTIVE SELECTION
+				21 container
+					22 checkbox (settable, integer) Description: Export with the selected atom or group Uncheck this to hide the selection halo from the image., Value: 0
+					23 text Export with the selected atom or group Uncheck this to hide the selection halo from the image.
+			24 container PNG SIZE
+				25 text PNG SIZE
+				26 container
+					27 radio button (settable, integer) Description: 1× Standard, Value: 0
+					28 text 1 × Standard
+				29 container
+					30 radio button (settable, integer) Description: 2× High, Value: 1
+					31 text 2 × High
+				32 container
+					33 radio button (settable, integer) Description: 4× Maximum, Value: 0
+					34 text 4 × Maximum
+				35 container
+					36 text Width
+					37 stepper (settable, integer) Description: PNG width in pixels, Value: 629, ID: png-export-width
+					38 text px
+				39 container
+					40 text Height
+					41 stepper (settable, integer) Description: PNG height in pixels, Value: 650, ID: png-export-height
+					42 text px
+				43 container
+					44 checkbox (settable, integer) Description: Keep aspect ratio, Value: 1
+					45 text Keep aspect ratio
+				46 text You can enter an exact size between 200 and 8000 pixels.
+			47 container BACKGROUND
+				48 text BACKGROUND
+				49 container
+					50 radio button (settable, integer) Description: With background Uses the current canvas color., Value: 1
+					51 text With background Uses the current canvas color.
+				52 container
+					53 radio button (settable, integer) Description: No background Keeps the exported file transparent., Value: 0
+					54 text No background Keeps the exported file transparent.
+			55 container COLOR MODE
+				56 text COLOR MODE
+				57 container
+					58 radio button (settable, integer) Description: Color Lets you choose colors for the exported image., Value: 1
+					59 text Color Lets you choose colors for the exported image.
+				60 container
+					61 radio button (settable, integer) Description: Grayscale Converts the image to grayscale for printing., Value: 0
+					62 text Grayscale Converts the image to grayscale for printing.
+				63 container
+					64 radio button (settable, integer) Description: Black and white Uses high contrast for photocopies and printers., Value: 0
+					65 text Black and white Uses high contrast for photocopies and printers.
+			66 container EXPORT COLORS
+				67 text EXPORT COLORS
+				68 text These colors apply only to the exported file.
+				69 container
+					70 text Parent chain
+					71 color well (settable) Description: Choose the main chain color, Value: #4d8c94
+				72 container
+					73 text Functional group
+					74 color well (settable) Description: Choose the functional group color, Value: #8a6ca0
+				75 container
+					76 text Substituents
+					77 color well (settable) Description: Choose the substituent color, Value: #d5a254
+				78 button Reset colors
+			79 button Cancel
+			80 button Download PNG
+
+The focused UI element is 9 button Close image export options

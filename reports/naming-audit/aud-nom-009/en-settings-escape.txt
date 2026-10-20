@@ -1,0 +1,121 @@
+Browser tab: 1, Title: "OrgoRush — Interactive Organic Chemistry & IUPAC Practice", URL: "https://sciu-lab.github.io/Hydrocarbon-Lab/en/".
+1 AXWebArea OrgoRush — Interactive Organic Chemistry & IUPAC Practice, URL: sciu-lab.github.io/Hydrocarbon-Lab/en/
+	2 container
+		3 button Close settings
+		4 container Settings
+			5 container
+				6 text ⚙  SETTINGS
+			7 heading Settings, Value: 2, ID: settings-title
+				8 text Settings
+			9 button Close settings
+			10 container PREFERENCES
+				11 heading PREFERENCES, Value: 3, ID: settings-options-title
+					12 text PREFERENCES
+				13 container
+					14 text Show implicit H
+					15 checkbox (settable, integer) Description: Show implicit H, Value: 1
+				16 container
+					17 text Number carbons
+					18 checkbox (settable, integer) Description: Number carbons, Value: 1
+				19 container
+					20 text Highlight substituents
+					21 checkbox (settable, integer) Description: Highlight substituents, Value: 1
+				22 container Numbering size
+					23 text Numbering size
+					24 slider (settable, integer) Description: Numbering size, Value: 1
+					25 container
+						26 text 100  %
+					27 button (disabled) Reset
+				28 container Semi-developed size
+					29 text Semi-developed size
+					30 slider (settable, float) Description: Semi-developed size, Value: 1.25
+					31 container
+						32 text 125  %
+					33 button (disabled) Reset
+				34 container
+					35 text Remember stereochemistry
+					36 checkbox (settable, integer) Description: Remember stereochemistry, Value: 0
+				37 container
+					38 text Move panels freely
+					39 checkbox (settable, integer) Description: Move panels freely, Value: 0
+				40 container R/S badge size
+					41 text R/S badge size
+					42 text Adjusts the circle and letter of tetrahedral centers
+					43 slider (settable, integer) Description: R/S badge size, Value: 1
+					44 container
+						45 text 100  %
+					46 button (disabled) Reset
+				47 button Reset panel positions
+			48 container OPTIONAL ACCESSIBILITY
+				49 heading OPTIONAL ACCESSIBILITY, Value: 3, ID: settings-accessibility-title
+					50 text OPTIONAL ACCESSIBILITY
+				51 container
+					52 text Advanced screen-reader support
+					53 checkbox (settable, integer) Description: Advanced screen-reader support, Value: 0
+				54 container
+					55 text AA high contrast
+					56 checkbox (settable, integer) Description: AA high contrast, Value: 0
+				57 container
+					58 text Larger text
+					59 checkbox (settable, integer) Description: Larger text, Value: 0
+				60 container
+					61 text Double-bond pattern
+					62 checkbox (settable, integer) Description: Double-bond pattern, Value: 0
+				63 container
+					64 text Larger buttons
+					65 checkbox (settable, integer) Description: Larger buttons, Value: 0
+				66 container
+					67 text Dyslexia-friendly type
+					68 checkbox (settable, integer) Description: Dyslexia-friendly type, Value: 0
+				69 container
+					70 text Simplified mode
+					71 checkbox (settable, integer) Description: Simplified mode, Value: 0
+				72 container
+					73 text Highlight interactive elements
+					74 checkbox (settable, integer) Description: Highlight interactive elements, Value: 0
+			75 container KEYBOARD SHORTCUTS
+				76 heading KEYBOARD SHORTCUTS, Value: 3, ID: settings-shortcuts-title
+					77 text KEYBOARD SHORTCUTS
+				78 text Ctrl
+				79 text Z
+				80 text Undo
+				81 text Ctrl
+				82 text Y
+				83 text Redo
+				84 text B
+				85 text Benzene
+				86 text R
+				87 text Ring
+				88 text M / E / P
+				89 text Methyl / Ethyl / Propyl
+				90 text Ctrl
+				91 text S
+				92 text Save
+				93 text Ctrl
+				94 text Shift
+				95 text S
+				96 text Export
+				97 text Ctrl
+				98 text I
+				99 text Import
+				100 text Ctrl
+				101 text N
+				102 text New molecule
+				103 text Delete / Supr
+				104 text Delete
+				105 text Esc
+				106 text Deselect
+				107 text Ctrl
+				108 text 1
+				109 text By name
+				110 text Ctrl
+				111 text 2
+				112 text SMILES
+				113 text Ctrl
+				114 text 3
+				115 text Semi-dev.
+				116 text Ctrl
+				117 text 4
+				118 text Skeletal
+
+The focused UI element is 9 button Close settings
