@@ -13,6 +13,34 @@ pueden compartirse directamente mediante `/es/` y `/en/`.
 - Español: https://sciu-lab.github.io/Hydrocarbon-Lab/es/
 - English: https://sciu-lab.github.io/Hydrocarbon-Lab/en/
 
+## English overview
+
+OrgoRush is a bilingual educational organic-chemistry editor and nomenclature
+trainer. [Open the English app](https://sciu-lab.github.io/Hydrocarbon-Lab/en/).
+The suggested IUPAC profile follows the implemented Blue Book 2013+ rules; the
+IUPAC 1979 Legacy profile covers a narrower, explicitly supported subset. An
+unavailable name means that the selected profile does not cover that structure;
+the app is not a universal nomenclature authority.
+
+Practice and Exam run in the current browser session. Their drafts, attempts,
+results, and Dashboard are lost when the page is reloaded. The GitHub Pages
+version stores the current molecule, History, Saved structures, and preferences
+in browser storage; they are not shared between devices and may be lost if that
+storage is cleared. The Sites version can sync History and Saved when its
+persistent storage is configured.
+
+The public page currently loads Google Analytics. Compound context resolution
+may contact OPSIN, PubChem, Wikidata, and Wikipedia when a compound name or
+identity is available; these requests are not necessarily initiated by a
+separate manual action. Practice questions and their grading run locally. Do
+not enter personal or sensitive information.
+
+To report a problem, [open a GitHub issue](https://github.com/sciu-lab/Hydrocarbon-Lab/issues/new?template=bug_report.md).
+Include the page URL, browser, language, mode, steps to reproduce, and the seed
+or question number when relevant. Do not include student names or personal
+data. This information describes current scope and data flows; it does not
+claim that every structure is supported or make a software-license statement.
+
 La versión de GitHub Pages se genera automáticamente desde la rama `main` con
 `npm run build:pages`. En GitHub Pages, el historial queda guardado localmente
 en el navegador; en Sites se sincroniza mediante su almacenamiento persistente,

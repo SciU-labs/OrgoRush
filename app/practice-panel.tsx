@@ -349,6 +349,7 @@ export function PracticePanel({ language, onLanguageChange, onBackToLab, generat
       {count === null && <p role="status">{t("Introduce un número entero positivo de preguntas.")}</p>}
       <ClassVariantsPanel selection={{ mode, questionCount: count, categories, questionTypes, difficulty }} language={language} onUseSeed={setSeed} />
       {configError && <p role="alert">{t(mode === "exam" ? "No se pudo iniciar el examen. Revisa los temas y vuelve a intentarlo." : "No se pudo iniciar la práctica. Revisa los temas y vuelve a intentarlo.")}</p>}
+      <p className="practice-session-notice" role="note">{t("Las sesiones, los borradores y los resultados de Práctica/Examen solo duran esta sesión y se pierden al recargar. Historial y Guardados usan almacenamiento aparte, según la versión del laboratorio.")}</p>
       <button type="submit" className="practice-primary" disabled={!categories.length || !questionTypes.length || count === null}>{t(mode === "exam" ? "Iniciar examen" : "Iniciar práctica")}</button>
     </form> : <>
       <p className="practice-seed">{t("Semilla")}: <code>{localized.config.seed}</code></p>

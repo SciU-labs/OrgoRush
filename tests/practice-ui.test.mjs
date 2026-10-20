@@ -294,6 +294,10 @@ for (const language of ["es", "en"]) test(`configuration ${language}: topics, de
   assert.doesNotMatch(html, /\bmax="|<option/);
   assert.ok(html.includes(uiText(language, "Semilla (opcional)")));
   assert.ok(html.includes(uiText(language, "Iniciar práctica")));
+  const sessionNotice = uiText(language, "Las sesiones, los borradores y los resultados de Práctica/Examen solo duran esta sesión y se pierden al recargar. Historial y Guardados usan almacenamiento aparte, según la versión del laboratorio.");
+  const noticeAt = html.indexOf(sessionNotice);
+  const startAt = html.indexOf(uiText(language, "Iniciar práctica"));
+  assert.ok(noticeAt >= 0 && noticeAt < startAt, "the temporary-session notice appears before Start");
   assert.ok(html.includes(uiText(language, "Opción múltiple")));
   assert.ok(html.includes(uiText(language, "Construir la molécula")));
   assert.ok(html.includes(uiText(language, "Dificultad")));

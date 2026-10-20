@@ -42,6 +42,7 @@ function editor(viewMode = "semi-developed") {
     getTetrahedralStereoCenters: () => [],
     localizedIupac: (name) => name,
     localizedDynamicText: (message) => message,
+    preservesSourceName: () => false,
     t: (message) => message,
   };
   context.setViewMode = (mode) => { context.viewMode = mode; };
@@ -53,7 +54,7 @@ function editor(viewMode = "semi-developed") {
   for (const name of [
     "setPlacementTool", "setReasoningSourceName", "setSourceNameOverride", "setNotice", "setSelectedId",
     "setShowStereochemistry", "setCommonAlkylNameSelections", "setShowIupacName", "setRingInsertMode",
-    "setShowAlkylPalette", "setShowRingPalette", "setShowFunctionalPalette", "setNameBuilderFeedback",
+    "setShowAlkylPalette", "setShowRingPalette", "setShowFunctionalPalette", "setNameBuilderFeedback", "setHistoryOpen",
   ]) context[name] = () => {};
   context.commit = action("commit", context);
   return { context, importSmilesString: action("importSmilesString", context), initial: structuredClone(initial.molecule) };
@@ -151,10 +152,31 @@ test("a direct load is one history action and undo/redo restore both graphs", ()
   direct.importSmilesString("CCC", { kind: "text" });
   const propane = structuredClone(direct.context.molecule);
   assert.equal(direct.context.undoStack.length, 1);
+  assert.equal(direct.context.smilesFeedback.kind, "success");
   action("undo", { ...direct.context })();
   assert.deepEqual(direct.context.molecule, direct.initial);
+  assert.equal(direct.context.smilesFeedback, null);
   action("redo", { ...direct.context })();
   assert.deepEqual(direct.context.molecule, propane);
+  assert.equal(direct.context.smilesFeedback, null);
+});
+
+test("restoring a different library molecule clears feedback for the previous SMILES", () => {
+  const direct = editor();
+  direct.importSmilesString("CCCC", { kind: "text" });
+  assert.equal(direct.context.smilesFeedback.kind, "success");
+  const ethanol = moleculeFromSmiles("CCO");
+  assert.equal(ethanol.ok, true);
+
+  action("restoreLibraryEntry", direct.context)({
+    molecule: ethanol.molecule,
+    name: "ethanol",
+    viewMode: "semi-developed",
+  }, "history");
+
+  assert.deepEqual(direct.context.molecule, ethanol.molecule);
+  assert.equal(direct.context.smilesFeedback, null);
+  assert.equal(direct.context.undoStack.length, 2);
 });
 
 test("the current panel submits text on button or Enter through the shared import action", () => {

@@ -450,6 +450,7 @@ type HistoryTransferNotice = {
 type LocalizedFeedbackMessage =
   | { id: "source"; source: string }
   | { id: "smiles.empty" }
+  | { id: "smiles.isotope-unsupported" }
   | { id: "smiles.exported" }
   | { id: "smiles.imported"; suggestedName: string | null; importedRecords: number | null }
   | { id: "formula.empty" }
@@ -6934,6 +6935,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         return localizedDynamicText(message.source);
       case "smiles.empty":
         return t("Escribe o pega un SMILES antes de cargarlo.");
+      case "smiles.isotope-unsupported":
+        return t("La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.");
       case "smiles.exported":
         return t("La molécula actual se exportó como archivo .smi compatible con SMILES.");
       case "smiles.imported": {
@@ -8058,6 +8061,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             molecule: restored,
             viewMode: restoredViewMode,
           });
+          setSmilesFeedback(null);
           setMolecule(restored);
           setIsPristineInitialMolecule(false);
           setSourceNameOverride(preservesSourceName(data.draft.name) ? data.draft.name : null);
@@ -8114,6 +8118,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             molecule: restored,
             viewMode: restoredViewMode,
           });
+          setSmilesFeedback(null);
           setMolecule(restored);
           setIsPristineInitialMolecule(false);
           setSourceNameOverride(preservesSourceName(data.draft.name) ? data.draft.name : null);
@@ -8351,6 +8356,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setUndoPristineStates((items) => [...items, isPristineInitialMolecule]);
     setFuture([]);
     setFuturePristineStates([]);
+    setSmilesFeedback(null);
     setMolecule(sanitizedNext);
     setIsPristineInitialMolecule(false);
     if (!preserveName) {
@@ -9339,6 +9345,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setFuturePristineStates((items) => [isPristineInitialMolecule, ...items]);
     setUndoStack((items) => items.slice(0, -1));
     setUndoPristineStates((items) => items.slice(0, -1));
+    setSmilesFeedback(null);
     setMolecule(cloneMolecule(previous));
     setIsPristineInitialMolecule(undoPristineStates.at(-1) ?? false);
     setReasoningSourceName(null);
@@ -9355,6 +9362,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setUndoPristineStates((items) => [...items, isPristineInitialMolecule]);
     setFuture((items) => items.slice(1));
     setFuturePristineStates((items) => items.slice(1));
+    setSmilesFeedback(null);
     setMolecule(cloneMolecule(next));
     setIsPristineInitialMolecule(futurePristineStates[0] ?? false);
     setReasoningSourceName(null);
@@ -9778,6 +9786,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       }
       const converted = moleculeFromSmiles(smiles);
       if (!converted.ok) {
+        if (converted.errorCode === "EXPLICIT_ISOTOPE_UNSUPPORTED") {
+          setSmilesFeedback({ kind: "error", message: { id: "smiles.isotope-unsupported" } });
+          return;
+        }
         throw new Error(origin.kind === "text" && converted.error === "OpenChemLib no pudo convertir la estructura recibida."
           ? "SMILES no válido. Revisa la sintaxis e inténtalo de nuevo."
           : converted.error);
@@ -14274,6 +14286,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           aria-label={t("Síguenos en Instagram: @sciu.science")}
         >
           {t("Síguenos en Instagram: @sciu.science")}
+        </a>
+        <a
+          className="footer-public-guide"
+          href="https://github.com/sciu-lab/Hydrocarbon-Lab/blob/main/README.md#english-overview"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("Alcance, privacidad y reporte de errores")}
         </a>
         <p className="footer-note">
           {t("Los hidrógenos se completan automáticamente respetando las valencias de C, O, N y halógenos.")}

@@ -6,6 +6,7 @@ import { Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 
 import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { readSmilesFileRecord } from "../app/smiles-file.ts";
+import { uiText } from "../app/i18n.ts";
 
 const isotopeCases = [
   ["[13CH3]CO", 6, 13],
@@ -42,6 +43,7 @@ for (const [smiles, atomicNumber, mass] of isotopeCases) {
       (i) => parsed.getAtomicNo(i) === atomicNumber && parsed.getAtomMass(i) === mass,
     ), "the actual parser preserves the isotope, including explicit isotope hydrogens");
     assertIsotopeRejection(moleculeFromSmiles(smiles));
+    assert.equal(moleculeFromSmiles(smiles).errorCode, "EXPLICIT_ISOTOPE_UNSUPPORTED");
     assertIsotopeRejection(inspectSmilesStructure(smiles));
   });
 }
@@ -141,7 +143,14 @@ for (const language of ["es", "en"]) {
           assert.equal(context.smilesImporting, false);
         }
         assert.equal(context.smilesFeedback.kind, "error");
-        assert.match(context.smilesFeedback.message.source, /isótopos explícitos.*No se importó/);
+        assert.equal(context.smilesFeedback.message.id, "smiles.isotope-unsupported");
+        const localizedMessage = action("resolveLocalizedFeedbackMessage", {
+          language,
+          t: (source) => uiText(language, source),
+        })(context.smilesFeedback.message);
+        assert.equal(localizedMessage, language === "en"
+          ? "This structure contains explicit isotopes that the editor does not currently support. It was not imported to avoid changing its chemical identity."
+          : "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.");
         assert.deepEqual(calls, [], "no analysis, commit, state replacement or persistence is reached");
         for (const key of Object.keys(state)) {
           assert.strictEqual(context[key], state[key], key);

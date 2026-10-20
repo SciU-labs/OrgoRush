@@ -10431,6 +10431,7 @@ body:has(.a11y-high-contrast) .docx-export-error { color: var(--red); }
 .practice-card button:hover:not(:disabled) { border-color: var(--brand-primary); }
 .practice-card button:focus-visible, .practice-card input:focus-visible, .practice-card select:focus-visible, .practice-launch:focus-visible { outline: 3px solid var(--brand-primary); outline-offset: 3px; }
 .practice-card .practice-primary { background: var(--brand-primary); border-color: var(--brand-primary); color: var(--brand-surface); }
+.practice-session-notice { margin: 14px 0; padding: 10px 12px; border-left: 3px solid var(--brand-primary); background: var(--brand-primary-soft); }
 .practice-card .language-switch button { padding: 7px 11px; }
 .practice-mode { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
 .practice-mode button[aria-pressed="true"] { border-color: var(--brand-primary); background: var(--brand-primary-soft); color: var(--brand-selected-ink); }

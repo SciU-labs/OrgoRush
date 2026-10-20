@@ -109,7 +109,11 @@ for (const language of ["es", "en"]) {
     assert.ok(classOptIn.includes(uiText(language, "Generar variantes para una clase")));
     assert.match(html, /type="number" min="1" step="1"/);
     assert.doesNotMatch(html, /\bmax="|<option/);
-    assert.ok(html.includes(uiText(language, "Iniciar examen"))); assert.doesNotMatch(html, /endless|Próximamente|Coming soon/);
+    const sessionNotice = uiText(language, "Las sesiones, los borradores y los resultados de Práctica/Examen solo duran esta sesión y se pierden al recargar. Historial y Guardados usan almacenamiento aparte, según la versión del laboratorio.");
+    const noticeAt = html.indexOf(sessionNotice);
+    const startAt = html.indexOf(uiText(language, "Iniciar examen"));
+    assert.ok(noticeAt >= 0 && noticeAt < startAt, "the temporary-session notice appears before Start");
+    assert.doesNotMatch(html, /endless|Próximamente|Coming soon/);
   });
   test(`Naming pre-submit ${language} has exact student text, no reference/feedback/reviewer/answer data`, () => {
     let s = start(); s = updateExamAnswer(s, "  My draft  "); const q = s.plan.slots[0].question;

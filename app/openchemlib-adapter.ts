@@ -13,9 +13,12 @@ import {
 
 type SupportedElement = NonNullable<GeneratedAtom["element"]>;
 
+export type OpenChemLibImportErrorCode = "EXPLICIT_ISOTOPE_UNSUPPORTED";
+type OpenChemLibImportFailure = { ok: false; error: string; errorCode?: OpenChemLibImportErrorCode };
+
 export type OpenChemLibBuildResult =
   | { ok: true; molecule: GeneratedMolecule }
-  | { ok: false; error: string };
+  | OpenChemLibImportFailure;
 
 export type OpenChemLibSmilesExportResult =
   | { ok: true; smiles: string }
@@ -31,7 +34,7 @@ export type OpenChemLibSmilesInspectionResult =
       preservedTetrahedralStereoCenterCount: number;
       unpreservedTetrahedralStereoCenterCount: number;
     }
-  | { ok: false; error: string };
+  | OpenChemLibImportFailure;
 
 export type PolycyclicTopology = "monocyclic" | "fused" | "bridged" | "spiro" | "other";
 
@@ -173,6 +176,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       return {
         ok: false,
         error: "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+        errorCode: "EXPLICIT_ISOTOPE_UNSUPPORTED",
       };
     }
   }
