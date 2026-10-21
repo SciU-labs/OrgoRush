@@ -4904,6 +4904,11 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 }
 
 .reasoning-section {
+  /* Keep legacy neutral aliases local to this panel, using OrgoRush tokens. */
+  --ink: var(--brand-ink);
+  --muted: var(--brand-muted);
+  --line: var(--brand-border);
+  --paper: var(--brand-surface);
   margin: 18px 20px 0;
   padding: 14px;
   border: 1px solid var(--brand-border);
@@ -4922,7 +4927,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 
 .reasoning-heading h3 {
   margin: 0;
-  color: var(--brand-ink);
+  color: var(--ink);
   font-family: var(--font-heading);
   font-size: 16px;
 }
@@ -4930,7 +4935,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 .reasoning-heading > div > span {
   display: block;
   margin-top: 3px;
-  color: var(--brand-muted);
+  color: var(--muted);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -4946,8 +4951,8 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   padding: 0 9px;
   border: 1px solid var(--brand-border);
   border-radius: 9px;
-  background: var(--brand-surface);
-  color: var(--brand-muted);
+  background: var(--paper);
+  color: var(--muted);
   cursor: pointer;
   font-size: 11px;
   font-weight: 800;
@@ -4961,7 +4966,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 }
 
 .reasoning-visibility-button:focus-visible {
-  outline: 3px solid var(--brand-primary);
+  outline: 3px solid var(--brand-selected-ink);
   outline-offset: 2px;
 }
 
@@ -5022,6 +5027,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   transition: background 180ms ease, box-shadow 180ms ease;
 }
 .reasoning-section li.reasoning-step-target {
+  --muted: var(--ink);
   background: var(--brand-primary-soft);
   box-shadow: 0 0 0 5px var(--brand-primary-soft);
 }
@@ -5038,7 +5044,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   height: 25px;
   border: 1px solid var(--brand-border);
   border-radius: 8px;
-  background: var(--brand-surface);
+  background: var(--paper);
   color: var(--brand-selected-ink);
   font-size: 9px;
   font-weight: 800;
@@ -5047,29 +5053,25 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 .reasoning-section strong {
   display: block;
   margin-bottom: 3px;
-  color: var(--brand-ink);
+  color: var(--ink);
   font-size: 12px;
 }
 
 .reasoning-section p {
   margin: 0;
-  color: var(--brand-muted);
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.5;
 }
 
 .reasoning-section p b {
-  color: var(--brand-ink);
+  color: var(--ink);
 }
 
 .reasoning-name-fragment {
   margin-top: 10px;
-  color: var(--mint-strong);
+  color: var(--brand-selected-ink);
   text-align: center;
-}
-
-.reasoning-name-fragment--parent {
-  color: var(--brand-primary);
 }
 
 .reasoning-name-fragment-text {
@@ -6860,10 +6862,6 @@ html[data-theme="dark"] .status-dot {
   box-shadow: 0 0 0 4px var(--brand-primary-soft);
 }
 
-html[data-theme="dark"] .reasoning-name-fragment--parent {
-  color: #9bb4ff;
-}
-
 html[data-theme="dark"] .step-line {
   background: #354a44;
 }
@@ -7419,22 +7417,26 @@ html[data-theme="dark"] .naming-rule {
 
 html[data-theme="dark"] .reasoning-section,
 html[data-theme="dark"] .reasoning-section.collapsed {
+  /* Existing dark neutral palette, shared by all text/controls in the panel. */
+  --ink: #f8fafc;
+  --muted: #aebbd0;
+  --paper: var(--brand-toolbar);
   border-color: var(--brand-border);
   background: var(--brand-workspace);
 }
 
 html[data-theme="dark"] .reasoning-heading h3 {
-  color: #f8fafc;
+  color: var(--ink);
 }
 
 html[data-theme="dark"] .reasoning-heading > div > span {
-  color: #aebbd0;
+  color: var(--muted);
 }
 
 html[data-theme="dark"] .reasoning-visibility-button {
   border-color: var(--brand-border);
-  background: var(--brand-toolbar);
-  color: #d6deed;
+  background: var(--paper);
+  color: var(--muted);
 }
 
 html[data-theme="dark"] .reasoning-visibility-button:hover {
@@ -7445,18 +7447,23 @@ html[data-theme="dark"] .reasoning-visibility-button:hover {
 
 html[data-theme="dark"] .reasoning-section li > span {
   border-color: var(--brand-border);
-  background: var(--brand-toolbar);
+  background: var(--paper);
   color: var(--brand-selected-ink);
 }
 
 html[data-theme="dark"] .reasoning-section strong,
-html[data-theme="dark"] .reasoning-section p b,
+html[data-theme="dark"] .reasoning-section p b { color: var(--ink); }
+html[data-theme="dark"] .reasoning-section p { color: var(--muted); }
 html[data-theme="dark"] footer strong { color: #e2e8f0; }
-html[data-theme="dark"] .reasoning-section p,
 html[data-theme="dark"] footer { color: #aebbd0; }
 
 .a11y-high-contrast .reasoning-section {
   border-width: 2px;
+}
+html .a11y-high-contrast .reasoning-section {
+  --ink: var(--brand-ink);
+  --muted: var(--brand-muted);
+  --paper: var(--brand-workspace);
 }
 html .a11y-high-contrast .reasoning-heading h3,
 html .a11y-high-contrast .reasoning-section strong,
@@ -9983,19 +9990,22 @@ html .app-shell.a11y-high-contrast .analysis-utility-bar .language-switch button
 .iupac-dock-profile:disabled { opacity: .6; cursor: default; }
 .iupac-dock-name { display: block; max-height: none; }
 .iupac-dock-name .chemical-name-text { display: block; overflow: visible; overflow-wrap: anywhere; text-overflow: clip; white-space: normal; }
-.iupac-name-reference { color: inherit; cursor: pointer; text-decoration: underline; text-decoration-color: #87d8be; text-decoration-style: dotted; text-decoration-thickness: 2px; text-underline-offset: 3px; user-select: text; }
-.iupac-name-reference:hover, .iupac-name-reference.is-active { color: #b9ffdf; text-decoration-style: solid; }
-.iupac-name-reference:focus-visible { outline: 2px solid #b9ffdf; outline-offset: 3px; border-radius: 2px; }
+.iupac-name-reference { color: inherit; cursor: pointer; text-decoration: underline; text-decoration-color: var(--orgorush-structure-main); text-decoration-style: dotted; text-decoration-thickness: 2px; text-underline-offset: 3px; user-select: text; }
+.iupac-name-reference:hover, .iupac-name-reference.is-active { color: var(--brand-surface); text-decoration-style: solid; }
+.iupac-name-reference:focus-visible { outline: 2px solid var(--orgorush-structure-main); outline-offset: 3px; border-radius: 2px; }
 .reasoning-bond-halo { stroke: #d96500; stroke-width: 15; stroke-linecap: round; opacity: .3; }
 .bond.reasoning-bond-highlight { stroke: #a64200; stroke-width: 5.5; }
 html[data-theme="dark"] .reasoning-bond-halo { stroke: #ffd166; opacity: .38; }
 html[data-theme="dark"] .bond.reasoning-bond-highlight { stroke: #ffd166; }
-.reasoning-name-fragment-control { min-height: 32px; padding: 3px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: inherit; font: inherit; font-weight: 800; cursor: pointer; }
-.reasoning-name-fragment-control:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.reasoning-name-fragment-control { min-height: 32px; padding: 3px 7px; border: 1px solid var(--brand-selected-ink); border-radius: 6px; background: var(--paper); color: inherit; font: inherit; font-weight: 800; cursor: pointer; }
+.reasoning-name-fragment-control:hover { background: var(--brand-primary-soft); }
+.reasoning-name-fragment-control:focus-visible { outline: 3px solid var(--brand-selected-ink); outline-offset: 2px; }
 .reasoning-name-fragment-control.is-selected,
 .reasoning-name-fragment-control[aria-pressed="true"] { border-color: #a64200; box-shadow: inset 3px 0 #a64200; }
 html[data-theme="dark"] .reasoning-name-fragment-control.is-selected,
 html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { border-color: #ffd166; box-shadow: inset 3px 0 #ffd166; }
+html .a11y-high-contrast .reasoning-name-fragment-control.is-selected,
+html .a11y-high-contrast .reasoning-name-fragment-control[aria-pressed="true"] { border-color: var(--amber); box-shadow: inset 3px 0 var(--amber); }
 .reasoning-name-fragment-explanation { margin: 5px 0 0; font-size: 12px; line-height: 1.5; }
 @media (prefers-reduced-motion: reduce) {
   .reasoning-section li { transition: none; }
@@ -10054,10 +10064,10 @@ html[data-theme="dark"] .reasoning-name-fragment-control[aria-pressed="true"] { 
 .a11y-high-contrast .iupac-dock-detail-heading > span { color: #074f66; }
 .a11y-high-contrast .iupac-dock-name,
 .a11y-high-contrast .iupac-dock-detail > strong { color: #081d18; }
-.a11y-high-contrast .iupac-dock .iupac-name-reference { text-decoration-color: #074f66; }
+.a11y-high-contrast .iupac-dock .iupac-name-reference { text-decoration-color: var(--brand-selected-ink); }
 .a11y-high-contrast .iupac-dock .iupac-name-reference:hover,
-.a11y-high-contrast .iupac-dock .iupac-name-reference.is-active { color: #074f66; }
-.a11y-high-contrast .iupac-dock .iupac-name-reference:focus-visible { outline-color: #074f66; }
+.a11y-high-contrast .iupac-dock .iupac-name-reference.is-active { color: var(--brand-selected-ink); }
+.a11y-high-contrast .iupac-dock .iupac-name-reference:focus-visible { outline-color: var(--brand-selected-ink); }
 .a11y-high-contrast .iupac-dock-common-name { color: #26463e; }
 .a11y-high-contrast .iupac-dock-common-name > span { color: #075f4e; }
 .a11y-high-contrast .iupac-dock-profile,
