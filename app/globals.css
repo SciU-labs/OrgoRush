@@ -22,6 +22,8 @@
   --brand-primary: #3563ff;
   --brand-primary-hover: #284fe0;
   --brand-primary-soft: #eef2ff;
+  --orgorush-structure-main: #3563ff;
+  --orgorush-structure-number: #3563ff;
   --brand-accent: #c7f36b;
   --brand-ink: #111827;
   --brand-muted: #667085;
@@ -92,6 +94,8 @@ button {
   --brand-primary-hover: #063d4d;
   --brand-primary-soft: #ffffff;
   --brand-selected-ink: #074f66;
+  --orgorush-structure-main: #07556a;
+  --orgorush-structure-number: #07556a;
   --brand-ink: #081d18;
   --brand-muted: #26463e;
   --brand-border: #25483f;
@@ -889,7 +893,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 .png-color-mode-swatch.color {
   background: linear-gradient(
     135deg,
-    var(--structure-main, #4d8c94) 0 32%,
+    var(--structure-main, #3563ff) 0 32%,
     var(--structure-functional, #8a6ca0) 32% 66%,
     var(--structure-branch, #d5a254) 66% 100%
   );
@@ -2101,8 +2105,14 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .theme-control:hover {
-  border-color: var(--brand-border);
-  background: #f5f7fb;
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+}
+
+.theme-control:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
 }
 
 .theme-control strong {
@@ -2115,9 +2125,10 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   place-items: center;
   width: 26px;
   height: 26px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 22%, var(--brand-border));
   border-radius: 50%;
-  background: #f1f4f9;
-  color: #53627a;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   font-size: 14px;
 }
 
@@ -2605,7 +2616,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 .condensed-bond-hit-target { fill: transparent; stroke: transparent; pointer-events: all; }
 .condensed-atom:hover .condensed-atom-text,
 .condensed-atom:focus-visible .condensed-atom-text { stroke: color-mix(in srgb, var(--structure-main) 22%, var(--paper)); stroke-width: 4px; }
-.condensed-selection-halo { fill: rgba(76, 155, 135, 0.08); stroke: #358b77; stroke-width: 2px; pointer-events: none; }
+.condensed-selection-halo { fill: color-mix(in srgb, var(--structure-main) 10%, transparent); stroke: var(--structure-main); stroke-width: 2px; pointer-events: none; }
 .condensed-bond { cursor: pointer; outline: none; }
 .condensed-bond text { pointer-events: none; }
 .condensed-bond:hover text,
@@ -2687,7 +2698,10 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .molecule-stage {
-  --structure-main: #4d8c94;
+  --canvas: #f8fafc;
+  --grid-dot: #d5dff0;
+  --structure-main: var(--orgorush-structure-main);
+  --structure-number: var(--orgorush-structure-number);
   --structure-branch: #d5a254;
   --structure-functional: #8a6ca0;
   position: sticky;
@@ -2696,15 +2710,15 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   height: clamp(300px, calc(100dvh - 390px), 620px);
   margin: 0 18px;
   overflow: hidden;
-  border: 1px solid #dfe8e5;
+  border: 1px solid var(--brand-border);
   border-radius: 19px;
   background: var(--canvas);
 }
 
 .molecule-stage:focus-visible {
-  outline: 3px solid rgba(55, 137, 116, 0.32);
+  outline: 3px solid color-mix(in srgb, var(--brand-primary) 42%, transparent);
   outline-offset: 3px;
-  border-color: #77ad9f;
+  border-color: var(--brand-primary);
 }
 
 .molecule-stage svg {
@@ -3260,8 +3274,8 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .selection-ring {
-  fill: rgba(92, 153, 138, 0.09);
-  stroke: #4c9b87;
+  fill: color-mix(in srgb, var(--structure-main) 10%, transparent);
+  stroke: var(--structure-main);
   stroke-width: 2;
   stroke-dasharray: 5 4;
 }
@@ -3276,8 +3290,8 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 
 .semi-developed-node:hover .semi-developed-hover-ring,
 .semi-developed-node:focus-visible .semi-developed-hover-ring {
-  fill: rgba(76, 155, 135, 0.025);
-  stroke: rgba(76, 155, 135, 0.34);
+  fill: color-mix(in srgb, var(--structure-main) 3%, transparent);
+  stroke: color-mix(in srgb, var(--structure-main) 38%, transparent);
 }
 
 .semi-developed-node.selected .semi-developed-hover-ring {
@@ -3285,8 +3299,8 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .semi-developed-selection-ring {
-  fill: rgba(92, 153, 138, 0.09);
-  stroke: #358b77;
+  fill: color-mix(in srgb, var(--structure-main) 10%, transparent);
+  stroke: var(--structure-main);
   stroke-width: 2;
 }
 
@@ -3326,8 +3340,8 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 
 .skeletal-node:hover .skeletal-hit-target,
 .skeletal-node:focus .skeletal-hit-target {
-  fill: rgba(86, 148, 132, 0.08);
-  stroke: rgba(63, 137, 119, 0.3);
+  fill: color-mix(in srgb, var(--structure-main) 8%, transparent);
+  stroke: color-mix(in srgb, var(--structure-main) 34%, transparent);
 }
 
 .skeletal-node:hover .skeletal-anchor,
@@ -3346,7 +3360,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 
 .skeletal-selection-ring {
   fill: rgba(255, 255, 255, 0.82);
-  stroke: #3d8f7b;
+  stroke: var(--structure-main);
   stroke-width: 2;
   stroke-dasharray: 4 3;
 }
@@ -3409,7 +3423,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .skeletal-number-leader {
-  stroke: rgba(29, 109, 97, 0.72);
+  stroke: color-mix(in srgb, var(--structure-main) 72%, transparent);
   stroke-width: 1.5;
   stroke-linecap: round;
   pointer-events: none;
@@ -3449,7 +3463,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .number-circle {
-  fill: #1d6d61;
+  fill: var(--structure-number);
   stroke: white;
   stroke-width: 2.5;
 }
@@ -3513,7 +3527,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   border-radius: 2px;
 }
 
-.main-key { background: var(--structure-main, #4d8c94); }
+.main-key { background: var(--structure-main, #3563ff); }
 .branch-key { background: var(--structure-branch, #d5a254); }
 
 .structure-family-badge {
@@ -6305,7 +6319,8 @@ html[data-theme="dark"] .examples-card {
 
 html[data-theme="dark"] .theme-control:hover {
   border-color: var(--brand-primary);
-  background: #202d46;
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
 }
 
 html[data-theme="dark"] .settings-control {
@@ -6799,6 +6814,12 @@ html[data-theme="dark"] .preset-structure {
   color: #8cd4bd;
 }
 
+html[data-theme="dark"] .theme-icon {
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 52%, var(--brand-border));
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+}
+
 html[data-theme="dark"] .status-dot {
   background: #70c9aa;
   box-shadow: 0 0 0 4px #254139;
@@ -6827,7 +6848,7 @@ html[data-theme="dark"] .bond-order-picker button.active {
 }
 
 html[data-theme="dark"] .condensed-atom-text { stroke: var(--paper); }
-html[data-theme="dark"] .condensed-selection-halo { fill: rgba(103, 193, 169, 0.1); stroke: #71c2aa; }
+html[data-theme="dark"] .condensed-selection-halo { fill: color-mix(in srgb, var(--structure-main) 15%, transparent); stroke: var(--structure-main); }
 html[data-theme="dark"] .condensed-stereo-badge rect { fill: #302d1e; stroke: #c7aa58; }
 html[data-theme="dark"] .condensed-stereo-badge text { fill: #f0d884; }
 html[data-theme="dark"] .condensed-locant { fill: #b7c8c1; }
@@ -6898,9 +6919,29 @@ html[data-theme="dark"] .reset-structure-colors {
 }
 
 html[data-theme="dark"] .molecule-stage {
+  --canvas: #101827;
+  --grid-dot: #33415c;
+  --orgorush-structure-main: #8fa8ff;
+  --orgorush-structure-number: #3156c7;
+  --structure-main: var(--orgorush-structure-main);
+  --structure-number: var(--orgorush-structure-number);
   --structure-functional: #bd91d0;
-  border-color: #30433e;
+  border-color: #34435f;
   background: var(--canvas);
+}
+
+.a11y-high-contrast .molecule-stage {
+  --canvas: #ffffff;
+  --grid-dot: #8798ad;
+  --orgorush-structure-main: #07556a;
+  --orgorush-structure-number: #07556a;
+}
+
+html[data-theme="dark"] .a11y-high-contrast .molecule-stage {
+  --canvas: #ffffff;
+  --grid-dot: #8798ad;
+  --orgorush-structure-main: #07556a;
+  --orgorush-structure-number: #07556a;
 }
 
 html[data-theme="dark"] .canvas-toolbar-left button {
@@ -6952,29 +6993,37 @@ html[data-theme="dark"] .carbon-node.on-branch .atom-circle {
 }
 
 html[data-theme="dark"] .selection-ring {
-  fill: rgba(103, 193, 169, 0.1);
-  stroke: #71c2aa;
+  fill: color-mix(in srgb, var(--structure-main) 15%, transparent);
+  stroke: var(--structure-main);
 }
 
 html[data-theme="dark"] .semi-developed-node:hover .semi-developed-hover-ring,
 html[data-theme="dark"] .semi-developed-node:focus-visible .semi-developed-hover-ring {
-  fill: rgba(113, 194, 170, 0.04);
-  stroke: rgba(113, 194, 170, 0.45);
+  fill: color-mix(in srgb, var(--structure-main) 5%, transparent);
+  stroke: color-mix(in srgb, var(--structure-main) 52%, transparent);
 }
 
 html[data-theme="dark"] .semi-developed-selection-ring {
-  fill: rgba(103, 193, 169, 0.1);
-  stroke: #71c2aa;
+  fill: color-mix(in srgb, var(--structure-main) 15%, transparent);
+  stroke: var(--structure-main);
 }
 
 html[data-theme="dark"] .skeletal-selection-ring {
   fill: rgba(18, 31, 27, 0.88);
-  stroke: #78c6af;
+  stroke: var(--structure-main);
+}
+
+html[data-theme="dark"] .skeletal-node.on-branch .skeletal-selection-ring {
+  stroke: var(--structure-branch);
+}
+
+html[data-theme="dark"] .uniform-colors .skeletal-node.on-branch .skeletal-selection-ring {
+  stroke: var(--structure-main);
 }
 
 html[data-theme="dark"] .number-circle {
-  fill: #58a891;
-  stroke: #13211d;
+  fill: var(--structure-number);
+  stroke: var(--canvas);
 }
 
 html[data-theme="dark"] .skeletal-terminal-carbon,
@@ -6983,7 +7032,7 @@ html[data-theme="dark"] .steroid-ring-label circle {
 }
 
 html[data-theme="dark"] .skeletal-number-leader {
-  stroke: rgba(154, 219, 197, 0.78);
+  stroke: color-mix(in srgb, var(--structure-main) 82%, transparent);
 }
 
 html[data-theme="dark"] .steroid-ring-label circle {

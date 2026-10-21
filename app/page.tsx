@@ -268,7 +268,7 @@ type ExportColorPalette = {
 };
 
 const DEFAULT_STRUCTURE_COLORS = {
-  main: "#4d8c94",
+  main: "#3563ff",
   branch: "#d5a254",
   functional: "#8a6ca0",
 } as const;
@@ -7429,7 +7429,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   );
   const hasHeterocycle = useMemo(() => moleculeContainsHeterocycle(molecule), [molecule]);
   const structureColorStyle = useMemo(() => ({
-    "--structure-main": DEFAULT_STRUCTURE_COLORS.main,
+    "--structure-main": "var(--orgorush-structure-main)",
     "--structure-branch": DEFAULT_STRUCTURE_COLORS.branch,
   }) as CSSProperties, []);
   const exportColorStyle = useMemo(() => ({
