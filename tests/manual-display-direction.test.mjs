@@ -19,7 +19,8 @@ import { moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { flipCoordinates } from "../app/coordinate-flip.ts";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
-const page = fs.readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
+const page = fs.readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+const styles = fs.readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
 let server;
 let analyzeMolecule;
 let readChemistryDocument;
@@ -48,6 +49,10 @@ function extract(startMarker, endMarker) {
 }
 
 const optionsSource = extract("const directionOptions = [", "const ALKYL_TEMPLATES:");
+const directionButtonSource = extract(
+  "                <button\n                  key={option.label}",
+  "\n                </button>",
+);
 const addCarbonSource = extract("  const addCarbon = (dx: number, dy: number) => {", "  const addCarbonFromArrow =");
 const cloneSource = extract("function cloneMolecule(molecule: Molecule): Molecule {", "function buildAdjacency(");
 const commitSource = extract("  const commit = (next: Molecule, message: string, preserveName = false) => {", "  const constructFromName =");
@@ -62,6 +67,13 @@ const compiledOptions = ts.transpileModule(`${optionsSource}\nreturn directionOp
   compilerOptions: { target: ts.ScriptTarget.ES2022 },
 }).outputText;
 const directionOptions = new Function(compiledOptions)();
+
+function cssRule(css, selector) {
+  const rule = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .find(([, selectors]) => selectors.split(",").some((entry) => entry.trim() === selector));
+  assert.ok(rule, `CSS rule exists for ${selector}`);
+  return rule[2];
+}
 
 function graphWithChain(length = 3) {
   return {
@@ -156,9 +168,42 @@ function assertDirection(molecule, parentId, childId, direction, preferred = [])
 }
 
 test("the real editor action maps all four arrow buttons to graph atoms and orthogonal display bonds", () => {
-  assert.deepEqual(directionOptions.map(({ symbol, dx, dy }) => [symbol, dx, dy]), [
-    ["↑", 0, -1], ["←", -1, 0], ["→", 1, 0], ["↓", 0, 1],
+  assert.deepEqual(directionOptions.map(({ label, className, dx, dy }) => [label, className, dx, dy]), [
+    ["Arriba", "north", 0, -1],
+    ["Izquierda", "west", -1, 0],
+    ["Derecha", "east", 1, 0],
+    ["Abajo", "south", 0, 1],
   ]);
+  assert.equal(directionOptions.length, 4);
+  assert.match(directionButtonSource, /className=\{option\.className\}/);
+  assert.match(directionButtonSource, /onClick=\{\(\) => addCarbon\(option\.dx, option\.dy\)\}/);
+  assert.match(
+    directionButtonSource,
+    /<svg className="direction-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">\s*<path d="M12 19V5m0 0-6 6m6-6 6 6" \/>\s*<\/svg>/,
+  );
+  assert.equal((directionButtonSource.match(/<svg\b/g) ?? []).length, 1, "each mapped button renders the shared SVG arrow");
+
+  const arrowStyle = cssRule(styles, ".direction-arrow");
+  assert.match(arrowStyle, /width:\s*16px;/);
+  assert.match(arrowStyle, /height:\s*16px;/);
+  assert.match(arrowStyle, /stroke-width:\s*2\.25;/);
+  for (const [direction, rotation] of [
+    ["north", undefined],
+    ["west", "-90deg"],
+    ["east", "90deg"],
+    ["south", "180deg"],
+  ]) {
+    if (rotation === undefined) {
+      assert.equal(directionOptions.find(({ className }) => className === direction).dy, -1,
+        "the upward-pointing shared SVG is unrotated for north");
+      continue;
+    }
+    assert.match(
+      cssRule(styles, `.direction-pad .${direction} .direction-arrow`),
+      new RegExp(`transform:\\s*rotate\\(${rotation.replace("-", "\\-")}\\);`),
+      `${direction} arrow rotation matches its graph direction`,
+    );
+  }
 
   for (const [selectedId, direction] of [[2, "up"], [2, "down"], [1, "left"], [3, "right"]]) {
     const before = graphWithChain();
