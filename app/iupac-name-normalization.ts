@@ -250,7 +250,7 @@ export function normalizeTraditionalUnsaturationNotation(value: string) {
   // Benzene is a retained aromatic parent name. Its terminal "eno" is not an
   // alkene suffix and must never cause a preceding substituent locant to be
   // rearranged as a multiple-bond locant.
-  if (/benceno$/i.test(value)) return value;
+  if (/(?:benceno|naftaleno|antraceno|fenantreno|indeno|fluoreno|azuleno)$/i.test(value)) return value;
 
   const substituentPrefix = "(?:(?:\\d+(?:,\\d+)*-(?:fluoro|cloro|bromo|yodo|metil|etil|hidroxi|amino)-)+)";
   const prefixed = value.match(
@@ -330,6 +330,12 @@ function translateCore(value: string) {
       (_match, root: string) => `cyclo${root}yl`,
     )
     .replace(/naftaleno/g, "naphthalene")
+    .replace(/antraceno/g, "anthracene")
+    .replace(/fenantreno/g, "phenanthrene")
+    .replace(/indeno/g, "indene")
+    .replace(/fluoreno/g, "fluorene")
+    .replace(/azuleno/g, "azulene")
+    .replace(/dihidro(?=naphthalene)/g, "dihydro")
     .replace(/naftalen(?=-|$)/g, "naphthalen")
     .replace(/espiro(?=\[)/g, "spiro")
     .replace(/triciclo(?=\[)/g, "tricyclo")
@@ -500,6 +506,14 @@ type DisplayVocabularyEntry = {
 };
 
 const displayVocabulary: readonly DisplayVocabularyEntry[] = [
+  { pattern: /anthracene(?=$|[-,.)])/gi, spanish: "antraceno" },
+  { pattern: /phenanthrene(?=$|[-,.)])/gi, spanish: "fenantreno" },
+  { pattern: /indene(?=$|[-,.)])/gi, spanish: "indeno" },
+  { pattern: /fluorene(?=$|[-,.)])/gi, spanish: "fluoreno" },
+  { pattern: /azulene(?=$|[-,.)])/gi, spanish: "azuleno" },
+  { pattern: /dihydro(?=naphthalene)/gi, spanish: "dihidro" },
+  { pattern: /chloro(?=naphthalene)/gi, spanish: "cloro" },
+  { pattern: /iodo(?=naphthalene)/gi, spanish: "yodo" },
   { pattern: /naphthalene(?=$|[-,.)])/gi, spanish: "naftaleno" },
   { pattern: /naphthalen(?=$|[-,.)])/gi, spanish: "naftalen" },
   { pattern: /pyridine(?=$|[-,.)])/gi, spanish: "piridina" },

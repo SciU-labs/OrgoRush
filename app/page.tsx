@@ -89,6 +89,7 @@ import {
   type MoleculeStructure,
   type TraditionalGroupType,
 } from "./traditional-nomenclature";
+import { nameRetainedFused1979, type RetainedFusedResult } from "./iupac1979-retained-fused.ts";
 import {
   findCommonNameSuggestion,
   type CommonNameSuggestion,
@@ -581,6 +582,7 @@ type Analysis = {
   primaryFunctionalLabel?: string;
   fusedBicyclic?: FusedBicyclicSystem;
   spanish1979SaturatedFusedParent?: string;
+  retainedFused?: RetainedFusedResult;
   fusedTricyclic?: FusedTricyclicSystem;
   fusedTetracyclic?: FusedTetracyclicSystem;
   steroidSystem?: SteroidLikeRingSystem;
@@ -3106,6 +3108,16 @@ export function buildLegacyEnglishNameModel(
   displayedSourceName = analysis.name,
   options: { stereochemistry?: boolean } = {},
 ): LegacyEnglishNameModel {
+  if (analysis.retainedFused) {
+    const retained = analysis.retainedFused;
+    return {
+      profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+      parent: { kind: "polycyclic", carbonCount: analysis.mainChain.length,
+        atomIds: [...analysis.mainChain], fallbackName: retained.status === "SUPPORTED" ? retained.nameEn : undefined },
+      doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
+      unavailableReason: retained.status === "UNSUPPORTED" ? retained.reason : undefined,
+    };
+  }
   const skeleton = carbonSkeleton(molecule);
   const heterocycle = heterocycleRing(molecule);
   const rings = molecule.rings ?? [];
@@ -3870,12 +3882,39 @@ export function analyzeMolecule(
   enabledAliases: readonly string[] = [],
   convention: ParentSelectionConvention = "blue-book-2013",
 ): Analysis {
+  // A connected graph needs E >= V + 1 to be polycyclic. Keep the new
+  // recognizer out of the frequently repeated acyclic/monocyclic exercise path.
+  const retainedFused = molecule.bonds.length >= molecule.atoms.length + 1
+    || (molecule.rings?.length ?? 0) > 1 ? nameRetainedFused1979(molecule) : undefined;
+  if (retainedFused && ((retainedFused.topology.kind === "invalid"
+    && (hasSharedRingAtoms(molecule) || molecule.bonds.length >= molecule.atoms.length))
+    || (retainedFused.status === "UNSUPPORTED" && retainedFused.requiresRetainedRoute))) {
+    return {
+      name: COMPLEX_NAME_UNAVAILABLE_MESSAGE, chainName: "", family: "polycyclic",
+      formula: molecularFormula(molecule), mainChain: [], substituents: [], numberedAtoms: new Map(),
+      doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], retainedFused,
+    };
+  }
+  if (retainedFused?.status === "SUPPORTED") {
+    return {
+      name: retainedFused.nameEs, chainName: retainedFused.parentEs,
+      formula: molecularFormula(molecule), family: "polycyclic",
+      mainChain: [...retainedFused.atomIds], substituents: [],
+      // Keep the numeric contract for existing consumers. Junction locants
+      // are stored separately and rendered verbatim by the existing badges.
+      numberedAtoms: new Map([...retainedFused.locants].filter(([, locant]) => /^\d+$/.test(locant))
+        .map(([id, locant]) => [id, Number(locant)])),
+      doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], retainedFused,
+      ringSystem: retainedFused.topology.kind === "ortho-peri-fused" ? "Sistema orto/perifusionado" : "Sistema ortofusionado",
+    };
+  }
   const groups = detectFunctionalGroups(molecule);
   const fusedBicyclic = getFusedBicyclicSystem(molecule, groups);
   if (fusedBicyclic) {
     return analyzeFusedBicyclicMolecule(molecule, fusedBicyclic, groups);
   }
-  if (hasSharedRingAtoms(molecule)) {
+  if (hasSharedRingAtoms(molecule) || (retainedFused && retainedFused.topology.cycleRank > 1
+    && retainedFused.topology.kind !== "linked")) {
     const fusedTricyclic = getFusedTricyclicSystem(molecule, groups);
     if (fusedTricyclic) {
       const primaryFunctionalGroup = fusedTricyclic.primaryFunctionalGroup
@@ -3978,6 +4017,7 @@ export function analyzeMolecule(
       formula: molecularFormula(molecule), family: "polycyclic",
       mainChain: [], chainName: "", substituents: [], numberedAtoms: new Map(),
       doubleBondLocants: [], tripleBondLocants: [], functionalGroups: groups,
+      retainedFused,
       steroidSystem: steroidLike?.isGonaneTopology ? steroidLike : undefined,
       ringSystem: steroidLike?.isGonaneTopology
         ? steroidStereochemistryStatus(molecule, "es")
@@ -4061,6 +4101,8 @@ export function suggestedIupacNameWithOmittedLocants(analysis: Analysis) {
 
 /** Keeps the graph-derived locant for the older Spanish formatter when Suggested omits it. */
 export function legacySpanishFormatterInput(analysis: Analysis, selectedDisplayName: string) {
+  if (analysis.retainedFused) return analysis.retainedFused.status === "SUPPORTED"
+    && selectedDisplayName === analysis.retainedFused.nameEs ? selectedDisplayName : "-";
   if (isSpanish1979SaturatedFusedParentName(stripStereochemicalDescriptors(selectedDisplayName))) {
     return analysis.fusedBicyclic && selectedDisplayName === analysis.spanish1979SaturatedFusedParent
       && selectedDisplayName === analysis.name ? selectedDisplayName : "-";
@@ -4071,6 +4113,29 @@ export function legacySpanishFormatterInput(analysis: Analysis, selectedDisplayN
   const selectedBase = stripStereochemicalDescriptors(selectedDisplayName);
   const stereoPrefix = selectedDisplayName.slice(0, selectedDisplayName.length - selectedBase.length);
   return `${stereoPrefix}${analysis.name}`;
+}
+
+/** Alphanumeric junctions stay separate from the numeric legacy data contract. */
+export function displayedAtomLocants(analysis: Analysis): ReadonlyMap<number, number | string> {
+  return analysis.retainedFused?.status === "SUPPORTED"
+    ? analysis.retainedFused.locants : analysis.numberedAtoms;
+}
+
+function retainedFusedReasoning(result: RetainedFusedResult, language: AppLanguage): IupacReasoningStep[] {
+  if (result.status !== "SUPPORTED") return [];
+  const en = language === "en";
+  const junctions = [...result.locants.values()].filter((locant) => /[a-z]/.test(locant));
+  return [
+    { number: "01", title: en ? "Retained fused parent" : "Padre fusionado retenido", nameRole: "parent",
+      explanation: en ? `The complete constitutional graph matches ${result.parentEn}. ${result.rule}.`
+        : `El grafo constitucional completo corresponde a ${result.parentEs}. ${result.rule}.` },
+    { number: "02", title: en ? "Fused-ring numbering" : "Numeración del sistema fusionado",
+      explanation: en ? `The verified 1979 numbering includes junction locants ${junctions.join(", ")}; canvas coordinates do not select the numbering.`
+        : `La numeración verificada de 1979 incluye las uniones ${junctions.join(", ")}; las coordenadas del dibujo no determinan la numeración.` },
+    { number: "03", title: en ? "Constitutional name" : "Nombre constitucional",
+      explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
+        : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` },
+  ];
 }
 
 /**
@@ -4638,6 +4703,7 @@ export function buildIupacReasoningSteps(
   sourceName?: string | null,
   presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
+  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "es");
   if (heterocycleRing(molecule) && localNamerCannotSafelyName(molecule, analysis)) return [];
   if (analysis.steroidSystem?.constitutionNameEs) {
     const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
@@ -5189,6 +5255,7 @@ export function buildEnglishReasoningSteps(
   analysis: Analysis,
   presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
+  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "en");
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "en");
   const exocyclicRingFunction = exocyclicRingCarbonFunction(molecule, analysis);
@@ -5810,6 +5877,7 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
 }
 
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
+  if (analysis.retainedFused) return analysis.retainedFused.status !== "SUPPORTED";
   if (hasUnrepresentedArylSubstitution(molecule, analysis)) return true;
   if (nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)) return true;
   if (heterocycleHasUnrepresentedHydroxylGroups(molecule)) return true;
@@ -5862,6 +5930,9 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
  * check also protects the dock while a verified external context is loading.
  */
 export function externalCandidateNeedsNeutralLocalName(molecule: Molecule, analysis: Analysis) {
+  // The retained matcher accounts for every atom, including its bounded
+  // methyl/halogen prefixes, without using the chain formatter's group model.
+  if (analysis.retainedFused?.status === "SUPPORTED") return false;
   if (localNamerCannotSafelyName(molecule, analysis)) return true;
   const representedAtomIds = new Set([
     ...analysis.mainChain,
@@ -10535,8 +10606,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const paintedNumberBadgeRadius = numberingGeometry.radius + numberingGeometry.strokeWidth / 2;
   const skeletalNumberBadgeOffsets = new Map<number, { x: number; y: number }>();
   const numberBadgeNeedsLeader = new Set<number>();
-  const numberedAtomsInOrder = [...activeAnalysis.numberedAtoms.entries()]
-    .sort(([, left], [, right]) => left - right)
+  const numberedAtomsInOrder = [...(activeAnalysis.retainedFused?.status === "SUPPORTED"
+    ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).entries()]
+    .sort(([, left], [, right]) => String(left).localeCompare(String(right), "en", { numeric: true }))
     .map(([atomId]) => molecule.atoms.find((atom) => atom.id === atomId))
     .filter((atom): atom is CarbonAtom => Boolean(atom));
   for (const atom of numberedAtomsInOrder) {
@@ -10598,7 +10670,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   }
   const numberingBadgeExtents = effectiveShowNumbering
     ? molecule.atoms.flatMap((atom) => {
-        if (!activeAnalysis.numberedAtoms.has(atom.id) || carbonCount <= 1) return [];
+        if (!(activeAnalysis.retainedFused?.status === "SUPPORTED"
+          ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(atom.id) || carbonCount <= 1) return [];
         const position = displayPositions.get(atom.id)!;
         const offset = skeletalNumberBadgeOffsets.get(atom.id)!;
         const paintedRadius = paintedNumberBadgeRadius;
@@ -11814,7 +11887,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const startNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomA)
-                  && activeAnalysis.numberedAtoms.has(a)
+                  && (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(a)
                   ? {
                       center: {
                         x: positionA.x + skeletalNumberBadgeOffsets.get(a)!.x,
@@ -11826,7 +11899,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const endNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomB)
-                  && activeAnalysis.numberedAtoms.has(b)
+                  && (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(b)
                   ? {
                       center: {
                         x: positionB.x + skeletalNumberBadgeOffsets.get(b)!.x,
@@ -12139,7 +12212,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const element = getElement(atom);
                 const carbonAtom = isCarbonAtom(atom);
                 const isSelected = atom.id === selectedId;
-                const chainNumber = activeAnalysis.numberedAtoms.get(atom.id);
+                const chainNumber = (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).get(atom.id);
                 const position = displayPositions.get(atom.id)!;
                 const numberBadgeOffset = skeletalNumberBadgeOffsets.get(atom.id)
                   ?? numberingGeometry.offset;

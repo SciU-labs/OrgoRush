@@ -373,7 +373,9 @@ const CASES = [
 
 const OUT_OF_SCOPE = [
   ["biciclo simple", "C1CC2CCC1C2"],
-  ["anillos aromáticos fusionados", "c1ccc2ccccc2c1"],
+  // The exact naphthalene parent is covered by the 1979 retained registry;
+  // functional derivatives still require a separate supported suffix grammar.
+  ["aromático fusionado con función fuera de cobertura", "Oc1ccc2ccccc2c1"],
   ["anillo espiro", "C1CCC2(CC1)CCCC2"],
 ];
 

@@ -856,6 +856,8 @@ const dynamicExact: Record<string, string> = {
   "La estructura contiene un tipo de enlace aún no editable.": "The structure contains a bond type that is not editable yet.",
   "El nombre describe varias especies separadas; construye una molécula orgánica a la vez.": "The name describes multiple separate species; build one organic molecule at a time.",
   "OpenChemLib reconoció un sistema de anillos fusionados. Su análisis y edición se incorporarán en una próxima ampliación.": "OpenChemLib recognized a fused-ring system. Analysis and editing will be added in a future expansion.",
+  "Sistema ortofusionado": "Ortho-fused system",
+  "Sistema orto/perifusionado": "Ortho- and peri-fused system",
   "OPSIN no reconoció ese nombre.": "OPSIN did not recognize that name.",
   "OPSIN devolvió una respuesta que no se pudo leer.": "OPSIN returned a response that could not be read.",
   "El motor químico no pudo interpretar ese nombre IUPAC. Revisa localizadores, paréntesis, guiones y sufijos.": "The chemistry engine could not interpret that IUPAC name. Check locants, parentheses, hyphens, and suffixes.",

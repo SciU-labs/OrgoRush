@@ -1,5 +1,6 @@
 import { Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 import { ringHasBond } from "./fused-ring.ts";
+import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 import type {
   GeneratedAtom,
   GeneratedBond,
@@ -329,7 +330,10 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     cyclomaticNumber,
     sharedAtomCounts,
   });
-  // Admit the editor's MVP without enabling aromatic, bridged or spiro systems.
+  // Admit only exact retained constitutions verified against the 1979 registry,
+  // alongside the existing aliphatic MVP. Other complex topologies stay guarded.
+  const verifiedRetainedFusion = (topology === "fused" || topology === "bridged")
+    && nameRetainedFused1979({ atoms, bonds }).status === "SUPPORTED";
   const editableFusion = topology === "fused"
     && rings.every((ring) => ring.kind === "cycloalkane"
       && (ring.atomIds.length === 5 || ring.atomIds.length === 6)
@@ -339,7 +343,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       return shared.length === 0 || (shared.length === 2
         && ringHasBond(ring, shared[0], shared[1]) && ringHasBond(other, shared[0], shared[1]));
     }));
-  if ((topology === "fused" && !editableFusion) || topology === "bridged" || topology === "spiro") {
+  if (!verifiedRetainedFusion && ((topology === "fused" && !editableFusion) || topology === "bridged" || topology === "spiro")) {
     return { ok: false, error: polycyclicSupportMessage(topology) };
   }
 

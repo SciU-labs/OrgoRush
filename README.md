@@ -22,6 +22,14 @@ IUPAC 1979 Legacy profile covers a narrower, explicitly supported subset. An
 unavailable name means that the selected profile does not cover that structure;
 the app is not a universal nomenclature authority.
 
+The fused-ring 1979 subset recognizes the exact retained constitutions of
+naphthalene, anthracene, phenanthrene, indene, fluorene and azulene, plus
+1,4-dihydronaphthalene and a single methyl or halogen on naphthalene. It uses
+graph-based recognition and verified junction locants (including 4a/8a).
+The existing saturated fused bicycles use A-31 von Baeyer names. General
+component fusion names, other hydrogenations and fused functional suffixes
+remain outside this subset; see the [acceptance and validation report](reports/orgorush-iupac79-fused-001.md).
+
 Practice and Exam run in the current browser session. Their drafts, attempts,
 results, and Dashboard are lost when the page is reloaded. The GitHub Pages
 version stores the current molecule, History, Saved structures, and preferences

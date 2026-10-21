@@ -202,7 +202,7 @@ const unsupported = [
   ["alkane", "CC(C)C(CC)CC(S)CCC", "sulfur"],
 ];
 for (const [category, smiles, label] of unsupported) test(`D4.2B rejects ${label}`, () => {
-  if (["spiro", "bridged", "fused aromatic"].includes(label)) {
+  if (["spiro", "bridged"].includes(label)) {
     const imported = moleculeFromSmiles(smiles);
     assert.equal(imported.ok, false); assert.match(imported.error, /policíclico/);
     return;

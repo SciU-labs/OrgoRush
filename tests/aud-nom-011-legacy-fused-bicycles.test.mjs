@@ -158,7 +158,8 @@ test("the new admission preserves prior negative/control outputs rather than wid
     ["unsaturated", change((g) => { g.bonds.find(([a,b]) => a === 3 && b === 4 || a === 4 && b === 3)[2] = 2; }), "biciclo[4.4.0]-2-deceno", "bicyclo[4.4.0]dec-2-ene"],
     ["alcohol", change((g) => { g.atoms.push({ id: 11, element: "O", x: 3, y: 3 }); g.bonds.push([3,11,1]); }), "biciclo[4.4.0]-2-decanol", "bicyclo[4.4.0]decan-2-ol"],
     ["substituted", change((g) => { g.atoms.push({ id: 11, element: "C", x: 3, y: 3 }); g.bonds.push([3,11,1]); }), "-"],
-    ["aromatic", rawGraph("c1ccc2ccccc2c1"), "-"],
+    // ORGORUSH-IUPAC79-FUSED-001: exact A-21.1(3) graph is now admitted.
+    ["aromatic", rawGraph("c1ccc2ccccc2c1"), "naftaleno", "naphthalene"],
     ["heteroatom", change((g) => { g.atoms[2].element = "N"; }), "-"],
     ["spiro", rawGraph("C1CCC2(C1)CCCC2"), "-"],
     ["linked rings", rawGraph("C1CCCCC1C2CCCCC2"), "-", "cyclohexylcyclohexane"],
@@ -187,7 +188,10 @@ test("literal formatting alone cannot admit unproved, mismatched or stereo-tagge
   assert.equal(page.legacySpanishFormatterInput(analysis, "biciclo[3.3.0]octano"), "-");
   assert.equal(page.legacySpanishFormatterInput(analysis, `(1R)-${analysis.name}`), "-");
   assert.equal(formatIupac1979SpanishName("biciclo[4.2.0]octano"), undefined);
-  for (const smiles of ["c1ccc2ccccc2c1", "C1CCC2(C1)CCCC2", "C1CC2CCC1C2"]) {
+  const naphthalene = moleculeFromSmiles("c1ccc2ccccc2c1");
+  assert.equal(naphthalene.ok, true);
+  assert.equal(page.analyzeMolecule(naphthalene.molecule).name, "naftaleno");
+  for (const smiles of ["C1CCC2(C1)CCCC2", "C1CC2CCC1C2"]) {
     const result = moleculeFromSmiles(smiles);
     assert.equal(result.ok, false, `${smiles}: existing import safety remains intact`);
     assert.match(result.error, /policíclico/);
