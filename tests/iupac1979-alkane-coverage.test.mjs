@@ -10,6 +10,7 @@ import { legacyProfileDisplayName } from "../app/legacy-profile-display.ts";
 import { generateLegacyEnglishName } from "../app/legacy-english-nomenclature.ts";
 import { translateSpanishIupacForDisplay } from "../app/iupac-name-normalization.ts";
 import { assertReasoningIntegrity } from "./helpers/reasoning-integrity.mjs";
+import { CYCLIC_REFERENCES, graphFromCyclicReference } from "./fixtures/iupac79-cyclic-audit-003.mjs";
 
 function graphIdentity(smiles) {
   const graph = new SmilesParser().parseMolecule(smiles);
@@ -123,11 +124,18 @@ test("IUPAC 1979 preserves the supported acyclic alkane names in ES/EN and the v
   }
 });
 
-test("Legacy does not copy unsupported non-acyclic names as alkane fallbacks", () => {
+test("Legacy admits verified cyclic grammar and keeps unsupported polycycles unavailable", () => {
   const ring = observe("C1CCCCC1");
   assert.equal(ring.legacy.name, "ciclohexano");
-  assert.equal(applyNomenclatureConvention("ciclohexano", "iupac-1979-es", "es"), "-");
-  assert.deepEqual(legacyProfileDisplayName({ language: "es", suggestedName: "ciclohexano",
-    spanish1979Name: "-", english1979Name: "cyclohexane" }),
+  assert.equal(ring.legacyEs, "ciclohexano");
+  assert.equal(applyNomenclatureConvention("ciclohexano", "iupac-1979-es", "es"), "ciclohexano");
+  const graph = graphFromCyclicReference(CYCLIC_REFERENCES.find(row => row.id === "pyrene"));
+  const unsupported = page.analyzeMolecule(graph, [], "iupac-1979-legacy");
+  assert.equal(page.legacyLocalNameIsUnavailable(graph, unsupported), true);
+  const es = applyNomenclatureConvention(page.legacySpanishFormatterInput(unsupported, unsupported.name), "iupac-1979-es", "es");
+  const en = generateLegacyEnglishName(page.buildLegacyEnglishNameModel(graph, unsupported)).name;
+  assert.equal(es, "-");assert.equal(en, "-");
+  assert.deepEqual(legacyProfileDisplayName({ language: "es", suggestedName: "pireno",
+    spanish1979Name: es, english1979Name: en }),
   { name: "No disponible para esta estructura", available: false });
 });

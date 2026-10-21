@@ -5,6 +5,8 @@ import {
 } from "./iupac-name-normalization.ts";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 import { isRetainedFused1979NameEs } from "./iupac1979-retained-fused.ts";
+import { isCyclicParent1979Spelling } from "./iupac1979-cyclic-parents.ts";
+import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry.ts";
 import { isSpanish1979SaturatedPolycyclicSpelling } from "./iupac1979-saturated-fused.ts";
 
 export type NomenclatureConvention = "current" | "traditional" | "iupac-1979-es" | "iupac-1979-legacy-en";
@@ -244,11 +246,36 @@ export function formatTraditionalSystematicName(baseName: string, language: AppL
 
 /** Spanish IUPAC 1979 output applies verified historical forms before the shared formatter. */
 export function formatIupac1979SpanishName(baseName: string) {
+  if (isCyclicParent1979Spelling(baseName)
+    || HETEROCYCLE_DEFINITIONS.some(d => d.name.es.toLocaleLowerCase("es") === baseName)) return baseName;
   if (isSpanish1979SaturatedPolycyclicSpelling(baseName)) return baseName;
   if (isRetainedFused1979NameEs(baseName)) return baseName;
-  return formatSpanish1979CyclicKetone(baseName)
+  return formatSpanish1979Monocycle(baseName)
+    ?? formatSpanish1979CyclicKetone(baseName)
     ?? formatTraditionalSystematicName(baseName, "es")
     ?? formatSpanish1979Extension(baseName);
+}
+
+/** A-11/A-2: keep the cyclic prefix with the parent, ahead of the
+ * generic chain formatter. Only the existing simple prefix grammar is added.
+ */
+function formatSpanish1979Monocycle(baseName: string) {
+  const root = traditionalRootPatterns.es;
+  const prefix = "(?:(?:\\d+(?:,\\d+)*-)?(?:di|tri|tetra|penta|hexa|hepta|octa|nona|deca)?(?:metil|etil|propil|butil|fluoro|cloro|bromo|yodo)-?)*";
+  const value = baseName.toLocaleLowerCase("es");
+  if(new RegExp(`^${prefix}ciclo(?:${root})ano$`).test(value)) return value;
+  const unsaturated=value.match(new RegExp(`^(${prefix})ciclo(${root})(a)?-(\\d+(?:,\\d+)*)-(di|tri|tetra|penta|hexa|hepta|octa)?(en|in)o$`));
+  if(unsaturated) {
+    const [,sub,stem,connecting,locants,multiple="",bond]=unsaturated;
+    const multiplicity=["","","di","tri","tetra","penta","hexa","hepta","octa"].indexOf(multiple);
+    if(multiple && (locants.split(",").length!==multiplicity||connecting!=="a"))return;
+    if(!multiple && (locants.includes(",")||connecting))return;
+    return withTraditionalPrefix(sub,`${locants}-ciclo${stem}${multiple?"a":""}${multiple}${bond}o`);
+  }
+  // C-812.1(b), C-832.2, C-822.1 / Table C-III: supported ring suffixes.
+  if(new RegExp(`^ciclo(?:${root})ano(?:carbonitrilo|carboxamida)$`).test(value)) return value;
+  const amine=value.match(new RegExp(`^ciclo(${root})an-1-amina$`));
+  if(amine)return `ciclo${amine[1]}anamina`;
 }
 
 /**

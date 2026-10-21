@@ -39,6 +39,7 @@ let externalCandidateNeedsNeutralLocalName;
 let externalCandidateLocalDisplayName;
 let heterocycleHasUnrepresentedHydroxylGroups;
 let legacyEnglishProfileIsSupportedForMolecule;
+let legacyLocalNameIsUnavailable;
 let registeredHeterocycleParentForRing;
 let buildIupacReasoningSteps;
 let buildEnglishReasoningSteps;
@@ -63,6 +64,7 @@ before(async () => {
     externalCandidateLocalDisplayName,
     heterocycleHasUnrepresentedHydroxylGroups,
     legacyEnglishProfileIsSupportedForMolecule,
+    legacyLocalNameIsUnavailable,
     registeredHeterocycleParentForRing,
     buildIupacReasoningSteps,
     buildEnglishReasoningSteps,
@@ -135,8 +137,8 @@ test("oxygenated heterocycles with external hydroxyl groups are outside local na
     assert.equal(heterocycleHasUnrepresentedHydroxylGroups(converted.molecule), false);
     assert.equal(localNamerCannotSafelyName(converted.molecule, analysis), false);
     assert.equal(externalCandidateNeedsNeutralLocalName(converted.molecule, analysis), false);
-    assert.equal(legacyEnglishProfileIsSupportedForMolecule(converted.molecule), false,
-      "the existing Legacy formatter treats heterocycle atom counts as carbons");
+    assert.equal(legacyEnglishProfileIsSupportedForMolecule(converted.molecule), true,
+      "CYCLIC-AUDIT-003 admits complete registered bare parents without treating heteroatoms as carbons");
   }
 });
 
@@ -258,12 +260,15 @@ test("CID 5793 remains protected before local profiles are selected", () => {
   // The graph-based formatter is known to omit oxygen-rich parts here; the
   // UI must gate every locally generated profile when this external structure
   // is active, while keeping the exact PubChem identity as the primary name.
-  assert.match(pageSource, /localSuggestedNameUnavailable\s*\|\|\s*!legacyEnglishProfileIsSupportedForMolecule\(molecule\)\s*\?\s*"-"\s*:\s*generateLegacyEnglishName/);
+  const legacyAnalysis = analyzeMolecule(result.molecule, [], "iupac-1979-legacy");
+  assert.equal(legacyLocalNameIsUnavailable(result.molecule, legacyAnalysis), true,
+    "independent Legacy availability retains the complete glucose safety gate");
+  assert.match(pageSource, /legacyNameUnavailable\s*\|\|\s*!legacyEnglishProfileIsSupportedForMolecule\(molecule\)\s*\?\s*"-"\s*:\s*generateLegacyEnglishName/);
   assert.match(pageSource, /const suggestedName = externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\) \?\? pubChemIupacName!/);
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
-  assert.match(pageSource, /localSuggestedNameUnavailable \|\| !legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
-    "Legacy English is not offered for heterocycles that its formatter turns into carbocycles");
+  assert.match(pageSource, /legacyNameUnavailable \|\| !legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
+    "Legacy English retains its own graph coverage gate for incomplete heterocycle names");
 
   const supported = moleculeFromSmiles("OCC");
   assert.equal(supported.ok, true, supported.ok ? undefined : supported.error);

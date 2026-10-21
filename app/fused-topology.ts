@@ -1,3 +1,5 @@
+import { findOrderedSimpleMonocycle } from "./simple-cycle.ts";
+
 /** Constitutional topology only: no canvas coordinates or stored ring metadata. */
 export type RingGraph = {
   atoms: readonly { id: number; element?: string; charge?: number }[];
@@ -66,9 +68,26 @@ export function recognizeRingTopology(graph: RingGraph): TopologyResult {
   cycleRank = graph.bonds.length - ids.size + components;
   if (components > 1) return result("other", "disconnected");
   if (!cycleRank) return result("acyclic");
-  if (cycleRank === 1) return result("monocyclic");
-  if (blocks.length > 1) return result(blocks.some((block, i) => blocks.slice(i + 1)
-    .some((other) => [...block].some((id) => other.has(id)))) ? "spiro" : "linked");
+  if (cycleRank === 1) {
+    const ordered = findOrderedSimpleMonocycle(graph);
+    if (!ordered) return result("other", "monocycle-perception-failed");
+    cycles = [ordered];
+    return result("monocyclic");
+  }
+  if (blocks.length > 1) {
+    // Each recursive call contains one cyclic biconnected block, so recursion
+    // cannot revisit this multi-block branch. Linking trees are excluded.
+    const perceived = blocks.map((block) => recognizeRingTopology({
+      atoms: graph.atoms.filter((atom) => block.has(atom.id)),
+      bonds: graph.bonds.filter(([a, b]) => block.has(a) && block.has(b)),
+    }));
+    if (perceived.some((item) => item.cycles.length !== item.cycleRank || item.reason)) {
+      return result("other", "cyclic-block-perception-failed");
+    }
+    cycles = perceived.flatMap((item) => item.cycles);
+    return result(blocks.some((block, i) => blocks.slice(i + 1)
+      .some((other) => [...block].some((id) => other.has(id)))) ? "spiro" : "linked");
+  }
 
   // Enumerate induced (chordless) cycles within the single cyclic block. The
   // cap is a safe unsupported boundary, never an incomplete fusion assignment.

@@ -221,7 +221,9 @@ test("Legacy English preserves registered heterocycle parents and gates unsuppor
     assert.equal(model.parent.kind, "heterocycle", smiles);
     assert.equal(model.parent.carbonCount, expectedCarbons, smiles);
     assert.equal(generated, expectedName, smiles);
-    assert.equal(legacyEnglishProfileIsSupportedForMolecule(molecule), false, smiles);
+    // CYCLIC-AUDIT-003 removes the blanket veto for complete registered bare
+    // parents. The unregistered and hydroxylated controls below stay closed.
+    assert.equal(legacyEnglishProfileIsSupportedForMolecule(molecule), true, smiles);
     assert.equal(legacyEnglishVariantIsAvailable(expectedName, generated, false), false, smiles);
     assert.doesNotMatch(generated, /cyclopropane|cyclohexane/, smiles);
   }

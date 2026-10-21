@@ -27,7 +27,8 @@ export function displayedProfiles(molecule, analyses, engine) {
     ? formatStereochemicalName(molecule, analysis.mainChain, base, { explicitDoubleBonds: true }) : base;
   const currentBase = stripStereochemicalDescriptors(engine.suggestedIupacNameWithOmittedLocants(analyses.current));
   const current = unavailable ? null : withStereo(analyses.current, currentBase);
-  const legacy = unavailable ? null : withStereo(analyses.legacy, analyses.legacy.name);
+  const legacyUnavailable = engine.legacyLocalNameIsUnavailable(molecule, analyses.legacy);
+  const legacy = legacyUnavailable ? null : withStereo(analyses.legacy, analyses.legacy.name);
   const currentName = (language) => current === null ? null : applyNomenclatureConvention(
     engine.localizeSupportedSteroidConstitutionName(current, language)
       ?? (language === "en" ? translateSpanishIupacForDisplay(current) || current : localizeChemicalNameForDisplay(current, "es")),

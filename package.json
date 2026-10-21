@@ -19,6 +19,7 @@
     "test:reference-corpus": "node --test --test-concurrency=1 tests/reference-corpus-schema.test.mjs tests/reference-name-corpus.test.mjs tests/reference-roundtrip.test.mjs tests/reference-corpus-coverage.test.mjs",
     "report:reference-corpus": "node scripts/report-reference-corpus.mjs",
     "audit:reference-corpus": "node scripts/audit-reference-corpus.mjs",
+    "audit:iupac79-cyclic": "node scripts/audit-iupac79-cyclic-003.mjs",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "docx:proof": "node scripts/docx-1-proof.mjs",
     "docx:mcq-proof": "node scripts/docx-1-proof.mjs --mcq",

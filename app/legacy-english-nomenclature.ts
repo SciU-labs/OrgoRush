@@ -417,6 +417,7 @@ export function formatName(model: LegacyEnglishNameModel) {
     && prefixParts.length === 1
     && model.substituents.length === 1
     && model.substituents[0].locant === 1
+    && !model.doubleBondLocants.length && !model.tripleBondLocants.length
   ) {
     prefixParts = [prefixParts[0].replace(/^1-/, "")];
   }

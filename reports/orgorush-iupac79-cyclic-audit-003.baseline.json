@@ -1,0 +1,5758 @@
+{
+  "revision": "90b119a",
+  "observations": 452,
+  "counts": {
+    "A": {
+      "PASS": 0,
+      "FAIL": 12,
+      "UNSUPPORTED": 0
+    },
+    "B": {
+      "PASS": 12,
+      "FAIL": 0,
+      "UNSUPPORTED": 10
+    },
+    "C": {
+      "PASS": 0,
+      "FAIL": 0,
+      "UNSUPPORTED": 17
+    },
+    "D": {
+      "PASS": 0,
+      "FAIL": 0,
+      "UNSUPPORTED": 23
+    },
+    "E": {
+      "PASS": 0,
+      "FAIL": 6,
+      "UNSUPPORTED": 0
+    },
+    "F": {
+      "PASS": 0,
+      "FAIL": 14,
+      "UNSUPPORTED": 6
+    },
+    "G": {
+      "PASS": 0,
+      "FAIL": 13,
+      "UNSUPPORTED": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "mono-3",
+      "identity": "eO@Hyj@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclopropano",
+          "rawEs": "-",
+          "rawEn": "cyclopropane",
+          "es": "-",
+          "en": "cyclopropane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclopropano",
+          "rawEs": "-",
+          "rawEn": "cyclopropane",
+          "es": "-",
+          "en": "cyclopropane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclopropano",
+          "rawEs": "-",
+          "rawEn": "cyclopropane",
+          "es": "-",
+          "en": "cyclopropane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "molecule",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-4",
+      "identity": "gBP@DiVj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclobutano",
+          "rawEs": "-",
+          "rawEn": "cyclobutane",
+          "es": "-",
+          "en": "cyclobutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclobutano",
+          "rawEs": "-",
+          "rawEn": "cyclobutane",
+          "es": "-",
+          "en": "cyclobutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclobutano",
+          "rawEs": "-",
+          "rawEn": "cyclobutane",
+          "es": "-",
+          "en": "cyclobutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "molecule",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-5",
+      "identity": "gKP@Di\\Zj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclopentano",
+          "rawEs": "-",
+          "rawEn": "cyclopentane",
+          "es": "-",
+          "en": "cyclopentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclopentano",
+          "rawEs": "-",
+          "rawEn": "cyclopentane",
+          "es": "-",
+          "en": "cyclopentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclopentano",
+          "rawEs": "-",
+          "rawEn": "cyclopentane",
+          "es": "-",
+          "en": "cyclopentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "molecule",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-6",
+      "identity": "gFp@DiTvjh@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexano",
+          "rawEs": "-",
+          "rawEn": "cyclohexane",
+          "es": "-",
+          "en": "cyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexano",
+          "rawEs": "-",
+          "rawEn": "cyclohexane",
+          "es": "-",
+          "en": "cyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexano",
+          "rawEs": "-",
+          "rawEn": "cyclohexane",
+          "es": "-",
+          "en": "cyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dipentilbutano",
+          "rawEs": "-",
+          "rawEn": "1,4-dipentylbutane",
+          "es": "-",
+          "en": "1,4-dipentylbutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-7",
+      "identity": "gOp@DiUkjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "cicloheptano",
+          "rawEs": "-",
+          "rawEn": "cycloheptane",
+          "es": "-",
+          "en": "cycloheptane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "cicloheptano",
+          "rawEs": "-",
+          "rawEn": "cycloheptane",
+          "es": "-",
+          "en": "cycloheptane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "cicloheptano",
+          "rawEs": "-",
+          "rawEn": "cycloheptane",
+          "es": "-",
+          "en": "cycloheptane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dihexilbutano",
+          "rawEs": "-",
+          "rawEn": "1,4-dihexylbutane",
+          "es": "-",
+          "en": "1,4-dihexylbutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-8",
+      "identity": "daD@@DiUVzjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclooctano",
+          "rawEs": "-",
+          "rawEn": "cyclooctane",
+          "es": "-",
+          "en": "cyclooctane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclooctano",
+          "rawEs": "-",
+          "rawEn": "cyclooctane",
+          "es": "-",
+          "en": "cyclooctane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclooctano",
+          "rawEs": "-",
+          "rawEn": "cyclooctane",
+          "es": "-",
+          "en": "cyclooctane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,5-diheptilpentano",
+          "rawEs": "-",
+          "rawEn": "1,5-diheptylpentane",
+          "es": "-",
+          "en": "1,5-diheptylpentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-12",
+      "identity": "dcL@@DiUUU]jjjj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclododecano",
+          "rawEs": "-",
+          "rawEn": "cyclododecane",
+          "es": "-",
+          "en": "cyclododecane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclododecano",
+          "rawEs": "-",
+          "rawEn": "cyclododecane",
+          "es": "-",
+          "en": "cyclododecane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclododecano",
+          "rawEs": "-",
+          "rawEn": "cyclododecane",
+          "es": "-",
+          "en": "cyclododecane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,7-diundecilheptano",
+          "rawEs": "-",
+          "rawEn": "1,7-diundecylheptane",
+          "es": "-",
+          "en": "1,7-diundecylheptane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-ene",
+      "identity": "gFp@DiTujh@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohex-1-eno",
+          "rawEs": "ciclo-1-hexeno",
+          "rawEn": "1-cyclohexene",
+          "es": "ciclo-1-hexeno",
+          "en": "1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohex-1-eno",
+          "rawEs": "ciclo-1-hexeno",
+          "rawEn": "1-cyclohexene",
+          "es": "ciclo-1-hexeno",
+          "en": "1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohex-1-eno",
+          "rawEs": "ciclo-1-hexeno",
+          "rawEn": "1-cyclohexene",
+          "es": "ciclo-1-hexeno",
+          "en": "1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "4-(pent-3-en-1-il)-1-pentilbut-1-eno",
+          "rawEs": "4-(pent-3-en-1-il)-1-pentil-1-buteno",
+          "rawEn": "4-(pent-3-en-1-yl)-1-pentyl-1-butene",
+          "es": "4-(pent-3-en-1-il)-1-pentil-1-buteno",
+          "en": "4-(pent-3-en-1-yl)-1-pentyl-1-butene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-diene",
+      "identity": "gFp@DiTvVh@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexa-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-cyclohexadiene",
+          "es": "-",
+          "en": "1,3-cyclohexadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexa-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-cyclohexadiene",
+          "es": "-",
+          "en": "1,3-cyclohexadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexa-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-cyclohexadiene",
+          "es": "-",
+          "en": "1,3-cyclohexadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-bis(pent-3-en-1-il)buta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,4-bis(pent-3-en-1-yl)-1,3-butadiene",
+          "es": "-",
+          "en": "1,4-bis(pent-3-en-1-yl)-1,3-butadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-yne",
+      "identity": "daD@@DiUV{jj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclooct-1-ino",
+          "rawEs": "ciclo-1-octino",
+          "rawEn": "1-cyclooctyne",
+          "es": "ciclo-1-octino",
+          "en": "1-cyclooctyne",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclooct-1-ino",
+          "rawEs": "ciclo-1-octino",
+          "rawEn": "1-cyclooctyne",
+          "es": "ciclo-1-octino",
+          "en": "1-cyclooctyne",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclooct-1-ino",
+          "rawEs": "ciclo-1-octino",
+          "rawEn": "1-cyclooctyne",
+          "es": "ciclo-1-octino",
+          "en": "1-cyclooctyne",
+          "esStatus": "FAIL",
+          "enStatus": "PASS",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-heptil-5-(hept-4-in-1-il)pent-1-ino",
+          "rawEs": "1-heptil-5-(hept-4-in-1-il)-1-pentino",
+          "rawEn": "1-heptyl-5-(hept-4-yn-1-yl)-1-pentyne",
+          "es": "1-heptil-5-(hept-4-in-1-il)-1-pentino",
+          "en": "1-heptyl-5-(hept-4-yn-1-yl)-1-pentyne",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-methyl-ene",
+      "identity": "gOp@DjWkZj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1-metilciclohex-1-eno",
+          "rawEs": "1-metilciclo-1-hexeno",
+          "rawEn": "methyl-1-cyclohexene",
+          "es": "1-metilciclo-1-hexeno",
+          "en": "methyl-1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-metilciclohex-1-eno",
+          "rawEs": "1-metilciclo-1-hexeno",
+          "rawEn": "methyl-1-cyclohexene",
+          "es": "1-metilciclo-1-hexeno",
+          "en": "methyl-1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-metilciclohex-1-eno",
+          "rawEs": "1-metilciclo-1-hexeno",
+          "rawEn": "methyl-1-cyclohexene",
+          "es": "1-metilciclo-1-hexeno",
+          "en": "methyl-1-cyclohexene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "5-(3-metilpent-3-en-1-il)-2-pentilpent-2-eno",
+          "rawEs": "5-(3-metilpent-3-en-1-il)-2-pentil-2-penteno",
+          "rawEn": "5-(3-methylpent-3-en-1-il)-2-pentyl-2-pentene",
+          "es": "5-(3-metilpent-3-en-1-il)-2-pentil-2-penteno",
+          "en": "5-(3-methylpent-3-en-1-il)-2-pentyl-2-pentene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mono-dimethyl",
+      "identity": "daD@@DjWjZjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1,3-dimetilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1,3-dimethylcyclohexane",
+          "es": "-",
+          "en": "1,3-dimethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1,3-dimetilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1,3-dimethylcyclohexane",
+          "es": "-",
+          "en": "1,3-dimethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1,3-dimetilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1,3-dimethylcyclohexane",
+          "es": "-",
+          "en": "1,3-dimethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "2-metil-1-(3-metilhexil)-4-(4-metilpentil)pentano",
+          "rawEs": "-",
+          "rawEn": "2-methyl-1-(3-methylhexyl)-4-(4-methylpentyl)pentane",
+          "es": "-",
+          "en": "2-methyl-1-(3-methylhexyl)-4-(4-methylpentyl)pentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "naphthalene",
+      "identity": "det@@DjYUX^d@@@@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "naftaleno",
+          "rawEs": "naftaleno",
+          "rawEn": "naphthalene",
+          "es": "naftaleno",
+          "en": "naphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "naftaleno",
+          "rawEs": "naftaleno",
+          "rawEn": "naphthalene",
+          "es": "naftaleno",
+          "en": "naphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "naftaleno",
+          "rawEs": "naftaleno",
+          "rawEn": "naphthalene",
+          "es": "naftaleno",
+          "en": "naphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "naftaleno",
+          "rawEs": "naftaleno",
+          "rawEn": "naphthalene",
+          "es": "naftaleno",
+          "en": "naphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "anthracene",
+      "identity": "fgA@@@DjYU_VByHu`@@@@@@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "antraceno",
+          "rawEs": "antraceno",
+          "rawEn": "anthracene",
+          "es": "antraceno",
+          "en": "anthracene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "antraceno",
+          "rawEs": "antraceno",
+          "rawEn": "anthracene",
+          "es": "antraceno",
+          "en": "anthracene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "antraceno",
+          "rawEs": "antraceno",
+          "rawEn": "anthracene",
+          "es": "antraceno",
+          "en": "anthracene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "antraceno",
+          "rawEs": "antraceno",
+          "rawEn": "anthracene",
+          "es": "antraceno",
+          "en": "anthracene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "phenanthrene",
+      "identity": "fgA@@@LdbbbTVKIBMjp@@@@@@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "fenantreno",
+          "rawEs": "fenantreno",
+          "rawEn": "phenanthrene",
+          "es": "fenantreno",
+          "en": "phenanthrene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "fenantreno",
+          "rawEs": "fenantreno",
+          "rawEn": "phenanthrene",
+          "es": "fenantreno",
+          "en": "phenanthrene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "fenantreno",
+          "rawEs": "fenantreno",
+          "rawEn": "phenanthrene",
+          "es": "fenantreno",
+          "en": "phenanthrene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "fenantreno",
+          "rawEs": "fenantreno",
+          "rawEn": "phenanthrene",
+          "es": "fenantreno",
+          "en": "phenanthrene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "azulene",
+      "identity": "det@@DjYWkaf@@@@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "azuleno",
+          "rawEs": "azuleno",
+          "rawEn": "azulene",
+          "es": "azuleno",
+          "en": "azulene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "azuleno",
+          "rawEs": "azuleno",
+          "rawEn": "azulene",
+          "es": "azuleno",
+          "en": "azulene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "azuleno",
+          "rawEs": "azuleno",
+          "rawEn": "azulene",
+          "es": "azuleno",
+          "en": "azulene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "azuleno",
+          "rawEs": "azuleno",
+          "rawEn": "azulene",
+          "es": "azuleno",
+          "en": "azulene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "dihydronaphthalene",
+      "identity": "det@@DjYUX^dHbHP@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1,4-dihidronaftaleno",
+          "rawEs": "1,4-dihidronaftaleno",
+          "rawEn": "1,4-dihydronaphthalene",
+          "es": "1,4-dihidronaftaleno",
+          "en": "1,4-dihydronaphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1,4-dihidronaftaleno",
+          "rawEs": "1,4-dihidronaftaleno",
+          "rawEn": "1,4-dihydronaphthalene",
+          "es": "1,4-dihidronaftaleno",
+          "en": "1,4-dihydronaphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1,4-dihidronaftaleno",
+          "rawEs": "1,4-dihidronaftaleno",
+          "rawEn": "1,4-dihydronaphthalene",
+          "es": "1,4-dihidronaftaleno",
+          "en": "1,4-dihydronaphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dihidronaftaleno",
+          "rawEs": "1,4-dihidronaftaleno",
+          "rawEn": "1,4-dihydronaphthalene",
+          "es": "1,4-dihidronaftaleno",
+          "en": "1,4-dihydronaphthalene",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "tetralin",
+      "identity": "det@@DjYUX^dHbH`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "pyrene",
+      "identity": "f`y@@@LdbbbbbfkEBMIuo@@@@@@@@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "perhydropyrene",
+      "identity": "f`y@@@LdbbbbbfkEBMIuoUUUUUUP@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "linear-tricyclic",
+      "identity": "fgA@@@DjYU_VByHujjjjjh@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "es": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "es": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "es": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "es": "triciclo[8.4.0.0^{3,8}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{3,8}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "angular-tricyclic",
+      "identity": "fgA@@@LdbbbTVKIBMjuUUUUT@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "es": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "es": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "es": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEs": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "rawEn": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "es": "triciclo[8.4.0.0^{2,7}]tetradecano",
+          "en": "tricyclo[8.4.0.0^{2,7}]tetradecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "capture-C17H28",
+      "identity": "fhe@@@DjYUUUVByJwgAjjjjjjh@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEs": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEn": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "es": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "en": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEs": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEn": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "es": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "en": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEs": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEn": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "es": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "en": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEs": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "rawEn": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "es": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+          "en": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "star-tetracyclic",
+      "identity": "fdu@@@DjYee]}daZlGtZjjjjjj`@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEs": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEn": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "es": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "en": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEs": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEn": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "es": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "en": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEs": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEn": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "es": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "en": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEs": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "rawEn": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "es": "tetraciclo[12.4.0.0^{2,7}.0^{8,13}]octadecano",
+          "en": "tetracyclo[12.4.0.0^{2,7}.0^{8,13}]octadecane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "adamantane",
+      "identity": "deL@@DjUYkfEijjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "dispiro",
+      "identity": "daT@@LddUbUaMuUUT@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "mixed-spiro",
+      "identity": "dk|@@LdbbTbjkfWSBHjJb@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "biphenyl",
+      "identity": "dcl@@DjYU_egX@@@@@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "bifenilo",
+          "rawEs": "-",
+          "rawEn": "phenylcyclohexane",
+          "es": "-",
+          "en": "phenylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "bicyclohexyl",
+      "identity": "dcl@@DjYU_egZjjjh@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexilciclohexano",
+          "rawEs": "-",
+          "rawEn": "cyclohexylcyclohexane",
+          "es": "-",
+          "en": "cyclohexylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "mixed-linked",
+      "identity": "dmL@@DjYU^TYjjjj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclopentilciclohexano",
+          "rawEs": "-",
+          "rawEn": "cyclopentylcyclohexane",
+          "es": "-",
+          "en": "cyclopentylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "cyclohexylbenzene",
+      "identity": "dcl@@DjUg^aWP`hjH@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexilbenceno",
+          "rawEs": "-",
+          "rawEn": "cyclohexylcyclohexane",
+          "es": "-",
+          "en": "cyclohexylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "phenylcycloheptane",
+      "identity": "dk\\@@DjUg]h]LHJJh`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "cicloheptilbenceno",
+          "rawEs": "-",
+          "rawEn": "cycloheptylcyclohexane",
+          "es": "-",
+          "en": "cycloheptylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "terphenyl",
+      "identity": "fde@@@DjYU_yWbiZCF@@@H@@@@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1,4-difenilbenceno",
+          "rawEs": "-",
+          "rawEn": "1,4-diphenyl-1,4-diphenylbenzene",
+          "es": "-",
+          "en": "1,4-diphenyl-1,4-diphenylbenzene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "pyrrole",
+      "identity": "gKX@@eKcRp@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "pirrol",
+          "rawEs": "-",
+          "rawEn": "pyrrole",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "buta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-butadien-1-amine",
+          "es": "-",
+          "en": "1,3-butadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "buta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-butadien-1-amine",
+          "es": "-",
+          "en": "1,3-butadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "buta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-butadien-1-amine",
+          "es": "-",
+          "en": "1,3-butadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "furan",
+      "identity": "gKQ@@eKcRp@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "furano",
+          "rawEs": "-",
+          "rawEn": "furan",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-butoxibuta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1-butoxy-1,3-butadiene",
+          "es": "-",
+          "en": "1-butoxy-1,3-butadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-butoxibuta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1-butoxy-1,3-butadiene",
+          "es": "-",
+          "en": "1-butoxy-1,3-butadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-butoxibuta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1-butoxy-1,3-butadiene",
+          "es": "-",
+          "en": "1-butoxy-1,3-butadiene",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "thiophene",
+      "identity": "gKPH@DIRxtl@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "tiofeno",
+          "rawEs": "-",
+          "rawEn": "thiophene",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "buta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-butadiene",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "buta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-butadiene",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "buta-1,3-dieno",
+          "rawEs": "-",
+          "rawEn": "1,3-butadiene",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "pyridine",
+      "identity": "gFx@@eJf`@@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "piridina",
+          "rawEs": "-",
+          "rawEn": "pyridine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "penta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-pentadien-1-amine",
+          "es": "-",
+          "en": "1,3-pentadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "penta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-pentadien-1-amine",
+          "es": "-",
+          "en": "1,3-pentadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "penta-1,3-dien-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,3-pentadien-1-amine",
+          "es": "-",
+          "en": "1,3-pentadien-1-amine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "oxirane",
+      "identity": "eOHBNZ`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "oxirano",
+          "rawEs": "-",
+          "rawEn": "oxirane",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "etoxietano",
+          "rawEs": "-",
+          "rawEn": "1-ethoxyethane",
+          "es": "-",
+          "en": "1-ethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "etoxietano",
+          "rawEs": "-",
+          "rawEn": "1-ethoxyethane",
+          "es": "-",
+          "en": "1-ethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "aziridine",
+      "identity": "eO`BNZ`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "aziridina",
+          "rawEs": "-",
+          "rawEn": "aziridine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "etanamina",
+          "rawEs": "-",
+          "rawEn": "ethanamine",
+          "es": "-",
+          "en": "ethanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "etanamina",
+          "rawEs": "-",
+          "rawEn": "ethanamine",
+          "es": "-",
+          "en": "ethanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "etanamina",
+          "rawEs": "-",
+          "rawEn": "ethanamine",
+          "es": "-",
+          "en": "ethanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "oxetane",
+      "identity": "gBQ@@eJuT@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "oxetano",
+          "rawEs": "-",
+          "rawEn": "oxetane",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-propoxipropano",
+          "rawEs": "-",
+          "rawEn": "1-propoxypropane",
+          "es": "-",
+          "en": "1-propoxypropane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-propoxipropano",
+          "rawEs": "-",
+          "rawEn": "1-propoxypropane",
+          "es": "-",
+          "en": "1-propoxypropane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "azetidine",
+      "identity": "gBX@@eJuT@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "azetidina",
+          "rawEs": "-",
+          "rawEn": "azetidine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "propan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-propanamine",
+          "es": "-",
+          "en": "1-propanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "propan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-propanamine",
+          "es": "-",
+          "en": "1-propanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "propan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-propanamine",
+          "es": "-",
+          "en": "1-propanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "pyrrolidine",
+      "identity": "gKX@@eKcUP@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "pirrolidina",
+          "rawEs": "-",
+          "rawEn": "pyrrolidine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "butan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-butanamine",
+          "es": "-",
+          "en": "1-butanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "butan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-butanamine",
+          "es": "-",
+          "en": "1-butanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "butan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-butanamine",
+          "es": "-",
+          "en": "1-butanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "tetrahydrofuran",
+      "identity": "gKQ@@eKcUP@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "tetrahidrofurano",
+          "rawEs": "-",
+          "rawEn": "tetrahydrofuran",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-butoxibutano",
+          "rawEs": "-",
+          "rawEn": "1-butoxybutane",
+          "es": "-",
+          "en": "1-butoxybutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-butoxibutano",
+          "rawEs": "-",
+          "rawEn": "1-butoxybutane",
+          "es": "-",
+          "en": "1-butoxybutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-butoxibutano",
+          "rawEs": "-",
+          "rawEn": "1-butoxybutane",
+          "es": "-",
+          "en": "1-butoxybutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "dioxolane",
+      "identity": "gKP`Adi\\Zj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1,3-dioxolano",
+          "rawEs": "-",
+          "rawEn": "1,3-dioxolane",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1,2-dimetoxietano",
+          "rawEs": "-",
+          "rawEn": "1,2-dimethoxyethane",
+          "es": "-",
+          "en": "1,2-dimethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1,2-dimetoxietano",
+          "rawEs": "-",
+          "rawEn": "1,2-dimethoxyethane",
+          "es": "-",
+          "en": "1,2-dimethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "piperidine",
+      "identity": "gFx@@eJfuU@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "piperidina",
+          "rawEs": "-",
+          "rawEn": "piperidine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "pentan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-pentanamine",
+          "es": "-",
+          "en": "1-pentanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "pentan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-pentanamine",
+          "es": "-",
+          "en": "1-pentanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "pentan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1-pentanamine",
+          "es": "-",
+          "en": "1-pentanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "tetrahydropyran",
+      "identity": "gFq@@eJfuU@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "tetrahidropirano",
+          "rawEs": "-",
+          "rawEn": "tetrahydropyran",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-pentoxipentano",
+          "rawEs": "-",
+          "rawEn": "1-pentoxipentane",
+          "es": "-",
+          "en": "1-pentoxipentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-pentoxipentano",
+          "rawEs": "-",
+          "rawEn": "1-pentoxipentane",
+          "es": "-",
+          "en": "1-pentoxipentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-pentoxipentano",
+          "rawEs": "-",
+          "rawEn": "1-pentoxipentane",
+          "es": "-",
+          "en": "1-pentoxipentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "morpholine",
+      "identity": "gFy@JDiTvjh@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "morfolina",
+          "rawEs": "-",
+          "rawEn": "morpholine",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "N-etil-2-etoxietanamina",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "N-etil-2-etoxietanamina",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "N-metil-2-metoxietanamina",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "dioxane",
+      "identity": "gFp`ATiTvjh@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1,4-dioxano",
+          "rawEs": "-",
+          "rawEn": "1,4-dioxane",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1,2-dietoxietano",
+          "rawEs": "-",
+          "rawEn": "1,2-diethoxyethane",
+          "es": "-",
+          "en": "1,2-diethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1,2-dietoxietano",
+          "rawEs": "-",
+          "rawEn": "1,2-diethoxyethane",
+          "es": "-",
+          "en": "1,2-diethoxyethane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "aromático",
+          "rawEs": "-",
+          "rawEn": "molecule",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "indole",
+      "identity": "diV@@@RfU|kahDB@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "quinoline",
+      "identity": "dev@@@rQQJHtpr@@@@@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "quinuclidine",
+      "identity": "daf@@@RiUkfzjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "oxaspiro",
+      "identity": "detH@@rQRIHtpsUUUP@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "dihydrofuran",
+      "identity": "gKQ@@eKcSP@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "heterociclo no reconocido",
+          "rawEs": "-",
+          "rawEn": "Local IUPAC name unavailable for this structure",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "4-butoxibut-1-eno",
+          "rawEs": "4-butoxi-1-buteno",
+          "rawEn": "4-butoxy-1-butene",
+          "es": "4-butoxi-1-buteno",
+          "en": "4-butoxy-1-butene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-butoxibut-1-eno",
+          "rawEs": "1-butoxi-1-buteno",
+          "rawEn": "1-butoxy-1-butene",
+          "es": "1-butoxi-1-buteno",
+          "en": "1-butoxy-1-butene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "4-butoxibut-1-eno",
+          "rawEs": "4-butoxi-1-buteno",
+          "rawEn": "4-butoxy-1-butene",
+          "es": "4-butoxi-1-buteno",
+          "en": "4-butoxy-1-butene",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "methylcyclohexane",
+      "identity": "gOp@DjWkjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "methylcyclohexane",
+          "es": "-",
+          "en": "methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "methylcyclohexane",
+          "es": "-",
+          "en": "methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "methylcyclohexane",
+          "es": "-",
+          "en": "methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-(3-metilpentil)-4-pentilpentano",
+          "rawEs": "-",
+          "rawEn": "1-(3-methylpentyl)-4-pentylpentane",
+          "es": "-",
+          "en": "1-(3-methylpentyl)-4-pentylpentane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ethylcyclohexane",
+      "identity": "daD@@DjUZzjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "etilciclohexano",
+          "rawEs": "-",
+          "rawEn": "ethylcyclohexane",
+          "es": "-",
+          "en": "ethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "etilciclohexano",
+          "rawEs": "-",
+          "rawEn": "ethylcyclohexane",
+          "es": "-",
+          "en": "ethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "etilciclohexano",
+          "rawEs": "-",
+          "rawEn": "ethylcyclohexane",
+          "es": "-",
+          "en": "ethylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "chlorocyclohexane",
+      "identity": "gOpHADILkWUU@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "clorociclohexano",
+          "rawEs": "-",
+          "rawEn": "chlorocyclohexane",
+          "es": "-",
+          "en": "chlorocyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "clorociclohexano",
+          "rawEs": "-",
+          "rawEn": "chlorocyclohexane",
+          "es": "-",
+          "en": "chlorocyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "clorociclohexano",
+          "rawEs": "-",
+          "rawEn": "chlorocyclohexane",
+          "es": "-",
+          "en": "chlorocyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1-cloro-1,4-dipentilbutano",
+          "rawEs": "-",
+          "rawEn": "1-chloro-1,4-dipentylbutane",
+          "es": "-",
+          "en": "1-chloro-1,4-dipentylbutane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "methylhalocycle",
+      "identity": "daD@`@qDfUzZjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "1-bromo-4-metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1-bromo-4-methylcyclohexane",
+          "es": "-",
+          "en": "1-bromo-4-methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "1-bromo-4-metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1-bromo-4-methylcyclohexane",
+          "es": "-",
+          "en": "1-bromo-4-methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "1-bromo-4-metilciclohexano",
+          "rawEs": "-",
+          "rawEn": "1-bromo-4-methylcyclohexane",
+          "es": "-",
+          "en": "1-bromo-4-methylcyclohexane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "cyclohexanol",
+      "identity": "gOq@@drm]UT@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexanol",
+          "rawEs": "ciclohexanol",
+          "rawEn": "cyclohexanol",
+          "es": "ciclohexanol",
+          "en": "cyclohexanol",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexanol",
+          "rawEs": "ciclohexanol",
+          "rawEn": "cyclohexanol",
+          "es": "ciclohexanol",
+          "en": "cyclohexanol",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexanol",
+          "rawEs": "ciclohexanol",
+          "rawEn": "cyclohexanol",
+          "es": "ciclohexanol",
+          "en": "cyclohexanol",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dipentilbutan-1-ol",
+          "rawEs": "1,4-dipentilbutanol",
+          "rawEn": "1,4-dipentyl-1-butanol",
+          "es": "1,4-dipentilbutanol",
+          "en": "1,4-dipentyl-1-butanol",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "cyclohexanone",
+      "identity": "gOq@@drm[UT@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexanona",
+          "rawEs": "ciclohexanona",
+          "rawEn": "cyclohexanone",
+          "es": "ciclohexanona",
+          "en": "cyclohexanone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexanona",
+          "rawEs": "ciclohexanona",
+          "rawEn": "cyclohexanone",
+          "es": "ciclohexanona",
+          "en": "cyclohexanone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexanona",
+          "rawEs": "ciclohexanona",
+          "rawEn": "cyclohexanone",
+          "es": "ciclohexanona",
+          "en": "cyclohexanone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dipentilbutan-1-ona",
+          "rawEs": "1,4-dipentil-1-butanona",
+          "rawEn": "1,4-dipentyl-1-butanone",
+          "es": "1,4-dipentil-1-butanona",
+          "en": "1,4-dipentyl-1-butanone",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "enone",
+      "identity": "gOq@@drm[ST@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohex-2-en-1-ona",
+          "rawEs": "2-ciclohexenona",
+          "rawEn": "2-cyclohexenone",
+          "es": "2-ciclohexenona",
+          "en": "2-cyclohexenone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohex-2-en-1-ona",
+          "rawEs": "2-ciclohexenona",
+          "rawEn": "2-cyclohexenone",
+          "es": "2-ciclohexenona",
+          "en": "2-cyclohexenone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohex-2-en-1-ona",
+          "rawEs": "2-ciclohexenona",
+          "rawEn": "2-cyclohexenone",
+          "es": "2-ciclohexenona",
+          "en": "2-cyclohexenone",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-bis(pent-4-en-1-il)but-2-en-1-ona",
+          "rawEs": "1,4-bis(pent-4-en-1-il)-2-buten-1-ona",
+          "rawEn": "1,4-bis(pent-4-en-1-yl)-2-buten-1-one",
+          "es": "1,4-bis(pent-4-en-1-il)-2-buten-1-ona",
+          "en": "1,4-bis(pent-4-en-1-yl)-2-buten-1-one",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ringacid",
+      "identity": "didD@@QInUxVjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ácido ciclohexanocarboxílico",
+          "rawEs": "ácido ciclohexanocarboxílico",
+          "rawEn": "cyclohexanecarboxylic acid",
+          "es": "ácido ciclohexanocarboxílico",
+          "en": "cyclohexanecarboxylic acid",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ácido ciclohexanocarboxílico",
+          "rawEs": "ácido ciclohexanocarboxílico",
+          "rawEn": "cyclohexanecarboxylic acid",
+          "es": "ácido ciclohexanocarboxílico",
+          "en": "cyclohexanecarboxylic acid",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ácido ciclohexanocarboxílico",
+          "rawEs": "ácido ciclohexanocarboxílico",
+          "rawEn": "cyclohexanecarboxylic acid",
+          "es": "ácido ciclohexanocarboxílico",
+          "en": "cyclohexanecarboxylic acid",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ringaldehyde",
+      "identity": "daDH@@RVU[fjj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexanocarbaldehído",
+          "rawEs": "ciclohexanocarbaldehído",
+          "rawEn": "cyclohexanecarbaldehyde",
+          "es": "ciclohexanocarbaldehído",
+          "en": "cyclohexanecarbaldehyde",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexanocarbaldehído",
+          "rawEs": "ciclohexanocarbaldehído",
+          "rawEn": "cyclohexanecarbaldehyde",
+          "es": "ciclohexanocarbaldehído",
+          "en": "cyclohexanecarbaldehyde",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexanocarbaldehído",
+          "rawEs": "ciclohexanocarbaldehído",
+          "rawEn": "cyclohexanecarbaldehyde",
+          "es": "ciclohexanocarbaldehído",
+          "en": "cyclohexanecarbaldehyde",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ringnitrile",
+      "identity": "daF@@@RVU[njj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexanocarbonitrilo",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarbonitrile",
+          "es": "-",
+          "en": "cyclohexanecarbonitrile",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexanocarbonitrilo",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarbonitrile",
+          "es": "-",
+          "en": "cyclohexanecarbonitrile",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexanocarbonitrilo",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarbonitrile",
+          "es": "-",
+          "en": "cyclohexanecarbonitrile",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ringamide",
+      "identity": "difH@DAInUxVjj`@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexanocarboxamida",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarboxamide",
+          "es": "-",
+          "en": "cyclohexanecarboxamide",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexanocarboxamida",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarboxamide",
+          "es": "-",
+          "en": "cyclohexanecarboxamide",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexanocarboxamida",
+          "rawEs": "-",
+          "rawEn": "cyclohexanecarboxamide",
+          "es": "-",
+          "en": "cyclohexanecarboxamide",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "es": "ERROR",
+          "en": "ERROR",
+          "error": "RangeError: Maximum call stack size exceeded",
+          "esStatus": "FAIL",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "ringamine",
+      "identity": "gOx@@drm]UT@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "ciclohexan-1-amina",
+          "rawEs": "-",
+          "rawEn": "cyclohexanamine",
+          "es": "-",
+          "en": "cyclohexanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "ciclohexan-1-amina",
+          "rawEs": "-",
+          "rawEn": "cyclohexanamine",
+          "es": "-",
+          "en": "cyclohexanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "ciclohexan-1-amina",
+          "rawEs": "-",
+          "rawEn": "cyclohexanamine",
+          "es": "-",
+          "en": "cyclohexanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "PASS",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "1,4-dipentilbutan-1-amina",
+          "rawEs": "-",
+          "rawEn": "1,4-dipentyl-1-butanamine",
+          "es": "-",
+          "en": "1,4-dipentyl-1-butanamine",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "methyldecalin",
+      "identity": "dmL@@DjYUVGijjjj@@",
+      "status": "FAIL",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "3-metilbiciclo[4.4.0]decano",
+          "rawEs": "-",
+          "rawEn": "3-methyl-3-methylbicyclo[4.4.0]decane",
+          "es": "-",
+          "en": "3-methyl-3-methylbicyclo[4.4.0]decane",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "FAIL",
+          "status": "FAIL"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-1-1-0",
+      "identity": "gCP@H|TuU@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-1-1-1",
+      "identity": "gJp@DjT\\Zj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-2-1-0",
+      "identity": "gJp@DjYdZj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-2-1-1",
+      "identity": "gGp@DjWTvjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-2-2-0",
+      "identity": "gGp@DjYGVjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-2-2-1",
+      "identity": "dnD@@DjUJbZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-2-2-2",
+      "identity": "dad@@DjUZynjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-1-0",
+      "identity": "gGp@DjVXvjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-1-1",
+      "identity": "dnD@@DjWrjZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-2-0",
+      "identity": "dnD@@DjYrbZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-2-1",
+      "identity": "dad@@DjUZZnjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-2-2",
+      "identity": "diT@@DjUUaxZjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-3-0",
+      "identity": "dad@@DjYRZnjjj@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "biciclo[3.3.0]octano",
+          "rawEs": "biciclo[3.3.0]octano",
+          "rawEn": "bicyclo[3.3.0]octane",
+          "es": "biciclo[3.3.0]octano",
+          "en": "bicyclo[3.3.0]octane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "biciclo[3.3.0]octano",
+          "rawEs": "biciclo[3.3.0]octano",
+          "rawEn": "bicyclo[3.3.0]octane",
+          "es": "biciclo[3.3.0]octano",
+          "en": "bicyclo[3.3.0]octane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "biciclo[3.3.0]octano",
+          "rawEs": "biciclo[3.3.0]octano",
+          "rawEn": "bicyclo[3.3.0]octane",
+          "es": "biciclo[3.3.0]octano",
+          "en": "bicyclo[3.3.0]octane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "biciclo[3.3.0]octano",
+          "rawEs": "biciclo[3.3.0]octano",
+          "rawEn": "bicyclo[3.3.0]octane",
+          "es": "biciclo[3.3.0]octano",
+          "en": "bicyclo[3.3.0]octane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-3-1",
+      "identity": "diT@@DjUZnXZjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-3-3-2",
+      "identity": "det@@DjUUx^fjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-1-0",
+      "identity": "dnD@@DjWcJZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-1-1",
+      "identity": "dad@@DjW\\injjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-2-0",
+      "identity": "dad@@DjY|injjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-2-1",
+      "identity": "diT@@DjUVfxZjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-2-2",
+      "identity": "det@@DjUWXQfjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-3-0",
+      "identity": "diT@@DjYVnXZjjh@@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "biciclo[4.3.0]nonano",
+          "rawEs": "biciclo[4.3.0]nonano",
+          "rawEn": "bicyclo[4.3.0]nonane",
+          "es": "biciclo[4.3.0]nonano",
+          "en": "bicyclo[4.3.0]nonane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "biciclo[4.3.0]nonano",
+          "rawEs": "biciclo[4.3.0]nonano",
+          "rawEn": "bicyclo[4.3.0]nonane",
+          "es": "biciclo[4.3.0]nonano",
+          "en": "bicyclo[4.3.0]nonane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "biciclo[4.3.0]nonano",
+          "rawEs": "biciclo[4.3.0]nonano",
+          "rawEn": "bicyclo[4.3.0]nonane",
+          "es": "biciclo[4.3.0]nonano",
+          "en": "bicyclo[4.3.0]nonane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "biciclo[4.3.0]nonano",
+          "rawEs": "biciclo[4.3.0]nonano",
+          "rawEn": "bicyclo[4.3.0]nonane",
+          "es": "biciclo[4.3.0]nonano",
+          "en": "bicyclo[4.3.0]nonane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-3-1",
+      "identity": "det@@DjUVZ^Fjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-3-2",
+      "identity": "dmL@@DjUUQdUjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-4-0",
+      "identity": "det@@DjYUX^fjjj`@",
+      "status": "PASS",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "biciclo[4.4.0]decano",
+          "rawEs": "biciclo[4.4.0]decano",
+          "rawEn": "bicyclo[4.4.0]decane",
+          "es": "biciclo[4.4.0]decano",
+          "en": "bicyclo[4.4.0]decane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "biciclo[4.4.0]decano",
+          "rawEs": "biciclo[4.4.0]decano",
+          "rawEn": "bicyclo[4.4.0]decane",
+          "es": "biciclo[4.4.0]decano",
+          "en": "bicyclo[4.4.0]decane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "biciclo[4.4.0]decano",
+          "rawEs": "biciclo[4.4.0]decano",
+          "rawEn": "bicyclo[4.4.0]decane",
+          "es": "biciclo[4.4.0]decano",
+          "en": "bicyclo[4.4.0]decane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "biciclo[4.4.0]decano",
+          "rawEs": "biciclo[4.4.0]decano",
+          "rawEn": "bicyclo[4.4.0]decane",
+          "es": "biciclo[4.4.0]decano",
+          "en": "bicyclo[4.4.0]decane",
+          "esStatus": "PASS",
+          "enStatus": "PASS",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-4-1",
+      "identity": "dmL@@DjUY^dUjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "theta-4-4-2",
+      "identity": "dcl@@DjUUXUgZjjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-2",
+      "identity": "gJp@H~KFjh@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-3",
+      "identity": "gGp@DjeWFjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-4",
+      "identity": "dnD@@DjepjZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-5",
+      "identity": "dad@@LddRNDwUUU@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-6",
+      "identity": "diT@@LddRJpnFjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-2-7",
+      "identity": "det@@LddRJVDLuUUT@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-3-3",
+      "identity": "dnD@@DjgRbZjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-3-4",
+      "identity": "dad@@DjeRzfjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-3-5",
+      "identity": "diT@@Dje\\nXZjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-3-6",
+      "identity": "det@@Dje]Kafjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-3-7",
+      "identity": "dmL@@Dje]rzUjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-4-4",
+      "identity": "diT@@DjeVfxZjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-4-5",
+      "identity": "det@@DjeUZ^Fjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-4-6",
+      "identity": "dmL@@DjeU^FUjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-4-7",
+      "identity": "dcl@@LddRRROBnuUUUP@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-5-5",
+      "identity": "dmL@@DjeUvdUjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-5-6",
+      "identity": "dcl@@DjeUT]eZjjjh@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-5-7",
+      "identity": "dk\\@@DjeUWGUNjjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-6-6",
+      "identity": "dk\\@@DjeUUe]Njjjj`@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-6-7",
+      "identity": "dg|@@DjeUUUoSjjjjj@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "spiro-7-7",
+      "identity": "foA@@@DjeUU]UcNjjjjj`@@",
+      "status": "UNSUPPORTED",
+      "variants": [
+        {
+          "variant": "stored",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "no-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "reindexed-reflected",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        },
+        {
+          "variant": "stale-ring-metadata",
+          "analysis": "Nombre no disponible para estructuras complejas",
+          "rawEs": "-",
+          "rawEn": "-",
+          "es": "-",
+          "en": "-",
+          "esStatus": "UNSUPPORTED",
+          "enStatus": "UNSUPPORTED",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    }
+  ]
+}

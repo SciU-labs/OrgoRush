@@ -161,13 +161,15 @@ test("graph-backed saturated polycycles extend coverage while other negative con
     // ORGORUSH-IUPAC79-FUSED-001: exact A-21.1(3) graph is now admitted.
     ["aromatic", rawGraph("c1ccc2ccccc2c1"), "naftaleno", "naphthalene"],
     ["heteroatom", change((g) => { g.atoms[2].element = "N"; }), "-"],
-    ["spiro", rawGraph("C1CCC2(C1)CCCC2"), "-"],
-    ["linked rings", rawGraph("C1CCCCC1C2CCCCC2"), "-", "cyclohexylcyclohexane"],
+    // CYCLIC-AUDIT-003: these complete bare graphs now have independent
+    // A-41 / A-52 / A-31 proofs. All original negative controls remain below.
+    ["spiro", rawGraph("C1CCC2(C1)CCCC2"), "espiro[4.4]nonano", "spiro[4.4]nonane"],
+    ["linked rings", rawGraph("C1CCCCC1C2CCCCC2"), "1,1'-biciclohexilo", "1,1'-bicyclohexyl"],
     // POLYCYCLIC-002 extends A-32 bare saturated parents, without admitting
     // arbitrary unsaturation, substituents, charges or assigned stereo here.
     ["tricyclic", tri, "triciclo[8.4.0.0^{3,8}]tetradecano", "tricyclo[8.4.0.0^{3,8}]tetradecane"],
     ["tetracyclic", fuseRingOnBond(tri, 13, 14, 6), "tetraciclo[8.8.0.0^{2,7}.0^{12,17}]octadecano", "tetracyclo[8.8.0.0^{2,7}.0^{12,17}]octadecane"],
-    ["bridged", rawGraph("C1CC2CCC1C2"), "-"],
+    ["bridged", rawGraph("C1CC2CCC1C2"), "biciclo[2.2.1]heptano", "bicyclo[2.2.1]heptane"],
     ["stored tetrahedral stereo", change((g) => { g.atoms[0].tetrahedralParity = "R"; g.atoms[0].tetrahedralBondTo = 2; }), "-"],
     ["charge", change((g) => { g.atoms[0].charge = 1; }), "-"],
     ["disconnected", change((g) => { g.atoms.push({ id: 11, x: 9, y: 9 }); }), "-"],
@@ -190,7 +192,11 @@ test("literal formatting alone cannot admit unproved, mismatched or stereo-tagge
   assert.equal(page.legacySpanishFormatterInput({ ...analysis, spanish1979SaturatedFusedParent: undefined }, analysis.name), "-");
   assert.equal(page.legacySpanishFormatterInput(analysis, "biciclo[3.3.0]octano"), "-");
   assert.equal(page.legacySpanishFormatterInput(analysis, `(1R)-${analysis.name}`), "-");
-  assert.equal(formatIupac1979SpanishName("biciclo[4.2.0]octano"), undefined);
+  assert.equal(formatIupac1979SpanishName("biciclo[4.2.0]octano"), "biciclo[4.2.0]octano");
+  assert.equal(page.legacySpanishFormatterInput(analysis, "biciclo[4.2.0]octano"), "-",
+    "a newly admitted valid spelling still requires its corresponding graph proof");
+  assert.equal(formatIupac1979SpanishName("biciclo[4.2.0]nonano"), undefined);
+  assert.equal(formatIupac1979SpanishName("espiro[5.4]decano"), undefined);
   const naphthalene = moleculeFromSmiles("c1ccc2ccccc2c1");
   assert.equal(naphthalene.ok, true);
   assert.equal(page.analyzeMolecule(naphthalene.molecule).name, "naftaleno");
