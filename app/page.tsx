@@ -5607,10 +5607,10 @@ export function buildActiveIupacReasoning(input: {
 }
 
 const directionOptions = [
-  { label: "Arriba", symbol: "↑", dx: 0, dy: -1, className: "north" },
-  { label: "Izquierda", symbol: "←", dx: -1, dy: 0, className: "west" },
-  { label: "Derecha", symbol: "→", dx: 1, dy: 0, className: "east" },
-  { label: "Abajo", symbol: "↓", dx: 0, dy: 1, className: "south" },
+  { label: "Arriba", dx: 0, dy: -1, className: "north" },
+  { label: "Izquierda", dx: -1, dy: 0, className: "west" },
+  { label: "Derecha", dx: 1, dy: 0, className: "east" },
+  { label: "Abajo", dx: 0, dy: 1, className: "south" },
 ];
 
 const ALKYL_TEMPLATES: AlkylTemplate[] = [
@@ -12529,7 +12529,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   aria-label={language === "en" ? `Add carbon ${t(option.label).toLowerCase()}` : `Añadir carbono hacia ${option.label.toLowerCase()}`}
                   title={language === "en" ? `Add ${t(option.label).toLowerCase()}` : `Añadir hacia ${option.label.toLowerCase()}`}
                 >
-                  {option.symbol}
+                  <svg className="direction-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 19V5m0 0-6 6m6-6 6 6" />
+                  </svg>
                 </button>
               ))}
               <span className="pad-center">+</span>

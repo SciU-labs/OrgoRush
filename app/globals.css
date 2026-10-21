@@ -128,7 +128,7 @@ button {
 .a11y-high-contrast .analysis-utility-bar :is(
   .personal-history-control, .theme-control, .settings-control, .language-switch, .scope-pill
 ) {
-  border: 2px solid #25483f;
+  border: 2px solid var(--brand-primary);
   background: var(--paper);
   box-shadow: none;
   color: var(--ink);
@@ -190,6 +190,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   color: var(--blue);
   box-shadow: inset 0 0 0 2px var(--blue);
 }
+html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-primary); }
 
 .a11y-high-contrast .main-bond,
 .a11y-high-contrast .uniform-colors .branch-bond {
@@ -2203,10 +2204,10 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   gap: 8px;
   margin-left: 0;
   padding: 9px 13px;
-  border: 1px solid #cce0d9;
+  border: 1px solid var(--brand-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  color: #49655d;
+  background: color-mix(in srgb, var(--brand-primary-soft) 65%, var(--brand-surface));
+  color: var(--brand-muted);
   font-size: 13px;
   font-weight: 700;
 }
@@ -2215,8 +2216,8 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3f9b7d;
-  box-shadow: 0 0 0 4px #e1f2ec;
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 4px var(--brand-primary-soft);
 }
 
 .intro-strip {
@@ -3590,10 +3591,10 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   place-items: center;
   width: 38px;
   height: 38px;
-  border: 1px solid #a7c8bf;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 40%, var(--brand-border));
   border-radius: 12px;
-  background: #e9f4f0;
-  color: #236d5c;
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
   font-family: var(--font-ui);
   font-size: 18px;
   font-weight: 700;
@@ -3607,7 +3608,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 
 .selection-summary p {
   margin-bottom: 4px;
-  color: #72827e;
+  color: var(--brand-muted);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -3615,7 +3616,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .selection-summary strong {
-  color: #344e48;
+  color: var(--brand-ink);
   font-size: 12px;
   line-height: 1.4;
 }
@@ -3693,19 +3694,40 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   z-index: 1;
   display: grid;
   place-items: center;
-  border: 1px solid #c7d9d4;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--brand-border);
   border-radius: 9px;
-  background: #f5faf8;
-  color: #397365;
+  background: var(--brand-surface);
+  color: var(--brand-selected-ink);
   cursor: pointer;
-  font-size: 17px;
+  font-size: 0;
   font-weight: 700;
   transition: 140ms ease;
 }
 
+.direction-arrow {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.direction-pad .west .direction-arrow { transform: rotate(-90deg); }
+.direction-pad .east .direction-arrow { transform: rotate(90deg); }
+.direction-pad .south .direction-arrow { transform: rotate(180deg); }
+
 .direction-pad button:hover {
-  border-color: #75aa9c;
-  background: #ddf0e9;
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   transform: scale(1.05);
 }
 
@@ -5047,7 +5069,7 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
 }
 
 .reasoning-name-fragment--parent {
-  color: var(--blue);
+  color: var(--brand-primary);
 }
 
 .reasoning-name-fragment-text {
@@ -6805,7 +6827,6 @@ html[data-theme="dark"] .analysis-utility-bar .scope-pill {
 
 html[data-theme="dark"] .theme-icon,
 html[data-theme="dark"] .step-number,
-html[data-theme="dark"] .selection-icon,
 html[data-theme="dark"] .notice span,
 html[data-theme="dark"] .valid-badge,
 html[data-theme="dark"] .naming-rule > span,
@@ -6820,9 +6841,27 @@ html[data-theme="dark"] .theme-icon {
   color: var(--brand-selected-ink);
 }
 
+html[data-theme="dark"] .selection-icon {
+  border-color: color-mix(in srgb, var(--brand-primary) 52%, var(--brand-border));
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+}
+
+html[data-theme="dark"] .selection-summary p {
+  color: #9eabb9;
+}
+
+html[data-theme="dark"] .selection-summary strong {
+  color: #e4eaf5;
+}
+
 html[data-theme="dark"] .status-dot {
-  background: #70c9aa;
-  box-shadow: 0 0 0 4px #254139;
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 4px var(--brand-primary-soft);
+}
+
+html[data-theme="dark"] .reasoning-name-fragment--parent {
+  color: #9bb4ff;
 }
 
 html[data-theme="dark"] .step-line {
@@ -7079,7 +7118,6 @@ html[data-theme="dark"] .structure-family-badge.family-polycyclic {
   color: #c0b6ec;
 }
 
-html[data-theme="dark"] .selection-summary p,
 html[data-theme="dark"] .bond-order-picker > span,
 html[data-theme="dark"] .pad-label,
 html[data-theme="dark"] .formula-row span,
@@ -7097,14 +7135,18 @@ html[data-theme="dark"] .footer-instagram:focus-visible {
   color: #a9baff;
 }
 
-html[data-theme="dark"] .selection-summary strong,
 html[data-theme="dark"] .alkyl-palette-heading strong,
 html[data-theme="dark"] .formula-row strong,
 html[data-theme="dark"] .naming-rule strong {
   color: #d3e4de;
 }
 
-html[data-theme="dark"] .direction-pad button,
+html[data-theme="dark"] .direction-pad button {
+  border-color: var(--brand-border);
+  background: var(--brand-workspace);
+  color: #c8d3ff;
+}
+
 html[data-theme="dark"] .alkyl-button,
 html[data-theme="dark"] .ring-button {
   border-color: #3e5b53;
@@ -7112,13 +7154,18 @@ html[data-theme="dark"] .ring-button {
   color: #8ed0bb;
 }
 
-html[data-theme="dark"] .direction-pad button:hover,
 html[data-theme="dark"] .alkyl-button:hover,
 html[data-theme="dark"] .alkyl-button.active,
 html[data-theme="dark"] .ring-button:hover,
 html[data-theme="dark"] .ring-button.active {
   border-color: #568878;
   background: #27463d;
+}
+
+html[data-theme="dark"] .direction-pad button:hover {
+  border-color: var(--brand-primary);
+  background: color-mix(in srgb, var(--brand-primary) 20%, var(--paper));
+  color: #c8d3ff;
 }
 
 html[data-theme="dark"] .remove-button {
@@ -11946,7 +11993,7 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
   border-color: var(--brand-border);
   border-radius: 9px;
   background: var(--brand-workspace);
-  color: #c1d3cd;
+  color: #c8d3ff;
   transition: background-color var(--brand-transition),
     border-color var(--brand-transition), color var(--brand-transition);
 }
