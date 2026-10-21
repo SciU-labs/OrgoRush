@@ -90,6 +90,8 @@ import {
   type TraditionalGroupType,
 } from "./traditional-nomenclature";
 import { nameRetainedFused1979, type RetainedFusedResult } from "./iupac1979-retained-fused.ts";
+import { nameSaturatedFused1979, isSpanish1979SaturatedPolycyclicSpelling,
+  type SaturatedFused1979Result } from "./iupac1979-saturated-fused.ts";
 import {
   findCommonNameSuggestion,
   type CommonNameSuggestion,
@@ -583,6 +585,7 @@ type Analysis = {
   fusedBicyclic?: FusedBicyclicSystem;
   spanish1979SaturatedFusedParent?: string;
   retainedFused?: RetainedFusedResult;
+  saturatedFused1979?: SaturatedFused1979Result;
   fusedTricyclic?: FusedTricyclicSystem;
   fusedTetracyclic?: FusedTetracyclicSystem;
   steroidSystem?: SteroidLikeRingSystem;
@@ -3108,6 +3111,12 @@ export function buildLegacyEnglishNameModel(
   displayedSourceName = analysis.name,
   options: { stereochemistry?: boolean } = {},
 ): LegacyEnglishNameModel {
+  if (analysis.saturatedFused1979?.status === "SUPPORTED") return {
+    profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+    parent: { kind: "polycyclic", carbonCount: molecule.atoms.length, atomIds: [...analysis.mainChain],
+      fallbackName: analysis.saturatedFused1979.nameEn },
+    doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
+  };
   if (analysis.retainedFused) {
     const retained = analysis.retainedFused;
     return {
@@ -3908,14 +3917,24 @@ export function analyzeMolecule(
       ringSystem: retainedFused.topology.kind === "ortho-peri-fused" ? "Sistema orto/perifusionado" : "Sistema ortofusionado",
     };
   }
+  const saturatedFused1979 = retainedFused && molecule.bonds.every((b) => getBondOrder(b) === 1)
+    ? nameSaturatedFused1979(molecule) : undefined;
+  if (saturatedFused1979?.status === "UNSUPPORTED" && saturatedFused1979.topology.reason === "disconnected") return {
+    name: COMPLEX_NAME_UNAVAILABLE_MESSAGE, chainName: "", family: "polycyclic", formula: molecularFormula(molecule),
+    mainChain: [], substituents: [], numberedAtoms: new Map(), doubleBondLocants: [], tripleBondLocants: [],
+    functionalGroups: [], retainedFused, saturatedFused1979,
+  };
+  const perceivedMolecule = saturatedFused1979?.status === "SUPPORTED"
+    ? { ...molecule, rings: saturatedFused1979.topology.cycles.map((atomIds, i) => ({ id: i + 1, kind: "cycloalkane" as const, atomIds })) }
+    : molecule;
   const groups = detectFunctionalGroups(molecule);
-  const fusedBicyclic = getFusedBicyclicSystem(molecule, groups);
+  const fusedBicyclic = getFusedBicyclicSystem(perceivedMolecule, groups);
   if (fusedBicyclic) {
-    return analyzeFusedBicyclicMolecule(molecule, fusedBicyclic, groups);
+    return { ...analyzeFusedBicyclicMolecule(perceivedMolecule, fusedBicyclic, groups), saturatedFused1979 };
   }
   if (hasSharedRingAtoms(molecule) || (retainedFused && retainedFused.topology.cycleRank > 1
     && retainedFused.topology.kind !== "linked")) {
-    const fusedTricyclic = getFusedTricyclicSystem(molecule, groups);
+    const fusedTricyclic = getFusedTricyclicSystem(perceivedMolecule, groups);
     if (fusedTricyclic) {
       const primaryFunctionalGroup = fusedTricyclic.primaryFunctionalGroup
         ?? selectPrimaryFunctionalGroup(groups);
@@ -3945,10 +3964,11 @@ export function analyzeMolecule(
           ? functionalGroupLabels[primaryFunctionalGroup]
           : undefined,
         fusedTricyclic,
+        saturatedFused1979,
         ringSystem: `Sistema tricíclico fusionado ${fusedTricyclic.ringSizes.join("-")} (${fusedTricyclic.topology === "linear" ? "lineal" : "angular"}), ${fusedTricyclic.vonBaeyerDescriptor}; ${fusedTricyclic.atomIds.length} átomos en el núcleo y ${fusedTricyclic.externalAtomIds.length} externos.`,
       };
     }
-    const steroidLike = getSteroidLike6565System(molecule);
+    const steroidLike = getSteroidLike6565System(perceivedMolecule);
     if (steroidLike?.constitutionNameEs && steroidLike.numbering && steroidLike.angularMethyls) {
       const numberedAtoms = new Map(steroidLike.numbering.map(
         (atomId, index) => [atomId, index + 1] as const,
@@ -3973,7 +3993,7 @@ export function analyzeMolecule(
       };
     }
     if (!steroidLike?.isGonaneTopology) {
-      const fusedTetracyclic = getFusedTetracyclicSystem(molecule, groups);
+      const fusedTetracyclic = getFusedTetracyclicSystem(perceivedMolecule, groups);
       if (fusedTetracyclic) {
         const primaryFunctionalGroup = fusedTetracyclic.primaryFunctionalGroup
           ?? selectPrimaryFunctionalGroup(groups);
@@ -4008,10 +4028,18 @@ export function analyzeMolecule(
             ? functionalGroupLabels[primaryFunctionalGroup]
             : undefined,
           fusedTetracyclic,
+          saturatedFused1979,
           ringSystem: `Sistema tetracíclico fusionado ${fusedTetracyclic.ringSizes.join("-")} (${topologyLabel}); ${fusedTetracyclic.independentCycleCount} ciclos independientes, ${fusedTetracyclic.atomIds.length} átomos en el núcleo, ${fusedTetracyclic.externalAtomIds.length} externos, ${fusedTetracyclic.substituents.length} sustituyentes alquilo, ${fusedTetracyclic.functionalGroups.length} grupos funcionales y ${fusedTetracyclic.coreMultipleBonds.length} insaturaciones del núcleo${fusedTetracyclic.vonBaeyerDescriptor ? `; descriptor ${fusedTetracyclic.vonBaeyerDescriptor}` : ""}.`,
         };
       }
     }
+    if (saturatedFused1979?.status === "SUPPORTED") return {
+      name: saturatedFused1979.nameEs, chainName: saturatedFused1979.nameEs,
+      formula: molecularFormula(molecule), family: "polycyclic", mainChain: [...saturatedFused1979.numbering],
+      numberedAtoms: new Map(saturatedFused1979.numbering.map((id, i) => [id, i + 1])),
+      substituents: [], doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], saturatedFused1979,
+      steroidSystem: steroidLike?.isGonaneTopology ? steroidLike : undefined,
+    };
     return {
       name: "Nombre no disponible para estructuras complejas",
       formula: molecularFormula(molecule), family: "polycyclic",
@@ -4107,6 +4135,11 @@ export function legacySpanishFormatterInput(analysis: Analysis, selectedDisplayN
     return analysis.fusedBicyclic && selectedDisplayName === analysis.spanish1979SaturatedFusedParent
       && selectedDisplayName === analysis.name ? selectedDisplayName : "-";
   }
+  if (isSpanish1979SaturatedPolycyclicSpelling(stripStereochemicalDescriptors(selectedDisplayName))) {
+    return analysis.saturatedFused1979?.status === "SUPPORTED"
+      && selectedDisplayName === analysis.saturatedFused1979.nameEs && selectedDisplayName === analysis.name
+      ? selectedDisplayName : "-";
+  }
   // Keep the exact historical substituted-aryl wording unavailable until adjudicated.
   if (analysis.substituents.some((item) => Boolean(item.aryl))) return "-";
   if (suggestedIupacNameWithOmittedLocants(analysis) === analysis.name) return selectedDisplayName;
@@ -4135,6 +4168,25 @@ function retainedFusedReasoning(result: RetainedFusedResult, language: AppLangua
     { number: "03", title: en ? "Constitutional name" : "Nombre constitucional",
       explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
         : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` },
+  ];
+}
+
+function saturatedFused1979Reasoning(analysis: Analysis, language: AppLanguage): IupacReasoningStep[] | null {
+  const system = analysis.saturatedFused1979;
+  if (system?.status !== "SUPPORTED" || analysis.fusedBicyclic || analysis.fusedTricyclic || analysis.fusedTetracyclic) return null;
+  const en = language === "en";
+  return [
+    { number: "01", title: en ? "Saturated fused parent" : "Padre fusionado saturado", nameRole: "parent",
+      explanation: en ? `The graph contains ${system.topology.cycleRank} independent rings. ${system.rules.join("; ")} applies to this constitutional name.`
+        : `El grafo contiene ${system.topology.cycleRank} anillos independientes. Se aplican ${system.rules.join("; ")} al nombre constitucional.` },
+    { number: "02", title: en ? "Main ring and bridges" : "Anillo principal y puentes",
+      explanation: en ? `The ${system.mainRing.length}-carbon Hamiltonian boundary is a largest possible main ring. Every omitted edge is a zero-length bridge.`
+        : `La periferia hamiltoniana de ${system.mainRing.length} carbonos es un anillo principal de tamaño máximo. Cada arista omitida es un puente de longitud cero.` },
+    { number: "03", title: en ? "Von Baeyer numbering" : "Numeración von Baeyer",
+      explanation: en ? `Numbering starts at a bridgehead along the longest branch. The most symmetric division and lowest secondary-bridge locants give ${system.descriptor}; no stereochemistry is assigned.`
+        : `La numeración comienza en una cabeza de puente por la rama más larga. La división más simétrica y los menores locantes de puentes secundarios dan ${system.descriptor}; no se asigna estereoquímica.` },
+    { number: "04", title: en ? "Constitutional name" : "Nombre constitucional",
+      explanation: en ? `The complete parent name is ${system.nameEn}.` : `El nombre completo del padre es ${system.nameEs}.` },
   ];
 }
 
@@ -4703,6 +4755,8 @@ export function buildIupacReasoningSteps(
   sourceName?: string | null,
   presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
+  const saturatedSteps = saturatedFused1979Reasoning(analysis, "es");
+  if (saturatedSteps) return saturatedSteps;
   if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "es");
   if (heterocycleRing(molecule) && localNamerCannotSafelyName(molecule, analysis)) return [];
   if (analysis.steroidSystem?.constitutionNameEs) {
@@ -5255,6 +5309,8 @@ export function buildEnglishReasoningSteps(
   analysis: Analysis,
   presentation: ReasoningPresentation = {},
 ): IupacReasoningStep[] {
+  const saturatedSteps = saturatedFused1979Reasoning(analysis, "en");
+  if (saturatedSteps) return saturatedSteps;
   if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "en");
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "en");
@@ -5877,6 +5933,7 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
 }
 
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
+  if (analysis.saturatedFused1979?.status === "SUPPORTED") return false;
   if (analysis.retainedFused) return analysis.retainedFused.status !== "SUPPORTED";
   if (hasUnrepresentedArylSubstitution(molecule, analysis)) return true;
   if (nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)) return true;

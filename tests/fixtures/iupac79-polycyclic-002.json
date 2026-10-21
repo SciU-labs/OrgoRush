@@ -1,0 +1,14 @@
+{
+  "id": "capture-17-20-linear-6665",
+  "vertices": 17,
+  "perimeter": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+  "chords": [[1,10],[3,8],[12,16]],
+  "ringSizes": [5,6,6,6],
+  "formula": "C17H28",
+  "referenceSmiles": "C(C1)CC(C2)C1CC1C2CC(CCCC2)C2C1",
+  "expectedEs": "tetraciclo[8.7.0.0^{3,8}.0^{12,16}]heptadecano",
+  "expectedEn": "tetracyclo[8.7.0.0^{3,8}.0^{12,16}]heptadecane",
+  "rule": "IUPAC 1979 A-31.2; A-32.11–13, A-32.21–23, A-32.31(a–d)",
+  "source": "https://www.acdlabs.com/iupac/nomenclature/79/r79_164.htm",
+  "justification": "The outer 17-cycle is Hamiltonian and thus a largest possible main ring. All omitted edges are zero-length bridges. The 1–10 bridge splits it into paths with 8 and 7 internal carbons, more symmetrically than the other bridges. Longest-path-first numbering gives secondary bridges 3,8 and 12,16; the reverse admissible numbering ties. Ring-edge separations are linear, unlike the gonane graph. No stereochemistry is implied."
+}

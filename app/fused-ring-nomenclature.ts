@@ -288,14 +288,22 @@ function compareCandidateScores(left: readonly number[], right: readonly number[
   return compareNumberLists(left, right);
 }
 
-function buildZeroLengthBridgeVonBaeyerDescriptor(
+export function buildZeroLengthBridgeVonBaeyerDescriptor(
   molecule: FusedRingMolecule,
   atomIds: readonly number[],
   bridgeCount: number,
+  provenMainRing?: readonly number[],
 ) {
   const core = new Set(atomIds);
   const coreBonds = molecule.bonds.filter(([left, right]) => core.has(left) && core.has(right));
-  const cycles = enumerateCoreCycles(atomIds, coreBonds);
+  const coreEdgeKeys = new Set(coreBonds.map(([a, b]) => edgeKey(a, b)));
+  if (provenMainRing && (provenMainRing.length !== core.size
+    || new Set(provenMainRing).size !== core.size
+    || provenMainRing.some((id, i) => !core.has(id)
+      || !coreEdgeKeys.has(edgeKey(id, provenMainRing[(i + 1) % provenMainRing.length]))))) return null;
+  // A validated Hamiltonian boundary already attains the maximum possible
+  // ring length. No exponential all-simple-cycle search is needed in this case.
+  const cycles = provenMainRing ? [[...provenMainRing]] : enumerateCoreCycles(atomIds, coreBonds);
   const maximumCycleLength = Math.max(0, ...cycles.map((cycle) => cycle.length));
   const mainRings = cycles.filter((cycle) => cycle.length === maximumCycleLength);
   const candidates: ZeroLengthBridgeVonBaeyerCandidate[] = [];
@@ -349,7 +357,8 @@ function buildZeroLengthBridgeVonBaeyerDescriptor(
             .flatMap((bridge) => bridge.locants)
             .sort((a, b) => a - b);
           candidates.push({
-            // P-23.2.1, P-23.2.4 and P-23.2.6.2: largest main ring,
+            // IUPAC 1979 A-32.31(a-d), with the A-2.2 first-difference
+            // comparison referenced by A-32.31(d): largest main ring,
             // longest main bridge, most symmetric division, then lowest
             // secondary-bridge locants. Zero bridges tie on their lengths.
             score: [

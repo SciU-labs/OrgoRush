@@ -5,6 +5,7 @@ import {
 } from "./iupac-name-normalization.ts";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 import { isRetainedFused1979NameEs } from "./iupac1979-retained-fused.ts";
+import { isSpanish1979SaturatedPolycyclicSpelling } from "./iupac1979-saturated-fused.ts";
 
 export type NomenclatureConvention = "current" | "traditional" | "iupac-1979-es" | "iupac-1979-legacy-en";
 
@@ -243,6 +244,7 @@ export function formatTraditionalSystematicName(baseName: string, language: AppL
 
 /** Spanish IUPAC 1979 output applies verified historical forms before the shared formatter. */
 export function formatIupac1979SpanishName(baseName: string) {
+  if (isSpanish1979SaturatedPolycyclicSpelling(baseName)) return baseName;
   if (isRetainedFused1979NameEs(baseName)) return baseName;
   return formatSpanish1979CyclicKetone(baseName)
     ?? formatTraditionalSystematicName(baseName, "es")

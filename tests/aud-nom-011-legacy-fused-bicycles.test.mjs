@@ -150,7 +150,7 @@ function rawGraph(smiles) {
   };
 }
 
-test("the new admission preserves prior negative/control outputs rather than widening all bicyclic coverage", () => {
+test("graph-backed saturated polycycles extend coverage while other negative controls stay closed", () => {
   const base = bicycle(6, 6);
   const change = (fn) => { const graph = structuredClone(base); fn(graph); return graph; };
   const tri = fuseRingOnBond(base, 4, 5, 6);
@@ -163,7 +163,10 @@ test("the new admission preserves prior negative/control outputs rather than wid
     ["heteroatom", change((g) => { g.atoms[2].element = "N"; }), "-"],
     ["spiro", rawGraph("C1CCC2(C1)CCCC2"), "-"],
     ["linked rings", rawGraph("C1CCCCC1C2CCCCC2"), "-", "cyclohexylcyclohexane"],
-    ["tricyclic", tri, "-"], ["tetracyclic", fuseRingOnBond(tri, 13, 14, 6), "-"],
+    // POLYCYCLIC-002 extends A-32 bare saturated parents, without admitting
+    // arbitrary unsaturation, substituents, charges or assigned stereo here.
+    ["tricyclic", tri, "triciclo[8.4.0.0^{3,8}]tetradecano", "tricyclo[8.4.0.0^{3,8}]tetradecane"],
+    ["tetracyclic", fuseRingOnBond(tri, 13, 14, 6), "tetraciclo[8.8.0.0^{2,7}.0^{12,17}]octadecano", "tetracyclo[8.8.0.0^{2,7}.0^{12,17}]octadecane"],
     ["bridged", rawGraph("C1CC2CCC1C2"), "-"],
     ["stored tetrahedral stereo", change((g) => { g.atoms[0].tetrahedralParity = "R"; g.atoms[0].tetrahedralBondTo = 2; }), "-"],
     ["charge", change((g) => { g.atoms[0].charge = 1; }), "-"],
