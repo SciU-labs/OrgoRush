@@ -340,25 +340,33 @@ function badgeIntersectsExtent(
 /**
  * Keeps the visual R/S labels readable without changing the carrier bond or
  * the stored atom configuration. Candidate directions are relative to the
- * carrier vector, so the result survives rotation and reflection.
+ * carrier vector, so the result survives rotation and reflection. Informational
+ * semi-developed labels can omit the carrier and opt into bond avoidance.
  */
 export function layoutTetrahedralBadgePositions(
-  descriptors: readonly TetrahedralStereoBond[],
+  descriptors: readonly (TetrahedralStereoCenter & { neighborAtomId?: number })[],
   positions: ReadonlyMap<number, { x: number; y: number }>,
   scale = 1,
   obstacles: readonly TetrahedralBadgeExtent[] = [],
+  options?: {
+    bonds: readonly (readonly [number, number, ...unknown[]])[];
+  },
 ) {
   const placed = new Map<number, { x: number; y: number }>();
   const radius = TETRAHEDRAL_BADGE_RADIUS * scale;
   const minimumSeparation = radius * 2 + 7 * scale;
-  const angleOffsets = [0, Math.PI, Math.PI / 3, -Math.PI / 3, Math.PI * 2 / 3, -Math.PI * 2 / 3];
-  const distanceFactors = [1, 1.4, 1.8];
+  const angleOffsets = options
+    ? Array.from({ length: 24 }, (_, i) => i * Math.PI / 12)
+    : [0, Math.PI, Math.PI / 3, -Math.PI / 3, Math.PI * 2 / 3, -Math.PI * 2 / 3];
+  const distanceFactors = options ? [1, 1.4, 1.8, 2.2, 2.6, 3] : [1, 1.4, 1.8];
 
   for (const descriptor of descriptors) {
     const center = positions.get(descriptor.atomId);
-    const neighbor = positions.get(descriptor.neighborAtomId);
-    if (!center || !neighbor) continue;
-    const carrierAngle = Math.atan2(neighbor.y - center.y, neighbor.x - center.x);
+    const neighbor = descriptor.neighborAtomId === undefined ? undefined : positions.get(descriptor.neighborAtomId);
+    if (!center || (!options && !neighbor)) continue;
+    // Informational labels need no chemical carrier. Up is a stable preferred
+    // direction; actual bond and text obstacles select the free sector.
+    const carrierAngle = neighbor ? Math.atan2(neighbor.y - center.y, neighbor.x - center.x) : 0;
     const preferredAngle = carrierAngle - Math.PI / 2;
     const candidates = distanceFactors.flatMap((factor) => angleOffsets.map((offset, angleIndex) => {
       const distance = TETRAHEDRAL_BADGE_DISTANCE * scale * factor;
@@ -380,7 +388,17 @@ export function layoutTetrahedralBadgePositions(
           ? 100_000 + (minimumSeparation - separation) * 1_000
           : 0);
       }, 0);
-      return obstaclePenalty + badgePenalty + candidate.preference;
+      const bondPenalty = (options?.bonds ?? []).reduce((sum, [a, b]) => {
+        const start = positions.get(a), end = positions.get(b);
+        if (!start || !end) return sum;
+        const dx = end.x - start.x, dy = end.y - start.y;
+        const lengthSquared = dx * dx + dy * dy;
+        const t = lengthSquared ? Math.max(0, Math.min(1,
+          ((candidate.x - start.x) * dx + (candidate.y - start.y) * dy) / lengthSquared)) : 0;
+        const clearance = Math.hypot(candidate.x - start.x - t * dx, candidate.y - start.y - t * dy);
+        return sum + (clearance < radius + 7 ? 100_000 : 0);
+      }, 0);
+      return obstaclePenalty + badgePenalty + bondPenalty + candidate.preference;
     };
     candidates.sort((left, right) => score(left) - score(right));
     placed.set(descriptor.atomId, candidates[0]);

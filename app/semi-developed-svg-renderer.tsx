@@ -1,4 +1,27 @@
 import { getSemiDevelopedLabelExtent } from "./semi-developed-label-geometry.ts";
+import { TETRAHEDRAL_BADGE_RADIUS, type TetrahedralStereoCenter } from "./tetrahedral-stereochemistry.ts";
+import { semiDevelopedStereoAccessibleLabel } from "./semi-developed-stereo.ts";
+
+/** Informational and exportable: no action, tab stop or editor hit target. */
+export function SemiDevelopedStereoBadgeSvg({ center, position, scale, language, locant }: {
+  center: TetrahedralStereoCenter;
+  position: { x: number; y: number };
+  scale: number;
+  language: "es" | "en";
+  locant?: number;
+}) {
+  const label = semiDevelopedStereoAccessibleLabel(center, language, locant);
+  return (
+    <g className="tetrahedral-center-marker semi-developed-stereo-marker"
+      data-stereo-atom-id={center.atomId}
+      transform={`translate(${position.x} ${position.y}) scale(${scale})`}
+      role="img" aria-label={label}>
+      <title>{label}</title>
+      <circle className="tetrahedral-center-badge" r={TETRAHEDRAL_BADGE_RADIUS} />
+      <text textAnchor="middle" dominantBaseline="central">{center.configuration}</text>
+    </g>
+  );
+}
 
 /** Semi-developed atom glyph and hit target; interaction handlers stay on the owning canvas node. */
 export function SemiDevelopedAtomSvg({

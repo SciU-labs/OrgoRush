@@ -25,7 +25,15 @@ import { createPracticeReviewer, reviewBondId } from "./practice-review";
 import type { ReviewHighlights } from "./practice-review";
 import { calculatePracticeMolecule2DLayout } from "./practice-molecule-layout";
 import { buildSemiDevelopedRenderModel } from "./semi-developed-renderer";
-import { SemiDevelopedAtomSvg } from "./semi-developed-svg-renderer";
+import { SemiDevelopedAtomSvg, SemiDevelopedStereoBadgeSvg } from "./semi-developed-svg-renderer";
+import {
+  DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY,
+  getSemiDevelopedStereoCenters,
+  normalizeSemiDevelopedStereoDisplay,
+  readSemiDevelopedStereoDisplay,
+  writeSemiDevelopedStereoDisplay,
+  type SemiDevelopedStereoDisplay,
+} from "./semi-developed-stereo";
 import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
@@ -7083,6 +7091,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [semiDevelopedLabelScalePreferenceReady, setSemiDevelopedLabelScalePreferenceReady] = useState(false);
   const [tetrahedralBadgeScale, setTetrahedralBadgeScale] = useState(DEFAULT_TETRAHEDRAL_BADGE_SCALE);
   const [tetrahedralBadgeScalePreferenceReady, setTetrahedralBadgeScalePreferenceReady] = useState(false);
+  const [semiDevelopedStereoDisplay, setSemiDevelopedStereoDisplay] = useState<SemiDevelopedStereoDisplay>(DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY);
+  const [semiDevelopedStereoPreferenceReady, setSemiDevelopedStereoPreferenceReady] = useState(false);
   const [highlightSubstituents, setHighlightSubstituents] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("semi-developed");
   const [newBondOrder, setNewBondOrder] = useState<BondOrder>(1);
@@ -8072,6 +8082,22 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     }
   }, [isolatedBuild, tetrahedralBadgeScale, tetrahedralBadgeScalePreferenceReady]);
 
+
+  useEffect(() => {
+    if (isolatedBuild) return;
+    const restorePreference = window.setTimeout(() => {
+      try { setSemiDevelopedStereoDisplay(readSemiDevelopedStereoDisplay(window.localStorage)); }
+      catch { setSemiDevelopedStereoDisplay(DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY); }
+      finally { setSemiDevelopedStereoPreferenceReady(true); }
+    }, 0);
+    return () => window.clearTimeout(restorePreference);
+  }, [isolatedBuild]);
+
+  useEffect(() => {
+    if (isolatedBuild || !semiDevelopedStereoPreferenceReady) return;
+    try { writeSemiDevelopedStereoDisplay(semiDevelopedStereoDisplay, window.localStorage); }
+    catch { /* Keep the session setting when access to localStorage is blocked. */ }
+  }, [isolatedBuild, semiDevelopedStereoDisplay, semiDevelopedStereoPreferenceReady]);
 
   useEffect(() => {
     let cancelled = false;
@@ -10436,6 +10462,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       descriptor,
     ]),
   );
+  const semiDevelopedStereoCenters = getSemiDevelopedStereoCenters(
+    molecule, viewMode, stereochemistryEnabled, semiDevelopedStereoDisplay,
+  );
+  const tetrahedralBadgeDescriptors = viewMode === "semi-developed"
+    ? semiDevelopedStereoCenters : tetrahedralStereoBonds;
   const ringFusionPreviewMolecule = ringFusionDropTarget?.preview ?? null;
   const fusedRingAtomIds = new Set<number>();
   for (const ring of molecule.rings ?? []) {
@@ -10623,10 +10654,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   // large molecules. Counter-scale only the educational marker so its real
   // screen diameter remains perceptible on steroids as well as short chains.
   const baseTetrahedralBadgePositions = layoutTetrahedralBadgePositions(
-    tetrahedralStereoBonds,
+    tetrahedralBadgeDescriptors,
     displayPositions,
     tetrahedralBadgeScale,
     [...numberingBadgeExtents, ...atomLabelExtents],
+    viewMode === "semi-developed" ? { bonds: molecule.bonds } : undefined,
   );
   const baseTetrahedralBadgeExtents = tetrahedralBadgeExtentsAtScale(
     tetrahedralBadgeScale,
@@ -10654,7 +10686,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   );
   const effectiveTetrahedralBadgeScale = tetrahedralMarkerScale * tetrahedralBadgeScale;
   const tetrahedralBadgePositions = layoutTetrahedralBadgePositions(
-    tetrahedralStereoBonds,
+    tetrahedralBadgeDescriptors,
     displayPositions,
     effectiveTetrahedralBadgeScale,
     [
@@ -10662,6 +10694,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       ...atomLabelExtents,
       ...preliminarySteroidRingLabels.map(({ x, y }) => ({ x: x - 16, y: y - 16, width: 32, height: 32 })),
     ],
+    viewMode === "semi-developed" ? { bonds: molecule.bonds } : undefined,
   );
   const tetrahedralBadgeExtents = tetrahedralBadgeExtentsAtScale(
     effectiveTetrahedralBadgeScale,
@@ -12348,6 +12381,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   onToggleTetrahedral={toggleTetrahedralCenter}
                 />
               )}
+              {semiDevelopedStereoCenters.map((center) => {
+                const position = tetrahedralBadgePositions.get(center.atomId);
+                return position ? <SemiDevelopedStereoBadgeSvg key={center.atomId}
+                  center={center} position={position} scale={effectiveTetrahedralBadgeScale}
+                  language={language} locant={semiDevelopedAtomGlyphs.get(center.atomId)?.element === "C"
+                    ? activeAnalysis.numberedAtoms.get(center.atomId) : undefined} /> : null;
+              })}
             </svg>
 
             {!buildEditor?.hideCategory && <div className={`structure-family-badge family-${analysis.family} ${analysis.functionalGroups.length ? "has-functional-group" : ""}`}>
@@ -13483,6 +13523,19 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 />
                 <i aria-hidden="true" />
               </label>
+              <div className="settings-scale-control semi-developed-stereo-settings">
+                <label htmlFor="semi-developed-stereo-display">{t("Estereoquímica en semidesarrollada")}</label>
+                <select id="semi-developed-stereo-display" value={semiDevelopedStereoDisplay}
+                  aria-describedby="semi-developed-stereo-help"
+                  onChange={(event) => setSemiDevelopedStereoDisplay(normalizeSemiDevelopedStereoDisplay(event.target.value))}>
+                  <option value="hidden">{t("Ocultar R/S")}</option>
+                  <option value="labels">{t("Mostrar R/S")}</option>
+                  <option value="labels-and-bonds" disabled>{t("Mostrar R/S y enlaces estereoquímicos")}</option>
+                </select>
+                <small id="semi-developed-stereo-help">{t("Los indicadores respetan la estereoquímica global. Las cuñas y rayados en semidesarrollada aún no están disponibles: requieren validar su geometría y el recorte de etiquetas.")}</small>
+                <button type="button" disabled={semiDevelopedStereoDisplay === DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY}
+                  onClick={() => setSemiDevelopedStereoDisplay(DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY)}>{t("Restablecer")}</button>
+              </div>
               <div className="settings-scale-control" role="group" aria-label={t("Tamaño de badges R/S")}>
                 <div>
                   <strong>{t("Tamaño de badges R/S")}</strong>

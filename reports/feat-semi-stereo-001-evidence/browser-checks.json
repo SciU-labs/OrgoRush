@@ -1,0 +1,110 @@
+[
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      33.683868408203125,
+      33.68388366699219,
+      33.68388366699219
+    ],
+    "height": 844,
+    "labels": [
+      "Carbon 4, S configuration",
+      "Carbon 7, R configuration",
+      "Carbon 2, R configuration"
+    ],
+    "theme": "light",
+    "width": 390
+  },
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      28.336578369140625,
+      28.336578369140625,
+      28.336578369140625
+    ],
+    "height": 800,
+    "labels": [
+      "Carbono 4, configuración S",
+      "Carbono 7, configuración R",
+      "Carbono 2, configuración R"
+    ],
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      52.150657653808594,
+      52.150665283203125,
+      52.150657653808594
+    ],
+    "height": 800,
+    "labels": [
+      "Carbono 4, configuración S",
+      "Carbono 7, configuración R",
+      "Carbono 2, configuración R"
+    ],
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      21.252426147460938,
+      21.25244140625,
+      21.252426147460938
+    ],
+    "height": 800,
+    "labels": [
+      "Carbono 4, configuración S",
+      "Carbono 7, configuración R",
+      "Carbono 2, configuración R"
+    ],
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      28.336578369140625,
+      28.336578369140625,
+      28.336578369140625
+    ],
+    "height": 800,
+    "labels": [
+      "Carbono 4, configuración S",
+      "Carbono 7, configuración R",
+      "Carbono 2, configuración R"
+    ],
+    "theme": "dark",
+    "width": 320
+  },
+  {
+    "badges": 3,
+    "clipped": [],
+    "collisions": [],
+    "diameters": [
+      47.78961181640625,
+      47.78961181640625,
+      47.78961181640625
+    ],
+    "height": 720,
+    "labels": [
+      "Carbono 4, configuración S",
+      "Carbono 7, configuración R",
+      "Carbono 2, configuración R"
+    ],
+    "theme": "dark",
+    "width": 1280
+  }
+]

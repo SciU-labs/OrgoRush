@@ -3177,6 +3177,21 @@ html .app-shell.a11y-high-contrast .language-switch button.active {
   stroke-width: 2.5;
 }
 
+.semi-developed-stereo-marker {
+  cursor: default;
+  pointer-events: none;
+}
+
+.semi-developed-stereo-settings select {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
 .main-bond {
   stroke: var(--structure-main);
   stroke-width: 5;
