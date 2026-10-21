@@ -50,6 +50,13 @@ function renderAtom({ label, hydrogenSubscript, charge = "", selected = false, s
   return { markup, hitTarget };
 }
 
+function cssRule(css, selector) {
+  const rule = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .find(([, selectors]) => selectors.split(",").some((entry) => entry.trim() === selector));
+  assert.ok(rule, `CSS rule exists for ${selector}`);
+  return rule[2];
+}
+
 test("text-first atoms have no permanent badge and retain one invisible editor hit target", () => {
   const cases = [
     { label: "C" },
@@ -86,8 +93,27 @@ test("selection and hover cues are editor-only while the hit target leaves expos
   assert.ok(hitRadius < selectionRadius);
   assert.match(markup, /class="semi-developed-hover-ring" data-editor-only="true"/);
   assert.match(markup, /class="selection-ring semi-developed-selection-ring" data-editor-only="true"/);
-  assert.match(styles, /\.semi-developed-node:hover \.semi-developed-hover-ring[\s\S]*?stroke: rgba\(76, 155, 135, 0\.34\)/);
-  assert.match(styles, /\.semi-developed-node\.selected \.semi-developed-hover-ring\s*\{\s*display: none;/);
+
+  const lightHover = cssRule(styles, ".semi-developed-node:hover .semi-developed-hover-ring");
+  const lightFocus = cssRule(styles, ".semi-developed-node:focus-visible .semi-developed-hover-ring");
+  const darkHover = cssRule(styles, 'html[data-theme="dark"] .semi-developed-node:hover .semi-developed-hover-ring');
+  const darkFocus = cssRule(styles, 'html[data-theme="dark"] .semi-developed-node:focus-visible .semi-developed-hover-ring');
+  for (const [mode, rule, fillPercent, strokePercent] of [
+    ["light hover", lightHover, 3, 38],
+    ["light focus", lightFocus, 3, 38],
+    ["dark hover", darkHover, 5, 52],
+    ["dark focus", darkFocus, 5, 52],
+  ]) {
+    assert.match(rule, new RegExp(`fill:\\s*color-mix\\(in srgb, var\\(--structure-main\\) ${fillPercent}%, transparent\\)`), `${mode} uses the main structure color`);
+    assert.match(rule, new RegExp(`stroke:\\s*color-mix\\(in srgb, var\\(--structure-main\\) ${strokePercent}%, transparent\\)`), `${mode} has a visible themed outline`);
+  }
+  assert.notEqual(lightHover, darkHover, "dark hover keeps its distinct contrast treatment");
+
+  const selectionRule = cssRule(styles, ".semi-developed-node.selected .semi-developed-hover-ring");
+  assert.match(selectionRule, /display:\s*none;/, "selection hides the redundant hover cue");
+  const hitTargetRule = cssRule(styles, ".semi-developed-hit-target");
+  assert.match(hitTargetRule, /pointer-events:\s*all;/, "atom hit target remains interactive");
+  assert.match(hitTargetRule, /cursor:\s*pointer;/, "atom hit target retains its pointer affordance");
 
   const chain = {
     atoms: [{ id: 1, x: 0, y: 0 }, { id: 2, x: 1, y: 0 }],
