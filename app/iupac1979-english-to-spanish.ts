@@ -3,6 +3,7 @@ import { attachLegacyFragment, legacyBenzoateFragment, legacyFunctionalFragment,
 import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
 import type { RingGraph } from "./fused-topology.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
+import { verifyLegacyAliphaticAmineModel, formatLegacyAliphaticAmineSpanish } from "./iupac1979-aliphatic-amines.ts";
 
 type StereoGraph = Omit<RingGraph,"atoms"> & { atoms: readonly (RingGraph["atoms"][number] & {tetrahedralParity?:string;tetrahedralBondTo?:number})[] };
 export type LegacySpanishResolution =
@@ -69,6 +70,15 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
         return unsupported("retained-parent-evidence-does-not-match-graph");
       return {status:"TRANSLATED_FROM_LEGACY_EN",name:proof.nameEs,model:m,fixedLocants:proof.locants,
         numberedAtoms:new Map([...proof.locants].filter(([,l])=>/^\d+$/.test(l)).map(([id,l])=>[id,Number(l)])),rule:proof.rule};
+    }
+    if(input.model.parent.kind==="chain") {
+      if(!verifyLegacyAliphaticAmineModel(input.graph,input.model))
+        return unsupported("aliphatic-amine-model-does-not-prove-complete-graph-and-numbering");
+      const name=formatLegacyAliphaticAmineSpanish(input.model);
+      if(!name)return unsupported("unrepresented-historical-amine-grammar");
+      return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
+        numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),
+        rule:"C-11.42; C-812.1(b); C-813.1; C-814.4; C-13/C-15; complete graph identity"};
     }
     if (!verifyLegacyAromaticModel(input.graph,input.model)) return unsupported("semantic-model-does-not-prove-complete-graph");
     const model=numberLegacyBenzene(input.model,name=>legacyPrefixTerm(name)?.es ?? name);

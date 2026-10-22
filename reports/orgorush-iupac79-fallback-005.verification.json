@@ -1,0 +1,19 @@
+{
+  "baselineHead": "8c81185",
+  "distinctTestFiles": 164,
+  "distinctTests": 2878,
+  "finalDistinctPassed": 2873,
+  "preexistingSkipped": 5,
+  "preexistingSkippedCases": ["ESTER-0007","ESTER-0012","ESTER-0014","ESTER-0015","ESTER-0016"],
+  "initialCompletedPartition": {"files":44,"passed":630,"failed":2,"interruptedByToolConnection":true},
+  "remainingPartition": {"files":120,"tests":2246,"passed":2241,"failed":0,"skipped":5,"exitCode":0},
+  "isolatedFrozenRevalidation": {"tests":10,"passed":10,"failed":0,"unchangedFixturesAndTimeouts":true,"exitCode":0},
+  "finalTargetedAminesAndNitrogenRegression": {"tests":20,"passed":20,"failed":0},
+  "finalReproduction": {"cases":14,"translated":12,"expectedUnsupported":2,"exitCode":0},
+  "typescript": {"baselineDiagnostics":49,"finalDiagnostics":49,"introduced":0,"exitCode":1},
+  "pagesBuildAndValidation": "PASS",
+  "sitesBuildAndValidation": "PASS",
+  "diffCheck": "PASS",
+  "commitOrPushPerformed": false,
+  "logsDirectory": "outputs/iupac79-fallback-005"
+}

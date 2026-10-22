@@ -1,0 +1,49 @@
+{
+  "smiles": "CCC(N)CC(CC)CCC",
+  "modern": "5-etiloctan-3-amina",
+  "formula": "C₁₀H₂₃N",
+  "analysis": "5-etiloctan-3-amina",
+  "formatterInput": "5-etiloctan-3-amina",
+  "chemicallyAvailable": true,
+  "nativeSpanishName": "-",
+  "englishName": "5-ethyl-3-octanamine",
+  "englishModel": {
+    "profile": "iupac-1979-legacy-en",
+    "parent": {
+      "kind": "chain",
+      "carbonCount": 8,
+      "atomIds": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        9,
+        10,
+        11
+      ]
+    },
+    "doubleBondLocants": [],
+    "tripleBondLocants": [],
+    "functionalGroups": [
+      {
+        "kind": "amine",
+        "locant": 3,
+        "carbonIncludedInParent": true
+      }
+    ],
+    "substituents": [
+      {
+        "locant": 5,
+        "systematicName": "etil",
+        "complex": false
+      }
+    ],
+    "nitrogenSubstituents": []
+  },
+  "spanishResolution": {
+    "status": "UNSUPPORTED",
+    "name": "-",
+    "reason": "semantic-model-does-not-prove-complete-graph"
+  }
+}

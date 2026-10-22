@@ -45,7 +45,7 @@ export function displayedProfiles(molecule, analyses, engine) {
 
 /** Mirrors the UI's selected language numbering without mutating analyses. */
 export function resolvedProfileAnalyses(molecule,analyses,profile,engine) {
-  if(profile.selected==="current"||(analyses.legacy.family!=="aromatic"
+  if(profile.selected==="current"||(!["aromatic","acyclic"].includes(analyses.legacy.family)
     &&!(profile.language==="en"&&analyses.legacy.retainedFused?.status==="SUPPORTED")))return analyses;
   const resolution=engine.resolveLegacyNomenclature(molecule,analyses.legacy);
   return {...analyses,legacy:profile.language==="es"?resolution.spanishAnalysis:resolution.englishAnalysis};

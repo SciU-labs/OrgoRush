@@ -3219,7 +3219,9 @@ export function buildLegacyEnglishNameModel(
       locant: locantForGroup(group, analysis.mainChain)
         ?? anchorLocantForGroup(group, analysis.mainChain, skeleton)
         ?? 1,
-      carbonIncludedInParent: analysis.mainChain.includes(group.carbonId),
+      carbonIncludedInParent: group.kind === "amine"
+        ? group.carbonIds.some(id => analysis.mainChain.includes(id))
+        : analysis.mainChain.includes(group.carbonId),
       attachedAlkylName: group.kind === "ester"
         ? esterAlkylName(group.alkylCarbonId, skeleton).replace(/o$/, "")
         : undefined,
@@ -3252,7 +3254,7 @@ export function buildLegacyEnglishNameModel(
 
 function locantForGroup(group: FunctionalGroup, path: number[]) {
   const carbonId = group.carbonIds.find((candidate) => path.includes(candidate));
-  return carbonId ? path.indexOf(carbonId) + 1 : undefined;
+  return carbonId !== undefined ? path.indexOf(carbonId) + 1 : undefined;
 }
 
 function anchorLocantForGroup(group: FunctionalGroup, path: number[], skeleton: Molecule) {
@@ -3261,7 +3263,7 @@ function anchorLocantForGroup(group: FunctionalGroup, path: number[], skeleton: 
   const adjacency = buildAdjacency(skeleton);
   for (const carbonId of group.carbonIds) {
     const anchor = path.find((parentAtomId) => (adjacency.get(parentAtomId) ?? []).includes(carbonId));
-    if (anchor) return path.indexOf(anchor) + 1;
+    if (anchor !== undefined) return path.indexOf(anchor) + 1;
   }
   return undefined;
 }
@@ -6147,14 +6149,14 @@ export function resolveLegacyNomenclature(molecule: Molecule, analysis: Analysis
   const nativeSpanishName=chemicallyAvailable
     ?applyNomenclatureConvention(legacySpanishFormatterInput(analysis,sourceName),"iupac-1979-es","es"):"-";
   const spanishResolution=resolveLegacySpanish({graph:molecule,model:englishModel,englishName,nativeSpanishName,chemicallyAvailable});
-  const project=(model:LegacyEnglishNameModel,name:string):Analysis=>{
-    if(model.parent.kind!=="aromatic"||model.parent.atomIds.length!==analysis.mainChain.length)return analysis;
+  const project=(model:LegacyEnglishNameModel,name:string,translated=false):Analysis=>{
+    if((model.parent.kind!=="aromatic"&&!(translated&&model.parent.kind==="chain"))||model.parent.atomIds.length!==analysis.mainChain.length)return analysis;
     return {...analysis,name,mainChain:[...model.parent.atomIds],numberedAtoms:new Map(model.parent.atomIds.map((id,i)=>[id,i+1])),
       substituents:analysis.substituents.map((s,i)=>({...s,locant:model.substituents[i]?.locant??s.locant,
         name:model.substituents[i]?.systematicName??s.name,complex:model.substituents[i]?.complex??s.complex}))};
   };
   const spanishAnalysis=spanishResolution.status==="TRANSLATED_FROM_LEGACY_EN"
-    ?project(spanishResolution.model,spanishResolution.name):analysis;
+    ?project(spanishResolution.model,spanishResolution.name,true):analysis;
   let englishAnalysis=project(englishModel,englishName);
   if(analysis.retainedFused?.status==="SUPPORTED"&&analysis.retainedFused.englishLocants) {
     const locants=analysis.retainedFused.englishLocants;
