@@ -4,6 +4,7 @@ import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numberin
 import type { RingGraph } from "./fused-topology.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 import { verifyLegacyAliphaticAmineModel, formatLegacyAliphaticAmineSpanish } from "./iupac1979-aliphatic-amines.ts";
+import { verifyLegacyAliphaticFunctionalModel, formatLegacyAliphaticFunctionalSpanish, legacyAliphaticFunctionalRules } from "./iupac1979-aliphatic-functions.ts";
 
 type StereoGraph = Omit<RingGraph,"atoms"> & { atoms: readonly (RingGraph["atoms"][number] & {tetrahedralParity?:string;tetrahedralBondTo?:number})[] };
 export type LegacySpanishResolution =
@@ -72,6 +73,15 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
         numberedAtoms:new Map([...proof.locants].filter(([,l])=>/^\d+$/.test(l)).map(([id,l])=>[id,Number(l)])),rule:proof.rule};
     }
     if(input.model.parent.kind==="chain") {
+      if(input.model.functionalGroups[0]?.kind!=="amine") {
+        if(!verifyLegacyAliphaticFunctionalModel(input.graph,input.model))
+          return unsupported("aliphatic-functional-model-does-not-prove-complete-graph-and-numbering");
+        const name=formatLegacyAliphaticFunctionalSpanish(input.model);
+        if(!name)return unsupported("unrepresented-historical-functional-grammar");
+        return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
+          numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),
+          rule:`${legacyAliphaticFunctionalRules[input.model.functionalGroups[0].kind]}; C-13.11/C-15; complete graph identity`};
+      }
       if(!verifyLegacyAliphaticAmineModel(input.graph,input.model))
         return unsupported("aliphatic-amine-model-does-not-prove-complete-graph-and-numbering");
       const name=formatLegacyAliphaticAmineSpanish(input.model);

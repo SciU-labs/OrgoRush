@@ -1,0 +1,48 @@
+{
+  "task": "ORGORUSH-IUPAC79-FALLBACK-006",
+  "baselineHead": "1ed57f4",
+  "audit": {
+    "baselineStructures": 48,
+    "baseline": {"NATIVE_ES": 27, "TRANSLATED_FROM_LEGACY_EN": 0, "UNSUPPORTED": 21},
+    "sameStructuresAfter": {"NATIVE_ES": 27, "TRANSLATED_FROM_LEGACY_EN": 15, "UNSUPPORTED": 6},
+    "finalStructures": 57,
+    "final": {"NATIVE_ES": 27, "TRANSLATED_FROM_LEGACY_EN": 24, "UNSUPPORTED": 6},
+    "englishCurrentAndNativeReferencesChanged": 0,
+    "positiveReferences": 45,
+    "drawingVariantsPerReference": 5,
+    "positiveVariantObservations": 225,
+    "verifyExitCode": 0
+  },
+  "stages": [
+    {"family": "alcohol", "pass": 22, "fail": 0},
+    {"family": "ketone", "pass": 29, "fail": 0},
+    {"family": "aldehyde", "pass": 25, "fail": 0},
+    {"family": "carboxylicAcid", "pass": 31, "fail": 0},
+    {"family": "amide", "pass": 37, "fail": 0},
+    {"family": "nitrile", "pass": 42, "fail": 0},
+    {"family": "ester", "pass": 48, "fail": 0}
+  ],
+  "targetedFinal": {"tests": 133, "pass": 133, "fail": 0, "skip": 0},
+  "typescript": {"baselineDiagnostics": 49, "currentDiagnostics": 49, "introduced": []},
+  "pages": {"buildExitCode": 0, "validatorExitCode": 0, "entries": 3, "assets": 6, "base": "/Hydrocarbon-Lab/"},
+  "sites": {"buildExitCode": 0, "validatorExitCode": 0, "esmWorkerDefaultFetch": true, "hostingManifest": true},
+  "generalSuite": {
+    "status": "PASS",
+    "topLevelTestFiles": 165,
+    "tests": 2931,
+    "pass": 2926,
+    "fail": 0,
+    "skip": 5,
+    "cancelled": 0,
+    "todo": 0,
+    "exitCode": 0,
+    "singleUninterruptedRun": true,
+    "retries": 0,
+    "durationMs": 4178903.1277,
+    "preexistingExactEnglishReferenceSkips": ["ESTER-0007", "ESTER-0012", "ESTER-0014", "ESTER-0015", "ESTER-0016"]
+  },
+  "frozenSnapshots": {"easyMs": 41561.9948, "v3PlansD4Ms": 79647.6248, "hardV4FreshProcessesMs": 154094.2437},
+  "gitDiffCheck": "PASS",
+  "logsDirectory": "outputs/iupac79-fallback-006/",
+  "commitOrPushPerformed": false
+}
