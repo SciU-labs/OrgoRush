@@ -125,7 +125,7 @@ for (const f of fixtures.filter((f) => f.status === "PASS")) test(`integrated ES
 });
 
 test("unsupported fused aromatic functional and peri parents cannot fall through to an invented chain name", () => {
-  for (const f of fixtures.filter((f) => ["pyrene", "naphthalenol", "tetralin"].includes(f.id))) {
+  for (const f of [{smiles:"Oc1ccc2cc(O)ccc2c1"},{smiles:"c1ccc2c(c1)C(=O)CC2"}]) {
     const graph = rawGraph(f.smiles), analysis = engine.analyzeMolecule(graph);
     assert.equal(analysis.retainedFused.status, "UNSUPPORTED");
     assert.equal(engine.localNamerCannotSafelyName(graph, analysis), true);
@@ -173,6 +173,6 @@ test("real import commit, undo/redo and chemistry document reconstruction retain
     const restored = readChemistryDocument(JSON.parse(JSON.stringify({ format: "laboratorio-quimica-organica", version: 1, kind: "structure", structure })),
       { calculateFormula: () => f.formula, isValenceValid: () => true, isSupportedElement: () => true })[0];
     assert.equal(engine.analyzeMolecule(restored.molecule).name, f.es);
-    assert.equal(recognizeRingTopology(restored.molecule).kind, "ortho-fused");
+    assert.equal(recognizeRingTopology(restored.molecule).kind, f.topology ?? "ortho-fused");
   }
 });

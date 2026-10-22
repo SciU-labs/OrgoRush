@@ -6,6 +6,7 @@ import { createServer } from "vite";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { applyNomenclatureConvention } from "../app/nomenclature-conventions.ts";
 import { legacyProfileDisplayName } from "../app/legacy-profile-display.ts";
+import { resolveLegacySpanish } from "../app/iupac1979-english-to-spanish.ts";
 import {
   translateSpanishIupacForDisplay,
   translateSpanishIupacToOpsin,
@@ -200,8 +201,11 @@ test("TNT gets the same valid Legacy name in Spanish and English when Spanish 19
   assert.equal(spanish1979, "-", "the Spanish 1979 formatter has no nitroaromatic rule");
   assert.equal(suggestedEn, "2-methyl-1,3,5-trinitrobenzene");
   assert.equal(english1979, suggestedEn, "the English Legacy engine confirms this is already a valid shared name");
+  const spanishResolution=resolveLegacySpanish({graph:molecule,model:buildLegacyEnglishNameModel(molecule,analysis),
+    nativeSpanishName:spanish1979,englishName:english1979,chemicallyAvailable:true});
+  assert.equal(spanishResolution.status,"TRANSLATED_FROM_LEGACY_EN");
   assert.deepEqual(legacyProfileDisplayName({
-    language: "es", suggestedName: suggestedEs, spanish1979Name: spanish1979, english1979Name: english1979,
+    language: "es", suggestedName: "unused Suggested", spanish1979Name: spanishResolution.name, english1979Name: english1979,
   }), { name: suggestedEs, available: true });
   assert.deepEqual(legacyProfileDisplayName({
     language: "en", suggestedName: suggestedEn, spanish1979Name: spanish1979, english1979Name: english1979,

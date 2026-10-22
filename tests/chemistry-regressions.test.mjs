@@ -40,6 +40,7 @@ let externalCandidateLocalDisplayName;
 let heterocycleHasUnrepresentedHydroxylGroups;
 let legacyEnglishProfileIsSupportedForMolecule;
 let legacyLocalNameIsUnavailable;
+let resolveLegacyNomenclature;
 let registeredHeterocycleParentForRing;
 let buildIupacReasoningSteps;
 let buildEnglishReasoningSteps;
@@ -65,6 +66,7 @@ before(async () => {
     heterocycleHasUnrepresentedHydroxylGroups,
     legacyEnglishProfileIsSupportedForMolecule,
     legacyLocalNameIsUnavailable,
+    resolveLegacyNomenclature,
     registeredHeterocycleParentForRing,
     buildIupacReasoningSteps,
     buildEnglishReasoningSteps,
@@ -263,11 +265,15 @@ test("CID 5793 remains protected before local profiles are selected", () => {
   const legacyAnalysis = analyzeMolecule(result.molecule, [], "iupac-1979-legacy");
   assert.equal(legacyLocalNameIsUnavailable(result.molecule, legacyAnalysis), true,
     "independent Legacy availability retains the complete glucose safety gate");
-  assert.match(pageSource, /legacyNameUnavailable\s*\|\|\s*!legacyEnglishProfileIsSupportedForMolecule\(molecule\)\s*\?\s*"-"\s*:\s*generateLegacyEnglishName/);
+  const resolvedLegacy=resolveLegacyNomenclature(result.molecule,legacyAnalysis);
+  assert.equal(resolvedLegacy.chemicallyAvailable,false);
+  assert.equal(resolvedLegacy.englishName,"-");
+  assert.equal(resolvedLegacy.spanishResolution.status,"UNSUPPORTED");
+  assert.match(pageSource, /const legacyResolution = useMemo\([\s\S]*?resolveLegacyNomenclature\(molecule,legacyAnalysis/);
   assert.match(pageSource, /const suggestedName = externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\) \?\? pubChemIupacName!/);
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
-  assert.match(pageSource, /legacyNameUnavailable \|\| !legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
+  assert.match(pageSource, /chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
     "Legacy English retains its own graph coverage gate for incomplete heterocycle names");
 
   const supported = moleculeFromSmiles("OCC");
@@ -479,7 +485,7 @@ test("normalizes parser vocabulary and localizes chemical output by locale", () 
 test("routes normalized Spanish names through parsing before reporting topology limits", async () => {
   const cases = [
     ["3-acetilbenzaldehído", "3-acetylbenzaldehyde", "O=Cc1cccc(C(C)=O)c1", true],
-    ["naftalen-2-ol", "naphthalen-2-ol", "Oc1ccc2ccccc2c1", false],
+    ["naftalen-2-ol", "naphthalen-2-ol", "Oc1ccc2ccccc2c1", true],
     ["decalina", "decalin", "C1CCC2CCCCC2C1", true],
     ["espiro[4.5]decano", "spiro[4.5]decane", "C1CCC2(CC1)CCCC2", false],
     ["biciclo[2.2.1]heptano", "bicyclo[2.2.1]heptane", "C1CC2CCC1C2", false],

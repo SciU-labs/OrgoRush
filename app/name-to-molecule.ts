@@ -115,6 +115,7 @@ const commonSubstituents: Record<
   { substituent: SubstituentKind; systematicAlias?: string }
 > = {
   vinil: { substituent: { kind: "vinyl" } },
+  etenil: { substituent: { kind: "vinyl" } },
   isopropil: { substituent: { kind: "isopropyl" }, systematicAlias: "1-metiletil" },
   isobutil: { substituent: { kind: "isobutyl" }, systematicAlias: "2-metilpropil" },
   "sec-butil": { substituent: { kind: "sec-butyl" }, systematicAlias: "1-metilpropil" },

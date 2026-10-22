@@ -1,4 +1,5 @@
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
+import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
 
 export const IUPAC_1979_LEGACY_ENGLISH_PROFILE = "iupac-1979-legacy-en" as const;
 export type NomenclatureProfile =
@@ -62,6 +63,7 @@ export type LegacyEnglishNameModel = {
     carbonCount: number;
     atomIds: number[];
     fallbackName?: string;
+    retained?: {id:string;locants:string[]};
   };
   doubleBondLocants: number[];
   tripleBondLocants: number[];
@@ -188,7 +190,7 @@ export function legacyEnglishVariantIsAvailable(
 }
 
 const fixedPrefixTranslations: Readonly<Record<string, string>> = {
-  amino: "amino", bromo: "bromo", ciano: "cyano", cloro: "chloro", fluoro: "fluoro",
+  amino: "amino", bromo: "bromo", ciano: "cyano", cloro: "chloro", fluoro: "fluoro", vinil: "ethenyl",
   formil: "formyl", hidroxi: "hydroxy", isobutil: "isobutyl", isopropil: "isopropyl",
   nitro: "nitro", oxo: "oxo", fenil: "phenyl", secbutil: "sec-butyl",
   "sec-butil": "sec-butyl", tertbutil: "tert-butyl", "tert-butil": "tert-butyl", yodo: "iodo",
@@ -204,9 +206,13 @@ export function englishStructuralSubstituentName(name: string) {
       .find((candidate) => candidate === numberedUnsaturated[1]);
     if (root) {
       const ending = numberedUnsaturated[3] === "en" ? "en" : "yn";
+      if (numberedUnsaturated[4] === "1") return `${numberedUnsaturated[2]}-${englishIupacRoot(root)}${ending}yl`;
       return `${englishIupacRoot(root)}-${numberedUnsaturated[2]}-${ending}-${numberedUnsaturated[4]}-yl`;
     }
   }
+  const historicalUnsaturated=name.match(/^(\d+)-([a-z]+)(en|in)il$/i);
+  if(historicalUnsaturated){const root=Array.from({length:101},(_,count)=>iupacRootForCarbonCount(count)).find(r=>r===historicalUnsaturated[2]);
+    if(root)return `${historicalUnsaturated[1]}-${englishIupacRoot(root)}${historicalUnsaturated[3]==="en"?"en":"yn"}yl`;}
   const unsaturated = name.match(/^([a-z]+)(en|in)il$/i);
   if (unsaturated) {
     const root = Array.from({ length: 101 }, (_, count) => iupacRootForCarbonCount(count))
@@ -246,7 +252,7 @@ export function nameSubstituents(substituents: readonly (Omit<LegacySubstituent,
     groups.set(key, group);
   }
   return [...groups.values()]
-    .sort((a, b) => getAlphabetizationKey(a.name).localeCompare(getAlphabetizationKey(b.name), "en")
+    .sort((a, b) => historicalPrefixKey(a.name).localeCompare(historicalPrefixKey(b.name), "en")
       || a.name.localeCompare(b.name, "en"))
     .map((group) => {
       const locants = [...group.locants].sort((a, b) => a === "N" ? b === "N" ? 0 : -1 : b === "N" ? 1 : a - b).join(",");
@@ -325,6 +331,8 @@ function functionalParent(model: LegacyEnglishNameModel, principal: LegacyFuncti
     if (principal === "carboxylicAcid") return count === 1 ? "benzoic acid" : `benzene-${locantText}-${multiple}carboxylic acid`;
     if (principal === "aldehyde") return count === 1 ? "benzaldehyde" : `benzene-${locantText}-${multiple}carbaldehyde`;
     if (principal === "nitrile") return count === 1 ? "benzonitrile" : `benzene-${locantText}-${multiple}carbonitrile`;
+    if (principal === "ester" && count === 1 && groups[0].attachedAlkylName)
+      return `${englishStructuralSubstituentName(groups[0].attachedAlkylName)} benzoate`;
   }
 
   if (ring) {
@@ -391,8 +399,15 @@ export type LegacyEnglishReasoning = {
 };
 
 export function formatName(model: LegacyEnglishNameModel) {
+  return model.unavailableReason?"-":formatPreparedName(numberLegacyBenzene(model,englishStructuralSubstituentName));
+}
+
+function formatPreparedName(model:LegacyEnglishNameModel) {
   if (model.unavailableReason) return "-";
   const hierarchy = resolveFunctionalHierarchy(model.functionalGroups);
+  if(model.parent.kind==="aromatic"&&hierarchy.principalKind
+    && (!["alcohol","amine","carboxylicAcid","aldehyde","nitrile","amide","ester"].includes(hierarchy.principalKind)
+      ||hierarchy.principalKind==="ester"&&(hierarchy.principalGroups.length!==1||!hierarchy.principalGroups[0].attachedAlkylName)))return "-";
   if (hierarchy.principalKind === "carboxylicAcid" && hierarchy.principalGroups.length > 1) {
     const groups = hierarchy.principalGroups;
     const terminalDiacid = model.parent.kind === "chain" && groups.length === 2
@@ -436,8 +451,9 @@ export function formatName(model: LegacyEnglishNameModel) {
 }
 
 export function generateLegacyEnglishName(model: LegacyEnglishNameModel) {
+  model = numberLegacyBenzene(model, englishStructuralSubstituentName);
   const hierarchy = resolveFunctionalHierarchy(model.functionalGroups);
-  const finalName = formatName(model);
+  const finalName = formatPreparedName(model);
   const principalLocants = hierarchy.principalGroups.map((group) => group.locant).sort((a, b) => a - b);
   const reasoning: LegacyEnglishReasoning = {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,

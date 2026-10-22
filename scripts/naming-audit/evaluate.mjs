@@ -2,7 +2,6 @@ import { isDeepStrictEqual } from "node:util";
 import { moleculeFromSmiles, moleculeToSmiles } from "../../app/openchemlib-adapter.ts";
 import { applyNomenclatureConvention, stripStereochemicalDescriptors } from "../../app/nomenclature-conventions.ts";
 import { localizeChemicalNameForDisplay, translateSpanishIupacForDisplay } from "../../app/iupac-name-normalization.ts";
-import { generateLegacyEnglishName } from "../../app/legacy-english-nomenclature.ts";
 import { formatStereochemicalName, getMainChainStereoDescriptors } from "../../app/double-bond-stereochemistry.ts";
 import { getTetrahedralStereoCenters } from "../../app/tetrahedral-stereochemistry.ts";
 import { structuralIdentity } from "../../tests/helpers/reference-corpus.mjs";
@@ -33,16 +32,23 @@ export function displayedProfiles(molecule, analyses, engine) {
     engine.localizeSupportedSteroidConstitutionName(current, language)
       ?? (language === "en" ? translateSpanishIupacForDisplay(current) || current : localizeChemicalNameForDisplay(current, "es")),
     "current", language);
-  const spanishLegacy = legacy === null ? "-" : applyNomenclatureConvention(
-    engine.legacySpanishFormatterInput(analyses.legacy, legacy), "iupac-1979-es", "es");
-  const englishLegacy = legacy === null || !engine.legacyEnglishProfileIsSupportedForMolecule(molecule)
-    ? "-" : generateLegacyEnglishName(engine.buildLegacyEnglishNameModel(molecule, analyses.legacy, legacy)).name;
+  const resolution=legacy===null?null:engine.resolveLegacyNomenclature(molecule,analyses.legacy,legacy,{stereochemistry:true});
+  const spanishLegacy=resolution?.spanishResolution.name??"-";
+  const englishLegacy=resolution?.englishName??"-";
   return {
     "2013-es": { name: currentName("es"), convention: "current", language: "es", selected: "current" },
     "2013-en": { name: currentName("en"), convention: "current", language: "en", selected: "current" },
     "1979-es": { name: spanishLegacy === "-" ? null : spanishLegacy, convention: "iupac-1979-es", language: "es", selected: "legacy" },
     "1979-en": { name: englishLegacy === "-" ? null : englishLegacy, convention: "iupac-1979-legacy-en", language: "en", selected: "legacy" },
   };
+}
+
+/** Mirrors the UI's selected language numbering without mutating analyses. */
+export function resolvedProfileAnalyses(molecule,analyses,profile,engine) {
+  if(profile.selected==="current"||(analyses.legacy.family!=="aromatic"
+    &&!(profile.language==="en"&&analyses.legacy.retainedFused?.status==="SUPPORTED")))return analyses;
+  const resolution=engine.resolveLegacyNomenclature(molecule,analyses.legacy);
+  return {...analyses,legacy:profile.language==="es"?resolution.spanishAnalysis:resolution.englishAnalysis};
 }
 
 function analysisSnapshot(analysis, molecule) {
@@ -183,7 +189,7 @@ export function evaluateCase(record, engine) {
     result.properties.nameDeterminism = check(isDeepStrictEqual(profiles, repeatNames));
     const models = {};
     for (const key of PROFILES) {
-      const profile = profiles[key], analysis = analyses[profile.selected];
+      const profile = profiles[key], selectedAnalyses=resolvedProfileAnalyses(molecule,analyses,profile,engine), analysis = selectedAnalyses[profile.selected];
       const expected = record.expected[key];
       const row = { status: profile.name === null ? "UNSUPPORTED" : "NAMED", name: profile.name,
         ...(expected ? { expected } : {}), evidenceLevel: expected ? "GOLD" : "GENERATED",
@@ -198,7 +204,7 @@ export function evaluateCase(record, engine) {
         if (expected) result.signals.push({ profile: key, code: "UNEXPECTED_UNAVAILABLE", detail: "Individually derived exact expectation has no local output" });
         continue;
       }
-      const model = engine.buildActiveIupacReasoning({ molecule, analyses, ...profile, displayedName: profile.name,
+      const model = engine.buildActiveIupacReasoning({ molecule, analyses:selectedAnalyses, ...profile, displayedName: profile.name,
         generatedNames: PROFILES.map((p) => profiles[p].name).filter(Boolean), canHighlight: true });
       models[key] = model;
       row.reasoning = profileChecks(model, analysis, molecule);
@@ -211,7 +217,7 @@ export function evaluateCase(record, engine) {
     for (const key of ["2013-es", "2013-en", "1979-es", "1979-en", "2013-es"]) {
       const p = profiles[key];
       if (p.name === null) continue;
-      last = engine.buildActiveIupacReasoning({ molecule, analyses, ...p, displayedName: p.name,
+      last = engine.buildActiveIupacReasoning({ molecule, analyses:resolvedProfileAnalyses(molecule,analyses,p,engine), ...p, displayedName: p.name,
         generatedNames: PROFILES.map((k) => profiles[k].name).filter(Boolean), canHighlight: true });
     }
     result.properties.profileLanguageReturn = models["2013-es"] && last

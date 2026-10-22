@@ -1,7 +1,13 @@
 import type { AppLanguage } from "./i18n.ts";
+import type { NomenclatureConvention } from "./nomenclature-conventions.ts";
 
-const TNT_SUGGESTED_ES = "2-metil-1,3,5-trinitrobenceno";
-const TNT_LEGACY_EN = "2-methyl-1,3,5-trinitrobenzene";
+/** Export labels follow a verified selected Legacy name. Keep the existing
+ * canonical metadata when Current is selected or no Legacy name is available. */
+export function selectedNomenclatureExportName(input: {
+  convention:NomenclatureConvention;displayedName:string;copyable:boolean;canonicalName:string;
+}) {
+  return input.convention!=="current"&&input.copyable?input.displayedName:input.canonicalName;
+}
 
 /** Resolves display text for Legacy without inventing historical names. */
 export function legacyProfileDisplayName(input: {
@@ -15,14 +21,6 @@ export function legacyProfileDisplayName(input: {
   }
   if (input.language === "en" && input.english1979Name !== "-") {
     return { name: input.english1979Name, available: true };
-  }
-
-  // For this exact TNT case, the existing English Legacy engine confirms the
-  // same valid systematic name used by Suggested; ES may display that name too.
-  if (input.language === "es"
-    && input.suggestedName === TNT_SUGGESTED_ES
-    && input.english1979Name === TNT_LEGACY_EN) {
-    return { name: input.suggestedName, available: true };
   }
 
   return {

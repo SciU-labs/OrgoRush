@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { moleculeFromSmiles, moleculeToSmiles } from "../../app/openchemlib-adapter.ts";
-import { analyzeBoth, displayedProfiles } from "../../scripts/naming-audit/evaluate.mjs";
+import { analyzeBoth, displayedProfiles, resolvedProfileAnalyses } from "../../scripts/naming-audit/evaluate.mjs";
 import { structuralIdentity } from "./reference-corpus.mjs";
 
 const read = (file) => JSON.parse(readFileSync(new URL(`../../reports/naming-audit/${file}`, import.meta.url)));
@@ -32,9 +32,10 @@ export function project(engine, observed, key) {
   const profile = profiles[key];
   assert.ok(profile.name, `${key} is available`);
   const before = structuredClone({ molecule, analyses });
-  const result = engine.buildActiveIupacReasoning({ molecule, analyses, ...profile,
+  const selectedAnalyses=resolvedProfileAnalyses(molecule,analyses,profile,engine);
+  const result = engine.buildActiveIupacReasoning({ molecule, analyses:selectedAnalyses, ...profile,
     displayedName: profile.name, generatedNames: Object.values(profiles).map((item) => item.name).filter(Boolean), canHighlight: true });
-  assert.strictEqual(result.analysis, key.startsWith("2013") ? analyses.current : analyses.legacy);
+  assert.strictEqual(result.analysis, selectedAnalyses[profile.selected]);
   assert.deepEqual({ molecule, analyses }, before, "reasoning does not mutate graph or analyses");
   return result;
 }

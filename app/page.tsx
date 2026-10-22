@@ -195,7 +195,10 @@ import {
 import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry";
 import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
-import { legacyProfileDisplayName } from "./legacy-profile-display";
+import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
+import { resolveLegacySpanish } from "./iupac1979-english-to-spanish.ts";
+import { numberLegacyBenzene } from "./legacy-name-numbering.ts";
+import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
@@ -236,6 +239,7 @@ import {
   compareParentCandidates,
   FUNCTIONAL_GROUP_FORMS,
   generateLegacyEnglishName,
+  englishStructuralSubstituentName,
   IUPAC_1979_LEGACY_ENGLISH_PROFILE,
   numberParent,
   selectParent,
@@ -3138,10 +3142,12 @@ export function buildLegacyEnglishNameModel(
   };
   if (analysis.retainedFused) {
     const retained = analysis.retainedFused;
+    const englishLocants=retained.status==="SUPPORTED"?(retained.englishLocants??retained.locants):new Map<number,string>();
     return {
       profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
       parent: { kind: "polycyclic", carbonCount: analysis.mainChain.length,
-        atomIds: [...analysis.mainChain], fallbackName: retained.status === "SUPPORTED" ? retained.nameEn : undefined },
+        atomIds: retained.status==="SUPPORTED"?[...englishLocants.keys()]:[...analysis.mainChain], fallbackName: retained.status === "SUPPORTED" ? retained.nameEn : undefined,
+        retained:retained.status==="SUPPORTED"?{id:retained.parentId,locants:[...englishLocants.values()]}:undefined },
       doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
       unavailableReason: retained.status === "UNSUPPORTED" ? retained.reason : undefined,
     };
@@ -3187,7 +3193,8 @@ export function buildLegacyEnglishNameModel(
     ?? /^(?:ácido )?\((?:\d+[EZRS])(?:,\d+[EZRS])*\)-/.test(displayedSourceName);
   const unrepresentedTetrahedralCenter = stereochemistryRequested
     && getTetrahedralStereoCenters(molecule).some((center) => !analysis.mainChain.includes(center.atomId));
-  return {
+  let unrepresentedAromaticRadical=false;
+  const model: LegacyEnglishNameModel = {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
     unavailableReason: nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)
       || hasUnrepresentedArylSubstitution(molecule, analysis)
@@ -3217,16 +3224,30 @@ export function buildLegacyEnglishNameModel(
         ? esterAlkylName(group.alkylCarbonId, skeleton).replace(/o$/, "")
         : undefined,
     })),
-    substituents: (unsupportedHeterocycleLocalName ? [] : analysis.substituents).map((substituent) => ({
-      locant: substituent.locant,
-      systematicName: substituent.name,
-      complex: substituent.complex,
-    })),
+    substituents: (unsupportedHeterocycleLocalName ? [] : analysis.substituents).map((substituent) => {
+      if(parentKind!=="aromatic")return {locant:substituent.locant,systematicName:substituent.name,complex:substituent.complex};
+      // The legacy aromatic path used to drop internal unsaturation of a
+      // three-carbon radical and emit propylbenzene for a propenyl graph.
+      // Reuse the existing radical namer with the actual bond orders.
+      const ids=new Set(substituent.atomIds), parent=parentAtomIds[substituent.locant-1];
+      const link=molecule.bonds.find(([a,b])=>a===parent&&ids.has(b)||b===parent&&ids.has(a));
+      const allCarbon=substituent.atomIds.every(id=>getElement(getAtom(id,molecule)!)==="C");
+      const unsaturated=molecule.bonds.some(([a,b,o=1])=>ids.has(a)&&ids.has(b)&&o>1);
+      const tree=molecule.bonds.filter(([a,b])=>ids.has(a)&&ids.has(b)).length===ids.size-1;
+      const radical=allCarbon&&unsaturated&&tree&&link
+        ? nameSubstituent(link[0]===parent?link[1]:link[0],parent,buildAdjacency(skeleton),
+          new Map(molecule.bonds.map(b=>[bondKey(b[0],b[1]),getBondOrder(b)])),true):undefined;
+      const verifiedRadical=radical?legacyPrefixTerm(radical.name):undefined;
+      if(radical&&!verifiedRadical)unrepresentedAromaticRadical=true;
+      return {locant:substituent.locant,systematicName:verifiedRadical?.es??substituent.name,complex:radical?.complex??substituent.complex};
+    }),
     nitrogenSubstituents: unsupportedHeterocycleLocalName ? [] : nitrogenSubstituentsForParent(molecule, analysis),
     stereochemicalPrefix: unsupportedHeterocycleLocalName
       ? undefined
       : legacyEnglishStereochemicalPrefix(molecule, analysis, stereochemistryRequested),
   };
+  if(unrepresentedAromaticRadical)model.unavailableReason??="Unsaturated aromatic side-chain grammar is not completely represented.";
+  return numberLegacyBenzene(model, englishStructuralSubstituentName);
 }
 
 function locantForGroup(group: FunctionalGroup, path: number[]) {
@@ -3968,6 +3989,8 @@ function analyzePerceivedMolecule(
     };
   }
   if (retainedFused?.status === "SUPPORTED") {
+    const retainedGroups=molecule.atoms.some(atom=>getElement(atom)!=="C")?detectFunctionalGroups(molecule):[];
+    const retainedPrincipal=selectPrimaryFunctionalGroup(retainedGroups);
     return {
       name: retainedFused.nameEs, chainName: retainedFused.parentEs,
       formula: molecularFormula(molecule), family: "polycyclic",
@@ -3976,7 +3999,9 @@ function analyzePerceivedMolecule(
       // are stored separately and rendered verbatim by the existing badges.
       numberedAtoms: new Map([...retainedFused.locants].filter(([, locant]) => /^\d+$/.test(locant))
         .map(([id, locant]) => [id, Number(locant)])),
-      doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], retainedFused,
+      doubleBondLocants: [], tripleBondLocants: [], functionalGroups: retainedGroups, retainedFused,
+      primaryFunctionalGroup:retainedPrincipal,
+      primaryFunctionalLabel:retainedPrincipal?functionalGroupLabels[retainedPrincipal]:undefined,
       ringSystem: retainedFused.topology.kind === "ortho-peri-fused" ? "Sistema orto/perifusionado" : "Sistema ortofusionado",
     };
   }
@@ -4224,21 +4249,26 @@ export function displayedAtomLocants(analysis: Analysis): ReadonlyMap<number, nu
     ? analysis.retainedFused.locants : analysis.numberedAtoms;
 }
 
-function retainedFusedReasoning(result: RetainedFusedResult, language: AppLanguage): IupacReasoningStep[] {
+function retainedFusedReasoning(result: RetainedFusedResult, language: AppLanguage, groups:FunctionalGroup[]=[]): IupacReasoningStep[] {
   if (result.status !== "SUPPORTED") return [];
   const en = language === "en";
   const junctions = [...result.locants.values()].filter((locant) => /[a-z]/.test(locant));
-  return [
+  const steps:IupacReasoningStep[] = [
     { number: "01", title: en ? "Retained fused parent" : "Padre fusionado retenido", nameRole: "parent",
       explanation: en ? `The complete constitutional graph matches ${result.parentEn}. ${result.rule}.`
         : `El grafo constitucional completo corresponde a ${result.parentEs}. ${result.rule}.` },
     { number: "02", title: en ? "Fused-ring numbering" : "Numeración del sistema fusionado",
       explanation: en ? `The verified 1979 numbering includes junction locants ${junctions.join(", ")}; canvas coordinates do not select the numbering.`
         : `La numeración verificada de 1979 incluye las uniones ${junctions.join(", ")}; las coordenadas del dibujo no determinan la numeración.` },
-    { number: "03", title: en ? "Constitutional name" : "Nombre constitucional",
-      explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
-        : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` },
   ];
+  const hydroxyls=groups.filter(group=>group.kind==="alcohol");
+  if(hydroxyls.length)steps.push({number:"03",title:en?"Hydroxy function":"Función hidroxilo",nameRole:"function",
+    explanation:en?`The OH group at C${result.locants.get(hydroxyls[0].carbonId)} gives the retained naphthol suffix under C-202.`
+      :`El grupo OH en C${result.locants.get(hydroxyls[0].carbonId)} da el sufijo retenido naftol según C-202.`});
+  steps.push({ number: hydroxyls.length?"04":"03", title: en ? "Constitutional name" : "Nombre constitucional",
+      explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
+        : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` });
+  return steps;
 }
 
 function saturatedFused1979Reasoning(analysis: Analysis, language: AppLanguage): IupacReasoningStep[] | null {
@@ -4853,7 +4883,7 @@ export function buildIupacReasoningSteps(
   if (cyclicSteps) return cyclicSteps;
   const saturatedSteps = saturatedFused1979Reasoning(analysis, "es");
   if (saturatedSteps) return saturatedSteps;
-  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "es");
+  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "es", analysis.functionalGroups);
   if (heterocycleRing(molecule) && localNamerCannotSafelyName(molecule, analysis)) return [];
   if (analysis.steroidSystem?.constitutionNameEs) {
     const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
@@ -5409,7 +5439,7 @@ export function buildEnglishReasoningSteps(
   if (cyclicSteps) return cyclicSteps;
   const saturatedSteps = saturatedFused1979Reasoning(analysis, "en");
   if (saturatedSteps) return saturatedSteps;
-  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "en");
+  if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "en", analysis.functionalGroups);
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "en");
   const exocyclicRingFunction = exocyclicRingCarbonFunction(molecule, analysis);
@@ -6104,6 +6134,34 @@ export function externalCandidateNeedsNeutralLocalName(molecule: Molecule, analy
 export function legacyLocalNameIsUnavailable(molecule: Molecule, analysis: Analysis) {
   return externalCandidateNeedsNeutralLocalName(molecule, analysis)
     || analysis.name === COMPLEX_NAME_UNAVAILABLE_MESSAGE;
+}
+
+/** One resolution feeds display, clipboard/export availability and pedagogy.
+ * ES lexical availability, EN availability and chemical safety are distinct. */
+export function resolveLegacyNomenclature(molecule: Molecule, analysis: Analysis,
+  sourceName=analysis.name, options: {stereochemistry?:boolean}={}) {
+  const chemicallyAvailable=!legacyLocalNameIsUnavailable(molecule,analysis);
+  const englishModel=buildLegacyEnglishNameModel(molecule,analysis,sourceName,options);
+  const englishName=chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule(molecule)
+    ?generateLegacyEnglishName(englishModel).name:"-";
+  const nativeSpanishName=chemicallyAvailable
+    ?applyNomenclatureConvention(legacySpanishFormatterInput(analysis,sourceName),"iupac-1979-es","es"):"-";
+  const spanishResolution=resolveLegacySpanish({graph:molecule,model:englishModel,englishName,nativeSpanishName,chemicallyAvailable});
+  const project=(model:LegacyEnglishNameModel,name:string):Analysis=>{
+    if(model.parent.kind!=="aromatic"||model.parent.atomIds.length!==analysis.mainChain.length)return analysis;
+    return {...analysis,name,mainChain:[...model.parent.atomIds],numberedAtoms:new Map(model.parent.atomIds.map((id,i)=>[id,i+1])),
+      substituents:analysis.substituents.map((s,i)=>({...s,locant:model.substituents[i]?.locant??s.locant,
+        name:model.substituents[i]?.systematicName??s.name,complex:model.substituents[i]?.complex??s.complex}))};
+  };
+  const spanishAnalysis=spanishResolution.status==="TRANSLATED_FROM_LEGACY_EN"
+    ?project(spanishResolution.model,spanishResolution.name):analysis;
+  let englishAnalysis=project(englishModel,englishName);
+  if(analysis.retainedFused?.status==="SUPPORTED"&&analysis.retainedFused.englishLocants) {
+    const locants=analysis.retainedFused.englishLocants;
+    englishAnalysis={...analysis,mainChain:[...locants.keys()],numberedAtoms:new Map([...locants].filter(([,l])=>/^\d+$/.test(l)).map(([id,l])=>[id,Number(l)])),
+      retainedFused:{...analysis.retainedFused,locants}};
+  }
+  return {chemicallyAvailable,nativeSpanishName,englishName,englishModel,spanishResolution,spanishAnalysis,englishAnalysis};
 }
 
 export function externalCandidateLocalDisplayName(molecule: Molecule, analysis: Analysis, language: AppLanguage) {
@@ -7752,13 +7810,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? formatStereochemicalName(molecule, legacyAnalysis.mainChain, stripStereochemicalDescriptors(legacyAnalysis.name), { explicitDoubleBonds: true })
     : stripStereochemicalDescriptors(legacyAnalysis.name);
   const legacyNameUnavailable = legacyLocalNameIsUnavailable(molecule, legacyAnalysis);
-  const legacyEnglishName = useMemo(
-    () => legacyNameUnavailable || !legacyEnglishProfileIsSupportedForMolecule(molecule)
-      ? "-"
-      : generateLegacyEnglishName(
-        buildLegacyEnglishNameModel(molecule, legacyAnalysis, legacyNameWithSelectedStereochemistry,
-          { stereochemistry: stereochemistryEnabled }),
-      ).name,
+  const legacyResolution = useMemo(
+    () => resolveLegacyNomenclature(molecule,legacyAnalysis,legacyNameWithSelectedStereochemistry,
+      {stereochemistry:stereochemistryEnabled}),
     [legacyAnalysis, legacyNameWithSelectedStereochemistry, legacyNameUnavailable, molecule, stereochemistryEnabled],
   );
   const nomenclatureVariants = (() => {
@@ -7768,10 +7822,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     const legacyDisplay = legacyProfileDisplayName({
       language,
       suggestedName,
-      spanish1979Name: legacyNameUnavailable
-        ? "-"
-        : applyNomenclatureConvention(legacySpanishFormatterInput(legacyAnalysis, legacyNameWithSelectedStereochemistry), "iupac-1979-es", "es"),
-      english1979Name: legacyNameUnavailable ? "-" : legacyEnglishName,
+      spanish1979Name: legacyResolution.spanishResolution.name,
+      english1979Name: legacyResolution.englishName,
     });
     return selectableNomenclatureConventions(language).map((convention) => ({
       convention,
@@ -7840,6 +7892,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   );
   const canonicalIupacName = nameWithSelectedStereochemistry;
   const localizedCanonicalIupacName = localizedIupac(nameWithSelectedStereochemistry);
+  const exportIupacName=selectedNomenclatureExportName({convention:activeNomenclatureConvention,
+    displayedName:displayedIupacName,copyable:displayedNameCopyable,canonicalName:canonicalIupacName});
+  const localizedExportIupacName=selectedNomenclatureExportName({convention:activeNomenclatureConvention,
+    displayedName:displayedIupacName,copyable:displayedNameCopyable,canonicalName:localizedCanonicalIupacName});
   const formulaIsomerMolecules = useMemo(() => {
     const molecules = new Map<string, Molecule>();
     if (!formulaResult?.ok) return molecules;
@@ -8056,7 +8112,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   };
   const { analysis: activeAnalysis, steps: localizedReasoningSteps, fragments: reasoningNameFragments, links: reasoningNameLinkParts } = buildActiveIupacReasoning({
     molecule,
-    analyses: { current: analysis, legacy: legacyAnalysis },
+    analyses: { current: analysis, legacy: language==="es"?legacyResolution.spanishAnalysis:legacyResolution.englishAnalysis },
     enabledAliases: commonAlkylNameSelections,
     sourceName: reasoningSourceName,
     displayedName: displayedIupacName,
@@ -9674,14 +9730,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     try {
       if (usesLocalLibrary()) {
         const item = saveLocalSavedEntry({
-          name: canonicalIupacName,
+          name: exportIupacName,
           formula: analysis.formula,
           family: historyFamilyLabel,
           molecule,
           viewMode,
         });
         setSavedEntries((items) => mergeHistoryEntry(items, item, 200));
-        setNotice(`${canonicalIupacName} quedó añadido a Guardados.`);
+        setNotice(`${exportIupacName} quedó añadido a Guardados.`);
         setLibrarySection("saved");
         setHistoryOpen(true);
         return;
@@ -9693,7 +9749,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           "x-lab-visitor-id": historyIdentity,
         },
         body: JSON.stringify({
-          name: canonicalIupacName,
+          name: exportIupacName,
           formula: analysis.formula,
           family: historyFamilyLabel,
           molecule,
@@ -9713,7 +9769,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       }
       const scope = data.scope ?? historyScope;
       setHistoryScope(scope);
-      setNotice(`${canonicalIupacName} quedó añadido a Guardados.`);
+      setNotice(`${exportIupacName} quedó añadido a Guardados.`);
       setLibrarySection("saved");
       setHistoryOpen(true);
     } catch (error) {
@@ -9781,7 +9837,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       const { moleculeToSmiles } = await import("./openchemlib-adapter");
       const result = moleculeToSmiles(molecule);
       if (!result.ok) throw new Error(result.error);
-      downloadSmilesFile(result.smiles, canonicalIupacName);
+      downloadSmilesFile(result.smiles, exportIupacName);
       setSmilesFeedback({
         kind: "success",
         message: { id: "smiles.exported" },
@@ -9900,7 +9956,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             setNotice("No fue posible exportar el canvas como imagen PNG.");
             return;
           }
-          const currentName = molecule.atoms.length ? localizedCanonicalIupacName : "molecula";
+          const currentName = molecule.atoms.length ? localizedExportIupacName : "molecula";
           downloadBlobFile(blob, `${safePngFileName(currentName)}.png`);
           setPngExportOpen(false);
           setNotice("La imagen PNG de la molécula se descargó correctamente.");
@@ -9935,7 +9991,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       clonedSvg.setAttribute("height", String(frame.height));
       applySvgColorMode(clonedSvg, pngColorMode);
       const serializedSvg = new XMLSerializer().serializeToString(clonedSvg);
-      const currentName = molecule.atoms.length ? localizedCanonicalIupacName : "molecula";
+      const currentName = molecule.atoms.length ? localizedExportIupacName : "molecula";
       downloadBlobFile(
         new Blob([serializedSvg], { type: "image/svg+xml;charset=utf-8" }),
         `${safePngFileName(currentName)}.svg`,
@@ -13512,7 +13568,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 <MoleculeHistoryPreview molecule={molecule} />
                 <div>
                   <span>{t("Estructura actual")}</span>
-                  <strong>{localizedCanonicalIupacName}</strong>
+                  <strong>{localizedExportIupacName}</strong>
                   <small>{analysis.formula} · {localizedHistoryFamilyLabel}</small>
                 </div>
                 <button onClick={saveCurrentStructure} disabled={!historyIdentity || savedBusy}>

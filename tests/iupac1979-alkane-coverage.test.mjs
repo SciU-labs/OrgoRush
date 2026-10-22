@@ -129,7 +129,7 @@ test("Legacy admits verified cyclic grammar and keeps unsupported polycycles una
   assert.equal(ring.legacy.name, "ciclohexano");
   assert.equal(ring.legacyEs, "ciclohexano");
   assert.equal(applyNomenclatureConvention("ciclohexano", "iupac-1979-es", "es"), "ciclohexano");
-  const graph = graphFromCyclicReference(CYCLIC_REFERENCES.find(row => row.id === "pyrene"));
+  const graph = graphFromCyclicReference(CYCLIC_REFERENCES.find(row => row.id === "perhydropyrene"));
   const unsupported = page.analyzeMolecule(graph, [], "iupac-1979-legacy");
   assert.equal(page.legacyLocalNameIsUnavailable(graph, unsupported), true);
   const es = applyNomenclatureConvention(page.legacySpanishFormatterInput(unsupported, unsupported.name), "iupac-1979-es", "es");

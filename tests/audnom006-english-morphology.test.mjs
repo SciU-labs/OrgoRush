@@ -19,7 +19,7 @@ test("AUD-NOM-006 fixes modern English morphology while preserving profiles, gra
   const fixtures = [
     {
       id: "AUDCASE-0160", smiles: "c1(C=C)ccc(Cl)cc1", expected: "1-chloro-4-ethenylbenzene",
-      spanish: "1-cloro-4-vinilbenceno", legacyEnglish: "1-chloro-4-vinilbenzene",
+      spanish: "1-cloro-4-vinilbenceno", legacyEnglish: "1-chloro-4-ethenylbenzene", legacySpanish:"1-cloro-4-etenilbenceno",
       formula: "C₈H₇Cl", locant: 4, moiety: "ethenyl",
     },
     {
@@ -38,7 +38,7 @@ test("AUD-NOM-006 fixes modern English morphology while preserving profiles, gra
     assert.equal(profiles["2013-en"].name, fixture.expected, `${fixture.id}: 2013 EN`);
     assert.equal(profiles["1979-en"].name, fixture.legacyEnglish,
       `${fixture.id}: Legacy retains its separately adjudicated status and wording`);
-    assert.equal(profiles["1979-es"].name, null, `${fixture.id}: unsupported Legacy ES remains unavailable`);
+    assert.equal(profiles["1979-es"].name, fixture.legacySpanish??null, `${fixture.id}: graph-verified Legacy coverage`);
     assert.deepEqual(chemistry.engine.analyzeMolecule(molecule), analyses.current, `${fixture.id}: repeat analysis is deterministic`);
     assert.deepEqual(chemistry.engine.analyzeMolecule(molecule, [], "iupac-1979-legacy"), analyses.legacy,
       `${fixture.id}: repeat Legacy analysis is deterministic`);
