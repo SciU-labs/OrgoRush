@@ -198,8 +198,19 @@ export function deriveUnsaturationNameContributions(
     const locant = (bondType === "double" ? analysis.doubleBondLocants : analysis.tripleBondLocants)[0];
     const marker = bondType === "double" ? "en" : "yn";
     const prefix = `${root}-${locant}-${marker}`;
-    const legacyParent = `${locant}-${root}${marker}${parent.slice(prefix.length)}`;
-    if (parent.startsWith(prefix) && name.endsWith(legacyParent)) {
+    const tail = parent.slice(prefix.length), tails = [tail];
+    // A corrected modern plural retains e (ene/yne-diol/dione), while the
+    // supplied Legacy name can use en/yn. Recognize that literal boundary;
+    // keep the functional suffix, its locants and every graph target intact.
+    const primary = analysis.primaryFunctionalGroup;
+    const functionalLocants = analysis.functionalGroups.filter(group => group.kind === primary)
+      .map(group => analysis.numberedAtoms.get(group.carbonId)).filter((value): value is number => value !== undefined)
+      .sort((left, right) => left - right);
+    const suffix = matchFunctionalParentSuffix(parent, primary, language);
+    if (analysis.family === "acyclic" && (primary === "alcohol" || primary === "ketone") && functionalLocants.length > 1
+      && suffix?.[1] === functionalLocants.join(",") && tail === `e-${suffix[0]}`) tails.push(tail.slice(1));
+    const legacyParent = tails.map(ending => `${locant}-${root}${marker}${ending}`).find(candidate => name.endsWith(candidate));
+    if (parent.startsWith(prefix) && legacyParent) {
       const atoms = analysis.mainChain.slice(locant - 1, locant + 1);
       if (atoms.length !== 2) return [];
       const start = name.length - legacyParent.length;
@@ -657,6 +668,8 @@ function parentNameEvidence(
 /** Presentation evidence, never a naming rule: distinguish the numerical root
  * from written chain morphology and the complete functional component. */
 export function deriveLegacyParentNamePresentation(analysis: FragmentAnalysis, name: string, language: AppLanguage) {
+  // Retained aromatic parents do not derive their names from alkane roots.
+  if (analysis.family === "aromatic") return;
   const root = IUPAC_ROOTS[analysis.mainChain.length];
   if (!root) return;
   const numericalRoot = language === "en" ? englishIupacRoot(root) : root;
@@ -819,8 +832,14 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
     const multiplicity = deriveCyclicKetoneMultiplicityEvidence(analysis, name, language, input.generatedNames, input.convention);
     if (first) fragments[unsaturationStep.number] = { ...first, additionalFragments: [...rest, ...(multiplicity ? [multiplicity] : [])] };
   }
-  const parent = parentNameEvidence(analysis, name, language, evidence);
   const parentStep = steps.find((step) => step.nameRole === "parent");
+  // A supplied Legacy EN name can accompany the current analysis in Practice.
+  // Its verified bond spans establish the moved locant; keep the parent root
+  // separate, without replacing an existing selected-profile parent fragment.
+  const legacyParentMissing = Boolean(parentStep && !fragments[parentStep.number] && language === "en"
+    && input.generatedNames?.includes(name) && name !== localizedName(analysis.name ?? analysis.chainName, language)
+    && unsaturationStep && fragments[unsaturationStep.number]?.semanticId);
+  const parent = parentNameEvidence(analysis, name, language, evidence, legacyParentMissing);
   if (parent && parentStep) {
     const previous = fragments[parentStep.number];
     if (!previous || previous.text === parent.text

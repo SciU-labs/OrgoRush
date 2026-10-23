@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { before, after, test } from "node:test";
 import { readFileSync } from "node:fs";
 import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
+import { verifiedD4Fixture009 } from "./helpers/validation-fix-009-d4.mjs";
 import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { exerciseStructuralIdentity, createRestrictedChemicalGenerator } from "../app/exercise-chemical-generator.ts";
 import { createPracticeConfig } from "../app/practice-session.ts";
@@ -19,7 +20,7 @@ import { formatPracticeReviewMessage } from "../app/practice-review-i18n.ts";
 import { deriveReasoningNameFragments } from "../app/reasoning-name-fragments.ts";
 import { buildReasoningNameLinkParts } from "../app/reasoning-name-links.ts";
 
-const fixture=JSON.parse(readFileSync(new URL("./fixtures/difficulty-d4-hard-foundation.json",import.meta.url)));
+const fixture=verifiedD4Fixture009(JSON.parse(readFileSync(new URL("./fixtures/difficulty-d4-hard-foundation.json",import.meta.url))));
 const functionalFixture=JSON.parse(readFileSync(new URL("./fixtures/difficulty-d4-2a-hard-functional.json",import.meta.url)));
 const structuralFixture=JSON.parse(readFileSync(new URL("./fixtures/difficulty-d4-2b-hard-structural.json",import.meta.url)));
 let chemistry, validate, evaluate, currentValidate, currentEvaluate, review;

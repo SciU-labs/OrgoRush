@@ -86,18 +86,23 @@ test("OrgoRush audit: 84 outputs, NOM-001/NOM-002 conformance, historical eviden
   const omitLegacySpanish = (row) => Object.fromEntries(
     Object.entries(row).filter(([key]) => key !== "1979-es"),
   );
-  const omitNom0032013 = (row) => {
-    if (row.id !== "19" && row.id !== "20") return row;
+  const omitCorrected2013 = (row) => {
+    if (row.id !== "14" && row.id !== "19" && row.id !== "20") return row;
     return Object.fromEntries(Object.entries(row).filter(([key]) => (
-      key !== "2013-en" && key !== "2013-es" && key !== "parentAtoms"
+      key !== "2013-en" && key !== "2013-es" && (row.id === "14" || key !== "parentAtoms")
     )));
   };
-  assert.deepEqual(rows.map(omitLegacySpanish).map(omitNom0032013),
-    observedResults.map(omitLegacySpanish).map(omitNom0032013),
-    "historical outputs remain unchanged except the separately asserted NOM-001/2 and NOM-003 cells");
-  assert.deepEqual(rows.filter(({ id }) => !changedIds.has(id) && id !== "19" && id !== "20")
+  assert.deepEqual(rows.map(omitLegacySpanish).map(omitCorrected2013),
+    observedResults.map(omitLegacySpanish).map(omitCorrected2013),
+    "historical outputs remain unchanged except the separately asserted NOM-001/2, NOM-003 and FIX-009 cells");
+  // P-16.7 / RSEQ §6b: consonant-initial diol retains the parent's o/e.
+  // Preserve the historical observation file as the evidence of the defect.
+  const correctedDiol = rows.find(({ id }) => id === "14");
+  assert.equal(correctedDiol["2013-es"], "pentano-2,4-diol");
+  assert.equal(correctedDiol["2013-en"], "pentane-2,4-diol");
+  assert.deepEqual(rows.filter(({ id }) => !changedIds.has(id) && id !== "14" && id !== "19" && id !== "20")
     .map(omitLegacySpanish),
-  observedResults.filter(({ id }) => !changedIds.has(id) && id !== "19" && id !== "20")
+  observedResults.filter(({ id }) => !changedIds.has(id) && id !== "14" && id !== "19" && id !== "20")
     .map(omitLegacySpanish),
   "the unaffected audit structures retain historical outputs");
   const historicalAffected = observedResults.filter(({ id }) => nom001Ids.has(id));

@@ -3362,6 +3362,7 @@ function makeFunctionalParentName(
   locants: number[],
   esterAlkylNames: string[] = [],
   retainShortAmineLocant = false,
+  convention: ParentSelectionConvention = "blue-book-2013",
 ) {
   const hydrocarbonName = makeChainName(length, doubleLocants, tripleLocants);
   const stem = hydrocarbonName.endsWith("o") ? hydrocarbonName.slice(0, -1) : hydrocarbonName;
@@ -3398,9 +3399,12 @@ function makeFunctionalParentName(
   }
 
   if (sortedLocants.length > 1) {
-    if (kind === "alcohol") return `${stem}-${locantText}-${suffixMultiplier(count, "ol")}ol`;
-    if (kind === "ketone") return `${stem}-${locantText}-${suffixMultiplier(count, "ona")}ona`;
-    if (kind === "amine") return `${stem}-${locantText}-${suffixMultiplier(count, "amina")}amina`;
+    // P-16.7: di-/tri-/tetr- begin with consonants, so Spanish retains the
+    // parent's final o. Legacy keeps its existing formatter input contract.
+    const multipliedParent = convention === "blue-book-2013" ? hydrocarbonName : stem;
+    if (kind === "alcohol") return `${multipliedParent}-${locantText}-${suffixMultiplier(count, "ol")}ol`;
+    if (kind === "ketone") return `${multipliedParent}-${locantText}-${suffixMultiplier(count, "ona")}ona`;
+    if (kind === "amine") return `${multipliedParent}-${locantText}-${suffixMultiplier(count, "amina")}amina`;
   }
 
   const locant = sortedLocants[0] ?? 1;
@@ -3579,6 +3583,7 @@ function analyzeFunctionalAcyclic(
           ? primaryGroups.map((group) => esterAlkylName(group.alkylCarbonId, skeleton))
           : [],
         twoCarbonPhenylFunction,
+        convention,
       )
     : baseHydrocarbonName;
   let substituentParts = formatSubstituentGroups(chosen.substituents, enabledAliases);
@@ -4821,6 +4826,13 @@ function legacyStructuralReasoningText(
   const parentKind = isEnglish ? ring ? "cyclic parent ring" : "parent chain" : ring ? "anillo cíclico progenitor" : "cadena principal";
   const locantText = (values: number[]) => values.length ? values.join(", ") : (isEnglish ? "none" : "ninguno");
   if (role === "parent") {
+    if (analysis.family === "aromatic") {
+      const parentName = isEnglish ? translateSpanishIupacForDisplay(analysis.chainName) : analysis.chainName;
+      const retainedBenzene = analysis.chainName === "benceno";
+      return isEnglish
+        ? `The 1979 Legacy analysis selects the aromatic parent ring of ${analysis.mainChain.length} carbons. Its ${retainedBenzene ? "retained " : ""}parent name is “${parentName}”; the aromatic ring determines the numbering${retainedBenzene ? " (A-11.3)" : ""}. The selected name is ${displayedName}.`
+        : `El análisis Legacy de 1979 selecciona el anillo aromático de ${analysis.mainChain.length} carbonos. El nombre${retainedBenzene ? " retenido" : ""} del padre es «${parentName}»; el anillo aromático determina la numeración${retainedBenzene ? " (A-11.3)" : ""}. El nombre seleccionado es ${displayedName}.`;
+    }
     const linkingVowelExplanation = legacyCyclicKetoneLinkingVowelExplanation(analysis, displayedName, language);
     if (linkingVowelExplanation) return linkingVowelExplanation;
     const ringKetoneLocants = ring ? analysis.functionalGroups
@@ -4853,6 +4865,14 @@ function legacyStructuralReasoningText(
       : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
   }
   if (role === "numbering") {
+    if (analysis.family === "aromatic") {
+      const positions = analysis.substituents.map(item => `${isEnglish ? translateSpanishIupacForDisplay(item.name) : item.name} ${isEnglish ? "at" : "en"} C${item.locant}`);
+      const principal = functionalLocants.length
+        ? isEnglish ? ` The principal ${groupDescription} has locants ${locantText(functionalLocants)}.` : ` La función principal (${groupDescription}) tiene los localizadores ${locantText(functionalLocants)}.` : "";
+      return isEnglish
+        ? `The starting positions and both directions of the selected aromatic ring are compared: first the suffix group, then the lowest prefix locants, then the alphabetical order of the prefixes in this language (C-15.11).${principal}${positions.length ? ` The selected numbering places ${positions.join("; ")}.` : ""} The written name is ${displayedName}.`
+        : `Se comparan las posiciones iniciales y ambos sentidos del anillo aromático seleccionado: primero la función de sufijo, después los menores localizadores de prefijos y, en caso de empate, el orden alfabético de los prefijos en este idioma (C-15.11).${principal}${positions.length ? ` La numeración seleccionada sitúa ${positions.join("; ")}.` : ""} El nombre escrito es ${displayedName}.`;
+    }
     const comparison = selectedParentNumberingReasoning(analysis, language);
     if (comparison) return comparison;
     const functional = functionalLocants.length ? `${groupDescription} C${locantText(functionalLocants)}` : "";

@@ -20,8 +20,8 @@ const questionSnapshot = (question, generationIndex) => ({
 });
 
 /** Historical captures default explicitly to v1; v2 has its own new fixture. */
-export async function captureDifficultySessions(difficulty = "basic", locale = "es", generatorVersion = 1) {
-  const chemistry = await loadExerciseChemistry();
+export async function captureDifficultySessions(difficulty = "basic", locale = "es", generatorVersion = 1, sharedChemistry) {
+  const chemistry = sharedChemistry ?? await loadExerciseChemistry();
   const random = Math.random, now = Date.now;
   try {
     const generate = createPracticeQuestionGenerator(createRestrictedChemicalGenerator(chemistry.oracles),
@@ -55,6 +55,18 @@ export async function captureDifficultySessions(difficulty = "basic", locale = "
     return { practiceNaming: practiceRuns[0], practiceMixed: practiceRuns[1], examMixed: exam };
   } finally {
     Math.random = random; Date.now = now;
-    await chemistry.close();
+    if (!sharedChemistry) await chemistry.close();
   }
+}
+
+/** One pure engine per fresh process; avoid three redundant SSR compilations.
+ * Every level retains its own generator, entropy guard and full payload proof. */
+export async function captureDifficultyLevels(locale, generatorVersion) {
+  const chemistry = await loadExerciseChemistry();
+  try {
+    const sessions = {};
+    for (const difficulty of ["basic", "intermediate", "advanced"])
+      sessions[difficulty] = await captureDifficultySessions(difficulty, locale, generatorVersion, chemistry);
+    return sessions;
+  } finally { await chemistry.close(); }
 }

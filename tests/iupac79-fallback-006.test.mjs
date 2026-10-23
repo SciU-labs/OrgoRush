@@ -54,11 +54,19 @@ test('all enabled families reject corrupted function metadata, branches, locants
  }
 });
 
-test('baseline audit preserves every English, Current 2013 and native ES reference',()=>{
+test('baseline audit preserves Legacy references and corrects the demonstrated modern multiplicative elision',()=>{
  const baseline=JSON.parse(readFileSync(new URL('../reports/orgorush-iupac79-fallback-006.baseline.json',import.meta.url),'utf8'));
+ // FIX-009 / P-16.7 and RSEQ §§4,6b: preserve this historical observation
+ // file; these four modern cells had the same independently confirmed error.
+ const correctedModern=new Map([
+  ['etan-1,2-diol','etano-1,2-diol'],
+  ['propan-1,2,3-triol','propano-1,2,3-triol'],
+  ['2-propilpropan-1,3-diol','2-propilpropano-1,3-diol'],
+  ['pentan-2,4-diona','pentano-2,4-diona'],
+ ]);
  for(const record of baseline){const g=graph(record.smiles),r=observe(g);
   assert.equal(r.englishName,record.legacyEN,record.smiles);
-  assert.equal(e.analyzeMolecule(g).name,record.current2013,record.smiles);
+  assert.equal(e.analyzeMolecule(g).name,correctedModern.get(record.current2013)??record.current2013,record.smiles);
   assert.equal(r.nativeSpanishName,record.nativeES,record.smiles);
   assert.equal(r.chemicallyAvailable,record.chemicallyAvailable,record.smiles);
   if(record.status==='NATIVE_ES')assert.equal(r.spanishResolution.name,record.legacyES,record.smiles);

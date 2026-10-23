@@ -10,7 +10,7 @@ import { createExamConfig, createExamQuestionPlan } from "../../app/exam-session
 const hash = value => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 /** Real three-type Exam plans, all seventeen anchors. Only locale presentation
  * is projected to ES; the entire graph/options/metadata payload is hashed. */
-export async function captureHardV4Snapshot(locale = "es") {
+export async function captureHardV4Snapshot(locale = "es", inspectPayload) {
   const chemistry = await loadExerciseChemistry(), random = Math.random, now = Date.now;
   try {
     const generate = createPracticeQuestionGenerator(createRestrictedChemicalGenerator(chemistry.oracles),
@@ -25,6 +25,7 @@ export async function captureHardV4Snapshot(locale = "es") {
         return { type: slot.questionType, displayOrdinal: slot.displayOrdinal, generationIndex: slot.generationIndex,
           structuralIdentity: q.reference.structuralIdentity, names: q.reference.names, formula: q.reference.formula,
           family: q.generation.family, payloadSha256: hash(q),
+          ...(inspectPayload ? inspectPayload(q) : {}),
           ...(q.type === "multiple-choice" ? { optionIdsSha256: hash(q.options.map(o => o.id)), optionSetSha256: hash(q.options) } : {}),
           ...(q.type === "build" ? { buildTargetIdentity: evaluate({ referenceMolecule: q.molecule,
             submittedMolecule: q.molecule, category, config }).referenceIdentity } : {}) };

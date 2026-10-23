@@ -229,9 +229,9 @@ test("a single-unsaturation name retains its existing parent and locant links", 
 test("each analyzed parent-chain multiple bond has a distinct bilingual name contribution and exact bond target", () => {
   const fixtures = [
     { name: "pent-2-eno", smiles: "CC=CCC", types: ["double"], locants: [2] },
-    { name: "3-metilhept-3-en-2,6-diona", smiles: "CC(=O)C(C)=CCC(=O)C", types: ["double"], locants: [3] },
+    { name: "3-metilhept-3-eno-2,6-diona", smiles: "CC(=O)C(C)=CCC(=O)C", types: ["double"], locants: [3] },
     { name: "5-metilhex-3-en-2-ol", smiles: "CC(O)C=CC(C)C", types: ["double"], locants: [3] },
-    { name: "5-metilhept-3-in-2,6-diol", smiles: "CC(O)C#CC(C)C(O)C", types: ["triple"], locants: [3] },
+    { name: "5-metilhept-3-ino-2,6-diol", smiles: "CC(O)C#CC(C)C(O)C", types: ["triple"], locants: [3] },
     { name: "5-metiloct-3-en-6-in-2-ol", smiles: "CC(O)C=CC(C)C#CC", types: ["double", "triple"], locants: [3, 6] },
     { name: "ácido 4-metilhept-2-en-5-inoico", smiles: "O=C(O)C=CC(C)C#CC", types: ["double", "triple"], locants: [2, 5] },
     { name: "4-amino-5-bromo-3-metilhept-2-en-6-in-1-ol", smiles: "OCC=C(C)C(N)C(Br)C#C", types: ["double", "triple"], locants: [2, 6] },
@@ -264,7 +264,7 @@ test("each analyzed parent-chain multiple bond has a distinct bilingual name con
         fixture.locants.map((locant, index) => [`unsaturation:${fixture.types[index]}:${locant}`, fixture.types[index], locant]));
       assert.equal(linked.map((part) => part.text).join(""), displayedName);
       assert.equal(contributionStep.unsaturationContributions.length, fixture.locants.length);
-      if (fixture.name === "3-metilhept-3-en-2,6-diona") {
+      if (fixture.name === "3-metilhept-3-eno-2,6-diona") {
         assert.equal(fragments["02"]?.text, "hept");
         assert.equal(fragments["04"]?.text, language === "en" ? "3-methyl" : "3-metil");
         assert.equal(fragments["01"]?.text, language === "en" ? "2,6-dione" : "2,6-diona");

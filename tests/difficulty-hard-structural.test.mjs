@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { before, after, test } from "node:test";
 import { readFileSync } from "node:fs";
 import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
+import { verifiedD4Fixture009 } from "./helpers/validation-fix-009-d4.mjs";
 import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { exerciseStructuralIdentity } from "../app/exercise-chemical-generator.ts";
 import { EXERCISE_CATEGORIES, GENERATOR_VERSION, normalizeSessionConfig } from "../app/exercise-model.ts";
@@ -111,7 +112,7 @@ test("real parent evidence exposes first-point-of-difference and cyclic alphabet
 });
 
 test("all seventeen anchors have independent Hard evidence; D4 and all five D4.2A categories remain certified", () => {
-  const d4 = readFixture("difficulty-d4-hard-foundation.json"), a = readFixture("difficulty-d4-2a-hard-functional.json");
+  const d4 = verifiedD4Fixture009(readFixture("difficulty-d4-hard-foundation.json")), a = readFixture("difficulty-d4-2a-hard-functional.json");
   const covered = new Set();
   for (const f of [...d4.fixtures.filter(f => f.minimumDifficulty === "advanced"), ...d4.additionalFixtures, ...a.fixtures, ...fixture.fixtures]) {
     const m = graph(f.smiles), r = chemistry.oracles.reference(m);

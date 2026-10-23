@@ -14,9 +14,8 @@ test("D4 preserves all v3 difficulty plans captured before foundation edits in f
   const fixture=JSON.parse(readFileSync(new URL("./fixtures/difficulty-d4-frozen-v3-session.json",import.meta.url)));
   assert.equal(fixture.capturedAtHead,"e4f9d2f");assert.equal(GENERATOR_VERSION,4);assert.deepEqual(SUPPORTED_GENERATOR_VERSIONS,[1,2,3,4]);
   for(const locale of ["es","en"]) {
-    const source=`import {captureDifficultySessions} from './tests/helpers/difficulty-session-snapshot.mjs';
-      const sessions={};for(const d of ['basic','intermediate','advanced'])sessions[d]=await captureDifficultySessions(d,'${locale}',3);
-      console.log('SNAPSHOT='+JSON.stringify(sessions));`;
+    const source=`import {captureDifficultyLevels} from './tests/helpers/difficulty-session-snapshot.mjs';
+      console.log('SNAPSHOT='+JSON.stringify(await captureDifficultyLevels('${locale}',3)));`;
     const actual=JSON.parse(execFileSync(process.execPath,["--input-type=module","-e",source],{encoding:"utf8",timeout:120000}).split("SNAPSHOT=")[1].trim());
     assert.deepEqual(actual,fixture.sessions);
   }

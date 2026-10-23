@@ -7,11 +7,38 @@ test("v4 Hard all-category three-type plans repeat exactly in three fresh ES/EN 
   const fixture = JSON.parse(readFileSync(new URL("./fixtures/difficulty-d5-hard-v4-session.json", import.meta.url)));
   assert.equal(fixture.capturedAtHead, "3f31484"); assert.equal(fixture.snapshot.generatorVersion, 4);
   assert.equal(fixture.snapshot.runs.length, 17);
+  // FIX-009 / P-16.7: this capture contains one demonstrated elision error.
+  // Keep the original snapshot and prove that reversing ONLY that Spanish
+  // name restores its full payload hash. Every other byte remains frozen.
+  const identity009 = "dmTD@@eIgYyijf@@", before009 = "5-metiloct-3-en-2,7-diona", after009 = "5-metiloct-3-eno-2,7-diona";
+  let firstCapture009;
   for (const locale of ["es", "es", "en"]) {
     const script = `import {captureHardV4Snapshot} from './tests/helpers/difficulty-hard-v4-snapshot.mjs';
-      console.log('SNAPSHOT='+JSON.stringify(await captureHardV4Snapshot('${locale}')));`;
+      import assert from 'node:assert/strict'; import {createHash} from 'node:crypto';
+      const inspect=q=>{
+        if(q.reference.structuralIdentity!=='${identity009}')return {};
+        assert.equal(q.reference.names.es,'${after009}');
+        const original=structuredClone(q);
+        original.reference.names.es='${before009}';
+        if(original.reference.name==='${after009}')original.reference.name='${before009}';
+        return {preFix009PayloadSha256:createHash('sha256').update(JSON.stringify(original)).digest('hex')};
+      };
+      console.log('SNAPSHOT='+JSON.stringify(await captureHardV4Snapshot('${locale}',inspect)));`;
     const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { encoding: "utf8", timeout: 600000 });
-    assert.deepEqual(JSON.parse(output.split("SNAPSHOT=")[1].trim()), fixture.snapshot);
+    const actual = JSON.parse(output.split("SNAPSHOT=")[1].trim());
+    if(firstCapture009)assert.deepEqual(actual,firstCapture009,"full corrected payloads repeat across fresh processes/locales");
+    else firstCapture009=structuredClone(actual);
+    const projected=structuredClone(actual), questions=projected.runs.flatMap(run=>run.questions);
+    const corrected=questions.filter(q=>q.preFix009PayloadSha256);
+    assert.equal(corrected.length,1);
+    const question=corrected[0], original=fixture.snapshot.runs.flatMap(run=>run.questions).find(q=>q.structuralIdentity===identity009);
+    assert.equal(question.structuralIdentity,identity009);
+    assert.equal(original.names.es,before009); assert.equal(question.names.es,after009);
+    assert.notEqual(question.payloadSha256,original.payloadSha256);
+    question.names.es=before009;
+    question.payloadSha256=question.preFix009PayloadSha256;
+    delete question.preFix009PayloadSha256;
+    assert.deepEqual(projected,fixture.snapshot,"only the verified Spanish morphology changes; original hashes still prove all other payload bytes");
   }
   for (const run of fixture.snapshot.runs) {
     assert.equal(run.config.difficulty, "advanced"); assert.equal(run.config.generatorVersion, 4);
