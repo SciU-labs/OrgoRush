@@ -46,18 +46,19 @@ test("AUDNOM-006: constitutional mode, unspecified geometry and existing R/S sta
 });
 
 for (const record of affected("AUDNOM-007")) {
-  test(`AUDNOM-007: ${record.id} exposes the complete non root before the ketone suffix`, () => {
+  test(`AUDNOM-007: ${record.id} exposes the literal chain fragment before the ketone suffix`, () => {
     const observed = observe(chemistry.engine, record.smiles);
     for (const key of record.affectedProfiles) {
       const model = project(chemistry.engine, observed, key);
       const parent = evidence(model).find((item) => item.kind === "parent");
       const suffix = evidence(model).find((item) => item.kind === "function");
-      assert.equal(parent.text, "non");
+      const parentText = key.startsWith("1979") ? "nonan" : "non";
+      assert.equal(parent.text, parentText);
       assert.equal(parent.start, model.displayedName.lastIndexOf("nonan"));
       assert.ok(parent.start + parent.text.length <= suffix.start);
       assert.deepEqual(new Set(parent.atomIds), new Set(model.analysis.mainChain));
       const linked = model.links.find((item) => item.stepNumber === parent.stepNumber);
-      assert.equal(linked.text, "non");
+      assert.equal(linked.text, parentText);
       assert.deepEqual(new Set(linked.atomIds), new Set(parent.atomIds));
     }
   });
@@ -71,9 +72,9 @@ test("AUDNOM-007: oct/non/dec neighbors and an N-nonyl prefix use the functional
       if (!observed.profiles[key].name) { assert.equal(key, "1979-es"); continue; }
       const model = project(chemistry.engine, observed, key);
       const parent = evidence(model).find((item) => item.kind === "parent");
-      assert.equal(parent.text, root, model.displayedName);
+      assert.equal(parent.text, `${root}an`, model.displayedName);
       assert.equal(parent.start, model.displayedName.lastIndexOf(`${root}an`));
-      assert.equal(model.links.find((item) => item.stepNumber === parent.stepNumber).text, root);
+      assert.equal(model.links.find((item) => item.stepNumber === parent.stepNumber).text, `${root}an`);
     }
   }
 });

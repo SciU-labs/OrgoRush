@@ -3,7 +3,7 @@ import { uiText } from "./i18n.ts";
 import { translateSpanishIupacForDisplay } from "./iupac-name-normalization.ts";
 import { functionalNameEvidence, matchFunctionalParentSuffix, type FunctionalContribution, type FunctionalReasoningAnalysis } from "./reasoning-functional-groups.ts";
 import type { StereoDescriptor } from "./double-bond-stereochemistry.ts";
-import { IUPAC_ROOTS } from "./iupac-prefixes.ts";
+import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 
 export type ReasoningNameEvidence = {
   text: string;
@@ -588,6 +588,7 @@ function deriveExistingReasoningNameFragments({
 function parentNameEvidence(
   analysis: FragmentAnalysis, name: string, language: AppLanguage,
   evidence: ReturnType<typeof functionalNameEvidence>,
+  legacy = false,
 ): ReasoningNameEvidence | undefined {
   if (!analysis.mainChain.length) return;
   if (analysis.family === "aromatic" && ["fenol", "anilina"].includes(analysis.chainName)) return;
@@ -611,8 +612,18 @@ function parentNameEvidence(
     // A locanted unsaturation may intervene between the root and final function.
     const intervening = name.slice(start + root.length, suffix.start);
     const linkingVowel = hasWrittenCyclicKetoneLinkingVowel(analysis, name, root, start);
-    if (!/^(?:-(?:\d+(?:,\d+)*-)?[a-z]+)*-?$/i.test(intervening) && !linkingVowel) return;
-    text = name.slice(start, start + root.length + Number(linkingVowel));
+    const saturatedLinkingVowel = legacy && analysis.family === "acyclic" && root.endsWith("an")
+      && !analysis.doubleBondLocants.length && !analysis.tripleBondLocants.length
+      && intervening === (language === "en" ? "e" : "o");
+    // Legacy can move the multiple-bond locant before the stem: 3-buten-2-one.
+    // Keep its written "en" separate from both "but" and the functional suffix.
+    const legacyUnsaturation = legacy && analysis.family === "acyclic" && [
+      analysis.doubleBondLocants.length ? unsaturationMorpheme(intervening, "double") : "",
+      analysis.tripleBondLocants.length ? unsaturationMorpheme(intervening, "triple") : "",
+    ].some(marker => marker && /^-?(?:\d+(?:,\d+)*-)?$/.test(intervening.slice(marker.length)));
+    if (!/^(?:-(?:\d+(?:,\d+)*-)?[a-z]+)*-?$/i.test(intervening)
+      && !linkingVowel && !saturatedLinkingVowel && !legacyUnsaturation) return;
+    text = name.slice(start, start + root.length + Number(linkingVowel || saturatedLinkingVowel));
   } else if (!analysis.primaryFunctionalGroup
     && (analysis.family === "acyclic" || analysis.family === "aromatic" && analysis.chainName === "benceno")
     && name.endsWith(parent)) {
@@ -643,6 +654,29 @@ function parentNameEvidence(
   return { text, start, label, kind: "parent", atomIds: analysis.mainChain };
 }
 
+/** Presentation evidence, never a naming rule: distinguish the numerical root
+ * from written chain morphology and the complete functional component. */
+export function deriveLegacyParentNamePresentation(analysis: FragmentAnalysis, name: string, language: AppLanguage) {
+  const root = IUPAC_ROOTS[analysis.mainChain.length];
+  if (!root) return;
+  const numericalRoot = language === "en" ? englishIupacRoot(root) : root;
+  const evidence = functionalNameEvidence(analysis, name, language);
+  const parent = parentNameEvidence(analysis, name, language, evidence, true);
+  const saturatedFragment = !analysis.doubleBondLocants.length && !analysis.tripleBondLocants.length
+    && parent?.text.startsWith(`${numericalRoot}an`) ? `${numericalRoot}an` : undefined;
+  const suffix = evidence.find(item => item.contributions.some(origin => origin.role === "suffix"));
+  // Include written parent locants, but leave ester O-alkyls and substituents out.
+  const precedingLocants = parent?.start === undefined ? undefined
+    : /(?:^|-)(\d+(?:,\d+)*-)$/.exec(name.slice(0, parent.start))?.[1];
+  const acidMarker = evidence.find(item => item.contributions.some(origin => origin.role === "acid-marker"));
+  const componentStart = parent?.start === undefined ? undefined
+    : language === "es" && acidMarker ? acidMarker.start : parent.start - (precedingLocants?.length ?? 0);
+  const functionalComponent = suffix && componentStart !== undefined && parent?.start !== undefined && suffix.start >= parent.start
+    ? name.slice(componentStart, language === "en" && acidMarker
+      ? acidMarker.start + acidMarker.text.length : suffix.start + suffix.text.length) : undefined;
+  return { numericalRoot, saturatedFragment, parent, functionalComponent };
+}
+
 /** Legacy display adapters locate literal spans only after the selected profile's
  * analyzed graph and generated name agree. Chemistry and locants still come from Analysis. */
 function deriveLegacyConventionFragments(input: FragmentInput): Record<string, ReasoningNameFragment> {
@@ -667,22 +701,22 @@ function deriveLegacyConventionFragments(input: FragmentInput): Record<string, R
       } else fragments[step.number] = fragment;
     }
   };
-  const root = IUPAC_ROOTS[analysis.mainChain.length] ?? "";
+  const presentation = deriveLegacyParentNamePresentation(analysis, name, language);
+  const root = presentation?.numericalRoot ?? "";
   if (!root) return fragments;
   const ring = analysis.family === "cycloalkane";
   const rootText = ring
     ? `${language === "en" ? "cyclo" : "ciclo"}${root}`
     : root;
   const functionalEvidence = functionalNameEvidence(analysis, name, language);
-  const parentEvidence = parentNameEvidence(analysis, name, language, functionalEvidence);
+  const parentEvidence = presentation?.parent;
   const functionalSuffixStart = functionalEvidence.find((item) => item.contributions.some((origin) => origin.role === "suffix"))?.start;
   // Prefer the morphologically verified parent position. In a legacy nonanone,
   // the last "non" crosses into "one" and cannot identify the parent root.
   const radicalStart = parentEvidence && name.startsWith(rootText, parentEvidence.start)
     ? parentEvidence.start!
     : name.lastIndexOf(rootText, functionalSuffixStart === undefined ? name.length : functionalSuffixStart - rootText.length);
-  const writtenRootText = isSaturatedAcyclicAlkaneParent(analysis, parentEvidence?.text ?? "")
-      && parentEvidence?.start === radicalStart
+  const writtenRootText = !ring && parentEvidence?.start === radicalStart
     ? parentEvidence.text
     : radicalStart >= 0 && hasWrittenCyclicKetoneLinkingVowel(analysis, name, rootText, radicalStart)
     ? `${rootText}a` : rootText;

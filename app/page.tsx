@@ -38,7 +38,7 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
-import { IUPAC_ROOTS } from "./iupac-prefixes";
+import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
   translateSpanishIupacForDisplay,
@@ -199,7 +199,7 @@ import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./lega
 import { resolveLegacySpanish } from "./iupac1979-english-to-spanish.ts";
 import { numberLegacyBenzene } from "./legacy-name-numbering.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
-import { deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
+import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
@@ -4841,10 +4841,16 @@ function legacyStructuralReasoningText(
       ? isEnglish ? " In this 1979 profile, candidate chains are compared by the maximum number of multiple bonds before chain length (A-3.4)."
         : " En este perfil 1979, las cadenas candidatas se comparan por el máximo número de enlaces múltiples antes que por la longitud (A-3.4)."
       : "";
-    const scaffold = `${ring ? isEnglish ? "cyclo" : "ciclo" : ""}${alkaneRoots[analysis.mainChain.length] ?? ""}`;
+    const presentation = deriveLegacyParentNamePresentation(analysis, displayedName, language);
+    const root = alkaneRoots[analysis.mainChain.length] ?? "";
+    const numericalRoot = presentation?.numericalRoot ?? (isEnglish ? englishIupacRoot(root) : root);
+    const chainFragment = presentation?.saturatedFragment ?? presentation?.parent?.text;
+    const morphology = isEnglish
+      ? ` Its numerical root is “${numericalRoot}-”.${chainFragment ? ` The ${presentation?.saturatedFragment ? "saturated " : ""}chain fragment is “${chainFragment}-”.` : ""}${presentation?.functionalComponent ? ` The complete functional component is “${presentation.functionalComponent}”.` : ""}`
+      : ` La raíz numérica es «${numericalRoot}-».${chainFragment ? ` El fragmento de cadena${presentation?.saturatedFragment ? " saturada" : ""} es «${chainFragment}-».` : ""}${presentation?.functionalComponent ? ` El componente funcional completo es «${presentation.functionalComponent}».` : ""}`;
     return isEnglish
-      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}; its carbon scaffold is “${scaffold}”.${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
-      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}; su esqueleto carbonado es «${scaffold}».${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
+      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}.${morphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
+      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
   }
   if (role === "numbering") {
     const comparison = selectedParentNumberingReasoning(analysis, language);
