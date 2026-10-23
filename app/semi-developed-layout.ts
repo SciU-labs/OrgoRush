@@ -2,6 +2,8 @@ import {
   inspectDoubleBondStereochemistry,
   setDoubleBondGeometry,
   type StereoConfiguration,
+  type StereoMolecule,
+  type ReadonlyStereoMolecule,
 } from "./double-bond-stereochemistry.ts";
 import { findOrderedSimpleMonocycle } from "./simple-cycle.ts";
 import type { ManualDisplayDirection } from "./manual-display-direction.ts";
@@ -14,10 +16,7 @@ import type { ManualDisplayDirection } from "./manual-display-direction.ts";
  */
 export type SemiDevelopedPoint = { x: number; y: number };
 
-export type SemiDevelopedGraph = {
-  atoms: readonly { id: number; x: number; y: number }[];
-  bonds: readonly (readonly [number, number, ...unknown[]])[];
-  rings?: readonly { atomIds: readonly number[] }[];
+export type SemiDevelopedGraph = ReadonlyStereoMolecule & {
   isMirrored?: boolean;
   manualDisplayDirections?: readonly {
     parentAtomId: number;
@@ -181,7 +180,8 @@ function orientDisplayPath(path: readonly number[], graph: SemiDevelopedGraph, p
     }
   }
   const atoms = new Map(graph.atoms.map((atom) => [atom.id, atom]));
-  const first = atoms.get(path[0])!, last = atoms.get(path.at(-1)!);
+  const first = atoms.get(path[0]), last = atoms.get(path[path.length - 1]);
+  if (!first || !last) return [...path];
   const leftToRight = first.x < last.x || first.x === last.x && first.y <= last.y;
   return leftToRight ? [...path] : [...path].reverse();
 }
@@ -318,7 +318,7 @@ function calculateAcyclicPositions(
       ...placement,
     });
   }
-  const stereoSource = graph as Parameters<typeof inspectDoubleBondStereochemistry>[0];
+  const stereoSource = graph;
   for (const target of stereoBonds) {
     const inspection = inspectDoubleBondStereochemistry(stereoSource, target.leftAtomId, target.rightAtomId);
     if (!inspection.stereogenic || !inspection.priorityAtomIds) continue;
@@ -684,11 +684,11 @@ export function calculateSemiDevelopedLayout(
   // The chemistry helper is shared; only the resulting display coordinates
   // change, while the MolecularGraph passed by the caller remains untouched.
   if (stereoBonds.length) {
-    let displayed = {
+    let displayed: StereoMolecule = {
       ...graph,
       atoms: graph.atoms.map((atom) => ({ ...atom, ...(positions.get(atom.id) ?? {}) })),
-      bonds: graph.bonds.map(([left, right, order = 1]) => [left, right, order as 1 | 2 | 3] as [number, number, 1 | 2 | 3]),
-    } as Parameters<typeof inspectDoubleBondStereochemistry>[0];
+      bonds: graph.bonds.map(([left, right, order = 1]) => [left, right, order]),
+    };
     for (const target of stereoBonds) {
       const adjusted = setDoubleBondGeometry(displayed, target.leftAtomId, target.rightAtomId, target.configuration);
       if (adjusted.ok) displayed = adjusted.molecule;

@@ -4,10 +4,8 @@ import {
   type ManualDisplayPlacement,
 } from "./manual-display-direction.ts";
 import {
-  decodeViewModeV2,
-  decodeViewModeV1,
+  decodeVersionedViewMode,
   encodeViewModeV2,
-  type CurrentV1ViewMode,
   type PersistedViewModeV1,
   type PersistedViewModeV2,
   type ViewMode,
@@ -206,27 +204,28 @@ function normalizePortableMolecule(
     for (const candidate of value.rings) {
       if (!isRecord(candidate) || !Array.isArray(candidate.atomIds)) return null;
       const ring = candidate;
+      const ringAtomIds = candidate.atomIds;
       if (
         !Number.isSafeInteger(ring.id)
         || ringIds.has(ring.id as number)
         || (ring.kind !== "cycloalkane" && ring.kind !== "aromatic")
-        || ring.atomIds.length < 3
-        || ring.atomIds.length > 20
-        || ring.atomIds.some((id) => !Number.isSafeInteger(id) || !atomIds.has(id as number))
-        || new Set(ring.atomIds).size !== ring.atomIds.length
+        || ringAtomIds.length < 3
+        || ringAtomIds.length > 20
+        || ringAtomIds.some((id) => !Number.isSafeInteger(id) || !atomIds.has(id as number))
+        || new Set(ringAtomIds).size !== ringAtomIds.length
       ) {
         return null;
       }
-      for (let index = 0; index < ring.atomIds.length; index += 1) {
-        const left = ring.atomIds[index] as number;
-        const right = ring.atomIds[(index + 1) % ring.atomIds.length] as number;
+      for (let index = 0; index < ringAtomIds.length; index += 1) {
+        const left = ringAtomIds[index] as number;
+        const right = ringAtomIds[(index + 1) % ringAtomIds.length] as number;
         if (!edges.has(edgeKey(left, right))) return null;
       }
       ringIds.add(ring.id as number);
       rings.push({
         id: ring.id as number,
         kind: ring.kind as "cycloalkane" | "aromatic",
-        atomIds: [...ring.atomIds] as number[],
+        atomIds: [...ringAtomIds] as number[],
       });
     }
   }
@@ -249,12 +248,7 @@ function normalizePortableStructure(
   version: 1 | 2,
 ): PortableStructure | null {
   if (!isRecord(value)) return null;
-  const decodedMode = version === 1
-    ? decodeViewModeV1(value.viewMode)
-    : decodeViewModeV2(value.viewMode);
-  const viewMode = version === 1
-    ? decodedMode as CurrentV1ViewMode | null
-    : decodedMode.ok ? decodedMode.viewMode : null;
+  const viewMode = decodeVersionedViewMode(value.viewMode, version);
   if (
     typeof value.name !== "string"
     || typeof value.formula !== "string"

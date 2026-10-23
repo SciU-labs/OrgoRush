@@ -1223,10 +1223,9 @@ export function getFusedTetracyclicSystem(
     : topologyKinds.every((value) => value === "angular")
       ? "angular" as const
       : "mixed" as const;
-  const adjacency = Object.fromEntries(labels.map((label) => [label, []])) as Record<
-    FusedTetracyclicRingLabel,
-    FusedTetracyclicRingLabel[]
-  >;
+  const adjacency: Record<FusedTetracyclicRingLabel, FusedTetracyclicRingLabel[]> = {
+    A: [], B: [], C: [], D: [],
+  };
   for (const fusion of fusionBonds) {
     adjacency[fusion.ringLabels[0]].push(fusion.ringLabels[1]);
     adjacency[fusion.ringLabels[1]].push(fusion.ringLabels[0]);

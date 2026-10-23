@@ -2,10 +2,11 @@ import type { AppLanguage } from "./i18n.ts";
 import { uiText } from "./i18n.ts";
 import { translateSpanishIupacForDisplay } from "./iupac-name-normalization.ts";
 import type { FunctionalReasoningAnalysis } from "./reasoning-functional-groups.ts";
+import type { GeneratedMolecule } from "./name-to-molecule.ts";
 
 type AromaticReasoningMolecule = {
   rings?: readonly { kind: string; atomIds: readonly number[] }[];
-  bonds: readonly (readonly number[])[];
+  bonds: readonly Readonly<GeneratedMolecule["bonds"][number]>[];
 };
 
 /** Use the chosen chain and the engine's ring atom provenance, never name substrings. */

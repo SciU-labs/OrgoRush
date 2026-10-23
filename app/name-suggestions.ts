@@ -395,12 +395,12 @@ export function findCommonNameSuggestion(input: string, language: AppLanguage): 
     })),
   ];
   let best: { candidate: SuggestionCandidate; score: number; exactOutput: boolean } | null = null;
-  candidates.forEach((candidate) => {
+  for (const candidate of candidates) {
     const aliases = [...new Set([...candidate.aliases, candidate.name])];
     const score = aliases.reduce((highest, alias) => Math.max(highest, scoreCandidate(input, alias)), 0);
     const exactOutput = normalizeName(candidate.name) === normalizedInput;
     if (!best || score > best.score) best = { candidate, score, exactOutput };
-  });
+  }
   if (!best || (best.exactOutput && !best.candidate.suggestOnExactFailure)) return null;
   const threshold = normalizedInput.length <= 5 ? 0.82 : 0.73;
   if (best.score < threshold) return null;

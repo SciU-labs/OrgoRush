@@ -23,6 +23,13 @@ export type StereoMolecule = {
   }>;
 };
 
+/** Read contract for inspection/layout; editing continues to require StereoMolecule. */
+export type ReadonlyStereoMolecule = {
+  atoms: readonly StereoMolecule["atoms"][number][];
+  bonds: readonly StereoMolecule["bonds"][number][];
+  rings?: StereoMolecule["rings"];
+};
+
 export type DoubleBondStereoInspection =
   | {
       stereogenic: false;
@@ -97,7 +104,7 @@ const valences: Record<StereoElement, number> = {
 
 const hydrogenSignature: CipSignature = { atomicNumber: 1, children: [] };
 
-function atomElement(molecule: StereoMolecule, atomId: number): StereoElement | null {
+function atomElement(molecule: ReadonlyStereoMolecule, atomId: number): StereoElement | null {
   const atom = molecule.atoms.find((candidate) => candidate.id === atomId);
   return atom ? atom.element ?? "C" : null;
 }
@@ -106,7 +113,7 @@ function bondOrder(bond: StereoMolecule["bonds"][number]): StereoBondOrder {
   return bond[2] ?? 1;
 }
 
-function findBond(molecule: StereoMolecule, left: number, right: number) {
+function findBond(molecule: ReadonlyStereoMolecule, left: number, right: number) {
   return molecule.bonds.find(
     (bond) => (bond[0] === left && bond[1] === right)
       || (bond[0] === right && bond[1] === left),
@@ -114,7 +121,7 @@ function findBond(molecule: StereoMolecule, left: number, right: number) {
 }
 
 export function isAromaticBond(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
 ) {
@@ -126,11 +133,11 @@ export function isAromaticBond(
   ));
 }
 
-function atomBonds(molecule: StereoMolecule, atomId: number) {
+function atomBonds(molecule: ReadonlyStereoMolecule, atomId: number) {
   return molecule.bonds.filter((bond) => bond[0] === atomId || bond[1] === atomId);
 }
 
-function implicitHydrogens(molecule: StereoMolecule, atomId: number) {
+function implicitHydrogens(molecule: ReadonlyStereoMolecule, atomId: number) {
   const element = atomElement(molecule, atomId);
   if (!element) return 0;
   const usedValence = atomBonds(molecule, atomId)
@@ -161,7 +168,7 @@ function terminalSignature(atomicNumber: number): CipSignature {
 }
 
 function buildCipSignature(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   atomId: number,
   parentId: number,
   visited: Set<number>,
@@ -211,7 +218,7 @@ type AttachedSubstituent = {
 };
 
 function prioritySubstituent(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   alkeneAtomId: number,
   otherAlkeneAtomId: number,
 ): number | null {
@@ -245,7 +252,7 @@ function prioritySubstituent(
 }
 
 function signedSide(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
   substituentAtomId: number,
@@ -260,7 +267,7 @@ function signedSide(
 }
 
 function configurationFromGeometry(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
   leftPriorityAtomId: number,
@@ -273,7 +280,7 @@ function configurationFromGeometry(
 }
 
 export function inspectDoubleBondStereochemistry(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
   options: DoubleBondStereoInspectionOptions = {},
@@ -315,7 +322,7 @@ export function inspectDoubleBondStereochemistry(
 }
 
 function componentAfterCut(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   startAtomId: number,
   cutLeft: number,
   cutRight: number,
@@ -337,7 +344,7 @@ function componentAfterCut(
 }
 
 function isAcyclicBond(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
 ) {
@@ -347,7 +354,7 @@ function isAcyclicBond(
 
 /** True only for the non-aromatic, acyclic C=C bonds that the canvas can switch. */
 export function isDoubleBondEZToggleAvailable(
-  molecule: StereoMolecule,
+  molecule: ReadonlyStereoMolecule,
   leftAtomId: number,
   rightAtomId: number,
 ) {

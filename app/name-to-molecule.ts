@@ -865,7 +865,6 @@ function parseFusedVonBaeyerName(name: string): FusedVonBaeyerParseResult {
       descriptor,
       bridgeLengths,
       secondaryBridgeLocants,
-      carbonCount,
       language,
       ...prefixes,
       ...parentTail,

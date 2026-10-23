@@ -151,7 +151,7 @@ import {
   getMoleculeExportDimensions,
   getMoleculeExportFrame,
   getMoleculeVisualBounds,
-  type MoleculeVisualBounds,
+  type MoleculeVisualExtent,
 } from "./molecule-visual-bounds";
 import { findOrderedSimpleMonocycle } from "./simple-cycle";
 import { getAutoPlacedCarbonPosition, placeAttachmentTemplate } from "./manual-layout";
@@ -2366,7 +2366,8 @@ function heterocycleRingTopologySignatures(molecule: Molecule, ring: RingInfo) {
 
 const REGISTERED_HETEROCYCLE_RING_SIGNATURES = HETEROCYCLE_DEFINITIONS.flatMap((definition) => {
   const converted = moleculeFromSmiles(definition.smiles);
-  const ring = converted.ok ? heterocycleRing(converted.molecule) : undefined;
+  if (!converted.ok) return [];
+  const ring = heterocycleRing(converted.molecule);
   return ring
     ? [{ definition, signatures: heterocycleRingTopologySignatures(converted.molecule, ring) }]
     : [];
@@ -7371,7 +7372,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [canvasExpanded, setCanvasExpanded] = useState(false);
-  const [expandedViewFrame, setExpandedViewFrame] = useState<MoleculeVisualBounds | null>(null);
+  const [expandedViewFrame, setExpandedViewFrame] = useState<MoleculeVisualExtent | null>(null);
   const [expandedZoom, setExpandedZoom] = useState(1);
   const [pngExportOpen, setPngExportOpen] = useState(false);
   const [imageExportFormat, setImageExportFormat] = useState<ImageExportFormat>("png");
@@ -8196,7 +8197,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       reasoningPeekTimer.current = setTimeout(() => setReasoningPeekOpen(false), 3600);
     }
   };
-  const selectUnsaturationContribution = (contribution: Pick<UnsaturationNameContribution, "semanticId">, stepNumber = "07") => {
+  const selectUnsaturationContribution = (contribution: Pick<ReasoningNameFragment, "semanticId">, stepNumber = "07") => {
+    if (!contribution.semanticId) return;
     setSelectedUnsaturationReference({
       semanticId: contribution.semanticId,
       key: reasoningReferenceKey,
@@ -11812,9 +11814,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                                 ? (language === "en" ? "PubChem could not be reached or returned a service error. The formula remains valid; try again later." : "No se pudo conectar con PubChem o el servicio devolvió un error. La fórmula sigue siendo válida; inténtalo más tarde.")
                                 : formulaCandidateResult.status === "cancelled"
                                   ? (language === "en" ? "PubChem search cancelled." : "Búsqueda en PubChem cancelada.")
-                                  : formulaCandidateResult.status === "invalid-response"
-                                    ? (language === "en" ? "PubChem returned an invalid response. No candidates were shown." : "PubChem devolvió una respuesta no válida. No se muestran candidatos.")
-                                    : formulaCandidateResult.message}
+                                  : (language === "en" ? "PubChem returned an invalid response. No candidates were shown." : "PubChem devolvió una respuesta no válida. No se muestran candidatos.")}
                       </div>
 
                       {formulaCandidateResult.status === "success" && (

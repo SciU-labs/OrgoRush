@@ -40,8 +40,16 @@ export type CondensedToken =
       branchDepth: number;
     }
   | {
-      type: "branch-open" | "branch-close";
-      text: "(" | ")";
+      type: "branch-open";
+      text: "(";
+      x: number;
+      y: number;
+      width: number;
+      branchDepth: number;
+    }
+  | {
+      type: "branch-close";
+      text: ")";
       x: number;
       y: number;
       width: number;
@@ -186,7 +194,7 @@ function chooseBackbone(
   };
   const score = (path: readonly number[]) => {
     const carbonCount = path.filter((id) => (atomById.get(id)?.element ?? "C") === "C").length;
-    const endpointPenalty = Number([path[0], path.at(-1)].some((id) => {
+    const endpointPenalty = Number([path[0], path[path.length - 1]].some((id) => {
       const atom = atomById.get(id)!;
       const neighbors = adjacency.get(id) ?? [];
       return ["F", "Cl", "Br", "I"].includes(atom.element ?? "C")

@@ -7,24 +7,15 @@ import {
   type SemiDevelopedStereoBond,
   type SemiDevelopedPoint,
 } from "./semi-developed-layout.ts";
-import { inspectDoubleBondStereochemistry } from "./double-bond-stereochemistry.ts";
+import { inspectDoubleBondStereochemistry, type ReadonlyStereoMolecule } from "./double-bond-stereochemistry.ts";
 import type { ManualDisplayPlacement } from "./manual-display-direction.ts";
 import type { ViewMode } from "./view-mode.ts";
 
 type SkeletalPoint = { x: number; y: number };
 
-type LayoutAtom = {
-  id: number;
-  x: number;
-  y: number;
-};
+type LayoutAtom = ReadonlyStereoMolecule["atoms"][number];
 
-type LayoutBond = readonly [number, number, ...unknown[]];
-
-type LayoutMolecule = {
-  atoms: readonly LayoutAtom[];
-  bonds: readonly LayoutBond[];
-  rings?: readonly { atomIds: readonly number[] }[];
+type LayoutMolecule = ReadonlyStereoMolecule & {
   isMirrored?: boolean;
   manualDisplayDirections?: readonly ManualDisplayPlacement[];
 };
@@ -45,7 +36,7 @@ function semiDevelopedStereoBonds(molecule: LayoutMolecule): SemiDevelopedStereo
   return molecule.bonds.flatMap((bond) => {
     const [left, right, order = 1] = bond;
     if (order !== 2 || bond[3] !== true) return [];
-    const inspection = inspectDoubleBondStereochemistry(molecule as Parameters<typeof inspectDoubleBondStereochemistry>[0], left, right);
+    const inspection = inspectDoubleBondStereochemistry(molecule, left, right);
     return inspection.stereogenic && inspection.configuration
       ? [{ leftAtomId: left, rightAtomId: right, configuration: inspection.configuration }]
       : [];

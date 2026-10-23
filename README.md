@@ -264,6 +264,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 - `npm run dev`: start the Vite/Vinext development server
 - `npm run build`: build and validate the deployable Sites artifact
 - `npm run start`: start the built Vinext application
+- `npm run typecheck`: check all TypeScript sources under strict mode without emitting files
 - `npm test`: build and run the full chemistry, session, rendering and release regression suite
 - `npm run validate:artifact`: recheck an existing artifact's manifest and ESM `default.fetch` export
 - `npm run db:generate`: generate Drizzle migrations after schema changes

@@ -1,21 +1,14 @@
 import {
   inspectDoubleBondStereochemistry,
   setDoubleBondGeometry,
+  type ReadonlyStereoMolecule,
 } from "./double-bond-stereochemistry.ts";
 
 export type SkeletalPoint = { x: number; y: number };
 
-type LayoutAtom = {
-  id: number;
-  x: number;
-  y: number;
-};
+type LayoutAtom = ReadonlyStereoMolecule["atoms"][number];
 
-type LayoutBond = readonly [number, number, ...unknown[]];
-
-type LayoutMolecule = {
-  atoms: readonly LayoutAtom[];
-  bonds: readonly LayoutBond[];
+type LayoutMolecule = ReadonlyStereoMolecule & {
   /** UI-only state: mirror the generated display coordinates horizontally. */
   isMirrored?: boolean;
 };
