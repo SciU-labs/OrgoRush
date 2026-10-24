@@ -7846,7 +7846,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   );
   const nomenclatureVariants = (() => {
     const suggestedName = externalNameIsPrimary
-      ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language) ?? pubChemIupacName!
+      ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
+        ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
       : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language);
     const legacyDisplay = legacyProfileDisplayName({
       language,
@@ -14765,7 +14766,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     ].filter(Boolean).join(" · ")}</strong>
                   </p>
                 )}
-                {namingPubChemIdentity?.iupacName && !externalNameIsPrimary && namingPubChemIdentity.iupacName !== displayedIupacName && (
+                {namingPubChemIdentity?.iupacName && (!externalNameIsPrimary || activeNomenclatureConvention === "current") && namingPubChemIdentity.iupacName !== displayedIupacName && (
                   <p className="iupac-dock-origin"><span>{language === "en" ? "Systematic name · PubChem" : "Nombre sistemático · PubChem"}</span><strong><ChemicalNameText name={namingPubChemIdentity.iupacName} /></strong></p>
                 )}
                 {showPubChemRecordTitle && pubChemRecordTitle && (

@@ -544,13 +544,46 @@ const displayVocabulary: readonly DisplayVocabularyEntry[] = [
   { pattern: /butyryl(?=[a-z]|$|[-,.)])/gi, spanish: "butiril" },
 ];
 
-/** Localizes canonical chemical output through the controlled vocabulary above. */
-export function localizeChemicalNameForDisplay(value: string, locale: "es" | "en") {
+const displayStereoDescriptors = "(?:\\((?:\\d+[a-z]?)?[RSEZ](?:,(?:\\d+[a-z]?)?[RSEZ])*\\)-)*";
+const externalFusedKetoneDisplay = new RegExp(
+  `^(?<stereo>${displayStereoDescriptors})(?<prefixes>(?:\\d+(?:,\\d+)*-(?:acetyl|dimethyl|methyl)-)*)`
+  + "(?<hydroLocants>\\d+(?:,\\d+)*)-dodecahydrocyclopenta(?<fusion>\\[a\\])phenanthren-(?<ketoneLocant>\\d+)-one$",
+);
+
+/** Localizes display text only; external names require complete vocabulary
+ * coverage, while existing local/Legacy callers retain their lexical bridge. */
+export function localizeChemicalNameForDisplay(
+  value: string,
+  locale: "es" | "en",
+  options: { source?: "external" } = {},
+) {
   if (locale === "en") return value;
-  return displayVocabulary.reduce(
-    (localized, entry) => localized.replace(entry.pattern, entry.spanish),
-    value,
+  const translateKnownVocabulary = (text: string) => displayVocabulary.reduce(
+    (localized, entry) => localized.replace(entry.pattern, entry.spanish), text,
   );
+  if (options.source === "external") {
+    // Recognize the whole construction before localizing any component.
+    // Locants, stereodescriptors, fusion descriptor and separators are copied;
+    // no parent selection, numbering, stereochemistry or identity is inferred.
+    const fused = externalFusedKetoneDisplay.exec(value)?.groups;
+    if (fused) {
+      return `${fused.stereo}${translateKnownVocabulary(fused.prefixes)}${fused.hydroLocants}`
+        + `-dodecahidrociclopenta${fused.fusion}fenantren-${fused.ketoneLocant}-ona`;
+    }
+    // Existing simple vocabulary is safe only when it accounts for every
+    // lexical character. Match spans against the original text so replacing
+    // one morpheme cannot create a boundary for an unknown neighboring word.
+    const uncovered = value.split("");
+    const stereo = new RegExp(`^${displayStereoDescriptors}`).exec(value)?.[0] ?? "";
+    uncovered.fill(" ", 0, stereo.length);
+    for (const entry of displayVocabulary) {
+      for (const match of value.matchAll(entry.pattern)) {
+        uncovered.fill(" ", match.index, match.index + match[0].length);
+      }
+    }
+    if (/[^\d\s()[\],.\-]/.test(uncovered.join(""))) return value;
+  }
+  return translateKnownVocabulary(value);
 }
 
 export function getOpsinNameCandidates(value: string) {

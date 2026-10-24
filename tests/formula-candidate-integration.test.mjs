@@ -52,7 +52,7 @@ test("external name safeguards follow the exact loaded graph and suppress unsupp
   assert.match(page, /legacyProfileDisplayName\(\{/);
   assert.equal(legacyEnglishVariantIsAvailable("oxirane", "cyclopropane", false), false);
   assert.equal(legacyEnglishVariantIsAvailable("morpholine", "cyclohexane", false), false);
-  assert.match(page, /verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\) \?\? pubChemIupacName!/);
+  assert.match(page, /verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\)\s*\?\? localizeChemicalNameForDisplay\(pubChemIupacName!, language, \{ source: "external" \}\)/);
   assert.match(page, /Local IUPAC name unavailable for this structure/);
   assert.match(page, /Nombre IUPAC local no disponible para esta estructura/);
   assert.match(page, /setLoadedPubChemIdentity\(\{[\s\S]*?candidate\.inchiKey[\s\S]*?candidate\.smiles/);

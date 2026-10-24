@@ -270,7 +270,7 @@ test("CID 5793 remains protected before local profiles are selected", () => {
   assert.equal(resolvedLegacy.englishName,"-");
   assert.equal(resolvedLegacy.spanishResolution.status,"UNSUPPORTED");
   assert.match(pageSource, /const legacyResolution = useMemo\([\s\S]*?resolveLegacyNomenclature\(molecule,legacyAnalysis/);
-  assert.match(pageSource, /const suggestedName = externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\) \?\? pubChemIupacName!/);
+  assert.match(pageSource, /const suggestedName = externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\)\s*\?\? localizeChemicalNameForDisplay\(pubChemIupacName!, language, \{ source: "external" \}\)/);
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
   assert.match(pageSource, /chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
