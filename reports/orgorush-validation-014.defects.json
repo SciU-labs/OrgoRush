@@ -1,0 +1,1296 @@
+{
+  "schema": "orgorush-validation-014-defects/v1",
+  "failedObservations": 5,
+  "affectedConstitutions": 3,
+  "probableRootCauseGroups": 3,
+  "confirmedRootCauses": 2,
+  "probableRootCauses": 1,
+  "definitions": [
+    {
+      "id": "V014-D01",
+      "severity": "P0",
+      "category": "mixed",
+      "title": "Metilideno funcional nombrado como metil",
+      "caseId": "V014-125",
+      "code": "SATURATED-BRANCH",
+      "minimal": {
+        "id": "D1-min",
+        "smiles": "CC(=O)C(=C)CC",
+        "referenceEnglish": "3-methylidenepentan-2-one",
+        "reference": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C=C(C(C)=O)CC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methylidenepentan-2-one.json",
+          "sha256": "6353964962a1c5761093419e36f7d68f997b791bf25626d24e3ff12c8d505033",
+          "formula": "C6H10O"
+        },
+        "names": {
+          "2013-es": "3-metilpentan-2-ona",
+          "1979-es": "3-etil-3-buten-2-ona",
+          "1979-en": "3-ethyl-3-buten-2-one",
+          "2013-en": "3-methylpentan-2-one"
+        },
+        "englishProofs": {
+          "2013-en": {
+            "status": "FAIL-STRUCTURE",
+            "stereoStatus": "DIFFERENT",
+            "smiles": "CC(C(C)=O)CC",
+            "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+            "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+            "formula": "C6H12O"
+          },
+          "1979-en": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "C(C)C(C(C)=O)=C",
+            "url": "https://www.ebi.ac.uk/opsin/ws/3-ethyl-3-buten-2-one.json",
+            "sha256": "b1645edd75962b8c9f24e9416973dc95a18a2a7898fc540678855aa2dc8dc9f5",
+            "formula": "C6H10O"
+          }
+        },
+        "reasoning": {
+          "2013-es": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "a30f722175812ce7d9798f0f4f331a9345570c5226f799fbd92223643baaccb3"
+          },
+          "1979-es": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "678103d818e6ce5024456e6896b19c333e6f0cc5c6c615bec25c97ab499f9df0"
+          },
+          "1979-en": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "84d77dc656a3b042e6bb863e346371c4faa387fa641a96bd91438fbfae6dfe75"
+          },
+          "2013-en": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "d755bea4be2f231f29ace60bd8fa651fb3e571a3c14346cbd775bc60dc76bd9a"
+          }
+        }
+      },
+      "controls": [
+        {
+          "id": "D1-control",
+          "smiles": "CC(=O)C(C)CC",
+          "referenceEnglish": "3-methylpentan-2-one",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "CC(C(C)=O)CC",
+            "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+            "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+            "formula": "C6H12O"
+          },
+          "names": {
+            "2013-es": "3-metilpentan-2-ona",
+            "1979-es": "3-metil-2-pentanona",
+            "1979-en": "3-methyl-2-pentanone",
+            "2013-en": "3-methylpentan-2-one"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "CC(C(C)=O)CC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+              "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+              "formula": "C6H12O"
+            },
+            "1979-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "CC(C(C)=O)CC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/3-methyl-2-pentanone.json",
+              "sha256": "7104c0a1d44e0f778fb617c3dc795fcac960ad7d9a25614405ec419091c4b4b7",
+              "formula": "C6H12O"
+            }
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "a30f722175812ce7d9798f0f4f331a9345570c5226f799fbd92223643baaccb3"
+            },
+            "1979-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "2a9e3a725004c7d34663e552f7cb055608ab735de3eedca0055791b61bbea3d6"
+            },
+            "1979-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "96ed3e1daca55d6eedbf39ffeed007b514313da2a26cb58299cfcd20ae616d63"
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "d755bea4be2f231f29ace60bd8fa651fb3e571a3c14346cbd775bc60dc76bd9a"
+            }
+          }
+        },
+        {
+          "id": "D1-shorter",
+          "smiles": "CC(=O)C(=C)C",
+          "referenceEnglish": "3-methylbut-3-en-2-one",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "CC(C(C)=O)=C",
+            "url": "https://www.ebi.ac.uk/opsin/ws/3-methylbut-3-en-2-one.json",
+            "sha256": "04193753f30bce7b4cab8deb2662243cfad0f1ef3b27ac8a7158e9e9bfbeab76",
+            "formula": "C5H8O"
+          },
+          "names": {
+            "2013-es": "3-metilbut-3-en-2-ona",
+            "1979-es": "3-metil-3-buten-2-ona",
+            "1979-en": "3-methyl-3-buten-2-one",
+            "2013-en": "3-methylbut-3-en-2-one"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "CC(C(C)=O)=C",
+              "url": "https://www.ebi.ac.uk/opsin/ws/3-methylbut-3-en-2-one.json",
+              "sha256": "04193753f30bce7b4cab8deb2662243cfad0f1ef3b27ac8a7158e9e9bfbeab76",
+              "formula": "C5H8O"
+            },
+            "1979-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "CC(C(C)=O)=C",
+              "url": "https://www.ebi.ac.uk/opsin/ws/3-methyl-3-buten-2-one.json",
+              "sha256": "db24f35714c8a29a135cc84ce070eb729a521c7be40d8ad1908aea5eb9fc58ec",
+              "formula": "C5H8O"
+            }
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "c46e32e764d019a7441ed114cf6f4c1a9d936d54c3a1c6b463aeda1356a026b5"
+            },
+            "1979-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "47d0c08676b6157c4204d7f805d21b2135e6048844bf7fa6a36268780f8f3017"
+            },
+            "1979-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "6c437333bd2afb53fee997174ee7a6a3d8baa26980d716a8c4c8c81394f85771"
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "814de10f37221a5797faad7578f17a23638e3345989eaca8e713654cc5b0e38e"
+            }
+          }
+        }
+      ],
+      "criterion": "El enlace C=CH2 lateral debe conservarse: 3-methylidenepentan-2-one, no 3-methylpentan-2-one. OPSIN confirma constituciones y fórmulas diferentes.",
+      "difference": "Se pierde un doble enlace; C6H10O se convierte semánticamente en C6H12O. En el caso base: C8H14O2 frente a C8H16O2.",
+      "references": [
+        {
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P2.html",
+          "sections": "P-29.2, P-29.3.1: CH2= methylidene"
+        },
+        {
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P6.html",
+          "sections": "P-62, P-63, P-64, P-65",
+          "use": "2013 amines, hydroxy/ether, ketone, acid/ester rules",
+          "consultedDate": "2026-10-25",
+          "evidenceType": "Normative rule/terminology; per-case applications are derived, not claimed printed examples"
+        }
+      ],
+      "functions": [
+        {
+          "path": "app/page.tsx",
+          "name": "nameSubstituent",
+          "line": 1883
+        },
+        {
+          "path": "app/page.tsx",
+          "name": "analyzeFunctionalAcyclic",
+          "line": 3529
+        }
+      ],
+      "rootCause": "La rama funcional llama nameSubstituent con bondOrders y preferSystematicUnsaturatedPrefix, pero omite attachmentOrder; su valor por defecto 1 impide el caso methylidene. Lectura de código y reducción concuerdan.",
+      "confidence": "confirmed",
+      "impact": "Otros grupos funcionales con =CH2 lateral pueden compartir el mismo llamador. No se cuantifica su prevalencia fuera del corpus.",
+      "affectedObservations": [
+        {
+          "caseId": "V014-125",
+          "profile": "2013-es",
+          "observed": "4-hidroxi-3-metilheptan-2-ona",
+          "expected": [
+            "4-hidroxi-3-metilidenoheptan-2-ona"
+          ],
+          "classification": "FAIL-STRUCTURE"
+        },
+        {
+          "caseId": "V014-125",
+          "profile": "2013-en",
+          "observed": "4-hydroxy-3-methylheptan-2-one",
+          "expected": [
+            "4-hydroxy-3-methylideneheptan-2-one"
+          ],
+          "classification": "FAIL-STRUCTURE"
+        }
+      ],
+      "reproduction": [
+        "node scripts/validation-014-audit.mjs --reproduce",
+        "Buscar V014-D01 y comparar los perfiles y las identidades en reports/orgorush-validation-014.defects.json"
+      ],
+      "reductionScope": "Mínimo encontrado mediante las eliminaciones documentadas; no se afirma minimalidad matemática global.",
+      "incidenceIds": [
+        "V014-125/2013-es/V014-D01",
+        "V014-125/2013-en/V014-D01"
+      ]
+    },
+    {
+      "id": "V014-D02",
+      "severity": "P1",
+      "category": "unsaturated",
+      "title": "Radical dienilo pierde el multiplicador y el inglés conserva -il",
+      "caseId": "V014-045",
+      "code": "RADICAL-MULTIPLICITY",
+      "minimal": {
+        "id": "D2-min",
+        "smiles": "CCCCCC(C=CC=C)CCCCC",
+        "referenceEnglish": "6-(buta-1,3-dien-1-yl)undecane",
+        "reference": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(=CC=C)C(CCCCC)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/6-(buta-1%2C3-dien-1-yl)undecane.json",
+          "sha256": "715fd1cc8b949eb2ae29953f83fb37624847457baa9a54cee0fee5308693f0d8",
+          "formula": "C15H28"
+        },
+        "names": {
+          "2013-es": "6-(but-1,3-en-1-il)undecano",
+          "1979-es": null,
+          "1979-en": "5-pentyl-1,3-decadiene",
+          "2013-en": "6-(but-1,3-en-1-il)undecane"
+        },
+        "englishProofs": {
+          "2013-en": {
+            "status": "PENDING-REFERENCE",
+            "reason": "6-(but-1,3-en-1-il)undecane was uninterpretable due to the following section of the name: 6-(but-1,3-en-1-il)  The following was not understandable in the context it was used: il",
+            "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-1%2C3-en-1-il)undecane.json",
+            "sha256": "4d7b2249a302cfcf262fee8152a5479ac07b2b3e9c9afe7e48e8e00a12785c29"
+          },
+          "1979-en": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "C(CCCC)C(C=CC=C)CCCCC",
+            "url": "https://www.ebi.ac.uk/opsin/ws/5-pentyl-1%2C3-decadiene.json",
+            "sha256": "4cbd18744390b4be874874cd885a154b6d48f89b316ebe8b893b202c26ffc770",
+            "formula": "C15H28"
+          }
+        },
+        "reasoning": {
+          "2013-es": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "1a186b50a7a3ef673946f4e83a25cef8a5700bfe956a3f73127e6201bb954645"
+          },
+          "1979-es": {
+            "integrity": null,
+            "hash": null
+          },
+          "1979-en": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "8bd18c20dd09950593c1460604f7d7abfcf579c19397389815aa7df93b194dd1"
+          },
+          "2013-en": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "68ab39cd182e91984f96c7cbb22ddab727bf470b3f99826a1e578a6a70cd62f8"
+          }
+        }
+      },
+      "controls": [
+        {
+          "id": "D2-shorter",
+          "smiles": "CCCCC(C=CC=C)CCCCC",
+          "referenceEnglish": "5-butyldeca-1,3-diene",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "C(CCC)C(C=CC=C)CCCCC",
+            "url": "https://www.ebi.ac.uk/opsin/ws/5-butyldeca-1%2C3-diene.json",
+            "sha256": "affae64bdb063e25af1c65a92a063c252f3626ed7399a077e93ec1f7b595fd4f",
+            "formula": "C14H26"
+          },
+          "names": {
+            "2013-es": "5-butildeca-1,3-dieno",
+            "1979-es": "5-butil-1,3-decadieno",
+            "1979-en": "5-butyl-1,3-decadiene",
+            "2013-en": "5-butyldeca-1,3-diene"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "C(CCC)C(C=CC=C)CCCCC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/5-butyldeca-1%2C3-diene.json",
+              "sha256": "affae64bdb063e25af1c65a92a063c252f3626ed7399a077e93ec1f7b595fd4f",
+              "formula": "C14H26"
+            },
+            "1979-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "C(CCC)C(C=CC=C)CCCCC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/5-butyl-1%2C3-decadiene.json",
+              "sha256": "9ac5d516b4587e4ed0aa5348c2cbe337448da8a40c05930e507d769fe5c69a55",
+              "formula": "C14H26"
+            }
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "190d8c3c3352d6694160a2cf58bce5c3eb927feec1204812302b3daef4e841e7"
+            },
+            "1979-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "c78245f838eb313d9131cfb499d562ce2b7805cc10c5a808ed268ab41ca8f91d"
+            },
+            "1979-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "6235eec79704d19f06010f5161d030a3c82679247c355c85e6c194c7f8cec8e6"
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "fe8e1b670fd97d72b30895e654f1b1fdef5797edfa591e10189e232afacd7d43"
+            }
+          }
+        },
+        {
+          "id": "D2-control",
+          "smiles": "CCCCCC(CC=CC)CCCCC",
+          "referenceEnglish": "6-(but-2-en-1-yl)undecane",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "C(C=CC)C(CCCCC)CCCCC",
+            "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-2-en-1-yl)undecane.json",
+            "sha256": "9a71bf22639df67e0950a3f04b59976aa749e4689c3bc2c31ce52d7f3362231a",
+            "formula": "C15H30"
+          },
+          "names": {
+            "2013-es": "6-(but-2-en-1-il)undecano",
+            "1979-es": "5-pentil-2-deceno",
+            "1979-en": "5-pentyl-2-decene",
+            "2013-en": "6-(but-2-en-1-yl)undecane"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "C(C=CC)C(CCCCC)CCCCC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-2-en-1-yl)undecane.json",
+              "sha256": "9a71bf22639df67e0950a3f04b59976aa749e4689c3bc2c31ce52d7f3362231a",
+              "formula": "C15H30"
+            },
+            "1979-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "C(CCCC)C(CC=CC)CCCCC",
+              "url": "https://www.ebi.ac.uk/opsin/ws/5-pentyl-2-decene.json",
+              "sha256": "93a9c7faec1ac1afb886f3c8dedf57bd289432d3fe356e507ca88bcacff8191f",
+              "formula": "C15H30"
+            }
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "f3d03ef7a789bfe39223a66a587afa4953c86afe6e18e844b6b5ef2a49fb2077"
+            },
+            "1979-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "2b7f45b6e67c9ff368a84edc8bca9f376ad8c8b7f66c299ea50754c372ecf6e4"
+            },
+            "1979-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "ad1486f6c8078fef773a9c50b16983474ac06e69a7c092edc73ec6d034347c62"
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "26312a2d61e777de51c2dd263c8227bc577daec93acc468c198f842bc156cb53"
+            }
+          }
+        }
+      ],
+      "criterion": "Dos dobles enlaces de un radical requieren dien; 6-(buta-1,3-dien-1-yl)undecane en inglés. «but-1,3-en-1-il» no es una construcción correcta.",
+      "difference": "Localizadores 1,3 con morfema singular en y ausencia de la vocal/multiplicador de buta...dien; proyección inglesa sin traducir il. El fallo de OPSIN es evidencia auxiliar, no la prueba normativa por sí solo.",
+      "references": [
+        {
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P3.html",
+          "sections": "P-31.1 unsaturation multiplicative prefixes",
+          "consultedDate": "2026-10-25"
+        },
+        {
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P2.html",
+          "sections": "P-21, P-22, P-23, P-24, P-25",
+          "use": "2013 chain/ring/spiro/fused parents",
+          "consultedDate": "2026-10-25",
+          "evidenceType": "Normative rule/terminology; per-case applications are derived, not claimed printed examples"
+        },
+        {
+          "url": "https://www.acdlabs.com/iupac/nomenclature/79/r79_53.htm",
+          "sections": "A-3.5 (corroboración del radical dienyl, no selección del padre 2013)",
+          "use": "1979 ene/yne/enyne grammar and seniority",
+          "consultedDate": "2026-10-25",
+          "evidenceType": "Normative rule/terminology; per-case applications are derived, not claimed printed examples"
+        }
+      ],
+      "functions": [
+        {
+          "path": "app/page.tsx",
+          "name": "makeUnsaturatedSubstituentName",
+          "line": 1965
+        },
+        {
+          "path": "app/iupac-name-normalization.ts",
+          "name": "spanishNumberedUnsaturatedSubstituent",
+          "line": 25
+        }
+      ],
+      "rootCause": "makeUnsaturatedSubstituentName concatena todas las posiciones con en/in singular; el traductor de radicales numerados solo reconoce un localizador. Ambas limitaciones son visibles en el código.",
+      "confidence": "confirmed",
+      "impact": "Radicales laterales con múltiples dobles o triples enlaces; la extrapolación a triples no se cuenta como reproducción confirmada.",
+      "affectedObservations": [
+        {
+          "caseId": "V014-045",
+          "profile": "2013-es",
+          "observed": "6-(but-1,3-en-1-il)tetradecano",
+          "expected": [
+            "6-(buta-1,3-dien-1-il)tetradecano"
+          ],
+          "classification": "FAIL-NAME"
+        },
+        {
+          "caseId": "V014-045",
+          "profile": "2013-en",
+          "observed": "6-(but-1,3-en-1-il)tetradecane",
+          "expected": [
+            "6-(buta-1,3-dien-1-yl)tetradecane"
+          ],
+          "classification": "FAIL-NAME"
+        }
+      ],
+      "reproduction": [
+        "node scripts/validation-014-audit.mjs --reproduce",
+        "Buscar V014-D02 y comparar los perfiles y las identidades en reports/orgorush-validation-014.defects.json"
+      ],
+      "reductionScope": "Mínimo encontrado mediante las eliminaciones documentadas; no se afirma minimalidad matemática global.",
+      "incidenceIds": [
+        "V014-045/2013-es/V014-D02",
+        "V014-045/2013-en/V014-D02"
+      ]
+    },
+    {
+      "id": "V014-D03",
+      "severity": "P2",
+      "category": "cyclic",
+      "title": "Proyección inglesa de tiofeno sustituido usa raíz española y localizador de alqueno",
+      "caseId": "V014-059",
+      "code": "HETEROCYCLE-EN",
+      "minimal": {
+        "id": "D3-min",
+        "smiles": "Cc1cccs1",
+        "referenceEnglish": "2-methylthiophene",
+        "reference": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC=1SC=CC1",
+          "url": "https://www.ebi.ac.uk/opsin/ws/2-methylthiophene.json",
+          "sha256": "d7d6179ef750e751fef96429163fd47021c39c024628551ab2478f489c81fcf7",
+          "formula": "C5H6S"
+        },
+        "names": {
+          "2013-es": "2-metiltiofeno",
+          "1979-es": null,
+          "1979-en": null,
+          "2013-en": "methyltiof-2-ene"
+        },
+        "englishProofs": {
+          "2013-en": {
+            "status": "PENDING-REFERENCE",
+            "reason": "methyltiof-2-ene was uninterpretable due to the following section of the name: tiof-2-ene  The following was not understandable in the context it was used: tiof",
+            "url": "https://www.ebi.ac.uk/opsin/ws/methyltiof-2-ene.json",
+            "sha256": "d7caf121f6272ace87bb35585b19cc15e673277014fcf65d3625ac3fa663d4f1"
+          },
+          "1979-en": null
+        },
+        "reasoning": {
+          "2013-es": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "d6df9d2869b643bb70ccf1ab2c9650d341ffde42d7049c922d30eb07ce425e8a"
+          },
+          "1979-es": {
+            "integrity": null,
+            "hash": null
+          },
+          "1979-en": {
+            "integrity": null,
+            "hash": null
+          },
+          "2013-en": {
+            "integrity": {
+              "status": "PASS"
+            },
+            "hash": "917c4b92c48d226b6878d96365e2687fceabb6ae8b604e6a804df5344e6d29c9"
+          }
+        }
+      },
+      "controls": [
+        {
+          "id": "D3-unsubstituted",
+          "smiles": "c1ccsc1",
+          "referenceEnglish": "thiophene",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "S1C=CC=C1",
+            "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+            "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+            "formula": "C4H4S"
+          },
+          "names": {
+            "2013-es": "tiofeno",
+            "1979-es": "tiofeno",
+            "1979-en": "thiophene",
+            "2013-en": "thiophene"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "S1C=CC=C1",
+              "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+              "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+              "formula": "C4H4S"
+            },
+            "1979-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "S1C=CC=C1",
+              "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+              "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+              "formula": "C4H4S"
+            }
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "943d38320c4e6514572b835d4beeeeab328d9c89fce3d78a43b3b43715c03de4"
+            },
+            "1979-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "2c65a024c35695d521439b992f48e568eb00d8d4df9ac10d85d3015037a8eb15"
+            },
+            "1979-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "899bab4488b743633fcf6b9268acab43c65d2f1cf155a2dea1a379fd3d92d75e"
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "ecb3abd6c36a45f9b283ebc72065febefc2d83d57196e78014b9b38e90f91788"
+            }
+          }
+        },
+        {
+          "id": "D3-control",
+          "smiles": "Cc1ccncc1",
+          "referenceEnglish": "4-methylpyridine",
+          "reference": {
+            "status": "PASS",
+            "stereoStatus": "PASS",
+            "smiles": "CC1=CC=NC=C1",
+            "url": "https://www.ebi.ac.uk/opsin/ws/4-methylpyridine.json",
+            "sha256": "317ddb52fe8f5f22a907b51f5d177c9ac1a7b647e524d6629cd9b017861c9526",
+            "formula": "C6H7N"
+          },
+          "names": {
+            "2013-es": "4-metilpiridina",
+            "1979-es": null,
+            "1979-en": null,
+            "2013-en": "4-methylpyridine"
+          },
+          "englishProofs": {
+            "2013-en": {
+              "status": "PASS",
+              "stereoStatus": "PASS",
+              "smiles": "CC1=CC=NC=C1",
+              "url": "https://www.ebi.ac.uk/opsin/ws/4-methylpyridine.json",
+              "sha256": "317ddb52fe8f5f22a907b51f5d177c9ac1a7b647e524d6629cd9b017861c9526",
+              "formula": "C6H7N"
+            },
+            "1979-en": null
+          },
+          "reasoning": {
+            "2013-es": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "1221bc3fbe82d97c915900e5e8ae53cb06ec8c17eb6cf4d05544da5506e7b290"
+            },
+            "1979-es": {
+              "integrity": null,
+              "hash": null
+            },
+            "1979-en": {
+              "integrity": null,
+              "hash": null
+            },
+            "2013-en": {
+              "integrity": {
+                "status": "PASS"
+              },
+              "hash": "b368f24e7f5a25428490d87e464dae870214eed2b1073a9cb4204022ad316699"
+            }
+          }
+        }
+      ],
+      "criterion": "El padre inglés retenido es thiophene; 2-methylthiophene. La salida methyltiof-2-ene no conserva esa construcción.",
+      "difference": "El localizador 2 del metilo se desplaza al sufijo ene y tiof no se traduce. No se afirma que OPSIN pruebe qué otra molécula representa una cadena que no interpreta.",
+      "references": [
+        {
+          "url": "https://iupac.qmul.ac.uk/BlueBook/P2.html",
+          "sections": "P-22.2.2, Table 2.2: thiophene",
+          "consultedDate": "2026-10-25"
+        },
+        {
+          "url": "https://rseq.org/wp-content/uploads/2018/05/2021-Guia-Breve-para-la-Nomenclatura-en-Quimica-Organica.pdf",
+          "sections": "Tables 1-3; sections 4, 6b, 7, 8",
+          "use": "Spanish lexical/morphological forms and printed 2013 examples; for 1979 ONLY vocabulary, never modern parent selection or locant placement",
+          "consultedDate": "2026-10-25",
+          "evidenceType": "Normative rule/terminology; per-case applications are derived, not claimed printed examples"
+        }
+      ],
+      "functions": [
+        {
+          "path": "app/iupac-name-normalization.ts",
+          "name": "normalizeTraditionalUnsaturationNotation",
+          "line": 261
+        },
+        {
+          "path": "app/iupac-name-normalization.ts",
+          "name": "heterocycleTranslations / translateCore",
+          "line": 92
+        }
+      ],
+      "rootCause": "Probable interacción entre normalización de sufijos eno y traducción de heterociclos por nombres completos. La reproducción confirma el síntoma; no se ha aislado una única función como causa suficiente.",
+      "confidence": "symptom-confirmed; root-cause-probable",
+      "impact": "Otros heterociclos sustituidos sin entrada específica en la proyección inglesa requieren auditoría dirigida.",
+      "affectedObservations": [
+        {
+          "caseId": "V014-059",
+          "profile": "2013-en",
+          "observed": "methyltiof-2-ene",
+          "expected": [
+            "2-methylthiophene"
+          ],
+          "classification": "FAIL-NAME"
+        }
+      ],
+      "reproduction": [
+        "node scripts/validation-014-audit.mjs --reproduce",
+        "Buscar V014-D03 y comparar los perfiles y las identidades en reports/orgorush-validation-014.defects.json"
+      ],
+      "reductionScope": "Mínimo encontrado mediante las eliminaciones documentadas; no se afirma minimalidad matemática global.",
+      "incidenceIds": [
+        "V014-059/2013-en/V014-D03"
+      ]
+    }
+  ],
+  "additionalControls": [
+    {
+      "id": "D1-min",
+      "smiles": "CC(=O)C(=C)CC",
+      "referenceEnglish": "3-methylidenepentan-2-one",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "C=C(C(C)=O)CC",
+        "url": "https://www.ebi.ac.uk/opsin/ws/3-methylidenepentan-2-one.json",
+        "sha256": "6353964962a1c5761093419e36f7d68f997b791bf25626d24e3ff12c8d505033",
+        "formula": "C6H10O"
+      },
+      "names": {
+        "2013-es": "3-metilpentan-2-ona",
+        "1979-es": "3-etil-3-buten-2-ona",
+        "1979-en": "3-ethyl-3-buten-2-one",
+        "2013-en": "3-methylpentan-2-one"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "FAIL-STRUCTURE",
+          "stereoStatus": "DIFFERENT",
+          "smiles": "CC(C(C)=O)CC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+          "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+          "formula": "C6H12O"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(C)C(C(C)=O)=C",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-ethyl-3-buten-2-one.json",
+          "sha256": "b1645edd75962b8c9f24e9416973dc95a18a2a7898fc540678855aa2dc8dc9f5",
+          "formula": "C6H10O"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "a30f722175812ce7d9798f0f4f331a9345570c5226f799fbd92223643baaccb3"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "678103d818e6ce5024456e6896b19c333e6f0cc5c6c615bec25c97ab499f9df0"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "84d77dc656a3b042e6bb863e346371c4faa387fa641a96bd91438fbfae6dfe75"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "d755bea4be2f231f29ace60bd8fa651fb3e571a3c14346cbd775bc60dc76bd9a"
+        }
+      }
+    },
+    {
+      "id": "D1-control",
+      "smiles": "CC(=O)C(C)CC",
+      "referenceEnglish": "3-methylpentan-2-one",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "CC(C(C)=O)CC",
+        "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+        "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+        "formula": "C6H12O"
+      },
+      "names": {
+        "2013-es": "3-metilpentan-2-ona",
+        "1979-es": "3-metil-2-pentanona",
+        "1979-en": "3-methyl-2-pentanone",
+        "2013-en": "3-methylpentan-2-one"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC(C(C)=O)CC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methylpentan-2-one.json",
+          "sha256": "664aaf79c1b39257b2f619457a261efdcc520624ae3138b8f83b6fb7f977cda3",
+          "formula": "C6H12O"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC(C(C)=O)CC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methyl-2-pentanone.json",
+          "sha256": "7104c0a1d44e0f778fb617c3dc795fcac960ad7d9a25614405ec419091c4b4b7",
+          "formula": "C6H12O"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "a30f722175812ce7d9798f0f4f331a9345570c5226f799fbd92223643baaccb3"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "2a9e3a725004c7d34663e552f7cb055608ab735de3eedca0055791b61bbea3d6"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "96ed3e1daca55d6eedbf39ffeed007b514313da2a26cb58299cfcd20ae616d63"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "d755bea4be2f231f29ace60bd8fa651fb3e571a3c14346cbd775bc60dc76bd9a"
+        }
+      }
+    },
+    {
+      "id": "D1-shorter",
+      "smiles": "CC(=O)C(=C)C",
+      "referenceEnglish": "3-methylbut-3-en-2-one",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "CC(C(C)=O)=C",
+        "url": "https://www.ebi.ac.uk/opsin/ws/3-methylbut-3-en-2-one.json",
+        "sha256": "04193753f30bce7b4cab8deb2662243cfad0f1ef3b27ac8a7158e9e9bfbeab76",
+        "formula": "C5H8O"
+      },
+      "names": {
+        "2013-es": "3-metilbut-3-en-2-ona",
+        "1979-es": "3-metil-3-buten-2-ona",
+        "1979-en": "3-methyl-3-buten-2-one",
+        "2013-en": "3-methylbut-3-en-2-one"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC(C(C)=O)=C",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methylbut-3-en-2-one.json",
+          "sha256": "04193753f30bce7b4cab8deb2662243cfad0f1ef3b27ac8a7158e9e9bfbeab76",
+          "formula": "C5H8O"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC(C(C)=O)=C",
+          "url": "https://www.ebi.ac.uk/opsin/ws/3-methyl-3-buten-2-one.json",
+          "sha256": "db24f35714c8a29a135cc84ce070eb729a521c7be40d8ad1908aea5eb9fc58ec",
+          "formula": "C5H8O"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "c46e32e764d019a7441ed114cf6f4c1a9d936d54c3a1c6b463aeda1356a026b5"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "47d0c08676b6157c4204d7f805d21b2135e6048844bf7fa6a36268780f8f3017"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "6c437333bd2afb53fee997174ee7a6a3d8baa26980d716a8c4c8c81394f85771"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "814de10f37221a5797faad7578f17a23638e3345989eaca8e713654cc5b0e38e"
+        }
+      }
+    },
+    {
+      "id": "D2-min",
+      "smiles": "CCCCCC(C=CC=C)CCCCC",
+      "referenceEnglish": "6-(buta-1,3-dien-1-yl)undecane",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "C(=CC=C)C(CCCCC)CCCCC",
+        "url": "https://www.ebi.ac.uk/opsin/ws/6-(buta-1%2C3-dien-1-yl)undecane.json",
+        "sha256": "715fd1cc8b949eb2ae29953f83fb37624847457baa9a54cee0fee5308693f0d8",
+        "formula": "C15H28"
+      },
+      "names": {
+        "2013-es": "6-(but-1,3-en-1-il)undecano",
+        "1979-es": null,
+        "1979-en": "5-pentyl-1,3-decadiene",
+        "2013-en": "6-(but-1,3-en-1-il)undecane"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PENDING-REFERENCE",
+          "reason": "6-(but-1,3-en-1-il)undecane was uninterpretable due to the following section of the name: 6-(but-1,3-en-1-il)  The following was not understandable in the context it was used: il",
+          "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-1%2C3-en-1-il)undecane.json",
+          "sha256": "4d7b2249a302cfcf262fee8152a5479ac07b2b3e9c9afe7e48e8e00a12785c29"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(CCCC)C(C=CC=C)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/5-pentyl-1%2C3-decadiene.json",
+          "sha256": "4cbd18744390b4be874874cd885a154b6d48f89b316ebe8b893b202c26ffc770",
+          "formula": "C15H28"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "1a186b50a7a3ef673946f4e83a25cef8a5700bfe956a3f73127e6201bb954645"
+        },
+        "1979-es": {
+          "integrity": null,
+          "hash": null
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "8bd18c20dd09950593c1460604f7d7abfcf579c19397389815aa7df93b194dd1"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "68ab39cd182e91984f96c7cbb22ddab727bf470b3f99826a1e578a6a70cd62f8"
+        }
+      }
+    },
+    {
+      "id": "D2-shorter",
+      "smiles": "CCCCC(C=CC=C)CCCCC",
+      "referenceEnglish": "5-butyldeca-1,3-diene",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "C(CCC)C(C=CC=C)CCCCC",
+        "url": "https://www.ebi.ac.uk/opsin/ws/5-butyldeca-1%2C3-diene.json",
+        "sha256": "affae64bdb063e25af1c65a92a063c252f3626ed7399a077e93ec1f7b595fd4f",
+        "formula": "C14H26"
+      },
+      "names": {
+        "2013-es": "5-butildeca-1,3-dieno",
+        "1979-es": "5-butil-1,3-decadieno",
+        "1979-en": "5-butyl-1,3-decadiene",
+        "2013-en": "5-butyldeca-1,3-diene"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(CCC)C(C=CC=C)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/5-butyldeca-1%2C3-diene.json",
+          "sha256": "affae64bdb063e25af1c65a92a063c252f3626ed7399a077e93ec1f7b595fd4f",
+          "formula": "C14H26"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(CCC)C(C=CC=C)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/5-butyl-1%2C3-decadiene.json",
+          "sha256": "9ac5d516b4587e4ed0aa5348c2cbe337448da8a40c05930e507d769fe5c69a55",
+          "formula": "C14H26"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "190d8c3c3352d6694160a2cf58bce5c3eb927feec1204812302b3daef4e841e7"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "c78245f838eb313d9131cfb499d562ce2b7805cc10c5a808ed268ab41ca8f91d"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "6235eec79704d19f06010f5161d030a3c82679247c355c85e6c194c7f8cec8e6"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "fe8e1b670fd97d72b30895e654f1b1fdef5797edfa591e10189e232afacd7d43"
+        }
+      }
+    },
+    {
+      "id": "D2-control",
+      "smiles": "CCCCCC(CC=CC)CCCCC",
+      "referenceEnglish": "6-(but-2-en-1-yl)undecane",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "C(C=CC)C(CCCCC)CCCCC",
+        "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-2-en-1-yl)undecane.json",
+        "sha256": "9a71bf22639df67e0950a3f04b59976aa749e4689c3bc2c31ce52d7f3362231a",
+        "formula": "C15H30"
+      },
+      "names": {
+        "2013-es": "6-(but-2-en-1-il)undecano",
+        "1979-es": "5-pentil-2-deceno",
+        "1979-en": "5-pentyl-2-decene",
+        "2013-en": "6-(but-2-en-1-yl)undecane"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(C=CC)C(CCCCC)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/6-(but-2-en-1-yl)undecane.json",
+          "sha256": "9a71bf22639df67e0950a3f04b59976aa749e4689c3bc2c31ce52d7f3362231a",
+          "formula": "C15H30"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "C(CCCC)C(CC=CC)CCCCC",
+          "url": "https://www.ebi.ac.uk/opsin/ws/5-pentyl-2-decene.json",
+          "sha256": "93a9c7faec1ac1afb886f3c8dedf57bd289432d3fe356e507ca88bcacff8191f",
+          "formula": "C15H30"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "f3d03ef7a789bfe39223a66a587afa4953c86afe6e18e844b6b5ef2a49fb2077"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "2b7f45b6e67c9ff368a84edc8bca9f376ad8c8b7f66c299ea50754c372ecf6e4"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "ad1486f6c8078fef773a9c50b16983474ac06e69a7c092edc73ec6d034347c62"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "26312a2d61e777de51c2dd263c8227bc577daec93acc468c198f842bc156cb53"
+        }
+      }
+    },
+    {
+      "id": "D3-min",
+      "smiles": "Cc1cccs1",
+      "referenceEnglish": "2-methylthiophene",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "CC=1SC=CC1",
+        "url": "https://www.ebi.ac.uk/opsin/ws/2-methylthiophene.json",
+        "sha256": "d7d6179ef750e751fef96429163fd47021c39c024628551ab2478f489c81fcf7",
+        "formula": "C5H6S"
+      },
+      "names": {
+        "2013-es": "2-metiltiofeno",
+        "1979-es": null,
+        "1979-en": null,
+        "2013-en": "methyltiof-2-ene"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PENDING-REFERENCE",
+          "reason": "methyltiof-2-ene was uninterpretable due to the following section of the name: tiof-2-ene  The following was not understandable in the context it was used: tiof",
+          "url": "https://www.ebi.ac.uk/opsin/ws/methyltiof-2-ene.json",
+          "sha256": "d7caf121f6272ace87bb35585b19cc15e673277014fcf65d3625ac3fa663d4f1"
+        },
+        "1979-en": null
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "d6df9d2869b643bb70ccf1ab2c9650d341ffde42d7049c922d30eb07ce425e8a"
+        },
+        "1979-es": {
+          "integrity": null,
+          "hash": null
+        },
+        "1979-en": {
+          "integrity": null,
+          "hash": null
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "917c4b92c48d226b6878d96365e2687fceabb6ae8b604e6a804df5344e6d29c9"
+        }
+      }
+    },
+    {
+      "id": "D3-unsubstituted",
+      "smiles": "c1ccsc1",
+      "referenceEnglish": "thiophene",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "S1C=CC=C1",
+        "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+        "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+        "formula": "C4H4S"
+      },
+      "names": {
+        "2013-es": "tiofeno",
+        "1979-es": "tiofeno",
+        "1979-en": "thiophene",
+        "2013-en": "thiophene"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "S1C=CC=C1",
+          "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+          "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+          "formula": "C4H4S"
+        },
+        "1979-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "S1C=CC=C1",
+          "url": "https://www.ebi.ac.uk/opsin/ws/thiophene.json",
+          "sha256": "9c9535e9b8b26d9aeac62ccddf267a453137fa737a9f2061bcf1f6fb55221757",
+          "formula": "C4H4S"
+        }
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "943d38320c4e6514572b835d4beeeeab328d9c89fce3d78a43b3b43715c03de4"
+        },
+        "1979-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "2c65a024c35695d521439b992f48e568eb00d8d4df9ac10d85d3015037a8eb15"
+        },
+        "1979-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "899bab4488b743633fcf6b9268acab43c65d2f1cf155a2dea1a379fd3d92d75e"
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "ecb3abd6c36a45f9b283ebc72065febefc2d83d57196e78014b9b38e90f91788"
+        }
+      }
+    },
+    {
+      "id": "D3-control",
+      "smiles": "Cc1ccncc1",
+      "referenceEnglish": "4-methylpyridine",
+      "reference": {
+        "status": "PASS",
+        "stereoStatus": "PASS",
+        "smiles": "CC1=CC=NC=C1",
+        "url": "https://www.ebi.ac.uk/opsin/ws/4-methylpyridine.json",
+        "sha256": "317ddb52fe8f5f22a907b51f5d177c9ac1a7b647e524d6629cd9b017861c9526",
+        "formula": "C6H7N"
+      },
+      "names": {
+        "2013-es": "4-metilpiridina",
+        "1979-es": null,
+        "1979-en": null,
+        "2013-en": "4-methylpyridine"
+      },
+      "englishProofs": {
+        "2013-en": {
+          "status": "PASS",
+          "stereoStatus": "PASS",
+          "smiles": "CC1=CC=NC=C1",
+          "url": "https://www.ebi.ac.uk/opsin/ws/4-methylpyridine.json",
+          "sha256": "317ddb52fe8f5f22a907b51f5d177c9ac1a7b647e524d6629cd9b017861c9526",
+          "formula": "C6H7N"
+        },
+        "1979-en": null
+      },
+      "reasoning": {
+        "2013-es": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "1221bc3fbe82d97c915900e5e8ae53cb06ec8c17eb6cf4d05544da5506e7b290"
+        },
+        "1979-es": {
+          "integrity": null,
+          "hash": null
+        },
+        "1979-en": {
+          "integrity": null,
+          "hash": null
+        },
+        "2013-en": {
+          "integrity": {
+            "status": "PASS"
+          },
+          "hash": "b368f24e7f5a25428490d87e464dae870214eed2b1073a9cb4204022ad316699"
+        }
+      }
+    }
+  ]
+}
