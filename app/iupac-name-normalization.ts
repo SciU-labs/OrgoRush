@@ -28,6 +28,8 @@ const spanishParentRoot = new RegExp(`(${IUPAC_ROOTS.filter((root) =>
 function translateSpanishAlkylMorphemes(value: string) {
   const translate = (_match: string, root: string) => `${englishIupacRoot(root)}yl`;
   return value
+    // Translate the complete divalent prefix before the monovalent alkyl pass.
+    .replace(/(^|[-,(])(\d+(?:,\d+)*-)?metilideno(?=[a-z]|$|[-,)])/g, "$1$2methylidene")
     .replace(spanishNumberedUnsaturatedSubstituent, (_match, root: string, bondLocant: string, unsaturation: string, freeValenceLocant: string) =>
       `${englishIupacRoot(root)}-${bondLocant}-${unsaturation === "en" ? "en" : "yn"}-${freeValenceLocant}-yl`)
     .replace(spanishUnsaturatedSubstituent, (_match, root: string, unsaturation: string) =>

@@ -198,7 +198,7 @@ import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
 import { resolveLegacySpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
 import { numberLegacyBenzene } from "./legacy-name-numbering.ts";
-import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
+import { legacyGraphsIdentical, legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
@@ -1886,8 +1886,14 @@ function nameSubstituent(
   adjacency: Map<number, number[]>,
   bondOrders?: ReadonlyMap<string, BondOrder>,
   preferSystematicUnsaturatedPrefix = false,
+  attachmentOrder: BondOrder = 1,
 ): Omit<NamedSubstituent, "locant"> {
   const component = collectSubtree(root, new Set(parent === null ? [] : [parent]), adjacency);
+  // P-29.2/P-56.4: a terminal carbon attached by = is methylidene, not methyl.
+  // Only the current acyclic hydrocarbon caller supplies this attachment order.
+  if (attachmentOrder === 2 && component.length === 1) {
+    return { name: "metilideno", sortName: "metilideno", complex: false, atomIds: component };
+  }
   const componentSet = new Set(component);
   const rootPaths: number[][] = [];
 
@@ -2241,6 +2247,7 @@ function analyzeHydrocarbonMolecule(
   enabledAliases: readonly string[] = [],
   externalSubstituents: readonly { anchorId: number; substituent: Omit<NamedSubstituent, "locant"> }[] = [],
   convention: ParentSelectionConvention = "blue-book-2013",
+  methylideneAttachments = false,
 ): Analysis {
   if ((molecule.rings?.length ?? 0) > 1) return analyzeMultiRingMolecule(molecule, enabledAliases);
   if (molecule.rings?.length === 1) return analyzeRingMolecule(molecule, enabledAliases);
@@ -2274,7 +2281,8 @@ function analyzeHydrocarbonMolecule(
     path.forEach((atomId, index) => {
       for (const neighbor of adjacency.get(atomId) ?? []) {
         if (pathSet.has(neighbor)) continue;
-        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true);
+        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true,
+          methylideneAttachments ? bondOrders.get(bondKey(atomId, neighbor)) ?? 1 : 1);
         substituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
@@ -2292,6 +2300,12 @@ function analyzeHydrocarbonMolecule(
   });
 
   const chosen = selectParentCandidate(candidates, convention);
+  const parentAtoms = new Set(chosen.path);
+  const multipleAttachment = methylideneAttachments && molecule.bonds.some(([a, b, order = 1]) =>
+    order > 1 && parentAtoms.has(a) !== parentAtoms.has(b));
+  const incompleteAttachment = multipleAttachment && !verifyCurrentMethylideneModel(molecule, {
+    ...chosen, mainChain: chosen.path,
+  });
   const chainName = makeChainName(
     chosen.path.length,
     chosen.doubleBondLocants,
@@ -2302,7 +2316,8 @@ function analyzeHydrocarbonMolecule(
   const numberedAtoms = new Map(chosen.path.map((atomId, index) => [atomId, index + 1]));
 
   return {
-    name,
+    name: incompleteAttachment ? COMPLEX_NAME_UNAVAILABLE_MESSAGE : name,
+    ...(incompleteAttachment ? { cyclicUnsupported: "current-multiple-attachment-not-completely-represented" } : {}),
     formula: molecularFormula(molecule),
     family: "acyclic",
     mainChain: chosen.path,
@@ -2313,6 +2328,34 @@ function analyzeHydrocarbonMolecule(
     tripleBondLocants: chosen.tripleBondLocants,
     functionalGroups: [],
   };
+}
+
+/** Prove the bounded current model using the existing
+ * graph identity utility. This does not choose or renumber a parent. */
+export function verifyCurrentMethylideneModel(molecule: Molecule, analysis: Pick<Analysis,
+  "mainChain" | "substituents" | "doubleBondLocants" | "tripleBondLocants">): boolean {
+  try {
+    const n = analysis.mainChain.length;
+    const s = analysis.substituents[0];
+    if (n < 3 || n > 100 || new Set(analysis.mainChain).size !== n
+      || analysis.substituents.length !== 1 || s.name !== "metilideno" || s.atomIds.length !== 1
+      || !Number.isInteger(s.locant) || s.locant < 1 || s.locant > n || analysis.tripleBondLocants.length
+      || analysis.mainChain.includes(s.atomIds[0]) || molecule.atoms.length !== n + 1
+      || molecule.bonds.length !== molecule.atoms.length - 1
+      || molecule.atoms.some(a => getElement(a) !== "C" || a.charge || getValenceUsed(a.id, molecule) > 4)
+      || getImplicitHydrogens(s.atomIds[0], molecule) !== 2) return false;
+    const locants = analysis.doubleBondLocants;
+    if (locants.some((l, i) => !Number.isInteger(l) || l < 1 || l >= n || i > 0 && l <= locants[i - 1])) return false;
+    const expected = {
+      atoms: Array.from({ length: n }, (_, id) => ({ id, element: "C", charge: undefined as number | undefined })),
+      bonds: Array.from({ length: n - 1 }, (_, i): [number, number, number] => [i, i + 1, locants.includes(i + 1) ? 2 : 1]),
+    };
+    const forced = new Map(analysis.mainChain.map((id, i) => [i, id]));
+    expected.atoms.push({ id: n, element: "C", charge: undefined });
+    expected.bonds.push([s.locant - 1, n, 2]);
+    forced.set(n, s.atomIds[0]);
+    return legacyGraphsIdentical(expected, molecule, forced);
+  } catch { return false; }
 }
 
 function carbonSkeleton(molecule: Molecule): Molecule {
@@ -4179,7 +4222,8 @@ function analyzePerceivedMolecule(
     return withExplicitGeometricName(molecule, { ...chainAnalysis, formula: molecularFormula(molecule) });
   }
 
-  const baseAnalysis = analyzeHydrocarbonMolecule(skeleton, enabledAliases, [], convention);
+  const baseAnalysis = analyzeHydrocarbonMolecule(skeleton, enabledAliases, [], convention,
+    convention === "blue-book-2013" && !groups.length && molecule.atoms.every(isCarbonAtom));
   if (!groups.length) {
     return withExplicitGeometricName(molecule, {
       ...baseAnalysis, formula: molecularFormula(molecule), functionalGroups: [],
@@ -5851,6 +5895,24 @@ export function buildActiveIupacReasoning(input: {
   const steps = language === "en"
     ? buildEnglishReasoningSteps(spanishSteps, molecule, analysis, presentation)
     : spanishSteps;
+  const methylidene = convention === "current" && verifyCurrentMethylideneModel(molecule, analysis)
+    && displayedName === (language === "en" ? translateSpanishIupacForDisplay(analysis.name) : analysis.name)
+    ? analysis.substituents[0] : undefined;
+  const methylideneText = methylidene ? language === "en"
+    ? `The =CH₂ group is attached by a double bond at C${methylidene.locant}: methylidene, not the single-bonded –CH₃ methyl group (P-29.2, P-56.4). This double bond is represented by the prefix; the parent-chain double bonds retain their own locants.`
+    : `El grupo =CH₂ se une mediante un enlace doble en C${methylidene.locant}: metilideno, distinto del metilo –CH₃ unido por enlace sencillo (P-29.2, P-56.4). Ese doble enlace se representa en el prefijo; los dobles enlaces del padre conservan sus propios localizadores.` : "";
+  if (methylidene) {
+    const parent = steps.find(step => step.nameRole === "parent");
+    if (parent) parent.explanation += language === "en"
+      ? ` P-44.3.2 selects the longest acyclic parent (${analysis.mainChain.length} carbons) before comparing unsaturation; the lateral =CH₂ remains outside that parent.`
+      : ` P-44.3.2 selecciona el padre acíclico más largo (${analysis.mainChain.length} carbonos) antes de comparar insaturaciones; el =CH₂ lateral queda fuera de ese padre.`;
+    const substituent = steps.find(step => step.nameRole === "substituent");
+    if (substituent) substituent.explanation += ` ${methylideneText} ${language === "en" ? "The complete name is" : "El nombre completo es"} ${displayedName}.`;
+    const unsaturation = steps.find(step => step.nameRole === "unsaturation");
+    if (unsaturation) unsaturation.explanation += ` ${methylideneText}`;
+    else steps.push({ number: "07", nameRole: "unsaturation",
+      title: language === "en" ? "Lateral double bond" : "Doble enlace lateral", explanation: methylideneText });
+  }
   const nitrogenSubstituents = nitrogenSubstituentsForParent(molecule, analysis).filter((item) => item.supported);
   const nitrogenExplanation = language === "en"
     ? "N locants identify alkyl groups bonded directly to the functional nitrogen, outside the numbered carbon parent."
@@ -5868,6 +5930,29 @@ export function buildActiveIupacReasoning(input: {
   const fragments = deriveReasoningNameFragments({
     analysis, convention, language, displayedName, generatedNames, canHighlight, steps,
   });
+  if (canHighlight && methylidene) {
+    const term = language === "en" ? "methylidene" : "metilideno";
+    const start = displayedName.indexOf(`${methylidene.locant}-${term}`);
+    const substituentStep = steps.find(step => step.nameRole === "substituent");
+    const numberingStep = steps.find(step => step.nameRole === "numbering");
+    const anchor = analysis.mainChain[methylidene.locant - 1], carbon = methylidene.atomIds[0];
+    if (start >= 0 && substituentStep) fragments[substituentStep.number] = {
+      text: term, start: start + String(methylidene.locant).length + 1, kind: "substituent",
+      label: language === "en" ? "Methylidene =CH₂" : "Metilideno =CH₂", explanation: methylideneText,
+      atomIds: [anchor, carbon], bondIds: [[anchor, carbon]], bondType: "double",
+      semanticId: `substituent:methylidene:${methylidene.locant}`, locant: methylidene.locant,
+    };
+    if (start >= 0 && numberingStep) {
+      const item: ReasoningNameFragment = { text: String(methylidene.locant), start, kind: "numbering",
+        label: language === "en" ? "Methylidene attachment locant" : "Localizador de unión del metilideno", atomIds: [anchor] };
+      const previous = fragments[numberingStep.number];
+      const same = previous && [previous, ...(previous.additionalFragments ?? [])].find(fragment =>
+        fragment.kind === item.kind && fragment.text === item.text && (fragment.start ?? displayedName.indexOf(fragment.text)) === start);
+      if (same) Object.assign(same, item);
+      else if (previous) (previous.additionalFragments ??= []).push(item);
+      else fragments[numberingStep.number] = item;
+    }
+  }
   if (canHighlight && nitrogenSubstituents.length
     && (displayedName === analysis.name || generatedNames.includes(displayedName))) {
     const step = steps.find((item) => item.nameRole === "substituent")!;
