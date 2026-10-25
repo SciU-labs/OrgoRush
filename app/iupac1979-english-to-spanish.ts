@@ -53,6 +53,40 @@ const suffixes:Record<string,string> = { alcohol:"fenol",amine:"anilina",carboxy
   aldehyde:"benzaldehído",nitrile:"benzonitrilo",amide:"benzamida" };
 const multipliers=["","","di","tri","tetra","penta","hexa"];
 
+/** Native acyclic polyenes must represent the entire neutral carbon graph.
+ * Parent selection/numbering comes from the existing 1979 analyzer; forced
+ * parent anchors prove each locant instead of accepting constitutional aliases.
+ * This proof does not extend the EN -> ES fallback to new families. */
+export function verifyLegacyAcyclicPolyeneModel(graph: StereoGraph, model: LegacyEnglishNameModel): boolean {
+  try {
+    const n = model.parent.carbonCount;
+    if (model.profile !== "iupac-1979-legacy-en" || model.unavailableReason
+      || model.parent.kind !== "chain" || model.parent.fallbackName || model.parent.retained
+      || !Number.isInteger(n) || n < 3 || n > 100 || model.parent.atomIds.length !== n
+      || new Set(model.parent.atomIds).size !== n || model.functionalGroups.length
+      || model.tripleBondLocants.length || model.nitrogenSubstituents?.length
+      || model.doubleBondLocants.length < 2 || model.doubleBondLocants.length > 8
+      || graph.bonds.length !== graph.atoms.length - 1
+      || graph.atoms.some(a => (a.element ?? "C") !== "C" || a.charge)
+      || graph.bonds.some(b => ![1, 2].includes(b[2] ?? 1))
+      || graph.bonds.filter(b => b[2] === 2).length !== model.doubleBondLocants.length) return false;
+    const locants = model.doubleBondLocants;
+    if (locants.some((l, i) => !Number.isInteger(l) || l < 1 || l >= n || i > 0 && l <= locants[i - 1])) return false;
+    if (graph.atoms.some(a => graph.bonds.reduce((sum, [l, r, order = 1]) => sum + (l === a.id || r === a.id ? order : 0), 0) > 4)) return false;
+    const expected = {
+      atoms: Array.from({ length: n }, (_, id) => ({ id, element: "C", charge: undefined as number | undefined })),
+      bonds: Array.from({ length: n - 1 }, (_, i): [number, number, number] => [i, i + 1, locants.includes(i + 1) ? 2 : 1]),
+    };
+    for (const s of model.substituents) {
+      const term = legacyPrefixTerm(s.systematicName);
+      if (!Number.isInteger(s.locant) || s.locant < 1 || s.locant > n || !term || term.kind
+        || term.elements.some(e => e !== "C") || term.bonds.some(b => b[2] !== 1)) return false;
+      attachLegacyFragment(expected, s.locant - 1, term);
+    }
+    return legacyGraphsIdentical(expected, graph, new Map(model.parent.atomIds.map((id, i) => [i, id])));
+  } catch { return false; }
+}
+
 export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:LegacyEnglishNameModel;englishName:string}):LegacySpanishResolution {
   const unsupported=(reason:string):LegacySpanishResolution=>({status:"UNSUPPORTED",name:"-",reason});
   try {

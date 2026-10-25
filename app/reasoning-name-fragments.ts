@@ -104,6 +104,23 @@ export function deriveUnsaturationNameContributions(
       fromIndex(String(locant), start, bondType, locant),
       fromIndex(marker, start + text.lastIndexOf(marker), bondType, locant),
     ];
+    // A-3.1: historical acyclic polyenes put the complete locant list before
+    // root + a + multiplier + ene/eno. Each locant owns its actual C=C bond;
+    // the shared morpheme below owns the union of those bonds.
+    if (rootByLength && analysis.family === "acyclic" && !analysis.primaryFunctionalGroup
+      && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length) {
+      const multiplier = ["", "", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa"][analysis.doubleBondLocants.length];
+      const tail = `${analysis.doubleBondLocants.join(",")}-${rootByLength}a${multiplier}en${language === "en" ? "e" : "o"}`;
+      const start = name.length - tail.length;
+      if (multiplier && name.endsWith(tail) && (start === 0 || name[start - 1] === "-")) {
+        let offset = start;
+        return analysis.doubleBondLocants.map(locant => {
+          const item = fromIndex(String(locant), offset, "double", locant);
+          offset += String(locant).length + 1;
+          return item;
+        });
+      }
+    }
     if (rootByLength && analysis.family === "cycloalkane" && analysis.primaryFunctionalGroup === "ketone"
       && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length) {
       const locants = analysis.doubleBondLocants.join(",");
@@ -278,13 +295,16 @@ export function deriveUnsaturationNameContributions(
   return output;
 }
 
-/** One shared written morpheme, alongside the separate graph targets of its locants. */
+/** One shared written morpheme, alongside the separate graph targets of its locants.
+ * Also used for the verified Legacy acyclic polyene spelling (A-3.1). */
 export function deriveCyclicKetoneMultiplicityEvidence(
   analysis: FragmentAnalysis, name: string, language: AppLanguage,
   generatedNames?: readonly string[], convention?: string,
 ): ReasoningNameEvidence | undefined {
   const count = analysis.doubleBondLocants.length;
-  if (analysis.family !== "cycloalkane" || analysis.primaryFunctionalGroup !== "ketone"
+  const legacyPolyene = (convention === "iupac-1979-es" || convention === "iupac-1979-legacy-en")
+    && analysis.family === "acyclic" && !analysis.primaryFunctionalGroup;
+  if ((!legacyPolyene && (analysis.family !== "cycloalkane" || analysis.primaryFunctionalGroup !== "ketone"))
     || count < 2 || analysis.tripleBondLocants.length) return;
   const multiplier = ["", "", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa"][count];
   if (!multiplier) return;

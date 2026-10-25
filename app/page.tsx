@@ -196,7 +196,7 @@ import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry";
 import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
-import { resolveLegacySpanish } from "./iupac1979-english-to-spanish.ts";
+import { resolveLegacySpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
 import { numberLegacyBenzene } from "./legacy-name-numbering.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
@@ -4861,9 +4861,16 @@ function legacyStructuralReasoningText(
     const morphology = isEnglish
       ? ` Its numerical root is “${numericalRoot}-”.${chainFragment ? ` The ${presentation?.saturatedFragment ? "saturated " : ""}chain fragment is “${chainFragment}-”.` : ""}${presentation?.functionalComponent ? ` The complete functional component is “${presentation.functionalComponent}”.` : ""}`
       : ` La raíz numérica es «${numericalRoot}-».${chainFragment ? ` El fragmento de cadena${presentation?.saturatedFragment ? " saturada" : ""} es «${chainFragment}-».` : ""}${presentation?.functionalComponent ? ` El componente funcional completo es «${presentation.functionalComponent}».` : ""}`;
+    const polyeneMorphology = !ring && analysis.family === "acyclic" && !analysis.primaryFunctionalGroup
+      && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length
+      && simplePrefixes[analysis.doubleBondLocants.length]
+      ? isEnglish
+        ? ` The reference alkane is ${numericalRoot}ane. A-3.1 replaces “ane” with “a${simplePrefixes[analysis.doubleBondLocants.length]}ene”; all double-bond locants precede the parent in the historical name.`
+        : ` El alcano de referencia es ${numericalRoot}ano. A-3.1 sustituye «ano» por «a${simplePrefixes[analysis.doubleBondLocants.length]}eno»; todos los localizadores de dobles enlaces preceden al padre en el nombre histórico.`
+      : "";
     return isEnglish
-      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}.${morphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
-      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
+      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
+      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
   }
   if (role === "numbering") {
     if (analysis.family === "aromatic") {
@@ -6173,7 +6180,16 @@ export function resolveLegacyNomenclature(molecule: Molecule, analysis: Analysis
   const englishModel=buildLegacyEnglishNameModel(molecule,analysis,sourceName,options);
   const englishName=chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule(molecule)
     ?generateLegacyEnglishName(englishModel).name:"-";
-  const nativeSpanishName=chemicallyAvailable
+  const sourceBase = stripStereochemicalDescriptors(sourceName);
+  const nativePolyene = analysis.family === "acyclic" && !analysis.primaryFunctionalGroup
+    && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length
+    // The new spelling itself also claims polyene coverage, even if a caller
+    // supplies it alongside an unrelated analyzed family.
+    || !/ciclo/i.test(sourceBase) && /a-\d+(?:,\d+)+-(?:di|tri|tetra|penta|hexa|hepta|octa)eno$/i.test(sourceBase);
+  const nativeSpanishName=chemicallyAvailable && (!nativePolyene
+    || sourceBase === stripStereochemicalDescriptors(analysis.name)
+      && sourceName.slice(0, sourceName.length - sourceBase.length) === (englishModel.stereochemicalPrefix ?? "")
+      && verifyLegacyAcyclicPolyeneModel(molecule, englishModel))
     ?applyNomenclatureConvention(legacySpanishFormatterInput(analysis,sourceName),"iupac-1979-es","es"):"-";
   const spanishResolution=resolveLegacySpanish({graph:molecule,model:englishModel,englishName,nativeSpanishName,chemicallyAvailable});
   const project=(model:LegacyEnglishNameModel,name:string,translated=false):Analysis=>{

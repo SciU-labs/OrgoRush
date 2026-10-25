@@ -343,6 +343,21 @@ function formatSpanish1979Extension(baseName: string) {
   const substitutedAlkane = value.match(new RegExp(`^${parent}ano$`, "i"));
   if (substitutedAlkane?.[1] && hasSupportedSubstituentSequence(substitutedAlkane[1])) return value;
 
+  // A-3.1/A-3.4: keep the connecting -a- and move every double-bond
+  // locant ahead of the acyclic parent. Use only represented multiplicities
+  // and the existing simple substituent grammar; never translate a substring.
+  const polyene = value.match(new RegExp(`^(.*?)(${root})a-(\\d+(?:,\\d+)+)-(di|tri|tetra|penta|hexa|hepta|octa)eno$`, "i"));
+  if (polyene) {
+    const [, prefix, stem, locants, multiplier] = polyene;
+    const positions = locants.split(",").map(Number);
+    const count = IUPAC_ROOTS.indexOf(stem);
+    if (prefix && !hasSupportedSubstituentSequence(prefix)) return undefined;
+    if (positions.length !== substituentMultipliers[multiplier]
+      || positions.some((position, index) => position < 1 || position >= count
+        || index > 0 && position <= positions[index - 1])) return undefined;
+    return withTraditionalPrefix(prefix, `${locants}-${stem}a${multiplier}eno`);
+  }
+
   // C-304.1 and C-401.2 use these suffixes on a ring parent; the attachment
   // carbon of the exocyclic group is not included in the ring numbering.
   if (new RegExp(`^ciclo(?:${root})ano(?:carbaldehído)$`, "i").test(value)) return value;

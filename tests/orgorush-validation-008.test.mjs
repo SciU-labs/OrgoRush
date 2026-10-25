@@ -14,7 +14,9 @@ after(async () => chemistry?.close());
 
 const unsupported = {
   "2013-es": [23, 24, 71, 72], "1979-en": [71, 72],
-  "1979-es": [12, 13, 35, 43, 47, 49, 50, 51, 59, 65, 69, 71, 72],
+  // POLYENES-011 independently verifies A-3.1/A-3.4 coverage for 12, 13, 69.
+  // The original expected-name fixture and archived matrices stay immutable.
+  "1979-es": [35, 43, 47, 49, 50, 51, 59, 65, 71, 72],
 };
 function expectedVerdict(index, profile) {
   if (unsupported[profile].includes(index)) return "UNSUPPORTED";
@@ -106,7 +108,21 @@ test("VALIDATION-008 reproducibility ledger does not erase defects or pending hi
   for (const row of live.records) for (const profile of PROFILES) {
     const recorded = matrix.records.find(item => item.id === row.id).variants[0].profiles[profile];
     const current = row.variants[0].profiles[profile];
-    if (recorded.classification?.startsWith("FAIL-")) {
+    // POLYENES-011 expands exactly these three reference-backed ES cases.
+    // Preserve the archived UNSUPPORTED verdicts and every original name;
+    // current coverage must prove the already verified historical structure.
+    const verifiedPolyeneExtension = profile === "1979-es"
+      && ["V008-012", "V008-013", "V008-069"].includes(row.id);
+    if (verifiedPolyeneExtension) {
+      assert.equal(recorded.classification, "UNSUPPORTED");
+      assert.equal(recorded.observed, null);
+      assert.equal(current.classification, "PASS");
+      assert.equal(current.observed, recorded.expected);
+      assert.deepEqual(current.issues, []);
+      // Match the JSON archive's representation (absent undefined properties).
+      assert.deepEqual(JSON.parse(JSON.stringify(current.analysis)),
+        matrix.records.find(item => item.id === row.id).variants[0].profiles["1979-en"].analysis);
+    } else if (recorded.classification?.startsWith("FAIL-")) {
       assert.equal(current.classification, "PASS", `${row.id}/${profile}: confirmed defect corrected`);
       assert.equal(current.observed, recorded.expected, "independent expected name is unchanged");
     } else {
