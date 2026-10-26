@@ -1,0 +1,31 @@
+name: Integridad histórica de VALIDATION-014
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22, 24]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Contrato histórico y pruebas de corrupción
+        run: node --test --test-concurrency=1 tests/orgorush-validation-014.test.mjs tests/orgorush-validation-014-integrity.test.mjs
+      - name: Verificar las 600 observaciones sin Git histórico ni outputs
+        run: node scripts/validation-014-audit.mjs --verify

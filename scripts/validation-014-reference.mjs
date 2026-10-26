@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import {readFileSync,writeFileSync,existsSync,readdirSync} from 'node:fs';
+import {readFileSync,writeFileSync,existsSync,mkdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {execFileSync} from 'node:child_process';
+import {loadHistoricalSnapshot,assertCaptureSource,canonicalJSON,sha256,textBytes} from './validation-014-integrity.mjs';
 import {CanonizerUtil,Molecule,SmilesParser} from 'openchemlib';
 import {referenceParentCandidates,normalizeFormula} from '../tests/helpers/validation-008-reference.mjs';
 import {VALIDATION_CASES,PROFILES,TARGETS,BASELINE,SOURCES} from '../tests/fixtures/orgorush-validation-014.mjs';
@@ -63,13 +63,11 @@ export function identity(smiles,stereo=false){
  for(let i=0;i<m.getAllAtoms();i++)m.setAtomMass(i,0);
  return CanonizerUtil.getIDCode(m,stereo?CanonizerUtil.NORMAL:CanonizerUtil.NOSTEREO);
 }
-const cacheRoot=new URL('../outputs/validation-014/opsin/',import.meta.url);
 const frozenPath=new URL('../tests/fixtures/orgorush-validation-014.opsin.json',import.meta.url);
 let frozen;
 export function receipt(name){
- frozen??=existsSync(frozenPath)?new Map(JSON.parse(readFileSync(frozenPath,'utf8')).responses.map(r=>[r.name,r])):new Map();
- const cached=new URL(`${digest(name)}.json`,cacheRoot);
- const r=frozen.get(name)??(existsSync(cached)?JSON.parse(readFileSync(cached,'utf8')):null);
+ frozen??=new Map(JSON.parse(readFileSync(frozenPath,'utf8')).responses.map(r=>[r.name,Object.freeze(r)]));
+ const r=frozen.get(name)??null;
  if(r?.body)assert.equal(digest(r.body),r.sha256,`Corrupt independent reference ${name}`);
  return r;
 }
@@ -148,23 +146,7 @@ export function graphMapping(reference,actual){
 const root=new URL('../',import.meta.url),out=new URL('outputs/validation-014/',root);
 const read=p=>JSON.parse(readFileSync(p,'utf8'));
 const save=(p,v)=>writeFileSync(p,JSON.stringify(v,null,2)+'\n');
-function baselineData(){return existsSync(new URL('baseline.json',out))?read(new URL('baseline.json',out)):read(frozenPath).baseline;}
-function protect(){const b=baselineData();assert.equal(b.head,BASELINE,'Frozen audit baseline changed');for (const f of b.files) {
-  const bytes = readFileSync(new URL(f.path, root));
-
-  // Exact binary comparison first.
-  if (digest(bytes) === f.sha256) continue;
-
-  // Accept equivalent Windows/Linux line endings only.
-  const lf = bytes.toString('utf8').replace(/\r\n/g, '\n');
-  const crlf = lf.replace(/\n/g, '\r\n');
-
-  assert.ok(
-    !bytes.includes(0) &&
-      (digest(lf) === f.sha256 || digest(crlf) === f.sha256),
-    f.path + ': protected file changed beyond LF/CRLF normalization'
-  );
-}return digest(JSON.stringify(b.files));}
+function baselineData(){return read(frozenPath).baseline;}
 export const STATUSES=['PASS','FAIL-STRUCTURE','FAIL-NAME','FAIL-REASONING','UNSUPPORTED','PENDING-REFERENCE'];
 const issue=(code,classification,severity,detail,evidence={})=>({code,classification,severity,detail,evidence});
 export function classify(issues,available,backed){
@@ -252,8 +234,9 @@ export function assess(row,key,variant,reference){
 }
 function count(observations){return Object.fromEntries(STATUSES.map(s=>[s,observations.filter(p=>p.classification===s).length]));}
 export async function adjudicate(){
- const productionHash=protect(),baseline=baselineData();
- const collectedFixture=readFileSync(new URL('fixture-collected.mjs',out)),collector=readFileSync(new URL('collector-used.mjs',out));
+ const out=new URL('../outputs/validation-014/capture/',import.meta.url);
+ const productionHash=assertCaptureSource().legacyProductionHash,baseline=baselineData();
+ const collectedFixture=textBytes(readFileSync(new URL('fixture-collected.mjs',out))),collector=textBytes(readFileSync(new URL('collector-used.mjs',out)));
  const archived=(await import(`data:text/javascript,${encodeURIComponent(collectedFixture.toString())}`)).VALIDATION_CASES;
  assert.deepEqual(archived.map(r=>[r.id,r.smiles,r.constitutionId,r.referenceEnglish]),VALIDATION_CASES.map(r=>[r.id,r.smiles,r.constitutionId,r.referenceEnglish]));
  const batchReceipts=[],raw=[];
@@ -286,33 +269,95 @@ export async function adjudicate(){
  const observations=records.flatMap(r=>PROFILES.map(p=>r.profiles[p]));
  const matrix={schema:'orgorush-validation-014/v1',baseline:BASELINE,sources:SOURCES,scope:{constitutions:150,primaryObservations:450,complementary2013English:150,totalObservations:600,projection:'2013-en is a language projection, not a fourth independent engine',variants:'Nested diagnostics, never additional base observations'},
   counts:count(observations),byProfile:Object.fromEntries(PROFILES.map(p=>[p,count(records.map(r=>r.profiles[p]))])),byCategory:Object.fromEntries(Object.keys(TARGETS).map(c=>[c,Object.fromEntries(PROFILES.map(p=>[p,count(records.filter(r=>r.category===c).map(r=>r.profiles[p]))]))])),records,roundtrips:existsSync(new URL('roundtrips.json',out))?read(new URL('roundtrips.json',out)):null,
-  execution:{productionHash,protectedFiles:baseline.files.length,fixtureHash:digest(readFileSync(new URL('tests/fixtures/orgorush-validation-014.mjs',root))),referenceRevision:read(new URL('reference-revision.json',out)),batchReceipts,supplementReceipt,tools:{node:baseline.node,npm:baseline.npm,...baseline.tools}}};
- save(new URL('reports/orgorush-validation-014.matrix.json',root),matrix);await verifyMatrix();console.log(JSON.stringify({counts:matrix.counts,byProfile:matrix.byProfile}));return matrix;
+  execution:{productionHash,protectedFiles:baseline.files.length,fixtureHash:digest(textBytes(readFileSync(new URL('tests/fixtures/orgorush-validation-014.mjs',root)))),referenceRevision:read(new URL('reference-revision.json',out)),batchReceipts,supplementReceipt,tools:{node:baseline.node,npm:baseline.npm,...baseline.tools}}};
+ await verifyCapturedMatrix(matrix);const output=new URL('regenerated.matrix.json',out);save(output,matrix);console.log(JSON.stringify({output:output.href,counts:matrix.counts,byProfile:matrix.byProfile}));return matrix.counts;
 }
-export async function verifyMatrix(matrix=read(new URL('reports/orgorush-validation-014.matrix.json',root))){
- assert.equal(matrix.records.length,150);assert.equal(new Set(matrix.records.map(r=>r.id)).size,150);assert.equal(new Set(matrix.records.map(r=>identity(r.smiles))).size,150);
- const historicalData=baselineData().historical;
- const historical=new Set(historicalData.identities.map(i=>typeof i==='string'?i:i.id));
- for(const [category,n]of Object.entries(TARGETS))assert.equal(matrix.records.filter(r=>r.category===category).length,n);
- let total=0;for(const r of matrix.records){assert.ok(!historical.has(identity(r.smiles)),`Historical duplicate ${r.id}`);assert.equal(r.constitutionId,identity(r.smiles));assert.deepEqual(Object.keys(r.profiles),PROFILES);assert.equal(receipt(r.referenceEnglish).sha256,r.referenceSha256);assert.equal(witness(r.referenceEnglish,r.smiles).status,'PASS');
-  for(const p of PROFILES){total++;const v=r.profiles[p];assert.ok(STATUSES.includes(v.classification));assert.ok(Array.isArray(v.issues));if(v.classification==='PASS'){
-   assert.equal(v.available,true);assert.equal(v.issues.length,0);assert.equal(v.evidence.name.status,'PASS');assert.equal(v.evidence.graph.status,'PASS');assert.equal(v.evidence.normativeExactMatch,true);assert.equal(v.evidence.groups.status,'PASS');assert.equal(v.evidence.reasoningIntegrity.status,'PASS');
-  }}
- }assert.equal(total,600);assert.deepEqual(matrix.counts,count(matrix.records.flatMap(r=>Object.values(r.profiles))));
- protect();return{structures:150,observations:600,protected:true};
-}
-
-/** Offline scientific replay of the 600 captured base observations. This does
- * not rerun the production engine or turn a captured output into its oracle. */
-export async function replayMatrix(){
- const matrix=read(new URL('reports/orgorush-validation-014.matrix.json',root));await verifyMatrix(matrix);let checked=0;
- for(const row of matrix.records){
-  if(!row.replayGraph){for(const p of PROFILES){assert.equal(row.profiles[p].classification,'UNSUPPORTED');checked++;}continue;}
-  const profiles=Object.fromEntries(PROFILES.map(p=>{const v=row.profiles[p];return[p,{name:v.name,analysis:v.analysis,reasoning:v.reasoning.model,reasoningIntegrity:v.evidence.reasoningIntegrity}];}));
-  const graph=cmlGraph(JSON.parse(receipt(row.referenceEnglish).body).cml);
-  for(const p of PROFILES){const actual=assess(row,p,{graph:row.replayGraph,profiles},graph);assert.equal(actual.classification,row.profiles[p].classification,`${row.id}/${p}`);checked++;}
+const jsonValue=value=>JSON.parse(JSON.stringify(value));
+function recordedReasoning(profile,graph){
+ if(!profile.available)return null;
+ const model=profile.reasoning.model,steps=new Set(model.steps.map(s=>s.number));
+ assert.equal(steps.size,model.steps.length,'Duplicate reasoning step');
+ assert.equal(model.links.map(l=>l.text).join(''),profile.name,'Recorded reasoning does not reconstruct the name');
+ const ids=new Set(graph.atoms.map(a=>a.id));
+ const fragments=Object.entries(model.fragments).flatMap(([step,f])=>[f,...(f.additionalFragments??[])].map(f=>({...f,step})));
+ for(const f of fragments){
+  assert.ok(steps.has(f.step));const start=f.start??profile.name.indexOf(f.text);
+  assert.ok(start>=0);assert.equal(profile.name.slice(start,start+f.text.length),f.text);
  }
- assert.equal(checked,600);return{baseObservationsReplayed:checked,engineRerun:false};
+ for(const item of [...fragments,...model.links]){
+  for(const id of item.atomIds??[])assert.ok(ids.has(id),`Unknown reasoning atom ${id}`);
+  for(const target of [item.stepNumber,...(item.relatedStepNumbers??[])].filter(Boolean))assert.ok(steps.has(target));
+  for(const [a,b]of item.bondIds??[]){const edge=graph.bonds.find(([l,r])=>l===a&&r===b||l===b&&r===a);assert.ok(edge,'Missing reasoning bond');if(item.bondType)assert.equal(edge[2]??1,item.bondType==='double'?2:3);}
+ }
+ return{status:'PASS'};
+}
+function validateProvenance(matrix,snapshot){
+ const e=matrix.execution,b=snapshot.references.baseline,m=snapshot.manifest;
+ assert.equal(matrix.schema,snapshot.matrix.schema);assert.equal(matrix.baseline,BASELINE);assert.equal(b.head,BASELINE);assert.equal(m.baselineCommit,BASELINE);
+ assert.equal(e.protectedFiles,m.sourceFiles.length);assert.equal(e.productionHash,m.legacyProductionHash);assert.equal(digest(JSON.stringify(b.files)),m.legacyProductionHash);
+ assert.equal(e.fixtureHash,m.artifacts.find(f=>f.key==='corpus').sha256);
+ assert.equal(e.referenceRevision.finalFixtureSha256,e.fixtureHash);assert.equal(e.referenceRevision.engineInputsUnchanged,true);
+ assert.equal(e.referenceRevision.rows,150);assert.equal(e.batchReceipts.length,6);
+ for(let i=0;i<6;i++){
+  const batch=e.batchReceipts[i];assert.equal(batch.status,'COMPLETE');assert.equal(batch.batch,i+1);assert.equal(batch.observations,100);
+  assert.deepEqual(batch.ids,VALIDATION_CASES.slice(i*25,i*25+25).map(r=>r.id));
+  assert.equal(batch.productionHash,e.productionHash);assert.equal(batch.fixtureHash,e.referenceRevision.rawFixtureSha256);
+  assert.match(batch.bodySha256,/^[a-f0-9]{64}$/);assert.match(batch.collectorHash,/^[a-f0-9]{64}$/);
+  assert.equal(batch.collectorHash,e.batchReceipts[0].collectorHash);
+ }
+ if(e.supplementReceipt){assert.equal(e.supplementReceipt.productionHash,e.productionHash);assert.equal(new Set(e.supplementReceipt.ids).size,e.supplementReceipt.ids.length);assert.match(e.supplementReceipt.bodySha256,/^[a-f0-9]{64}$/);}
+ assert.deepEqual(matrix.scope,snapshot.matrix.scope);assert.deepEqual(matrix.sources,SOURCES);
+ const names=new Set();for(const r of snapshot.references.responses){assert.ok(!names.has(r.name),'Duplicate external receipt');names.add(r.name);assert.equal(digest(r.body),r.sha256,`Corrupt external receipt: ${r.name}`);assert.ok(r.url.startsWith('https://www.ebi.ac.uk/opsin/ws/'));}
+}
+function validateMatrixData(matrix,snapshot){
+ validateProvenance(matrix,snapshot);
+ assert.equal(matrix.records.length,150);assert.equal(new Set(matrix.records.map(r=>r.id)).size,150);assert.equal(new Set(matrix.records.map(r=>identity(r.smiles))).size,150);
+ const historical=new Set(snapshot.references.baseline.historical.identities.map(i=>typeof i==='string'?i:i.id));
+ let total=0;
+ for(const [index,row]of matrix.records.entries()){
+  const fixture=VALIDATION_CASES[index];for(const key of Object.keys(fixture))assert.deepEqual(row[key],fixture[key],`${fixture.id}/${key}`);
+  assert.ok(!historical.has(identity(row.smiles)),`Historical duplicate ${row.id}`);assert.equal(row.constitutionId,identity(row.smiles));assert.deepEqual(Object.keys(row.profiles),PROFILES);
+  assert.equal(receipt(row.referenceEnglish).sha256,row.referenceSha256);assert.equal(witness(row.referenceEnglish,row.smiles).status,'PASS');
+  const reference=cmlGraph(JSON.parse(receipt(row.referenceEnglish).body).cml);assert.ok(reference.valence.every(v=>v.valid));assert.equal(normalizeFormula(reference.formula),normalizeFormula(row.formula));
+  const profiles=Object.fromEntries(PROFILES.map(p=>{const v=row.profiles[p];return[p,{name:v.name,analysis:v.analysis,reasoning:v.reasoning.model,reasoningIntegrity:row.replayGraph?recordedReasoning(v,row.replayGraph):null}];}));
+  for(const p of PROFILES){
+   total++;const v=row.profiles[p];assert.ok(STATUSES.includes(v.classification));assert.ok(Array.isArray(v.issues));assert.equal(v.available,Boolean(v.name));assert.deepEqual(v.expected,row.expected[p]);
+   if(!row.replayGraph){assert.equal(v.classification,'UNSUPPORTED');assert.equal(v.available,false);continue;}
+   const actual=assess(row,p,{graph:row.replayGraph,profiles},reference);
+   assert.equal(actual.classification,v.classification,`${row.id}/${p}: independent replay verdict`);
+   assert.equal(actual.severity,v.severity,`${row.id}/${p}: severity`);
+   assert.deepEqual(actual.issues.map(i=>i.code),v.issues.map(i=>i.code),`${row.id}/${p}: issues`);
+   assert.deepEqual(jsonValue(actual.evidence),v.evidence,`${row.id}/${p}: evidence is not supported by replay`);
+   if(v.classification==='PASS'){
+    assert.equal(v.issues.length,0);assert.equal(actual.evidence.name.status,'PASS');assert.equal(actual.evidence.graph.status,'PASS');assert.equal(actual.evidence.normativeExactMatch,true);assert.equal(actual.evidence.groups.status,'PASS');assert.equal(actual.evidence.reasoningIntegrity.status,'PASS');
+   }
+  }
+ }
+ assert.equal(total,600);assert.deepEqual(matrix.counts,count(matrix.records.flatMap(r=>Object.values(r.profiles))));
+ for(const p of PROFILES)assert.deepEqual(matrix.byProfile[p],count(matrix.records.map(r=>r.profiles[p])));
+ for(const [c,n]of Object.entries(TARGETS)){const rows=matrix.records.filter(r=>r.category===c);assert.equal(rows.length,n);for(const p of PROFILES)assert.deepEqual(matrix.byCategory[c][p],count(rows.map(r=>r.profiles[p])));}
+ return{structures:150,observations:600,historyIntegrity:true,sourceTreeChecked:false};
+}
+/** Historical verification is independent of the current checkout and HEAD.
+ * The pinned artifact identity and the scientific replay are both mandatory. */
+export async function verifyMatrix(matrix,options={}){
+ const snapshot=loadHistoricalSnapshot(options);matrix??=snapshot.matrix;
+ const result=validateMatrixData(matrix,snapshot);
+ const expected=snapshot.manifest.artifacts.find(f=>f.key==='matrix').semanticSha256;
+ assert.equal(sha256(canonicalJSON(matrix)),expected,'Supplied matrix differs from the published historical snapshot');
+ const failures=matrix.records.filter(r=>Object.values(r.profiles).some(p=>p.classification.startsWith('FAIL')));
+ assert.equal(snapshot.defects.failedObservations,matrix.records.flatMap(r=>Object.values(r.profiles)).filter(p=>p.classification.startsWith('FAIL')).length);
+ assert.equal(snapshot.defects.affectedConstitutions,failures.length);
+ for(const d of snapshot.defects.definitions)for(const o of d.affectedObservations){const p=matrix.records.find(r=>r.id===o.caseId)?.profiles[o.profile];assert.ok(p);assert.equal(p.name,o.observed);assert.equal(p.classification,o.classification);}
+ return result;
+}
+export async function verifyCapturedMatrix(matrix){
+ const source=assertCaptureSource(),result=validateMatrixData(matrix,loadHistoricalSnapshot());
+ return{...result,sourceTreeChecked:true,source};
+}
+/** Verification already replays all 600 saved base observations, offline. */
+export async function replayMatrix(options={}){
+ await verifyMatrix(undefined,options);return{baseObservationsReplayed:600,engineRerun:false};
 }
 
 function reductionEvidence(r){return{id:r.id,smiles:r.smiles,referenceEnglish:r.referenceEnglish,reference:witness(r.referenceEnglish,r.smiles),
@@ -320,6 +365,7 @@ function reductionEvidence(r){return{id:r.id,smiles:r.smiles,referenceEnglish:r.
  englishProofs:Object.fromEntries(['2013-en','1979-en'].map(p=>[p,r.profiles?.[p]?.name?witness(r.profiles[p].name,r.smiles):null])),
  reasoning:Object.fromEntries(PROFILES.map(p=>[p,{integrity:r.profiles?.[p]?.reasoningIntegrity??null,hash:r.profiles?.[p]?.reasoning?digest(JSON.stringify(r.profiles[p].reasoning)):null}]))};}
 export async function writeReport(){
+ const generated=new URL('regenerated/',out);mkdirSync(generated,{recursive:true});
  const matrix=read(new URL('reports/orgorush-validation-014.matrix.json',root));await verifyMatrix(matrix);
  const reductions=read(new URL('reductions.json',out)).records.map(reductionEvidence),get=id=>reductions.find(r=>r.id===id);
  for(const r of reductions)assert.equal(r.reference.status,'PASS',`Unverified reduction reference ${r.id}`);
@@ -357,7 +403,7 @@ export async function writeReport(){
  const defects={schema:'orgorush-validation-014-defects/v1',failedObservations:matrix.records.flatMap(r=>Object.values(r.profiles)).filter(p=>p.classification.startsWith('FAIL')).length,
   affectedConstitutions:matrix.records.filter(r=>Object.values(r.profiles).some(p=>p.classification.startsWith('FAIL'))).length,
   probableRootCauseGroups:definitions.length,confirmedRootCauses:2,probableRootCauses:1,definitions,additionalControls:reductions};
- save(new URL('reports/orgorush-validation-014.defects.json',root),defects);
+ save(new URL('orgorush-validation-014.defects.json',generated),defects);
  // Stable issue identifiers live on all observations, including nested variants.
  for(const row of matrix.records)for(const p of PROFILES){const v=row.profiles[p];v.incidenceIds=definitions.filter(d=>d.affectedObservations.some(o=>o.caseId===row.id&&o.profile===p)).map(d=>`${row.id}/${p}/${d.id}`);
   v.nomenclatureDimensions={connectivity:v.evidence.name?.status??'NOT-APPLICABLE',nameValidity:v.available?(v.evidence.normativeExactMatch?'rule-derived reference match':'individual adjudication or pending'):'NOT-APPLICABLE',preferredName:'Separate from connectivity; no universal PIN certificate',historicalConvention:p.startsWith('1979')?(v.evidence.normativeExactMatch?'reviewed frozen 1979 construction':'pending or unavailable'):'NOT-APPLICABLE',localization:p.endsWith('-es')?'RSEQ lexicon plus applicable edition rules':'English reference or explicit projection'};
@@ -378,8 +424,8 @@ export async function writeReport(){
  const markdown=`# ORGORUSH-VALIDATION-014 — auditoría independiente\n\n## A. Resumen ejecutivo\n\nBaseline: \`${BASELINE}\`, rama main. Auditoría aditiva: los ${matrix.execution.protectedFiles} archivos originales conservan su SHA-256. Sin cambios de producción, dependencias o fixtures históricos; sin commit ni push.\n\n150 constituciones nuevas, ocho cuotas exactas. 450 observaciones principales y 150 controles complementarios 2013 EN: **600**. Las variantes son diagnósticos anidados. Resultado: **${Object.entries(matrix.counts).map(([s,n])=>`${n} ${s}`).join('; ')}**. Hay **${defects.failedObservations} observaciones fallidas, ${defects.affectedConstitutions} constituciones afectadas y ${definitions.length} grupos de causa** (dos causas confirmadas y una probable). Se encontraron tres defectos; no se inventan otros dos para completar una lista de cinco.\n\n${byProfile}\n\nLas 450 principales: ${Object.entries(primary).map(([s,n])=>`${s} ${n}`).join('; ')}. El inglés 2013 es una proyección lingüística del análisis actual, no un cuarto motor independiente.\n\n## B. Metodología e independencia\n\nSe propusieron 203 nombres externos antes de consultar producción; se seleccionaron los primeros válidos y nuevos por cuota. 15 candidatos anteriores al cierre se descartaron por identidad histórica o duplicada. Se compararon identidades constitucionales canónicas sin estereoquímica ni isótopos frente a 1337 identidades históricas obtenidas de 390 fuentes locales, JSON, fixtures y recibos. Ninguna estructura se sustituyó por fallar OrgoRush. Los diez casos estereoquímicos también tienen constituciones diferentes.\n\nOPSIN interpreta nombres de referencia y nombres ingleses observados. Se conservan ${read(frozenPath).responses.length} recibos crudos, URL, estado HTTP, cuerpo, fecha y SHA-256 en el nuevo fixture .opsin.json. La selección tiene 150 interpretaciones SUCCESS. La versión del servicio no fue suministrada; no se inventa. Una respuesta 404/WARNING no demuestra por sí sola un nombre químicamente erróneo. No se empleó PubChem ni se afirma corroboración suya.\n\nEl lector CML independiente reconstruye átomos, órdenes, cargas, fórmula con hidrógenos explícitos, grupos y rango ciclomático. Se comprueban valencias y correspondencia por isomorfismo acotado a 50000 visitas. OpenChemLib 9.25.0 aporta una segunda representación estructural; también lo usa producción, por lo que su concordancia no se trata como independencia algorítmica absoluta. La enumeración acíclica de padres procede del oráculo independiente anterior, sin reutilizar el selector del motor; conserva sus límites de desempate alfabético y grupos complejos.\n\nLas expectativas 2013 y 1979 son aplicaciones derivadas de reglas, no ejemplos supuestamente impresos en las fuentes. OPSIN no certifica preferencia normativa. Se separan conectividad, validez, preferencia, convención y lengua. Los nombres equivalentes no preferidos no se clasifican P0/P1. Las alternativas sin revisión completa quedan pendientes. Una coincidencia española exige la referencia léxica y el nombre inglés externo correspondiente, además de las comprobaciones del grafo, padre y explicación.\n\nSe preservaron las capturas originales en seis lotes de 25, con 100 observaciones por lote. El fixture inicialmente capturado tiene hash \`${matrix.execution.referenceRevision.rawFixtureSha256}\`; el definitivo \`${matrix.execution.fixtureHash}\`. Una corrección del arnés de referencia sobre la API addBond/setBondType de OCL obligó a revisar metadatos aromáticos: los 150 IDs, SMILES, identidades, referencias inglesas y fórmulas permanecieron idénticos. Se archivaron productor y fixture originales y se verificó la revisión, sin repetir ni alterar resultados del motor. También se corrigieron criterios del auditor que confundían las letras de fusión con índices consecutivos, el ancla O-alquilo de un éster y los halógenos prefijos con grupos de sufijo. La envoltura del resultado exportado se desempaqueta antes de comparar su SMILES. Ninguna de estas correcciones modifica producción.\n\n17 SMILES válidos fueron rechazados al importar. Para 12 grafos neutros de elementos editables se añadió una ruta directa CML → grafo ordinario del API de edición. Esta ruta **no simula una importación exitosa ni una prueba de clics de UI**. Los cinco restantes, con cargas o P/B, mantienen rechazo explícito. No se fuerza disponibilidad de nombres.\n\n## C. Cobertura\n\n${category}\n\nCada perfil aparece exactamente 150 veces. La matriz enumera átomos/enlaces pesados, conteos de órdenes Kekulé, elementos, fórmula, componentes, grupos, rango ciclomático y paridades CML. El rango ciclomático no pretende ser una lista única de todos los ciclos posibles de un policiclo.\n\n## D. Resultados, exclusiones y pendientes\n\nSe conservan todas las incidencias y se elige la clasificación principal en orden estructura → nombre → razonamiento. Un rechazo seguro no es PASS. Las excepciones de ejecución sobre grafos válidos se distinguen de la exclusión deliberada. No se encontró una excepción de análisis que se haya reclasificado como rechazo seguro.\n\n${unsupported.length} constituciones tienen al menos un perfil UNSUPPORTED (${matrix.counts.UNSUPPORTED} observaciones). Los 15 casos limits son válidos y quedan rechazados en los cuatro perfiles: purina/quinolina, benzofurano/indol, adamantano y cubano sustituidos, sales y amonio, funciones S/P/B. Es una medida de cobertura, sin evidencia para llamarla regresión de disponibilidad en estructuras nuevas. El importador documenta sus barreras de carga y elementos en app/openchemlib-adapter.ts:217–243 y de policiclos en :335–346; las exclusiones particulares de nomenclatura se guardan literalmente en la matriz. Los rechazos regulares se etiquetan como oportunidad de cobertura futura; no se les atribuye una intención histórica no documentada.\n\nLegacy ES tiene 53 rechazos, frente a 23 de Legacy EN y 22 de cada perfil 2013. Ejemplos: ésteres/amidas/nitrilos funcionalizados pueden tener nombre inglés Legacy verificable y resolución española no disponible. V014-125 queda rechazado en Legacy pero produce el nombre incorrecto en 2013: el rechazo de un perfil no oculta ese fallo del otro.\n\n**${matrix.counts['PENDING-REFERENCE']} observaciones pendientes**, de ${new Set(pending.map(r=>r[0])).size} constituciones. Incluyen radicales ramificados con nombres equivalentes no preferidos, construcciones históricas cíclicas, diferencias de orden léxico español y formas alternativas de amida/nitrilo. El generador léxico del fixture no es un traductor normativo completo: por ejemplo, el orden inglés methoxy/methyl no determina el español metil/metoxi. Esas discrepancias no prueban un defecto. En V014-028 la unión vocálica española del metilideno requiere revisión específica.\n\n${table(['Caso','Perfil','Nombre pendiente'],pending)}\n\n## E. Análisis normativo\n\n2013 conserva la longitud del padre antes de maximizar enlaces múltiples dentro del alcance aplicable P-44; 1979 A-3/C-13 selecciona primero las insaturaciones después de la función principal. V014-045 ilustra una diferencia legítima: el padre actual tetradecano conserva el radical butadienilo, mientras que Legacy usa 5-pentyl-1,3-tridecadiene. El error actual es la construcción del radical, no que ambos perfiles usen padres distintos.\n\nV014-125 muestra un alcance que UNSATURATION-013 no cubrió: una rama =CH2 con función prioritaria. El nombre inglés observado representa otra constitución según OPSIN; P-29 distingue methyl (CH3–) de methylidene (CH2=). La reducción D1 confirma el fallo y los controles saturado y de un carbono menos no lo presentan.\n\nLos radicales históricos 1-methylethyl y similares no se sustituyen automáticamente por la preferencia de 2013. La RSEQ se usa para terminología española, sin imponer reglas actuales al perfil 1979. Las referencias no resueltas siguen explícitas.\n\n## F. «Cómo se obtiene» e invariancias\n\nSe usaron buildActiveIupacReasoning, sus fragmentos y enlaces reales. Se comprobó integridad, existencia de pasos/átomos/enlaces, reconstrucción del texto, numeración acíclica, correspondencia de grupos funcionales y ausencia de mutación. El isomorfismo vincula los IDs reales a los átomos CML; el oráculo comprueba la composición del padre cuando es aplicable. Las revisiones no certifican automáticamente cada frase pedagógica ni la minimalidad de todos los padres cíclicos.\n\nResultado principal: **0 FAIL-REASONING independientes**. Esto no absuelve las explicaciones de los nombres incorrectos: D1 conserva además una explicación y un resaltado de «metil» para una rama =CH2. Se registra bajo su defecto químico prioritario y no se cuenta dos veces como causa nueva.\n\n${variants.length} variantes con grafo: almacenamiento original, IDs/orden invertidos, reflexión visual y SMILES equivalente con mapas. Hay ${matrix.records.flatMap(r=>r.rejectedVariants).length} variantes alternativas rechazadas por el importador. Sus diagnósticos no aumentan las 600 observaciones. Los 568 SMILES exportados preservan constitución y configuración; 532 se reimportan y pasan la correspondencia independiente, y 36 exportaciones de los grafos CML siguen rechazadas por la barrera de policiclos. Las diez constituciones estereoquímicas y sus variantes conservan el estado especificado; se comparó identidad isomérica con OPSIN, sin confundir reflexión visual con inversión química.\n\n## G. Defectos y reproducciones\n\n${definitions.map(d=>`### ${d.id} — ${d.severity}: ${d.title}\n\nCaso ${d.caseId}. ${d.criterion}\n\nSMILES reducido: \`${d.minimal.smiles}\`. Salidas: ${PROFILES.filter(p=>d.minimal.names[p]).map(p=>`${p}: **${d.minimal.names[p]}**`).join('; ')}. ${d.difference}\n\n${d.rootCause} Confianza: ${d.confidence}. Controles: ${d.controls.map(c=>`${c.id} (\`${c.smiles}\`)`).join(', ')}. La reducción es el mínimo encontrado; no una demostración exhaustiva. ${d.impact}\n\nReferencias: ${d.references.filter(Boolean).map(s=>`[${s.sections}](${s.url})`).join(', ')}.\n`).join('\n')}\n\nReproducir: \`node scripts/validation-014-audit.mjs --reproduce\`. Los controles adicionales no completan cuotas ni cuentan como nuevas observaciones del corpus. El JSON de defectos conserva las salidas de todos los perfiles, recibos externos, controles, funciones posiblemente implicadas e IDs de incidencias.\n\n## H. Regresiones históricas\n\nSe ejecutó de nuevo VALIDATION-008 en un archivo de outputs separado, sin sobrescribir su ledger. Su modo strict-backed y el comparador UNSATURATION-013, que encadena POLYENES-011/FIX-009, conservaron **198 PASS, 16 UNSUPPORTED y 2 PENDING-REFERENCE**. El comparador también verifica los dos cambios de fixture autorizados por 013 y la identidad del JavaScript protegido de QUALITY-010. LOCALIZATION-012 y los demás tests históricos están incluidos en la pasada general por archivos. No se exige igualdad literal con el motor anterior a las correcciones 011/013.\n\n## I. Validación técnica y trazabilidad\n\n${technical}\n\nSuite general: **${complete?'COMPLETE':'EN CURSO'}**, ${suite.length}/173 archivos, ejecutados individualmente con \`node --test --test-concurrency=1 tests/<archivo>\`; agregado: ${JSON.stringify(suiteCounts)}. No se presenta como una ejecución única de npm test. Una sola pasada general; las pruebas dirigidas del nuevo auditor se ejecutaron durante su desarrollo y no se suman de nuevo al agregado. No se aumentaron timeouts. Las cinco omisiones históricas deben contrastarse por nombre al cerrar la pasada.\n\nHerramientas: ${Object.entries(matrix.execution.tools).map(([k,v])=>`${k} ${v}`).join('; ')}. Hash de los ${matrix.execution.protectedFiles} archivos protegidos: \`${matrix.execution.productionHash}\`. El hash final del fixture es \`${matrix.execution.fixtureHash}\`. Cada recibo de lote contiene su hash de cuerpo, productor, fixture, IDs, duración y estado COMPLETE. Los seis lotes y el suplemento se verifican antes de adjudicar; las fechas de ejecución quedan fuera de los resultados químicos comparables.\n\nArchivos permanentes nuevos: scripts/validation-014-audit.mjs; scripts/validation-014-reference.mjs; tests/fixtures/orgorush-validation-014.mjs; tests/fixtures/orgorush-validation-014.opsin.json; tests/orgorush-validation-014.test.mjs; reports/orgorush-validation-014.md; reports/orgorush-validation-014.matrix.json; reports/orgorush-validation-014.defects.json. Los logs/capturas temporales están en outputs/validation-014/.\n\nComandos: \`--collect\` recoge seis lotes con reanudación estricta de hashes; \`--roundtrip\` verifica exportación/reimportación; \`--adjudicate\` contrasta las capturas con referencias; \`--verify\` verifica cuotas, novedad, fuentes, evidencia PASS e integridad de originales; \`--report\` escribe informe y defectos. Las referencias externas están congeladas para verificación offline. Recoger y adjudicar de cero requiere primero el baseline de protección y las capturas originales descritas en los manifiestos; --verify y los tests del auditor usan el baseline congelado en el fixture cuando no existen outputs.\n\n## J. Propuesta FIX-015\n\n1. **D01, P0:** transmitir/comprobar el orden del enlace de unión en la ruta funcional. Añadir reproducción reducida, variante con función secundaria y control saturado. Verificar identidad del nombre completo en todos los perfiles; no ampliar la nomenclatura Legacy por accidente.\n2. **D02, P1:** construir multiplicadores/vocales de radicales poliinsaturados y traducir sus localizadores completos. Mantener el padre 2013 y la selección histórica; controlar dobles/triples mixtos y el radical monoinsaturado que ya funciona.\n3. **D03, P2:** reconocer el padre heterocíclico antes de normalizar sufijos y conservar el localizador del sustituyente al proyectar al inglés. Comparar tiofeno sin sustitución y piridina sustituida.\n4. **Referencias:** revisar las 32 observaciones pendientes por preferencia, sintaxis histórica y alfabeto español antes de convertirlas a PASS o defecto. Las diferencias equivalentes no justifican cambios químicos.\n5. **Cobertura posterior separada:** evaluar barreras de policiclos, carga, S/P/B y disponibilidad Legacy ES con referencias propias. No presentar esa ampliación como reparación de los cinco nombres fallidos.\n\nNinguna de estas correcciones se aplica en 014.\n\n### Fuentes consultadas\n\n${sources}\n- **Multiplicidad adicional**: [P-31.1](https://iupac.qmul.ac.uk/BlueBook/P3.html), consulta 2026-10-25.\n- **Identidad externa**: [OPSIN](https://www.ebi.ac.uk/opsin/), recibos individuales completos en el fixture; sirve para nombre → estructura, no para certificar PIN.\n`;
  const closurePath=new URL('final-summary.json',out),closure=existsSync(closurePath)?read(closurePath):null;
  if(closure)matrix.execution.finalVerification=closure;
- save(new URL('reports/orgorush-validation-014.matrix.json',root),matrix);
+ save(new URL('orgorush-validation-014.matrix.json',generated),matrix);
  const appendix=closure?`\n### Cierre verificable de ejecución\n\n${closure.completedFiles} archivos completados en la pasada general: ${JSON.stringify(closure.counts)}. Los nombres de las ${closure.skipNames.length} omisiones coinciden con la pasada histórica: ${closure.skipNames.join('; ')}.\n\nEl test nuevo 014 se ajustó durante la pasada general. Se ejecutó de nuevo únicamente ese archivo tras cerrar el arnés: ${JSON.stringify(closure.finalDiagnosticTest.counts)}, exit ${closure.finalDiagnosticTest.exitCode}. Esa ejecución dirigida no se suma otra vez a los totales de la pasada. Los archivos originales permanecen idénticos al baseline; no se afirma que los diagnósticos nuevos fueran inmutables durante todo su desarrollo.\n\nLas funciones capture y makeVariants coinciden por hash con el productor archivado de los seis lotes. Se reprodujeron las nueve capturas reducidas y los 600 veredictos base pueden repetirse offline con \`node scripts/validation-014-audit.mjs --replay\`. Este último comando adjudica observaciones guardadas; no vuelve a ejecutar el motor.\n`:'';
- writeFileSync(new URL('reports/orgorush-validation-014.md',root),markdown+appendix);protect();console.log(JSON.stringify({report:'written',counts:matrix.counts,defects:definitions.length,suiteCompleted:suite.length}));
+ writeFileSync(new URL('orgorush-validation-014.md',generated),markdown+appendix);await verifyMatrix();console.log(JSON.stringify({report:generated.href,counts:matrix.counts,defects:definitions.length,suiteCompleted:suite.length}));
  return defects;
 }

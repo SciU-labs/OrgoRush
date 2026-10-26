@@ -27,7 +27,7 @@ test('014 independent parser rejects a wrong molecule, without using preference 
 });
 test('014 matrix contains 600 base observations and no unbacked PASS',async()=>{
  const m=JSON.parse(readFileSync(new URL('../reports/orgorush-validation-014.matrix.json',import.meta.url),'utf8'));
- assert.deepEqual(await verifyMatrix(m),{structures:150,observations:600,protected:true});
+ assert.deepEqual(await verifyMatrix(m),{structures:150,observations:600,historyIntegrity:true,sourceTreeChecked:false});
  const r=m.records.find(r=>r.id==='V014-125');assert.equal(r.profiles['2013-es'].classification,'FAIL-STRUCTURE');
  const counterfeit=structuredClone(m);const v=counterfeit.records[0].profiles[PROFILES[0]];v.classification='PASS';v.evidence.name.status='PENDING-REFERENCE';
  await assert.rejects(()=>verifyMatrix(counterfeit));
