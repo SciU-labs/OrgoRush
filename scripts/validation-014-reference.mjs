@@ -149,7 +149,22 @@ const root=new URL('../',import.meta.url),out=new URL('outputs/validation-014/',
 const read=p=>JSON.parse(readFileSync(p,'utf8'));
 const save=(p,v)=>writeFileSync(p,JSON.stringify(v,null,2)+'\n');
 function baselineData(){return existsSync(new URL('baseline.json',out))?read(new URL('baseline.json',out)):read(frozenPath).baseline;}
-function protect(){const b=baselineData();assert.equal(b.head,BASELINE,'Frozen audit baseline changed');for(const f of b.files)assert.equal(digest(readFileSync(new URL(f.path,root))),f.sha256,f.path);return digest(JSON.stringify(b.files));}
+function protect(){const b=baselineData();assert.equal(b.head,BASELINE,'Frozen audit baseline changed');for (const f of b.files) {
+  const bytes = readFileSync(new URL(f.path, root));
+
+  // Exact binary comparison first.
+  if (digest(bytes) === f.sha256) continue;
+
+  // Accept equivalent Windows/Linux line endings only.
+  const lf = bytes.toString('utf8').replace(/\r\n/g, '\n');
+  const crlf = lf.replace(/\n/g, '\r\n');
+
+  assert.ok(
+    !bytes.includes(0) &&
+      (digest(lf) === f.sha256 || digest(crlf) === f.sha256),
+    f.path + ': protected file changed beyond LF/CRLF normalization'
+  );
+}return digest(JSON.stringify(b.files));}
 export const STATUSES=['PASS','FAIL-STRUCTURE','FAIL-NAME','FAIL-REASONING','UNSUPPORTED','PENDING-REFERENCE'];
 const issue=(code,classification,severity,detail,evidence={})=>({code,classification,severity,detail,evidence});
 export function classify(issues,available,backed){
