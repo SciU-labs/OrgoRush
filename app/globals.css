@@ -5236,6 +5236,12 @@ footer strong {
   text-underline-offset: 2px;
 }
 
+.footer-license-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
 .footer-note {
   display: flex;
   align-items: center;

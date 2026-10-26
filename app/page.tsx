@@ -14809,6 +14809,25 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         >
           {t("Alcance, privacidad y reporte de errores")}
         </a>
+        <div className="footer-license-links">
+          <a
+            className="footer-instagram"
+            href="https://github.com/sciu-lab/Hydrocarbon-Lab"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Código fuente / Source code
+          </a>
+          <a
+            className="footer-instagram"
+            href="https://github.com/sciu-lab/Hydrocarbon-Lab/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GNU AGPLv3 (AGPL-3.0-only)
+          </a>
+        </div>
+        <p className="footer-copyright">Copyright © 2026 SCIU · GNU AGPLv3</p>
         <p className="footer-note">
           {t("Los hidrógenos se completan automáticamente respetando las valencias de C, O, N y halógenos.")}
           <button
@@ -14828,7 +14847,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           aria-hidden={!showCreatorCredit}
         >
           <span>{t("Una experiencia creada por")}</span>
-          <strong>{t("Profe Alex Sáez")}</strong>
+          <strong>SCIU</strong>
           <small>{t("Química que se construye.")}</small>
         </div>
       </footer>

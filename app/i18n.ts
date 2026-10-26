@@ -584,7 +584,6 @@ const ENGLISH_UI: Record<string, string> = {
   "Descubrir crédito del autor": "Reveal author credit",
   "Hay algo escondido aquí": "There is something hidden here",
   "Una experiencia creada por": "An experience created by",
-  "Profe Alex Sáez": "Prof. Alex Sáez",
   "Química que se construye.": "Chemistry you can build.",
   "Hidrocarburo": "Hydrocarbon",
   "Aromático": "Aromatic",

@@ -13,10 +13,27 @@ pueden compartirse directamente mediante `/es/` y `/en/`.
 - Español: https://sciu-lab.github.io/Hydrocarbon-Lab/es/
 - English: https://sciu-lab.github.io/Hydrocarbon-Lab/en/
 
+## Licencia
+
+Copyright © 2026 SCIU. SCIU es el seudónimo público del titular de los derechos
+del proyecto; no es una empresa constituida.
+
+OrgoRush es software libre bajo la GNU Affero General Public License, versión 3
+únicamente (`AGPL-3.0-only`). Consulta el texto íntegro en [`LICENSE`](LICENSE).
+La licencia del proyecto no cambia las licencias ni las atribuciones de
+dependencias y materiales de terceros.
+
 ## English overview
 
 OrgoRush is a bilingual educational organic-chemistry editor and nomenclature
 trainer. [Open the English app](https://sciu-lab.github.io/Hydrocarbon-Lab/en/).
+Copyright © 2026 SCIU. SCIU is the public pseudonym of the project's individual
+copyright holder, not an incorporated company.
+
+OrgoRush is free software licensed under the GNU Affero General Public License,
+version 3 only (`AGPL-3.0-only`); see the complete text in [`LICENSE`](LICENSE).
+Third-party dependencies and materials retain their own licenses and
+attributions.
 The suggested IUPAC profile follows the implemented Blue Book 2013+ rules; the
 IUPAC 1979 Legacy profile covers a narrower, explicitly supported subset. An
 unavailable name means that the selected profile does not cover that structure;
@@ -47,7 +64,7 @@ To report a problem, [open a GitHub issue](https://github.com/sciu-lab/Hydrocarb
 Include the page URL, browser, language, mode, steps to reproduce, and the seed
 or question number when relevant. Do not include student names or personal
 data. This information describes current scope and data flows; it does not
-claim that every structure is supported or make a software-license statement.
+claim that every structure is supported.
 
 La versión de GitHub Pages se genera automáticamente desde la rama `main` con
 `npm run build:pages`. En GitHub Pages, el historial queda guardado localmente
@@ -75,9 +92,9 @@ alquinos, halogenados, alcoholes, aldehídos, cetonas, ácidos carboxílicos, é
 ésteres, aminas, amidas, carbociclos simples, aromáticos, E/Z, nitrilos y nitro.
 La nomenclatura tiene un alcance delimitado; no es un sistema universal para
 cualquier estructura orgánica. Véanse los informes y corpus de referencia en
-`docs/` y `tests/reference-corpus/`. El código está disponible en este repositorio. Actualmente no
-incluye un archivo de licencia explícita; la política de reutilización debe
-aclararse antes de presentarlo como software con licencia de código abierto.
+`docs/` y `tests/reference-corpus/`. El código del proyecto está disponible bajo
+la GNU AGPLv3 únicamente (`AGPL-3.0-only`); consulta [`LICENSE`](LICENSE).
+Las dependencias y materiales de terceros conservan sus licencias y atribuciones.
 
 ## Ejecutar la versión pública localmente
 
