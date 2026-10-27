@@ -205,6 +205,8 @@ import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substitue
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { activateReasoningReference, cancelReasoningHover, scheduleReasoningHover, scrollToReasoningStep } from "./reasoning-name-navigation";
+import { buildReasoningVisualTargets } from "./reasoning-visual-targets";
+import { ReasoningStepNumber, ReasoningVisualOverlay, useReasoningVisualInteraction } from "./reasoning-visual-interaction";
 import {
   GUIDED_TOUR_STEP_COUNT,
   INITIAL_GUIDED_TOUR_STATE,
@@ -8319,6 +8321,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const setActiveReasoningStep = (step: string | null) => setActiveReasoningReference(step ? { key: reasoningReferenceKey, molecule, step } : null);
   const setReasoningPeekOpen = (open: boolean) => setReasoningPeekContext(open ? { key: reasoningReferenceKey, molecule } : null);
   const reasoningHelpVisible = showReasoningHelp || reasoningPeekOpen;
+  const reasoningVisualsEnabled = !practiceOpen && !isolatedBuild && reasoningHelpVisible && showIupacName
+    && displayedNameCopyable && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary)
+    && sourceNameOverride === null && (!isPristineInitialMolecule || showPristineMethaneName);
+  const reasoningVisualTargets = buildReasoningVisualTargets({ molecule, analysis: activeAnalysis,
+    steps: localizedReasoningSteps, fragments: reasoningNameFragments, enabled: reasoningVisualsEnabled });
+  const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualTargets)}`;
+  const { target: reasoningVisualTarget, activate: activateReasoningVisual, clear: clearReasoningVisual } =
+    useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled);
   const openReasoningHelpFromUserAction = () => {
     const shouldAdvanceTour = !showReasoningHelp && guidedTourState.open && guidedTourState.step === 3;
     setShowReasoningHelp(true);
@@ -8330,6 +8340,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     timer.current = null;
   };
   const navigateToReasoningStep = (stepNumber: string, fromHover: boolean) => {
+    clearReasoningVisual();
     reasoningPointerNavigated.current = true;
     cancelReasoningHover(reasoningHoverTimer);
     clearReasoningTimer(reasoningScrollTimer);
@@ -12614,6 +12625,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 </g>
               )}
 
+              {viewMode !== "condensed" && <ReasoningVisualOverlay target={reasoningVisualTarget}
+                positions={displayPositions} showLocants={!effectiveShowNumbering}
+                semiDeveloped={viewMode === "semi-developed"} numberOffsets={skeletalNumberBadgeOffsets} />}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
                 const element = getElement(atom);
@@ -12833,6 +12847,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               {viewMode === "condensed" && condensedRenderModel?.available && (
                 <CondensedMoleculeSvg
                   model={condensedRenderModel}
+                  reasoningTarget={reasoningVisualTarget}
                   selectedAtomId={selectedId}
                   showNumbering={effectiveShowNumbering}
                   language={language}
@@ -14823,7 +14838,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 <ol>
                   {localizedReasoningSteps.map((step) => (
                     <li key={step.number} id={`iupac-reasoning-step-${step.number}`} className={activeReasoningStep === step.number ? "reasoning-step-target" : undefined}>
-                      <span>{step.number}</span>
+                      <ReasoningStepNumber number={step.number} title={step.title} language={language}
+                        target={reasoningVisualTargets[step.number]} active={reasoningVisualTarget?.stepNumber === step.number}
+                        onActivate={(target) => { setSelectedUnsaturationReference(null); activateReasoningVisual(target); }} />
                       <div>
                         <strong>{step.title}</strong>
                         <p><ChemicalNotationText value={step.explanation} /></p>

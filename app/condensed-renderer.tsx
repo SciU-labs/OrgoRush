@@ -1,8 +1,10 @@
 import type { KeyboardEvent, MouseEvent } from "react";
 import type { CondensedRenderModel, CondensedToken } from "./condensed-layout";
+import type { ReasoningVisualTarget } from "./reasoning-visual-targets";
 
 type CondensedRendererProps = {
   model: CondensedRenderModel;
+  reasoningTarget?: ReasoningVisualTarget | null;
   selectedAtomId: number | null;
   showNumbering: boolean;
   language: "es" | "en";
@@ -39,6 +41,7 @@ function activateBond(
 
 export function CondensedMoleculeSvg({
   model,
+  reasoningTarget,
   selectedAtomId,
   showNumbering,
   language,
@@ -73,6 +76,14 @@ export function CondensedMoleculeSvg({
               }}
             >
               <rect className="condensed-atom-hit-target" x={-token.width / 2 - 5} y={-26} width={token.width + 10} height={52} rx={9} data-editor-only="true" />
+              {reasoningTarget?.atomIds.includes(token.atomId) && <g className="reasoning-visual-overlay" data-editor-only="true" aria-hidden="true" pointerEvents="none">
+                <rect className="reasoning-visual-atom" data-reasoning-atom={token.atomId}
+                  x={-token.width / 2 - 3} y={-23} width={token.width + 6} height={46} rx={9} />
+                {!showNumbering && reasoningTarget.locants.some(([id]) => id === token.atomId) &&
+                  <g className="reasoning-visual-locant" data-reasoning-locant={token.atomId} transform="translate(0 -34)">
+                    <circle r="11" /><text textAnchor="middle" dominantBaseline="central">{reasoningTarget.locants.find(([id]) => id === token.atomId)![1]}</text>
+                  </g>}
+              </g>}
               {isSelected && <rect className="condensed-selection-halo" x={-token.width / 2 - 2} y={-22} width={token.width + 4} height={44} rx={8} data-editor-only="true" />}
               {showNumbering && token.locant !== undefined && (
                 <text className="condensed-locant" textAnchor="middle" y={-34} fontSize={15}>{token.locant}</text>
@@ -120,6 +131,11 @@ export function CondensedMoleculeSvg({
               onKeyDown={(event) => activateBond(event, token, onActivateBond)}
             >
               <rect className="condensed-bond-hit-target" x={-token.width / 2} y={-27} width={token.width} height={54} rx={7} data-editor-only="true" />
+              {reasoningTarget?.bondIds.some(([a, b]) => a === token.atomIds[0] && b === token.atomIds[1]
+                || a === token.atomIds[1] && b === token.atomIds[0]) && <g className="reasoning-visual-overlay" data-editor-only="true" aria-hidden="true" pointerEvents="none">
+                <rect className="reasoning-visual-atom" data-reasoning-bond={token.atomIds.join(":")}
+                  x={-token.width / 2} y={-16} width={token.width} height={32} rx={7} />
+              </g>}
               {token.text && <text textAnchor="middle" dominantBaseline="central" fontSize={fontSize}>{token.text}</text>}
             </g>
           );
