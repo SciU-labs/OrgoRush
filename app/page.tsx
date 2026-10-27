@@ -572,6 +572,7 @@ type NamedSubstituent = {
   complex: boolean;
   atomIds: number[];
   aryl?: MonomethylPhenyl;
+  unsaturatedBonds?: { locant: number; order: BondOrder; atomIds: [number, number] }[];
 };
 
 type Analysis = {
@@ -1959,6 +1960,11 @@ function nameSubstituent(
     sortName: stripForAlphabetizing(name),
     complex: branchParts.length > 0 || Boolean(unsaturatedPrefixName),
     atomIds: component,
+    unsaturatedBonds: chosen.path.slice(0, -1).flatMap((atomId, index) => {
+      const next = chosen.path[index + 1];
+      const order = bondOrders?.get(bondKey(atomId, next)) ?? 1;
+      return order > 1 ? [{ locant: index + 1, order, atomIds: [atomId, next] as [number, number] }] : [];
+    }),
   };
 }
 
@@ -1972,13 +1978,15 @@ function makeUnsaturatedSubstituentName(
   if (carbonCount === 2 && tripleLocants.length === 1 && tripleLocants[0] === 1) return undefined;
   const root = alkaneRoots[carbonCount];
   if (!root) return undefined;
+  const multiplicity = (count: number) => count > 1 ? simplePrefixes[count] ?? `${count}` : "";
   const doublePart = doubleLocants.length
-    ? `${doubleLocants.join(",")}-en`
+    ? `${doubleLocants.join(",")}-${multiplicity(doubleLocants.length)}en`
     : "";
   const triplePart = tripleLocants.length
-    ? `${tripleLocants.join(",")}-in`
+    ? `${tripleLocants.join(",")}-${multiplicity(tripleLocants.length)}in`
     : "";
-  return `${root}-${doublePart}${doublePart && triplePart ? "-" : ""}${triplePart}-1-il`;
+  const rootVowel = doubleLocants.length > 1 || tripleLocants.length > 1 ? "a" : "";
+  return `${root}${rootVowel}-${doublePart}${doublePart && triplePart ? "-" : ""}${triplePart}-1-il`;
 }
 
 function makeChainName(length: number, doubleLocants: number[], tripleLocants: number[]) {
@@ -2336,13 +2344,15 @@ export function verifyCurrentMethylideneModel(molecule: Molecule, analysis: Pick
   "mainChain" | "substituents" | "doubleBondLocants" | "tripleBondLocants">): boolean {
   try {
     const n = analysis.mainChain.length;
-    const s = analysis.substituents[0];
+    const methylidenes = analysis.substituents.filter(substituent => substituent.name === "metilideno");
+    const s = methylidenes[0];
+    const skeleton = carbonSkeleton(molecule);
     if (n < 3 || n > 100 || new Set(analysis.mainChain).size !== n
-      || analysis.substituents.length !== 1 || s.name !== "metilideno" || s.atomIds.length !== 1
+      || methylidenes.length !== 1 || s.atomIds.length !== 1
       || !Number.isInteger(s.locant) || s.locant < 1 || s.locant > n || analysis.tripleBondLocants.length
-      || analysis.mainChain.includes(s.atomIds[0]) || molecule.atoms.length !== n + 1
-      || molecule.bonds.length !== molecule.atoms.length - 1
-      || molecule.atoms.some(a => getElement(a) !== "C" || a.charge || getValenceUsed(a.id, molecule) > 4)
+      || analysis.mainChain.includes(s.atomIds[0]) || skeleton.atoms.length !== n + 1
+      || skeleton.bonds.length !== skeleton.atoms.length - 1
+      || skeleton.atoms.some(a => getElement(a) !== "C" || a.charge || getValenceUsed(a.id, molecule) > 4)
       || getImplicitHydrogens(s.atomIds[0], molecule) !== 2) return false;
     const locants = analysis.doubleBondLocants;
     if (locants.some((l, i) => !Number.isInteger(l) || l < 1 || l >= n || i > 0 && l <= locants[i - 1])) return false;
@@ -2354,7 +2364,7 @@ export function verifyCurrentMethylideneModel(molecule: Molecule, analysis: Pick
     expected.atoms.push({ id: n, element: "C", charge: undefined });
     expected.bonds.push([s.locant - 1, n, 2]);
     forced.set(n, s.atomIds[0]);
-    return legacyGraphsIdentical(expected, molecule, forced);
+    return legacyGraphsIdentical(expected, skeleton, forced);
   } catch { return false; }
 }
 
@@ -3561,7 +3571,8 @@ function analyzeFunctionalAcyclic(
     path.forEach((atomId, index) => {
       for (const neighbor of adjacency.get(atomId) ?? []) {
         if (pathSet.has(neighbor)) continue;
-        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true);
+        const attachmentOrder = bondOrders.get(bondKey(atomId, neighbor)) ?? 1;
+        const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true, attachmentOrder);
         carbonSubstituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
@@ -4737,9 +4748,15 @@ function unsaturatedSubstituentReasoning(molecule: Molecule, analysis: Analysis,
     ? translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName
     : analysis.chainName;
   const bondTypes = [...new Set(unsaturatedBonds.map(({ order }) => order === 3 ? "triple" : "double"))];
-  const bondText = bondTypes.map((type) => language === "en"
-    ? type === "triple" ? "the C≡C triple bond" : "the C=C double bond"
-    : type === "triple" ? "el enlace triple C≡C" : "el enlace doble C=C").join(language === "en" ? " and " : " y ");
+  const bondText = bondTypes.map((type) => {
+    const count = unsaturatedBonds.filter(({ order }) => (order === 3 ? "triple" : "double") === type).length;
+    if (language === "en") return type === "triple"
+      ? count === 1 ? "the C≡C triple bond" : `the ${count} C≡C triple bonds`
+      : count === 1 ? "the C=C double bond" : `the ${count} C=C double bonds`;
+    return type === "triple"
+      ? count === 1 ? "el enlace triple C≡C" : `los ${count} enlaces triples C≡C`
+      : count === 1 ? "el enlace doble C=C" : `los ${count} enlaces dobles C=C`;
+  }).join(language === "en" ? " and " : " y ");
   const groupText = bondTypes.length === 1
     ? language === "en"
       ? bondTypes[0] === "triple" ? "the ethynyl substituent" : "the ethenyl substituent"
@@ -5897,7 +5914,7 @@ export function buildActiveIupacReasoning(input: {
     : spanishSteps;
   const methylidene = convention === "current" && verifyCurrentMethylideneModel(molecule, analysis)
     && displayedName === (language === "en" ? translateSpanishIupacForDisplay(analysis.name) : analysis.name)
-    ? analysis.substituents[0] : undefined;
+    ? analysis.substituents.find(substituent => substituent.name === "metilideno") : undefined;
   const methylideneText = methylidene ? language === "en"
     ? `The =CH₂ group is attached by a double bond at C${methylidene.locant}: methylidene, not the single-bonded –CH₃ methyl group (P-29.2, P-56.4). This double bond is represented by the prefix; the parent-chain double bonds retain their own locants.`
     : `El grupo =CH₂ se une mediante un enlace doble en C${methylidene.locant}: metilideno, distinto del metilo –CH₃ unido por enlace sencillo (P-29.2, P-56.4). Ese doble enlace se representa en el prefijo; los dobles enlaces del padre conservan sus propios localizadores.` : "";
@@ -5951,6 +5968,42 @@ export function buildActiveIupacReasoning(input: {
       if (same) Object.assign(same, item);
       else if (previous) (previous.additionalFragments ??= []).push(item);
       else fragments[numberingStep.number] = item;
+    }
+  }
+  if (canHighlight) {
+    const substituentStep = steps.find(step => step.nameRole === "substituent");
+    if (substituentStep) {
+      for (const substituent of analysis.substituents) {
+        const translatedName = language === "en"
+          ? translateSpanishIupacForDisplay(substituent.name) || substituent.name
+          : substituent.name;
+        const nameStart = displayedName.indexOf(translatedName);
+        if (nameStart < 0 || !substituent.unsaturatedBonds?.length) continue;
+        for (const order of [2, 3] as const) {
+          const bonds = substituent.unsaturatedBonds.filter(bond => bond.order === order);
+          if (!bonds.length) continue;
+          const locants = [...new Set(bonds.map(bond => bond.locant))].sort((a, b) => a - b);
+          const multiplier = locants.length > 1 ? simplePrefixes[locants.length] ?? `${locants.length}` : "";
+          const suffix = language === "en" && order === 3 ? "yn" : order === 2 ? "en" : "in";
+          const text = `${locants.join(",")}-${multiplier}${suffix}`;
+          const start = displayedName.indexOf(text, nameStart);
+          if (start < 0) continue;
+          const fragment: ReasoningNameFragment = {
+            text, start, kind: "unsaturation",
+            label: language === "en" ? "Multiple bonds in the substituent" : "Enlaces múltiples del sustituyente",
+            explanation: language === "en"
+              ? `The ${bonds.length} ${order === 2 ? "C=C double" : "C≡C triple"} bond${bonds.length === 1 ? "" : "s"} in this substituent are represented by ${text}.`
+              : `Los ${bonds.length} ${order === 2 ? "enlaces dobles C=C" : "enlaces triples C≡C"} de este sustituyente se representan con ${text}.`,
+            atomIds: [...new Set(bonds.flatMap(bond => bond.atomIds))],
+            bondIds: bonds.map(bond => bond.atomIds),
+            bondType: order === 2 ? "double" : "triple",
+            semanticId: `unsaturation:substituent:${substituent.locant}:${order}`,
+          };
+          const existing = fragments[substituentStep.number];
+          if (existing) (existing.additionalFragments ??= []).push(fragment);
+          else fragments[substituentStep.number] = fragment;
+        }
+      }
     }
   }
   if (canHighlight && nitrogenSubstituents.length

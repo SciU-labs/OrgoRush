@@ -8,6 +8,9 @@ import { createExerciseChemistryOracles } from "../../app/exercise-chemistry-ora
 export async function loadExerciseChemistry() {
   const server = await createServer({
     root: fileURLToPath(new URL("../..", import.meta.url)),
+    // Keep test-server cleanup away from the managed node_modules/.vite link.
+    // On Windows Vite attempts to remove that junction when the server closes.
+    cacheDir: fileURLToPath(new URL("../../node_modules/.vite-exercise-tests", import.meta.url)),
     configFile: false, logLevel: "error", appType: "custom", plugins: [react()],
     server: { middlewareMode: true, hmr: false, ws: false },
   });

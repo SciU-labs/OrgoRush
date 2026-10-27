@@ -21,7 +21,11 @@ const spanishLocantedBranchedAlkoxy = new RegExp(
 const spanishAlkylNoun = new RegExp(`(${alkylRootPattern})ilo(?=$|[\\s,.)-])`, "g");
 const spanishAlkylSubstituent = new RegExp(`(${alkylRootPattern})il(?=[a-z]|$|[\\s,.)-])`, "g");
 const spanishUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})(en|in)il`, "g");
-const spanishNumberedUnsaturatedSubstituent = new RegExp(`(${alkylRootPattern})-(\\d+)-(en|in)-(\\d+)-il(?=$|[\\s,.)-])`, "g");
+const unsaturationMultipliers = "di|tri|tetra|penta|hexa|hepta|octa|nona|deca";
+const spanishNumberedUnsaturatedSubstituent = new RegExp(
+  `(${alkylRootPattern})(a?)-(\\d+(?:,\\d+)*-)(?:(${unsaturationMultipliers}))?(en|in)-(\\d+)-il(?=$|[\\s,.)-])`,
+  "g",
+);
 const spanishParentRoot = new RegExp(`(${IUPAC_ROOTS.filter((root) =>
   englishIupacRoot(root) !== root).join("|")})(?=(?:an|en|in)(?:[oa]|$|[-\\d]))`, "g");
 
@@ -30,8 +34,9 @@ function translateSpanishAlkylMorphemes(value: string) {
   return value
     // Translate the complete divalent prefix before the monovalent alkyl pass.
     .replace(/(^|[-,(])(\d+(?:,\d+)*-)?metilideno(?=[a-z]|$|[-,)])/g, "$1$2methylidene")
-    .replace(spanishNumberedUnsaturatedSubstituent, (_match, root: string, bondLocant: string, unsaturation: string, freeValenceLocant: string) =>
-      `${englishIupacRoot(root)}-${bondLocant}-${unsaturation === "en" ? "en" : "yn"}-${freeValenceLocant}-yl`)
+    .replace(spanishNumberedUnsaturatedSubstituent, (_match, root: string, rootVowel: string, bondLocants: string,
+      multiplier: string = "", unsaturation: string, freeValenceLocant: string) =>
+      `${englishIupacRoot(root)}${rootVowel}-${bondLocants}${multiplier}${unsaturation === "en" ? "en" : "yn"}-${freeValenceLocant}-yl`)
     .replace(spanishUnsaturatedSubstituent, (_match, root: string, unsaturation: string) =>
       `${englishIupacRoot(root)}${unsaturation === "en" ? "enyl" : "ynyl"}`)
     .replace(spanishAlkylNoun, translate)
@@ -253,6 +258,9 @@ export function normalizeTraditionalUnsaturationNotation(value: string) {
   // alkene suffix and must never cause a preceding substituent locant to be
   // rearranged as a multiple-bond locant.
   if (/(?:benceno|naftaleno|antraceno|fenantreno|indeno|fluoreno|azuleno|pireno|fluoranteno|bifenileno|trifenileno)$/i.test(value)) return value;
+  // Retained heterocycle names are translated as complete parent units below;
+  // their terminal "eno" is likewise not an acyclic alkene suffix.
+  if (translateHeterocycles(value) !== value) return value;
 
   const substituentPrefix = "(?:(?:\\d+(?:,\\d+)*-(?:fluoro|cloro|bromo|yodo|metil|etil|hidroxi|amino)-)+)";
   const prefixed = value.match(

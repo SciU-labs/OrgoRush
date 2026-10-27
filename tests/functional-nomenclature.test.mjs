@@ -20,6 +20,7 @@ let canvasCoordinateScaleForCarbonCount;
 before(async () => {
   server = await createServer({
     root: projectRoot,
+    cacheDir: fileURLToPath(new URL("../node_modules/.vite-exercise-tests", import.meta.url)),
     configFile: false,
     logLevel: "error",
     appType: "custom",
