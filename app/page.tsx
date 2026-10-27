@@ -8325,7 +8325,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     && displayedNameCopyable && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary)
     && sourceNameOverride === null && (!isPristineInitialMolecule || showPristineMethaneName);
   const reasoningVisualTargets = buildReasoningVisualTargets({ molecule, analysis: activeAnalysis,
-    steps: localizedReasoningSteps, fragments: reasoningNameFragments, enabled: reasoningVisualsEnabled });
+    steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualTargets)}`;
   const { target: reasoningVisualTarget, activate: activateReasoningVisual, clear: clearReasoningVisual } =
     useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled);

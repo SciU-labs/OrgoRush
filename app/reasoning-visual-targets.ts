@@ -2,7 +2,7 @@ import type { FunctionalReasoningAnalysis } from "./reasoning-functional-groups"
 import type { ReasoningNameEvidence, ReasoningNameFragment } from "./reasoning-name-fragments";
 
 export type ReasoningVisualGraph = {
-  atoms: readonly { id: number }[];
+  atoms: readonly { id: number; element?: string }[];
   bonds: readonly (readonly [number, number, ...unknown[]])[];
 };
 export type ReasoningVisualTarget = {
@@ -15,15 +15,21 @@ type VisualStep = {
   number: string;
   nameRole?: ReasoningNameEvidence["kind"];
   unsaturationContributions?: readonly ReasoningNameEvidence[];
+  numberingComparison?: {
+    criterion: "principal-function";
+    selectedLocants: readonly number[];
+    comparison: -1 | 0 | 1;
+  };
 };
 const bondKey = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
 
 /** Project the active naming analysis and its evidence. This does no chemical analysis. */
-export function buildReasoningVisualTargets({ molecule, analysis, steps, fragments, enabled }: {
+export function buildReasoningVisualTargets({ molecule, analysis, steps, fragments, displayedName, enabled }: {
   molecule: ReasoningVisualGraph;
   analysis: FunctionalReasoningAnalysis & { retainedFused?: { status: string; locants?: ReadonlyMap<number, number | string> } };
   steps: readonly VisualStep[];
   fragments: Readonly<Record<string, ReasoningNameFragment>>;
+  displayedName?: string;
   enabled: boolean;
 }): Record<string, ReasoningVisualTarget> {
   const targets: Record<string, ReasoningVisualTarget> = {};
@@ -56,8 +62,41 @@ export function buildReasoningVisualTargets({ molecule, analysis, steps, fragmen
     };
     const fragment = fragments[step.number];
     const evidence = fragment ? [fragment, ...(fragment.additionalFragments ?? [])] : [];
-    if (step.nameRole === "parent" || step.nameRole === "numbering") {
+    if (step.nameRole === "parent") {
       addRegion(analysis.mainChain);
+    } else if (step.nameRole === "numbering") {
+      const selected = step.numberingComparison?.selectedLocants ?? [];
+      const labels = new Set(selected.map(String));
+      // A resolved principal-function comparison explains these selected locants,
+      // not the reverse orientation or unrelated locants elsewhere in the name.
+      if (!selected.length || step.numberingComparison?.comparison === 0) {
+        for (const part of evidence) {
+          if (part.kind !== "numbering") continue;
+          if (part.atomIds?.length) {
+            for (const id of part.atomIds) {
+              const locant = numbering.get(id);
+              if (locant === undefined) valid = false;
+              else labels.add(String(locant));
+            }
+          } else if (part.locant !== undefined) labels.add(String(part.locant));
+          else if (displayedName) {
+            const start = part.start ?? displayedName.indexOf(part.text);
+            const written = start >= 0 && displayedName.slice(start, start + part.text.length) === part.text
+              && (part.start !== undefined || displayedName.lastIndexOf(part.text) === start);
+            // Parse only the complete verified locant fragment, never explanatory prose.
+            const values = part.text.split(",");
+            if (written && values.every(value => [...numbering.values()].some(locant => String(locant) === value))) {
+              for (const value of values) labels.add(value);
+            }
+          }
+        }
+      }
+      for (const label of labels) {
+        const matches = [...numbering].filter(([id, locant]) => String(locant) === label && parent.has(id)
+          && molecule.atoms.some(atom => atom.id === id && (atom.element ?? "C") === "C"));
+        if (matches.length !== 1) valid = false;
+        else addAtoms([matches[0][0]]);
+      }
     } else if (step.nameRole === "substituent") {
       // The existing step describes this analyzed set, including each real attachment.
       for (const substituent of analysis.substituents) {
