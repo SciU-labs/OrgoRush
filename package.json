@@ -13,7 +13,7 @@
     "preview:pages": "vite preview --config vite.pages.config.ts",
     "build": "bash scripts/build-verified.sh",
     "build:pages": "vite build --config vite.pages.config.ts",
-    "validate:pages": "node scripts/validate-pages.mjs",
+    "validate:pages": "node scripts/validate-pages.mjs && node --test tests/pages-seo.spec.mjs",
     "typecheck": "tsc --noEmit --incremental false",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --test --test-concurrency=1 tests/*.test.mjs",
