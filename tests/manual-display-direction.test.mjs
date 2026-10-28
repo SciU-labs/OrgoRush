@@ -96,6 +96,8 @@ function harness(sourceGraph = graphWithChain(), selectedId = 2, viewMode = "sem
     undoPristineStates: [],
     future: [],
     futurePristineStates: [],
+    soundEvents: [],
+    playSound(event) { context.soundEvents.push(event); },
     isCarbonAtom: (atom) => atom.element === "C" || atom.element === undefined,
     getElement: (atom) => atom.element ?? "C",
     elementNames: { C: "carbono" },
