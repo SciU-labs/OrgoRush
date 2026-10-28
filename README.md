@@ -1,6 +1,6 @@
-# Hydrocarbon Lab
+# OrgoRush
 
-## Hydrocarbon Lab / Laboratorio de Hidrocarburos
+## Química orgánica interactiva / Interactive Organic Chemistry
 
 Simulación didáctica bilingüe (ES/EN) para construir y analizar estructuras de
 química orgánica en vista semidesarrollada o esquelética. Incluye hidrocarburos,
@@ -9,9 +9,9 @@ una biblioteca personal importable y exportable mediante archivos `.quimica`.
 El selector de idioma recuerda la preferencia del visitante y las versiones
 pueden compartirse directamente mediante `/es/` y `/en/`.
 
-- GitHub Pages: https://sciu-lab.github.io/Hydrocarbon-Lab/
-- Español: https://sciu-lab.github.io/Hydrocarbon-Lab/es/
-- English: https://sciu-lab.github.io/Hydrocarbon-Lab/en/
+- GitHub Pages: https://sciu-labs.github.io/OrgoRush/
+- Español: https://sciu-labs.github.io/OrgoRush/es/
+- English: https://sciu-labs.github.io/OrgoRush/en/
 
 ## Licencia
 
@@ -26,7 +26,7 @@ dependencias y materiales de terceros.
 ## English overview
 
 OrgoRush is a bilingual educational organic-chemistry editor and nomenclature
-trainer. [Open the English app](https://sciu-lab.github.io/Hydrocarbon-Lab/en/).
+trainer. [Open the English app](https://sciu-labs.github.io/OrgoRush/en/).
 Copyright © 2026 SCIU. SCIU is the public pseudonym of the project's individual
 copyright holder, not an incorporated company.
 
@@ -60,7 +60,7 @@ identity is available; these requests are not necessarily initiated by a
 separate manual action. Practice questions and their grading run locally. Do
 not enter personal or sensitive information.
 
-To report a problem, [open a GitHub issue](https://github.com/sciu-lab/Hydrocarbon-Lab/issues/new?template=bug_report.md).
+To report a problem, [open a GitHub issue](https://github.com/SciU-labs/OrgoRush/issues/new?template=bug_report.md).
 Include the page URL, browser, language, mode, steps to reproduce, and the seed
 or question number when relevant. Do not include student names or personal
 data. This information describes current scope and data flows; it does not
@@ -107,7 +107,7 @@ npm run validate:pages
 npm run preview:pages
 ```
 
-Abra la URL indicada por Vite bajo `/Hydrocarbon-Lab/`, o directamente sus rutas
+Abra la URL indicada por Vite bajo `/OrgoRush/`, o directamente sus rutas
 `es/` y `en/`. El build estático se publica desde `dist-pages` por
 `.github/workflows/deploy-pages.yml`; no necesita Worker ni base de datos.
 Las cachés de Pages y Vinext están separadas para evitar módulos optimizados

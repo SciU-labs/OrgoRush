@@ -14873,7 +14873,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         </a>
         <a
           className="footer-public-guide"
-          href="https://github.com/sciu-lab/Hydrocarbon-Lab/blob/main/README.md#english-overview"
+          href="https://github.com/SciU-labs/OrgoRush/blob/main/README.md#english-overview"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -14882,7 +14882,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         <div className="footer-license-links">
           <a
             className="footer-instagram"
-            href="https://github.com/sciu-lab/Hydrocarbon-Lab"
+            href="https://github.com/SciU-labs/OrgoRush"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -14890,7 +14890,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           </a>
           <a
             className="footer-instagram"
-            href="https://github.com/sciu-lab/Hydrocarbon-Lab/blob/main/LICENSE"
+            href="https://github.com/SciU-labs/OrgoRush/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer"
           >

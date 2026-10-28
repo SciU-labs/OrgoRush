@@ -54,7 +54,7 @@ async function fetchJson(fetchImpl: FetchLike, url: string, signal?: AbortSignal
     signal,
     headers: {
       accept: "application/json",
-      "Api-User-Agent": "OrgoRush/0.1 (https://github.com/sciu-lab/Hydrocarbon-Lab)",
+      "Api-User-Agent": "OrgoRush/0.1 (https://github.com/SciU-labs/OrgoRush)",
     },
   });
   if (!response.ok) throw new ServiceError("Wikidata request failed");

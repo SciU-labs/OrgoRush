@@ -9,13 +9,13 @@ test("public English guide documents scope, persistence, data flows, licensing a
 
   for (const expected of [
     "## English overview",
-    "https://sciu-lab.github.io/Hydrocarbon-Lab/en/",
+    "https://sciu-labs.github.io/OrgoRush/en/",
     "IUPAC 1979 Legacy profile covers a narrower, explicitly supported subset",
     "are lost when the page is reloaded",
     "Google Analytics",
     "OPSIN, PubChem, Wikidata, and Wikipedia",
     "not necessarily initiated by a separate manual action",
-    "https://github.com/sciu-lab/Hydrocarbon-Lab/issues/new?template=bug_report.md",
+    "https://github.com/SciU-labs/OrgoRush/issues/new?template=bug_report.md",
     "GNU Affero General Public License",
     "AGPL-3.0-only",
     "Copyright © 2026 SCIU",
@@ -29,11 +29,11 @@ test("public English guide documents scope, persistence, data flows, licensing a
 test("the application exposes the public guide from its localized footer", () => {
   const page = read("../app/page.tsx");
   const i18n = read("../app/i18n.ts");
-  assert.match(page, /href="https:\/\/github\.com\/sciu-lab\/Hydrocarbon-Lab\/blob\/main\/README\.md#english-overview"/);
+  assert.match(page, /href="https:\/\/github\.com\/SciU-labs\/OrgoRush\/blob\/main\/README\.md#english-overview"/);
   assert.match(page, /t\("Alcance, privacidad y reporte de errores"\)/);
   assert.match(i18n, /"Alcance, privacidad y reporte de errores": "Scope, privacy, and bug reports"/);
   assert.match(page, /Código fuente \/ Source code/);
-  assert.match(page, /Hydrocarbon-Lab\/blob\/main\/LICENSE/);
+  assert.match(page, /SciU-labs\/OrgoRush\/blob\/main\/LICENSE/);
   assert.match(page, /Copyright © 2026 SCIU/);
   assert.match(page, /<strong>SCIU<\/strong>/);
 });

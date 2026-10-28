@@ -7,7 +7,7 @@ const outputDirectory = fileURLToPath(new URL("./dist-pages", import.meta.url));
 
 export default defineConfig({
   root: pagesRoot,
-  base: "/Hydrocarbon-Lab/",
+  base: "/OrgoRush/",
   cacheDir: fileURLToPath(new URL("./node_modules/.vite-pages", import.meta.url)),
   plugins: [react()],
   publicDir: fileURLToPath(new URL("./public", import.meta.url)),

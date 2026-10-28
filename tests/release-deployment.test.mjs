@@ -28,14 +28,17 @@ test("static builds use the local library on preview and custom hosts; server bu
 test("artifact gate catches a wrong repository base, missing assets and missing static persistence marker", async () => {
   const root = await mkdtemp(join(tmpdir(), "hydrocarbon-rc1-"));
   try {
+    assert.match(await readFile(new URL("../vite.pages.config.ts", import.meta.url), "utf8"), /base: "\/OrgoRush\/"/);
     for (const folder of ["es", "en", "assets"]) await mkdir(join(root, folder));
-    const html = '<html data-lab-deployment="static"><script type="module" src="/Hydrocarbon-Lab/assets/app.js"></script></html>';
-    await writeFile(join(root, "index.html"), '<a href="es/">ES</a><a href="en/">EN</a>');
+    const html = '<html data-lab-deployment="static"><script type="module" src="/OrgoRush/assets/app.js"></script></html>';
+    await writeFile(join(root, "index.html"), '<a href="/OrgoRush/es/">ES</a><a href="/OrgoRush/en/">EN</a>');
     for (const language of ["es", "en"]) await writeFile(join(root, language, "index.html"), html);
     await assert.rejects(validatePagesArtifact(root), /ENOENT/);
     await writeFile(join(root, "assets", "app.js"), "console.log('fixture')");
     assert.equal((await validatePagesArtifact(root)).assets, 1);
-    await writeFile(join(root, "es", "index.html"), html.replace("/Hydrocarbon-Lab/assets/", "/assets/"));
+    await writeFile(join(root, "es", "index.html"), html.replace("/OrgoRush/assets/", "/Hydrocarbon-Lab/assets/"));
+    await assert.rejects(validatePagesArtifact(root), /Outside repository base/);
+    await writeFile(join(root, "es", "index.html"), html.replace("/OrgoRush/assets/", "/assets/"));
     await assert.rejects(validatePagesArtifact(root), /Outside repository base/);
     await writeFile(join(root, "es", "index.html"), html.replace(' data-lab-deployment="static"', ""));
     await assert.rejects(validatePagesArtifact(root), /local persistence/);

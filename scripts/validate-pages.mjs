@@ -3,7 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 import { resolve, relative, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
-export async function validatePagesArtifact(directory = "dist-pages", base = "/Hydrocarbon-Lab/") {
+export async function validatePagesArtifact(directory = "dist-pages", base = "/OrgoRush/") {
   const root = resolve(directory);
   const checked = new Set();
   async function asset(url, parent = "") {

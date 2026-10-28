@@ -1,5 +1,12 @@
 # Release Hardening — RC1
 
+> **Estado tras migración (28 de octubre de 2026):** el proyecto ahora se publica
+> desde `SciU-labs/OrgoRush`, en
+> [GitHub Pages](https://sciu-labs.github.io/OrgoRush/), con rutas en
+> [español](https://sciu-labs.github.io/OrgoRush/es/) e
+> [inglés](https://sciu-labs.github.io/OrgoRush/en/). Los resultados y enlaces
+> de esta auditoría registran el deployment histórico probado el 2 de octubre.
+
 Auditoría del 2 de octubre de 2026, Windows, sobre `main`. Alcance del release:
 la aplicación estática de GitHub Pages. No se añadieron funcionalidades,
 química, telemetría, persistencia de sesiones ni límites arbitrarios de preguntas.
