@@ -1,0 +1,3 @@
+# Sound feedback manual QA
+
+In the lab, open Settings → Preferences and enable Sound effects. On ordinary laptop speakers, add carbons rapidly, attach a ring, change a bond order, delete an atom, and attempt a valence-invalid edit. Listen for short, distinct sounds without harsh peaks. In Practice, submit one correct and one incorrect answer. In Exam, select answers and confirm that no correctness cue is played before submission. Disable sound and repeat, then reload to confirm the setting persists; re-enable it and repeat. Check both Spanish and English labels, keyboard access, and a browser where audio is blocked or unavailable. Use a fresh browser profile to check the enabled-by-default setting and first interaction.

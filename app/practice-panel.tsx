@@ -1,5 +1,6 @@
 "use client";
 
+import { playSound } from "./sound";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode, RefObject } from "react";
 import type { AppLanguage } from "./i18n.ts";
@@ -273,15 +274,22 @@ export function PracticePanel({ language, onLanguageChange, onBackToLab, generat
   const t = (text: string) => uiText(language, text);
   const localized = localizePracticeState(session, language);
   const structure = useCallback((molecule: GeneratedMolecule) => setSession((state) => updatePracticeStructure(state, molecule)), []);
+  const lastChecked = useRef<PracticeState | null>(null);
   const actions: ViewActions = {
     structure,
     answer: (value) => setSession((state) => updatePracticeAnswer(state, value)),
     check: () => {
       // Capture the press once, outside React's replayable state updater.
       const submitted = clock.read();
-      setSession((state) => hasPracticeQuestion(state) && isBuildQuestion(state.question)
-        ? evaluateStructure ? submitPracticeStructure(state, language, submitted, evaluateStructure) : state
-        : submitPracticeAnswer(state, language, submitted));
+      if (lastChecked.current === session) return;
+      const next = hasPracticeQuestion(session) && isBuildQuestion(session.question)
+        ? evaluateStructure ? submitPracticeStructure(session, language, submitted, evaluateStructure) : session
+        : submitPracticeAnswer(session, language, submitted);
+      if ((next.phase === "FEEDBACK" || next.phase === "CORRECTION_FEEDBACK") && next !== session) {
+        lastChecked.current = session;
+        playSound(next.correct ? "correct" : "incorrect");
+      }
+      setSession(next);
     },
     next: () => setSession((state) => nextPracticeQuestion(localizePracticeState(state, language), generate)),
     end: () => setSession((state) => endPractice(localizePracticeState(state, language))),

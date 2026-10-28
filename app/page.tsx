@@ -15,6 +15,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { playSound, readSoundEnabled, setSoundEnabled, writeSoundEnabled } from "./sound";
 import { PracticePanel } from "./practice-panel";
 import { DocxExportPanel } from "./docx-export-panel";
 import type { BuildEditorProps } from "./practice-build-editor";
@@ -7558,6 +7559,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [historyClearing, setHistoryClearing] = useState(false);
   const [savedBusy, setSavedBusy] = useState(false);
   const [historyTransferNotice, setHistoryTransferNotice] = useState<HistoryTransferNotice | null>(null);
+  const [soundEnabled, setSoundPreference] = useState(true);
+  useEffect(() => {
+    let enabled = true;
+    try { enabled = readSoundEnabled(window.localStorage); } catch { /* Storage can be blocked. */ }
+    setSoundEnabled(enabled); setSoundPreference(enabled);
+  }, []);
   const [showHydrogens, setShowHydrogens] = useState(true);
   const [showNumbering, setShowNumbering] = useState(!isolatedBuild);
   const [showSteroidRingLabels, setShowSteroidRingLabels] = useState(true);
@@ -8862,6 +8869,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   };
 
   const showValenceError = (message: string, duration = 3600) => {
+    playSound("invalid");
     if (valenceAlertTimer.current !== null) {
       window.clearTimeout(valenceAlertTimer.current);
     }
@@ -9379,6 +9387,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       `Carbono añadido al ${elementNames[getElement(selectedAtom)]} con enlace ${getBondOrderLabel(newBondOrder)}. El nombre se recalculó automáticamente.`,
     );
     if (!committed) return;
+    playSound("atom");
     previousSelectedId.current = selectedAtom.id;
     setSelectedId(nextId);
     dispatchGuidedTour({ type: "carbon-added" });
@@ -9489,7 +9498,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     toggleStereochemistry = false,
   ) => {
     const changed = cycleBondOrder(a, b, requestedOrder, toggleStereochemistry);
-    if (changed) dispatchGuidedTour({ type: "bond-order-changed" });
+    if (changed) { playSound("modify"); dispatchGuidedTour({ type: "bond-order-changed" }); }
     return changed;
   };
 
@@ -9584,6 +9593,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     };
 
     if (!commit(next, `${template.label} añadido. La cadena principal y el nombre se recalcularon.`)) return;
+    playSound("atom");
     setPlacementTool(null);
     previousSelectedId.current = selectedAtom.id;
     setSelectedId(idMap[0]);
@@ -9678,6 +9688,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       next,
       `${template.label} añadido (${template.shortFormula}). Fórmula, grupo principal y nombre recalculados.`,
     )) return;
+    playSound("atom");
     setPlacementTool(null);
     previousSelectedId.current = targetAtom.id;
     setSelectedId(idMap[0]);
@@ -9802,6 +9813,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     const next = removeFusedRingAtom(molecule, selectedAtom.id);
     if (!next) return false;
     if (commit(next, language === "en" ? "Ring opened; atom removed." : "Anillo abierto; átomo eliminado.")) {
+      playSound("remove");
       setSelectedId(next.atoms[0].id);
     }
     return true;
@@ -9833,7 +9845,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       atoms: molecule.atoms.filter((atom) => atom.id !== selectedAtom.id),
       bonds: molecule.bonds.filter(([a, b]) => a !== selectedAtom.id && b !== selectedAtom.id),
     };
-    commit(next, `${elementNames[getElement(selectedAtom)]} terminal retirado.`);
+    if (!commit(next, `${elementNames[getElement(selectedAtom)]} terminal retirado.`)) return;
+    playSound("remove");
     setSelectedId(neighbor ?? next.atoms[0].id);
   };
 
@@ -9882,6 +9895,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         : `Nodo ${selectedAtom.id} eliminado.`,
     );
     if (!committed) return;
+    playSound("remove");
     previousSelectedId.current = null;
     setSelectedId(neighborIds[0] ?? remainingAtoms[0].id);
   };
@@ -10643,6 +10657,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         `${template.label} unido mediante un enlace simple. La estructura ahora contiene ${ringCount} anillos.`,
       );
       if (!committed) return;
+      playSound("bond");
       setPlacementTool(null);
       previousSelectedId.current = selectedAtom.id;
       setSelectedId(attached.attachmentId);
@@ -10652,10 +10667,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       return;
     }
 
-    commit(
+    const committed = commit(
       cloneMolecule(template.molecule),
       `${template.label} cargado. Selecciona un carbono y vuelve a Anillos para unir otro.`,
     );
+    if (!committed) return;
+    playSound("atom");
     setPlacementTool(null);
     setSelectedId(template.molecule.rings?.[0].atomIds[0] ?? template.molecule.atoms[0].id);
     setRingInsertMode("attach");
@@ -14509,6 +14526,24 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               </button>
             </div>
             <button
+              type="button"
+              className="settings-control sound-control"
+              aria-label={t("Efectos de sonido")}
+              aria-pressed={soundEnabled}
+              title={`${t("Efectos de sonido")} — ${t(soundEnabled ? "Activados" : "Desactivados")}`}
+              onClick={() => {
+                const enabled = !soundEnabled;
+                setSoundEnabled(enabled);
+                setSoundPreference(enabled);
+                try { writeSoundEnabled(enabled, window.localStorage); } catch { /* Storage can be blocked. */ }
+              }}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                <path d="M4 9v6h4l5 4V5L8 9H4z" />
+                {soundEnabled ? <path d="M16 9a4 4 0 0 1 0 6m2.5-8.5a8 8 0 0 1 0 11" /> : <path d="m17 9 5 6m0-6-5 6" />}
+              </svg>
+            </button>
+            <button
               className="theme-control"
               onClick={cycleTheme}
               aria-label={language === "en" ? `Theme ${themeModeLabel}. Change color mode` : `Tema ${themeModeLabel}. Cambiar modo de color`}
@@ -15064,3 +15099,4 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     </main>
   );
 }
+

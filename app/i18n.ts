@@ -3,6 +3,9 @@ export type AppLanguage = "es" | "en";
 export const LANGUAGE_STORAGE_KEY = "hydrocarbon-lab-language";
 
 const ENGLISH_UI: Record<string, string> = {
+  "Efectos de sonido": "Sound effects",
+  "Activados": "Enabled",
+  "Desactivados": "Disabled",
   "Crear guía": "Create worksheet",
   "Selección múltiple": "Multiple choice",
   "Categorías": "Categories",
