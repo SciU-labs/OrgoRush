@@ -198,13 +198,14 @@ import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifi
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
 import { resolveLegacySpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
-import { numberLegacyBenzene } from "./legacy-name-numbering.ts";
+import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
 import { legacyGraphsIdentical, legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
+import { describeAlphabeticalOrder, type AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order";
 import { activateReasoningReference, cancelReasoningHover, scheduleReasoningHover, scrollToReasoningStep } from "./reasoning-name-navigation";
 import { buildReasoningVisualReferences, reasoningFragmentId, type ReasoningVisualTarget } from "./reasoning-visual-targets";
 import { ReasoningStepNumber, ReasoningVisualOverlay, useReasoningVisualInteraction } from "./reasoning-visual-interaction";
@@ -243,6 +244,7 @@ import {
   FUNCTIONAL_GROUP_FORMS,
   generateLegacyEnglishName,
   englishStructuralSubstituentName,
+  nameSubstituents,
   IUPAC_1979_LEGACY_ENGLISH_PROFILE,
   numberParent,
   selectParent,
@@ -608,6 +610,7 @@ export type IupacReasoningStep = {
   number: "01" | "02" | "03" | "04" | "05" | "06" | "07";
   title: string;
   explanation: string;
+  alphabeticalOrder?: AlphabeticalOrderPresentation;
   nameRole?: ReasoningNameFragment["kind"];
   numberingComparison?: {
     criterion: "principal-function";
@@ -703,6 +706,17 @@ export function ChemicalNameText({ name = "" }: { name?: string }) {
       ))}
     </span>
   );
+}
+
+/** Shares prominent fragment typography without claiming a Canvas target. */
+export function ReasoningAlphabeticalContent({ presentation }: { presentation: AlphabeticalOrderPresentation }) {
+  return <>
+    {presentation.paragraphs.map((paragraph, index) => <p className="reasoning-alphabetical-paragraph" key={index}>{paragraph}</p>)}
+    <div className="reasoning-name-fragment reasoning-name-fragment--alphabetical">
+      <span className="reasoning-name-fragment-text">{presentation.fragment}</span>
+      <small className="reasoning-name-fragment-label">{presentation.label}</small>
+    </div>
+  </>;
 }
 
 export function ReasoningNameFragmentView({
@@ -4727,19 +4741,72 @@ function buildLocalizedSubstituentGroups(
   analysis: Analysis,
   enabledAliasSet: ReadonlySet<string>,
 ) {
-  const groups = new Map<string, { name: string; sortName: string; locants: number[] }>();
+  const groups = new Map<string, { name: string; sortName: string; locants: number[]; complex: boolean }>();
   analysis.substituents.forEach((substituent) => {
     const resolved = resolveSubstituentNaming(substituent, enabledAliasSet);
     const key = `${resolved.sortName}:${resolved.name}`;
     const current = groups.get(key) ?? {
       name: resolved.name,
       sortName: resolved.sortName,
+      complex: Boolean(resolved.complex),
       locants: [],
     };
     current.locants.push(substituent.locant);
     groups.set(key, current);
   });
   return groups;
+}
+
+/** The existing formatters supply both citation order and external multipliers.
+ * Written spans take precedence when a selected profile uses another spelling.
+ * This adapter neither alphabetizes names independently nor selects atom locants. */
+function alphabeticalReasoningPresentation(
+  sourceGroups: readonly { name: string; locants: readonly number[]; complex: boolean }[],
+  language: AppLanguage,
+  displayedName: string,
+  functionLabel?: string,
+  comparison?: IupacReasoningStep["numberingComparison"],
+) {
+  const occurrences = sourceGroups.flatMap(group => group.locants.map(locant => ({
+    locant, name: group.name, systematicName: group.name, complex: group.complex,
+    sortName: stripForAlphabetizing(group.name), atomIds: [] as number[],
+  })));
+  const format = (items: typeof occurrences) => language === "es"
+    ? formatSubstituentGroups(items) : nameSubstituents(items);
+  const orderedPrefixes = format(occurrences);
+  const groups = sourceGroups.map(group => {
+    const name = language === "es" ? group.name : englishStructuralSubstituentName(group.name);
+    const written = format(occurrences.filter(item => item.name === group.name && item.complex === group.complex))[0];
+    const citedPrefix = written.replace(/^\d+(?:,\d+)*-/, "");
+    const embeddedName = group.complex ? `(${name})` : name;
+    const multiplier = citedPrefix.endsWith(embeddedName) ? citedPrefix.slice(0, -embeddedName.length) : "";
+    const escaped = citedPrefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const spans = [...displayedName.matchAll(new RegExp(`(?:^|-)(\\d+(?:,\\d+)*)-${escaped}`, "g"))]
+      .filter(match => {
+        // Read only this proven group's top-level prefix. Internal locants of
+        // another complex substituent are not parent-chain positions.
+        const depth = [...displayedName.slice(0, match.index)]
+          .reduce((value, char) => value + (char === "(" ? 1 : char === ")" ? -1 : 0), 0);
+        return depth === 0 && match[1].split(",").length === group.locants.length;
+      });
+    const span = spans.length === 1 ? spans[0] : undefined;
+    const exact = span?.index ?? displayedName.indexOf(written);
+    const unlocanted = displayedName.startsWith(citedPrefix) ? 0 : -1;
+    return {
+      sourceName: group.name, name, complex: group.complex,
+      locants: span ? span[1].split(",").map(Number) : group.locants, citedPrefix, multiplier,
+      comparisonName: historicalPrefixKey(name).normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+      engineIndex: orderedPrefixes.indexOf(written), start: exact >= 0 ? exact : unlocanted,
+    };
+  });
+  const allWritten = groups.every(group => group.start >= 0);
+  groups.sort((left, right) => allWritten ? left.start - right.start : left.engineIndex - right.engineIndex);
+  return describeAlphabeticalOrder(groups, language, {
+    functionLabel,
+    ...(comparison?.comparison === -1 ? {
+      selectedLocants: comparison.selectedLocants, reverseLocants: comparison.reverseLocants,
+    } : {}),
+  });
 }
 
 function hasImplicitAcyclicAldehydeLocant(analysis: Analysis) {
@@ -5494,14 +5561,14 @@ export function buildIupacReasoningSteps(
     });
   }
 
-  if (substituentGroups.size > 1) {
-    const alphabeticalNames = [...substituentGroups.values()]
-      .sort((left, right) => compareAlphabeticalNames(left.sortName, right.sortName))
-      .map((group) => group.name);
+  if (substituentGroups.size) {
+    const alphabeticalOrder = alphabeticalReasoningPresentation([...substituentGroups.values()], "es", displayedName,
+      analysis.primaryFunctionalLabel, primaryNumberingComparison)!;
     steps.push({
       number: "05",
       title: "Orden alfabético",
-      explanation: `Los sustituyentes se escriben como ${alphabeticalNames.join(" → ")}. Para ordenar se ignoran di-, tri-, tetra-, sec- y tert-.`,
+      explanation: [...alphabeticalOrder.paragraphs, alphabeticalOrder.fragment].join("\n\n"),
+      alphabeticalOrder,
     });
   }
 
@@ -5789,6 +5856,7 @@ export function buildEnglishReasoningSteps(
 
   return steps.map((step) => {
     let explanation: string;
+    let alphabeticalOrder = step.alphabeticalOrder;
     let unsaturationContributions = step.unsaturationContributions;
     if (step.nameRole === "unsaturation") {
       unsaturationContributions = deriveUnsaturationNameContributions(
@@ -5883,13 +5951,11 @@ export function buildEnglishReasoningSteps(
       explanation = substituentList
         ? `Substituent names and locants are assigned from the numbered parent skeleton: ${substituentList}. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once.${substituentLocantsTie ? " Both directions are equivalent for these locants." : ""}`
         : "No carbon substituents need to be added to the parent name.";
-    } else if (step.number === "05") {
-      const names = [...new Set(analysis.substituents.map((item) =>
-        translateSpanishIupacToOpsin(item.name) || item.name,
-      ))].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
-      explanation = names.length
-        ? `Different substituent names are written in alphabetical order: ${names.join(" → ")}. Multiplicative prefixes such as di-, tri-, and tetra- do not control alphabetization.`
-        : "Substituent prefixes are ordered alphabetically when more than one different substituent is present.";
+    } else if (alphabeticalOrder) {
+      alphabeticalOrder = alphabeticalReasoningPresentation(alphabeticalOrder.groups.map(group => ({
+        name: group.sourceName, locants: group.locants, complex: group.complex,
+      })), "en", englishName, primaryLabel, steps.find(item => item.numberingComparison)?.numberingComparison)!;
+      explanation = [...alphabeticalOrder.paragraphs, alphabeticalOrder.fragment].join("\n\n");
     } else {
       const descriptors = getMainChainStereoDescriptors(molecule, analysis.mainChain, true);
       const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
@@ -5909,6 +5975,7 @@ export function buildEnglishReasoningSteps(
       ...step,
       title: englishReasoningTitle(step.title),
       explanation,
+      ...(alphabeticalOrder ? { alphabeticalOrder } : {}),
       ...(unsaturationContributions ? { unsaturationContributions } : {}),
     };
   });
@@ -14907,7 +14974,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                         onActivate={activateReasoningCanvasReference} />
                       <div>
                         <strong>{step.title}</strong>
-                        <p><ChemicalNotationText value={step.explanation} /></p>
+                        {step.alphabeticalOrder
+                          ? <ReasoningAlphabeticalContent presentation={step.alphabeticalOrder} />
+                          : <p><ChemicalNotationText value={step.explanation} /></p>}
                         {reasoningNameFragments[step.number] && (
                         <ReasoningNameFragmentView fragment={reasoningNameFragments[step.number]}
                           stepNumber={step.number} language={language}

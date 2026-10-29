@@ -64,7 +64,7 @@ test("functional priority appears before the parent and substituent rules", () =
   assert.equal(result.ok, true, result.ok ? undefined : result.error);
   const analysis = analyzeMolecule(result.molecule);
   const steps = buildIupacReasoningSteps(result.molecule, analysis);
-  assert.deepEqual(steps.map((step) => step.number), ["01", "02", "03", "04"]);
+  assert.deepEqual(steps.map((step) => step.number), ["01", "02", "03", "04", "05"]);
   assert.match(steps[0].explanation, /ácido carboxílico/i);
   assert.match(steps[0].explanation, /se fija como C1/i);
 });

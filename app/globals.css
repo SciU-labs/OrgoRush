@@ -5083,6 +5083,15 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   line-height: 1.3;
 }
 
+.reasoning-section .reasoning-alphabetical-paragraph + .reasoning-alphabetical-paragraph {
+  margin-top: 8px;
+}
+
+.reasoning-name-fragment--alphabetical {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .reasoning-name-fragment-label {
   display: block;
   margin-top: 3px;
