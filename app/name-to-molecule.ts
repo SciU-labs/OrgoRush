@@ -2,6 +2,7 @@ import { englishIupacRoot, IUPAC_ROOT_ALIASES, IUPAC_ROOTS } from "./iupac-prefi
 import { normalizeTraditionalUnsaturationNotation } from "./iupac-name-normalization.ts";
 import { normalizeSubstituentAliasesForLocalParser } from "./substituent-aliases.ts";
 import { fuseRingOnBond } from "./fused-ring.ts";
+import { inspectDoubleBondStereochemistry, setCisTransGeometry, setDoubleBondGeometry } from "./double-bond-stereochemistry.ts";
 import {
   getFusedBicyclicSystem,
   getFusedTetracyclicSystem,
@@ -77,16 +78,19 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer";
+      inputFamily?: "fused-von-baeyer" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer";
+      inputFamily?: "fused-von-baeyer" | "alkene-stereo";
+      /** The compact grammar did not resolve connectivity; no stereo was assigned. */
+      requiresAdvancedConnectivity?: boolean;
     };
 
 const hydrocarbonRoots = IUPAC_ROOTS;
 const alkylNames = IUPAC_ROOTS.map((root) => root ? `${root}il` : "");
+const englishAlkylNames = IUPAC_ROOTS.map((root) => root ? `${englishIupacRoot(root)}yl` : "");
 
 const multiplierCounts: Record<string, number> = {
   di: 2,
@@ -126,8 +130,10 @@ const commonSubstituents: Record<
 const halogenSubstituents: Record<string, Extract<SubstituentKind, { kind: "halogen" }>> = {
   fluoro: { kind: "halogen", element: "F" },
   cloro: { kind: "halogen", element: "Cl" },
+  chloro: { kind: "halogen", element: "Cl" },
   bromo: { kind: "halogen", element: "Br" },
   yodo: { kind: "halogen", element: "I" },
+  iodo: { kind: "halogen", element: "I" },
 };
 
 const parenthesizedSubstituents: Record<
@@ -160,6 +166,7 @@ const substituentTokens = [
   ...Object.keys(commonSubstituents),
   ...Object.keys(halogenSubstituents),
   ...alkylNames.slice(1),
+  ...englishAlkylNames.slice(1),
 ].sort((left, right) => right.length - left.length);
 
 function normalizeName(value: string) {
@@ -239,6 +246,8 @@ function expectedUnsaturationCount(token: string, ending: "en" | "ino") {
 }
 
 function parseParentTail(tail: string, size: number) {
+  // English and Spanish endings enter the same connectivity grammar.
+  tail = tail.replace(/ane$/, "ano").replace(/ene$/, "eno").replace(/yne$/, "ino");
   if (tail === "ano") return { doubleLocants: [], tripleLocants: [] };
   if (tail === "eno") return { doubleLocants: [1], tripleLocants: [] };
   if (tail === "ino") return { doubleLocants: [], tripleLocants: [1] };
@@ -300,11 +309,11 @@ function parseParent(value: string): ParentDescription | null {
     return { kind: "benzene", size: 6, doubleLocants: [], tripleLocants: [] };
   }
 
-  const isRing = value.startsWith("ciclo");
+  const isRing = value.startsWith("ciclo") || value.startsWith("cyclo");
   const withoutCycle = isRing ? value.slice(5) : value;
 
   for (let size = hydrocarbonRoots.length - 1; size >= 1; size -= 1) {
-    const roots = [hydrocarbonRoots[size], ...(IUPAC_ROOT_ALIASES[size] ?? [])]
+    const roots = [hydrocarbonRoots[size], englishIupacRoot(hydrocarbonRoots[size]), ...(IUPAC_ROOT_ALIASES[size] ?? [])]
       .sort((left, right) => right.length - left.length);
     for (const root of roots) {
       if (!withoutCycle.startsWith(root)) continue;
@@ -327,7 +336,7 @@ function substituentFromToken(token: string) {
   if (common) return common;
   const halogen = halogenSubstituents[token];
   if (halogen) return { substituent: halogen };
-  const length = alkylNames.indexOf(token);
+  const length = Math.max(alkylNames.indexOf(token), englishAlkylNames.indexOf(token));
   if (length > 0) return { substituent: { kind: "linear", length } as SubstituentKind };
   return null;
 }
@@ -559,8 +568,8 @@ function parseAldehydeName(name: string): ParsedName | null {
 }
 
 function parseKetoneName(name: string): ParsedName | null {
-  const locanted = name.match(/^(.*)-(\d+)-ona$/);
-  const simple = locanted ? null : name.match(/^(.+)ona$/);
+  const locanted = name.match(/^(.*)-(\d+)-(?:ona|one)$/);
+  const simple = locanted ? null : name.match(/^(.+)(?:ona|one)$/);
   if (!locanted && !simple) return null;
   const parentName = hydrocarbonParentFromAlcoholStem(locanted?.[1] ?? simple?.[1] ?? "");
   return oxygenatedParsedName(name, parentName, [locanted ? Number(locanted[2]) : 2], "ketone");
@@ -1373,7 +1382,7 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
   return null;
 }
 
-export function buildHydrocarbonFromIupacName(value: string): NameBuildResult {
+function buildConstitutionFromIupacName(value: string): NameBuildResult {
   const normalizedInput = normalizeName(value);
   if (!normalizedInput) {
     return { ok: false, error: "Escribe un nombre, por ejemplo: 3-etil-2-metilhexano." };
@@ -1390,6 +1399,7 @@ export function buildHydrocarbonFromIupacName(value: string): NameBuildResult {
   if (!parsed) {
     return {
       ok: false,
+      requiresAdvancedConnectivity: true,
       error: "No pude interpretar la cadena, el ciclo o sus grupos funcionales. Prueba con hex-2-eno, 3-etil-2-metilhexano, propan-2-ol o benceno-1,3,5-triol.",
     };
   }
@@ -1404,4 +1414,58 @@ export function buildHydrocarbonFromIupacName(value: string): NameBuildResult {
     normalizedInput: parsed.normalizedInput,
     enabledAliases: parsed.enabledAliases,
   };
+}
+
+/** Parse descriptors separately, but assign them only after all connectivity
+ * and functional groups are known. Atom IDs of the compact parser's parent
+ * are its name locants; external parsers must not assume that correspondence. */
+export function buildHydrocarbonFromIupacName(value: string): NameBuildResult {
+  const normalized = normalizeName(value);
+  const relative = /^(cis|trans)-(.*)$/.exec(normalized);
+  const absolute = /^\(((?:\d+)?[ez](?:,(?:\d+)?[ez])*)\)-(.+)$/.exec(normalized);
+  if (!relative && !absolute) return buildConstitutionFromIupacName(value);
+  if (/^(?:cis-|trans-|\((?:\d+)?[ez])/.test((relative ?? absolute)![2])) return {
+    ok: false, inputFamily: "alkene-stereo",
+    error: "Hay descriptores estereoquímicos superpuestos. Usa un único descriptor E/Z por doble enlace.",
+  };
+  const base = buildConstitutionFromIupacName((relative ?? absolute)![2]);
+  if (!base.ok) return relative ? {
+    ...base, inputFamily: "alkene-stereo",
+    error: `No se pudo validar cis/trans para este nombre. ${base.error} Usa E/Z con localizadores si la conectividad requiere el motor avanzado.`,
+  } : base;
+  // The fused parser has its own numbering map; never interpret its atom IDs
+  // as ordinary chain locants for absolute descriptors.
+  if (!relative && base.inputFamily === "fused-von-baeyer") return {
+    ok: false, error: "Usa el motor avanzado para descriptores E/Z en sistemas fusionados.",
+  };
+  let molecule = base.molecule;
+  let normalizedInput: string;
+  if (relative) {
+    const configured = setCisTransGeometry(molecule, relative[1] as "cis" | "trans");
+    if (!configured.ok) return { ...configured, inputFamily: "alkene-stereo" };
+    molecule = configured.molecule;
+    normalizedInput = `(${Math.min(...configured.atomIds)}${configured.configuration})-${base.normalizedInput}`;
+  } else {
+    const descriptors = absolute![1].split(",");
+    const seen = new Set<number>();
+    const canonical: string[] = [];
+    for (const descriptor of descriptors) {
+      const match = /^(\d+)?([ez])$/.exec(descriptor)!;
+      const doubleBonds = molecule.bonds.filter(([a, b, order]) => order === 2
+        && inspectDoubleBondStereochemistry(molecule, a, b).stereogenic);
+      const locant = match[1] ? Number(match[1]) : doubleBonds.length === 1 ? doubleBonds[0][0] : null;
+      if (locant === null || seen.has(locant)) return {
+        ok: false, inputFamily: "alkene-stereo",
+        error: "Los descriptores E/Z necesitan localizadores únicos cuando hay varios dobles enlaces.",
+      };
+      seen.add(locant);
+      const configuration = match[2].toUpperCase() as "E" | "Z";
+      const configured = setDoubleBondGeometry(molecule, locant, locant + 1, configuration);
+      if (!configured.ok) return { ok: false, error: configured.error, inputFamily: "alkene-stereo" };
+      molecule = configured.molecule;
+      canonical.push(`${locant}${configuration}`);
+    }
+    normalizedInput = `(${canonical.join(",")})-${base.normalizedInput}`;
+  }
+  return { ...base, molecule, normalizedInput, inputFamily: "alkene-stereo" };
 }

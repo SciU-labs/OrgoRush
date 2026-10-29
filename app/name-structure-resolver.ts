@@ -1,5 +1,7 @@
 import { getOpsinNameCandidates } from "./iupac-name-normalization.ts";
-import { inspectSmilesStructure } from "./openchemlib-adapter.ts";
+import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
+import { buildHydrocarbonFromIupacName } from "./name-to-molecule.ts";
+import { setCisTransGeometry } from "./double-bond-stereochemistry.ts";
 import {
   type NameStructureResolution,
   type NameStructureResolutionResult,
@@ -184,6 +186,43 @@ export async function resolveChemicalName(
   originalName: string,
   options: NameResolverOptions = {},
 ): Promise<NameStructureResolutionResult> {
+  // Resolve cis/trans only after connectivity is complete. Never ask a remote
+  // name service to choose the educational alias's reference pair for us.
+  const relative = /^(cis|trans)\s*[-–—−]\s*(.*)$/i.exec(originalName.trim());
+  if (relative) {
+    const local = buildHydrocarbonFromIupacName(originalName);
+    const invalid = (error: string): NameStructureResolutionResult => ({
+      ok: false, serviceReached: false, error, detail: "Especifica E/Z con localizadores si la referencia cis/trans no es inequívoca.",
+    });
+    if (!local.ok && !local.requiresAdvancedConnectivity) return invalid(local.error);
+    let resolved: NameStructureResolution | undefined;
+    let molecule;
+    let interpretedName;
+    if (local.ok) {
+      molecule = local.molecule;
+      interpretedName = local.normalizedInput;
+    } else {
+      const base = await resolveChemicalName(relative[2], options);
+      if (!base.ok) return base;
+      resolved = base.value;
+      const converted = moleculeFromSmiles(resolved.smiles);
+      if (!converted.ok) return invalid(converted.error);
+      const configured = setCisTransGeometry(converted.molecule, relative[1].toLowerCase() as "cis" | "trans");
+      if (!configured.ok) return invalid(configured.error);
+      molecule = configured.molecule;
+      // External atom IDs are not name locants. One eligible C=C makes an
+      // unlocanted E/Z descriptor sufficient without inventing a numbering map.
+      interpretedName = `(${configured.configuration})-${resolved.interpretedName}`;
+    }
+    const exported = moleculeToSmiles(molecule);
+    if (!exported.ok) return invalid(exported.error);
+    return { ok: true, value: {
+      originalName, interpretedName, smiles: exported.smiles,
+      source: resolved?.source ?? "integrated-fallback", warnings: resolved?.warnings ?? [],
+      // Constitutional PubChem identifiers cannot identify the newly assigned
+      // stereoisomer, so do not copy them from the unspecified base structure.
+    } };
+  }
   const opsin = await resolveNameWithOpsin(originalName, options);
   if (opsin.ok) return opsin;
 

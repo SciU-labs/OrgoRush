@@ -1,5 +1,6 @@
 import { getMainChainTetrahedralDescriptors } from "./tetrahedral-stereochemistry.ts";
 import { stripStereochemicalDescriptors } from "./nomenclature-conventions.ts";
+import { legacyGraphsIdentical } from "./iupac1979-name-structure.ts";
 
 export type StereoConfiguration = "E" | "Z";
 
@@ -217,11 +218,11 @@ type AttachedSubstituent = {
   signature: CipSignature;
 };
 
-function prioritySubstituent(
+function attachedSubstituents(
   molecule: ReadonlyStereoMolecule,
   alkeneAtomId: number,
   otherAlkeneAtomId: number,
-): number | null {
+): AttachedSubstituent[] {
   const candidates: AttachedSubstituent[] = [];
   atomBonds(molecule, alkeneAtomId).forEach((bond) => {
     const neighborId = bond[0] === alkeneAtomId ? bond[1] : bond[0];
@@ -245,6 +246,15 @@ function prioritySubstituent(
     candidates.push({ atomId: null, signature: hydrogenSignature });
   }
 
+  return candidates;
+}
+
+function prioritySubstituent(
+  molecule: ReadonlyStereoMolecule,
+  alkeneAtomId: number,
+  otherAlkeneAtomId: number,
+): number | null {
+  const candidates = attachedSubstituents(molecule, alkeneAtomId, otherAlkeneAtomId);
   if (candidates.length !== 2) return null;
   const comparison = compareCipSignatures(candidates[0].signature, candidates[1].signature);
   if (comparison === 0) return null;
@@ -502,6 +512,58 @@ export function toggleDoubleBondGeometry<T extends StereoMolecule>(
     ? "E"
     : "Z";
   return setDoubleBondGeometry(molecule, leftAtomId, rightAtomId, target);
+}
+
+/** Educational cis/trans input: identify a reference pair from connectivity,
+ * then compare that pair with the same CIP priorities used by the E/Z editor.
+ * A CIP tie alone is not proof that two entire substituents are identical. */
+export function setCisTransGeometry<T extends StereoMolecule>(
+  molecule: T,
+  relationship: "cis" | "trans",
+): { ok: true; molecule: T; configuration: StereoConfiguration; atomIds: [number, number] }
+  | { ok: false; error: string } {
+  const candidates = molecule.bonds.filter(([left, right, order = 1]) => order === 2
+    && inspectDoubleBondStereochemistry(molecule, left, right).stereogenic);
+  if (candidates.length !== 1) return { ok: false, error: candidates.length
+    ? "El descriptor cis/trans es ambiguo: hay varios dobles enlaces estereogénicos. Usa descriptores E/Z con localizadores."
+    : "El descriptor cis/trans no es válido: no hay un doble enlace C=C que presente isomería geométrica." };
+  const [left, right] = candidates[0];
+  if (!isDoubleBondEZToggleAvailable(molecule, left, right)) return {
+    ok: false, error: "El descriptor cis/trans de un doble enlace cíclico no está admitido por el editor. Usa un alqueno acíclico.",
+  };
+  const leftGroups = attachedSubstituents(molecule, left, right);
+  const rightGroups = attachedSubstituents(molecule, right, left);
+  const branch = (id: number, parent: number) => {
+    const ids = componentAfterCut(molecule, id, id, parent);
+    return {
+      atoms: molecule.atoms.filter(atom => ids.has(atom.id)),
+      bonds: molecule.bonds.filter(([a, b]) => ids.has(a) && ids.has(b)),
+    };
+  };
+  const matches = (a: AttachedSubstituent, b: AttachedSubstituent) => {
+    if (a.atomId === null || b.atomId === null) return a.atomId === b.atomId;
+    if (compareCipSignatures(a.signature, b.signature) !== 0) return false;
+    return legacyGraphsIdentical(branch(a.atomId, left), branch(b.atomId, right),
+      new Map([[a.atomId, b.atomId]]));
+  };
+  // Conventional disubstituted alkenes use the two hydrogens, even when the
+  // two remaining groups also happen to be identical (for example but-2-ene).
+  const hydrogens = leftGroups.find(g => g.atomId === null)
+    && rightGroups.find(g => g.atomId === null);
+  const pairs = hydrogens ? [[null, null]] : leftGroups.flatMap(a =>
+    rightGroups.filter(b => matches(a, b)).map(b => [a.atomId, b.atomId]));
+  if (pairs.length !== 1) return {
+    ok: false,
+    error: "La referencia cis/trans es ambigua: no se identifica un único par de sustituyentes iguales. Usa E/Z para especificar la configuración.",
+  };
+  const inspection = inspectDoubleBondStereochemistry(molecule, left, right);
+  if (!inspection.stereogenic) return { ok: false, error: "Ese enlace no presenta isomería E/Z." };
+  const [leftReference, rightReference] = pairs[0];
+  const samePriority = (leftReference === inspection.priorityAtomIds[0])
+    === (rightReference === inspection.priorityAtomIds[1]);
+  const configuration: StereoConfiguration = (relationship === "cis") === samePriority ? "Z" : "E";
+  const configured = setDoubleBondGeometry(molecule, left, right, configuration);
+  return configured.ok ? { ...configured, atomIds: [left, right] } : configured;
 }
 
 export function getMainChainStereoDescriptors(

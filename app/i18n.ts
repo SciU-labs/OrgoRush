@@ -3,6 +3,12 @@ export type AppLanguage = "es" | "en";
 export const LANGUAGE_STORAGE_KEY = "hydrocarbon-lab-language";
 
 const ENGLISH_UI: Record<string, string> = {
+  "El descriptor cis/trans es ambiguo: hay varios dobles enlaces estereogénicos. Usa descriptores E/Z con localizadores.": "The cis/trans descriptor is ambiguous: there are multiple stereogenic double bonds. Use E/Z descriptors with locants.",
+  "El descriptor cis/trans no es válido: no hay un doble enlace C=C que presente isomería geométrica.": "The cis/trans descriptor is invalid: there is no C=C double bond capable of geometric isomerism.",
+  "El descriptor cis/trans de un doble enlace cíclico no está admitido por el editor. Usa un alqueno acíclico.": "The editor does not support cis/trans descriptors on cyclic double bonds. Use an acyclic alkene.",
+  "La referencia cis/trans es ambigua: no se identifica un único par de sustituyentes iguales. Usa E/Z para especificar la configuración.": "The cis/trans reference is ambiguous: a unique pair of identical substituents could not be identified. Use E/Z to specify the configuration.",
+  "Hay descriptores estereoquímicos superpuestos. Usa un único descriptor E/Z por doble enlace.": "There are overlapping stereochemical descriptors. Use a single E/Z descriptor per double bond.",
+  "Los descriptores E/Z necesitan localizadores únicos cuando hay varios dobles enlaces.": "E/Z descriptors need unique locants when there are multiple double bonds.",
   "Efectos de sonido": "Sound effects",
   "Activados": "Enabled",
   "Desactivados": "Disabled",

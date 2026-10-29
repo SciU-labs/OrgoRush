@@ -6192,7 +6192,7 @@ function usesLocalLibrary() {
 }
 
 async function resolveNameStructure(name: string): Promise<NameStructureResolution> {
-  if (!usesLocalLibrary()) {
+  if (!usesLocalLibrary() && !/^(cis|trans)\s*[-–—−]/i.test(name.trim())) {
     try {
       const response = await fetch("/api/name-to-structure", {
         method: "POST",
@@ -8943,7 +8943,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     // Correct them before parsing so the user can explicitly accept the PIN
     // instead of silently retaining a malformed presentation.
     const localPreflight = buildHydrocarbonFromIupacName(submittedName);
-    if (!localPreflight.ok && localPreflight.inputFamily === "fused-von-baeyer") {
+    if (!localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
+      || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
       setNameBuilderOpen(true);
       setNameBuilderFeedback({ kind: "error", message: localPreflight.error });
       return;
@@ -8965,7 +8966,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       let advancedNameResolved = false;
       let resolvedPubChemIdentity: PubChemStructureIdentity | null = null;
 
-      if (localPreflight.ok && localPreflight.inputFamily === "fused-von-baeyer") {
+      if (localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
+        || localPreflight.inputFamily === "alkene-stereo")) {
         next = localPreflight.molecule;
         enabledAliases = localPreflight.enabledAliases;
         normalizedInput = localPreflight.normalizedInput;
@@ -8996,9 +8998,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           } else if (data.source === "PubChem") {
             engineLabel = "PubChem + OpenChemLib";
           }
-          normalizedInput = (data.interpretedName ?? submittedName)
-            .toLocaleLowerCase("es")
-            .replace(/\s+/g, "");
+          normalizedInput = data.interpretedName ?? submittedName;
           if (data.warnings?.length) {
             serviceWarning = ` ${data.warnings.map((warning) => t(warning)).join(" ")}`;
           }
@@ -9031,7 +9031,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         || (advancedNameResolved
         && localNamerCannotSafelyName(next, generatedAnalysis));
       const preserveGraphSourceName = preserveTrustedSourceName && !hasGraphRenderableAlias;
-      const resultName = preserveGraphSourceName ? submittedName : generatedAnalysis.name;
+      const preferredSourceName = localPreflight.inputFamily === "alkene-stereo" ? normalizedInput : submittedName;
+      const resultName = preserveGraphSourceName ? preferredSourceName : generatedAnalysis.name;
       const commonName = generatedAnalysis.commonName
         ? `; también se conoce como ${generatedAnalysis.commonName}`
         : "";
@@ -9053,8 +9054,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       // If OPSIN/OpenChemLib successfully parsed a structure whose nested
       // functional groups exceed the local naming grammar, keep the validated
       // source name rather than replacing it with an incomplete suggestion.
-      setSourceNameOverride(preserveGraphSourceName ? submittedName : null);
-      if (getTetrahedralStereoCenters(next).length) setShowStereochemistry(true);
+      setSourceNameOverride(preserveGraphSourceName ? preferredSourceName : null);
+      if (getTetrahedralStereoCenters(next).length || next.bonds.some(bond => bond[3] === true)) {
+        setShowStereochemistry(true);
+      }
       setSelectedId(next.atoms[0].id);
       setCommonAlkylNameSelections(selectedAliasOccurrences);
       setShowIupacName(true);
@@ -12396,7 +12399,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const stereoInspection = order === 2 && !lockedBond && !containingRing
                   ? inspectDoubleBondStereochemistry(molecule, a, b)
                   : null;
-                const stereoConfiguration = stereoInspection?.stereogenic
+                const stereoConfiguration = stereoInspection?.stereogenic && bond[3] === true
                   ? stereoInspection.configuration
                   : null;
                 const stereoToggleAvailable = Boolean(stereoInspection?.stereogenic);
@@ -12412,7 +12415,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const currentStereoLabel = stereoConfiguration
                   ? `${stereoLocant ?? ""}${stereoConfiguration}`
                   : "E/Z";
-                const nextStereoLabel = stereoConfiguration === "E" ? "Z" : "E";
+                const nextStereoLabel = stereoInspection?.configuration === "Z" ? "E" : "Z";
                 const markerX = (positionA.x + positionB.x) / 2 + normalX * 25;
                 const markerY = (positionA.y + positionB.y) / 2 + normalY * 25;
                 return (
