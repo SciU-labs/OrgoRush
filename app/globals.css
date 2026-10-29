@@ -10313,6 +10313,19 @@ html[data-theme="dark"] .molecule-stage .reasoning-visual-overlay { --reasoning-
   letter-spacing: 0.04em;
 }
 
+.guided-tour-progress-track {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--soft-line, #e9efed);
+}
+
+.guided-tour-progress-track span {
+  display: block;
+  height: 100%;
+  background: var(--brand-primary);
+}
+
 .guided-tour-close {
   display: grid;
   flex: 0 0 auto;

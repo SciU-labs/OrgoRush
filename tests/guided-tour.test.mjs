@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   GUIDED_TOUR_STEP_COUNT,
+  isTourCarbonPair,
   GUIDED_TOUR_STORAGE_KEY,
   INITIAL_GUIDED_TOUR_STATE,
   guidedTourCopy,
@@ -31,216 +32,62 @@ function initialize(decision = null) {
   return guidedTourReducer(INITIAL_GUIDED_TOUR_STATE, { type: "initialize", decision });
 }
 
-test("first visit opens the seven-step guide, while Skip persists across reloads", () => {
+test("first visit, dismissal, completion and reopening persist", () => {
   const storage = new MemoryStorage();
-  const firstVisit = guidedTourReducer(INITIAL_GUIDED_TOUR_STATE, {
-    type: "initialize",
-    decision: readGuidedTourDecision(storage),
-  });
-  assert.deepEqual(firstVisit, {
-    ready: true, open: true, step: 0, carbonPhase: "select", settingsOpenedFromTour: false, completion: "pending",
-  });
-  assert.equal(GUIDED_TOUR_STEP_COUNT, 7);
-
-  const skipped = guidedTourReducer(firstVisit, { type: "dismiss" });
-  assert.equal(skipped.open, false);
-  assert.equal(skipped.completion, "skipped");
-  assert.equal(writeGuidedTourDecision(storage, skipped.completion), true);
-  assert.equal(storage.getItem(GUIDED_TOUR_STORAGE_KEY), "skipped");
-  assert.equal(initialize(readGuidedTourDecision(storage)).open, false);
-});
-
-test("completing the last step persists completion and manual reopening restarts at the first step", () => {
-  const storage = new MemoryStorage();
-  let state = initialize();
-  for (let step = 0; step < GUIDED_TOUR_STEP_COUNT - 1; step += 1) {
-    state = guidedTourReducer(state, { type: "next" });
-    assert.equal(state.step, step + 1);
-    assert.equal(state.open, true);
-  }
-  state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.open, false);
-  assert.equal(state.completion, "completed");
-  assert.equal(writeGuidedTourDecision(storage, state.completion), true);
-  assert.equal(initialize(readGuidedTourDecision(storage)).open, false);
-
-  state = guidedTourReducer(state, { type: "open" });
-  assert.deepEqual(state, {
-    ready: true, open: true, step: 0, carbonPhase: "select", settingsOpenedFromTour: false, completion: "completed",
-  });
+  let state = initialize(readGuidedTourDecision(storage));
+  assert.equal(state.open, true);
+  assert.equal(GUIDED_TOUR_STEP_COUNT, 5);
   state = guidedTourReducer(state, { type: "dismiss" });
-  assert.equal(state.completion, "completed", "closing a manually reopened guide keeps the saved completion");
-  assert.equal(guidedTourControls("en").open, "How to use?");
-});
-
-test("Previous and Next navigate within bounds, and closed guides ignore navigation", () => {
-  let state = initialize();
-  state = guidedTourReducer(state, { type: "previous" });
+  assert.equal(state.completion, "skipped");
+  writeGuidedTourDecision(storage, state.completion);
+  assert.equal(initialize(readGuidedTourDecision(storage)).open, false);
+  state = guidedTourReducer(state, { type: "open" });
   assert.equal(state.step, 0);
-  state = guidedTourReducer(state, { type: "next" });
-  state = guidedTourReducer(state, { type: "previous" });
-  assert.equal(state.step, 0);
-  const closed = guidedTourReducer(state, { type: "dismiss" });
-  assert.equal(guidedTourReducer(closed, { type: "next" }), closed);
+  for (let i = 0; i < 5; i++) state = guidedTourReducer(state, { type: "next" });
+  assert.equal(state.completion, "completed");
+  writeGuidedTourDecision(storage, state.completion);
+  assert.equal(initialize(readGuidedTourDecision(storage)).open, false);
 });
 
-test("localized copy can change without resetting the current guide step", () => {
-  const state = guidedTourReducer(guidedTourReducer(initialize(), { type: "next" }), { type: "next" });
-  const stepBeforeLanguageChange = state.step;
-  assert.match(guidedTourCopy("es", state.step).title, /nombre IUPAC/i);
-  assert.match(guidedTourCopy("en", state.step).title, /IUPAC name/i);
-  assert.equal(state.step, stepBeforeLanguageChange);
-  assert.deepEqual(guidedTourControls("es").progress(state.step), "Paso 3 de 7");
-  assert.deepEqual(guidedTourControls("en").progress(state.step), "Step 3 of 7");
-});
-
-test("fragment guidance names mouse, click, keyboard and touch, and offers the existing acetone example explicitly", () => {
-  const spanish = guidedTourCopy("es", 4, { hasInteractiveName: true });
-  const english = guidedTourCopy("en", 4, { hasInteractiveName: false });
-  assert.match(spanish.description, /nombre IUPAC real/i);
-  assert.match(spanish.description, /mouse.*clic, teclado y toque/i);
-  assert.match(spanish.followUp, /destaca el mismo fragmento/i);
-  assert.match(english.followUp, /propanone example/i);
-  assert.equal(english.action, "Try the propanone example");
-  assert.match(english.exampleNote, /Undo/);
-  const acetoneAlreadyLoaded = guidedTourCopy("en", 4, { acetoneAlreadyLoaded: true });
-  assert.equal(acetoneAlreadyLoaded.action, undefined);
-  assert.equal(acetoneAlreadyLoaded.exampleNote, undefined);
-});
-
-test("guide access and step targets remain localized and point at the real learning path", () => {
-  assert.deepEqual(Array.from({ length: GUIDED_TOUR_STEP_COUNT }, (_, index) => guidedTourTargetForStep(index)), [
-    "carbon", "bond-controls", "name", "reasoning", "name", "settings", "tools",
-  ]);
-  assert.equal(guidedTourCopy("es", 3).action, "Mostrar la explicación");
-  assert.equal(guidedTourCopy("en", 3).action, "Show the explanation");
-  assert.equal(guidedTourControls("es").skip, "Omitir");
-  assert.equal(guidedTourControls("en").previous, "Previous");
-  assert.equal(guidedTourControls("es").finish, "Terminar");
-});
-
-test("the derived-name step offers an explicit propanone example when no explanation can be shown", () => {
-  const spanish = guidedTourCopy("es", 3, { needsExampleForReasoning: true });
-  const english = guidedTourCopy("en", 3, { needsExampleForReasoning: true });
-  assert.equal(spanish.exampleAction, "Cargar propanona y mostrar su explicación");
-  assert.match(spanish.description, /ejemplo de propanona/i);
-  assert.match(spanish.description, /Deshacer/);
-  assert.equal(english.exampleAction, "Load propanone and show its explanation");
-  assert.match(english.description, /Undo/);
-  assert.equal(guidedTourCopy("es", 3, { needsExampleForReasoning: false }).action, "Mostrar la explicación");
-});
-
-test("the carbon step separates real carbon selection from using the actual Add C direction pad", () => {
-  const spanish = guidedTourCopy("es", 0, { isPristineInitialMolecule: true, carbonPhase: "select" });
-  const english = guidedTourCopy("en", 0, { isPristineInitialMolecule: true, carbonPhase: "select" });
-  assert.match(spanish.description, /CH₄.*Haz clic para seleccionarlo/);
-  assert.match(english.description, /CH₄.*Click it to select it/);
-  assert.match(guidedTourCopy("es", 0, { carbonPhase: "select" }).description, /carbono del canvas para seleccionarlo/);
-  assert.match(guidedTourCopy("es", 0, { carbonPhase: "add" }).description, /flechas reales «Añadir C»/);
-  assert.match(guidedTourCopy("en", 0, { carbonPhase: "add" }).description, /real Add C arrows/);
-  assert.equal(guidedTourTargetForStep(0, "select"), "carbon");
-  assert.equal(guidedTourTargetForStep(0, "add"), "add-carbon");
-  assert.equal(guidedTourCopy("en", 0).exampleAction, undefined);
-});
-
-test("selection only enters the carbon-add substep; only the next valid carbon addition advances once", () => {
-  let state = initialize();
-  assert.equal(guidedTourReducer(state, { type: "carbon-added" }), state, "an add without a user selection is ignored");
-  state = guidedTourReducer(state, { type: "carbon-selected" });
-  assert.equal(state.step, 0, "selection does not complete the main step");
-  assert.equal(state.carbonPhase, "add");
-  const selected = state;
-  assert.equal(guidedTourReducer(state, { type: "carbon-selected" }), selected, "repeated selection is idempotent");
-  state = guidedTourReducer(state, { type: "carbon-added" });
-  assert.equal(state.step, 1);
-  assert.equal(state.carbonPhase, "select");
-  assert.equal(guidedTourReducer(state, { type: "carbon-added" }), state, "duplicate or stale add events cannot skip another step");
-});
-
-test("manual Next can skip the carbon substeps and the other guided requirements", () => {
-  let state = guidedTourReducer(initialize(), { type: "carbon-selected" });
-  assert.equal(state.carbonPhase, "add");
-  state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.step, 1);
-  assert.equal(state.carbonPhase, "select");
-  state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.step, 2, "manual Next remains available without a bond-order commit");
-});
-
-test("automatic step changes are gated by the active step and do not remove manual navigation", () => {
+test("only valid molecular milestones advance the interactive steps", () => {
+  const ethane = { atoms: [{id: 1, element: "C"}, {id: 2, element: "C"}], bonds: [[1, 2, 1]] };
+  const ethene = { ...ethane, bonds: [[1, 2, 2]] };
+  assert.equal(isTourCarbonPair(ethane, 1), true);
+  assert.equal(isTourCarbonPair(ethene, 2), true);
+  assert.equal(isTourCarbonPair(ethene, 1), false);
+  assert.equal(isTourCarbonPair({...ethane, atoms: [ethane.atoms[0], {id: 2, element: "O"}]}, 1), false);
+  assert.equal(isTourCarbonPair({...ethane, bonds: [[1, 3, 1]]}, 1), false);
   let state = initialize();
   assert.equal(guidedTourReducer(state, { type: "bond-order-changed" }), state);
-  state = guidedTourReducer(state, { type: "next" });
+  state = guidedTourReducer(state, { type: "carbon-added" });
   assert.equal(state.step, 1);
   state = guidedTourReducer(state, { type: "bond-order-changed" });
   assert.equal(state.step, 2);
-  assert.equal(guidedTourReducer(state, { type: "bond-order-changed" }), state);
-  state = guidedTourReducer(state, { type: "previous" });
-  assert.equal(state.step, 1);
   state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.step, 2);
-});
-
-test("reasoning auto-advances only on opening its explanation or activating a real linked fragment", () => {
-  let state = initialize();
-  for (let step = 0; step < 3; step += 1) state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.step, 3);
-  assert.equal(guidedTourReducer(state, { type: "reasoning-fragment-activated" }), state);
-  state = guidedTourReducer(state, { type: "reasoning-opened" });
-  assert.equal(state.step, 4);
-  assert.equal(guidedTourReducer(state, { type: "reasoning-opened" }), state);
+  assert.equal(guidedTourReducer(state, { type: "reasoning-opened" }).step, 3);
   state = guidedTourReducer(state, { type: "reasoning-fragment-activated" });
-  assert.equal(state.step, 5);
-  assert.equal(guidedTourReducer(state, { type: "reasoning-fragment-activated" }), state);
+  assert.equal(state.step, 4);
+  assert.equal(guidedTourReducer(state, { type: "previous" }).step, 3);
 });
 
-test("Settings advances only after it was opened from the Settings guide step and then closed", () => {
-  let state = initialize();
-  state = guidedTourReducer(state, { type: "settings-opened", fromGuidedStep: true });
-  assert.equal(state.settingsOpenedFromTour, false, "an early Settings visit is not attributed to step 6");
-  state = guidedTourReducer(state, { type: "settings-closed" });
-  assert.equal(state.step, 0);
-  for (let step = 0; step < 5; step += 1) state = guidedTourReducer(state, { type: "next" });
-  state = guidedTourReducer(state, { type: "settings-opened", fromGuidedStep: false });
-  state = guidedTourReducer(state, { type: "settings-closed" });
-  assert.equal(state.step, 5, "an external Settings visit does not advance the guide");
-  state = guidedTourReducer(state, { type: "settings-opened", fromGuidedStep: true });
-  assert.equal(state.settingsOpenedFromTour, true);
-  state = guidedTourReducer(state, { type: "settings-closed" });
-  assert.equal(state.step, 6);
-  assert.equal(state.settingsOpenedFromTour, false);
+test("copy and controls are localized and reflect available reasoning", () => {
+  assert.match(guidedTourCopy("en", 0, {isPristineInitialMolecule: true, carbonPhase: "add"}).description, /carbon/);
+  assert.match(guidedTourCopy("es", 2, {isEthene: true}).title, /eteno/);
+  assert.match(guidedTourCopy("en", 3, {hasInteractiveName: true, reasoningOpen: true}).description, /fragment/);
+  assert.doesNotMatch(guidedTourCopy("en", 3, {hasInteractiveName: false}).description, /fragment/);
+  assert.equal(guidedTourControls("en").progress(2), "Step 3 of 5");
+  assert.equal(guidedTourControls("es").finish, "Empezar a explorar");
+  assert.equal(guidedTourTargetForStep(0, "add"), "add-carbon");
+  assert.equal(guidedTourTargetForStep(1), "bond-controls");
 });
 
-test("opening an Examples or By name tool may complete the final guide step, while manual Finish remains available", () => {
-  let state = initialize();
-  for (let step = 0; step < GUIDED_TOUR_STEP_COUNT - 1; step += 1) state = guidedTourReducer(state, { type: "next" });
-  assert.equal(guidedTourReducer(state, { type: "tools-opened" }).completion, "completed");
-  assert.equal(guidedTourReducer(state, { type: "tools-opened" }).open, false);
-  state = guidedTourReducer(state, { type: "open" });
-  for (let step = 0; step < GUIDED_TOUR_STEP_COUNT - 1; step += 1) state = guidedTourReducer(state, { type: "next" });
-  state = guidedTourReducer(state, { type: "next" });
-  assert.equal(state.open, false, "manual Finish still completes the guide");
-  assert.equal(state.completion, "completed");
-});
-
-test("the bond step distinguishes the order picker for new bonds from clicking an existing canvas bond", () => {
-  const spanish = guidedTourCopy("es", 1).description;
-  const english = guidedTourCopy("en", 1).description;
-  assert.match(spanish, /Antes de añadir un carbono.*Simple, Doble o Triple/);
-  assert.match(spanish, /Para cambiar un enlace del canvas, haz clic o actívalo/);
-  assert.match(english, /Before adding a carbon.*Single, Double, or Triple/);
-  assert.match(english, /click or activate that bond/);
-});
-
-test("settings guidance matches the real accessibility and keyboard-shortcut location in both languages", () => {
-  const spanish = guidedTourCopy("es", 5);
-  const english = guidedTourCopy("en", 5);
-  assert.match(spanish.description, /Configuración.*Historial y Guardados/);
-  assert.match(spanish.description, /H implícitos, numeración, resaltado de sustituyentes/);
-  assert.match(spanish.description, /Accesibilidad y los atajos de teclado/);
-  assert.match(english.description, /Settings.*History and Saved/);
-  assert.match(english.description, /implicit hydrogens, numbering, substituent highlighting/);
-  assert.match(english.description, /Accessibility options and keyboard shortcuts/);
+test("reopened tour explains unavailable edits in both languages", () => {
+  for (const language of ["en", "es"]) {
+    const saturated = guidedTourCopy(language, 0, { carbonPhase: "add", hasCarbon: true, canAddCarbon: false });
+    const noBond = guidedTourCopy(language, 1, { isEthane: false, hasEditableBond: false });
+    assert.match(saturated.description, language === "en" ? /cannot accept/ : /no puede aceptar/);
+    assert.match(noBond.description, language === "en" ? /No carbon–carbon bond/ : /No hay un enlace/);
+  }
 });
 
 test("context cards stay beside their target and inside the viewport above the fixed name dock", () => {

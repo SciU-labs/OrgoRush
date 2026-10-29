@@ -1,7 +1,14 @@
 export const GUIDED_TOUR_STORAGE_KEY = "hydrocarbonLab.guidedTour.v1";
-export const GUIDED_TOUR_STEP_COUNT = 7;
+export const GUIDED_TOUR_STEP_COUNT = 5;
 
 export type GuidedTourDecision = "completed" | "skipped";
+export function isTourCarbonPair(molecule: { atoms: readonly { id: number; element?: string }[]; bonds: readonly (readonly [number, number, number?])[]; rings?: readonly unknown[] }, order: number): boolean {
+  return molecule.atoms.length === 2 && molecule.atoms.every((atom) => !atom.element || atom.element === "C")
+    && molecule.bonds.length === 1 && (molecule.bonds[0][2] ?? 1) === order
+    && molecule.bonds[0][0] !== molecule.bonds[0][1]
+    && molecule.bonds[0].slice(0, 2).every((id) => molecule.atoms.some((atom) => atom.id === id))
+    && !molecule.rings?.length;
+}
 export type GuidedTourCompletion = GuidedTourDecision | "pending";
 export type GuidedTourTarget =
   | "carbon"
@@ -41,18 +48,16 @@ export const INITIAL_GUIDED_TOUR_STATE: GuidedTourState = {
   ready: false,
   open: false,
   step: 0,
-  carbonPhase: "select",
+  carbonPhase: "add",
   settingsOpenedFromTour: false,
   completion: "pending",
 };
 
 const stepTargets: readonly GuidedTourTarget[] = [
-  "carbon",
+  "add-carbon",
   "bond-controls",
   "name",
   "reasoning",
-  "name",
-  "settings",
   "tools",
 ];
 
@@ -64,12 +69,12 @@ export function guidedTourReducer(state: GuidedTourState, action: GuidedTourActi
         ready: true,
         open: action.decision === null,
         step: 0,
-        carbonPhase: "select",
+        carbonPhase: "add",
         settingsOpenedFromTour: false,
         completion: action.decision ?? "pending",
       };
     case "open":
-      return { ...state, ready: true, open: true, step: 0, carbonPhase: "select", settingsOpenedFromTour: false };
+      return { ...state, ready: true, open: true, step: 0, carbonPhase: "add", settingsOpenedFromTour: false };
     case "previous":
       return state.open
         ? { ...state, step: Math.max(0, state.step - 1), carbonPhase: "select", settingsOpenedFromTour: false }
@@ -85,7 +90,7 @@ export function guidedTourReducer(state: GuidedTourState, action: GuidedTourActi
         ? { ...state, carbonPhase: "add" }
         : state;
     case "carbon-added":
-      return state.open && state.step === 0 && state.carbonPhase === "add"
+      return state.open && state.step === 0
         ? { ...state, step: 1, carbonPhase: "select", settingsOpenedFromTour: false }
         : state;
     case "bond-order-changed":
@@ -93,12 +98,10 @@ export function guidedTourReducer(state: GuidedTourState, action: GuidedTourActi
         ? { ...state, step: 2, carbonPhase: "select", settingsOpenedFromTour: false }
         : state;
     case "reasoning-opened":
+      return state;
+    case "reasoning-fragment-activated":
       return state.open && state.step === 3
         ? { ...state, step: 4, carbonPhase: "select", settingsOpenedFromTour: false }
-        : state;
-    case "reasoning-fragment-activated":
-      return state.open && state.step === 4
-        ? { ...state, step: 5, carbonPhase: "select", settingsOpenedFromTour: false }
         : state;
     case "settings-opened":
       return {
@@ -179,6 +182,12 @@ export function guidedTourCopy(
     needsExampleForReasoning?: boolean;
     isPristineInitialMolecule?: boolean;
     carbonPhase?: "select" | "add";
+    isEthene?: boolean;
+    reasoningOpen?: boolean;
+    hasCarbon?: boolean;
+    isEthane?: boolean;
+    canAddCarbon?: boolean;
+    hasEditableBond?: boolean;
   } = {},
 ): GuidedTourCopy {
   const english = language === "en";
@@ -186,127 +195,75 @@ export function guidedTourCopy(
 
   switch (currentStep) {
     case 0:
-      if (options.carbonPhase === "add") {
-        return english
-          ? {
-              title: "Build a molecule",
-              description: "Now choose one of the real Add C arrows below the canvas. The new carbon is added in that direction.",
-            }
-          : {
-              title: "Construye una molécula",
-              description: "Ahora elige una de las flechas reales «Añadir C» bajo el canvas. El nuevo carbono se agrega en esa dirección.",
-            };
-      }
-      return english
-        ? {
-            title: "Build a molecule",
-            description: options.isPristineInitialMolecule
-              ? "Start with this CH₄ carbon. Click it to select it, then choose an Add C arrow below the canvas to add another carbon."
-              : "Click a carbon in the canvas to select it, then choose an Add C arrow below the canvas. The new carbon appears in that direction.",
-          }
-        : {
-            title: "Construye una molécula",
-            description: options.isPristineInitialMolecule
-              ? "Empieza con este carbono de CH₄. Haz clic para seleccionarlo y luego elige una flecha «Añadir C», bajo el canvas, para agregar otro carbono."
-              : "Haz clic en un carbono del canvas para seleccionarlo y luego elige una flecha «Añadir C», bajo el canvas. El nuevo carbono aparece en esa dirección.",
-          };
+      return english ? {
+        title: "Build your first molecule",
+        description: options.hasCarbon === false
+          ? "Your current structure has no carbon to select. Continue the tour, or add a carbon using the editor."
+          : options.carbonPhase === "select"
+          ? "Select a carbon in the canvas, then use an Add C arrow below it."
+          : options.canAddCarbon === false
+            ? "The selected carbon cannot accept this bond. Select another carbon or continue the tour."
+          : options.isPristineInitialMolecule
+            ? "We've started with one carbon. Select a single bond, then use the → Add C arrow below the canvas."
+            : "Use an Add C arrow below the canvas to add a carbon. Your structure stays yours to edit.",
+      } : {
+        title: "Construye tu primera molécula",
+        description: options.hasCarbon === false
+          ? "Tu estructura actual no tiene carbono para seleccionar. Continúa la guía o agrega un carbono con el editor."
+          : options.carbonPhase === "select"
+          ? "Selecciona un carbono en el canvas y luego usa una flecha Añadir C."
+          : options.canAddCarbon === false
+            ? "El carbono seleccionado no puede aceptar este enlace. Selecciona otro carbono o continúa la guía."
+          : options.isPristineInitialMolecule
+            ? "Empezamos con un carbono. Elige enlace simple y luego usa la flecha → Añadir C bajo el canvas."
+            : "Usa una flecha Añadir C bajo el canvas para agregar un carbono. Tú decides cómo editar tu estructura.",
+      };
     case 1:
-      return english
-        ? {
-            title: "Choose a bond order",
-            description: "Before adding a carbon, choose Single, Double, or Triple here. To change a bond already in the canvas, click or activate that bond; each activation cycles its order.",
-          }
-        : {
-            title: "Elige el orden del enlace",
-            description: "Antes de añadir un carbono, elige aquí Simple, Doble o Triple. Para cambiar un enlace del canvas, haz clic o actívalo; cada activación recorre su orden.",
-          };
+      return english ? {
+        title: "Change the bond",
+        description: options.isEthane ? "Activate the bond between the two carbons to change it from single to double." : options.hasEditableBond === false ? "No carbon–carbon bond can be changed here. Continue the tour to explore the name." : "Activate an editable carbon–carbon bond to change its order, or continue the tour.",
+      } : {
+        title: "Cambia el enlace",
+        description: options.isEthane ? "Activa el enlace entre los dos carbonos para cambiarlo de simple a doble." : options.hasEditableBond === false ? "No hay un enlace entre carbonos que se pueda cambiar aquí. Continúa la guía para explorar el nombre." : "Activa un enlace editable entre carbonos para cambiar su orden, o continúa la guía.",
+      };
     case 2:
-      return english
-        ? {
-            title: "Watch the IUPAC name",
-            description: "The name updates as you build and stays in the fixed bar at the bottom.",
-            ...(options.isPristineInitialMolecule ? {
-              exampleAction: "Try propanone to see a full name",
-              exampleNote: "This is optional; Undo restores your current structure.",
-            } : {}),
-          }
-        : {
-            title: "Observa el nombre IUPAC",
-            description: "El nombre se actualiza mientras construyes y permanece en la barra fija de abajo.",
-            ...(options.isPristineInitialMolecule ? {
-              exampleAction: "Probar con propanona y ver un nombre completo",
-              exampleNote: "Es opcional; Deshacer recupera tu estructura actual.",
-            } : {}),
-          };
+      return english ? {
+        title: options.isEthene ? "Meet your molecule: ethene!" : "Meet your molecule",
+        description: "The IUPAC name updates automatically whenever you change the structure.",
+      } : {
+        title: options.isEthene ? "Conoce tu molécula: ¡eteno!" : "Conoce tu molécula",
+        description: "El nombre IUPAC se actualiza automáticamente cuando cambias la estructura.",
+      };
     case 3:
-      return options.needsExampleForReasoning
-        ? english
-          ? {
-              title: "Understand the name",
-              description: "This structure has no explanation to show yet. Load the propanone example explicitly; its “How it is derived” steps explain the name. Undo restores your structure.",
-              exampleAction: "Load propanone and show its explanation",
-            }
-          : {
-              title: "Comprende el nombre",
-              description: "Esta estructura todavía no tiene una explicación disponible. Carga el ejemplo de propanona para ver sus pasos en «Cómo se obtiene». Deshacer recupera tu estructura.",
-              exampleAction: "Cargar propanona y mostrar su explicación",
-            }
-        : english
-          ? {
-              title: "See how the name is derived",
-              description: "Open “How it is derived” to see why the structure receives this name and how its parts match the chemical rules.",
-              action: "Show the explanation",
-            }
-          : {
-              title: "Mira cómo se obtiene el nombre",
-              description: "Abre «Cómo se obtiene» para ver por qué la estructura recibe este nombre y cómo sus partes corresponden a las reglas químicas.",
-              action: "Mostrar la explicación",
-            };
-    case 4:
-      return english
-        ? {
-            title: "Explore the name",
-            description: "Select a linked part in the real IUPAC name below to jump to its explanation. Hover previews it; click, keyboard, and touch work too.",
-            followUp: options.hasInteractiveName
-              ? "The same fragment is highlighted in the explanation."
-              : "This name has no links yet; the propanone example shows them on the real name.",
-            action: options.acetoneAlreadyLoaded || options.hasInteractiveName ? undefined : "Try the propanone example",
-            exampleNote: options.acetoneAlreadyLoaded || options.hasInteractiveName
-              ? undefined
-              : "Suggested displays “propan-2-one”; Undo restores your current structure.",
-          }
-        : {
-            title: "Explora el nombre",
-            description: "Selecciona una parte enlazada del nombre IUPAC real, abajo, para ir a su explicación. El mouse la previsualiza; también funciona con clic, teclado y toque.",
-            followUp: options.hasInteractiveName
-              ? "La explicación destaca el mismo fragmento."
-              : "Este nombre aún no tiene enlaces; el ejemplo de propanona los muestra en el nombre real.",
-            action: options.acetoneAlreadyLoaded || options.hasInteractiveName ? undefined : "Probar con propanona",
-            exampleNote: options.acetoneAlreadyLoaded || options.hasInteractiveName
-              ? undefined
-              : "IUPAC sugerido muestra «propan-2-ona»; Deshacer recupera tu estructura.",
-          };
-    case 5:
-      return english
-        ? {
-            title: "Personalize the view",
-            description: "Open Settings from the gear beside History and Saved. Adjust implicit hydrogens, numbering, substituent highlighting, and label sizes. Accessibility options and keyboard shortcuts are farther down in the same panel.",
-          }
-        : {
-            title: "Personaliza la visualización",
-            description: "Abre Configuración con el engranaje junto a Historial y Guardados. Ajusta H implícitos, numeración, resaltado de sustituyentes y tamaño de etiquetas. Más abajo están Accesibilidad y los atajos de teclado.",
-          };
+      return english ? {
+        title: "Understand the name",
+        description: options.needsExampleForReasoning
+          ? "An explanation is not available for this structure. Continue exploring or return to a named molecule."
+          : options.reasoningOpen && options.hasInteractiveName
+            ? "Select a highlighted name fragment to explore its meaning."
+          : options.hasInteractiveName
+            ? "Open ‘How it is derived’, then select a highlighted name fragment to explore its meaning."
+            : options.reasoningOpen ? "Explore the rules in ‘How it is derived’." : "Open ‘How it is derived’ to explore the rules behind the name.",
+      } : {
+        title: "Comprende el nombre",
+        description: options.needsExampleForReasoning
+          ? "No hay una explicación disponible para esta estructura. Continúa explorando o vuelve a una molécula con nombre."
+          : options.reasoningOpen && options.hasInteractiveName
+            ? "Selecciona un fragmento resaltado del nombre para explorar su significado."
+          : options.hasInteractiveName
+            ? "Abre «Cómo se obtiene» y selecciona un fragmento resaltado del nombre para explorar su significado."
+            : options.reasoningOpen ? "Explora las reglas en «Cómo se obtiene»." : "Abre «Cómo se obtiene» para explorar las reglas detrás del nombre.",
+      };
     default:
-      return english
-        ? {
-            title: "Keep exploring",
-            description: "Try Examples or build a structure from By name. You can reopen this guide any time.",
-          }
-        : {
-            title: "Sigue explorando",
-            description: "Prueba Ejemplos o construye una estructura desde Por nombre. Puedes volver a abrir esta guía cuando quieras.",
-          };
+      return english ? {
+        title: "You're ready to explore!",
+        description: "Build more molecules, try By name or Examples, or challenge yourself in Practice / Exam. Happy exploring!",
+      } : {
+        title: "¡Ya puedes explorar!",
+        description: "Construye más moléculas, prueba Por nombre o Ejemplos, o desafíate en Práctica / Examen. ¡Que disfrutes explorando!",
+      };
   }
+
 }
 
 export function guidedTourControls(language: "es" | "en") {
@@ -314,10 +271,10 @@ export function guidedTourControls(language: "es" | "en") {
     ? {
         open: "How to use?",
         close: "Close guide",
-        skip: "Skip",
+        skip: "Skip tour",
         previous: "Previous",
         next: "Next",
-        finish: "Finish",
+        finish: "Start exploring",
         progress: (step: number) => `Step ${step + 1} of ${GUIDED_TOUR_STEP_COUNT}`,
       }
     : {
@@ -326,7 +283,7 @@ export function guidedTourControls(language: "es" | "en") {
         skip: "Omitir",
         previous: "Anterior",
         next: "Siguiente",
-        finish: "Terminar",
+        finish: "Empezar a explorar",
         progress: (step: number) => `Paso ${step + 1} de ${GUIDED_TOUR_STEP_COUNT}`,
       };
 }

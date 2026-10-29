@@ -218,6 +218,7 @@ import {
   guidedTourScrollDelta,
   guidedTourReducer,
   guidedTourTargetForStep,
+  isTourCarbonPair,
   placeGuidedTourCard,
   readGuidedTourDecision,
   writeGuidedTourDecision,
@@ -7868,9 +7869,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     dispatchGuidedTour({ type: "next" });
   }, [guidedTourState.step, rememberGuidedTourDecision]);
   const markGuidedTourToolsOpened = () => {
-    if (!guidedTourState.open || guidedTourState.step !== GUIDED_TOUR_STEP_COUNT - 1) return;
-    rememberGuidedTourDecision("completed");
-    dispatchGuidedTour({ type: "tools-opened" });
+    // Opening an exploration mode does not replace the explicit finish action.
   };
   const closeSettings = () => {
     setSettingsOpen(false);
@@ -9478,7 +9477,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     playSound("atom");
     previousSelectedId.current = selectedAtom.id;
     setSelectedId(nextId);
-    dispatchGuidedTour({ type: "carbon-added" });
+    if (isTourCarbonPair(next, 1) && molecule.atoms.length === 1 && isCarbonAtom(molecule.atoms[0])) {
+      dispatchGuidedTour({ type: "carbon-added" });
+    }
   };
   const addCarbonFromArrow = useEffectEvent(addCarbon);
 
@@ -9585,8 +9586,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     requestedOrder?: BondOrder,
     toggleStereochemistry = false,
   ) => {
+    const intendedOrder = requestedOrder ?? skippedBondOrder.current.get(bondKey(a, b)) ?? 2;
     const changed = cycleBondOrder(a, b, requestedOrder, toggleStereochemistry);
-    if (changed) { playSound("modify"); dispatchGuidedTour({ type: "bond-order-changed" }); }
+    if (changed) {
+      playSound("modify");
+      if (isTourCarbonPair(molecule, 1) && intendedOrder === 2 && !toggleStereochemistry) {
+        dispatchGuidedTour({ type: "bond-order-changed" });
+      }
+    }
     return changed;
   };
 
@@ -11456,14 +11463,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       : `(${alias.systematic}) ahora se muestra como ${alias.common}; el nombre completo se reordenó alfabéticamente.`);
   };
   const guidedTourControlsText = guidedTourControls(language);
-  const guidedTourTarget = guidedTourTargetForStep(guidedTourState.step, guidedTourState.carbonPhase);
-  const guidedTourCopyText = guidedTourCopy(language, guidedTourState.step, {
-    hasInteractiveName: reasoningNameLinkParts.some((part) => part.stepNumber),
-    acetoneAlreadyLoaded: analysis.name === "propan-2-ona" && carbonCount === 3,
-    needsExampleForReasoning: isPristineInitialMolecule || activeLocalNameUnavailable,
-    isPristineInitialMolecule,
-    carbonPhase: guidedTourState.carbonPhase,
-  });
+  const guidedTourHasInteractiveName = showIupacName && !isPristineInitialMolecule && !activeLocalNameUnavailable
+    && reasoningNameLinkParts.some((part) => part.stepNumber);
+  const guidedTourPhase = hasActiveSelection && isCarbonAtom(selectedAtom) ? "add" : "select";
+  const guidedTourCanAddCarbon = guidedTourPhase === "add" && !getAtomValenceViolation(molecule, selectedAtom.id, newBondOrder)
+    && (!molecule.rings?.length || newBondOrder === 1);
+  const guidedTourTarget = guidedTourState.step === 0 && (guidedTourPhase === "select" || !guidedTourCanAddCarbon) ? "carbon"
+    : guidedTourState.step === 3 && reasoningHelpVisible && guidedTourHasInteractiveName ? "name"
+    : guidedTourTargetForStep(guidedTourState.step, "add");
   const guidedTourSuspended = guidedTourIsSuspendedByOverlay({
     historyOpen,
     settingsOpen,
@@ -11489,6 +11496,19 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const guidedTourEditableBondKey = guidedTourEditableBond
     ? `${guidedTourEditableBond[0]}-${guidedTourEditableBond[1]}`
     : null;
+  const guidedTourCopyText = guidedTourCopy(language, guidedTourState.step, {
+    hasInteractiveName: guidedTourHasInteractiveName,
+    acetoneAlreadyLoaded: analysis.name === "propan-2-ona" && carbonCount === 3,
+    needsExampleForReasoning: activeLocalNameUnavailable,
+    isPristineInitialMolecule,
+    carbonPhase: guidedTourPhase,
+    isEthene: isTourCarbonPair(molecule, 2),
+    reasoningOpen: reasoningHelpVisible,
+    hasCarbon: molecule.atoms.some(isCarbonAtom),
+    isEthane: isTourCarbonPair(molecule, 1),
+    canAddCarbon: guidedTourCanAddCarbon,
+    hasEditableBond: Boolean(guidedTourEditableBond),
+  });
 
   useEffect(() => {
     if (isolatedBuild) return;
@@ -11502,7 +11522,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ) || 58;
     const findAnchor = () => document.querySelector<HTMLElement>(
       `[data-guided-tour-anchor="${guidedTourTarget}"]`,
-    ) ?? (guidedTourTarget === "reasoning"
+    ) ?? (guidedTourTarget === "carbon" ? document.querySelector<HTMLElement>(".builder-card") : null)
+      ?? (guidedTourTarget === "reasoning"
       ? document.querySelector<HTMLElement>(".analysis-card")
       : null);
 
@@ -13116,14 +13137,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             <div
               className="direction-pad"
               aria-label={t("Añadir carbono")}
-              data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "add-carbon" ? "add-carbon" : undefined}
-              data-guided-tour-target={showGuidedTour && guidedTourTarget === "add-carbon" ? "active" : undefined}
             >
               <span className="pad-label">{t("Añadir C")}</span>
               {directionOptions.map((option) => (
                 <button
                   key={option.label}
                   className={option.className}
+                  data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "add-carbon" && option.dx === 1 ? "add-carbon" : undefined}
+                  data-guided-tour-target={showGuidedTour && guidedTourTarget === "add-carbon" && option.dx === 1 ? "active" : undefined}
                   onClick={() => addCarbon(option.dx, option.dy)}
                   disabled={!hasActiveSelection}
                   aria-label={language === "en" ? `Add carbon ${t(option.label).toLowerCase()}` : `Añadir carbono hacia ${option.label.toLowerCase()}`}
@@ -13685,6 +13706,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 ×
               </button>
             </div>
+            <div className="guided-tour-progress-track" aria-hidden="true"><span style={{ width: `${((guidedTourState.step + 1) / GUIDED_TOUR_STEP_COUNT) * 100}%` }} /></div>
             <h2 id="guided-tour-title">{guidedTourCopyText.title}</h2>
             <p id="guided-tour-description">{guidedTourCopyText.description}</p>
             {guidedTourCopyText.followUp && <p className="guided-tour-follow-up">{guidedTourCopyText.followUp}</p>}
