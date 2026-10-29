@@ -17,6 +17,7 @@ import {
 import { getAutoPlacedCarbonPosition } from "../app/manual-layout.ts";
 import { moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { flipCoordinates } from "../app/coordinate-flip.ts";
+import { isTourCarbonPair } from "../app/guided-tour-state.ts";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const page = fs.readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8").replace(/\r\n/g, "\n");
@@ -97,8 +98,10 @@ function harness(sourceGraph = graphWithChain(), selectedId = 2, viewMode = "sem
     future: [],
     futurePristineStates: [],
     soundEvents: [],
+    tourEvents: [],
     playSound(event) { context.soundEvents.push(event); },
     isCarbonAtom: (atom) => atom.element === "C" || atom.element === undefined,
+    isTourCarbonPair,
     getElement: (atom) => atom.element ?? "C",
     elementNames: { C: "carbono" },
     getBondOrderLabel: (order) => order === 1 ? "simple" : order === 2 ? "doble" : "triple",
@@ -127,7 +130,7 @@ function harness(sourceGraph = graphWithChain(), selectedId = 2, viewMode = "sem
       context.selectedId = id;
       context.selectedAtom = context.molecule.atoms.find((atom) => atom.id === id);
     },
-    dispatchGuidedTour() {},
+    dispatchGuidedTour(event) { context.tourEvents.push(event.type); },
     showValenceError(message) { context.valenceError = message; },
     setNotice(message) { context.notice = message; },
     titleCaseElement: (element) => element,
@@ -259,6 +262,36 @@ test("the existing valence rejection blocks direction actions before graph mutat
   addWithDirection(context, "up");
   assert.deepEqual(context.molecule, before);
   assert.equal(context.valenceError, "blocked by valence");
+});
+
+test("tour advances only after a successful methane to ethane addition", () => {
+  const methane = harness(graphWithChain(1), 1);
+  addWithDirection(methane, "right");
+  assert.equal(isTourCarbonPair(methane.molecule, 1), true);
+  assert.deepEqual(methane.tourEvents, ["carbon-added"]);
+
+  const chain = harness(graphWithChain(3), 2);
+  addWithDirection(chain, "up");
+  assert.equal(chain.molecule.atoms.length, 4);
+  assert.deepEqual(chain.tourEvents, []);
+
+  const doubleBond = harness(graphWithChain(1), 1);
+  doubleBond.newBondOrder = 2;
+  addWithDirection(doubleBond, "right");
+  assert.equal(isTourCarbonPair(doubleBond.molecule, 2), true);
+  assert.deepEqual(doubleBond.tourEvents, []);
+
+  const rejected = harness(graphWithChain(1), 1);
+  rejected.getAtomValenceViolation = () => ({ attempted: 5, limit: 4 });
+  addWithDirection(rejected, "right");
+  assert.equal(rejected.molecule.atoms.length, 1);
+  assert.deepEqual(rejected.tourEvents, []);
+
+  const rejectedCommit = harness(graphWithChain(1), 1);
+  rejectedCommit.findMoleculeValenceViolation = () => ({ element: "C", atomId: 1, attempted: 5, limit: 4 });
+  addWithDirection(rejectedCommit, "right");
+  assert.equal(rejectedCommit.molecule.atoms.length, 1);
+  assert.deepEqual(rejectedCommit.tourEvents, []);
 });
 
 test("the real commit, undo and redo path restores the directional hint and its placement", () => {

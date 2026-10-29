@@ -58,7 +58,9 @@ test("v2 frozen mixed Practice/Exam snapshot repeats in fresh processes and ES/E
   const capture = (locale) => {
     const source = `import {captureDifficultySessions} from './tests/helpers/difficulty-session-snapshot.mjs';
       console.log('D2_SNAPSHOT='+JSON.stringify(await captureDifficultySessions('basic','${locale}',2)));`;
-    const out = execFileSync(process.execPath, ["--input-type=module", "-e", source], { encoding: "utf8", timeout: 60000 });
+    // Each fresh process compiles the production page through Vite; on Windows
+    // that startup alone can approach 60 seconds before snapshot generation.
+    const out = execFileSync(process.execPath, ["--input-type=module", "-e", source], { encoding: "utf8", timeout: 180000 });
     return JSON.parse(out.split("D2_SNAPSHOT=")[1].trim());
   };
   assert.equal(fixture.generatorVersion, 2);

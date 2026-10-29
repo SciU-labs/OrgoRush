@@ -9469,6 +9469,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           }
         : {}),
     };
+    const completesTourAddition = isTourCarbonPair(next, 1)
+      && molecule.atoms.length === 1 && isCarbonAtom(molecule.atoms[0]);
     const committed = commit(
       next,
       `Carbono añadido al ${elementNames[getElement(selectedAtom)]} con enlace ${getBondOrderLabel(newBondOrder)}. El nombre se recalculó automáticamente.`,
@@ -9477,7 +9479,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     playSound("atom");
     previousSelectedId.current = selectedAtom.id;
     setSelectedId(nextId);
-    if (isTourCarbonPair(next, 1) && molecule.atoms.length === 1 && isCarbonAtom(molecule.atoms[0])) {
+    if (completesTourAddition) {
       dispatchGuidedTour({ type: "carbon-added" });
     }
   };
@@ -9590,7 +9592,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     const changed = cycleBondOrder(a, b, requestedOrder, toggleStereochemistry);
     if (changed) {
       playSound("modify");
-      if (isTourCarbonPair(molecule, 1) && intendedOrder === 2 && !toggleStereochemistry) {
+      if (isTourCarbonPair(molecule, 1) && intendedOrder === 2) {
         dispatchGuidedTour({ type: "bond-order-changed" });
       }
     }

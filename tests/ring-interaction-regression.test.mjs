@@ -4,6 +4,7 @@ import test from "node:test";
 import ts from "typescript";
 import { fuseRingOnBond, ringFusionError } from "../app/fused-ring.ts";
 import { migrateNomenclatureConvention, nomenclatureConventionLabel, selectableNomenclatureConventions } from "../app/nomenclature-conventions.ts";
+import { isTourCarbonPair } from "../app/guided-tour-state.ts";
 
 const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
 const ast = ts.createSourceFile("page.tsx", page, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
@@ -29,18 +30,57 @@ test("ordinary bond activation edits while Shift activation retains explicit fus
   assert.match(page, /setFusionSelection\(null\);\s*changeBondOrderFromInput\(a, b, undefined, event\.altKey\);/s);
   const calls = [];
   let changed = true;
-  const changeBond = action("changeBondOrderFromInput", {
+  const context = {
     cycleBondOrder: (...args) => { calls.push(["cycle", ...args]); return changed; },
     playSound: (event) => calls.push(["sound", event]),
     dispatchGuidedTour: (event) => calls.push(["tour", event.type]),
-  });
+    molecule: { atoms: [{ id: 1, element: "C" }, { id: 2, element: "C" }], bonds: [[1, 2, 1]] },
+    isTourCarbonPair,
+    skippedBondOrder: { current: new Map() },
+    bondKey: (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`,
+  };
+  const changeBond = action("changeBondOrderFromInput", context);
   assert.equal(changeBond(1, 2, 3, true), true);
-  assert.deepEqual(calls, [["cycle", 1, 2, 3, true], ["sound", "modify"], ["tour", "bond-order-changed"]]);
+  assert.deepEqual(calls, [["cycle", 1, 2, 3, true], ["sound", "modify"]]);
   calls.length = 0;
   changed = false;
   assert.equal(changeBond(1, 2), false);
   assert.deepEqual(calls, [["cycle", 1, 2, undefined, false]]);
+  calls.length = 0;
+  changed = true;
+  assert.equal(changeBond(1, 2), true);
+  assert.deepEqual(calls, [["cycle", 1, 2, undefined, false], ["sound", "modify"], ["tour", "bond-order-changed"]]);
+  calls.length = 0;
+  context.skippedBondOrder.current.set("1-2", 3);
+  assert.equal(changeBond(1, 2), true);
+  assert.deepEqual(calls, [["cycle", 1, 2, undefined, false], ["sound", "modify"]]);
+  calls.length = 0;
+  context.molecule = { atoms: [{ id: 1, element: "C" }, { id: 2, element: "C" }, { id: 3, element: "C" }], bonds: [[1, 2, 1], [2, 3, 1]] };
+  assert.equal(changeBond(1, 2, 2), true);
+  assert.deepEqual(calls, [["cycle", 1, 2, 2, false], ["sound", "modify"]]);
   assert.doesNotMatch(page, /containingRing && !event\.shiftKey\) setFusionSelection/);
+});
+
+test("an Alt activation that actually changes ethane to ethene advances the tour", () => {
+  const events = [];
+  const context = {
+    molecule: { atoms: [{ id: 1, element: "C" }, { id: 2, element: "C" }], bonds: [[1, 2, 1]] },
+    getAtom: (id, molecule) => molecule.atoms.find((atom) => atom.id === id),
+    isCarbonAtom: (atom) => (atom.element ?? "C") === "C",
+    isTourCarbonPair,
+    bondKey: (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`,
+    getBondOrder: (bond) => bond[2] ?? 1,
+    skippedBondOrder: { current: new Map() },
+    findBondValenceViolation: () => null,
+    getBondOrderLabel: (order) => String(order),
+    commit(next) { context.committed = next; return true; },
+    playSound() {},
+    dispatchGuidedTour: (event) => events.push(event.type),
+  };
+  context.cycleBondOrder = action("cycleBondOrder", context);
+  assert.equal(action("changeBondOrderFromInput", context)(1, 2, undefined, true), true);
+  assert.equal(isTourCarbonPair(context.committed, 2), true);
+  assert.deepEqual(events, ["bond-order-changed"]);
 });
 
 test("ring drag and drop remains available outside explicit fusion mode", () => {
