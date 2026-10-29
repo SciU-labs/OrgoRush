@@ -58,13 +58,13 @@ test("016A numbering selects C3 or C2/C4 from verified locants in all four profi
   }
 });
 
-test("016A selected principal-function locants exclude the discarded orientation", () => {
+test("016A numbering includes accepted substituent locants alongside the principal function", () => {
   for (const profile of ["2013-es", "2013-en", "1979-es", "1979-en"]) {
     const m = model("CCC(=O)CC(C)CC", profile);
     const step = m.reasoning.steps.find(step => step.nameRole === "numbering");
     assert.deepEqual(step.numberingComparison.selectedLocants, [3]);
     assert.deepEqual(step.numberingComparison.reverseLocants, [5]);
-    assertNumbering(m, [3]);
+    assertNumbering(m, [3,5]);
   }
 });
 
@@ -148,11 +148,13 @@ test("016 atom IDs and storage/visual order never become locants", () => {
     substituents: m.reasoning.analysis.substituents.map(s => ({ ...s, atomIds: s.atomIds.map(remap) })),
   };
   const targets = buildReasoningVisualTargets({ molecule: variant, analysis,
-    steps: m.reasoning.steps.filter(step => ["parent","numbering","substituent"].includes(step.nameRole)), fragments: {}, enabled: true });
+    steps: m.reasoning.steps.filter(step => ["parent","numbering","substituent"].includes(step.nameRole)),
+    displayedName: m.reasoning.displayedName,
+    fragments: { [m.role("numbering").stepNumber]: m.reasoning.fragments[m.role("numbering").stepNumber] }, enabled: true });
   const numbering = targets[m.role("numbering").stepNumber];
   assert.deepEqual(numbering.locants, m.role("numbering").locants.map(([id,n]) => [remap(id),n]));
   assert.ok(numbering.locants.every(([id,n]) => id !== n));
-  assert.equal(numbering.atomIds.length,1);
+  assert.equal(numbering.atomIds.length,2);
   assert.deepEqual(numbering.bondIds,[]);
 });
 
@@ -172,7 +174,7 @@ test("016 timer expires at exactly 2000 ms and each same/different step press re
   const changes = [], controller = createReasoningVisualController(target => changes.push(target));
   const m = model("CCC(=O)CC(C)CC");
   const a = m.role("parent"), b = m.role("numbering");
-  assertNumbering(m,[3]);
+  assertNumbering(m,[3,5]);
   controller.activate(a); context.mock.timers.tick(1999); assert.strictEqual(changes.at(-1), a);
   context.mock.timers.tick(1); assert.equal(changes.at(-1), null);
   controller.activate(a); context.mock.timers.tick(1500); controller.activate(b);
@@ -239,16 +241,17 @@ test("016 native step buttons expose accessible keyboard activation; unsafe step
 
 test("016 overlays cover real SVG regions in skeletal, semi-developed and condensed views and stay out of exports", () => {
   const m = model("CCC(=O)CC(C)CC"), target = m.role("numbering");
-  assertNumbering(m,[3]);
+  assertNumbering(m,[3,5]);
   const positions = new Map(m.molecule.atoms.map(atom => [atom.id,{ x: atom.x*50,y: atom.y*50 }]));
   for (const semiDeveloped of [false,true]) {
     const html = renderToStaticMarkup(React.createElement(ui.ReasoningVisualOverlay, { target, positions, semiDeveloped, showLocants: true }));
     assert.equal((html.match(/data-reasoning-atom=/g) ?? []).length,target.atomIds.length);
     assert.equal((html.match(/data-reasoning-bond=/g) ?? []).length,target.bondIds.length);
     assert.equal((html.match(/data-reasoning-locant=/g) ?? []).length,target.locants.length);
-    assert.equal(target.locants.length,1);
+    assert.equal(target.locants.length,2);
     assert.match(html,/>3<\/text>/);
-    assert.doesNotMatch(html,/>[124567]<\/text>/);
+    assert.match(html,/>5<\/text>/);
+    assert.doesNotMatch(html,/>[12467]<\/text>/);
     assert.match(html,/data-editor-only="true"/); assert.match(html,/pointer-events="none"/);
   }
   const renderModel = buildCondensedRenderModel(m.molecule, () => 0);

@@ -206,7 +206,7 @@ import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substitue
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { activateReasoningReference, cancelReasoningHover, scheduleReasoningHover, scrollToReasoningStep } from "./reasoning-name-navigation";
-import { buildReasoningVisualTargets } from "./reasoning-visual-targets";
+import { buildReasoningVisualReferences, reasoningFragmentId, type ReasoningVisualTarget } from "./reasoning-visual-targets";
 import { ReasoningStepNumber, ReasoningVisualOverlay, useReasoningVisualInteraction } from "./reasoning-visual-interaction";
 import {
   GUIDED_TOUR_STEP_COUNT,
@@ -709,21 +709,41 @@ export function ReasoningNameFragmentView({
   fragment,
   onSelectContribution,
   selectedSemanticId,
+  stepNumber,
+  visualTargets,
+  selectedFragmentId,
+  onActivateTarget,
+  language = "es",
 }: {
   fragment: ReasoningNameFragment;
   onSelectContribution?: (contribution: ReasoningNameFragment) => void;
   selectedSemanticId?: string | null;
+  stepNumber?: string;
+  visualTargets?: Readonly<Record<string, ReasoningVisualTarget>>;
+  selectedFragmentId?: string | null;
+  onActivateTarget?: (target: ReasoningVisualTarget) => void;
+  language?: AppLanguage;
 }) {
   return (
     <>
       {[fragment, ...(fragment.additionalFragments ?? [])].map((part, index) => {
-        const selectable = part.semanticId && onSelectContribution;
+        const fragmentId = stepNumber ? reasoningFragmentId(stepNumber, part) : undefined;
+        const target = fragmentId ? visualTargets?.[fragmentId] : undefined;
+        const selectable = visualTargets ? target && onActivateTarget : part.semanticId && onSelectContribution;
+        const selected = visualTargets ? fragmentId === selectedFragmentId : Boolean(part.semanticId && part.semanticId === selectedSemanticId);
         return (
           <div key={part.semanticId ? `${part.semanticId}:${part.start ?? index}:${part.text}` : index} className={`reasoning-name-fragment reasoning-name-fragment--${part.kind}`}>
             {selectable
-              ? <button type="button" className={`reasoning-name-fragment-control ${part.semanticId === selectedSemanticId ? "is-selected" : ""}`}
-                  aria-label={part.label} aria-pressed={part.semanticId === selectedSemanticId}
-                  onClick={() => onSelectContribution(part)}>
+              ? <button type="button" className={`reasoning-name-fragment-control ${selected ? "is-selected" : ""}`}
+                  aria-label={visualTargets
+                    ? language === "en" ? `${part.text}: ${part.label}. Highlight in the molecule for two seconds`
+                      : `${part.text}: ${part.label}. Resaltar en la molécula durante dos segundos`
+                    : part.label} aria-pressed={selected}
+                  onClick={(event) => {
+                    event?.stopPropagation();
+                    if (target && onActivateTarget) onActivateTarget(target);
+                    else onSelectContribution?.(part);
+                  }}>
                   <span className="reasoning-name-fragment-text">{part.text}</span>
                 </button>
               : <span className="reasoning-name-fragment-text">{part.text}</span>}
@@ -7615,7 +7635,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [showReasoningHelp, setShowReasoningHelp] = useState(true);
   const [reasoningPeekContext, setReasoningPeekContext] = useState<{ key: string; molecule: typeof molecule } | null>(null);
   const [activeReasoningReference, setActiveReasoningReference] = useState<{ key: string; molecule: typeof molecule; step: string } | null>(null);
-  const [selectedUnsaturationReference, setSelectedUnsaturationReference] = useState<{ semanticId: string; key: string } | null>(null);
+  const [selectedUnsaturationReference, setSelectedUnsaturationReference] = useState<{ semanticId: string; key: string; molecule: typeof molecule } | null>(null);
   const reasoningHoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reasoningPointerNavigated = useRef(false);
   const reasoningScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -8318,7 +8338,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   });
   const mainChainSet = new Set(activeAnalysis.mainChain);
   const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
-  const selectedUnsaturationSemanticId = selectedUnsaturationReference?.key === reasoningReferenceKey
+  const selectedUnsaturationSemanticId = selectedUnsaturationReference?.key === reasoningReferenceKey && selectedUnsaturationReference.molecule === molecule
     ? selectedUnsaturationReference.semanticId
     : null;
   const activeReasoningBondIds = reasoningNameLinkParts
@@ -8331,9 +8351,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const reasoningVisualsEnabled = !practiceOpen && !isolatedBuild && reasoningHelpVisible && showIupacName
     && displayedNameCopyable && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary)
     && sourceNameOverride === null && (!isPristineInitialMolecule || showPristineMethaneName);
-  const reasoningVisualTargets = buildReasoningVisualTargets({ molecule, analysis: activeAnalysis,
+  const reasoningVisualReferences = buildReasoningVisualReferences({ molecule, analysis: activeAnalysis,
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
-  const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualTargets)}`;
+  const reasoningVisualTargets = reasoningVisualReferences.steps;
+  const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualReferences)}`;
   const { target: reasoningVisualTarget, activate: activateReasoningVisual, clear: clearReasoningVisual } =
     useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled);
   const openReasoningHelpFromUserAction = () => {
@@ -8346,8 +8367,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     if (timer.current !== null) clearTimeout(timer.current);
     timer.current = null;
   };
-  const navigateToReasoningStep = (stepNumber: string, fromHover: boolean) => {
+  const navigateToReasoningStep = (stepNumber: string, fromHover: boolean, semanticId?: string) => {
     clearReasoningVisual();
+    setSelectedUnsaturationReference(semanticId ? { semanticId, key: reasoningReferenceKey, molecule } : null);
     reasoningPointerNavigated.current = true;
     cancelReasoningHover(reasoningHoverTimer);
     clearReasoningTimer(reasoningScrollTimer);
@@ -8372,11 +8394,15 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   };
   const selectUnsaturationContribution = (contribution: Pick<ReasoningNameFragment, "semanticId">, stepNumber = "07") => {
     if (!contribution.semanticId) return;
-    setSelectedUnsaturationReference({
-      semanticId: contribution.semanticId,
-      key: reasoningReferenceKey,
-    });
-    navigateToReasoningStep(stepNumber, false);
+    navigateToReasoningStep(stepNumber, false, contribution.semanticId);
+  };
+  const activateReasoningCanvasReference = (target: ReasoningVisualTarget) => {
+    cancelReasoningHover(reasoningHoverTimer);
+    clearReasoningTimer(reasoningScrollTimer);
+    clearReasoningTimer(reasoningHighlightTimer);
+    setActiveReasoningStep(null);
+    setSelectedUnsaturationReference(null);
+    activateReasoningVisual(target);
   };
   useEffect(() => {
     return () => {
@@ -14877,15 +14903,17 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   {localizedReasoningSteps.map((step) => (
                     <li key={step.number} id={`iupac-reasoning-step-${step.number}`} className={activeReasoningStep === step.number ? "reasoning-step-target" : undefined}>
                       <ReasoningStepNumber number={step.number} title={step.title} language={language}
-                        target={reasoningVisualTargets[step.number]} active={reasoningVisualTarget?.stepNumber === step.number}
-                        onActivate={(target) => { setSelectedUnsaturationReference(null); activateReasoningVisual(target); }} />
+                        target={reasoningVisualTargets[step.number]} active={reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId}
+                        onActivate={activateReasoningCanvasReference} />
                       <div>
                         <strong>{step.title}</strong>
                         <p><ChemicalNotationText value={step.explanation} /></p>
                         {reasoningNameFragments[step.number] && (
                         <ReasoningNameFragmentView fragment={reasoningNameFragments[step.number]}
-                          selectedSemanticId={selectedUnsaturationSemanticId}
-                          onSelectContribution={(contribution) => selectUnsaturationContribution(contribution, step.number)} />
+                          stepNumber={step.number} language={language}
+                          visualTargets={reasoningVisualReferences.fragments}
+                          selectedFragmentId={reasoningVisualTarget?.fragmentId}
+                          onActivateTarget={activateReasoningCanvasReference} />
                         )}
                       </div>
                     </li>
