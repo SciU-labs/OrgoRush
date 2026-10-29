@@ -4764,8 +4764,6 @@ function alphabeticalReasoningPresentation(
   sourceGroups: readonly { name: string; locants: readonly number[]; complex: boolean }[],
   language: AppLanguage,
   displayedName: string,
-  functionLabel?: string,
-  comparison?: IupacReasoningStep["numberingComparison"],
 ) {
   const occurrences = sourceGroups.flatMap(group => group.locants.map(locant => ({
     locant, name: group.name, systematicName: group.name, complex: group.complex,
@@ -4801,12 +4799,7 @@ function alphabeticalReasoningPresentation(
   });
   const allWritten = groups.every(group => group.start >= 0);
   groups.sort((left, right) => allWritten ? left.start - right.start : left.engineIndex - right.engineIndex);
-  return describeAlphabeticalOrder(groups, language, {
-    functionLabel,
-    ...(comparison?.comparison === -1 ? {
-      selectedLocants: comparison.selectedLocants, reverseLocants: comparison.reverseLocants,
-    } : {}),
-  });
+  return describeAlphabeticalOrder(groups, language);
 }
 
 function hasImplicitAcyclicAldehydeLocant(analysis: Analysis) {
@@ -5562,12 +5555,11 @@ export function buildIupacReasoningSteps(
   }
 
   if (substituentGroups.size) {
-    const alphabeticalOrder = alphabeticalReasoningPresentation([...substituentGroups.values()], "es", displayedName,
-      analysis.primaryFunctionalLabel, primaryNumberingComparison)!;
+    const alphabeticalOrder = alphabeticalReasoningPresentation([...substituentGroups.values()], "es", displayedName)!;
     steps.push({
       number: "05",
       title: "Orden alfabético",
-      explanation: [...alphabeticalOrder.paragraphs, alphabeticalOrder.fragment].join("\n\n"),
+      explanation: alphabeticalOrder.paragraphs.join(" "),
       alphabeticalOrder,
     });
   }
@@ -5954,8 +5946,8 @@ export function buildEnglishReasoningSteps(
     } else if (alphabeticalOrder) {
       alphabeticalOrder = alphabeticalReasoningPresentation(alphabeticalOrder.groups.map(group => ({
         name: group.sourceName, locants: group.locants, complex: group.complex,
-      })), "en", englishName, primaryLabel, steps.find(item => item.numberingComparison)?.numberingComparison)!;
-      explanation = [...alphabeticalOrder.paragraphs, alphabeticalOrder.fragment].join("\n\n");
+      })), "en", englishName)!;
+      explanation = alphabeticalOrder.paragraphs.join(" ");
     } else {
       const descriptors = getMainChainStereoDescriptors(molecule, analysis.mainChain, true);
       const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);

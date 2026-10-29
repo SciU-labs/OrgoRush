@@ -402,7 +402,7 @@ test("aromatic fragments retain benzene, visible prefixes, and TNT pedagogy", ()
   assert.equal(tntEs.fragments["01"], undefined, "nitro must not be presented as a suffix");
   assert.match(tntEs.steps.find((step) => step.number === "01").explanation, /prefijo nitro-/i);
   assert.match(tntEs.steps.find((step) => step.number === "03").explanation, /nitro en C1, 3 y 5/i);
-  assert.match(tntEs.steps.find((step) => step.number === "05").explanation, /metil → nitro/i);
+  assert.match(tntEs.steps.find((step) => step.number === "05").alphabeticalOrder.fragment, /metil → nitro/i);
   const exported = moleculeToSmiles(tnt.molecule);
   assert.equal(exported.ok, true);
   assert.equal(curatedCommonNameForSmiles(exported.smiles, "es"), "TNT · 2,4,6-trinitrotolueno");

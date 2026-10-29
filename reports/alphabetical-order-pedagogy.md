@@ -1,43 +1,40 @@
-# Alphabetical Order: contextual explanation and typography
+# Alphabetical Order: concise explanations
 
 Date: 2026-10-29.
 
-The Alphabetical Order step now explains the actual substituent groups, their quantities and positions, the base-name comparison, and why writing order is separate from choosing the numbering direction. Its summary is prominent static text, using the same typography as the existing reasoning fragments.
+The explanation contains at most two short sentences: the rule, then an application to the molecule's actual substituents. A single substituent type receives one shorter sentence. The example uses 30 words in Spanish and 30 in English, with no repeated quantities, carbon positions or justification of numbering orientation.
 
 ## Modified files
 
-- `app/reasoning-alphabetical-order.ts`: pure ES/EN narrative formatter. Receives groups already ordered by the nomenclature formatter; describes repeated positions, multiplicity, distinguishing letters, a single substituent type, and higher-priority numbering decisions. Complex-group and conventional-qualifier explanations are included only when relevant.
-- `app/page.tsx`: adapts the existing grouped substituent data and existing Spanish/English prefix formatters into that presentation. Verified top-level prefix spans keep the narrative aligned with the name displayed by the selected language/profile, including English locant changes. Adds a noninteractive `ReasoningAlphabeticalContent` component. A single substituent type now receives the explanatory step; no-substituent cases keep their prior behavior.
-- `app/globals.css`: adds paragraph spacing and width constraints for the static summary. Reuses `.reasoning-name-fragment-text` unchanged for font size, weight, line height and responsive wrapping.
-- `tests/alphabetical-order-reasoning.test.mjs`: 12 new regressions covering chemistry-derived explanations, quantity/locant independence, common initial letters, language/profile changes, single/absent substituents, complex groups, contextual conventional forms, shared typography, static semantics and unchanged Canvas targets.
-- `tests/reasoning-hierarchy.test.mjs`: updates the expected step list for a molecule with a single substituent type; functional priority still comes first.
+- `app/reasoning-alphabetical-order.ts`: replaces the extended narrative with the short ES/EN rule and application. Retains internal prefixes for complex groups and identifies the comparison key of a conventional form when relevant. For many substituent types, uses one representative comparison while preserving the complete arrow.
+- `app/page.tsx`: removes the unused numbering context and the duplicate arrow from the explanation string. The existing static arrow component and styles are preserved.
+- `tests/alphabetical-order-reasoning.test.mjs`: updates the pedagogical assertions and adds length, sentence-count, nonrepetition and many-substituent checks.
+- `tests/reasoning-hierarchy.test.mjs` and `tests/reasoning-name-fragments.test.mjs`: check the arrow in its presentation field, separately from the short explanation.
 - This report.
 
-No alphabetical-order engine was introduced. Citation order and multiplicative forms come from the existing formatters and selected output. The presentation does not select or renumber a parent, mutate analysis, or change molecular highlighting. The new summary has no name role, atom IDs, Canvas target, event handlers, button semantics or interactive hover styles.
+Chemical ordering, grouping, locants, numbering priorities and Canvas highlighting remain governed by the existing logic. No stylesheet or highlighting implementation was changed.
 
 ## Example behavior
 
-For the requested dichlorinated enone, the Spanish presentation identifies two cloro groups at C4/C5 and two metil groups, both at C6. It explains c before m, dicloro before dimetil, and the role of di- as quantity. It explicitly preserves the ketone's C2 preference over C6 in the opposite direction. The English presentation explains the corresponding chloro/methyl comparison.
+> Los sustituyentes se ordenan alfabéticamente por su nombre base, sin considerar prefijos multiplicativos externos ni sus localizadores. Aquí, «cloro» (c) precede a «metil» (m); se cita «dicloro» antes de «dimetil».
 
-Other molecules use their own groups and locants. For example, methoxy/methyl requires comparison beyond their shared initial letters in English, whereas the Spanish metil/metoxi comparison differs. A single type explains that no comparison of different names is necessary. The displayed arrow appears once, as prominent noninteractive text.
+The example is generated from the existing molecular naming data. Other groups, language-specific comparisons and multiplicative forms use their own names. The arrow remains prominent, complete and noninteractive.
 
-The complex-substituent explanation distinguishes a complete group name and its internal prefixes from an outside multiplicative prefix. sec-/tert- forms are not listed as universal exceptions: a conventional qualifier is discussed only when that actual citation form is present. The terminology follows [IUPAC Blue Book P-14.5](https://iupac.qmul.ac.uk/BlueBook/P1.html).
+The existing distinction between internal complex-group prefixes and outside multipliers is retained; conventional qualifiers are treated contextually rather than listed as universal exceptions.
 
 ## Validation
 
-The final regression run passed **142 tests, 0 failures, 0 skipped**, including all 12 new tests. It covers reasoning hierarchy, nomenclature ordering, halogen names, legacy English naming, current English prefix regressions, fragment highlighting, numbered-step interactions, name fragments and profile-specific reasoning:
+The focused run passed **62 tests, 0 failures, 0 skipped**, covering short explanations, reasoning hierarchy, existing name fragments and interactive highlighting:
 
 ```text
-node --test --test-concurrency=1 tests/alphabetical-order-reasoning.test.mjs tests/reasoning-hierarchy.test.mjs tests/nomenclature-order.test.mjs tests/halogen-nomenclature.test.mjs tests/legacy-english-nomenclature.test.mjs tests/ether-current-profile-regressions.test.mjs tests/reasoning-fragment-highlighting.test.mjs tests/orgorush-reasoning-interaction-016.test.mjs tests/reasoning-name-fragments.test.mjs tests/reasoning-nom004-profile.test.mjs
+node --test --test-concurrency=1 tests/alphabetical-order-reasoning.test.mjs tests/reasoning-hierarchy.test.mjs tests/reasoning-name-fragments.test.mjs tests/reasoning-fragment-highlighting.test.mjs
 ```
 
 - `npm run typecheck`: passed.
-- `npm run build:pages`: passed, with existing bundle-size/dynamic-import warnings.
-- `npm run validate:pages`: artifact validation and 4 additional tests passed (**146 passing tests in total**).
+- `npm run build:pages`: passed; existing bundle-size/dynamic-import warnings remain.
+- `npm run validate:pages`: artifact validation and 4 additional tests passed (**66 passing tests total**).
 - `git diff --check`: passed.
 
 ## Verification limits
 
-An integrated-browser smoke test was attempted against the local Pages preview, but the browser could not reach `127.0.0.1` and returned `ERR_CONNECTION_TIMED_OUT`. The temporary preview process was stopped. Visual consistency and wrapping are checked through production-component HTML and shared CSS contracts; no desktop/mobile viewport screenshot verification is claimed.
-
-The change retains the chemical coverage and citation choices of the existing naming profiles. Specialized reasoning paths that do not supply ordinary substituent groups keep their existing presentation.
+The 30–50-word target is checked for the example; representative cases stay within 50 words and at most two sentences, with single-type cases below 25 words. Exceptionally long chemical names retain their actual spelling. Validation uses the existing production-component, CSS-contract and chemistry/hook test conventions; no new live-browser viewport review is claimed for this text-only update.

@@ -32,17 +32,26 @@ function fromName(name, profile = "2013-en") {
   return model(exported.smiles, profile);
 }
 
-test("the example explains actual counts, repeated positions, base names and the ketone numbering priority in ES/EN", () => {
+function assertConcise(presentation, maximum = 50) {
+  const text = presentation.paragraphs.join(" ");
+  assert.ok(presentation.paragraphs.length <= 2);
+  assert.equal((text.match(/[.!?](?:\s|$)/g) ?? []).length, presentation.paragraphs.length);
+  assert.ok(text.split(/\s+/u).length <= maximum, text);
+  assert.doesNotMatch(text, /C\d|numbering direction|sentido de numeración|ketone|cetona|two groups|dos grupos|both at|ambos en/i);
+}
+
+test("the example gives a short rule and its molecular application in ES/EN", () => {
   for (const [profile, fragment] of [["2013-es", "cloro → metil"], ["2013-en", "chloro → methyl"]]) {
     const m = model(example, profile), text = m.step.explanation;
     assert.equal(m.presentation.fragment, fragment);
     assert.deepEqual(m.presentation.groups.map(group => [...group.locants]), [[4,5], [6,6]]);
     assert.deepEqual(m.presentation.groups.map(group => group.multiplier), ["di", "di"]);
-    assert.match(text, profile.endsWith("es") ? /dos grupos «cloro».*C4.*C5.*dos grupos «metil».*ambos en C6/s
-      : /two chloro groups.*C4.*C5.*two methyl groups.*both at C6/s);
-    assert.match(text, profile.endsWith("es") ? /«c» va antes que «m»/ : /“c” comes before “m”/);
-    assert.match(text, profile.endsWith("es") ? /localizadores.*posiciones.*tampoco determinan/ : /locants.*positions.*do not determine/);
-    assert.match(text, profile.endsWith("es") ? /cetona.*C2.*frente a C6.*no invierte/s : /ketone.*C2.*versus C6.*does not reverse/s);
+    assertConcise(m.presentation);
+    assert.equal(m.presentation.paragraphs.length, 2);
+    assert.equal(text, m.presentation.paragraphs.join(" "));
+    assert.ok(text.split(/\s+/u).length >= 30, text);
+    assert.match(m.presentation.paragraphs[0], profile.endsWith("es") ? /nombre base.*prefijos multiplicativos.*localizadores/ : /base names.*multiplicative prefixes.*locants/);
+    assert.match(m.presentation.paragraphs[1], profile.endsWith("es") ? /«cloro» \(c\) precede a «metil» \(m\).*«dicloro» antes de «dimetil»/ : /“chloro” \(c\) precedes “methyl” \(m\).*“dichloro” before “dimethyl”/);
     assert.doesNotMatch(text, /sec-|tert-|terc-/);
     assert.equal(m.reasoning.steps.find(step => step.nameRole === "numbering").numberingComparison.comparison, -1);
   }
@@ -53,15 +62,16 @@ test("the selected profile supplies alphabetical citation; quantity and locants 
   assert.equal(m.presentation.fragment, "ethyl → methyl");
   assert.deepEqual(m.presentation.groups.map(group => group.citedPrefix), ["ethyl", "dimethyl"]);
   assert.deepEqual(m.presentation.groups.map(group => [...group.locants]), [[3], [2,2]]);
-  assert.match(m.step.explanation, /“di-”.*indicates two methyl groups/);
-  assert.match(m.step.explanation, /outside prefix does not determine.*alphabetical/);
+  assertConcise(m.presentation);
+  assert.match(m.step.explanation, /without considering external multiplicative prefixes/);
   assert.match(m.step.explanation, /ethyl.*before.*dimethyl/);
 });
 
 test("different substituents generate their own comparison and never borrow the example", () => {
   const m = fromName("2-bromo-3-ethylhexane");
   assert.equal(m.presentation.fragment, "bromo → ethyl");
-  assert.match(m.step.explanation, /“b” comes before “e”/);
+  assertConcise(m.presentation);
+  assert.match(m.step.explanation, /“bromo” \(b\) precedes “ethyl” \(e\)/);
   assert.doesNotMatch(m.step.explanation, /chloro|C6\)|“di-”/);
   assert.deepEqual(m.presentation.groups.map(group => [...group.locants]), [[2], [3]]);
 });
@@ -71,8 +81,10 @@ test("comparison continues beyond a shared initial letter, in the displayed lang
   const en = model("CC(C)CC(OC)CC", "2013-en");
   assert.equal(es.presentation.fragment, "metil → metoxi");
   assert.equal(en.presentation.fragment, "methoxy → methyl");
-  assert.match(es.step.explanation, /coinciden en «met».*«i» antes que «o»/);
-  assert.match(en.step.explanation, /share “meth”.*“o” comes before “y”/);
+  assert.match(es.step.explanation, /primera diferencia \(i antes que o\)/);
+  assert.match(en.step.explanation, /first difference \(o before y\)/);
+  assertConcise(es.presentation);
+  assertConcise(en.presentation);
 });
 
 test("displayed English prefix locants are projected without renumbering the molecule", () => {
@@ -82,18 +94,20 @@ test("displayed English prefix locants are projected without renumbering the mol
   assert.equal(en.reasoning.displayedName, "2-iodo-4-methylpentane");
   assert.deepEqual(en.presentation.groups.map(group => [...group.locants]), [[2], [4]]);
   assert.deepEqual(es.presentation.groups.map(group => [...group.locants]), [[2], [4]]);
-  assert.match(en.step.explanation, /one iodo group \(at C2\).*one methyl group \(at C4\)/);
+  assert.match(en.step.explanation, /“iodo” \(i\) precedes “methyl” \(m\)/);
+  assertConcise(en.presentation);
 });
 
-test("one substituent type needs no alphabetical comparison but explains multiplicity and distribution", () => {
+test("one substituent type gets one shorter sentence without repeating multiplicity or positions", () => {
   for (const profile of ["2013-es", "2013-en"]) {
     const m = fromName("2,2,4-trimethylpentane", profile);
     assert.equal(m.presentation.groups.length, 1);
     assert.equal(m.presentation.fragment, profile.endsWith("es") ? "metil" : "methyl");
     assert.deepEqual([...m.presentation.groups[0].locants], [2,2,4]);
     assert.match(m.step.explanation, profile.endsWith("es") ? /no es necesario comparar nombres diferentes/ : /no comparison between different names is needed/);
-    assert.match(m.step.explanation, profile.endsWith("es") ? /dos en C2 y uno en C4/ : /two at C2 and one at C4/);
-    assert.match(m.step.explanation, profile.endsWith("es") ? /«tri-».*tres/ : /“tri-”.*three/);
+    assertConcise(m.presentation, 25);
+    assert.equal(m.presentation.paragraphs.length, 1);
+    assert.doesNotMatch(m.step.explanation, /tri-|trimetil|trimethyl|C2|C4/);
     assert.doesNotMatch(m.presentation.fragment, /→/);
   }
 });
@@ -114,6 +128,7 @@ test("ES to EN to ES and supported legacy profiles keep counts and citation alig
     const data = reasoning.steps.find(step => step.alphabeticalOrder).alphabeticalOrder;
     assert.equal(data.fragment, profile.endsWith("es") ? "cloro → metil" : "chloro → methyl");
     assert.deepEqual(data.groups.map(group => [...group.locants]), [[4,5], [6,6]]);
+    assertConcise(data);
   }
   assert.deepEqual(project(chemistry.engine, observed, "2013-es"), first);
   assert.deepEqual(observed, original);
@@ -132,20 +147,38 @@ test("complex substituents retain their internal prefixes; the existing formatte
   ];
   const original = structuredClone(groups), result = describeAlphabeticalOrder(groups, "en");
   assert.equal(result.fragment, "1,1-dimethylethyl → ethyl");
-  assert.match(result.paragraphs.join(" "), /“d” comes before “e”/);
-  assert.match(result.paragraphs.join(" "), /complete group name, including its internal prefixes/);
-  assert.match(result.paragraphs.join(" "), /not universally removed/);
+  assert.match(result.paragraphs.join(" "), /“1,1-dimethylethyl” \(d\) precedes “ethyl” \(e\)/);
+  assert.match(result.paragraphs.join(" "), /complete names, retaining internal prefixes in complex groups/);
+  assert.match(result.paragraphs.join(" "), /ignoring outside multipliers/);
+  assertConcise(result);
   assert.deepEqual(groups, original);
 });
 
 test("conventional qualifiers are explained only when that form is actually present", () => {
   const group = { sourceName: "tert-butil", name: "tert-butyl", comparisonName: historicalPrefixKey("tert-butyl"),
     locants: [4], citedPrefix: "tert-butyl", multiplier: "", complex: false };
-  const text = describeAlphabeticalOrder([group], "en").paragraphs.join(" ");
-  assert.match(text, /conventional form “tert-butyl” used here, “butyl” is compared/);
+  const other = { sourceName: "etil", name: "ethyl", comparisonName: "ethyl", locants: [3], citedPrefix: "ethyl", multiplier: "", complex: false };
+  const presentation = describeAlphabeticalOrder([group, other], "en");
+  const text = presentation.paragraphs.join(" ");
+  assert.match(text, /“tert-butyl” \(key “butyl”\)/);
+  assertConcise(presentation);
   assert.doesNotMatch(text, /sec-/);
   const ordinary = { ...group, name: "butyl", citedPrefix: "butyl" };
-  assert.doesNotMatch(describeAlphabeticalOrder([ordinary], "en").paragraphs.join(" "), /conventional|sec-|tert-/);
+  assert.doesNotMatch(describeAlphabeticalOrder([ordinary, other], "en").paragraphs.join(" "), /key|conventional|sec-|tert-/);
+});
+
+test("many substituent types keep two short sentences while the arrow retains every group", () => {
+  const groups = ["bromo", "chloro", "ethyl", "fluoro", "iodo", "methyl"].map((name, index) => ({
+    sourceName: name, name, comparisonName: name, locants: [index + 1], citedPrefix: name, multiplier: "", complex: false,
+  }));
+  for (const language of ["es", "en"]) {
+    const before = structuredClone(groups), result = describeAlphabeticalOrder(groups, language);
+    assertConcise(result);
+    assert.equal(result.paragraphs.length, 2);
+    assert.equal(result.fragment, groups.map(group => group.name).join(" → "));
+    assert.match(result.paragraphs[1], language === "es" ? /^Entre ellos,/ : /^Among them,/);
+    assert.deepEqual(groups, before);
+  }
 });
 
 test("the alphabetical summary uses the same prominent span and stays semantically noninteractive", () => {

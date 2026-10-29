@@ -142,8 +142,8 @@ test("aromatic nitro groups are explained as prefixes, not principal suffix grou
   assert.match(tntSpanish.find((step) => step.number === "03").explanation, /metil en C2/i);
   assert.match(tntEnglish.find((step) => step.number === "03").explanation, /nitro at C1, 3, and 5/i);
   assert.match(tntEnglish.find((step) => step.number === "03").explanation, /methyl at C2/i);
-  assert.match(tntSpanish.find((step) => step.number === "05").explanation, /metil → nitro/i);
-  assert.match(tntEnglish.find((step) => step.number === "05").explanation, /methyl → nitro/i);
+  assert.match(tntSpanish.find((step) => step.number === "05").alphabeticalOrder.fragment, /metil → nitro/i);
+  assert.match(tntEnglish.find((step) => step.number === "05").alphabeticalOrder.fragment, /methyl → nitro/i);
 
   const nitroAcid = moleculeFromSmiles(cases.find(([label]) => label === "nitro plus a suffix group")[1]);
   const nitroAcidAnalysis = analyzeMolecule(nitroAcid.molecule);
@@ -207,7 +207,7 @@ test("different substituents add locant and alphabetical-order steps", () => {
   const analysis = analyzeMolecule(result.molecule);
   const steps = buildIupacReasoningSteps(result.molecule, analysis);
   assert.deepEqual(steps.map((step) => step.number), ["02", "03", "04", "05"]);
-  assert.match(steps.find((step) => step.number === "05").explanation, /etil → metil/i);
+  assert.match(steps.find((step) => step.number === "05").alphabeticalOrder.fragment, /etil → metil/i);
 });
 
 test("repeated substituents on one carbon are explained as a natural group", () => {
