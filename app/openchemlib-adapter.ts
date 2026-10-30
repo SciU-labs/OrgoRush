@@ -1,6 +1,7 @@
 import { Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 import { ringHasBond } from "./fused-ring.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
+import { editableValencesValid } from "./editable-valence.ts";
 import type {
   GeneratedAtom,
   GeneratedBond,
@@ -191,6 +192,9 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
 
   oclMolecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
 
+  try { oclMolecule.validate(); } catch {
+    return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."};
+  }
   const bondedNeighbors = (atomIndex: number) => {
     const neighbors: Array<{ atomIndex: number; order: number }> = [];
     for (let bondIndex = 0; bondIndex < oclMolecule.getAllBonds(); bondIndex += 1) {
@@ -303,6 +307,15 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     x: (rawX - centerX) / averageBondLength,
     y: (rawY - centerY) / averageBondLength,
   }));
+  if (!editableValencesValid({atoms,bonds})) return {ok:false,error:"La estructura excede las valencias permitidas por el editor."};
+  const rebuilt = buildOpenChemLibStereoGraph({atoms,bonds}).molecule;
+  rebuilt.ensureHelperArrays(OCLMolecule.cHelperCIP);
+  for(const [sourceIndex,id] of atomIndexToId) {
+    if(oclMolecule.getAllHydrogens(sourceIndex)!==rebuilt.getAllHydrogens(id-1))
+      return {ok:false,error:"La conversión no conserva la posición de los hidrógenos de la estructura."};
+  }
+  if (rebuilt.getMolecularFormula().formula !== oclMolecule.getMolecularFormula().formula)
+    return {ok:false,error:"La conversión no conserva la fórmula y los hidrógenos de la estructura."};
 
   const ringSet = oclMolecule.getRingSet();
   const rings: GeneratedRing[] = [];
@@ -330,8 +343,9 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     cyclomaticNumber,
     sharedAtomCounts,
   });
-  // Admit only exact retained constitutions verified against the 1979 registry,
-  // alongside the existing aliphatic MVP. Other complex topologies stay guarded.
+  // Keep the retained and all-carbon envelopes, and admit neutral C/N/O
+  // heterocycles fused along complete shared edges. All paths above preserve
+  // editable valence and per-atom hydrogens; other topologies stay guarded.
   const verifiedRetainedFusion = (topology === "fused" || topology === "bridged")
     && nameRetainedFused1979({ atoms, bonds }).status === "SUPPORTED";
   const editableFusion = topology === "fused"
@@ -343,7 +357,15 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       return shared.length === 0 || (shared.length === 2
         && ringHasBond(ring, shared[0], shared[1]) && ringHasBond(other, shared[0], shared[1]));
     }));
-  if (!verifiedRetainedFusion && ((topology === "fused" && !editableFusion) || topology === "bridged" || topology === "spiro")) {
+  const neutralHeterocyclicFusion = topology === "fused"
+    && rings.every(r=>[5,6].includes(r.atomIds.length)
+      && r.atomIds.every(id=>["C","N","O"].includes(atoms[id-1].element??"C") && !(atoms[id-1].charge??0)))
+    && rings.some(r=>r.atomIds.some(id=>atoms[id-1].element==="N"))
+    && rings.every((r,i)=>rings.slice(i+1).every(other=>{
+      const shared=r.atomIds.filter(id=>other.atomIds.includes(id));
+      return shared.length===0 || shared.length===2 && ringHasBond(r,shared[0],shared[1]) && ringHasBond(other,shared[0],shared[1]);
+    }));
+  if (!verifiedRetainedFusion && ((topology === "fused" && !editableFusion && !neutralHeterocyclicFusion) || topology === "bridged" || topology === "spiro")) {
     return { ok: false, error: polycyclicSupportMessage(topology) };
   }
 

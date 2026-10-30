@@ -1,0 +1,42 @@
+[
+  {
+    "name": "purine",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/purine/property/IUPACName,SMILES,MolecularFormula/JSON",
+    "CID": 1044,
+    "MolecularFormula": "C5H4N4",
+    "SMILES": "C1=C2C(=NC=N1)N=CN2",
+    "IUPACName": "7H-purine"
+  },
+  {
+    "name": "xanthine",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/xanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+    "CID": 1188,
+    "MolecularFormula": "C5H4N4O2",
+    "SMILES": "C1=NC2=C(N1)C(=O)NC(=O)N2",
+    "IUPACName": "3,7-dihydropurine-2,6-dione"
+  },
+  {
+    "name": "theobromine",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/theobromine/property/IUPACName,SMILES,MolecularFormula/JSON",
+    "CID": 5429,
+    "MolecularFormula": "C7H8N4O2",
+    "SMILES": "CN1C=NC2=C1C(=O)NC(=O)N2C",
+    "IUPACName": "3,7-dimethylpurine-2,6-dione"
+  },
+  {
+    "name": "theophylline",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/theophylline/property/IUPACName,SMILES,MolecularFormula/JSON",
+    "CID": 2153,
+    "MolecularFormula": "C7H8N4O2",
+    "SMILES": "CN1C2=C(C(=O)N(C1=O)C)NC=N2",
+    "IUPACName": "1,3-dimethyl-7H-purine-2,6-dione"
+  },
+  {
+    "name": "caffeine",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/caffeine/property/IUPACName,SMILES,MolecularFormula/JSON",
+    "CID": 2519,
+    "MolecularFormula": "C8H10N4O2",
+    "SMILES": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+    "IUPACName": "1,3,7-trimethylpurine-2,6-dione"
+  }
+]

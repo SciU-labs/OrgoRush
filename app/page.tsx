@@ -39,6 +39,8 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
+import { deriveStructuralComponents, structuralVisualTargets } from "./structural-derivation";
+import { reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -572,6 +574,7 @@ type RingFusionDropTarget = {
 };
 
 type NamedSubstituent = {
+  unsupported?: boolean;
   locant: number;
   name: string;
   sortName: string;
@@ -1934,6 +1937,14 @@ function nameSubstituent(
     return { name: "metilideno", sortName: "metilideno", complex: false, atomIds: component };
   }
   const componentSet = new Set(component);
+  const internalEdges = component.reduce((count, id) => count
+    + (adjacency.get(id) ?? []).filter(other => componentSet.has(other)).length, 0) / 2;
+  // This routine names rooted trees. A ring needs a separate parent grammar;
+  // excluding only the previous vertex otherwise recurses around it forever.
+  if (internalEdges >= component.length) return {
+    name: "sustituyente cíclico no compatible", sortName: "", complex: true,
+    atomIds: component, unsupported: true,
+  };
   const rootPaths: number[][] = [];
 
   const walk = (current: number, previous: number | null, path: number[]) => {
@@ -1995,6 +2006,7 @@ function nameSubstituent(
 
   return {
     name,
+    ...(chosen.branches.some(branch => branch.unsupported) ? { unsupported: true } : {}),
     sortName: stripForAlphabetizing(name),
     complex: branchParts.length > 0 || Boolean(unsaturatedPrefixName),
     atomIds: component,
@@ -6318,6 +6330,7 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
 }
 
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
+  if (analysis.substituents.some(item => item.unsupported)) return true;
   if (analysis.cyclicUnsupported) return true;
   if (analysis.cyclicParent1979) return false;
   molecule = perceiveNamingRings(molecule).molecule;
@@ -7643,7 +7656,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   useEffect(() => {
     let enabled = true;
     try { enabled = readSoundEnabled(window.localStorage); } catch { /* Storage can be blocked. */ }
-    setSoundEnabled(enabled); setSoundPreference(enabled);
+    setSoundEnabled(enabled);
+    const frame = requestAnimationFrame(() => setSoundPreference(enabled));
+    return () => cancelAnimationFrame(frame);
   }, []);
   const [showHydrogens, setShowHydrogens] = useState(true);
   const [showNumbering, setShowNumbering] = useState(!isolatedBuild);
@@ -8086,10 +8101,15 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     [legacyAnalysis, legacyNameWithSelectedStereochemistry, legacyNameUnavailable, molecule, stereochemistryEnabled],
   );
   const nomenclatureVariants = (() => {
-    const suggestedName = externalNameIsPrimary
+    // A reconciled name is already a literal chemical grammar. Translating
+    // isolated morphemes can produce invalid mixed-language names.
+    const verifiedSystematicPresentation = (pubChemIupacName
+      ? reconcileSystematicName(molecule, pubChemIupacName)?.name : undefined)
+      ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName)?.name : undefined);
+    const suggestedName = verifiedSystematicPresentation ?? (externalNameIsPrimary
       ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
         ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
-      : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language);
+      : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language));
     const legacyDisplay = legacyProfileDisplayName({
       language,
       suggestedName,
@@ -8394,7 +8414,26 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary) && sourceNameOverride === null
       && (!isPristineInitialMolecule || showPristineMethaneName),
   });
-  const mainChainSet = new Set(activeAnalysis.mainChain);
+  const reconciledDerivation = reconcileSystematicName(molecule, displayedIupacName)
+    ?? (pubChemIupacName ? reconcileSystematicName(molecule, pubChemIupacName) : null)
+    ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
+  const [symmetryChoice, setSymmetryChoice] = useState<{model: typeof reconciledDerivation; index:number}|null>(null);
+  const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
+  const validatedDerivation=reconciledDerivation?selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex):null;
+  const validatedTargets = validatedDerivation ? validatedNameTargets(validatedDerivation) : {};
+  const visualNumbering: ReadonlyMap<number, number | string> = validatedDerivation
+    ? new Map(validatedDerivation.components.find(c => c.role === "parent")!.numbering)
+    : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
+  const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
+  // An external name or source override has no verified correspondence to the
+  // local naming analysis. Do not present its parent colours as authoritative.
+  const reasoningUnsupported = activeLocalNameUnavailable
+    || (activeNomenclatureConvention === "current" && externalNameIsPrimary)
+    || sourceNameOverride !== null;
+  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
+  const structuralDerivation = { ...structuralEvidence,
+    name: { ...structuralEvidence.name, text: displayedIupacName } };
+  const structuralTargets = structuralVisualTargets(structuralDerivation);
   const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
   const selectedUnsaturationSemanticId = selectedUnsaturationReference?.key === reasoningReferenceKey && selectedUnsaturationReference.molecule === molecule
     ? selectedUnsaturationReference.semanticId
@@ -8412,9 +8451,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const reasoningVisualReferences = buildReasoningVisualReferences({ molecule, analysis: activeAnalysis,
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualTargets = reasoningVisualReferences.steps;
-  const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualReferences)}`;
+  const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualReferences)}|${JSON.stringify(validatedDerivation)}`;
   const { target: reasoningVisualTarget, activate: activateReasoningVisual, clear: clearReasoningVisual } =
-    useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled);
+    useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled
+      || ((validatedDerivation || reasoningUnsupported && structuralDerivation.status === "PARTIAL")
+        && reasoningHelpVisible && showIupacName && !practiceOpen && !isolatedBuild));
   const openReasoningHelpFromUserAction = () => {
     const shouldAdvanceTour = !showReasoningHelp && guidedTourState.open && guidedTourState.step === 3;
     setShowReasoningHelp(true);
@@ -11140,8 +11181,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const paintedNumberBadgeRadius = numberingGeometry.radius + numberingGeometry.strokeWidth / 2;
   const skeletalNumberBadgeOffsets = new Map<number, { x: number; y: number }>();
   const numberBadgeNeedsLeader = new Set<number>();
-  const numberedAtomsInOrder = [...(activeAnalysis.retainedFused?.status === "SUPPORTED"
-    ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).entries()]
+  const numberedAtomsInOrder = [...visualNumbering.entries()]
     .sort(([, left], [, right]) => String(left).localeCompare(String(right), "en", { numeric: true }))
     .map(([atomId]) => molecule.atoms.find((atom) => atom.id === atomId))
     .filter((atom): atom is CarbonAtom => Boolean(atom));
@@ -11205,7 +11245,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const numberingBadgeExtents = effectiveShowNumbering
     ? molecule.atoms.flatMap((atom) => {
         if (!(activeAnalysis.retainedFused?.status === "SUPPORTED"
-          ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(atom.id) || carbonCount <= 1) return [];
+          ? activeAnalysis.retainedFused.locants : visualNumbering).has(atom.id) || carbonCount <= 1) return [];
         const position = displayPositions.get(atom.id)!;
         const offset = skeletalNumberBadgeOffsets.get(atom.id)!;
         const paintedRadius = paintedNumberBadgeRadius;
@@ -12260,7 +12300,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               </div>
             )}
           <div
-            className={`molecule-stage ${placementTool ? "is-placing" : ""} ${draggedRingTemplate ? "is-dragging-ring" : ""} ${viewMode === "skeletal" ? "skeletal-view" : viewMode === "semi-developed" ? "semi-developed-view" : "condensed-view"} ${highlightSubstituents ? "" : "uniform-colors"} ${canvasScaleClass}`}
+            className={`molecule-stage ${placementTool ? "is-placing" : ""} ${draggedRingTemplate ? "is-dragging-ring" : ""} ${viewMode === "skeletal" ? "skeletal-view" : viewMode === "semi-developed" ? "semi-developed-view" : "condensed-view"} ${highlightSubstituents && (!reasoningUnsupported || validatedDerivation) ? "" : "uniform-colors"} ${canvasScaleClass}`}
+            data-import-ring-count={molecule.rings?.length??0}
+            data-graph-cycle-rank={molecule.bonds.length-molecule.atoms.length+1}
             style={structureColorStyle}
             tabIndex={advancedScreenReaderEnabled ? 0 : undefined}
             role={advancedScreenReaderEnabled ? "group" : undefined}
@@ -12433,7 +12475,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const startNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomA)
-                  && (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(a)
+                  && visualNumbering.has(a)
                   ? {
                       center: {
                         x: positionA.x + skeletalNumberBadgeOffsets.get(a)!.x,
@@ -12445,7 +12487,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const endNumberObstacle = effectiveShowNumbering
                   && carbonCount > 1
                   && isCarbonAtom(atomB)
-                  && (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).has(b)
+                  && visualNumbering.has(b)
                   ? {
                       center: {
                         x: positionB.x + skeletalNumberBadgeOffsets.get(b)!.x,
@@ -12532,6 +12574,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     className={`bond-control bond-order-${order} ${lockedBond ? "locked-bond" : ""} ${stereoInteractionEnabled ? "stereo-bond-control" : ""} ${ringFusionDropTarget?.a === a && ringFusionDropTarget.b === b ? ringFusionDropTarget.error ? "fusion-drop-invalid" : "fusion-drop-valid" : ""}`}
                     data-bond-a={a}
                     data-bond-b={b}
+                    data-bond-order={order}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "bond-controls" && guidedTourEditableBondKey === `${a}-${b}` ? "bond-controls" : undefined}
                     data-guided-tour-target={showGuidedTour && guidedTourTarget === "bond-controls" && guidedTourEditableBondKey === `${a}-${b}` ? "active" : undefined}
                     onClick={(event) => {
@@ -12761,7 +12804,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const element = getElement(atom);
                 const carbonAtom = isCarbonAtom(atom);
                 const isSelected = atom.id === selectedId;
-                const chainNumber = (activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms).get(atom.id);
+                const chainNumber = visualNumbering.get(atom.id);
                 const position = displayPositions.get(atom.id)!;
                 const numberBadgeOffset = skeletalNumberBadgeOffsets.get(atom.id)
                   ?? numberingGeometry.offset;
@@ -12780,6 +12823,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 return (
                   <g
                     key={atom.id}
+                    data-atom-id={atom.id}
+                    data-atom-element={element}
                     className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${mainChainSet.has(atom.id) ? "on-main-chain" : "on-branch"}`}
                     transform={`translate(${position.x} ${position.y})`}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "carbon" : undefined}
@@ -13068,7 +13113,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             )}
 
             <div className="stage-legend" aria-label={t("Leyenda")}>
-              {highlightSubstituents ? (
+              {highlightSubstituents && (!reasoningUnsupported || validatedDerivation) ? (
                 <>
                   <span><i className="main-key" /> {isRingStructure ? t("Anillo principal") : t("Cadena principal")}</span>
                   <span><i className="branch-key" /> {t("Sustituyente")}</span>
@@ -14939,7 +14984,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             </section>
           )}
 
-          {!activeLocalNameUnavailable && <div
+          <div
             className={`reasoning-section ${reasoningHelpVisible ? "expanded" : "collapsed"}`}
           >
             <div
@@ -14982,7 +15027,40 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
               <div id="iupac-reasoning-content">
-                <ol>
+                {validatedDerivation ? <div data-derivation-support="FULL">
+                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{validatedDerivation.name}</strong></p>
+                  {validatedDerivation.symmetry && <div data-derivation-symmetry="equivalent">
+                    <p>{language==="en"?validatedDerivation.symmetry.explanation
+                      : `Hay ${validatedDerivation.symmetry.assignments.length} elecciones equivalentes de cadena principal por simetría. La elección mostrada no tiene preferencia química; al alternar cambian juntos el padre y sus sustituyentes.`}</p>
+                    <button type="button" data-symmetry-choice={symmetryChoiceIndex} onClick={()=>setSymmetryChoice({model:reconciledDerivation,
+                      index:(symmetryChoiceIndex+1)%validatedDerivation.symmetry!.assignments.length})}>
+                      {language==="en"?"Show equivalent parent":"Mostrar padre equivalente"} ({symmetryChoiceIndex+1}/{validatedDerivation.symmetry.assignments.length})
+                    </button>
+                  </div>}
+                  <ol>{validatedDerivation.components.map((component, index) => <li key={component.id} data-name-component={component.id}>
+                    <ReasoningStepNumber number={String(index + 1)} title={component.text} language={language}
+                      target={validatedTargets[component.id]} active={reasoningVisualTarget?.stepNumber === component.id}
+                      onActivate={activateReasoningVisual} />
+                    <div><button type="button" className="reasoning-name-fragment-control" data-name-fragment={component.id}
+                      aria-pressed={reasoningVisualTarget?.stepNumber === component.id}
+                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{component.text}</button>
+                      <p>{component.explanation}</p></div>
+                  </li>)}</ol>
+                </div> : reasoningUnsupported ? <div data-derivation-support={structuralDerivation.status}>
+                  <p>{language === "en"
+                  ? "A verified derivation is not available for this structure and displayed name. Parent and substituent colours are suppressed. A name from an external source is not automatically a preferred IUPAC name."
+                  : "No hay una derivación verificada disponible para esta estructura y el nombre mostrado. Se desactivan los colores del esqueleto principal y de los sustituyentes. Un nombre de una fuente externa no es automáticamente un nombre IUPAC preferido."}</p>
+                  {structuralDerivation.status === "PARTIAL" && <>
+                    <p>{language === "en" ? "PARTIAL: verified structural components. Select a component to inspect its atoms and bonds; no name locants are assigned."
+                      : "PARTIAL: componentes estructurales verificados. Selecciona un componente para ver sus átomos y enlaces; no se asignan localizadores del nombre."}</p>
+                    <ol>{structuralDerivation.components.map((component, index) => <li key={component.id} data-structural-kind={component.kind}>
+                      <ReasoningStepNumber number={String(index + 1)} title={component.kind} language={language}
+                        target={structuralTargets[component.id]} active={reasoningVisualTarget?.stepNumber === component.id}
+                        onActivate={activateReasoningVisual} />
+                      <div><strong>{component.kind}</strong><p>{component.evidence}</p></div>
+                    </li>)}</ol>
+                  </>}
+                </div> : <ol>
                   {localizedReasoningSteps.map((step) => (
                     <li key={step.number} id={`iupac-reasoning-step-${step.number}`} className={activeReasoningStep === step.number ? "reasoning-step-target" : undefined}>
                       <ReasoningStepNumber number={step.number} title={step.title} language={language}
@@ -15003,10 +15081,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       </div>
                     </li>
                   ))}
-                </ol>
+                </ol>}
               </div>
             </div>
-          </div>}
+          </div>
         </aside>
 
 

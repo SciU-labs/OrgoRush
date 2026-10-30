@@ -283,12 +283,13 @@ test("a verified Spanish equivalence is rejected if PubChem returns the wrong id
   assert.equal(result.ok, false);
 });
 
-test("rejects caffeine safely because its fused heterocycle is outside current canvas coverage", async () => {
+test("resolves caffeine through the neutral fused-heterocycle import route", async () => {
   const { fetchImpl } = mockedChemicalServices();
   for (const name of ["cafeína", "caffeine"]) {
     const result = await resolveChemicalName(name, { fetchImpl });
-    assert.equal(result.ok, false, name);
-    assert.match(result.error, /no pudieron resolver/i, name);
+    assert.equal(result.ok, true, name);
+    assert.equal(result.value.molecularFormula,'C8H10N4O2');
+    assert.equal(result.value.iupacName,'1,3,7-trimethylpurine-2,6-dione');
   }
 });
 

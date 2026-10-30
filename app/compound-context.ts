@@ -2,6 +2,7 @@ import type { AppLanguage } from "./i18n";
 import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
 import { findApprovedWikipediaChemistryPage } from "./wikipedia-chemistry.ts";
 import { createWikidataArticleResolver } from "./wikidata-article-resolver.ts";
+import { mapStructuralRegions } from "./structural-derivation.ts";
 
 export type CompoundIdentity = {
   /** A PubChem compound identifier retained when it is already known. */
@@ -430,7 +431,15 @@ function pubChemPropertiesMatchIdentity(
 
   const expectedSmiles = canonicalSmiles(identity.canonicalSmiles);
   const actualSmiles = canonicalSmiles(propertySmiles(properties));
-  if (expectedSmiles && actualSmiles) return expectedSmiles === actualSmiles;
+  if (expectedSmiles && actualSmiles) {
+    if (expectedSmiles === actualSmiles) return true;
+    // Equivalent aromatic traversals need not serialize to the same text even
+    // after an import/export round trip. Verify full graph identity instead;
+    // stereo outside the correspondence engine's scope still fails closed.
+    const expected = moleculeFromSmiles(identity.canonicalSmiles!);
+    const actual = moleculeFromSmiles(propertySmiles(properties)!);
+    return expected.ok && actual.ok && mapStructuralRegions(expected.molecule, actual.molecule, []) !== null;
+  }
 
   // A caller that supplies a CID without a second identifier explicitly
   // retains a known external identifier; otherwise do not guess.

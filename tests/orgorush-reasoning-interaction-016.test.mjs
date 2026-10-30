@@ -202,10 +202,10 @@ function hookHost() {
   const source = ts.transpileModule(readFileSync(new URL("../app/reasoning-visual-interaction.tsx", import.meta.url), "utf8"), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
   }).outputText;
-  const module = { exports: {} }, require = createRequire(import.meta.url);
+  const hookModule = { exports: {} }, require = createRequire(import.meta.url);
   new Function("require","module","exports", source)(id => id === "react" ? hooks
-    : id === "./reasoning-visual-targets" ? { createReasoningVisualController } : require(id), module, module.exports);
-  return { render(key,graph,enabled = true) { cursor = 0; return module.exports.useReasoningVisualInteraction(key,graph,enabled); },
+    : id === "./reasoning-visual-targets" ? { createReasoningVisualController } : require(id), hookModule, hookModule.exports);
+  return { render(key,graph,enabled = true) { cursor = 0; return hookModule.exports.useReasoningVisualInteraction(key,graph,enabled); },
     flush() { pending.splice(0).forEach(fn => fn()); }, unmount() { slots.forEach(slot => slot?.cleanup?.()); } };
 }
 

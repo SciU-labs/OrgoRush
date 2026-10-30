@@ -7,8 +7,10 @@ export function useReasoningVisualInteraction(contextKey: string, molecule: obje
   const controller = useMemo(() => createReasoningVisualController(target =>
     setReference(target ? { key: contextKey, molecule, target } : null)), [contextKey, molecule]);
   useEffect(() => {
-    setReference(null);
-    return () => controller.dispose();
+    // The render guard rejects the previous graph/context immediately. Cleanup
+    // also invalidates the stored selection when visibility changes, so it
+    // cannot reappear if the same context is enabled again.
+    return () => controller.clear();
   }, [controller, enabled]);
   return {
     target: enabled && reference?.key === contextKey && reference.molecule === molecule ? reference.target : null,

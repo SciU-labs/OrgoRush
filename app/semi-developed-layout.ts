@@ -574,6 +574,27 @@ export function calculateSemiDevelopedLayout(
 ): Map<number, SemiDevelopedPoint> {
   const positions = new Map<number, SemiDevelopedPoint>();
   if (!graph.atoms.length) return positions;
+  const declaredRings = graph.rings ?? [];
+  if (declaredRings.length > 1 && !stereoBonds.length && !graph.manualDisplayDirections?.length
+    && new Set(declaredRings.flatMap(r=>r.atomIds)).size === declaredRings.reduce((n,r)=>n+r.atomIds.length,0)
+    && graph.atoms.every(a=>Number.isFinite(a.x)&&Number.isFinite(a.y))) {
+    // The ring placer below joins fused polygons. Imported non-fused ring
+    // systems already have a coherent 2D arrangement; a distant ring must not
+    // fall through to the final unplaced-atom rows and become a flattened chain.
+    const atoms = new Map(graph.atoms.map(a=>[a.id,a]));
+    const lengths = graph.bonds.map(([a,b])=>Math.hypot(atoms.get(a)!.x-atoms.get(b)!.x,atoms.get(a)!.y-atoms.get(b)!.y))
+      .filter(length=>length>0).sort((a,b)=>a-b);
+    const median = lengths[Math.floor(lengths.length/2)];
+    const nondegenerate = declaredRings.every(r=>Math.abs(r.atomIds.reduce((sum,id,i)=>{
+      const a=atoms.get(id)!,b=atoms.get(r.atomIds[(i+1)%r.atomIds.length])!;
+      return sum+a.x*b.y-b.x*a.y;
+    },0)) > median*median);
+    if(median>0 && nondegenerate) {
+      const center=(Math.min(...graph.atoms.map(a=>a.x))+Math.max(...graph.atoms.map(a=>a.x)))/2;
+      const scale=BOND/median;
+      return new Map(graph.atoms.map(a=>[a.id,{x:(graph.isMirrored?2*center-a.x:a.x)*scale,y:a.y*scale}]));
+    }
+  }
   const adjacency = makeAdjacency(graph);
   const ringAtomIds = placeRingSystems(graph, positions);
   if (!ringAtomIds.size && !hasCycle(adjacency)) {

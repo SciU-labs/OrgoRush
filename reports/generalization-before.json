@@ -1,0 +1,62 @@
+[
+  {
+    "common": "salicylic acid",
+    "name": "2-hydroxybenzoic acid",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "benzoic acid",
+    "name": "benzoic acid",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "vanillin",
+    "name": "4-hydroxy-3-methoxybenzaldehyde",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "acetanilide",
+    "name": "N-phenylacetamide",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "benzophenone",
+    "name": "diphenylmethanone",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "methyl salicylate",
+    "name": "methyl 2-hydroxybenzoate",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "benzocaine",
+    "name": "ethyl 4-aminobenzoate",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "acetophenone",
+    "name": "1-phenylethanone",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "4-methylbenzoic acid",
+    "name": "4-methylbenzoic acid",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "3-methylbutanoic acid",
+    "name": "3-methylbutanoic acid",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "4-methoxybenzaldehyde",
+    "name": "4-methoxybenzaldehyde",
+    "before": "PARTIAL"
+  },
+  {
+    "common": "2-hydroxypropanamide",
+    "name": "2-hydroxypropanamide",
+    "before": "PARTIAL"
+  }
+]

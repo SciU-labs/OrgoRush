@@ -1,0 +1,1447 @@
+{
+  "mode": "live",
+  "evaluated": 12,
+  "attempted": 12,
+  "counts": {
+    "FULL": 11,
+    "PARTIAL": 1,
+    "UNSUPPORTED": 0
+  },
+  "rows": [
+    {
+      "common": "salicylic acid",
+      "source": "PubChem CID 338",
+      "receivedName": "2-hydroxybenzoic acid",
+      "reconciledName": "2-hydroxybenzoic acid",
+      "smiles": "C1=CC=C(C(=C1)C(=O)O)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aromatic acid",
+      "parent": [
+        5,
+        4,
+        3,
+        2,
+        1,
+        6,
+        7
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "hydroxy",
+          "start": 2,
+          "end": 9,
+          "atomIds": [
+            10
+          ],
+          "bondIds": [
+            [
+              4,
+              10
+            ]
+          ],
+          "numbering": [
+            [
+              4,
+              2
+            ]
+          ],
+          "explanation": "hydroxy specifies the connected alcohol substituent at 2; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 2
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzoic acid",
+          "start": 9,
+          "end": 21,
+          "atomIds": [
+            5,
+            4,
+            3,
+            2,
+            1,
+            6,
+            7
+          ],
+          "bondIds": [
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              4,
+              2
+            ]
+          ],
+          "explanation": "benzoic acid establishes the carboxylicAcid parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 2."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzoic acid",
+          "start": 9,
+          "end": 21,
+          "atomIds": [
+            7,
+            8,
+            9
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The carboxylicAcid group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "benzoic acid",
+      "source": "PubChem CID 243",
+      "receivedName": "benzoic acid",
+      "reconciledName": "benzoic acid",
+      "smiles": "C1=CC=C(C=C1)C(=O)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aromatic acid",
+      "parent": [
+        4,
+        3,
+        2,
+        1,
+        6,
+        5,
+        7
+      ],
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzoic acid",
+          "start": 0,
+          "end": 12,
+          "atomIds": [
+            4,
+            3,
+            2,
+            1,
+            6,
+            5,
+            7
+          ],
+          "bondIds": [
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              7
+            ]
+          ],
+          "numbering": [
+            [
+              4,
+              1
+            ]
+          ],
+          "explanation": "benzoic acid establishes the carboxylicAcid parent. Ring position 1 bears the characteristic group; the accepted locant sequence is unsubstituted."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzoic acid",
+          "start": 0,
+          "end": 12,
+          "atomIds": [
+            7,
+            8,
+            9
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The carboxylicAcid group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "vanillin",
+      "source": "PubChem CID 1183",
+      "receivedName": "4-hydroxy-3-methoxybenzaldehyde",
+      "reconciledName": "4-hydroxy-3-methoxybenzaldehyde",
+      "smiles": "COC1=C(C=CC(=C1)C=O)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aromatic aldehyde / ether",
+      "parent": [
+        7,
+        8,
+        3,
+        4,
+        5,
+        6,
+        9
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "hydroxy",
+          "start": 2,
+          "end": 9,
+          "atomIds": [
+            11
+          ],
+          "bondIds": [
+            [
+              4,
+              11
+            ]
+          ],
+          "numbering": [
+            [
+              4,
+              4
+            ]
+          ],
+          "explanation": "hydroxy specifies the connected alcohol substituent at 4; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 4
+        },
+        {
+          "id": "prefix-1",
+          "role": "prefix",
+          "text": "methoxy",
+          "start": 12,
+          "end": 19,
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              3
+            ]
+          ],
+          "explanation": "methoxy specifies the connected ether substituent at 3; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 3
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzaldehyde",
+          "start": 19,
+          "end": 31,
+          "atomIds": [
+            7,
+            8,
+            3,
+            4,
+            5,
+            6,
+            9
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ],
+          "explanation": "benzaldehyde establishes the aldehyde parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 3,4."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzaldehyde",
+          "start": 19,
+          "end": 31,
+          "atomIds": [
+            9,
+            10
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The aldehyde group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "acetanilide",
+      "source": "PubChem CID 904",
+      "receivedName": "N-phenylacetamide",
+      "reconciledName": "N-phenylacetamide",
+      "smiles": "CC(=O)NC1=CC=CC=C1",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "N-aryl amide",
+      "parent": [
+        2,
+        1,
+        4
+      ],
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "acetamide",
+          "start": 8,
+          "end": 17,
+          "atomIds": [
+            2,
+            1,
+            4
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "explanation": "The amide is the parent; its carbonyl carbon is C1."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "amide",
+          "start": 12,
+          "end": 17,
+          "atomIds": [
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "numbering": [],
+          "explanation": "C(=O)–N establishes the amide function."
+        },
+        {
+          "id": "n-phenyl",
+          "role": "substituent",
+          "text": "N-phenyl",
+          "start": 0,
+          "end": 8,
+          "atomIds": [
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              5
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [],
+          "explanation": "N- places the phenyl substituent on nitrogen.",
+          "locant": "N",
+          "parentId": "parent"
+        }
+      ]
+    },
+    {
+      "common": "benzophenone",
+      "source": "PubChem CID 3102",
+      "receivedName": "diphenylmethanone",
+      "reconciledName": "diphenylmethanone",
+      "smiles": "C1=CC=C(C=C1)C(=O)C2=CC=CC=C2",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "diaryl ketone",
+      "parent": [
+        7
+      ],
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "methanone",
+          "start": 8,
+          "end": 17,
+          "atomIds": [
+            7
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              7,
+              1
+            ]
+          ],
+          "explanation": "The ketone carbonyl is C1 of the acyclic parent."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "one",
+          "start": 14,
+          "end": 17,
+          "atomIds": [
+            7,
+            8
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The carbonyl carbon is bonded to carbon on both sides, establishing a ketone."
+        },
+        {
+          "id": "diphenyl",
+          "role": "substituent",
+          "text": "diphenyl",
+          "start": 0,
+          "end": 8,
+          "atomIds": [
+            4,
+            3,
+            2,
+            1,
+            6,
+            5,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "bondIds": [
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              14,
+              9
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The phenyl substituent(s) are bonded directly to the carbonyl carbon. Equivalent phenyl rings share one multiplicative target.",
+          "parentId": "parent",
+          "locant": 1
+        }
+      ]
+    },
+    {
+      "common": "methyl salicylate",
+      "source": "PubChem CID 4133",
+      "receivedName": "methyl 2-hydroxybenzoate",
+      "reconciledName": "methyl 2-hydroxybenzoate",
+      "smiles": "COC(=O)C1=CC=CC=C1O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aromatic ester",
+      "parent": [
+        5,
+        10,
+        9,
+        8,
+        7,
+        6,
+        3
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "hydroxy",
+          "start": 9,
+          "end": 16,
+          "atomIds": [
+            11
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ]
+          ],
+          "explanation": "hydroxy specifies the connected alcohol substituent at 2; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 2
+        },
+        {
+          "id": "ester-alkyl",
+          "role": "substituent",
+          "text": "methyl",
+          "start": 0,
+          "end": 6,
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The alkyl group is bonded to the ester oxygen, not to the aromatic ring.",
+          "parentId": "suffix"
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzoate",
+          "start": 16,
+          "end": 24,
+          "atomIds": [
+            5,
+            10,
+            9,
+            8,
+            7,
+            6,
+            3
+          ],
+          "bondIds": [
+            [
+              5,
+              10
+            ],
+            [
+              10,
+              9
+            ],
+            [
+              9,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              10,
+              2
+            ]
+          ],
+          "explanation": "benzoate establishes the ester parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 2."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzoate",
+          "start": 16,
+          "end": 24,
+          "atomIds": [
+            3,
+            4,
+            2
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The ester group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "benzocaine",
+      "source": "PubChem CID 2337",
+      "receivedName": "ethyl 4-aminobenzoate",
+      "reconciledName": "ethyl 4-aminobenzoate",
+      "smiles": "CCOC(=O)C1=CC=C(C=C1)N",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "amino aromatic ester",
+      "parent": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        4
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "amino",
+          "start": 8,
+          "end": 13,
+          "atomIds": [
+            12
+          ],
+          "bondIds": [
+            [
+              9,
+              12
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              4
+            ]
+          ],
+          "explanation": "amino specifies the connected amine substituent at 4; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 4
+        },
+        {
+          "id": "ester-alkyl",
+          "role": "substituent",
+          "text": "ethyl",
+          "start": 0,
+          "end": 5,
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The alkyl group is bonded to the ester oxygen, not to the aromatic ring.",
+          "parentId": "suffix"
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzoate",
+          "start": 13,
+          "end": 21,
+          "atomIds": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            4
+          ],
+          "bondIds": [
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              6,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              9,
+              4
+            ]
+          ],
+          "explanation": "benzoate establishes the ester parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzoate",
+          "start": 13,
+          "end": 21,
+          "atomIds": [
+            4,
+            5,
+            3
+          ],
+          "bondIds": [
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              3
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The ester group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "acetophenone",
+      "source": "PubChem CID 7410",
+      "receivedName": "1-phenylethanone",
+      "reconciledName": "1-phenylethanone",
+      "smiles": "CC(=O)C1=CC=CC=C1",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aryl ketone",
+      "parent": [
+        2,
+        1
+      ],
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "ethanone",
+          "start": 8,
+          "end": 16,
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "explanation": "The ketone carbonyl is C1 of the acyclic parent."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "one",
+          "start": 13,
+          "end": 16,
+          "atomIds": [
+            2,
+            3
+          ],
+          "bondIds": [
+            [
+              2,
+              3
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The carbonyl carbon is bonded to carbon on both sides, establishing a ketone."
+        },
+        {
+          "id": "phenyl",
+          "role": "substituent",
+          "text": "phenyl",
+          "start": 2,
+          "end": 8,
+          "atomIds": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "bondIds": [
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The phenyl substituent(s) are bonded directly to the carbonyl carbon. Equivalent phenyl rings share one multiplicative target.",
+          "parentId": "parent",
+          "locant": 1
+        }
+      ]
+    },
+    {
+      "common": "4-methylbenzoic acid",
+      "source": "PubChem CID 7470",
+      "receivedName": "4-methylbenzoic acid",
+      "reconciledName": "4-methylbenzoic acid",
+      "smiles": "CC1=CC=C(C=C1)C(=O)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "alkyl aromatic acid",
+      "parent": [
+        5,
+        4,
+        3,
+        2,
+        7,
+        6,
+        8
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "methyl",
+          "start": 2,
+          "end": 8,
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              4
+            ]
+          ],
+          "explanation": "methyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 4
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzoic acid",
+          "start": 8,
+          "end": 20,
+          "atomIds": [
+            5,
+            4,
+            3,
+            2,
+            7,
+            6,
+            8
+          ],
+          "bondIds": [
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              2,
+              4
+            ]
+          ],
+          "explanation": "benzoic acid establishes the carboxylicAcid parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzoic acid",
+          "start": 8,
+          "end": 20,
+          "atomIds": [
+            8,
+            9,
+            10
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              8,
+              10
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The carboxylicAcid group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "3-methylbutanoic acid",
+      "source": "PubChem CID 10430",
+      "receivedName": "3-methylbutanoic acid",
+      "reconciledName": null,
+      "smiles": "CC(C)CC(=O)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "PARTIAL",
+      "family": "branched acid (symmetric termini)",
+      "parent": [],
+      "components": []
+    },
+    {
+      "common": "4-methoxybenzaldehyde",
+      "source": "PubChem CID 31244",
+      "receivedName": "4-methoxybenzaldehyde",
+      "reconciledName": "4-methoxybenzaldehyde",
+      "smiles": "COC1=CC=C(C=C1)C=O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "aromatic aldehyde / ether",
+      "parent": [
+        6,
+        5,
+        4,
+        3,
+        8,
+        7,
+        9
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "methoxy",
+          "start": 2,
+          "end": 9,
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ]
+          ],
+          "explanation": "methoxy specifies the connected ether substituent at 4; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 4
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "benzaldehyde",
+          "start": 9,
+          "end": 21,
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            8,
+            7,
+            9
+          ],
+          "bondIds": [
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "explanation": "benzaldehyde establishes the aldehyde parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "benzaldehyde",
+          "start": 9,
+          "end": 21,
+          "atomIds": [
+            9,
+            10
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The aldehyde group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+        }
+      ]
+    },
+    {
+      "common": "2-hydroxypropanamide",
+      "source": "PubChem CID 94220",
+      "receivedName": "2-hydroxypropanamide",
+      "reconciledName": "2-hydroxypropanamide",
+      "smiles": "CC(C(=O)N)O",
+      "referenceIdentity": true,
+      "before": "PARTIAL",
+      "after": "FULL",
+      "family": "hydroxy amide",
+      "parent": [
+        3,
+        2,
+        1,
+        5
+      ],
+      "components": [
+        {
+          "id": "prefix-0",
+          "role": "prefix",
+          "text": "hydroxy",
+          "start": 2,
+          "end": 9,
+          "atomIds": [
+            6
+          ],
+          "bondIds": [
+            [
+              2,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              2
+            ]
+          ],
+          "explanation": "hydroxy specifies the connected alcohol substituent at 2; these locants belong to parent.",
+          "parentId": "parent",
+          "locant": 2
+        },
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "propanamide",
+          "start": 9,
+          "end": 20,
+          "atomIds": [
+            3,
+            2,
+            1,
+            5
+          ],
+          "bondIds": [
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "explanation": "The 3-carbon parent contains the principal amide carbon as C1; longer rooted carbon paths are excluded by validation."
+        },
+        {
+          "id": "suffix",
+          "role": "suffix",
+          "text": "amide",
+          "start": 15,
+          "end": 20,
+          "atomIds": [
+            3,
+            4,
+            5
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              5
+            ]
+          ],
+          "numbering": [],
+          "explanation": "The amide group supplies the suffix; hydroxyl, amino and alkoxy groups remain prefixes."
+        }
+      ]
+    }
+  ]
+}
