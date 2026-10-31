@@ -11701,6 +11701,16 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const onBuildReady = buildEditor?.onReady;
   useEffect(() => { onBuildChange?.(cloneMolecule(molecule)); }, [molecule, onBuildChange]);
   useEffect(() => { onBuildReady?.(); }, [onBuildReady]);
+  const expandedAccessibilityClasses = canvasExpanded ? [
+    highContrastEnabled && "a11y-high-contrast",
+    largeTextEnabled && "a11y-large-text",
+    doubleBondPatternEnabled && "a11y-double-bond-pattern",
+    largeTargetsEnabled && "a11y-large-targets",
+    dyslexiaTypefaceEnabled && "a11y-dyslexia-typeface",
+    simplifiedModeEnabled && "a11y-simplified-mode",
+    highlightInteractivesEnabled && "a11y-highlight-interactives",
+  ].filter(Boolean).join(" ") : "";
+
   const editorView = (
         <section
           id="structure-panel"
@@ -12271,7 +12281,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
             <div
             ref={expandedWorkspaceRef}
-            className={`molecule-workspace ${canvasExpanded ? "is-expanded" : ""}`}
+            className={`molecule-workspace ${canvasExpanded ? "is-expanded" : ""} ${expandedAccessibilityClasses}`}
             role={canvasExpanded ? "dialog" : undefined}
             aria-modal={canvasExpanded || undefined}
             inert={pngExportOpen}
@@ -15046,8 +15056,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       onActivate={activateReasoningVisual} />
                     <div><button type="button" className="reasoning-name-fragment-control" data-name-fragment={component.id}
                       aria-pressed={reasoningVisualTarget?.stepNumber === component.id}
-                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{component.label??component.text}</button>
-                      <p>{component.explanation}</p></div>
+                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{language==="es"?(component.labelEs??component.label??component.text):(component.label??component.text)}</button>
+                      <p>{language==="es"?(component.explanationEs??component.explanation):component.explanation}</p></div>
                   </li>)}</ol>
                 </div> : reasoningUnsupported ? <div data-derivation-support={structuralDerivation.status}>
                   <p>{language === "en"
@@ -15060,10 +15070,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       : language === "en" ? "PARTIAL: verified structural components. Select a component to inspect its atoms and bonds; no name locants are assigned."
                       : "PARTIAL: componentes estructurales verificados. Selecciona un componente para ver sus átomos y enlaces; no se asignan localizadores del nombre."}</p>
                     <ol>{structuralDerivation.components.map((component, index) => <li key={component.id} data-structural-kind={component.kind}>
-                      <ReasoningStepNumber number={String(index + 1)} title={component.kind} language={language}
+                      <ReasoningStepNumber number={String(index + 1)} title={language==="es"?(component.kindEs??component.kind):component.kind} language={language}
                         target={structuralTargets[component.id]} active={reasoningVisualTarget?.stepNumber === component.id}
                         onActivate={activateReasoningVisual} />
-                      <div><strong>{component.kind}</strong><p>{component.evidence}</p></div>
+                      <div><strong>{language==="es"?(component.kindEs??component.kind):component.kind}</strong><p>{language==="es"?(component.evidenceEs??component.evidence):component.evidence}</p></div>
                     </li>)}</ol>
                   </>}
                 </div> : <ol>

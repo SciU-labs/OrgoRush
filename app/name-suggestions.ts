@@ -394,6 +394,9 @@ export function findCommonNameSuggestion(input: string, language: AppLanguage): 
     suggestOnExactFailure: molecule.suggestOnExactFailure,
     })),
   ];
+  // Glucose family names need a form/anomer clarification, not an exact
+  // catalog suggestion that repeats the query.
+  if (/^(?:[dl][ -])?(?:glucosa|glucose)$/.test(normalizeChemicalText(input))) return null;
   let best: { candidate: SuggestionCandidate; score: number; exactOutput: boolean } | null = null;
   for (const candidate of candidates) {
     const aliases = [...new Set([...candidate.aliases, candidate.name])];

@@ -1,4 +1,4 @@
-import { getOpsinNameCandidates } from "./iupac-name-normalization.ts";
+import { getOpsinNameCandidates, isAmbiguousGlucoseName } from "./iupac-name-normalization.ts";
 import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule.ts";
 import { setCisTransGeometry } from "./double-bond-stereochemistry.ts";
@@ -186,6 +186,19 @@ export async function resolveChemicalName(
   originalName: string,
   options: NameResolverOptions = {},
 ): Promise<NameStructureResolutionResult> {
+  if (isAmbiguousGlucoseName(originalName)) {
+    const input = originalName.trim().toLocaleLowerCase("en");
+    const series = /^([dl])[- ]/.exec(input)?.[1]?.toLocaleUpperCase("en");
+    const englishInput = input.includes("glucose");
+    const error = series
+      ? englishInput
+        ? `${series}-glucose specifies the series, but not the form or anomer. Use aldehydo-${series}-glucose, alpha-${series}-glucopyranose, or beta-${series}-glucopyranose.`
+        : `${series}-glucosa especifica la serie, pero no la forma ni el anómero. Usa aldehydo-${series}-glucose, alpha-${series}-glucopyranose o beta-${series}-glucopyranose.`
+      : englishInput
+        ? "Glucose does not specify the D/L series, open or cyclic form, or anomer. Use aldehydo-D-glucose, alpha-D-glucopyranose, beta-D-glucopyranose, or an explicit L form."
+        : "Glucosa no especifica la serie D/L, la forma abierta o cíclica ni el anómero. Usa aldehydo-D-glucose, alpha-D-glucopyranose, beta-D-glucopyranose o una forma L explícita.";
+    return { ok: false, ambiguous: true, serviceReached: false, error, detail: "" };
+  }
   // Resolve cis/trans only after connectivity is complete. Never ask a remote
   // name service to choose the educational alias's reference pair for us.
   const relative = /^(cis|trans)\s*[-–—−]\s*(.*)$/i.exec(originalName.trim());

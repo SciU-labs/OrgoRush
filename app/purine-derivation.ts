@@ -136,35 +136,43 @@ export function parsePurineFamily(name:string) {
   const graph=buildPurineGraph(syntax);if(!graph)return null;
   const parent=recognizePurineParent(graph);if(!parent)return null;
   const components:NameComponent[]=[];
-  const add=(id:string,role:NameComponent["role"],s:Segment,ids:number[],explanation:string,label?:string,bonds?:[number,number][])=>{
+  const add=(id:string,role:NameComponent["role"],s:Segment,ids:number[],explanation:string,label?:string,bonds?:[number,number][],explanationEs?:string,labelEs?:string)=>{
     components.push({id,role,text:s.text,start:s.start,end:s.start+s.text.length,atomIds:ids,
       bondIds:bonds??graph.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b)).map(([a,b])=>[a,b]),
-      numbering:s.positions.map(p=>[p,p]),explanation,...(label?{label}:{})});
+      numbering:s.positions.map(p=>[p,p]),explanation,...(label?{label}:{}),...(explanationEs?{explanationEs}:{}),...(labelEs?{labelEs}:{})});
   };
   add("parent","parent",syntax.parent,positions,
-    "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants.");
+    "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants.","Purine parent · nine positions",undefined,
+    "La purina es un único sistema parental fusionado de nueve posiciones. Su numeración retenida sitúa N en 1, 3, 7 y 9, y los carbonos de fusión en 4 y 5. Selecciona este fragmento para inspeccionar los nueve locantes.","Sistema parental de purina · nueve posiciones");
   add("purine-nitrogens","parent",{...syntax.parent,positions:[...PURINE_NITROGENS]},[...PURINE_NITROGENS],
-    "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.","Ring nitrogens · 1, 3, 7, 9");
+    "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.","Ring nitrogens · 1, 3, 7, 9",undefined,
+    "Estos cuatro nitrógenos del anillo ocupan las posiciones 1, 3, 7 y 9 del mismo sistema parental. El elemento y la conectividad determinan los locantes, independientemente de la orientación del dibujo.","Nitrógenos del anillo · 1, 3, 7, 9");
   add("purine-fusion","parent",{...syntax.parent,positions:[4,5]},[4,5],
-    "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.","Fusion · 4, 5");
+    "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.","Fusion · 4, 5",undefined,
+    "Los carbonos 4 y 5 y su enlace compartido fusionan los ciclos de seis y cinco miembros; ningún átomo se duplica.","Fusión · 4, 5");
   if(syntax.methyl) {
     const s=syntax.methyl,ids=s.positions.map(p=>graph.bonds.find(([a,b])=>a===p&&b>9&&(graph.atoms[b-1].element==="C"))![1]);
     add("purine-methyl","prefix",s,ids,
-      `${s.text} specifies ${ids.length} methyl group(s), one at each of positions ${s.positions.join(", ")}. Each methyl replaces a parent H; a methylated ring N carries no N–H. ${ids.length===1?"One methyl needs no multiplying prefix.":`${["","","Di","Tri","Tetra"][ids.length]}- counts these ${ids.length} distinct methyl groups.`}`,undefined,s.positions.map((p,i)=>[p,ids[i]]));
+      `${s.text} specifies ${ids.length} methyl group(s), one at each of positions ${s.positions.join(", ")}. Each methyl replaces a parent H; a methylated ring N carries no N–H. ${ids.length===1?"One methyl needs no multiplying prefix.":`${["","","Di","Tri","Tetra"][ids.length]}- counts these ${ids.length} distinct methyl groups.`}`,undefined,s.positions.map((p,i)=>[p,ids[i]]),
+      `${s.text} indica ${ids.length} grupo(s) metilo, uno en cada posición ${s.positions.join(", ")}. Cada metilo sustituye un H del sistema parental; un N del anillo metilado no tiene enlace N–H. ${ids.length===1?"Un metilo no requiere prefijo multiplicativo.":`El prefijo multiplicativo cuenta estos ${ids.length} grupos metilo distintos.`}`,"Grupos metilo");
   }
   for(const [kind,s] of [["hydro",syntax.hydro],["indicated",syntax.indicated]] as const)if(s) {
     const occupied=s.positions.filter(p=>syntax.methyl?.positions.includes(p));
     add(`purine-${kind}`,"prefix",s,s.positions,
-      `${s.text} fixes the single-bonded parent nitrogen site(s) ${s.positions.join(", ")}. ${occupied.length?`Methyl substitution replaces the parent H at ${occupied.join(", ")}; these sites have no remaining N–H.`:"Each selected nitrogen retains one hydrogen in this structure."} Hydrogen populations are checked per atom; another tautomer is not interchangeable.`);
+      `${s.text} fixes the single-bonded parent nitrogen site(s) ${s.positions.join(", ")}. ${occupied.length?`Methyl substitution replaces the parent H at ${occupied.join(", ")}; these sites have no remaining N–H.`:"Each selected nitrogen retains one hydrogen in this structure."} Hydrogen populations are checked per atom; another tautomer is not interchangeable.`,"Hydrogen locants",undefined,
+      `${s.text} fija los sitios de nitrógeno parental con enlace simple en ${s.positions.join(", ")}. ${occupied.length?`La sustitución por metilo reemplaza el H parental en ${occupied.join(", ")}; esos sitios ya no tienen N–H.`:"En esta estructura, cada nitrógeno indicado conserva un hidrógeno."} Se verifica la cantidad de hidrógeno de cada átomo; no se intercambia con otro tautómero.`,"Locantes de hidrógeno");
   }
   if(syntax.oxo) {
     const s=syntax.oxo,oxygenIds=s.positions.map(p=>graph.bonds.find(([a,b,o])=>a===p&&o===2&&graph.atoms[b-1].element==="O")![1]);
     add("purine-oxo","suffix",s,[...s.positions,...oxygenIds],
-      `${s.text} specifies ${s.positions.length} C=O group(s) at parent carbon(s) ${s.positions.join(", ")}. ${s.positions.length===2?"Dione means two oxo groups.":s.positions.length===3?"Trione means three oxo groups.":"One denotes one oxo group."} Their carbonyl carbons remain part of the fused parent.`);
+      `${s.text} specifies ${s.positions.length} C=O group(s) at parent carbon(s) ${s.positions.join(", ")}. ${s.positions.length===2?"Dione means two oxo groups.":s.positions.length===3?"Trione means three oxo groups.":"One denotes one oxo group."} Their carbonyl carbons remain part of the fused parent.`,"Oxo groups",undefined,
+      `${s.text} indica ${s.positions.length} grupo(s) C=O en los carbonos parentales ${s.positions.join(", ")}. ${s.positions.length===2?"Diona representa dos grupos oxo.":s.positions.length===3?"Triona representa tres grupos oxo.":"El sufijo indica un grupo oxo."} Los carbonos carbonílicos siguen formando parte del sistema parental fusionado.`,"Grupos oxo");
   }
   const nh=parent.hydrogens.filter(([p,h])=>nitrogen(p)&&h>0).map(([p])=>p);
   const implied=nh.filter(p=>!syntax.hydro?.positions.includes(p)&&!syntax.indicated?.positions.includes(p));
   components[0].explanation+=nh.length?` The reconciled neutral graph has N–H at ${nh.join(", ")}.`:" The reconciled neutral graph has no N–H bonds.";
+  components[0].explanationEs=(components[0].explanationEs??"")+ (nh.length?` El grafo neutro reconciliado tiene N–H en ${nh.join(", ")}.`:" El grafo neutro reconciliado no tiene enlaces N–H.");
   if(implied.length)components[0].explanation+=` At N${implied.join(", N")}, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants.`;
+  if(implied.length)components[0].explanationEs+=` En N${implied.join(", N")}, dos enlaces simples del anillo y la valencia tres del nitrógeno neutro dejan un H implícito. Estos sitios se comprueban en el grafo y no se añaden a los locantes hidro escritos.`;
   return {graph,components,parent:positions,group:"heterocycle" as const,parentSystem:"purine" as const};
 }

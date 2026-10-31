@@ -159,12 +159,40 @@ function facets(graph:GeneratedMolecule,components:NameComponent[],name:string,a
     `The non-anomeric configuration is ${s.series}-${s.family.name}. `+(s.form==='open'?'This is an open carbonyl form; alpha/beta does not apply.':s.anomer?`Both reference configurations prove the ${s.anomer} anomer by formal Fischer ${s.anomer==='alpha'?'cis':'trans'} relation.`:'No alpha/beta assignment is made: this retained ketose-anomer rule is outside the proved grammar.'),s.centers.map(c=>[c.atomId,c.locant]));
 }
 
+/** Spanish evidence is authored from the recognized structure, never by
+ * replacing words in the English chemical explanation. */
+function localizeComponents(graph:GeneratedMolecule,components:NameComponent[]) {
+  const s=recognizeCarbohydrate(graph);if(!s)return;
+  const names:Record<string,string>={parent:'Sistema parental', 'sugar-family':'Familia configuracional','sugar-series':'Serie D/L','sugar-ring':'Forma del anillo','sugar-anomer':'Anómero','sugar-open':'Forma abierta','sugar-cip':'Configuración absoluta','sugar-decoration':'Sustituyentes','sugar-polyol':'Grupos hidroxilo','sugar-chain':'Esqueleto carbonado · locantes de carbohidrato','sugar-hydroxyls':'Grupos hidroxilo','sugar-carbonyl':s.carbonylPosition===1?'Aldehído · C1':'Cetona · C2','sugar-ring-oxygen':'Oxígeno del anillo','sugar-hemiacetal':s.carbonylPosition===1?'Hemiacetal cíclico':'Hemicetal cíclico','sugar-exocyclic':'Cadena de carbono exocíclica','sugar-reference':'Referencia configuracional','sugar-configuration':'Configuración del carbohidrato verificada'};
+  const explanations:Record<string,string>={
+    parent:`El nombre especifica un sistema de ${s.carbonIds.length} carbonos ${s.form==='open'?'de cadena abierta':`en forma ${s.form}`}. La estructura parental se comprueba con la conectividad completa.`,
+    'sugar-family':s.family?`Las configuraciones no anoméricas corresponden a ${s.series}-${s.family.name}. Los epímeros y la imagen especular tienen configuraciones ordenadas distintas; el cierre puede cambiar las prioridades CIP sin cambiar este estereoparental.`:'La familia estereoquímica no queda establecida por todos los centros configurados.',
+    'sugar-series':s.series?`La serie ${s.series} se determina en el centro quiral de mayor locante, C${s.configurationalPosition}. En la proyección de Fischer acíclica convencional, su oxígeno queda a la ${s.series==='D'?'derecha':'izquierda'}. Es una comparación del orden de ligandos con el gliceraldehído, no una equivalencia universal entre D/L y R/S ni una dirección en pantalla.`:'No hay configuración explícita suficiente para asignar la serie D/L.',
+    'sugar-ring':`La forma ${s.form} tiene un anillo saturado de ${s.ringAtomIds.length} miembros con un oxígeno. El cierre conecta C${s.carbonylPosition} con el oxígeno procedente de C${s.closurePosition}; los demás carbonos quedan fuera del anillo.`,
+    'sugar-anomer':s.anomer?`La relación formal de Fischer entre los oxígenos de C${s.carbonylPosition} y C${s.configurationalPosition} demuestra el anómero ${s.anomer==='alpha'?'alfa':'beta'} (${s.anomer==='alpha'?'cis':'trans'}). Se comprueban ambas configuraciones absolutas; girar o reflejar el dibujo no las cambia.`:'No se asigna un anómero porque faltan configuraciones explícitas.',
+    'sugar-open':`El nombre selecciona explícitamente la forma abierta ${s.carbonylPosition===1?'aldehído':'cetona'}. Está presente C${s.carbonylPosition}=O; esta prueba no identifica una forma abierta con un tautómero cíclico.`,
+    'sugar-cip':'Cada descriptor absoluto R/S escrito se reconstruye y compara con su átomo estereogénico. No se asigna configuración a centros omitidos.',
+    'sugar-decoration':'Los sustituyentes indicados se comprueban por conectividad y multiplicidad; sus locantes se interpretan según el sistema parental escrito.',
+    'sugar-polyol':`El sufijo indica ${s.hydroxyls.filter(h=>s.ringAtomIds.includes(h.carbonId)).length} grupos hidroxilo unidos al anillo. El oxígeno éter del anillo no es uno de esos grupos.`,
+    'sugar-chain':`La numeración sigue la cadena completa y no ramificada desde el carbonilo real o potencial. ${s.carbonylPosition===1?'Una aldosa tiene C1 terminal.':'Una 2-cetosa tiene dos vecinos carbonados en C2.'} Estos son locantes del carbohidrato, incluso si el nombre usa locantes de heterociclo.`,
+    'sugar-hydroxyls':`${s.hydroxyls.length} grupos C–OH terminales neutros tienen un H implícito en cada oxígeno. El oxígeno del anillo tiene dos enlaces C–O y ningún H, por lo que se excluye.`,
+    'sugar-carbonyl':`El carbonilo abierto C${s.carbonylPosition}=O es ${s.carbonylPosition===1?'terminal y tiene un H':'interno y tiene dos vecinos carbonados'}.`,
+    'sugar-ring-oxygen':`El único oxígeno del anillo conecta el carbono del carbohidrato C${s.carbonylPosition} con C${s.closurePosition}; es un enlace éter dentro de la forma ${s.form}.`,
+    'sugar-hemiacetal':`El C${s.carbonylPosition} anomérico tiene oxígeno del anillo y un hidroxilo libre. Tiene ${s.carbonylPosition===1?'un vecino carbonado y un H: un hemiacetal':'dos vecinos carbonados y ningún H: un hemicetal'}. Reemplazar ese OH por O–C daría un acetal o glicósido, fuera de este análisis.`,
+    'sugar-exocyclic':'Estos carbonos forman parte de la cadena numerada del carbohidrato, pero quedan fuera del anillo que contiene oxígeno.',
+    'sugar-reference':s.series?`En C${s.configurationalPosition}, el orden de ligandos establece la serie ${s.series}. Esto no implica una equivalencia universal entre D/L y R/S.`:'La referencia configuracional no tiene configuración explícita; no se justifica asignar D/L.',
+    'sugar-configuration':`La configuración no anomérica verificada corresponde a ${s.series}-${s.family?.name??'la familia reconocida'}. ${s.form==='open'?'Es una forma abierta de carbonilo y no aplica alfa/beta.':s.anomer?`Las configuraciones de referencia demuestran el anómero ${s.anomer==='alpha'?'alfa':'beta'} mediante la relación formal ${s.anomer==='alpha'?'cis':'trans'} de Fischer.`:'No se asigna alfa/beta porque esta regla anomérica no está dentro de la gramática demostrada.'}`,
+  };
+  for(const c of components){c.labelEs=names[c.id]??c.label;c.explanationEs=explanations[c.id]??`La estructura se comprueba con el grafo molecular y los locantes mostrados.`;}
+}
+
 /** Dedicated stereo-aware gate. Older noncarbohydrate productions keep their
  * deliberate stereo exclusion. Full graph identity includes absolute R/S. */
 export function reconcileCarbohydrateName(actual:GeneratedMolecule,name:string):ValidatedNameDerivation|null {
   if(name.length>200)return null;
   const parsed=retained(name)??substitutive(name);if(!parsed)return null;
   const {graph,components,parent}=parsed;
+  localizeComponents(graph,components);
   if(components.some(c=>name.slice(c.start,c.end)!==c.text)||graph.atoms.some(a=>!components.some(c=>c.atomIds.includes(a.id))))return null;
   const regions=components.flatMap(c=>[c.atomIds,...c.numbering.map(([id])=>[id])]);
   const mapping=mapStructuralRegions(graph,actual,regions);if(!mapping)return null;

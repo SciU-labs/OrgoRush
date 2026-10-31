@@ -12,6 +12,8 @@ export type StructuralComponent = {
   atomIds: number[];
   bondIds: [number, number][];
   evidence: string;
+  evidenceEs?: string;
+  kindEs?: string;
   numbering?: [number,number|string][];
 };
 export type StructuralDerivation = {
@@ -133,10 +135,11 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
     const atom = (id: number) => graph.atoms.find(a => a.id === id)!;
     const neutral = (id: number) => !(atom(id).charge ?? 0);
     const hydrogen = (id: number) => molecule.getImplicitHydrogens(atomIdToIndex.get(id)!);
-    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering']) => {
+    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering'], evidenceEs?:string) => {
       const region = [...new Set(ids)], included = new Set(region);
       result.components.push({ id: `structural-${result.components.length}`, kind, atomIds: region,
-        bondIds: graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b]), evidence,...(numbering?{numbering}:{}) });
+        bondIds: graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b]), evidence,...(numbering?{numbering}:{}),
+        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico'} as const)[kind] });
     };
     const acylOxygens = new Set<number>();
     for (const c of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
@@ -146,16 +149,16 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
       const singleO = ns.find(n => n.order === 1 && atom(n.id).element === "O" && neutral(n.id));
       const nitrogen = ns.find(n => n.order === 1 && atom(n.id).element === "N" && neutral(n.id));
       if (singleO && hydrogen(singleO.id) === 1 && neighbors(singleO.id).length === 1) {
-        acylOxygens.add(singleO.id); add("carboxylicAcid", [c.id, oxo[0].id, singleO.id], "C(=O)–OH; neutral oxygen with one implicit hydrogen.");
+        acylOxygens.add(singleO.id); add("carboxylicAcid", [c.id, oxo[0].id, singleO.id], "C(=O)–OH; neutral oxygen with one implicit hydrogen.",undefined,"C(=O)–OH; oxígeno neutro con un hidrógeno implícito.");
       } else if (singleO && neighbors(singleO.id).length === 2 && neighbors(singleO.id).every(n => n.order === 1 && (atom(n.id).element ?? "C") === "C")) {
-        acylOxygens.add(singleO.id); add("ester", [c.id, oxo[0].id, singleO.id], "C(=O)–O–C; ester linkage established by connectivity.");
-      } else if (nitrogen) add("amide", [c.id, oxo[0].id, nitrogen.id], "C(=O)–N; amide linkage established by connectivity.");
-      else add("carbonyl", [c.id, oxo[0].id], "A carbon–oxygen double bond is present; no suffix priority is inferred.");
+        acylOxygens.add(singleO.id); add("ester", [c.id, oxo[0].id, singleO.id], "C(=O)–O–C; ester linkage established by connectivity.",undefined,"C(=O)–O–C; el enlace éster se establece por conectividad.");
+      } else if (nitrogen) add("amide", [c.id, oxo[0].id, nitrogen.id], "C(=O)–N; amide linkage established by connectivity.",undefined,"C(=O)–N; la conectividad confirma el enlace amida.");
+      else add("carbonyl", [c.id, oxo[0].id], "A carbon–oxygen double bond is present; no suffix priority is inferred.",undefined,"Hay un enlace doble carbono–oxígeno; no se infiere prioridad de sufijos.");
     }
     for (const o of graph.atoms.filter(a => a.element === "O" && neutral(a.id) && !acylOxygens.has(a.id))) {
       const ns = neighbors(o.id);
       if (ns.length === 1 && ns[0].order === 1 && (atom(ns[0].id).element ?? "C") === "C" && hydrogen(o.id) === 1)
-        add("hydroxyl", [o.id, ns[0].id], "C–OH; oxygen has one implicit hydrogen. No carbohydrate anomer is inferred.");
+        add("hydroxyl", [o.id, ns[0].id], "C–OH; oxygen has one implicit hydrogen. No carbohydrate anomer is inferred.",undefined,"C–OH; el oxígeno tiene un hidrógeno implícito. No se infiere un anómero de carbohidrato.");
     }
     // Ring edges are determined by OCL, independent of editor ring metadata.
     const ringEdges = graph.bonds.filter((_, i) => molecule.isRingBond(i));
@@ -168,30 +171,31 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
         for (const [a, b] of ringEdges) if (a === id || b === id) queue.push(a === id ? b : a);
       }
       const ids = [...region], count = ringEdges.filter(([a, b]) => region.has(a) && region.has(b)).length - ids.length + 1;
-      add("ringSystem", ids, `Connected ring system with ${count} independent cycle(s). Shared ring atoms belong to this same system; no parent numbering is assigned.`);
+      add("ringSystem", ids, `Connected ring system with ${count} independent cycle(s). Shared ring atoms belong to this same system; no parent numbering is assigned.`,undefined,`Sistema de anillos conectado con ${count} ciclo(s) independiente(s). Los átomos compartidos pertenecen al mismo sistema; no se asigna numeración parental.`);
     }
     for(const c of graph.atoms.filter(a=>(a.element??"C")==="C" && neutral(a.id))) {
       const ns=neighbors(c.id);
       if(ns.length===1 && ns[0].order===1 && atom(ns[0].id).element==="N" && hydrogen(c.id)===3)
-        add("N-bound methyl",[c.id,ns[0].id],"A methyl carbon with three implicit hydrogens is bonded to nitrogen. This is connectivity evidence; no heterocycle locant is assigned.");
+        add("N-bound methyl",[c.id,ns[0].id],"A methyl carbon with three implicit hydrogens is bonded to nitrogen. This is connectivity evidence; no heterocycle locant is assigned.",undefined,"Un carbono metilo con tres hidrógenos implícitos está unido a nitrógeno. Es evidencia de conectividad; no se asigna un locante de heterociclo.");
     }
-    for (const a of graph.atoms) if (a.tetrahedralParity) add("stereo", [a.id], `Explicit absolute configuration ${a.tetrahedralParity}; preserved from the molecular model.`);
+    for (const a of graph.atoms) if (a.tetrahedralParity) add("stereo", [a.id], `Explicit absolute configuration ${a.tetrahedralParity}; preserved from the molecular model.`,undefined,`Configuración absoluta ${a.tetrahedralParity} explícita, conservada en el modelo molecular.`);
     const sugar=recognizeCarbohydrate(graph);
     if(sugar){
       result.carbohydrate=sugar;
       add('carbohydrate backbone',sugar.carbonIds,
-        `An unbranched ${sugar.carbonIds.length}-carbon ${sugar.carbonylPosition===1?'aldose':'2-ketose'} skeleton in ${sugar.form} form is verified by the whole C/O graph. These are structural carbohydrate locants, not a reconciliation of the displayed name.`,sugar.numbering);
+        `An unbranched ${sugar.carbonIds.length}-carbon ${sugar.carbonylPosition===1?'aldose':'2-ketose'} skeleton in ${sugar.form} form is verified by the whole C/O graph. These are structural carbohydrate locants, not a reconciliation of the displayed name.`,sugar.numbering,
+        `El grafo completo de C/O confirma un esqueleto lineal de ${sugar.carbonIds.length} carbonos, ${sugar.carbonylPosition===1?'aldosa':'2-cetosa'}, en forma ${sugar.form}. Son locantes estructurales del carbohidrato; no reconcilian el nombre mostrado.`);
       if(sugar.ringOxygenId!==undefined){
-        add('ring oxygen',[sugar.ringOxygenId],`One ring ether oxygen bridges carbohydrate C${sugar.carbonylPosition} and C${sugar.closurePosition}; it is not a hydroxyl.`);
+        add('ring oxygen',[sugar.ringOxygenId],`One ring ether oxygen bridges carbohydrate C${sugar.carbonylPosition} and C${sugar.closurePosition}; it is not a hydroxyl.`,undefined,`Un oxígeno éter del anillo conecta C${sugar.carbonylPosition} y C${sugar.closurePosition} del carbohidrato; no es un hidroxilo.`);
         add(sugar.carbonylPosition===1?'hemiacetal':'hemiketal',[sugar.anomericAtomId!,sugar.ringOxygenId,sugar.anomericHydroxylId!],
-          `Anomeric C${sugar.carbonylPosition} has ring oxygen and a free OH, with ${sugar.carbonylPosition===1?'one carbon neighbour and one H':'two carbon neighbours and no H'}. Acetals and glycosides do not match this envelope.`,[[sugar.anomericAtomId!,sugar.carbonylPosition]]);
+          `Anomeric C${sugar.carbonylPosition} has ring oxygen and a free OH, with ${sugar.carbonylPosition===1?'one carbon neighbour and one H':'two carbon neighbours and no H'}. Acetals and glycosides do not match this envelope.`,[[sugar.anomericAtomId!,sugar.carbonylPosition]],`El C${sugar.carbonylPosition} anomérico tiene oxígeno del anillo y un OH libre, con ${sugar.carbonylPosition===1?'un vecino carbonado y un H':'dos vecinos carbonados y ningún H'}. Los acetales y glicósidos no cumplen esta estructura.`);
         add('anomeric centre',[sugar.anomericAtomId!,sugar.anomericHydroxylId!],
           sugar.anomer?`Explicit anomeric and reference configurations prove ${sugar.anomer} by the formal Fischer ${sugar.anomer==='alpha'?'cis':'trans'} relationship.`
-            :'No alpha/beta assignment: configuration is absent or the retained ketose-anomer rule is outside the proved grammar.',[[sugar.anomericAtomId!,sugar.carbonylPosition]]);
+            :'No alpha/beta assignment: configuration is absent or the retained ketose-anomer rule is outside the proved grammar.',[[sugar.anomericAtomId!,sugar.carbonylPosition]],sugar.anomer?`Las configuraciones anomérica y de referencia demuestran el anómero ${sugar.anomer==='alpha'?'alfa':'beta'} mediante la relación formal ${sugar.anomer==='alpha'?'cis':'trans'} de Fischer.`:'No se asigna alfa/beta: falta configuración explícita o la regla de anómero de cetosa no está dentro de la gramática demostrada.');
       }
       add('configurational reference',[sugar.configurationalAtomId],
         sugar.series?`The highest numbered parent chirality centre C${sugar.configurationalPosition} proves series ${sugar.series} in the ordered Fischer ligand frame. ${sugar.family?`All non-anomeric centres additionally verify ${sugar.series}-${sugar.family.name}.`:'The remaining centres do not establish a supported stereoparent.'}`
-          :'The highest numbered parent chirality centre is not explicitly configured; no D/L or stereoparent name is assigned.',[[sugar.configurationalAtomId,sugar.configurationalPosition]]);
+          :'The highest numbered parent chirality centre is not explicitly configured; no D/L or stereoparent name is assigned.',[[sugar.configurationalAtomId,sugar.configurationalPosition]],sugar.series?`El centro quiral parental de mayor locante, C${sugar.configurationalPosition}, establece la serie ${sugar.series} según el orden de ligandos de Fischer. ${sugar.family?`Los demás centros no anoméricos también verifican ${sugar.series}-${sugar.family.name}.`:'Los centros restantes no establecen un estereoparental admitido.'}`:'El centro quiral parental de mayor locante no tiene configuración explícita; no se asigna D/L ni un nombre estereoparental.');
       result.limitations.push('Carbohydrate structural recognition does not by itself prove a retained or external name. Missing stereocentres and generic names remain PARTIAL.');
     }
     result.status = result.components.length ? "PARTIAL" : "UNSUPPORTED";

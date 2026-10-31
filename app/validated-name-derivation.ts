@@ -17,7 +17,9 @@ export type NameComponent = {
   bondIds: [number, number][];
   numbering: [number, number | string][];
   explanation: string;
+  explanationEs?: string;
   label?: string;
+  labelEs?: string;
 };
 export type ValidatedNameDerivation = {
   status: "FULL";

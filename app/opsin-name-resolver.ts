@@ -30,6 +30,7 @@ export type NameStructureResolutionResult =
       detail: string;
       error: string;
       serviceReached: boolean;
+      ambiguous?: boolean;
     };
 
 const embeddedSmilesFallback: Record<string, string> = {

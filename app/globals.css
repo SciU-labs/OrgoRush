@@ -2770,7 +2770,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   gap: 12px;
   padding: 10px 16px;
   border-bottom: 1px solid var(--brand-border);
-  background: color-mix(in srgb, var(--brand-surface) 92%, var(--brand-primary-soft));
+  background: color-mix(in srgb, var(--brand-workspace) 92%, var(--brand-primary-soft));
 }
 
 .expanded-workspace-header strong { color: var(--brand-ink); font-size: 14px; }
@@ -7380,12 +7380,12 @@ html[data-theme="dark"] .display-options label > span::after {
 
 html[data-theme="dark"] .molecule-workspace.is-expanded {
   border-color: var(--brand-border);
-  background: var(--brand-surface);
+  background: var(--brand-workspace);
 }
 
 html[data-theme="dark"] .expanded-workspace-header {
   border-color: var(--brand-border);
-  background: color-mix(in srgb, var(--brand-surface) 92%, var(--brand-primary-soft));
+  background: color-mix(in srgb, var(--brand-workspace) 92%, var(--brand-primary-soft));
 }
 
 html[data-theme="dark"] .numbering-size-control {
@@ -12192,3 +12192,185 @@ html[data-theme="dark"] .app-shell:not(.a11y-high-contrast) .workspace-grid > #s
 
 
 .sound-control:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 2px; }
+
+/* The expanded workspace is portaled to body, so the card-scoped OrgoRush
+   controls above do not match it. Keep the same tokens and control treatment. */
+.molecule-workspace.is-expanded {
+  border-color: var(--brand-border);
+  background: var(--brand-workspace);
+  color: var(--brand-ink);
+}
+
+.molecule-workspace.is-expanded .molecule-stage {
+  border-color: transparent;
+  background: var(--brand-workspace);
+}
+
+.molecule-workspace.is-expanded .builder-toolbar {
+  border-top: 1px solid var(--brand-border);
+  background: var(--brand-toolbar);
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header {
+  border-color: var(--brand-border);
+  background: color-mix(in srgb, var(--brand-workspace) 92%, var(--brand-primary-soft));
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header strong {
+  color: var(--ink);
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header button,
+.molecule-workspace.is-expanded .canvas-toolbar-left button {
+  border-color: var(--brand-border);
+  background: var(--brand-workspace);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: background-color var(--brand-transition),
+    border-color var(--brand-transition), color var(--brand-transition);
+}
+
+.molecule-workspace.is-expanded .canvas-toolbar-left button {
+  border-color: transparent;
+  background: transparent;
+  color: var(--brand-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header button:hover:not(:disabled),
+.molecule-workspace.is-expanded .canvas-toolbar-left button:hover:not(:disabled) {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header button:active:not(:disabled),
+.molecule-workspace.is-expanded .canvas-toolbar-left button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--brand-primary) 16%, var(--brand-workspace));
+}
+
+.molecule-workspace.is-expanded .expanded-workspace-header button:disabled,
+.molecule-workspace.is-expanded .canvas-toolbar-left button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.molecule-workspace.is-expanded .bond-order-picker > span,
+.molecule-workspace.is-expanded .pad-label {
+  color: var(--muted);
+}
+
+.molecule-workspace.is-expanded .bond-order-picker > div {
+  border-color: var(--brand-border);
+  background: var(--brand-workspace);
+}
+
+.molecule-workspace.is-expanded .bond-order-picker button {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  box-shadow: none;
+}
+
+.molecule-workspace.is-expanded .bond-order-picker button:hover:not(:disabled),
+.molecule-workspace.is-expanded .bond-order-picker button.active {
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
+}
+
+.molecule-workspace.is-expanded .direction-pad button {
+  border-color: var(--brand-border);
+  background: var(--brand-workspace);
+  color: var(--brand-ink);
+}
+
+.molecule-workspace.is-expanded .direction-pad button:hover:not(:disabled) {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+  transform: none;
+}
+
+.molecule-workspace.is-expanded .structure-actions :is(.alkyl-button, .ring-button, .functional-button) {
+  min-height: 44px;
+  border-color: transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--brand-ink);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color var(--brand-transition),
+    border-color var(--brand-transition), color var(--brand-transition),
+    box-shadow var(--brand-transition);
+}
+
+.molecule-workspace.is-expanded .structure-actions :is(.alkyl-button:hover:not(:disabled), .ring-button:hover:not(:disabled), .functional-button:hover:not(:disabled), .alkyl-button.active, .ring-button.active, .functional-button[aria-expanded="true"]) {
+  border-color: transparent;
+  background: var(--brand-primary-soft);
+  color: var(--brand-selected-ink);
+  box-shadow: inset 0 -3px 0 var(--brand-primary);
+}
+
+.molecule-workspace.is-expanded .structure-actions .remove-button {
+  border-color: var(--brand-error);
+  background: color-mix(in srgb, var(--brand-error) 8%, var(--brand-workspace));
+  color: var(--brand-ink);
+}
+
+.molecule-workspace.is-expanded .structure-actions .remove-button span {
+  color: var(--brand-error);
+}
+
+.molecule-workspace.is-expanded .structure-actions .remove-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--brand-error) 14%, var(--brand-workspace));
+}
+
+.molecule-workspace.is-expanded .structure-actions button:disabled,
+.molecule-workspace.is-expanded .direction-pad button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.molecule-workspace.is-expanded :is(
+  .expanded-workspace-header button,
+  .canvas-toolbar-left button,
+  .bond-order-picker button,
+  .direction-pad button,
+  .structure-actions button
+):focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded {
+  background: var(--brand-workspace);
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded .expanded-workspace-header {
+  background: color-mix(in srgb, var(--brand-workspace) 92%, var(--brand-primary-soft));
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded .canvas-toolbar-left button {
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded {
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded .bond-order-picker > span,
+html[data-theme="dark"] .molecule-workspace.is-expanded .pad-label,
+html[data-theme="dark"] .molecule-workspace.is-expanded .bond-order-picker button {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .molecule-workspace.is-expanded .direction-pad button,
+html[data-theme="dark"] .molecule-workspace.is-expanded .structure-actions :is(.alkyl-button, .ring-button, .functional-button, .remove-button) {
+  color: var(--ink);
+}

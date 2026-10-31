@@ -909,6 +909,9 @@ const dynamicExact: Record<string, string> = {
   "No se pudo cargar Guardados.": "Could not load Saved structures.",
   "No se pudo borrar el historial.": "Could not clear history.",
   "No pude interpretar ese nombre IUPAC.": "I could not interpret that IUPAC name.",
+  "Glucosa no especifica la serie D/L, la forma abierta o cíclica ni el anómero. Usa aldehydo-D-glucose, alpha-D-glucopyranose, beta-D-glucopyranose o una forma L explícita.": "Glucose does not specify the D/L series, open or cyclic form, or anomer. Use aldehydo-D-glucose, alpha-D-glucopyranose, beta-D-glucopyranose, or an explicit L form.",
+  "D-glucosa especifica la serie, pero no la forma ni el anómero. Usa aldehydo-D-glucose, alpha-D-glucopyranose o beta-D-glucopyranose.": "D-glucose specifies the series, but not the form or anomer. Use aldehydo-D-glucose, alpha-D-glucopyranose, or beta-D-glucopyranose.",
+  "L-glucosa especifica la serie, pero no la forma ni el anómero. Usa aldehydo-L-glucose, alpha-L-glucopyranose o beta-L-glucopyranose.": "L-glucose specifies the series, but not the form or anomer. Use aldehydo-L-glucose, alpha-L-glucopyranose, or beta-L-glucopyranose.",
 };
 
 export function dynamicUiText(language: AppLanguage, value: string | null | undefined) {
@@ -958,6 +961,7 @@ export function translateCommonName(language: AppLanguage, value?: string) {
   if (!value || language === "es") return value;
   const map: Record<string, string> = {
     acetona: "acetone",
+    cafeina: "caffeine",
     decalina: "decalin",
     anilina: "aniline",
     catecol: "catechol",
@@ -965,6 +969,7 @@ export function translateCommonName(language: AppLanguage, value?: string) {
     hidroquinona: "hydroquinone",
     floroglucinol: "phloroglucinol",
     tolueno: "toluene",
+    cafeína: "caffeine",
     "o-xileno": "o-xylene",
     "m-xileno": "m-xylene",
     "p-xileno": "p-xylene",

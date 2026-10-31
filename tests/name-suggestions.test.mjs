@@ -41,7 +41,8 @@ test("includes the ten requested common molecule families", () => {
 });
 
 test("does not offer broad suggestions for unrelated or exact input", () => {
-  assert.deepEqual(findCommonNameSuggestion("glucosa", "es"), { id: "glucose", name: "glucosa" });
+  assert.equal(findCommonNameSuggestion("glucosa", "es"), null);
+  assert.equal(findCommonNameSuggestion("glucose", "en"), null);
   assert.equal(findCommonNameSuggestion("benceno", "es"), null);
   assert.equal(findCommonNameSuggestion("xy", "es"), null);
 });

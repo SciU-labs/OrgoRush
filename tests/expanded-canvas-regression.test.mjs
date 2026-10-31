@@ -22,17 +22,27 @@ test("expanded viewport refits current geometry on open, edits, undo/redo, and r
   assert.match(page, /const activeViewBounds = canvasExpanded[\s\S]*?expandedViewFrame \?\? expandedFitBounds/);
 });
 
-test("expanded chrome uses OrgoRush tokens and retains accessible state styling", () => {
-  const chrome = css.slice(css.indexOf(".canvas-expand-scrim {"), css.indexOf("@media (max-width: 640px)", css.indexOf(".canvas-expand-scrim {")));
-  for (const token of ["--brand-border", "--brand-surface", "--brand-primary-soft", "--brand-ink", "--brand-primary", "--brand-primary-hover"]) {
+test("portal carries accessibility context and expanded controls use OrgoRush tokens", () => {
+  assert.match(page, /const expandedAccessibilityClasses = canvasExpanded \? \[([\s\S]*?)\]\.filter\(Boolean\)\.join\(" "\)/);
+  for (const feature of ["highContrastEnabled", "largeTextEnabled", "doubleBondPatternEnabled", "largeTargetsEnabled", "dyslexiaTypefaceEnabled", "simplifiedModeEnabled", "highlightInteractivesEnabled"]) {
+    assert.match(page, new RegExp(`\\b${feature}\\s*&&`));
+  }
+  assert.match(page, /className=\{`molecule-workspace \$\{canvasExpanded \? "is-expanded" : ""\} \$\{expandedAccessibilityClasses\}`\}/);
+
+  const chrome = css.slice(css.lastIndexOf("/* The expanded workspace is portaled to body"));
+  for (const token of ["--brand-border", "--brand-workspace", "--brand-toolbar", "--brand-primary-soft", "--brand-primary", "--brand-selected-ink", "--brand-error"]) {
     assert.ok(chrome.includes(`var(${token})`), `${token} is used in expanded chrome`);
   }
   assert.match(chrome, /button:hover:not\(:disabled\)/);
-  assert.match(chrome, /button:focus-visible/);
+  assert.match(chrome, /\):focus-visible/);
   assert.match(chrome, /button:active:not\(:disabled\)/);
   assert.match(chrome, /button:disabled/);
-  assert.match(css, /html\[data-theme="dark"\] \.expanded-workspace-header/);
-  assert.doesNotMatch(chrome, /#(?:294a43|286b5b|bcd7cf|e6f4ef|dbe7e3)/i);
+  for (const control of [".canvas-toolbar-left", ".bond-order-picker", ".direction-pad", ".alkyl-button", ".ring-button", ".functional-button", ".remove-button", ".structure-actions", ".builder-toolbar"]) {
+    assert.ok(chrome.includes(control), `${control} receives expanded control styles`);
+  }
+  assert.match(chrome, /html\[data-theme="dark"\] \.molecule-workspace\.is-expanded/);
+  assert.match(chrome, /background: color-mix\(in srgb, var\(--brand-error\)/);
+  assert.doesNotMatch(chrome, /!important/);
   assert.match(css, /--brand-primary: #3563ff/);
   assert.match(css, /--brand-primary-hover: #284fe0/);
   assert.match(css, /--brand-primary-soft: #eef2ff/);

@@ -28,7 +28,7 @@ before(async()=>{
 },{timeout:60000});
 after(async()=>{await browser?.close();await server?.close();});
 
-async function createPage(){
+async function createPage(path=base){
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   page.setDefaultTimeout(20000);await page.addInitScript(()=>localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped'));
   const errors=[],consoleErrors=[],network=[];
@@ -62,7 +62,7 @@ async function createPage(){
     if(f&&url.includes('/api/'))return route.fulfill({status:200,headers,body:JSON.stringify({source:'OPSIN',originalName:post.name,interpretedName:post.name,smiles:f.smiles,warnings:[]})});
     return route.fulfill({status:200,headers,body:'{}'});
   });
-  await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});return{page,errors,consoleErrors,network};
+  await page.goto(path,{waitUntil:'domcontentloaded',timeout:45000});return{page,errors,consoleErrors,network};
 }
 async function build(page,name,support='FULL',expectedName){
   await page.locator('[aria-controls="iupac-name-builder"]').click();await page.locator('#iupac-name-input').fill(name);
@@ -171,3 +171,26 @@ test(`${live?'LIVE':'HTTP FIXTURES'} carbohydrates: common/systematic names, act
   }catch(error){await page.screenshot({path:resolve(output,'failure.png'),fullPage:true});await writeFile(resolve(output,'failure.txt'),await page.locator('body').innerText());await writeFile(resolve(output,'failure.json'),JSON.stringify({evidence,network,errors,consoleErrors},null,2));throw error;}
   finally{await page.close();}
 },{timeout:600000});
+
+test('HTTP FIXTURES Spanish/English routes preserve FULL carbohydrate derivation while localizing evidence',async()=>{
+  const {page,network}=await createPage(`${base}es/`);
+  try{
+    await build(page,'β-D-glucopiranosa','FULL','beta-D-glucopyranose');
+    const panel=page.locator('[data-derivation-support="FULL"]');
+    const spanish=await panel.innerText();
+    assert.match(spanish,/anómero beta/i);
+    assert.match(spanish,/Configuración del carbohidrato verificada/i);
+    const graph=await canvasGraph(page),requests=network.length;
+    await page.getByRole('button',{name:'English'}).click();
+    await page.waitForFunction(()=>document.querySelector('[data-derivation-support="FULL"]')?.textContent.includes('formal Fischer'));
+    const english=await panel.innerText();
+    assert.match(english,/formal Fischer/i);
+    assert.doesNotMatch(english,/Configuración del carbohidrato verificada/i);
+    assert.deepEqual(await canvasGraph(page),graph,'language switch does not replace or modify the molecule');
+    assert.equal(network.length,requests,'language switch does not repeat external resolution');
+    await page.goto(`${base}en/`,{waitUntil:'domcontentloaded'});
+    assert.equal(await page.locator('html').getAttribute('lang'),'en');
+    await build(page,'beta-D-glucopyranose','FULL','beta-D-glucopyranose');
+    assert.match(await page.locator('[data-derivation-support="FULL"]').innerText(),/formal Fischer/i);
+  }finally{await page.close();}
+},{skip:live,timeout:90000});

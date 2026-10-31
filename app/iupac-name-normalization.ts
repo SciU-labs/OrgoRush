@@ -77,7 +77,34 @@ const commonSpanishNames: Record<string, string> = {
   "m-xileno": "m-xylene",
   "p-xileno": "p-xylene",
   decalina: "decalin",
+  cafeina: "caffeine",
 };
+
+// Exact retained-name aliases. Preserve the stated series and anomer while
+// bridging only the Spanish spelling to OPSIN's English vocabulary.
+const retainedCarbohydrateAliases: Record<string, string> = {
+  "d-glucosa": "D-glucose",
+  "l-glucosa": "L-glucose",
+  "alpha-d-glucopiranosa": "alpha-D-glucopyranose",
+  "alfa-d-glucopiranosa": "alpha-D-glucopyranose",
+  "beta-d-glucopiranosa": "beta-D-glucopyranose",
+  "α-d-glucopiranosa": "alpha-D-glucopyranose",
+  "β-d-glucopiranosa": "beta-D-glucopyranose",
+  "alpha-d-glucofuranosa": "alpha-D-glucofuranose",
+  "alfa-d-glucofuranosa": "alpha-D-glucofuranose",
+  "beta-d-glucofuranosa": "beta-D-glucofuranose",
+  "α-d-glucofuranosa": "alpha-D-glucofuranose",
+  "β-d-glucofuranosa": "beta-D-glucofuranose",
+  "alpha-d-glucopyranose": "alpha-D-glucopyranose",
+  "beta-d-glucopyranose": "beta-D-glucopyranose",
+  "alpha-d-glucofuranose": "alpha-D-glucofuranose",
+  "beta-d-glucofuranose": "beta-D-glucofuranose",
+};
+
+/** True when a glucose family/series name omits its form or anomer. */
+export function isAmbiguousGlucoseName(value: string) {
+  return /^(?:[dl]-)?(?:glucosa|glucose)$/i.test(normalizePunctuation(value));
+}
 
 /** Spanish heterocycle parent names accepted by the laboratory interface. */
 const heterocycleTranslations: Record<string, string> = {
@@ -442,6 +469,8 @@ export function translateSpanishIupacToOpsin(value: string) {
 
   const common = commonSpanishNames[normalized];
   if (common) return common;
+  const retainedCarbohydrate = retainedCarbohydrateAliases[normalized];
+  if (retainedCarbohydrate) return retainedCarbohydrate;
 
   const heterocycleName = translateHeterocycles(normalized);
 
