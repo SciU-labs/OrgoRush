@@ -73,7 +73,7 @@ for(const f of records)test(`neutral fused import, graph identity and honest par
   const reimported=graph(exported.smiles);assert.ok(mapStructuralRegions(g,reimported,[]));
   assert.equal(inspectSmilesStructure(exported.smiles).formula,f.MolecularFormula);
   const partial=deriveStructuralComponents(g,f.IUPACName);assert.equal(partial.status,'PARTIAL');
-  assert.equal(reconcileSystematicName(g,f.IUPACName),null,'import does not create purine numbering or full nomenclature');
+  assert.equal(reconcileSystematicName(g,f.IUPACName)?.status,'FULL','phase 7 separately proves the complete name; raw structural evidence stays PARTIAL');
   const ring=partial.components.find(c=>c.kind==='ringSystem');assert.equal(ring.atomIds.length,9);
   assert.deepEqual(structuralVisualTargets(partial)[ring.id].atomIds,ring.atomIds);
   const positions=calculateMolecule2DLayout(g,[],'semi-developed');

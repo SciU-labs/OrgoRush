@@ -39,7 +39,7 @@ export function ReasoningVisualOverlay({ target, positions, showLocants, semiDev
   numberOffsets?: ReadonlyMap<number, { x: number; y: number }>;
 }) {
   if (!target) return null;
-  return <g className="reasoning-visual-overlay" data-editor-only="true" aria-hidden="true" pointerEvents="none">
+  return <g className="reasoning-visual-overlay" data-reasoning-step={target.stepNumber} data-editor-only="true" aria-hidden="true" pointerEvents="none">
     {target.bondIds.map(([a, b]) => {
       const start = positions.get(a), end = positions.get(b);
       return start && end ? <line key={`${a}:${b}`} className="reasoning-bond-halo reasoning-visual-bond"

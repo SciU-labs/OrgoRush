@@ -7,6 +7,8 @@ import { localizeChemicalNameForDisplay } from "../app/iupac-name-normalization.
 import { applyNomenclatureConvention, selectableNomenclatureConventions, nomenclatureConventionLabel } from "../app/nomenclature-conventions.ts";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "../app/legacy-profile-display.ts";
 import { verifiedPubChemSystematicDisplayName } from "../app/verified-common-name-equivalences.ts";
+import { reconcileSystematicName } from "../app/validated-name-derivation.ts";
+import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 
 // Expected terminology checked independently before fixing the expected text:
 // IUPAC/RSEQ Spanish Brief Guide, tables 1–3 and sections 5.3/7/9;
@@ -27,8 +29,9 @@ assert.ok(variants?.initializer);
 const variantCode = ts.transpileModule(`result = ${variants.initializer.getText(page)};`, {
   compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext },
 }).outputText;
-function displayedVariants(language, identity, legacy = { spanishResolution: { name: "-" }, englishName: "-" }) {
+function displayedVariants(language, identity, legacy = { spanishResolution: { name: "-" }, englishName: "-" }, molecule = {atoms:[],bonds:[]}) {
   const context = { language, externalNameIsPrimary: true, namingPubChemIdentity: identity, pubChemIupacName: identity.iupacName,
+    molecule,reasoningSourceName:null,reconcileSystematicName,
     verifiedPubChemSystematicDisplayName, localizeChemicalNameForDisplay, applyNomenclatureConvention,
     selectableNomenclatureConventions, nomenclatureConventionLabel, legacyProfileDisplayName, legacyResolution: legacy,
     localizedIupac() { throw new Error("external display must not re-enter the local/Legacy translator"); },
@@ -106,6 +109,14 @@ test("LOCALIZATION-012 verified identity overrides and canonical export metadata
   const canonical = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === "canonicalIupacName");
   assert.equal(canonical.initializer.getText(page), "nameWithSelectedStereochemistry");
   assert.match(pageText, /compoundLookupNamesRef\.current = \[canonicalIupacName\]/);
+});
+
+test("LOCALIZATION-012 a fully reconciled purine name remains literal without enabling Legacy",()=>{
+  const parsed=moleculeFromSmiles('CN1C=NC2=C1C(=O)N(C(=O)N2C)C');assert.equal(parsed.ok,true);
+  const identity=Object.freeze({iupacName:'1,3,7-trimethylpurine-2,6-dione'});
+  const variants=displayedVariants('es',identity,undefined,parsed.molecule);
+  assert.equal(variants[0].name,identity.iupacName);
+  assert.equal(variants.find(v=>v.convention!=='current').available,false);
 });
 
 test("LOCALIZATION-012 the original PubChem name remains available in Current provenance", () => {

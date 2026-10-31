@@ -8421,7 +8421,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
   const validatedDerivation=reconciledDerivation?selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex):null;
   const validatedTargets = validatedDerivation ? validatedNameTargets(validatedDerivation) : {};
-  const visualNumbering: ReadonlyMap<number, number | string> = validatedDerivation
+  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
+  const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
+  const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
     ? new Map(validatedDerivation.components.find(c => c.role === "parent")!.numbering)
     : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
@@ -8429,8 +8431,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   // local naming analysis. Do not present its parent colours as authoritative.
   const reasoningUnsupported = activeLocalNameUnavailable
     || (activeNomenclatureConvention === "current" && externalNameIsPrimary)
-    || sourceNameOverride !== null;
-  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
+    || sourceNameOverride !== null
+    || (!!structuralEvidence.carbohydrate && !validatedDerivation);
   const structuralDerivation = { ...structuralEvidence,
     name: { ...structuralEvidence.name, text: displayedIupacName } };
   const structuralTargets = structuralVisualTargets(structuralDerivation);
@@ -11087,7 +11089,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     : [];
   const condensedRenderModel = viewMode === "condensed"
     ? buildCondensedRenderModel(molecule, (atomId) => getImplicitHydrogens(atomId, molecule), {
-        numbering: effectiveShowNumbering ? activeAnalysis.numberedAtoms : undefined,
+        numbering: effectiveShowNumbering && !contextualDerivationNumbering ? activeAnalysis.numberedAtoms : undefined,
         stereoBonds: condensedStereoBonds,
         includeTetrahedralParity: stereochemistryEnabled,
       })
@@ -11380,12 +11382,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
           additionalExtents: visualExtents,
         });
   const readExpandedFitBounds = useEffectEvent(() => expandedFitBounds);
-  /* eslint-disable react-hooks/set-state-in-effect -- modal-open transition synchronizes its derived viewport once */
+  /* eslint-disable react-hooks/set-state-in-effect -- opening, molecular edits, and representation changes synchronize the fitted viewport */
   useEffect(() => {
     if (!canvasExpanded) return;
     setExpandedViewFrame({ ...readExpandedFitBounds() });
     setExpandedZoom(1);
-  }, [canvasExpanded]);
+  }, [canvasExpanded, molecule, viewMode]);
   /* eslint-enable react-hooks/set-state-in-effect */
   const activeViewBounds = canvasExpanded
     ? expandedViewFrame ?? expandedFitBounds
@@ -12797,7 +12799,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               )}
 
               {viewMode !== "condensed" && <ReasoningVisualOverlay target={reasoningVisualTarget}
-                positions={displayPositions} showLocants={!effectiveShowNumbering}
+                positions={displayPositions} showLocants={!effectiveShowNumbering || contextualDerivationNumbering}
                 semiDeveloped={viewMode === "semi-developed"} numberOffsets={skeletalNumberBadgeOffsets} />}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
@@ -12825,6 +12827,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     key={atom.id}
                     data-atom-id={atom.id}
                     data-atom-element={element}
+                    data-atom-configuration={atom.tetrahedralParity}
                     className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${mainChainSet.has(atom.id) ? "on-main-chain" : "on-branch"}`}
                     transform={`translate(${position.x} ${position.y})`}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "carbon" : undefined}
@@ -13022,7 +13025,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   model={condensedRenderModel}
                   reasoningTarget={reasoningVisualTarget}
                   selectedAtomId={selectedId}
-                  showNumbering={effectiveShowNumbering}
+                  showNumbering={effectiveShowNumbering && !contextualDerivationNumbering}
                   language={language}
                   advancedScreenReaderEnabled={advancedScreenReaderEnabled}
                   onSelectAtom={(atomId) => {
@@ -13115,7 +13118,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             <div className="stage-legend" aria-label={t("Leyenda")}>
               {highlightSubstituents && (!reasoningUnsupported || validatedDerivation) ? (
                 <>
-                  <span><i className="main-key" /> {isRingStructure ? t("Anillo principal") : t("Cadena principal")}</span>
+                  <span><i className="main-key" /> {validatedDerivation?.parentSystem==="purine" ? language==="en"?"Purine system":"Sistema purínico" : validatedDerivation?.parentSystem==="carbohydrate" ? language==="en"?"Carbohydrate skeleton":"Esqueleto del carbohidrato" : isRingStructure ? t("Anillo principal") : t("Cadena principal")}</span>
                   <span><i className="branch-key" /> {t("Sustituyente")}</span>
                 </>
               ) : (
@@ -15043,7 +15046,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       onActivate={activateReasoningVisual} />
                     <div><button type="button" className="reasoning-name-fragment-control" data-name-fragment={component.id}
                       aria-pressed={reasoningVisualTarget?.stepNumber === component.id}
-                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{component.text}</button>
+                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{component.label??component.text}</button>
                       <p>{component.explanation}</p></div>
                   </li>)}</ol>
                 </div> : reasoningUnsupported ? <div data-derivation-support={structuralDerivation.status}>
@@ -15051,7 +15054,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   ? "A verified derivation is not available for this structure and displayed name. Parent and substituent colours are suppressed. A name from an external source is not automatically a preferred IUPAC name."
                   : "No hay una derivación verificada disponible para esta estructura y el nombre mostrado. Se desactivan los colores del esqueleto principal y de los sustituyentes. Un nombre de una fuente externa no es automáticamente un nombre IUPAC preferido."}</p>
                   {structuralDerivation.status === "PARTIAL" && <>
-                    <p>{language === "en" ? "PARTIAL: verified structural components. Select a component to inspect its atoms and bonds; no name locants are assigned."
+                    <p>{structuralDerivation.carbohydrate ? language === "en"
+                      ? "PARTIAL: the carbohydrate skeleton is verified. Contextual numbers are structural carbohydrate locants; the complete displayed name has not been proved. Missing configurations are not assigned."
+                      : "PARTIAL: esqueleto del carbohidrato verificado. Los números contextuales son localizadores estructurales del carbohidrato; el nombre completo mostrado no está demostrado. No se asignan configuraciones ausentes."
+                      : language === "en" ? "PARTIAL: verified structural components. Select a component to inspect its atoms and bonds; no name locants are assigned."
                       : "PARTIAL: componentes estructurales verificados. Selecciona un componente para ver sus átomos y enlaces; no se asignan localizadores del nombre."}</p>
                     <ol>{structuralDerivation.components.map((component, index) => <li key={component.id} data-structural-kind={component.kind}>
                       <ReasoningStepNumber number={String(index + 1)} title={component.kind} language={language}

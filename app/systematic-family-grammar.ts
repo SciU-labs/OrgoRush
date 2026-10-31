@@ -2,9 +2,10 @@ import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import type { NameComponent, ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { analyzeStructuralEquivalence } from "./structural-derivation.ts";
+import { parsePurineFamily } from "./purine-derivation.ts";
 
 type FamilyGraph = { graph: GeneratedMolecule; components: NameComponent[]; parent: number[];
-  group: ValidatedNameDerivation["principalGroup"]; equivalentParentPaths?: number[][] };
+  group: ValidatedNameDerivation["principalGroup"]; equivalentParentPaths?: number[][]; parentSystem?:"purine" };
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 type Prefix = { text: string; term: NonNullable<ReturnType<typeof legacyPrefixTerm>>; positions: number[]; start: number };
 
@@ -37,6 +38,7 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
 }
 
 export function parseAdditionalSystematicFamily(name: string): FamilyGraph | null {
+  const purine=parsePurineFamily(name);if(purine)return purine;
   const graph: GeneratedMolecule = { atoms: [], bonds: [] }, components: NameComponent[] = [];
   const atom = (element: "C" | "O" | "N" = "C") => { const id = graph.atoms.length + 1; graph.atoms.push({id,element,x:0,y:0}); return id; };
   const edge = (a: number, b: number, order: 1 | 2 = 1) => { graph.bonds.push([a,b,order]); };

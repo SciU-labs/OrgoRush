@@ -270,7 +270,9 @@ test("CID 5793 remains protected before local profiles are selected", () => {
   assert.equal(resolvedLegacy.englishName,"-");
   assert.equal(resolvedLegacy.spanishResolution.status,"UNSUPPORTED");
   assert.match(pageSource, /const legacyResolution = useMemo\([\s\S]*?resolveLegacyNomenclature\(molecule,legacyAnalysis/);
-  assert.match(pageSource, /const suggestedName = externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\)\s*\?\? localizeChemicalNameForDisplay\(pubChemIupacName!, language, \{ source: "external" \}\)/);
+  assert.match(pageSource, /const suggestedName = verifiedSystematicPresentation \?\? \(externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\)\s*\?\? localizeChemicalNameForDisplay\(pubChemIupacName!, language, \{ source: "external" \}\)/);
+  assert.match(pageSource,/const verifiedSystematicPresentation = \(pubChemIupacName[\s\S]*?reconcileSystematicName\(molecule, pubChemIupacName\)\?\.name/,
+    "a graph-verified complete name may precede the existing external identity fallback");
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
   assert.match(pageSource, /chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
@@ -489,7 +491,7 @@ test("routes normalized Spanish names through parsing before reporting topology 
     ["decalina", "decalin", "C1CCC2CCCCC2C1", true],
     ["espiro[4.5]decano", "spiro[4.5]decane", "C1CCC2(CC1)CCCC2", false],
     ["biciclo[2.2.1]heptano", "bicyclo[2.2.1]heptane", "C1CC2CCC1C2", false],
-    ["indol", "indol", "c1ccc2[nH]ccc2c1", false],
+    ["indol", "indol", "c1ccc2[nH]ccc2c1", true],
   ];
 
   for (const [input, parserName, smiles, editable] of cases) {
@@ -557,7 +559,8 @@ test("classifies unsupported polycyclic topology precisely after parsing", () =>
   assert.equal(spiro.ok, false);
   assert.match(spiro.error, /espiro/i);
 
-  const fused = moleculeFromSmiles("c1ccc2[nH]ccc2c1");
+  assert.equal(moleculeFromSmiles("c1ccc2[nH]ccc2c1").ok,true,"neutral five/six-membered C/N fusion is supported since phase 6");
+  const fused = moleculeFromSmiles("c1ccc2c(c1)CCCNC2");
   assert.equal(fused.ok, false);
   assert.match(fused.error, /fusionado/i);
 

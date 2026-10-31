@@ -1,0 +1,7735 @@
+{
+  "priority": [
+    {
+      "query": "purine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/purine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 1044,
+      "receivedName": "7H-purine",
+      "smiles": "C1=C2C(=NC=N1)N=CN2",
+      "formula": "C5H4N4",
+      "actualFormula": "C5H4N4",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          6,
+          5,
+          4,
+          3,
+          2,
+          1,
+          9,
+          8,
+          7
+        ],
+        "numbering": [
+          [
+            6,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            9,
+            7
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            7,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            6,
+            5
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            7,
+            3
+          ]
+        ],
+        "nitrogenIds": [
+          6,
+          4,
+          9,
+          7
+        ],
+        "fusionAtomIds": [
+          3,
+          2
+        ],
+        "hydrogens": [
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            7,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 3,
+          "end": 9,
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1,
+            9,
+            8,
+            7
+          ],
+          "bondIds": [
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              9,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              9,
+              7
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 7."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 3,
+          "end": 9,
+          "atomIds": [
+            6,
+            4,
+            9,
+            7
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              9,
+              7
+            ],
+            [
+              7,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 3,
+          "end": 9,
+          "atomIds": [
+            3,
+            2
+          ],
+          "bondIds": [
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ],
+            [
+              2,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "7H",
+          "start": 0,
+          "end": 2,
+          "atomIds": [
+            9
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              9,
+              7
+            ]
+          ],
+          "explanation": "7H fixes the single-bonded parent nitrogen site(s) 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1,
+            9,
+            8,
+            7
+          ],
+          "bondIds": [
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              9
+            ],
+            [
+              9,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              6,
+              1
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              9,
+              7
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              7,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            6,
+            4,
+            9,
+            7
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              6,
+              1
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              9,
+              7
+            ],
+            [
+              7,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            3,
+            2
+          ],
+          "bondIds": [
+            [
+              3,
+              2
+            ]
+          ],
+          "locants": [
+            [
+              3,
+              4
+            ],
+            [
+              2,
+              5
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            9
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              9,
+              7
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "xanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/xanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 1188,
+      "receivedName": "3,7-dihydropurine-2,6-dione",
+      "smiles": "C1=NC2=C(N1)C(=O)NC(=O)N2",
+      "formula": "C5H4N4O2",
+      "actualFormula": "C5H4N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          8,
+          9,
+          11,
+          3,
+          4,
+          6,
+          5,
+          1,
+          2
+        ],
+        "numbering": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            2,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            11
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            6,
+            8
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "nitrogenIds": [
+          8,
+          11,
+          5,
+          2
+        ],
+        "fusionAtomIds": [
+          3,
+          4
+        ],
+        "hydrogens": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 11,
+          "end": 17,
+          "atomIds": [
+            8,
+            9,
+            11,
+            3,
+            4,
+            6,
+            5,
+            1,
+            2
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              11
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              2,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1, 3, 7. At N1, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 11,
+          "end": 17,
+          "atomIds": [
+            8,
+            11,
+            5,
+            2
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              8,
+              1
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              2,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 11,
+          "end": 17,
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-hydro",
+          "role": "prefix",
+          "text": "3,7-dihydro",
+          "start": 0,
+          "end": 11,
+          "atomIds": [
+            11,
+            5
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              11,
+              3
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "explanation": "3,7-dihydro fixes the single-bonded parent nitrogen site(s) 3, 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 18,
+          "end": 27,
+          "atomIds": [
+            9,
+            6,
+            10,
+            7
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              2
+            ],
+            [
+              6,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            8,
+            9,
+            11,
+            3,
+            4,
+            6,
+            5,
+            1,
+            2
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              11
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              2,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            8,
+            11,
+            5,
+            2
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              8,
+              1
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              2,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        "purine-hydro": {
+          "stepNumber": "purine-hydro",
+          "atomIds": [
+            11,
+            5
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              11,
+              3
+            ],
+            [
+              5,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            9,
+            6,
+            10,
+            7
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              2
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "caffeine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/caffeine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 2519,
+      "receivedName": "1,3,7-trimethylpurine-2,6-dione",
+      "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+      "formula": "C8H10N4O2",
+      "actualFormula": "C8H10N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          9,
+          10,
+          12,
+          5,
+          6,
+          7,
+          2,
+          3,
+          4
+        ],
+        "numbering": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "nitrogenIds": [
+          9,
+          12,
+          2,
+          4
+        ],
+        "fusionAtomIds": [
+          5,
+          6
+        ],
+        "hydrogens": [
+          [
+            9,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has no N–H bonds."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1,3,7-trimethyl",
+          "start": 0,
+          "end": 15,
+          "atomIds": [
+            14,
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              9,
+              14
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ]
+          ],
+          "explanation": "1,3,7-trimethyl specifies 3 methyl group(s), one at each of positions 1, 3, 7. Each methyl replaces a parent H; a methylated ring N carries no N–H. Tri- counts these 3 distinct methyl groups."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 22,
+          "end": 31,
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            14,
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              9,
+              14
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "theobromine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/theobromine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 5429,
+      "receivedName": "3,7-dimethylpurine-2,6-dione",
+      "smiles": "CN1C=NC2=C1C(=O)NC(=O)N2C",
+      "formula": "C7H8N4O2",
+      "actualFormula": "C7H8N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          9,
+          10,
+          12,
+          5,
+          6,
+          7,
+          2,
+          3,
+          4
+        ],
+        "numbering": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "nitrogenIds": [
+          9,
+          12,
+          2,
+          4
+        ],
+        "fusionAtomIds": [
+          5,
+          6
+        ],
+        "hydrogens": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1. At N1, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "3,7-dimethyl",
+          "start": 0,
+          "end": 12,
+          "atomIds": [
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              12,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ]
+          ],
+          "explanation": "3,7-dimethyl specifies 2 methyl group(s), one at each of positions 3, 7. Each methyl replaces a parent H; a methylated ring N carries no N–H. Di- counts these 2 distinct methyl groups."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 19,
+          "end": 28,
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              12,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "theophylline",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/theophylline/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 2153,
+      "receivedName": "1,3-dimethyl-7H-purine-2,6-dione",
+      "smiles": "CN1C2=C(C(=O)N(C1=O)C)NC=N2",
+      "formula": "C7H8N4O2",
+      "actualFormula": "C7H8N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          7,
+          8,
+          2,
+          3,
+          4,
+          5,
+          11,
+          12,
+          13
+        ],
+        "numbering": [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            11,
+            7
+          ],
+          [
+            12,
+            8
+          ],
+          [
+            13,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            4,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            13,
+            3
+          ]
+        ],
+        "nitrogenIds": [
+          7,
+          2,
+          11,
+          13
+        ],
+        "fusionAtomIds": [
+          3,
+          4
+        ],
+        "hydrogens": [
+          [
+            7,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            7,
+            8,
+            2,
+            3,
+            4,
+            5,
+            11,
+            12,
+            13
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              4,
+              11
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              13,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              11,
+              7
+            ],
+            [
+              12,
+              8
+            ],
+            [
+              13,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 7."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            7,
+            2,
+            11,
+            13
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              11,
+              7
+            ],
+            [
+              13,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1,3-dimethyl",
+          "start": 0,
+          "end": 12,
+          "atomIds": [
+            10,
+            1
+          ],
+          "bondIds": [
+            [
+              7,
+              10
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "explanation": "1,3-dimethyl specifies 2 methyl group(s), one at each of positions 1, 3. Each methyl replaces a parent H; a methylated ring N carries no N–H. Di- counts these 2 distinct methyl groups."
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "7H",
+          "start": 13,
+          "end": 15,
+          "atomIds": [
+            11
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              11,
+              7
+            ]
+          ],
+          "explanation": "7H fixes the single-bonded parent nitrogen site(s) 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 23,
+          "end": 32,
+          "atomIds": [
+            8,
+            5,
+            9,
+            6
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              2
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            7,
+            8,
+            2,
+            3,
+            4,
+            5,
+            11,
+            12,
+            13
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              4,
+              11
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              13,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              11,
+              7
+            ],
+            [
+              12,
+              8
+            ],
+            [
+              13,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            7,
+            2,
+            11,
+            13
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              11,
+              7
+            ],
+            [
+              13,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            10,
+            1
+          ],
+          "bondIds": [
+            [
+              7,
+              10
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            11
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              11,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            8,
+            5,
+            9,
+            6
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              2
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "generalization": [
+    {
+      "query": "paraxanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/paraxanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 4687,
+      "receivedName": "1,7-dimethyl-3H-purine-2,6-dione",
+      "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2)C",
+      "formula": "C7H8N4O2",
+      "actualFormula": "C7H8N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          9,
+          10,
+          12,
+          5,
+          6,
+          7,
+          2,
+          3,
+          4
+        ],
+        "numbering": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "nitrogenIds": [
+          9,
+          12,
+          2,
+          4
+        ],
+        "fusionAtomIds": [
+          5,
+          6
+        ],
+        "hydrogens": [
+          [
+            9,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 3."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 16,
+          "end": 22,
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1,7-dimethyl",
+          "start": 0,
+          "end": 12,
+          "atomIds": [
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              9,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              2,
+              7
+            ]
+          ],
+          "explanation": "1,7-dimethyl specifies 2 methyl group(s), one at each of positions 1, 7. Each methyl replaces a parent H; a methylated ring N carries no N–H. Di- counts these 2 distinct methyl groups."
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "3H",
+          "start": 13,
+          "end": 15,
+          "atomIds": [
+            12
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              12,
+              3
+            ]
+          ],
+          "explanation": "3H fixes the single-bonded parent nitrogen site(s) 3. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 23,
+          "end": 32,
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            13,
+            1
+          ],
+          "bondIds": [
+            [
+              9,
+              13
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              2,
+              7
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            12
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              12,
+              3
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "1-methylxanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1-methylxanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 80220,
+      "receivedName": "1-methyl-3,7-dihydropurine-2,6-dione",
+      "smiles": "CN1C(=O)C2=C(NC1=O)N=CN2",
+      "formula": "C6H6N4O2",
+      "actualFormula": "C6H6N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          2,
+          8,
+          7,
+          6,
+          5,
+          3,
+          12,
+          11,
+          10
+        ],
+        "numbering": [
+          [
+            2,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            12,
+            7
+          ],
+          [
+            11,
+            8
+          ],
+          [
+            10,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            2,
+            8
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            5,
+            12
+          ],
+          [
+            12,
+            11
+          ],
+          [
+            11,
+            10
+          ],
+          [
+            10,
+            6
+          ]
+        ],
+        "nitrogenIds": [
+          2,
+          7,
+          12,
+          10
+        ],
+        "fusionAtomIds": [
+          6,
+          5
+        ],
+        "hydrogens": [
+          [
+            2,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            10,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 20,
+          "end": 26,
+          "atomIds": [
+            2,
+            8,
+            7,
+            6,
+            5,
+            3,
+            12,
+            11,
+            10
+          ],
+          "bondIds": [
+            [
+              2,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              12
+            ],
+            [
+              12,
+              11
+            ],
+            [
+              11,
+              10
+            ],
+            [
+              10,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              12,
+              7
+            ],
+            [
+              11,
+              8
+            ],
+            [
+              10,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 3, 7."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 20,
+          "end": 26,
+          "atomIds": [
+            2,
+            7,
+            12,
+            10
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              12,
+              7
+            ],
+            [
+              10,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 20,
+          "end": 26,
+          "atomIds": [
+            6,
+            5
+          ],
+          "bondIds": [
+            [
+              6,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              6,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1-methyl",
+          "start": 0,
+          "end": 8,
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ]
+          ],
+          "explanation": "1-methyl specifies 1 methyl group(s), one at each of positions 1. Each methyl replaces a parent H; a methylated ring N carries no N–H. One methyl needs no multiplying prefix."
+        },
+        {
+          "id": "purine-hydro",
+          "role": "prefix",
+          "text": "3,7-dihydro",
+          "start": 9,
+          "end": 20,
+          "atomIds": [
+            7,
+            12
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              7,
+              3
+            ],
+            [
+              12,
+              7
+            ]
+          ],
+          "explanation": "3,7-dihydro fixes the single-bonded parent nitrogen site(s) 3, 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 27,
+          "end": 36,
+          "atomIds": [
+            8,
+            3,
+            9,
+            4
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              2
+            ],
+            [
+              3,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            2,
+            8,
+            7,
+            6,
+            5,
+            3,
+            12,
+            11,
+            10
+          ],
+          "bondIds": [
+            [
+              2,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              12
+            ],
+            [
+              12,
+              11
+            ],
+            [
+              11,
+              10
+            ],
+            [
+              10,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              2,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              12,
+              7
+            ],
+            [
+              11,
+              8
+            ],
+            [
+              10,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            2,
+            7,
+            12,
+            10
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              2,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              12,
+              7
+            ],
+            [
+              10,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            6,
+            5
+          ],
+          "bondIds": [
+            [
+              6,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              6,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        "purine-hydro": {
+          "stepNumber": "purine-hydro",
+          "atomIds": [
+            7,
+            12
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              3
+            ],
+            [
+              12,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            8,
+            3,
+            9,
+            4
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              2
+            ],
+            [
+              3,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "3-methylxanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/3-methylxanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 70639,
+      "receivedName": "3-methyl-7H-purine-2,6-dione",
+      "smiles": "CN1C2=C(C(=O)NC1=O)NC=N2",
+      "formula": "C6H6N4O2",
+      "actualFormula": "C6H6N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          7,
+          8,
+          2,
+          3,
+          4,
+          5,
+          10,
+          11,
+          12
+        ],
+        "numbering": [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            10,
+            7
+          ],
+          [
+            11,
+            8
+          ],
+          [
+            12,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            12,
+            3
+          ]
+        ],
+        "nitrogenIds": [
+          7,
+          2,
+          10,
+          12
+        ],
+        "fusionAtomIds": [
+          3,
+          4
+        ],
+        "hydrogens": [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            12,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            7,
+            8,
+            2,
+            3,
+            4,
+            5,
+            10,
+            11,
+            12
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              12,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              11,
+              8
+            ],
+            [
+              12,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1, 7. At N1, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            7,
+            2,
+            10,
+            12
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              12,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "3-methyl",
+          "start": 0,
+          "end": 8,
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              3
+            ]
+          ],
+          "explanation": "3-methyl specifies 1 methyl group(s), one at each of positions 3. Each methyl replaces a parent H; a methylated ring N carries no N–H. One methyl needs no multiplying prefix."
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "7H",
+          "start": 9,
+          "end": 11,
+          "atomIds": [
+            10
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              10,
+              7
+            ]
+          ],
+          "explanation": "7H fixes the single-bonded parent nitrogen site(s) 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 19,
+          "end": 28,
+          "atomIds": [
+            8,
+            5,
+            9,
+            6
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              2
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            7,
+            8,
+            2,
+            3,
+            4,
+            5,
+            10,
+            11,
+            12
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              12,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              11,
+              8
+            ],
+            [
+              12,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            7,
+            2,
+            10,
+            12
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              12,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            10
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              10,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            8,
+            5,
+            9,
+            6
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              2
+            ],
+            [
+              5,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "7-methylxanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/7-methylxanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 68374,
+      "receivedName": "7-methyl-3H-purine-2,6-dione",
+      "smiles": "CN1C=NC2=C1C(=O)NC(=O)N2",
+      "formula": "C6H6N4O2",
+      "actualFormula": "C6H6N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          9,
+          10,
+          12,
+          5,
+          6,
+          7,
+          2,
+          3,
+          4
+        ],
+        "numbering": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "nitrogenIds": [
+          9,
+          12,
+          2,
+          4
+        ],
+        "fusionAtomIds": [
+          5,
+          6
+        ],
+        "hydrogens": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1, 3. At N1, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 12,
+          "end": 18,
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "numbering": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "7-methyl",
+          "start": 0,
+          "end": 8,
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              7
+            ]
+          ],
+          "explanation": "7-methyl specifies 1 methyl group(s), one at each of positions 7. Each methyl replaces a parent H; a methylated ring N carries no N–H. One methyl needs no multiplying prefix."
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "3H",
+          "start": 9,
+          "end": 11,
+          "atomIds": [
+            12
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              12,
+              3
+            ]
+          ],
+          "explanation": "3H fixes the single-bonded parent nitrogen site(s) 3. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 19,
+          "end": 28,
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            9,
+            10,
+            12,
+            5,
+            6,
+            7,
+            2,
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              12
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              9
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            9,
+            12,
+            2,
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              9,
+              1
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            5,
+            6
+          ],
+          "bondIds": [
+            [
+              5,
+              6
+            ]
+          ],
+          "locants": [
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              2,
+              7
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            12
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              12,
+              3
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            10,
+            7,
+            11,
+            8
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              2
+            ],
+            [
+              7,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "uric acid",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/uric%20acid/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 1175,
+      "receivedName": "7,9-dihydro-3H-purine-2,6,8-trione",
+      "smiles": "C12=C(NC(=O)N1)NC(=O)NC2=O",
+      "formula": "C5H4N4O3",
+      "actualFormula": "C5H4N4O3",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          10,
+          8,
+          7,
+          2,
+          1,
+          11,
+          6,
+          4,
+          3
+        ],
+        "numbering": [
+          [
+            10,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            11,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            3,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            10,
+            8
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            11,
+            10
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "nitrogenIds": [
+          10,
+          7,
+          6,
+          3
+        ],
+        "fusionAtomIds": [
+          2,
+          1
+        ],
+        "hydrogens": [
+          [
+            10,
+            1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            10,
+            8,
+            7,
+            2,
+            1,
+            11,
+            6,
+            4,
+            3
+          ],
+          "bondIds": [
+            [
+              10,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              11
+            ],
+            [
+              11,
+              10
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              3,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1, 3, 7, 9. At N1, two single ring bonds and neutral nitrogen valence three leave one implicit H. These unlisted H sites are checked in the graph rather than added to the written hydro locants."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            10,
+            7,
+            6,
+            3
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              10,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 15,
+          "end": 21,
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-hydro",
+          "role": "prefix",
+          "text": "7,9-dihydro",
+          "start": 0,
+          "end": 11,
+          "atomIds": [
+            6,
+            3
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ],
+          "explanation": "7,9-dihydro fixes the single-bonded parent nitrogen site(s) 7, 9. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-indicated",
+          "role": "prefix",
+          "text": "3H",
+          "start": 12,
+          "end": 14,
+          "atomIds": [
+            7
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              7,
+              3
+            ]
+          ],
+          "explanation": "3H fixes the single-bonded parent nitrogen site(s) 3. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6,8-trione",
+          "start": 22,
+          "end": 34,
+          "atomIds": [
+            8,
+            11,
+            4,
+            9,
+            12,
+            5
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              2
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              4,
+              8
+            ]
+          ],
+          "explanation": "2,6,8-trione specifies 3 C=O group(s) at parent carbon(s) 2, 6, 8. Trione means three oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            10,
+            8,
+            7,
+            2,
+            1,
+            11,
+            6,
+            4,
+            3
+          ],
+          "bondIds": [
+            [
+              10,
+              8
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              11
+            ],
+            [
+              11,
+              10
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              1
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              3,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            10,
+            7,
+            6,
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              10,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              5
+            ]
+          ]
+        },
+        "purine-hydro": {
+          "stepNumber": "purine-hydro",
+          "atomIds": [
+            6,
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ]
+        },
+        "purine-indicated": {
+          "stepNumber": "purine-indicated",
+          "atomIds": [
+            7
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              3
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            8,
+            11,
+            4,
+            9,
+            12,
+            5
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              11,
+              12
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              2
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              4,
+              8
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "hypoxanthine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/hypoxanthine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 135398638,
+      "receivedName": "1,7-dihydropurin-6-one",
+      "smiles": "C1=NC2=C(N1)C(=O)NC=N2",
+      "formula": "C5H4N4O",
+      "actualFormula": "C5H4N4O",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          8,
+          9,
+          10,
+          3,
+          4,
+          6,
+          5,
+          1,
+          2
+        ],
+        "numbering": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            2,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            6,
+            8
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "nitrogenIds": [
+          8,
+          10,
+          5,
+          2
+        ],
+        "fusionAtomIds": [
+          3,
+          4
+        ],
+        "hydrogens": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purin",
+          "start": 11,
+          "end": 16,
+          "atomIds": [
+            8,
+            9,
+            10,
+            3,
+            4,
+            6,
+            5,
+            1,
+            2
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              2,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has N–H at 1, 7."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purin",
+          "start": 11,
+          "end": 16,
+          "atomIds": [
+            8,
+            10,
+            5,
+            2
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              2,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purin",
+          "start": 11,
+          "end": 16,
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-hydro",
+          "role": "prefix",
+          "text": "1,7-dihydro",
+          "start": 0,
+          "end": 11,
+          "atomIds": [
+            8,
+            5
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              8,
+              1
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "explanation": "1,7-dihydro fixes the single-bonded parent nitrogen site(s) 1, 7. Each selected nitrogen retains one hydrogen in this structure. Hydrogen populations are checked per atom; another tautomer is not interchangeable."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "6-one",
+          "start": 17,
+          "end": 22,
+          "atomIds": [
+            6,
+            7
+          ],
+          "bondIds": [
+            [
+              6,
+              7
+            ]
+          ],
+          "numbering": [
+            [
+              6,
+              6
+            ]
+          ],
+          "explanation": "6-one specifies 1 C=O group(s) at parent carbon(s) 6. One denotes one oxo group. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            8,
+            9,
+            10,
+            3,
+            4,
+            6,
+            5,
+            1,
+            2
+          ],
+          "bondIds": [
+            [
+              8,
+              9
+            ],
+            [
+              9,
+              10
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              2,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            8,
+            10,
+            5,
+            2
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              2,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            3,
+            4
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ]
+        },
+        "purine-hydro": {
+          "stepNumber": "purine-hydro",
+          "atomIds": [
+            8,
+            5
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              8,
+              1
+            ],
+            [
+              5,
+              7
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            6,
+            7
+          ],
+          "bondIds": [
+            [
+              6,
+              7
+            ]
+          ],
+          "locants": [
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "1,3,7,9-tetramethyluric acid",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1%2C3%2C7%2C9-tetramethyluric%20acid/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 75324,
+      "receivedName": "1,3,7,9-tetramethylpurine-2,6,8-trione",
+      "smiles": "CN1C2=C(N(C1=O)C)N(C(=O)N(C2=O)C)C",
+      "formula": "C9H12N4O3",
+      "actualFormula": "C9H12N4O3",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          12,
+          10,
+          9,
+          4,
+          3,
+          13,
+          2,
+          6,
+          5
+        ],
+        "numbering": [
+          [
+            12,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            13,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            6,
+            8
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            12,
+            10
+          ],
+          [
+            10,
+            9
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            13,
+            12
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            5,
+            4
+          ]
+        ],
+        "nitrogenIds": [
+          12,
+          9,
+          2,
+          5
+        ],
+        "fusionAtomIds": [
+          4,
+          3
+        ],
+        "hydrogens": [
+          [
+            12,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            5,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            12,
+            10,
+            9,
+            4,
+            3,
+            13,
+            2,
+            6,
+            5
+          ],
+          "bondIds": [
+            [
+              12,
+              10
+            ],
+            [
+              10,
+              9
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              13
+            ],
+            [
+              13,
+              12
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              12,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              13,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              5,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has no N–H bonds."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            12,
+            9,
+            2,
+            5
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              12,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            4,
+            3
+          ],
+          "bondIds": [
+            [
+              4,
+              3
+            ]
+          ],
+          "numbering": [
+            [
+              4,
+              4
+            ],
+            [
+              3,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1,3,7,9-tetramethyl",
+          "start": 0,
+          "end": 19,
+          "atomIds": [
+            15,
+            16,
+            1,
+            8
+          ],
+          "bondIds": [
+            [
+              12,
+              15
+            ],
+            [
+              9,
+              16
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              5,
+              8
+            ]
+          ],
+          "numbering": [
+            [
+              12,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              9
+            ]
+          ],
+          "explanation": "1,3,7,9-tetramethyl specifies 4 methyl group(s), one at each of positions 1, 3, 7, 9. Each methyl replaces a parent H; a methylated ring N carries no N–H. Tetra- counts these 4 distinct methyl groups."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6,8-trione",
+          "start": 26,
+          "end": 38,
+          "atomIds": [
+            10,
+            13,
+            6,
+            11,
+            14,
+            7
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              6
+            ],
+            [
+              6,
+              8
+            ]
+          ],
+          "explanation": "2,6,8-trione specifies 3 C=O group(s) at parent carbon(s) 2, 6, 8. Trione means three oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            12,
+            10,
+            9,
+            4,
+            3,
+            13,
+            2,
+            6,
+            5
+          ],
+          "bondIds": [
+            [
+              12,
+              10
+            ],
+            [
+              10,
+              9
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              3,
+              13
+            ],
+            [
+              13,
+              12
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              5,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              12,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              13,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              5,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            12,
+            9,
+            2,
+            5
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              12,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            4,
+            3
+          ],
+          "bondIds": [
+            [
+              4,
+              3
+            ]
+          ],
+          "locants": [
+            [
+              4,
+              4
+            ],
+            [
+              3,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            15,
+            16,
+            1,
+            8
+          ],
+          "bondIds": [
+            [
+              12,
+              15
+            ],
+            [
+              9,
+              16
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              5,
+              8
+            ]
+          ],
+          "locants": [
+            [
+              12,
+              1
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              5,
+              9
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            10,
+            13,
+            6,
+            11,
+            14,
+            7
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              6
+            ],
+            [
+              6,
+              8
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "8-methylcaffeine",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/8-methylcaffeine/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 64115,
+      "receivedName": "1,3,7,8-tetramethylpurine-2,6-dione",
+      "smiles": "CC1=NC2=C(N1C)C(=O)N(C(=O)N2C)C",
+      "formula": "C9H12N4O2",
+      "actualFormula": "C9H12N4O2",
+      "import": "SUPPORTED",
+      "status": "FULL",
+      "parent": {
+        "atomIds": [
+          10,
+          11,
+          13,
+          4,
+          5,
+          8,
+          6,
+          2,
+          3
+        ],
+        "numbering": [
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            2,
+            8
+          ],
+          [
+            3,
+            9
+          ]
+        ],
+        "bondIds": [
+          [
+            10,
+            11
+          ],
+          [
+            11,
+            13
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "nitrogenIds": [
+          10,
+          13,
+          6,
+          3
+        ],
+        "fusionAtomIds": [
+          4,
+          5
+        ],
+        "hydrogens": [
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ]
+      },
+      "components": [
+        {
+          "id": "parent",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            10,
+            11,
+            13,
+            4,
+            5,
+            8,
+            6,
+            2,
+            3
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              13,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              8,
+              10
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              1
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              8,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              3,
+              9
+            ]
+          ],
+          "explanation": "Purine is one fused nine-position parent, not two independent parents. Its retained numbering has N at 1, 3, 7 and 9 and fusion carbons at 4 and 5. Select this fragment to inspect all nine locants. The reconciled neutral graph has no N–H bonds."
+        },
+        {
+          "id": "purine-nitrogens",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            10,
+            13,
+            6,
+            3
+          ],
+          "bondIds": [],
+          "numbering": [
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ],
+          "explanation": "These four ring nitrogens are positions 1, 3, 7 and 9 of the same retained parent. Element identity and connectivity determine the locants, independently of drawing orientation.",
+          "label": "Ring nitrogens · 1, 3, 7, 9"
+        },
+        {
+          "id": "purine-fusion",
+          "role": "parent",
+          "text": "purine",
+          "start": 19,
+          "end": 25,
+          "atomIds": [
+            4,
+            5
+          ],
+          "bondIds": [
+            [
+              4,
+              5
+            ]
+          ],
+          "numbering": [
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "explanation": "Carbons 4 and 5 and their shared bond fuse the six- and five-membered circuits; neither atom is duplicated.",
+          "label": "Fusion · 4, 5"
+        },
+        {
+          "id": "purine-methyl",
+          "role": "prefix",
+          "text": "1,3,7,8-tetramethyl",
+          "start": 0,
+          "end": 19,
+          "atomIds": [
+            15,
+            14,
+            7,
+            1
+          ],
+          "bondIds": [
+            [
+              10,
+              15
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "numbering": [
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              8
+            ]
+          ],
+          "explanation": "1,3,7,8-tetramethyl specifies 4 methyl group(s), one at each of positions 1, 3, 7, 8. Each methyl replaces a parent H; a methylated ring N carries no N–H. Tetra- counts these 4 distinct methyl groups."
+        },
+        {
+          "id": "purine-oxo",
+          "role": "suffix",
+          "text": "2,6-dione",
+          "start": 26,
+          "end": 35,
+          "atomIds": [
+            11,
+            8,
+            12,
+            9
+          ],
+          "bondIds": [
+            [
+              11,
+              12
+            ],
+            [
+              8,
+              9
+            ]
+          ],
+          "numbering": [
+            [
+              11,
+              2
+            ],
+            [
+              8,
+              6
+            ]
+          ],
+          "explanation": "2,6-dione specifies 2 C=O group(s) at parent carbon(s) 2, 6. Dione means two oxo groups. Their carbonyl carbons remain part of the fused parent."
+        }
+      ],
+      "targets": {
+        "parent": {
+          "stepNumber": "parent",
+          "atomIds": [
+            10,
+            11,
+            13,
+            4,
+            5,
+            8,
+            6,
+            2,
+            3
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              13,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              8,
+              10
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              1
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              8,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              3,
+              9
+            ]
+          ]
+        },
+        "purine-nitrogens": {
+          "stepNumber": "purine-nitrogens",
+          "atomIds": [
+            10,
+            13,
+            6,
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              3,
+              9
+            ]
+          ]
+        },
+        "purine-fusion": {
+          "stepNumber": "purine-fusion",
+          "atomIds": [
+            4,
+            5
+          ],
+          "bondIds": [
+            [
+              4,
+              5
+            ]
+          ],
+          "locants": [
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        },
+        "purine-methyl": {
+          "stepNumber": "purine-methyl",
+          "atomIds": [
+            15,
+            14,
+            7,
+            1
+          ],
+          "bondIds": [
+            [
+              10,
+              15
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "locants": [
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              2,
+              8
+            ]
+          ]
+        },
+        "purine-oxo": {
+          "stepNumber": "purine-oxo",
+          "atomIds": [
+            11,
+            8,
+            12,
+            9
+          ],
+          "bondIds": [
+            [
+              11,
+              12
+            ],
+            [
+              8,
+              9
+            ]
+          ],
+          "locants": [
+            [
+              11,
+              2
+            ],
+            [
+              8,
+              6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "query": "oxypurinol",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/oxypurinol/property/IUPACName,SMILES,MolecularFormula/JSON",
+      "cid": 135398752,
+      "receivedName": "1,7-dihydropyrazolo[5,4-d]pyrimidine-4,6-dione",
+      "smiles": "C1=NNC2=C1C(=O)NC(=O)N2",
+      "formula": "C5H4N4O2",
+      "actualFormula": "C5H4N4O2",
+      "import": "SUPPORTED",
+      "status": "PARTIAL",
+      "parent": null
+    }
+  ],
+  "counts": {
+    "priorityFull": 5,
+    "otherPurineFull": 8,
+    "nonpurineNegative": "PARTIAL"
+  }
+}

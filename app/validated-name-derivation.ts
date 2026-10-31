@@ -3,6 +3,7 @@ import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { mapStructuralRegions, analyzeStructuralEquivalence } from "./structural-derivation.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
+import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 
 export type NameComponent = {
   id: string;
@@ -16,12 +17,14 @@ export type NameComponent = {
   bondIds: [number, number][];
   numbering: [number, number | string][];
   explanation: string;
+  label?: string;
 };
 export type ValidatedNameDerivation = {
   status: "FULL";
   name: string;
   preferred: false;
-  principalGroup: "carboxylicAcid" | "amide" | "ester" | "aldehyde" | "ketone" | "alcohol";
+  principalGroup: "carboxylicAcid" | "amide" | "ester" | "aldehyde" | "ketone" | "alcohol" | "heterocycle";
+  parentSystem?: "purine" | "carbohydrate";
   components: NameComponent[];
   parentAtomIds: number[];
   symmetry?: {
@@ -55,6 +58,7 @@ export function reconcileSystematicName(actual: GeneratedMolecule, name: string)
   return result;
 }
 function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
+  const carbohydrate=reconcileCarbohydrateName(actual,name);if(carbohydrate)return carbohydrate;
   if (name.length > 200 || actual.atoms.some(a => a.tetrahedralParity) || actual.bonds.some(b => b[3] !== undefined)) return null;
   const graph: GeneratedMolecule = { atoms: [], bonds: [] };
   const components: NameComponent[] = [];
@@ -104,6 +108,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   let group: ValidatedNameDerivation["principalGroup"];
   let parent: number[];
   let allowEquivalentParents = false;
+  let parentSystem: ValidatedNameDerivation["parentSystem"];
   const acyclic = /^([2-9])-\[(.+)\]([a-z]+)anoic acid$/.exec(name);
   const amide = /^N-\((.+)\)(acetamide|[a-z]+anamide)$/.exec(name);
   // Parentheses are optional only around this single, unambiguous prefix.
@@ -155,6 +160,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     graph.atoms.push(...family.graph.atoms); graph.bonds.push(...family.graph.bonds);
     components.push(...family.components); parent=family.parent; group=family.group;
     allowEquivalentParents=!!family.equivalentParentPaths;
+    parentSystem=family.parentSystem;
   }
 
   // Every named span is literal and every graph atom must be accounted for.
@@ -170,7 +176,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
       numbering:c.numbering.map(([id,n]):[number,number|string]=>[map.get(id)!,n]),
     }))});
   const representative=assignment(mapping);
-  if(!equivalence)return {status:"FULL",name,preferred:false,principalGroup:group,...representative};
+  if(!equivalence)return {status:"FULL",name,preferred:false,principalGroup:group,...representative,...(parentSystem?{parentSystem}:{})};
   // Deduplicate internal automorphisms that do not change any named region or
   // locant. Each remaining assignment is a complete valid decomposition, not
   // the union of mutually exclusive parent chains.

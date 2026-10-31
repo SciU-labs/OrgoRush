@@ -17,6 +17,7 @@ import { buildPracticeReviewSteps } from "../app/practice-review.ts";
 import { deriveReasoningNameFragments } from "../app/reasoning-name-fragments.ts";
 import { buildReasoningNameLinkParts } from "../app/reasoning-name-links.ts";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { overvalentSpCarbonGraph } from "./helpers/overvalent-sp-carbon.mjs";
 
 let chemistry, chemical, generate, evaluate, validate;
 before(async () => {
@@ -61,11 +62,11 @@ const negatives = [
   ["alcohol", "CC(O)C#C(Br)C(C)CC"],
 ];
 for (const [category, smiles] of negatives) test(`Intermediate rejects Easy/Hard/unsafe graph ${category}: ${smiles}`, () => {
-  const m = graph(smiles);
+  const m = smiles==="CC(O)C#C(Br)C(C)CC"?overvalentSpCarbonGraph():graph(smiles);
   assert.equal(validateIntermediateExercise(m, category, chemistry.oracles).valid, false);
 });
 test("invalid triple/halo graph never passes chemistry or neutral Build; Hard never enters the comparison expansion", () => {
-  const invalid = graph("CC(O)C#C(Br)C(C)CC");
+  const invalid = overvalentSpCarbonGraph();
   assert.equal(validateExerciseChemistry(invalid, chemistry.oracles).reason, "invalid-valence");
   assert.equal(validate(invalid).valid, false);
   for (const [, smiles] of negatives.slice(8, 20)) assert.equal(validate(graph(smiles)).valid, false, smiles);

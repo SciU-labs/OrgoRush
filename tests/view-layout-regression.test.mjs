@@ -209,7 +209,7 @@ test("the actual canvas view switch selects derived layouts without touching mol
   const action = page.slice(page.indexOf("  const changeViewMode ="), page.indexOf("  const redrawMolecule ="));
   const expression = page.match(/const rawDisplayPositions = ([^;]+);/)[1];
   const numberExpression = page.match(/const chainNumber = ([^;]+);/)[1];
-  const canvasNumber = new Function("atom", "analysis", "activeAnalysis", `return ${numberExpression};`);
+  const canvasNumber = new Function("atom", "visualNumbering", `return ${numberExpression};`);
   const code = ts.transpileModule(`function run(context, mode) { with (context) {
     ${action}; changeViewMode(mode); return ${expression};
   } }`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
@@ -257,7 +257,7 @@ test("the actual canvas view switch selects derived layouts without touching mol
       assert.deepEqual(run(context, "semi-developed"),
         calculateMolecule2DLayout(branched, active.mainChain, "semi-developed"),
         "the actual view consumes the selected parent's atom order, including unsaturation geometry");
-      assert.deepEqual(branched.atoms.map((atom) => canvasNumber(atom, modern, active)),
+      assert.deepEqual(branched.atoms.map((atom) => canvasNumber(atom, active.numberedAtoms)),
         branched.atoms.map((atom) => active.numberedAtoms.get(atom.id)),
         "the actual canvas labels use active locants even while the 2013 analysis is available");
       assert.deepEqual(branched, unchanged);

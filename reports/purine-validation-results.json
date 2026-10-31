@@ -1,0 +1,115 @@
+{
+  "ordinary": {
+    "files": 188,
+    "tests": 3295,
+    "pass": 3290,
+    "fail": 0,
+    "skipped": 5
+  },
+  "rawIntegralRun": {
+    "tests": 3294,
+    "pass": 3195,
+    "fail": 94,
+    "cancelled": 0,
+    "skipped": 5,
+    "todo": 0,
+    "duration_ms": 2501195.3331
+  },
+  "completeFileReplacements": {
+    "oldTests": 134,
+    "oldFailures": 94,
+    "reruns": [
+      {
+        "files": [
+          "iupac2013-external-localization.test.mjs",
+          "orgorush-validation-008.test.mjs",
+          "orgorush-validation-fix-009.test.mjs"
+        ],
+        "tests": 102,
+        "pass": 102,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 76605.0087
+      },
+      {
+        "files": [
+          "skeletal-triple-residual.test.mjs",
+          "view-layout-regression.test.mjs"
+        ],
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 100698.6224
+      }
+    ]
+  },
+  "finalFocused": {
+    "tests": 119,
+    "pass": 119,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 10217.4192
+  },
+  "optionalAudits": {
+    "files": 2,
+    "tests": 24,
+    "pass": 20,
+    "fail": 4,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 104650.184,
+    "baseline": {
+      "commit": "ae06683",
+      "sameFourFailuresReproduced": true,
+      "log": ".sites-runtime/phase7-baseline-optional-audits.log"
+    }
+  },
+  "explanation": "Consolidated ordinary coverage replaces all tests of the five affected files with their complete passing reruns; it is not a claim that the original bulk command exited zero. One positive localization test was added. The final focused run covers the final recognizer and existing full-derivation families.",
+  "e2e": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "previous": {
+      "original": 3,
+      "generalized": 3,
+      "symmetryFused": 1
+    },
+    "purines": {
+      "deterministic": 1,
+      "live": 1,
+      "moleculesPerJourney": 5,
+      "repeatedAfterFinalBuild": true,
+      "pageErrors": [],
+      "consoleErrors": []
+    },
+    "logs": [
+      ".sites-runtime/phase7-final-original.log",
+      ".sites-runtime/phase7-final-families.log",
+      ".sites-runtime/phase7-final-symmetry.log",
+      ".sites-runtime/phase7-final-purine-deterministic.log",
+      ".sites-runtime/phase7-final-purine-live.log"
+    ]
+  },
+  "technical": {
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 36
+    },
+    "productionBuild": "PASS",
+    "worker": {
+      "esmDefaultFetch": "PASS",
+      "hostingManifestJson": "PASS"
+    },
+    "diffCheck": "PASS",
+    "deployed": false
+  }
+}

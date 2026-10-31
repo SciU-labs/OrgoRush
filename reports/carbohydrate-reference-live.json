@@ -1,0 +1,580 @@
+[
+  {
+    "query": "aldehydo-D-glucose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aldehydo-D-glucose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/aldehydo-D-glucose.json",
+    "retrievedAt": "2026-10-30T21:47:06.874Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 107526,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@H]([C@@H]([C@H](C=O)O)O)O)O)O",
+              "InChIKey": "GZCGUPFRVQAUEE-SLPGGIOYSA-N",
+              "IUPACName": "(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">aldehydo-D-glucose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-SLPGGIOYSA-N",
+        "smiles": "O=C[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "aldehydo-L-glucose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aldehydo-L-glucose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/aldehydo-L-glucose.json",
+    "retrievedAt": "2026-10-30T21:47:10.665Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 2724488,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]1[C@@H]([C@H]([C@@H](C(O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-ZZWDRFIYSA-N",
+              "IUPACName": "(3S,4R,5R,6S)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">aldehydo-L-glucose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">-1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m1/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-VANKVMQKSA-N",
+        "smiles": "O=C[C@@H](O)[C@H](O)[C@@H](O)[C@@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "alpha-D-glucopyranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-D-glucopyranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/alpha-D-glucopyranose.json",
+    "retrievedAt": "2026-10-30T21:47:11.813Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 79025,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-DVKNGEFBSA-N",
+              "IUPACName": "(2S,3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">alpha-D-glucopyranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a10 a14\">1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a21 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a10\" atomRefs2=\"a2 a10\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a8_a20\" atomRefs2=\"a8 a20\" order=\"S\"/>\n      <bond id=\"a9_a21\" atomRefs2=\"a9 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6+/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6+/m1/s1",
+        "stdinchikey": "WQZGKKKJIJFFOK-DVKNGEFBSA-N",
+        "smiles": "O[C@@H]1[C@H](O)[C@@H](O)[C@H](O)[C@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "beta-D-glucopyranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-D-glucopyranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/beta-D-glucopyranose.json",
+    "retrievedAt": "2026-10-30T21:47:12.862Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 64689,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@@H]1[C@H]([C@@H]([C@H]([C@@H](O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-VFUOTHLCSA-N",
+              "IUPACName": "(2R,3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">beta-D-glucopyranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a10 a14\">-1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a21 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a10\" atomRefs2=\"a2 a10\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a8_a20\" atomRefs2=\"a8 a20\" order=\"S\"/>\n      <bond id=\"a9_a21\" atomRefs2=\"a9 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6-/m1/s1",
+        "stdinchikey": "WQZGKKKJIJFFOK-VFUOTHLCSA-N",
+        "smiles": "O[C@H]1[C@H](O)[C@@H](O)[C@H](O)[C@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "alpha-D-glucofuranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-D-glucofuranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/alpha-D-glucofuranose.json",
+    "retrievedAt": "2026-10-30T21:47:13.956Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 11137711,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@@H]1[C@@H]([C@H]([C@H](O1)O)O)O)O)O",
+              "InChIKey": "AVVWPBAENSWJCB-UKFBFLRUSA-N",
+              "IUPACName": "(2S,3R,4R,5R)-5-[(1R)-1,2-dihydroxyethyl]oxolane-2,3,4-triol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">alpha-D-glucofuranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a8 a14\">1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a8\" atomRefs2=\"a2 a8\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2-11H,1H2/t2-,3-,4-,5-,6+/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2-11H,1H2/t2-,3-,4-,5-,6+/m1/s1",
+        "stdinchikey": "AVVWPBAENSWJCB-UKFBFLRUSA-N",
+        "smiles": "O[C@@H]1[C@H](O)[C@@H](O)[C@H](O1)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "beta-D-glucofuranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-D-glucofuranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/beta-D-glucofuranose.json",
+    "retrievedAt": "2026-10-30T21:47:15.288Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 11309871,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@@H]1[C@@H]([C@H]([C@@H](O1)O)O)O)O)O",
+              "InChIKey": "AVVWPBAENSWJCB-QZABAPFNSA-N",
+              "IUPACName": "(2R,3R,4R,5R)-5-[(1R)-1,2-dihydroxyethyl]oxolane-2,3,4-triol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">beta-D-glucofuranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a8 a14\">-1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a8\" atomRefs2=\"a2 a8\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2-11H,1H2/t2-,3-,4-,5-,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2-11H,1H2/t2-,3-,4-,5-,6-/m1/s1",
+        "stdinchikey": "AVVWPBAENSWJCB-QZABAPFNSA-N",
+        "smiles": "O[C@H]1[C@H](O)[C@@H](O)[C@H](O1)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "aldehydo-D-mannose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aldehydo-D-mannose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/aldehydo-D-mannose.json",
+    "retrievedAt": "2026-10-30T21:47:16.513Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 161658,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@H]([C@@H]([C@@H](C=O)O)O)O)O)O",
+              "InChIKey": "GZCGUPFRVQAUEE-KVTDHHQDSA-N",
+              "IUPACName": "(2S,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">aldehydo-D-mannose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4-,5-,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4-,5-,6-/m1/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-KVTDHHQDSA-N",
+        "smiles": "O=C[C@@H](O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "aldehydo-D-galactose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aldehydo-D-galactose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/aldehydo-D-galactose.json",
+    "retrievedAt": "2026-10-30T21:47:17.572Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 3037556,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@@H]([C@@H]([C@H](C=O)O)O)O)O)O",
+              "InChIKey": "GZCGUPFRVQAUEE-KCDKBNATSA-N",
+              "IUPACName": "(2R,3S,4S,5R)-2,3,4,5,6-pentahydroxyhexanal"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">aldehydo-D-galactose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6-/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6-/m0/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-KCDKBNATSA-N",
+        "smiles": "O=C[C@H](O)[C@@H](O)[C@@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "keto-D-fructose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/keto-D-fructose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/keto-D-fructose.json",
+    "retrievedAt": "2026-10-30T21:47:18.590Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 5984,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]([C@H]([C@@H](C(=O)CO)O)O)O)O",
+              "InChIKey": "BJHIKXHVCXFQLS-UYFOZJQFSA-N",
+              "IUPACName": "(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">keto-D-fructose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\" hydrogenCount=\"0\">\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"D\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a2_a15\" atomRefs2=\"a2 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h3,5-9,11-12H,1-2H2/t3-,5-,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h3,5-9,11-12H,1-2H2/t3-,5-,6-/m1/s1",
+        "stdinchikey": "BJHIKXHVCXFQLS-UYFOZJQFSA-N",
+        "smiles": "OCC(=O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "beta-D-fructofuranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-D-fructofuranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/beta-D-fructofuranose.json",
+    "retrievedAt": "2026-10-30T21:47:19.706Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 439709,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@@H]1[C@H]([C@@H]([C@](O1)(CO)O)O)O)O",
+              "InChIKey": "RFSUNEUAIZKAJO-ARQDHWQXSA-N",
+              "IUPACName": "(2R,3S,4S,5R)-2,5-bis(hydroxymethyl)oxolane-2,3,4-triol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">beta-D-fructofuranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\" hydrogenCount=\"0\">\n        <atomParity atomRefs4=\"a5 a4 a10 a2\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a21 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a3_a10\" atomRefs2=\"a3 a10\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a2_a15\" atomRefs2=\"a2 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a8_a20\" atomRefs2=\"a8 a20\" order=\"S\"/>\n      <bond id=\"a9_a21\" atomRefs2=\"a9 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3-4(9)5(10)6(11,2-8)12-3/h3-5,7-11H,1-2H2/t3-,4-,5+,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3-4(9)5(10)6(11,2-8)12-3/h3-5,7-11H,1-2H2/t3-,4-,5+,6-/m1/s1",
+        "stdinchikey": "RFSUNEUAIZKAJO-ARQDHWQXSA-N",
+        "smiles": "OC[C@]1(O)[C@@H](O)[C@H](O)[C@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "alpha-L-glucopyranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-L-glucopyranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/alpha-L-glucopyranose.json",
+    "retrievedAt": "2026-10-30T21:47:20.926Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 6971003,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]1[C@@H]([C@H]([C@@H]([C@@H](O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-MDMQIMBFSA-N",
+              "IUPACName": "(2R,3S,4R,5R,6S)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">alpha-L-glucopyranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a10 a14\">-1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">-1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a21 a10 a11\">1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a10\" atomRefs2=\"a2 a10\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a8_a20\" atomRefs2=\"a8 a20\" order=\"S\"/>\n      <bond id=\"a9_a21\" atomRefs2=\"a9 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6+/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6+/m0/s1",
+        "stdinchikey": "WQZGKKKJIJFFOK-MDMQIMBFSA-N",
+        "smiles": "O[C@H]1[C@@H](O)[C@H](O)[C@@H](O)[C@@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "beta-L-glucopyranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-L-glucopyranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/beta-L-glucopyranose.json",
+    "retrievedAt": "2026-10-30T21:47:22.063Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 6992084,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-QYESYBIKSA-N",
+              "IUPACName": "(2S,3S,4R,5R,6S)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">beta-L-glucopyranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a10 a14\">1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a15 a4 a5\">1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a17 a6 a7\">-1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a19 a8 a9\">1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a21 a10 a11\">1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a10\" atomRefs2=\"a2 a10\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a3_a15\" atomRefs2=\"a3 a15\" order=\"S\"/>\n      <bond id=\"a4_a16\" atomRefs2=\"a4 a16\" order=\"S\"/>\n      <bond id=\"a5_a17\" atomRefs2=\"a5 a17\" order=\"S\"/>\n      <bond id=\"a6_a18\" atomRefs2=\"a6 a18\" order=\"S\"/>\n      <bond id=\"a7_a19\" atomRefs2=\"a7 a19\" order=\"S\"/>\n      <bond id=\"a8_a20\" atomRefs2=\"a8 a20\" order=\"S\"/>\n      <bond id=\"a9_a21\" atomRefs2=\"a9 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6-/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6-/m0/s1",
+        "stdinchikey": "WQZGKKKJIJFFOK-QYESYBIKSA-N",
+        "smiles": "O[C@@H]1[C@@H](O)[C@H](O)[C@@H](O)[C@@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "aldehydo-D-ribose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aldehydo-D-ribose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/aldehydo-D-ribose.json",
+    "retrievedAt": "2026-10-30T21:47:22.947Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 5311110,
+              "MolecularFormula": "C5H10O5",
+              "SMILES": "C([C@H]([C@H]([C@H](C=O)O)O)O)O",
+              "InChIKey": "PYMYPHUHKUWMLA-LMVFSUKVSA-N",
+              "IUPACName": "(2R,3R,4R)-2,3,4,5-tetrahydroxypentanal"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">aldehydo-D-ribose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a12 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a14 a6 a7\">-1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a16 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"H\"/>\n      <atom id=\"a12\" elementType=\"H\"/>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a2_a11\" atomRefs2=\"a2 a11\" order=\"S\"/>\n      <bond id=\"a3_a12\" atomRefs2=\"a3 a12\" order=\"S\"/>\n      <bond id=\"a4_a13\" atomRefs2=\"a4 a13\" order=\"S\"/>\n      <bond id=\"a5_a14\" atomRefs2=\"a5 a14\" order=\"S\"/>\n      <bond id=\"a6_a15\" atomRefs2=\"a6 a15\" order=\"S\"/>\n      <bond id=\"a7_a16\" atomRefs2=\"a7 a16\" order=\"S\"/>\n      <bond id=\"a8_a17\" atomRefs2=\"a8 a17\" order=\"S\"/>\n      <bond id=\"a9_a18\" atomRefs2=\"a9 a18\" order=\"S\"/>\n      <bond id=\"a9_a19\" atomRefs2=\"a9 a19\" order=\"S\"/>\n      <bond id=\"a10_a20\" atomRefs2=\"a10 a20\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C5H10O5/c6-1-3(8)5(10)4(9)2-7/h1,3-5,7-10H,2H2/t3-,4+,5-/m0/s1",
+        "stdinchi": "InChI=1S/C5H10O5/c6-1-3(8)5(10)4(9)2-7/h1,3-5,7-10H,2H2/t3-,4+,5-/m0/s1",
+        "stdinchikey": "PYMYPHUHKUWMLA-LMVFSUKVSA-N",
+        "smiles": "O=C[C@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "alpha-D-ribofuranose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-D-ribofuranose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/alpha-D-ribofuranose.json",
+    "retrievedAt": "2026-10-30T21:47:24.098Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 445894,
+              "MolecularFormula": "C5H10O5",
+              "SMILES": "C([C@@H]1[C@H]([C@H]([C@H](O1)O)O)O)O",
+              "InChIKey": "HMFHBZSHGGEWLO-AIHAYLRMSA-N",
+              "IUPACName": "(2S,3R,4S,5R)-5-(hydroxymethyl)oxolane-2,3,4-triol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">alpha-D-ribofuranose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a1 a8 a12\">1</atomParity>\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a13 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a15 a6 a7\">-1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a17 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"H\"/>\n      <atom id=\"a12\" elementType=\"H\"/>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a2_a8\" atomRefs2=\"a2 a8\" order=\"S\"/>\n      <bond id=\"a1_a11\" atomRefs2=\"a1 a11\" order=\"S\"/>\n      <bond id=\"a2_a12\" atomRefs2=\"a2 a12\" order=\"S\"/>\n      <bond id=\"a3_a13\" atomRefs2=\"a3 a13\" order=\"S\"/>\n      <bond id=\"a4_a14\" atomRefs2=\"a4 a14\" order=\"S\"/>\n      <bond id=\"a5_a15\" atomRefs2=\"a5 a15\" order=\"S\"/>\n      <bond id=\"a6_a16\" atomRefs2=\"a6 a16\" order=\"S\"/>\n      <bond id=\"a7_a17\" atomRefs2=\"a7 a17\" order=\"S\"/>\n      <bond id=\"a9_a18\" atomRefs2=\"a9 a18\" order=\"S\"/>\n      <bond id=\"a9_a19\" atomRefs2=\"a9 a19\" order=\"S\"/>\n      <bond id=\"a10_a20\" atomRefs2=\"a10 a20\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C5H10O5/c6-1-2-3(7)4(8)5(9)10-2/h2-9H,1H2/t2-,3-,4-,5+/m1/s1",
+        "stdinchi": "InChI=1S/C5H10O5/c6-1-2-3(7)4(8)5(9)10-2/h2-9H,1H2/t2-,3-,4-,5+/m1/s1",
+        "stdinchikey": "HMFHBZSHGGEWLO-AIHAYLRMSA-N",
+        "smiles": "O[C@@H]1[C@H](O)[C@H](O)[C@H](O1)CO"
+      }
+    }
+  },
+  {
+    "query": "D-glucose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/D-glucose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/D-glucose.json",
+    "retrievedAt": "2026-10-30T21:47:25.215Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 5793,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-GASJEMHNSA-N",
+              "IUPACName": "(3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">D-glucose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-SLPGGIOYSA-N",
+        "smiles": "O=C[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "glucose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glucose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/glucose.json",
+    "retrievedAt": "2026-10-30T21:47:26.342Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 5793,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O",
+              "InChIKey": "WQZGKKKJIJFFOK-GASJEMHNSA-N",
+              "IUPACName": "(3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">glucose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\">\n        <atomParity atomRefs4=\"a2 a14 a4 a5\">-1</atomParity>\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"D\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"S\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a2_a13\" atomRefs2=\"a2 a13\" order=\"S\"/>\n      <bond id=\"a3_a14\" atomRefs2=\"a3 a14\" order=\"S\"/>\n      <bond id=\"a4_a15\" atomRefs2=\"a4 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h1,3-6,8-12H,2H2/t3-,4+,5+,6+/m0/s1",
+        "stdinchikey": "GZCGUPFRVQAUEE-SLPGGIOYSA-N",
+        "smiles": "O=C[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  },
+  {
+    "query": "D-fructose",
+    "pubchemUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/D-fructose/property/IUPACName,IsomericSMILES,InChIKey,MolecularFormula/JSON",
+    "opsinUrl": "https://opsin.ch.cam.ac.uk/opsin/D-fructose.json",
+    "retrievedAt": "2026-10-30T21:47:27.584Z",
+    "pubchem": {
+      "httpStatus": 200,
+      "body": {
+        "PropertyTable": {
+          "Properties": [
+            {
+              "CID": 2723872,
+              "MolecularFormula": "C6H12O6",
+              "SMILES": "C1[C@H]([C@H]([C@@H](C(O1)(CO)O)O)O)O",
+              "InChIKey": "LKDRXBCSQODPBY-VRPWFDPXSA-N",
+              "IUPACName": "(3S,4R,5R)-2-(hydroxymethyl)oxane-2,3,4,5-tetrol"
+            }
+          ]
+        }
+      }
+    },
+    "opsin": {
+      "httpStatus": 200,
+      "body": {
+        "status": "SUCCESS",
+        "message": "",
+        "cml": "<cml xmlns=\"http://www.xml-cml.org/schema\" convention=\"conventions:molecular\" xmlns:conventions=\"http://www.xml-cml.org/convention/\" xmlns:cmlDict=\"http://www.xml-cml.org/dictionary/cml/\" xmlns:nameDict=\"http://www.xml-cml.org/dictionary/cml/name/\">\n  <molecule id=\"m1\">\n    <name dictRef=\"nameDict:unknown\">D-fructose</name>\n    <atomArray>\n      <atom id=\"a1\" elementType=\"O\">\n        <label value=\"O\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a2\" elementType=\"C\">\n        <label value=\"1\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a3\" elementType=\"C\" hydrogenCount=\"0\">\n        <label value=\"2\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a4\" elementType=\"O\" hydrogenCount=\"0\">\n        <label value=\"O'''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a5\" elementType=\"C\">\n        <atomParity atomRefs4=\"a3 a16 a6 a7\">1</atomParity>\n        <label value=\"3\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a6\" elementType=\"O\">\n        <label value=\"O'\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a7\" elementType=\"C\">\n        <atomParity atomRefs4=\"a5 a18 a8 a9\">-1</atomParity>\n        <label value=\"4\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a8\" elementType=\"O\">\n        <label value=\"O''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a9\" elementType=\"C\">\n        <atomParity atomRefs4=\"a7 a20 a10 a11\">-1</atomParity>\n        <label value=\"5\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a10\" elementType=\"O\">\n        <label value=\"O'''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a11\" elementType=\"C\">\n        <label value=\"6\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a12\" elementType=\"O\">\n        <label value=\"O''''\" dictRef=\"cmlDict:locant\"/>\n      </atom>\n      <atom id=\"a13\" elementType=\"H\"/>\n      <atom id=\"a14\" elementType=\"H\"/>\n      <atom id=\"a15\" elementType=\"H\"/>\n      <atom id=\"a16\" elementType=\"H\"/>\n      <atom id=\"a17\" elementType=\"H\"/>\n      <atom id=\"a18\" elementType=\"H\"/>\n      <atom id=\"a19\" elementType=\"H\"/>\n      <atom id=\"a20\" elementType=\"H\"/>\n      <atom id=\"a21\" elementType=\"H\"/>\n      <atom id=\"a22\" elementType=\"H\"/>\n      <atom id=\"a23\" elementType=\"H\"/>\n      <atom id=\"a24\" elementType=\"H\"/>\n    </atomArray>\n    <bondArray>\n      <bond id=\"a1_a2\" atomRefs2=\"a1 a2\" order=\"S\"/>\n      <bond id=\"a2_a3\" atomRefs2=\"a2 a3\" order=\"S\"/>\n      <bond id=\"a3_a4\" atomRefs2=\"a3 a4\" order=\"D\"/>\n      <bond id=\"a3_a5\" atomRefs2=\"a3 a5\" order=\"S\"/>\n      <bond id=\"a5_a6\" atomRefs2=\"a5 a6\" order=\"S\"/>\n      <bond id=\"a5_a7\" atomRefs2=\"a5 a7\" order=\"S\"/>\n      <bond id=\"a7_a8\" atomRefs2=\"a7 a8\" order=\"S\"/>\n      <bond id=\"a7_a9\" atomRefs2=\"a7 a9\" order=\"S\"/>\n      <bond id=\"a9_a10\" atomRefs2=\"a9 a10\" order=\"S\"/>\n      <bond id=\"a9_a11\" atomRefs2=\"a9 a11\" order=\"S\"/>\n      <bond id=\"a11_a12\" atomRefs2=\"a11 a12\" order=\"S\"/>\n      <bond id=\"a1_a13\" atomRefs2=\"a1 a13\" order=\"S\"/>\n      <bond id=\"a2_a14\" atomRefs2=\"a2 a14\" order=\"S\"/>\n      <bond id=\"a2_a15\" atomRefs2=\"a2 a15\" order=\"S\"/>\n      <bond id=\"a5_a16\" atomRefs2=\"a5 a16\" order=\"S\"/>\n      <bond id=\"a6_a17\" atomRefs2=\"a6 a17\" order=\"S\"/>\n      <bond id=\"a7_a18\" atomRefs2=\"a7 a18\" order=\"S\"/>\n      <bond id=\"a8_a19\" atomRefs2=\"a8 a19\" order=\"S\"/>\n      <bond id=\"a9_a20\" atomRefs2=\"a9 a20\" order=\"S\"/>\n      <bond id=\"a10_a21\" atomRefs2=\"a10 a21\" order=\"S\"/>\n      <bond id=\"a11_a22\" atomRefs2=\"a11 a22\" order=\"S\"/>\n      <bond id=\"a11_a23\" atomRefs2=\"a11 a23\" order=\"S\"/>\n      <bond id=\"a12_a24\" atomRefs2=\"a12 a24\" order=\"S\"/>\n    </bondArray>\n  </molecule>\n</cml>",
+        "inchi": "InChI=1/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h3,5-9,11-12H,1-2H2/t3-,5-,6-/m1/s1",
+        "stdinchi": "InChI=1S/C6H12O6/c7-1-3(9)5(11)6(12)4(10)2-8/h3,5-9,11-12H,1-2H2/t3-,5-,6-/m1/s1",
+        "stdinchikey": "BJHIKXHVCXFQLS-UYFOZJQFSA-N",
+        "smiles": "OCC(=O)[C@@H](O)[C@H](O)[C@H](O)CO"
+      }
+    }
+  }
+]

@@ -3,6 +3,7 @@ import { before, after, test } from "node:test";
 import { readFileSync } from "node:fs";
 import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
 import { verifiedD4Fixture009 } from "./helpers/validation-fix-009-d4.mjs";
+import { overvalentSpCarbonGraph } from "./helpers/overvalent-sp-carbon.mjs";
 import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { exerciseStructuralIdentity, createRestrictedChemicalGenerator } from "../app/exercise-chemical-generator.ts";
 import { createPracticeConfig } from "../app/practice-session.ts";
@@ -166,7 +167,7 @@ const unsupported=[
   ["alcohol","CC(O)(O)CCCC","geminal repeated OH"],
 ];
 for(const [category,smiles,label] of unsupported) test(`Hard foundation rejects ${label}`,()=>{
-  const m=graph(smiles);assert.equal(hard(m,category).valid,false);
+  const m=label==="overvalent sp carbon"?overvalentSpCarbonGraph():graph(smiles);assert.equal(hard(m,category).valid,false);
   assert.equal(classifyMinimumExerciseDifficulty(m,category,chemistry.oracles),"unsupported");
   assert.equal(validate(m).valid,false);
 });

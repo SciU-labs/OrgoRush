@@ -1,0 +1,19 @@
+[
+  {
+    "label": "13C carbohydrate",
+    "smiles": "O=C[C@H](O)[C@@H](O)[C@H](O)[C@H](O)[13CH2]O",
+    "result": {
+      "ok": false,
+      "error": "La estructura contiene isótopos explícitos que el editor todavía no admite. No se importó para evitar alterar su identidad química.",
+      "errorCode": "EXPLICIT_ISOTOPE_UNSUPPORTED"
+    }
+  },
+  {
+    "label": "anionic anomeric oxygen",
+    "smiles": "[O-][C@@H]1[C@H](O)[C@@H](O)[C@H](O)[C@H](O1)CO",
+    "result": {
+      "ok": false,
+      "error": "La estructura contiene valencias o enlaces inválidos."
+    }
+  }
+]

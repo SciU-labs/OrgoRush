@@ -2738,7 +2738,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   padding: 0;
   border: 0;
   border-radius: 0;
-  background: rgba(4, 11, 9, 0.54);
+  background: rgba(17, 24, 39, 0.54);
   cursor: zoom-out;
   backdrop-filter: blur(8px);
 }
@@ -2754,7 +2754,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   max-height: none;
   flex-direction: column;
   overflow: auto;
-  border: 1px solid rgba(126, 184, 168, 0.48);
+  border: 1px solid var(--brand-border);
   border-radius: 22px;
   background: var(--paper);
   box-shadow: 0 28px 76px rgba(0, 0, 0, 0.5);
@@ -2769,11 +2769,11 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid #dbe7e3;
-  background: color-mix(in srgb, var(--paper) 92%, #e6f4ef);
+  border-bottom: 1px solid var(--brand-border);
+  background: color-mix(in srgb, var(--brand-surface) 92%, var(--brand-primary-soft));
 }
 
-.expanded-workspace-header strong { color: #294a43; font-size: 14px; }
+.expanded-workspace-header strong { color: var(--brand-ink); font-size: 14px; }
 
 .expanded-workspace-actions {
   display: flex;
@@ -2794,13 +2794,33 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   align-items: center;
   gap: 6px;
   padding: 6px 11px;
-  border: 1px solid #bcd7cf;
+  border: 1px solid var(--brand-border);
   border-radius: 9px;
-  background: #fff;
-  color: #286b5b;
+  background: var(--brand-surface);
+  color: var(--brand-primary);
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.expanded-workspace-header button:hover:not(:disabled) {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary-hover);
+}
+
+.expanded-workspace-header button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-primary) 42%, transparent);
+  outline-offset: 2px;
+}
+
+.expanded-workspace-header button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--brand-primary) 14%, var(--brand-surface));
+}
+
+.expanded-workspace-header button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .expanded-workspace-header button span { font-size: 18px; line-height: 1; }
@@ -7359,20 +7379,13 @@ html[data-theme="dark"] .display-options label > span::after {
 }
 
 html[data-theme="dark"] .molecule-workspace.is-expanded {
-  border-color: #3a584f;
-  background: #15231f;
+  border-color: var(--brand-border);
+  background: var(--brand-surface);
 }
 
 html[data-theme="dark"] .expanded-workspace-header {
-  border-color: #30473f;
-  background: #1b2d28;
-}
-
-html[data-theme="dark"] .expanded-workspace-header strong { color: #d3e4de; }
-html[data-theme="dark"] .expanded-workspace-header button {
-  border-color: #466a5f;
-  background: #233a33;
-  color: #aee2d1;
+  border-color: var(--brand-border);
+  background: color-mix(in srgb, var(--brand-surface) 92%, var(--brand-primary-soft));
 }
 
 html[data-theme="dark"] .numbering-size-control {

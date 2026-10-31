@@ -1,0 +1,26 @@
+{
+  "description": "Local phase 1–7 working copy at phase 8 start; includes unpublished phase 7 edits. LF-normalized hashes.",
+  "sections": {
+    "catalog": {
+      "startMarker": "const FUNCTIONAL_GROUP_TEMPLATES:",
+      "endMarker": "const PRESETS:",
+      "sha256": "71b96c10ba6d0a86fa2e3561c10ea3302131002734d2d6a95739060a3c20db34"
+    },
+    "labels": {
+      "startMarker": "const functionalGroupLabels:",
+      "endMarker": "const FUNCTIONAL_GROUP_TEMPLATES:",
+      "sha256": "7bf8bdc65abab2b6580fb839443ff4311529c950a6b4d666a2d0bf38a31acb66"
+    },
+    "menu": {
+      "startMarker": "{ id: \"oxygen\", title:",
+      "endMarker": "Tamaño de grupos funcionales",
+      "sha256": "a175cf4b9d458bf71d0c15c956e2dbd00011033a33b6b36cc89c53741d70b582"
+    }
+  },
+  "files": {
+    "app/editable-valence.ts": "2a194dd71b1266a90f3ba16dc28930da1311f437830808b47af7e627af3c441e",
+    "app/name-to-molecule.ts": "907dd0c7d821b34bc09928d14231d46cb1ac433f33a2e5be0ff00fe617287865",
+    "app/heterocycle-registry.ts": "842c7fc0f14c3b6bbeabe69ed3e394d216b7720467df3cb23a4656d949aa9d04",
+    "app/tetrahedral-stereochemistry.ts": "1045c750ab3a89242b66f6d98ee0cf9e376c10720f2cca118d5e67fdee212f19"
+  }
+}

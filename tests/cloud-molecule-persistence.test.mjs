@@ -112,11 +112,12 @@ test("sulfur is accepted and preserved because the molecule model and chemistry 
 });
 
 test("elements and charge states accepted by the actual OpenChemLib adapter remain persistable", () => {
-  for (const smiles of ["C[N+](=O)[O-]", "C/C=C/C", "N[C@@](C)C(=O)O", "CS"]) {
+  for (const smiles of ["C[N+](=O)[O-]", "C/C=C/C", "N[C@@H](C)C(=O)O", "CS"]) {
     const parsed = moleculeFromSmiles(smiles);
     assert.equal(parsed.ok, true, `${smiles} should be supported by the chemistry adapter`);
     assertSameIsomericSmiles(parsed.molecule);
   }
+  assert.equal(moleculeFromSmiles("N[C@@](C)C(=O)O").ok,false,"persistence cannot require an import that would change its hydrogen count");
 });
 
 test("legacy payloads without optional chemistry fields remain valid without invented values", () => {

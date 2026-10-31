@@ -3,26 +3,30 @@ import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { buildOpenChemLibStereoGraph } from "./tetrahedral-stereochemistry.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { editableValencesValid } from "./editable-valence.ts";
+import { recognizeCarbohydrate, type CarbohydrateStructure } from "./carbohydrate-structure.ts";
 
 export type StructuralComponent = {
   id: string;
-  kind: "carboxylicAcid" | "ester" | "amide" | "carbonyl" | "hydroxyl" | "ringSystem" | "stereo" | "N-bound methyl";
+  kind: "carboxylicAcid" | "ester" | "amide" | "carbonyl" | "hydroxyl" | "ringSystem" | "stereo" | "N-bound methyl"
+    | "carbohydrate backbone" | "ring oxygen" | "hemiacetal" | "hemiketal" | "configurational reference" | "anomeric centre";
   atomIds: number[];
   bondIds: [number, number][];
   evidence: string;
+  numbering?: [number,number|string][];
 };
 export type StructuralDerivation = {
   status: "FULL" | "PARTIAL" | "UNSUPPORTED";
   name: { text: string; classification: "unverified"; preferred: false };
   components: StructuralComponent[];
   limitations: string[];
+  carbohydrate?: CarbohydrateStructure;
 };
 const key = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
 
 /** Text cards and SVG selections consume exactly the same component evidence. */
 export function structuralVisualTargets(model: StructuralDerivation): Record<string, ReasoningVisualTarget> {
   return Object.fromEntries(model.components.map(c => [c.id, {
-    stepNumber: c.id, atomIds: c.atomIds, bondIds: c.bondIds, locants: [],
+    stepNumber: c.id, atomIds: c.atomIds, bondIds: c.bondIds, locants: c.numbering??[],
   }]));
 }
 
@@ -32,7 +36,8 @@ export function remapStructuralDerivation(model: StructuralDerivation, source: G
   return { ...model, components: model.components.map(c => ({ ...c,
     atomIds: c.atomIds.map(id => map.get(id)!),
     bondIds: c.bondIds.map(([a, b]) => [map.get(a)!, map.get(b)!]),
-  })) };
+    ...(c.numbering?{numbering:c.numbering.map(([id,p]):[number,number|string]=>[map.get(id)!,p])}:{}),
+  })),...(model.carbohydrate?{carbohydrate:recognizeCarbohydrate(target)??undefined}:{}) };
 }
 
 function normalized(graph: GeneratedMolecule) {
@@ -128,10 +133,10 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
     const atom = (id: number) => graph.atoms.find(a => a.id === id)!;
     const neutral = (id: number) => !(atom(id).charge ?? 0);
     const hydrogen = (id: number) => molecule.getImplicitHydrogens(atomIdToIndex.get(id)!);
-    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string) => {
+    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering']) => {
       const region = [...new Set(ids)], included = new Set(region);
       result.components.push({ id: `structural-${result.components.length}`, kind, atomIds: region,
-        bondIds: graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b]), evidence });
+        bondIds: graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b]), evidence,...(numbering?{numbering}:{}) });
     };
     const acylOxygens = new Set<number>();
     for (const c of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
@@ -171,6 +176,24 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
         add("N-bound methyl",[c.id,ns[0].id],"A methyl carbon with three implicit hydrogens is bonded to nitrogen. This is connectivity evidence; no heterocycle locant is assigned.");
     }
     for (const a of graph.atoms) if (a.tetrahedralParity) add("stereo", [a.id], `Explicit absolute configuration ${a.tetrahedralParity}; preserved from the molecular model.`);
+    const sugar=recognizeCarbohydrate(graph);
+    if(sugar){
+      result.carbohydrate=sugar;
+      add('carbohydrate backbone',sugar.carbonIds,
+        `An unbranched ${sugar.carbonIds.length}-carbon ${sugar.carbonylPosition===1?'aldose':'2-ketose'} skeleton in ${sugar.form} form is verified by the whole C/O graph. These are structural carbohydrate locants, not a reconciliation of the displayed name.`,sugar.numbering);
+      if(sugar.ringOxygenId!==undefined){
+        add('ring oxygen',[sugar.ringOxygenId],`One ring ether oxygen bridges carbohydrate C${sugar.carbonylPosition} and C${sugar.closurePosition}; it is not a hydroxyl.`);
+        add(sugar.carbonylPosition===1?'hemiacetal':'hemiketal',[sugar.anomericAtomId!,sugar.ringOxygenId,sugar.anomericHydroxylId!],
+          `Anomeric C${sugar.carbonylPosition} has ring oxygen and a free OH, with ${sugar.carbonylPosition===1?'one carbon neighbour and one H':'two carbon neighbours and no H'}. Acetals and glycosides do not match this envelope.`,[[sugar.anomericAtomId!,sugar.carbonylPosition]]);
+        add('anomeric centre',[sugar.anomericAtomId!,sugar.anomericHydroxylId!],
+          sugar.anomer?`Explicit anomeric and reference configurations prove ${sugar.anomer} by the formal Fischer ${sugar.anomer==='alpha'?'cis':'trans'} relationship.`
+            :'No alpha/beta assignment: configuration is absent or the retained ketose-anomer rule is outside the proved grammar.',[[sugar.anomericAtomId!,sugar.carbonylPosition]]);
+      }
+      add('configurational reference',[sugar.configurationalAtomId],
+        sugar.series?`The highest numbered parent chirality centre C${sugar.configurationalPosition} proves series ${sugar.series} in the ordered Fischer ligand frame. ${sugar.family?`All non-anomeric centres additionally verify ${sugar.series}-${sugar.family.name}.`:'The remaining centres do not establish a supported stereoparent.'}`
+          :'The highest numbered parent chirality centre is not explicitly configured; no D/L or stereoparent name is assigned.',[[sugar.configurationalAtomId,sugar.configurationalPosition]]);
+      result.limitations.push('Carbohydrate structural recognition does not by itself prove a retained or external name. Missing stereocentres and generic names remain PARTIAL.');
+    }
     result.status = result.components.length ? "PARTIAL" : "UNSUPPORTED";
     return result;
   } catch { return result; }

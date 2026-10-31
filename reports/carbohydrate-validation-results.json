@@ -1,0 +1,180 @@
+{
+  "ordinary": {
+    "files": 191,
+    "tests": 3364,
+    "pass": 3359,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 5,
+    "todo": 0,
+    "duration_ms": 6139884.7314,
+    "explanation": "The integral command passed. The only subsequent production delta scopes one literal prefix; all 65 carbohydrate tests were rerun as part of the final 186-case focus, and both browser journeys were repeated. Counts are unchanged."
+  },
+  "finalFocused": {
+    "tests": 186,
+    "pass": 186,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 15569.3906
+  },
+  "critical": {
+    "tests": 157,
+    "pass": 157,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 874216.0561
+  },
+  "editorIntegration": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 67204.5238
+  },
+  "pagesValidation": {
+    "tests": 4,
+    "pass": 4,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 636.2802
+  },
+  "e2e": {
+    "tests": 11,
+    "previous": [
+      {
+        "label": "original",
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 113802.7629
+      },
+      {
+        "label": "families",
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 142810.4048
+      },
+      {
+        "label": "symmetry",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 73301.1445
+      },
+      {
+        "label": "purine-deterministic",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 132622.556
+      },
+      {
+        "label": "purine-live",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 167139.7319
+      }
+    ],
+    "carbohydrates": [
+      {
+        "mode": "deterministic",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 383490.0243,
+        "molecules": 10,
+        "pageErrors": [],
+        "unexpectedConsoleErrors": [],
+        "expectedOpsinNameMisses": 0,
+        "allReceivedNamesFoundInActualNetwork": true
+      },
+      {
+        "mode": "live",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 399184.4789,
+        "molecules": 10,
+        "pageErrors": [],
+        "unexpectedConsoleErrors": [],
+        "expectedOpsinNameMisses": 3,
+        "allReceivedNamesFoundInActualNetwork": true
+      }
+    ]
+  },
+  "optionalAudits": {
+    "tests": 24,
+    "pass": 20,
+    "fail": 4,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 23312.6953,
+    "sameFourFailuresAsPhase7": true,
+    "baselineReport": "reports/purine-full-derivation-validation.md"
+  },
+  "technical": {
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 36,
+      "excludedGeneratedDirectories": [
+        "outputs",
+        ".sites-runtime"
+      ],
+      "finalAffectedFiles": "PASS"
+    },
+    "productionBuild": "PASS",
+    "pagesBuild": "PASS",
+    "workerArtifact": {
+      "esmDefaultFetch": "PASS",
+      "hostingJson": "PASS"
+    },
+    "deployed": false
+  },
+  "productionByteProof": {
+    "checked": 147,
+    "mismatches": [],
+    "finalSnapshot": "C:\\Users\\Alex_\\AppData\\Local\\Temp\\orgorush-phase8-validation-1793401204663",
+    "ordinarySnapshot": "C:\\Users\\Alex_\\AppData\\Local\\Temp\\orgorush-phase8-validation-1793398234017",
+    "ordinaryProductionDelta": [
+      "app/carbohydrate-derivation.ts"
+    ],
+    "literalPrefixDelta": {
+      "compared": 14,
+      "nonPrefixModelMismatches": [],
+      "scope": "Final change narrows literal prefix atoms, includes attachment bonds and adds their written locants; full name proofs and all other semantic components are unchanged."
+    }
+  }
+}

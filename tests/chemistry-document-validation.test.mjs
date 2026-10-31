@@ -148,11 +148,12 @@ test("compares ASCII and Unicode subscripts and accepts old files missing option
 });
 
 test("preserves supported charged nitro and specified stereochemistry", () => {
-  for (const smiles of ["C[N+](=O)[O-]", "C/C=C/C", "N[C@@](C)C(=O)O", "CS"]) {
+  for (const smiles of ["C[N+](=O)[O-]", "C/C=C/C", "N[C@@H](C)C(=O)O", "CS"]) {
     const result = moleculeFromSmiles(smiles);
     assert.equal(result.ok, true, smiles);
     assert.deepEqual(mustRead(makeStructure(result.molecule)).molecule, result.molecule, smiles);
   }
+  assert.equal(moleculeFromSmiles("N[C@@](C)C(=O)O").ok,false,"a bracket carbon with no H must not silently gain one on import");
 });
 
 test("a library is validated in full before its structures are returned for import", () => {

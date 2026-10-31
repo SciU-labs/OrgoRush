@@ -10,6 +10,7 @@ import { buildExerciseChemicalCandidate } from "../app/exercise-chemical-candida
 import { validateExerciseChemistry } from "../app/exercise-domain.ts";
 import { describeEasyChemistry, validateEasyExercise, validateEasyParent } from "../app/exercise-easy-profile.ts";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { overvalentSpCarbonGraph } from "./helpers/overvalent-sp-carbon.mjs";
 
 let chemistry, generate;
 const categories = EXERCISE_CATEGORIES.filter((category) => category !== "ez");
@@ -79,7 +80,9 @@ for (const [category, smiles] of [
 });
 
 test("overvalent triple+halo D0 counterexample is chemically invalid", () => {
-  const molecule = graph("CC(O)C#C(Br)C(C)CC");
+  assert.equal(moleculeFromSmiles("CC(O)C#C(Br)C(C)CC").ok,false,"the importer already rejects this overvalent input");
+  // Bypass import deliberately to exercise the independent exercise validator.
+  const molecule = overvalentSpCarbonGraph();
   assert.equal(validateExerciseChemistry(molecule, chemistry.oracles).valid, false);
   assert.equal(validateEasyExercise(molecule, "alcohol", chemistry.oracles).valid, false);
 });

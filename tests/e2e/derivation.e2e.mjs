@@ -5,6 +5,9 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { createServer } from 'vite';
 import { generalizationCases, generalizationEdges } from '../fixtures/generalized-derivation.mjs';
+import { purineCases } from '../fixtures/purine-derivation.mjs';
+import { moleculeFromSmiles } from '../../app/openchemlib-adapter.ts';
+import { mapStructuralRegions } from '../../app/structural-derivation.ts';
 
 // Use an installed Playwright package, or the explicit location of an existing
 // installation. No browser download or production configuration change.
@@ -13,7 +16,8 @@ const { chromium } = await import(process.env.ORGORUSH_PLAYWRIGHT_MODULE
 const live = process.env.ORGORUSH_E2E_LIVE === '1';
 const generalized = process.env.ORGORUSH_E2E_GENERALIZED === '1';
 const phase6 = process.env.ORGORUSH_E2E_PHASE6 === '1';
-const output = resolve('outputs/derivation-e2e', phase6?'symmetry-fused':generalized ? 'generalized' : 'original', live ? 'live' : 'deterministic');
+const phase7 = process.env.ORGORUSH_E2E_PHASE7 === '1';
+const output = resolve('outputs/derivation-e2e', phase7?'purine':phase6?'symmetry-fused':generalized ? 'generalized' : 'original', live ? 'live' : 'deterministic');
 const fusedRecords=JSON.parse(await readFile(new URL('../../reports/fused-reference-records.json',import.meta.url),'utf8'));
 const caffeine=fusedRecords.find(f=>f.name==='caffeine');
 const phase6Fixtures=[generalizationCases.find(f=>f.common==='3-methylbutanoic acid'),
@@ -24,10 +28,14 @@ const originalFixtures = [
   { common:'aspirin', name:'2-acetyloxybenzoic acid', smiles:'CC(=O)Oc1ccccc1C(=O)O', cid:2244, formula:'C9H8O4', parent:[5,6,7,8,9,10,11], prefix:[1,2,3,4], component:'acyloxy', bonds:['1:2','2:3','2:4','4:5'] },
 ];
 const selectedNames=process.env.ORGORUSH_E2E_NAMES?.split('|');
-const fixtures = (phase6?phase6Fixtures:generalized ? generalizationCases.filter(f=>f.expected!=='PARTIAL').map(f=>({...f,bonds:generalizationEdges[f.common]})) : originalFixtures)
+const fixtures = (phase7?purineCases:phase6?phase6Fixtures:generalized ? generalizationCases.filter(f=>f.expected!=='PARTIAL').map(f=>({...f,bonds:generalizationEdges[f.common]})) : originalFixtures)
   .filter(f=>!selectedNames||selectedNames.includes(f.common));
 let server, browser, base;
 const key = (a,b) => [Number(a),Number(b)].sort((x,y)=>x-y).join(':');
+function sameFixtureGraph(left,right){
+  const a=moleculeFromSmiles(left),b=moleculeFromSmiles(right);
+  return a.ok&&b.ok&&!!mapStructuralRegions(a.molecule,b.molecule,[]);
+}
 before(async()=>{
   server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0,strictPort:false}});
   await server.listen();
@@ -63,9 +71,11 @@ async function pageForRun() {
     const input=decodeURIComponent(url).toLowerCase();
     const nameQuery=/\/name\/([^/]+)\/cids\/json/.exec(input)?.[1];
     const structureQuery=/\/smiles\/([^/]+)\/cids\/json/.exec(input)?.[1];
+    const rawStructureQuery=/\/smiles\/([^/]+)\/cids\/json/i.exec(decodeURIComponent(url))?.[1];
     const body=req.postDataJSON?.();
     const f=fixtures.find(f=>nameQuery===f.common||nameQuery===f.name.toLowerCase()||input.includes(`/cid/${f.cid}/`)
       ||phase6&&f.common==='3-methylbutanoic acid'&&['cc(c)cc(o)=o','cc(c)cc(=o)o'].includes(structureQuery)
+      ||phase7&&rawStructureQuery&&sameFixtureGraph(rawStructureQuery,f.smiles)
       ||f.common==='aspirin'&&nameQuery==='2-(acetyloxy)benzoic acid'
       ||body?.name===f.common||body?.name===f.name||body?.name==='2-(acetyloxy)benzoic acid'&&f.common==='aspirin');
     if(url.includes('opsin')) return route.fulfill({status:200,headers,body:JSON.stringify({status:'FAILURE',message:'No OPSIN fixture; exercise PubChem fallback'})});
@@ -95,22 +105,24 @@ async function build(page, name, support='FULL') {
 // Start observing before the native click. Snapshot the transient selection in
 // one browser operation so its 2s expiry cannot split presence and data reads.
 async function captureRegion(page, trigger) {
+  const expectedStep=await trigger.getAttribute('data-name-fragment');
   const [snapshot]=await Promise.all([
-    page.waitForFunction(()=>{
+    page.waitForFunction(expectedStep=>{
       const node=document.querySelector('.reasoning-visual-overlay');
-      if(!node)return null;
+      if(!node || expectedStep&&node.dataset.reasoningStep!==expectedStep)return null;
       return {
         atoms:[...node.querySelectorAll('[data-reasoning-atom]')].map(n=>Number(n.dataset.reasoningAtom)).sort((a,b)=>a-b),
         bonds:[...node.querySelectorAll('[data-reasoning-bond]')].map(n=>n.dataset.reasoningBond),
         locants:[...node.querySelectorAll('[data-reasoning-locant]')].map(n=>n.dataset.reasoningLocant),
+        numbering:[...node.querySelectorAll('[data-reasoning-locant]')].map(n=>[Number(n.dataset.reasoningLocant),n.querySelector('text').textContent]),
       };
-    }),
+    },expectedStep),
     trigger.click(),
   ]);
   const value=await snapshot.jsonValue();await snapshot.dispose();return value;
 }
 
-if(!phase6)test(`${live?'LIVE':'HTTP FIXTURES'} common names → FULL → exact editor regions → molecule replacement`,async()=>{
+if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} common names → FULL → exact editor regions → molecule replacement`,async()=>{
   const {page,errors,received,consoleErrors}=await pageForRun();
   try {
     for (const f of fixtures) {
@@ -141,7 +153,7 @@ if(!phase6)test(`${live?'LIVE':'HTTP FIXTURES'} common names → FULL → exact 
   } finally { await page.close(); }
 },{timeout:240000});
 
-if(!live&&!phase6)test('HTTP FIXTURES loading and failure preserve the currently visible molecule',async()=>{
+if(!live&&!phase6&&!phase7)test('HTTP FIXTURES loading and failure preserve the currently visible molecule',async()=>{
   const {page,errors}=await pageForRun();
   try {
     await build(page,fixtures[0].common);
@@ -166,7 +178,7 @@ if(!live&&!phase6)test('HTTP FIXTURES loading and failure preserve the currently
   }finally{await page.close();}
 },{timeout:60000});
 
-if(!phase6)test(`${live?'LIVE':'HTTP FIXTURES'} systematic names and parenthesized variant`,async()=>{
+if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} systematic names and parenthesized variant`,async()=>{
   const {page,errors}=await pageForRun();
   try {
     for(const name of [...fixtures.map(f=>f.name),...(generalized?[]:['2-(acetyloxy)benzoic acid'])]) {
@@ -205,9 +217,8 @@ if(phase6)test(`${live?'LIVE':'HTTP FIXTURES'} symmetry choices and safe fused-h
     await page.locator('[data-derivation-symmetry="equivalent"]').waitFor();
     await page.waitForFunction(()=>document.querySelector('[data-symmetry-choice]')?.getAttribute('data-symmetry-choice')==='0');
     if(!live)assert.ok(['2,4,5,6','2,4,5,7'].includes((await parents()).join(',')));
-    await build(page,'caffeine','PARTIAL');
-    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
-    assert.ok(!/principal|parent/i.test(await page.locator('.stage-legend').innerText()),'partial rendering must not label an unassigned parent');
+    await build(page,'caffeine','FULL');
+    assert.equal(await page.locator('[data-derivation-support="PARTIAL"]').count(),0);
     const stage=page.locator('.molecule-stage');
     assert.equal(await stage.getAttribute('data-import-ring-count'),'2');
     assert.equal(await stage.getAttribute('data-graph-cycle-rank'),'2');
@@ -221,13 +232,78 @@ if(phase6)test(`${live?'LIVE':'HTTP FIXTURES'} symmetry choices and safe fused-h
     assert.equal(g.bonds.filter(([a,b,o])=>o===2&&(element(a)==='O'||element(b)==='O')).length,2);
     assert.equal(g.atoms.filter(a=>a.element==='C'&&g.bonds.filter(([x,y])=>x===a.id||y===a.id).length===1
       &&g.bonds.some(([x,y,o])=>o===1&&(x===a.id&&element(y)==='N'||y===a.id&&element(x)==='N'))).length,3);
-    const ringSelection=await captureRegion(page,page.locator('[data-structural-kind="ringSystem"] .reasoning-step-number'));
+    const ringSelection=await captureRegion(page,page.locator('[data-name-fragment="parent"]'));
     const selected={atoms:ringSelection.atoms.length,bonds:ringSelection.bonds.length,locants:ringSelection.locants.length};
-    assert.deepEqual(selected,{atoms:9,bonds:10,locants:0},'complete fused system without invented purine locants');
-    await page.locator('[data-structural-kind="ringSystem"] .reasoning-step-number').click();
-    await page.screenshot({path:resolve(output,'caffeine-partial.png'),fullPage:true,animations:'disabled'});
+    assert.deepEqual(selected,{atoms:9,bonds:10,locants:9},'phase 7 now proves the complete fused parent and retained locants');
+    await page.locator('[data-name-fragment="parent"]').click();
+    await page.screenshot({path:resolve(output,'caffeine-full.png'),fullPage:true,animations:'disabled'});
     await writeFile(resolve(output,'phase6.json'),JSON.stringify({mode:live?'live':'deterministic',first,second,selected,graph:g,received,network,errors,consoleErrors},null,2));
     assert.deepEqual(errors,[]);
   }catch(error){await page.screenshot({path:resolve(output,'phase6-failure.png'),fullPage:true});await writeFile(resolve(output,'phase6-failure.txt'),await page.locator('body').innerText());throw error;}
   finally{await page.close();}
 },{timeout:180000});
+
+if(phase7)test(`${live?'LIVE':'HTTP FIXTURES'} five purine names → FULL → retained locants, H and exact semantic regions`,async()=>{
+  const {page,errors,received,consoleErrors,network}=await pageForRun();
+  const evidence=[];
+  try{
+    for(const f of fixtures){
+      await build(page,f.common);
+      const panel=page.locator('[data-derivation-support="FULL"]');
+      await page.waitForFunction(name=>document.querySelector('[data-derivation-support="FULL"]')?.textContent.includes(name),f.name,{timeout:live?45000:15000});
+      assert.ok((await panel.innerText()).includes(f.name),'preserve the systematic name actually supplied');
+      assert.equal(await page.locator('.reasoning-visual-overlay').count(),0,'molecule changes clear previous locants and regions');
+      const g=await page.locator('.molecule-stage').evaluate(node=>({
+        atoms:[...node.querySelectorAll('[data-atom-id]')].map(n=>({id:Number(n.dataset.atomId),element:n.dataset.atomElement,x:0,y:0})),
+        bonds:[...node.querySelectorAll('[data-bond-a]')].map(n=>[Number(n.dataset.bondA),Number(n.dataset.bondB),Number(n.dataset.bondOrder)]),
+      }));
+      const reference=moleculeFromSmiles(f.smiles);assert.equal(reference.ok,true);
+      const map=mapStructuralRegions(reference.molecule,g,f.parent.map(id=>[id]));assert.ok(map,'the actual imported graph matches the independent reference');
+      const parent=f.parent.map(id=>map.get(id)),sorted=xs=>[...xs].sort((a,b)=>a-b);
+      const actualParent=await page.locator('.molecule-stage .on-main-chain[data-atom-id]').evaluateAll(ns=>ns.map(n=>Number(n.dataset.atomId)).sort((a,b)=>a-b));
+      assert.deepEqual(actualParent,sorted(parent));
+      assert.equal(await page.locator('.molecule-stage .number-circle').count(),0,'retained locants are contextual, not permanent atom badges');
+      const wanted=[{id:'parent',atoms:parent,numbering:parent.map((id,i)=>[id,String(i+1)]),
+        bonds:reference.molecule.bonds.filter(([a,b])=>f.parent.includes(a)&&f.parent.includes(b)).map(([a,b])=>key(map.get(a),map.get(b)))},
+        {id:'purine-nitrogens',atoms:[1,3,7,9].map(p=>parent[p-1]),numbering:[1,3,7,9].map(p=>[parent[p-1],String(p)]),bonds:[]},
+        {id:'purine-fusion',atoms:[parent[3],parent[4]],numbering:[[parent[3],'4'],[parent[4],'5']],bonds:[key(parent[3],parent[4])]}];
+      if(f.methyl.length)wanted.push({id:'purine-methyl',atoms:f.methyl.map(([,id])=>map.get(id)),numbering:f.methyl.map(([p])=>[parent[p-1],String(p)]),bonds:f.methyl.map(([p,id])=>key(parent[p-1],map.get(id)))});
+      for(const [kind,ps] of [['hydro',f.hydro],['indicated',f.indicated]])if(ps)wanted.push({id:`purine-${kind}`,atoms:ps.map(p=>parent[p-1]),numbering:ps.map(p=>[parent[p-1],String(p)]),bonds:[]});
+      if(f.oxo.length)wanted.push({id:'purine-oxo',atoms:f.oxo.flatMap(([p,id])=>[parent[p-1],map.get(id)]),numbering:f.oxo.map(([p])=>[parent[p-1],String(p)]),bonds:f.oxo.map(([p,id])=>key(parent[p-1],map.get(id)))});
+      const selections=[];
+      for(const w of wanted){
+        const selected=await captureRegion(page,panel.locator(`[data-name-fragment="${w.id}"]`));
+        assert.deepEqual(selected.atoms,sorted(w.atoms),`${f.common}/${w.id} atoms`);
+        assert.deepEqual(selected.bonds.map(s=>key(...s.split(':'))).sort(),w.bonds.toSorted(),`${f.common}/${w.id} edges`);
+        assert.deepEqual(selected.numbering.sort(([a],[b])=>a-b),w.numbering.toSorted(([a],[b])=>a-b),`${f.common}/${w.id} locants`);
+        selections.push({component:w.id,...selected});
+      }
+      if(f.common==='caffeine'){
+        const parentView=await captureRegion(page,panel.locator('[data-name-fragment="parent"]'));
+        assert.deepEqual(parentView.atoms,sorted(parent));assert.equal(parentView.numbering.length,9);
+        await page.screenshot({path:resolve(output,'caffeine-parent.png'),fullPage:true,animations:'disabled'});
+        assert.equal(await page.locator('.view-mode-switch button').nth(1).isDisabled(),true,'the existing cyclic condensed-view boundary remains intact');
+        await page.locator('.view-mode-switch button').nth(2).click();
+        const skeletal=await captureRegion(page,panel.locator('[data-name-fragment="purine-nitrogens"]'));
+        assert.deepEqual(skeletal.atoms,sorted([1,3,7,9].map(p=>parent[p-1])));
+        assert.deepEqual(skeletal.numbering.sort(([a],[b])=>a-b),[1,3,7,9].map(p=>[parent[p-1],String(p)]).sort(([a],[b])=>a-b));
+        await page.screenshot({path:resolve(output,'caffeine-skeletal.png'),fullPage:true,animations:'disabled'});
+        selections.push({component:'purine-nitrogens-skeletal',...skeletal});
+        await page.locator('.view-mode-switch button').first().click();
+      }
+      await page.screenshot({path:resolve(output,`${f.common}.png`),fullPage:true,animations:'disabled'});
+      evidence.push({common:f.common,receivedName:f.name,namePanel:await panel.innerText(),graph:g,numbering:parent.map((id,i)=>[id,i+1]),selections});
+      assert.deepEqual(errors,[]);
+    }
+    // A reordered SMILES must discard the previous parent and H assignment.
+    await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    await page.locator('#smiles-text-input').fill('Cn1c(=O)c2c(ncn2C)n(C)c1=O');
+    await page.locator('#smiles-interop-panel button[type="submit"]').click();
+    await page.locator('[data-name-fragment="purine-methyl"]').waitFor();
+    assert.equal(await page.locator('.reasoning-visual-overlay').count(),0);
+    for(const f of fixtures)assert.ok(received.includes(f.name),`PubChem returned the real systematic name for ${f.common}`);
+    assert.deepEqual(errors,[]);
+    await writeFile(resolve(output,'phase7.json'),JSON.stringify({mode:live?'live':'deterministic',evidence,received,network,errors,consoleErrors},null,2));
+  }catch(error){await page.screenshot({path:resolve(output,'failure.png'),fullPage:true});await writeFile(resolve(output,'failure.txt'),await page.locator('body').innerText());await writeFile(resolve(output,'failure.json'),JSON.stringify({evidence,received,network,errors,consoleErrors},null,2));throw error;}
+  finally{await page.close();}
+},{timeout:300000});
