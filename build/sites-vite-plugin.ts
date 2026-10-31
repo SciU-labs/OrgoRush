@@ -18,7 +18,7 @@ async function exists(path: string): Promise<boolean> {
 // closeBundle runs for multiple Vite environments, so a later invocation must
 // be able to replace the metadata copied by the previous invocation.
 async function makeOutputWritable(directory: string): Promise<void> {
-  if (process.platform !== "win32" || !await exists(directory)) return;
+  if (!await exists(directory)) return;
   await chmod(directory, 0o777);
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = resolve(directory, entry.name);
