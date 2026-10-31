@@ -141,7 +141,7 @@ test("expanded workspace wraps the live canvas and construction controls", () =>
   assert.match(page, /function OverlayPortal[\s\S]*?createPortal\(children, document\.body\)/);
   assert.match(page, /function ViewportPortal[\s\S]*?<OverlayPortal active=\{active\}>/);
   assert.match(page, /<ViewportPortal active=\{canvasExpanded\}>/);
-  assert.match(page, /className=\{`molecule-workspace \$\{canvasExpanded \? "is-expanded" : ""\}`\}/);
+  assert.match(page, /className=\{`molecule-workspace \$\{canvasExpanded \? "is-expanded" : ""\} \$\{expandedAccessibilityClasses\}`\}/);
   assert.match(page, /expanded-workspace-header/);
   assert.match(page, /ref=\{expandedCanvasCloseButtonRef\}/);
   assert.match(page, /ref=\{expandedWorkspaceRef\}/);
