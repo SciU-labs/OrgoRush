@@ -30,7 +30,7 @@ try {
       for (let attempt = 0; attempt < 2; attempt += 1) {
         try {
           const response = await fetch(url, { signal: AbortSignal.timeout(15000),
-            headers: { Accept: "application/json", "User-Agent": "HydrocarbonLab-ReferenceCorpus/1.0" } });
+            headers: { Accept: "application/json", "User-Agent": "OrgoRush-ReferenceCorpus/1.0" } });
           const body = await response.text();
           JSON.parse(body);
           if (response.status >= 500 || response.status === 429) throw new Error(`HTTP ${response.status}`);

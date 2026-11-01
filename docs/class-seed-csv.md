@@ -144,7 +144,7 @@ categories/all three types. Timings are observations, not performance thresholds
 
 ## CSV schema and safety
 
-Filename: `hydrocarbon-lab-class-assignments.csv`. Fixed columns:
+Filename: `orgorush-class-assignments.csv`. Fixed columns:
 
 ```text
 schema_version,derivation_version,class_seed,config_fingerprint,participant_id,session_seed,mode,generator_version,question_count,question_types,categories,locale

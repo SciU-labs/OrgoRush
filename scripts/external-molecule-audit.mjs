@@ -85,7 +85,7 @@ async function pubchem(smiles) {
   let lastError;
   for (let attempt = 0; attempt < 5; attempt += 1) {
     try {
-      const response = await fetch(requestUrl, { method: "POST", headers: { "User-Agent": "HydrocarbonLab-Audit/1.0 (diagnostic; PubChem PUG REST)", "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ smiles }) });
+      const response = await fetch(requestUrl, { method: "POST", headers: { "User-Agent": "OrgoRush-Audit/1.0 (diagnostic; PubChem PUG REST)", "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ smiles }) });
       if (response.status === 503 || response.status === 429) { await new Promise((resolve) => setTimeout(resolve, 1500 * (attempt + 1))); continue; }
       if (!response.ok) throw new Error(`PubChem HTTP ${response.status}`);
       const payload = await response.json();
@@ -116,7 +116,7 @@ if (!fixtures || wantExtend) {
   const records = [...existing];
   for (const candidate of candidates.filter((entry) => !knownSmiles.has(entry.inputSmiles))) {
     const properties = await pubchem(candidate.inputSmiles);
-    records.push({ id: `HC-${String(records.length + 1).padStart(3, "0")}`, molecule: candidate.molecule, category: candidate.category, inputSmiles: candidate.inputSmiles, commonName: null, referenceName: properties.IUPACName, formula: properties.MolecularFormula, canonicalSmiles: properties.ConnectivitySMILES ?? properties.CanonicalSMILES, isomericSmiles: properties.SMILES ?? properties.IsomericSMILES, source: "PubChem PUG REST", sourceUrl: properties.url, sourceRequestUrl: properties.requestUrl, cid: properties.CID, nameReview: "Pendiente de clasificar equivalencia IUPAC frente a la salida de Hydrocarbon Lab" });
+    records.push({ id: `HC-${String(records.length + 1).padStart(3, "0")}`, molecule: candidate.molecule, category: candidate.category, inputSmiles: candidate.inputSmiles, commonName: null, referenceName: properties.IUPACName, formula: properties.MolecularFormula, canonicalSmiles: properties.ConnectivitySMILES ?? properties.CanonicalSMILES, isomericSmiles: properties.SMILES ?? properties.IsomericSMILES, source: "PubChem PUG REST", sourceUrl: properties.url, sourceRequestUrl: properties.requestUrl, cid: properties.CID, nameReview: "Pendiente de clasificar equivalencia IUPAC frente a la salida de OrgoRush" });
   }
   fixtures = { generatedAt: new Date().toISOString(), sourcePolicy: "PubChem retrieved by candidate SMILES; application names are never reference values", cases: records };
   await fs.writeFile(referenceFile, `${JSON.stringify(fixtures, null, 2)}\n`);
@@ -127,7 +127,7 @@ if (wantSynonyms) {
   for (let start = 0; start < cids.length; start += 20) {
     const batch = cids.slice(start, start + 20);
     const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${batch.join(",")}/synonyms/JSON`;
-    const response = await fetch(url, { headers: { "User-Agent": "HydrocarbonLab-Audit/1.0 (diagnostic; PubChem PUG REST)" } });
+    const response = await fetch(url, { headers: { "User-Agent": "OrgoRush-Audit/1.0 (diagnostic; PubChem PUG REST)" } });
     if (!response.ok) throw new Error(`PubChem synonym HTTP ${response.status}`);
     const payload = await response.json();
     for (const entry of payload.InformationList?.Information ?? []) {
@@ -234,16 +234,16 @@ for (const item of fixtures.cases) {
   } catch (error) { results.push({ ...result, status: "CRASH", errorType: "otro", observations: String(error?.stack ?? error) }); }
 }
 
-const csvHeader = ["ID","Molécula","Categoría","Fuente","Nombre común","Nombre de referencia","SMILES de referencia","Nombre Hydrocarbon Lab","Fórmula esperada","Fórmula Hydrocarbon Lab","Round-trip SMILES","Resultado","Tipo de error","Observaciones"];
+const csvHeader = ["ID","Molécula","Categoría","Fuente","Nombre común","Nombre de referencia","SMILES de referencia","Nombre OrgoRush","Fórmula esperada","Fórmula OrgoRush","Round-trip SMILES","Resultado","Tipo de error","Observaciones"];
 const csv = [csvHeader.map(csvCell).join(","), ...results.map((r)=>[r.id,r.molecule,r.category,r.sourceUrl,r.commonName,r.referenceName,r.smilesReference,r.nameHydrocarbonLab,r.formulaExpected,r.formulaHydrocarbonLab,r.smilesRoundTrip,r.status,r.errorType,typeof r.observations === "string" ? r.observations : JSON.stringify(r.observations)].map(csvCell).join(","))].join("\r\n");
 const counts = Object.fromEntries(["PASS","PARTIAL","FAIL-NAME","FAIL-STRUCTURE","CRASH"].map((s)=>[s,results.filter((r)=>r.status===s).length]));
 const groups = Object.fromEntries(["selección del parent","numeración","prioridad funcional","orden alfabético","multiplicadores","aldehídos","cetonas","aminas","amidas","éteres","ésteres","aromáticos","E/Z","anillos","anillos fusionados","parser SMILES","serializer SMILES","cálculo de fórmula","otro"].map((key)=>[key,0]));
 for (const r of results.filter((x)=>x.status.startsWith("FAIL")||x.status==="CRASH")) groups[r.errorType && Object.hasOwn(groups,r.errorType) ? r.errorType : "otro"] += 1;
 const pct = (n) => `${(100*n/results.length).toFixed(1)}%`;
-const minimumCases = results.filter((r)=>r.status.startsWith("FAIL")||r.status==="CRASH").map((r)=>`- ${r.id} — ${r.status}${r.errorType ? ` (${r.errorType})` : ""}: PubChem SMILES \`${r.smilesReference}\` → Hydrocarbon Lab \`${r.smilesRoundTrip ?? "sin salida"}\`; nombre PubChem \`${r.referenceName}\` → nombre Hydrocarbon Lab \`${r.nameHydrocarbonLab ?? "sin nombre"}\`.`);
+const minimumCases = results.filter((r)=>r.status.startsWith("FAIL")||r.status==="CRASH").map((r)=>`- ${r.id} — ${r.status}${r.errorType ? ` (${r.errorType})` : ""}: PubChem SMILES \`${r.smilesReference}\` → OrgoRush \`${r.smilesRoundTrip ?? "sin salida"}\`; nombre PubChem \`${r.referenceName}\` → nombre OrgoRush \`${r.nameHydrocarbonLab ?? "sin nombre"}\`.`);
 await fs.mkdir(outputReports, { recursive: true });
 await fs.writeFile(resultsFile, `${JSON.stringify({ generatedAt: new Date().toISOString(), counts, failureGroups: groups, results }, null, 2)}\n`);
 await fs.writeFile(csvFile, `${csv}\r\n`);
 const commonNameCount = results.filter((r)=>r.commonName).length;
-await fs.writeFile(summaryFile, `# Auditoría automatizada de Hydrocarbon Lab\n\n- Casos: ${results.length}\n${Object.entries(counts).map(([k,v])=>`- ${k}: ${v} (${pct(v)})`).join("\n")}\n- Casos con nombre común documentado en sinónimos PubChem: ${commonNameCount}\n- Referencias congeladas: PubChem PUG REST; CID, URL, fórmula, nombre IUPAC y SMILES constan en el fixture histórico.\n- La diferencia textual de nombre no produce fallo sin discrepancia química; los PARTIAL conservan su arbitraje nomenclatural separado.\n\n## Fallos por causa probable\n\n${Object.entries(groups).map(([k,v])=>`- ${k}: ${v}`).join("\n")}\n\n## Distribución por familia\n\n${[...new Set(results.map(r=>r.category))].map((c)=>`- ${c}: ${results.filter(r=>r.category===c).length}`).join("\n")}\n\n## Casos mínimos reproducibles\n\n${minimumCases.join("\n") || "- Sin fallos."}\n\n## Lectura nomenclatural\n\nEl comparador E/Z contrasta los descriptores del nombre con la configuración definida por el SMILES de referencia. Los PARTIAL son diferencias textuales que requieren el arbitraje nomenclatural guardado; no se declaran errores por sí solos.\n`);
+await fs.writeFile(summaryFile, `# Auditoría automatizada de OrgoRush\n\n- Casos: ${results.length}\n${Object.entries(counts).map(([k,v])=>`- ${k}: ${v} (${pct(v)})`).join("\n")}\n- Casos con nombre común documentado en sinónimos PubChem: ${commonNameCount}\n- Referencias congeladas: PubChem PUG REST; CID, URL, fórmula, nombre IUPAC y SMILES constan en el fixture histórico.\n- La diferencia textual de nombre no produce fallo sin discrepancia química; los PARTIAL conservan su arbitraje nomenclatural separado.\n\n## Fallos por causa probable\n\n${Object.entries(groups).map(([k,v])=>`- ${k}: ${v}`).join("\n")}\n\n## Distribución por familia\n\n${[...new Set(results.map(r=>r.category))].map((c)=>`- ${c}: ${results.filter(r=>r.category===c).length}`).join("\n")}\n\n## Casos mínimos reproducibles\n\n${minimumCases.join("\n") || "- Sin fallos."}\n\n## Lectura nomenclatural\n\nEl comparador E/Z contrasta los descriptores del nombre con la configuración definida por el SMILES de referencia. Los PARTIAL son diferencias textuales que requieren el arbitraje nomenclatural guardado; no se declaran errores por sí solos.\n`);
 console.log(JSON.stringify({ fixtureFile: referenceFile, resultsFile, csvFile, summaryFile, count: results.length, counts, failureGroups: groups }, null, 2));

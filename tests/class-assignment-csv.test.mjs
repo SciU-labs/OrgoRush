@@ -13,7 +13,7 @@ test("CSV schema/header, BOM, CRLF, filename and byte determinism are frozen", (
   assert.ok(csv.startsWith('\uFEFF"schema_version","derivation_version","class_seed","config_fingerprint","participant_id","session_seed","mode","generator_version","question_count","question_types","categories","locale"\r\n'));
   assert.ok(csv.endsWith("\r\n")); assert.equal(csv, serializeClassAssignmentCsv(manifest, "es"));
   assert.deepEqual(parseClassCsv(csv).header, [...CLASS_ASSIGNMENT_CSV_COLUMNS]);
-  assert.equal(CLASS_ASSIGNMENT_CSV_FILENAME, "hydrocarbon-lab-class-assignments.csv");
+  assert.equal(CLASS_ASSIGNMENT_CSV_FILENAME, "orgorush-class-assignments.csv");
 });
 test("quoted commas, double quotes, embedded newlines and Unicode roundtrip exactly", () => {
   const manifest = generateClassAssignments(config('Clase, "química"\n🧪'), ['A,"01"', "B\n02", "Á03"]);

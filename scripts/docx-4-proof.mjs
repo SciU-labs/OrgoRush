@@ -282,7 +282,7 @@ try {
     const categories = model.questions.map(({ category }) => category);
     assert.equal(model.metadata.generatorVersion, 4);
     assert.equal(model.questions.length, proofCase.questionCount);
-    const stem = `hydrocarbon-lab-${id}`;
+    const stem = `orgorush-${id}`;
     await mkdir(outputDirectory, { recursive: true });
     await Promise.all([
       writeFile(join(outputDirectory, `${stem}-student.docx`), studentBuffer),

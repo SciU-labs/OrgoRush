@@ -85,8 +85,8 @@ test("config applies explicit defaults and strictly validates finite Naming asse
     ["alkane", "alkyne"]);
   assert.equal(createNamingAssessmentConfig({ seed: "DOCX-ADVANCED", difficulty: "advanced" }).difficulty, "advanced");
   assert.equal(namingAssessmentSessionConfig(defaults).generatorVersion, 4);
-  assert.equal(namingAssessmentFilename("student"), "hydrocarbon-lab-naming-student.docx");
-  assert.equal(namingAssessmentFilename("teacher"), "hydrocarbon-lab-naming-teacher.docx");
+  assert.equal(namingAssessmentFilename("student"), "orgorush-naming-student.docx");
+  assert.equal(namingAssessmentFilename("teacher"), "orgorush-naming-teacher.docx");
   const mcqDefaults = createMultipleChoiceAssessmentConfig({ seed: "DOCX-MCQ-CONFIG-DEFAULT" });
   assert.deepEqual({ locale: mcqDefaults.locale, questionCount: mcqDefaults.questionCount, difficulty: mcqDefaults.difficulty,
     categories: mcqDefaults.categories, questionType: mcqDefaults.questionType, generatorVersion: mcqDefaults.generatorVersion }, {
@@ -103,8 +103,8 @@ test("config applies explicit defaults and strictly validates finite Naming asse
     ["alkene", "alcohol"]);
   assert.throws(() => createMultipleChoiceAssessmentConfig({ seed: "DOCX-MCQ-INVALID", questionType: "naming" }), /Multiple Choice/);
   assert.equal(multipleChoiceAssessmentSessionConfig(mcqDefaults).questionTypes[0], "multiple-choice");
-  assert.equal(multipleChoiceAssessmentFilename("student"), "hydrocarbon-lab-mcq-student.docx");
-  assert.equal(multipleChoiceAssessmentFilename("teacher"), "hydrocarbon-lab-mcq-teacher.docx");
+  assert.equal(multipleChoiceAssessmentFilename("student"), "orgorush-mcq-student.docx");
+  assert.equal(multipleChoiceAssessmentFilename("teacher"), "orgorush-mcq-teacher.docx");
 
   for (const questionCount of [0, -1, 3, 100, Number.NaN, "10"]) {
     assert.throws(() => normalizeNamingAssessmentConfig({ seed: "DOCX-INVALID", questionCount }), /questionCount/);

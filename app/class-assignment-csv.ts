@@ -4,7 +4,7 @@ import type { ClassAssignmentManifest } from "./class-assignment.ts";
 import { normalizeExerciseDifficulty } from "./exercise-model.ts";
 import type { ExerciseDifficulty, SessionConfig } from "./exercise-model.ts";
 
-export const CLASS_ASSIGNMENT_CSV_FILENAME = "hydrocarbon-lab-class-assignments.csv";
+export const CLASS_ASSIGNMENT_CSV_FILENAME = "orgorush-class-assignments.csv";
 export const CLASS_ASSIGNMENT_CSV_COLUMNS = Object.freeze([
   "schema_version", "derivation_version", "class_seed", "config_fingerprint", "participant_id", "session_seed",
   "mode", "generator_version", "question_count", "question_types", "categories", "locale",

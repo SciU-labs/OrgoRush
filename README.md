@@ -1,4 +1,4 @@
-# OrgoRush
+# OrgoRush by SCIU
 
 ## Química orgánica interactiva / Interactive Organic Chemistry
 
@@ -12,6 +12,11 @@ pueden compartirse directamente mediante `/es/` y `/en/`.
 - GitHub Pages: https://sciu-labs.github.io/OrgoRush/
 - Español: https://sciu-labs.github.io/OrgoRush/es/
 - English: https://sciu-labs.github.io/OrgoRush/en/
+
+Some browser preference keys retain the former internal identifier so existing
+installations keep their saved settings after the product rename. They are
+compatibility identifiers, not user-facing branding; see
+[`docs/branding-compatibility.md`](docs/branding-compatibility.md).
 
 ## Licencia
 

@@ -81,7 +81,7 @@ try {
     throw new Error(`Generated DOCX checks failed: prompts=${(text.match(/What is the IUPAC name\?/g) ?? []).length}, answerKey=${text.includes("Answer Key")}, media=${mediaCount}, answers=${model.questions.map(({ referenceAnswer }) => text.includes(referenceAnswer))}.`);
   }
 
-  const output = `${root}/outputs/docx-0/hydrocarbon-lab-naming-proof.docx`;
+  const output = `${root}/outputs/docx-0/orgorush-naming-proof.docx`;
   await mkdir(`${root}/outputs/docx-0`, { recursive: true });
   await writeFile(output, buffer);
   console.log(JSON.stringify({

@@ -330,10 +330,10 @@ export function createDocxAssessmentModel(input: Readonly<{
 
 export function namingAssessmentFilename(audience: "student" | "teacher"): string {
   if (audience !== "student" && audience !== "teacher") throw new TypeError("Invalid assessment audience.");
-  return `hydrocarbon-lab-naming-${audience}.docx`;
+  return `orgorush-naming-${audience}.docx`;
 }
 
 export function multipleChoiceAssessmentFilename(audience: "student" | "teacher"): string {
   if (audience !== "student" && audience !== "teacher") throw new TypeError("Invalid assessment audience.");
-  return `hydrocarbon-lab-mcq-${audience}.docx`;
+  return `orgorush-mcq-${audience}.docx`;
 }

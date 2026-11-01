@@ -17,7 +17,7 @@ let server;
 let analyzeMolecule;
 
 
-// Cargamos el motor real de Hydrocarbon-Lab.
+// Cargamos el motor real de OrgoRush.
 before(async () => {
 
   server = await createServer({
@@ -393,7 +393,7 @@ test(
     );
 
     console.log(
-      "HYDROCARBON LAB - NAMING STRESS TEST"
+      "ORGORUSH - NAMING STRESS TEST"
     );
 
     console.log(

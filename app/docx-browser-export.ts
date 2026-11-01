@@ -2,6 +2,8 @@ import {
   createMultipleChoiceAssessmentConfig,
   createNamingAssessmentConfig,
   createDocxAssessmentModel,
+  multipleChoiceAssessmentFilename,
+  namingAssessmentFilename,
 } from "./docx-export-model.ts";
 import type { DocxAssessmentConfigInput } from "./docx-export-model.ts";
 import { selectMultipleChoiceAssessmentQuestions, selectNamingAssessmentQuestions } from "./docx-assessment-selection.ts";
@@ -32,13 +34,15 @@ export async function createWorksheetFiles(input: Readonly<{
   const model = createDocxAssessmentModel({ config, questions, structureAssets });
   const renderer = await import("./docx-export.ts");
   const audienceVersions = input.output === "both" ? ["student", "teacher"] as const : [input.output];
-  const filenamePrefix = config.questionType === "multiple-choice" ? "mcq" : "naming";
+  const filenameFor = config.questionType === "multiple-choice"
+    ? multipleChoiceAssessmentFilename
+    : namingAssessmentFilename;
   const files: WorksheetFile[] = [];
   for (const audience of audienceVersions) {
     const blob = audience === "student"
       ? await renderer.renderStudentDocxBlob(model)
       : await renderer.renderTeacherDocxBlob(model);
-    files.push(Object.freeze({ filename: `hydrocarbon-lab-${filenamePrefix}-${audience}.docx`, blob }));
+    files.push(Object.freeze({ filename: filenameFor(audience), blob }));
   }
   return Object.freeze(files);
 }

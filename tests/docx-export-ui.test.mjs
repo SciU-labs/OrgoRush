@@ -138,11 +138,11 @@ test("Both downloads retain separate object URLs until the browser handoff delay
   URL.revokeObjectURL = (url) => revoked.push(url);
   try {
     await downloadWorksheetFiles([
-      { filename: "hydrocarbon-lab-naming-student.docx", blob: new Blob(["student"]) },
-      { filename: "hydrocarbon-lab-naming-teacher.docx", blob: new Blob(["teacher"]) },
+      { filename: "orgorush-naming-student.docx", blob: new Blob(["student"]) },
+      { filename: "orgorush-naming-teacher.docx", blob: new Blob(["teacher"]) },
     ]);
     assert.deepEqual(anchors.map(({ filename }) => filename), [
-      "hydrocarbon-lab-naming-student.docx", "hydrocarbon-lab-naming-teacher.docx",
+      "orgorush-naming-student.docx", "orgorush-naming-teacher.docx",
     ]);
     assert.deepEqual(anchors.map(({ href }) => href), created);
     assert.equal(delayedRevocations.length, 2);
