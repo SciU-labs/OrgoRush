@@ -12740,18 +12740,20 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                             className="tetrahedral-center-hit-target"
                             r={TETRAHEDRAL_BADGE_HIT_RADIUS * Math.max(1, tetrahedralBadgeScale)}
                           />
-                          <g transform={`scale(${tetrahedralBadgeScale})`}>
-                            <circle className="tetrahedral-center-badge" r={TETRAHEDRAL_BADGE_RADIUS} />
-                            <text textAnchor="middle" dominantBaseline="central">
-                              {tetrahedralStereoBond.configuration}
-                            </text>
-                          </g>
+                          {semiDevelopedStereoDisplay === "labels" && (
+                            <g transform={`scale(${tetrahedralBadgeScale})`}>
+                              <circle className="tetrahedral-center-badge" r={TETRAHEDRAL_BADGE_RADIUS} />
+                              <text textAnchor="middle" dominantBaseline="central">
+                                {tetrahedralStereoBond.configuration}
+                              </text>
+                            </g>
+                          )}
                         </g>
                       </g>
                     )}
                     {stereoInteractionEnabled && (
                       <g
-                        className="stereo-bond-marker"
+                        className={`stereo-bond-marker${semiDevelopedStereoDisplay === "hidden" ? " stereo-labels-hidden" : ""}`}
                         transform={`translate(${markerX} ${markerY})`}
                         role="button"
                         tabIndex={0}
@@ -12771,9 +12773,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                         }}
                       >
                         <rect x="-16" y="-10" width="32" height="20" rx="10" />
-                        <text textAnchor="middle" dominantBaseline="central">
-                          {stereoConfiguration ?? "E/Z"}
-                        </text>
+                        {semiDevelopedStereoDisplay === "labels" && (
+                          <text textAnchor="middle" dominantBaseline="central">
+                            {stereoConfiguration ?? "E/Z"}
+                          </text>
+                        )}
                       </g>
                     )}
                   </g>
@@ -14218,15 +14222,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 <i aria-hidden="true" />
               </label>
               <div className="settings-scale-control semi-developed-stereo-settings">
-                <label htmlFor="semi-developed-stereo-display">{t("Estereoquímica en semidesarrollada")}</label>
+                <label htmlFor="semi-developed-stereo-display">{t("Etiquetas de estereoquímica")}</label>
                 <select id="semi-developed-stereo-display" value={semiDevelopedStereoDisplay}
                   aria-describedby="semi-developed-stereo-help"
                   onChange={(event) => setSemiDevelopedStereoDisplay(normalizeSemiDevelopedStereoDisplay(event.target.value))}>
-                  <option value="hidden">{t("Ocultar R/S")}</option>
-                  <option value="labels">{t("Mostrar R/S")}</option>
-                  <option value="labels-and-bonds" disabled>{t("Mostrar R/S y enlaces estereoquímicos")}</option>
+                  <option value="hidden">{t("Ocultar R/S y E/Z")}</option>
+                  <option value="labels">{t("Mostrar R/S y E/Z")}</option>
                 </select>
-                <small id="semi-developed-stereo-help">{t("Los indicadores respetan la estereoquímica global. Las cuñas y rayados en semidesarrollada aún no están disponibles: requieren validar su geometría y el recorte de etiquetas.")}</small>
+                <small id="semi-developed-stereo-help">{t("Las etiquetas R/S y E/Z se ocultan en las vistas esquelética y semidesarrollada. Los enlaces estereoquímicos permanecen visibles.")}</small>
                 <button type="button" disabled={semiDevelopedStereoDisplay === DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY}
                   onClick={() => setSemiDevelopedStereoDisplay(DEFAULT_SEMI_DEVELOPED_STEREO_DISPLAY)}>{t("Restablecer")}</button>
               </div>

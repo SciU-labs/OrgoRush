@@ -3149,6 +3149,17 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   letter-spacing: 0.02em;
 }
 
+.stereo-bond-marker.stereo-labels-hidden rect {
+  fill: transparent;
+  stroke: transparent;
+  filter: none;
+}
+
+.stereo-bond-control:hover .stereo-bond-marker.stereo-labels-hidden rect {
+  fill: transparent;
+  stroke: transparent;
+}
+
 .stereo-bond-control:hover .stereo-bond-marker rect,
 .stereo-bond-control:focus-visible .stereo-bond-marker rect {
   fill: #d7efe7;
