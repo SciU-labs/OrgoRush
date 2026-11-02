@@ -1009,6 +1009,16 @@ export function findDirectionalNeighborId(
 const getImplicitHydrogens = (atomId: number, molecule: Molecule) =>
   Math.max(0, getValenceLimit(atomId, molecule) - getValenceUsed(atomId, molecule));
 
+export function selectedAtomValenceSummary(atomId: number, molecule: Molecule) {
+  const explicit = getValenceUsed(atomId, molecule);
+  const hydrogens = getImplicitHydrogens(atomId, molecule);
+  return { explicit, hydrogens, completed: explicit + hydrogens, limit: getValenceLimit(atomId, molecule) };
+}
+
+export function SelectedAtomValenceText({ summary, language }: { summary: ReturnType<typeof selectedAtomValenceSummary>; language: AppLanguage }) {
+  return <strong>{language === "en" ? "Explicit bond order sum" : "Suma de órdenes de enlace explícitos"}: {summary.explicit} · {summary.hydrogens} {uiText(language, summary.hydrogens === 1 ? "H implícito" : "H implícitos")} · {language === "en" ? "Completed valence" : "Valencia completada"}: {summary.completed}/{summary.limit}</strong>;
+}
+
 const isCarbonAtom = (atom: CarbonAtom) => getElement(atom) === "C";
 
 const makeChain = (length: number): Molecule => ({
@@ -5327,7 +5337,7 @@ export function buildIupacReasoningSteps(
     (name) => !normalizedResultName.includes(name),
   );
   const primaryKind = analysis.primaryFunctionalGroup;
-  const retainedReasoning = retainedFunctionalParentReasoning(analysis, "es");
+  const retainedReasoning = retainedFunctionalParentReasoning(analysis, "es", displayedName);
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "es");
   const aromaticNitroGroups = analysis.family === "aromatic"
     ? analysis.functionalGroups.filter((group) => group.kind === "nitro")
@@ -5441,9 +5451,9 @@ export function buildIupacReasoningSteps(
     ];
     if (analysis.family === "aromatic") {
       const assignedPrefixLocants = aromaticPrefixLocantsText(analysis.substituents, "es");
-      explanationParts[0] = primaryKind
+      explanationParts[0] = retainedReasoning?.numbering ?? (primaryKind
         ? `En el anillo aromático, la función de sufijo conserva la prioridad de numeración; después se consideran los localizadores de los prefijos.`
-        : `En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos.`;
+        : `En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos.`);
       if (assignedPrefixLocants) {
         explanationParts.push(`La numeración asignada sitúa ${assignedPrefixLocants}.`);
       }
@@ -5548,7 +5558,9 @@ export function buildIupacReasoningSteps(
 
   if (localizedSubstituents.length) {
     const hierarchyReminder = analysis.family === "aromatic"
-      ? primaryKind
+      ? retainedReasoning?.numbering
+        ? "El padre retenido fija la posición 1; los prefijos se numeran a partir de ella."
+        : primaryKind
         ? "La función con sufijo tiene prioridad; los grupos citados como prefijos se consideran después."
         : "Al no haber una función de sufijo, los grupos citados como prefijos guían la numeración del anillo."
       : primaryKind || hasMultipleBonds
@@ -5632,10 +5644,10 @@ export function buildEnglishReasoningSteps(
   const saturatedSteps = saturatedFused1979Reasoning(analysis, "en");
   if (saturatedSteps) return saturatedSteps;
   if (analysis.retainedFused) return retainedFusedReasoning(analysis.retainedFused, "en", analysis.functionalGroups);
-  const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "en");
   const exocyclicRingFunction = exocyclicRingCarbonFunction(molecule, analysis);
   const englishName = presentation.displayedName ?? (translateSpanishIupacForDisplay(analysis.name) || analysis.name);
+  const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en", englishName);
   const isLegacyExplanation = presentation.profile === "iupac-1979-legacy";
   const parentName = translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName;
   if (analysis.steroidSystem?.constitutionNameEs) {
@@ -5929,7 +5941,7 @@ export function buildEnglishReasoningSteps(
         ? ` Multiple bonds are located at ${multipleBonds.join(", ")}.`
         : "";
       explanation = analysis.family === "aromatic"
-        ? `${primaryLabel ? `The suffix function (${primaryLabel}) keeps its numbering priority; prefix locants are considered afterward.` : "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes."}${aromaticPrefixLocantsText(analysis.substituents, "en") ? ` The assigned numbering places ${aromaticPrefixLocantsText(analysis.substituents, "en")}.` : ""}`
+        ? `${retainedReasoning?.numbering ?? (primaryLabel ? `The suffix function (${primaryLabel}) keeps its numbering priority; prefix locants are considered afterward.` : "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes.")}${aromaticPrefixLocantsText(analysis.substituents, "en") ? ` The assigned numbering places ${aromaticPrefixLocantsText(analysis.substituents, "en")}.` : ""}`
         : hasImplicitAcyclicAldehydeLocant(analysis)
         ? "The aldehyde carbon is part of the parent chain and is assigned position C1. Its position is implicit in the suffix -al, so the locant 1 does not need to be written in the name."
         : analysis.family === "cycloalkane" && selectedParentNumberingReasoning(analysis, "en")
@@ -5973,7 +5985,7 @@ export function buildEnglishReasoningSteps(
     }
 
     if ((step.nameRole === "function" && !retainedReasoning) || step.nameRole === "substituent") {
-      explanation = `${explanation} ${functionalContributionReasoning(analysis, step.nameRole, "en", isLegacyExplanation ? englishName : undefined)}`.trim();
+      explanation = `${explanation} ${functionalContributionReasoning(analysis, step.nameRole, "en", englishName)}`.trim();
       if (arylChainReasoning) explanation = `${explanation} ${arylChainReasoning[step.nameRole]}`.trim();
     }
     return {
@@ -11401,10 +11413,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     setExpandedViewFrame({ ...expandedFitBounds });
     setExpandedZoom(1);
   };
-  const selectedValence = getValenceUsed(selectedAtom.id, molecule);
-  const selectedHydrogens = getImplicitHydrogens(selectedAtom.id, molecule);
+  const selectedSummary = selectedAtomValenceSummary(selectedAtom.id, molecule);
   const selectedElement = getElement(selectedAtom);
-  const selectedValenceLimit = getValenceLimit(selectedAtom.id, molecule);
   const selectedBondRecord = selectedFusionBond
     ? molecule.bonds.find(([left, right]) =>
         (left === selectedFusionBond.a && right === selectedFusionBond.b)
@@ -13151,7 +13161,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   <span className={`selection-icon selection-${selectedElement.toLowerCase()}`}>{selectedElement}</span>
                   <div>
                     <p>{language === "en" ? `${t(elementNames[selectedElement])} ${t("seleccionado")}` : `${elementNames[selectedElement][0].toUpperCase() + elementNames[selectedElement].slice(1)} seleccionado`}</p>
-                    <strong>{selectedHydrogens} {selectedHydrogens === 1 ? t("H implícito") : t("H implícitos")} · {t("valencia")} {selectedValence}/{selectedValenceLimit}</strong>
+                    <SelectedAtomValenceText summary={selectedSummary} language={language} />
                   </div>
                 </>
               ) : (

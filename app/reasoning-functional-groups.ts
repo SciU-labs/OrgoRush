@@ -187,7 +187,29 @@ export function functionalNameEvidence(
 }
 
 /** The analyzed retained parent supplies the identity; presentation adds no naming rules. */
-export function retainedFunctionalParentReasoning(analysis: FunctionalReasoningAnalysis, language: AppLanguage) {
+export function retainedFunctionalParentReasoning(analysis: FunctionalReasoningAnalysis, language: AppLanguage, displayedName?: string) {
+  const aromaticParent = analysis.family === "aromatic" && analysis.mainChain.length === 6
+    && ((analysis.chainName === "anilina" && analysis.primaryFunctionalGroup === "amine")
+      || (analysis.chainName === "fenol" && analysis.primaryFunctionalGroup === "alcohol"));
+  const groups = analysis.functionalGroups.filter((group) => group.kind === analysis.primaryFunctionalGroup);
+  const displayedParent = localized(analysis.chainName, language).toLocaleLowerCase();
+  if (aromaticParent && (!displayedName || displayedName.toLocaleLowerCase().includes(displayedParent))
+    && groups.length === 1 && analysis.mainChain.includes(groups[0].carbonId)) {
+    const aniline = analysis.chainName === "anilina";
+    return language === "en" ? {
+      function: aniline
+        ? "The amino nitrogen is directly attached to a benzene ring. Aniline is the retained preferred IUPAC name; benzenamine is permitted in general nomenclature."
+        : "The –OH group is directly attached to a benzene ring. Phenol is the retained parent name.",
+      parent: `The parent is a six-carbon aromatic ring bearing ${aniline ? "the amino nitrogen" : "–OH"} directly; its retained functional parent is ${aniline ? "aniline" : "phenol"}.`,
+      numbering: `In the retained parent ${aniline ? "aniline" : "phenol"}, the ring carbon bearing ${aniline ? "the amino nitrogen" : "–OH"} is position 1. It is not written for the unsubstituted parent; other substituents receive their assigned locants.`,
+    } : {
+      function: aniline
+        ? "El nitrógeno amino está unido directamente a un anillo bencénico. Anilina es el nombre retenido preferido por la IUPAC; bencenamina se admite en nomenclatura general."
+        : "El grupo –OH está unido directamente a un anillo bencénico. Fenol es el nombre retenido del padre.",
+      parent: `El padre es un anillo aromático de seis carbonos unido directamente a ${aniline ? "un nitrógeno amino" : "–OH"}; su nombre funcional retenido es ${aniline ? "anilina" : "fenol"}.`,
+      numbering: `En el padre retenido ${aniline ? "anilina" : "fenol"}, el carbono del anillo unido a ${aniline ? "ese nitrógeno" : "–OH"} es la posición 1. En el padre no sustituido no se escribe ese localizador; los demás sustituyentes reciben sus localizadores asignados.`,
+    };
+  }
   const aldehydes = analysis.functionalGroups.filter((group) => group.kind === "aldehyde");
   if (analysis.family !== "aromatic" || analysis.mainChain.length !== 6
     || analysis.chainName !== "benzaldehído" || analysis.primaryFunctionalGroup !== "aldehyde"
@@ -196,9 +218,11 @@ export function retainedFunctionalParentReasoning(analysis: FunctionalReasoningA
   return language === "en" ? {
     function: `The aldehyde is identified as the principal functional group. The retained name “${name}” is used for a –CHO group directly attached to a benzene ring. The carbon of –CHO belongs to the aldehyde function and remains outside the parent ring.`,
     parent: "The parent skeleton is a six-carbon benzene ring.",
+    numbering: undefined,
   } : {
     function: `Se identifica el aldehído como la función principal. Se utiliza el nombre retenido «${name}» para un grupo –CHO unido directamente a un anillo bencénico. El carbono de –CHO pertenece a la función aldehído y queda fuera del anillo padre.`,
     parent: "El esqueleto padre es un anillo bencénico de seis carbonos.",
+    numbering: undefined,
   };
 }
 

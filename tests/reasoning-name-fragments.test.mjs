@@ -21,6 +21,8 @@ let buildIupacReasoningSteps;
 let buildEnglishReasoningSteps;
 let buildLegacyEnglishNameModel;
 let ReasoningNameFragmentView;
+let selectedAtomValenceSummary;
+let SelectedAtomValenceText;
 
 before(async () => {
   server = await createServer({
@@ -38,6 +40,8 @@ before(async () => {
     buildEnglishReasoningSteps,
     buildLegacyEnglishNameModel,
     ReasoningNameFragmentView,
+    selectedAtomValenceSummary,
+    SelectedAtomValenceText,
   } = await server.ssrLoadModule("/app/page.tsx"));
 });
 
@@ -581,6 +585,68 @@ test("indivisible aromatic functional parents remain whole, including substitute
       assert.equal(fragments["03"]?.text, name.startsWith("4-") ? "4" : undefined);
     }
   }
+});
+
+test("retained aniline and phenol explanations describe the parent and its position 1 in both languages", () => {
+  for (const [smiles, parent, expected] of [["Nc1ccccc1", "anilina", "anilina"], ["Nc1ccccc1Cl", "anilina", "2-cloroanilina"], ["Nc1ccc(Cl)cc1", "anilina", "4-cloroanilina"], ["Nc1ccccc1C", "anilina", "2-metilanilina"], ["Oc1ccccc1", "fenol", "fenol"]]) {
+    const compound = analyzed(smiles);
+    assert.equal(compound.analysis.chainName, parent);
+    assert.equal(compound.analysis.name, expected);
+    const group = compound.analysis.functionalGroups.find(g => g.kind === (parent === "anilina" ? "amine" : "alcohol"));
+    assert.equal(compound.analysis.numberedAtoms.get(group.carbonId), 1);
+    for (const language of ["es", "en"]) {
+      const name = language === "en" ? translateSpanishIupacToOpsin(compound.analysis.name) : compound.analysis.name;
+      const { steps } = derive(compound, name, language);
+      const func = steps.find(s => s.number === "01").explanation;
+      const numbering = steps.find(s => s.number === "03").explanation;
+      assert.match(func, language === "en" ? /retained|phenol/ : /retenido/);
+      assert.doesNotMatch(func, /aporta el sufijo|determines the suffix/i);
+      assert.match(numbering, language === "en" ? /position 1/ : /posición 1/);
+      if (parent === "anilina") assert.match(func, language === "en" ? /benzenamine/ : /bencenamina/);
+    }
+    if (smiles === "Nc1ccccc1") {
+      assert.equal(compound.molecule.atoms.filter(a => (a.element ?? "C") === "C").length, 6);
+      assert.equal(compound.molecule.atoms.filter(a => a.element === "N").length, 1);
+      assert.equal(compound.molecule.atoms.reduce((sum, a) => sum + selectedAtomValenceSummary(a.id, compound.molecule).hydrogens, 0), 7);
+    }
+  }
+  const amine = analyzed("Nc1ccccc1");
+  const systematic = buildEnglishReasoningSteps(buildIupacReasoningSteps(amine.molecule, amine.analysis), amine.molecule, amine.analysis, { displayedName: "benzenamine" });
+  assert.match(systematic.find(s => s.number === "01").explanation, /suffix/i);
+  assert.doesNotMatch(systematic.find(s => s.number === "01").explanation, /retained preferred/i);
+  const acid = analyzed("NCCC(=O)O");
+  assert.equal(acid.analysis.primaryFunctionalGroup, "carboxylicAcid");
+  const acidSteps = buildIupacReasoningSteps(acid.molecule, acid.analysis);
+  assert.doesNotMatch(acidSteps.map(s => s.explanation).join(" "), /padre retenido anilina/i);
+});
+
+test("selected atom summary counts bond orders and implicit hydrogens with charge-aware limits", () => {
+  for (const [smiles, element, expected] of [
+    ["Nc1ccccc1", "N", [1, 2, 3, 3]], ["CN", "N", [1, 2, 3, 3]],
+    ["CNC", "N", [2, 1, 3, 3]], ["Oc1ccccc1", "O", [1, 1, 2, 2]],
+    ["CCO", "O", [1, 1, 2, 2]], ["CC(=O)C", "O", [2, 0, 2, 2]],
+    ["c1ccccc1", "C", [3, 1, 4, 4]], ["CF", "F", [1, 0, 1, 1]],
+  ]) {
+    const { molecule } = analyzed(smiles);
+    const atom = molecule.atoms.find(a => (a.element ?? "C") === element);
+    const s = selectedAtomValenceSummary(atom.id, molecule);
+    assert.deepEqual([s.explicit, s.hydrogens, s.completed, s.limit], expected, smiles);
+  }
+  const charged = [
+    [{ atoms: [{ id: 1, element: "N", charge: 1, x: 0, y: 0 }, ...[2, 3, 4, 5].map(id => ({ id, element: "C", x: id, y: 0 }))], bonds: [[1, 2], [1, 3], [1, 4], [1, 5]] }, [4, 0, 4, 4]],
+    [{ atoms: [{ id: 1, element: "O", charge: -1, x: 0, y: 0 }, { id: 2, element: "C", x: 1, y: 0 }], bonds: [[1, 2]] }, [1, 0, 1, 1]],
+  ];
+  for (const [molecule, expected] of charged) {
+    const s = selectedAtomValenceSummary(1, molecule);
+    assert.deepEqual([s.explicit, s.hydrogens, s.completed, s.limit], expected);
+  }
+  const { molecule } = analyzed("Nc1ccccc1");
+  const nitrogen = molecule.atoms.find(a => a.element === "N");
+  const summary = selectedAtomValenceSummary(nitrogen.id, molecule);
+  const es = renderToStaticMarkup(React.createElement(SelectedAtomValenceText, { summary, language: "es" }));
+  const en = renderToStaticMarkup(React.createElement(SelectedAtomValenceText, { summary, language: "en" }));
+  assert.match(es, /Suma de órdenes de enlace explícitos: 1 · 2 H implícitos · Valencia completada: 3\/3/);
+  assert.match(en, /Explicit bond order sum: 1 · 2 implicit H · Completed valence: 3\/3/);
 });
 
 test("aromatic and cyclic branches retain their substituent links alongside the parent and suffix", () => {
