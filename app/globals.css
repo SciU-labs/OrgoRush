@@ -5074,6 +5074,7 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   place-items: center;
   width: 25px;
   height: 25px;
+  font-family: inherit;
   border: 1px solid var(--brand-border);
   border-radius: 8px;
   background: var(--paper);
@@ -10051,12 +10052,7 @@ html .a11y-high-contrast .reasoning-name-fragment-control[aria-pressed="true"] {
   .reasoning-section li { transition: none; }
 }
 .reasoning-section li > .reasoning-step-number {
-  width: 44px;
-  height: 44px;
   padding: 0;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 800;
   cursor: pointer;
   touch-action: manipulation;
 }
