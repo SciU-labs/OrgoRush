@@ -43,9 +43,10 @@ export function parentStructureSelectionReasoning(
     const ringAtom = attachment?.[0] === externalRingFunction.carbonId ? attachment[1] : attachment?.[0];
     const locant = ringAtom === undefined ? undefined : analysis.numberedAtoms.get(ringAtom);
     if (locant === undefined) return;
+    const ringCarbonCount = `${analysis.mainChain.length} ${analysis.mainChain.length === 1 ? "carbon" : "carbons"}`;
     return language === "en"
       ? `The selected parent is the ${analysis.mainChain.length}-carbon ring (${localizedParentName}). The carbon of ${externalRingFunction.kind === "carboxylicAcid" ? "–COOH" : "–CHO"} remains outside the ring and is attached at C${locant}; Blue Book P-59.2.1.8 names this with the ring parent and the ${externalRingFunction.kind === "carboxylicAcid" ? "carboxylic acid" : "carbaldehyde"} suffix. The ring locant and the external functional carbon are distinct.`
-      : `El padre seleccionado es el anillo de ${analysis.mainChain.length} carbonos (${localizedParentName}). El carbono del grupo ${externalRingFunction.kind === "carboxylicAcid" ? "–COOH" : "–CHO"} queda fuera del anillo y se une por C${locant}; Blue Book P-59.2.1.8 nombra este caso con el anillo como padre y el sufijo ${externalRingFunction.kind === "carboxylicAcid" ? "carboxílico" : "carbaldehído"}. El localizador del anillo y el carbono funcional externo son distintos.`;
+      : `El padre seleccionado es el anillo de ${ringCarbonCount} (${localizedParentName}). El carbono del grupo ${externalRingFunction.kind === "carboxylicAcid" ? "–COOH" : "–CHO"} queda fuera del anillo y se une por C${locant}; Blue Book P-59.2.1.8 nombra este caso con el anillo como padre y el sufijo ${externalRingFunction.kind === "carboxylicAcid" ? "carboxílico" : "carbaldehído"}. El localizador del anillo y el carbono funcional externo son distintos.`;
   }
   const outsideRings = (molecule.rings ?? []).filter((ring) =>
     ring.atomIds.length >= 3 && ring.atomIds.every((id) => !parent.has(id)));
@@ -54,6 +55,7 @@ export function parentStructureSelectionReasoning(
       || parent.has(b) && ring.atomIds.includes(a))));
 
   if (analysis.family === "acyclic" && principalIsOnParent && attachedRing) {
+    const chainCarbonCount = `${analysis.mainChain.length} ${analysis.mainChain.length === 1 ? "carbono" : "carbonos"}`;
     const groupLabel = analysis.primaryFunctionalGroup === "carboxylicAcid"
       ? language === "en" ? "carboxylic acid" : "ácido carboxílico"
       : analysis.primaryFunctionalGroup === "ketone"
@@ -72,8 +74,8 @@ export function parentStructureSelectionReasoning(
                   ? language === "en" ? "aldehyde" : "aldehído"
                   : language === "en" ? "principal characteristic" : "característico principal";
     return language === "en"
-      ? `The selected parent is the ${analysis.mainChain.length}-carbon acyclic chain (${localizedParentName}). The principal ${groupLabel} group occurs on this chain, while the attached ring is a separate substituent; under Blue Book P-59.2.1.2, a compound whose principal group occurs only in a chain is named as an acyclic compound and the cyclic component is cited as a substituent. The ring does not compete with the chain by carbon count.`
-      : `El padre seleccionado es la cadena acíclica de ${analysis.mainChain.length} carbonos (${localizedParentName}). El grupo principal (${groupLabel}) está en esa cadena y el anillo enlazado forma un sustituyente separado; según Blue Book P-59.2.1.2, si el grupo principal aparece solo en una cadena, el compuesto se nombra como acíclico y el componente cíclico se cita como sustituyente. El anillo no compite con la cadena por cantidad de carbonos.`;
+      ? `The selected parent is the ${analysis.mainChain.length}-carbon acyclic chain (${localizedParentName}), a chain containing the principal ${groupLabel} function. The principal ${groupLabel} group occurs on this chain, while the attached ring is a separate substituent; under Blue Book P-59.2.1.2, a compound whose principal group occurs only in a chain is named as an acyclic compound and the cyclic component is cited as a substituent. The ring does not compete with the chain by carbon count.`
+      : `El padre seleccionado es la cadena de ${chainCarbonCount} (${localizedParentName}), que contiene el grupo principal (${groupLabel}) en esa cadena. La función principal ${groupLabel} está en la cadena y el anillo enlazado forma un sustituyente separado; según Blue Book P-59.2.1.2, si el grupo principal aparece solo en una cadena, el compuesto se nombra como acíclico y el componente cíclico se cita como sustituyente. El anillo no compite con la cadena por cantidad de carbonos.`;
   }
 
   if (analysis.family === "aromatic" && !suffixGroups.length) {
@@ -89,9 +91,10 @@ export function parentStructureSelectionReasoning(
     if (!selectedAromaticRing) return;
     const sameHeteroatomClass = molecule.atoms.every((atom) => parent.has(atom.id) || atom.element === "C");
     const ringPreferenceApplies = Boolean(attachedCarbonFragment && sameHeteroatomClass);
+    const ringCarbonCount = `${selectedAromaticRing.atomIds.length} ${selectedAromaticRing.atomIds.length === 1 ? "carbon" : "carbons"}`;
     return language === "en"
-      ? `The selected parent is the aromatic ring (${localizedParentName}).${ringPreferenceApplies ? " The attached carbon fragment is cited as a substituent. Both parent candidates are in the same heteroatom class and have zero principal characteristic groups; Blue Book P-52.2.8 therefore selects the ring for a preferred IUPAC name." : attachedCarbonFragment ? " The attached carbon fragment is cited as a substituent. The validated analysis selects the aromatic ring, but these structural checks do not establish the specific ring-versus-chain criterion." : " No attached carbon substituent changes this parent selection."}`
-      : `El padre seleccionado es el anillo aromático (${localizedParentName}).${ringPreferenceApplies ? " El fragmento carbonado unido se cita como sustituyente. Ambos candidatos a padre pertenecen a la misma clase de heteroátomos y tienen cero grupos característicos principales; por eso Blue Book P-52.2.8 selecciona el anillo para el nombre IUPAC preferido." : attachedCarbonFragment ? " El fragmento carbonado unido se cita como sustituyente. El análisis validado selecciona el anillo aromático, pero estas comprobaciones estructurales no establecen el criterio específico de selección entre anillo y cadena." : " No hay un sustituyente carbonado unido que cambie esta selección del padre."}`;
+      ? `The selected aromatic parent ring (aromatic ring) contains ${ringCarbonCount} (${localizedParentName}).${ringPreferenceApplies ? " The attached carbon fragment is cited as a substituent. Both parent candidates are in the same heteroatom class and have zero principal characteristic groups; Blue Book P-52.2.8 therefore selects the ring for a preferred IUPAC name." : attachedCarbonFragment ? " The attached carbon fragment is cited as a substituent. The validated analysis selects the aromatic ring, but these structural checks do not establish the specific ring-versus-chain criterion." : " No attached carbon substituent changes this parent selection."}`
+      : `Se selecciona como padre el anillo aromático de ${selectedAromaticRing.atomIds.length} ${selectedAromaticRing.atomIds.length === 1 ? "carbono" : "carbonos"} (${localizedParentName}).${ringPreferenceApplies ? " El fragmento carbonado unido se cita como sustituyente. Ambos candidatos a padre pertenecen a la misma clase de heteroátomos y tienen cero grupos característicos principales; por eso Blue Book P-52.2.8 selecciona el anillo para el nombre IUPAC preferido." : attachedCarbonFragment ? " El fragmento carbonado unido se cita como sustituyente. El análisis validado selecciona el anillo aromático, pero estas comprobaciones estructurales no establecen el criterio específico de selección entre anillo y cadena." : " No hay un sustituyente carbonado unido que cambie esta selección del padre."}`;
   }
 
   return;
