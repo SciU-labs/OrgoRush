@@ -149,9 +149,13 @@ test("ES/EN configuration, accessible locants and explicit atom-ID fallback are 
   assert.equal(semiDevelopedStereoAccessibleLabel(center, "en", 2), "Carbon 2, S configuration");
   assert.equal(semiDevelopedStereoAccessibleLabel(center, "en"), "Atom ID 911, S configuration");
   assert.equal(semiDevelopedStereoAccessibleLabel(center, "es", 0), "Átomo ID 911, configuración S");
-  for (const text of ["Estereoquímica en semidesarrollada", "Ocultar R/S", "Mostrar R/S", "Mostrar R/S y enlaces estereoquímicos"]) {
+  for (const [text, translation] of [
+    ["Etiquetas de estereoquímica", "Stereochemistry labels"],
+    ["Ocultar R/S y E/Z", "Hide R/S and E/Z labels"],
+    ["Mostrar R/S y E/Z", "Show R/S and E/Z labels"],
+  ]) {
     assert.equal(uiText("es", text), text);
-    assert.notEqual(uiText("en", text), text);
+    assert.equal(uiText("en", text), translation);
   }
 });
 
@@ -159,7 +163,14 @@ test("page wires default labels to fit bounds and exportable informational glyph
   const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(page, /viewMode === "skeletal" && stereochemistryEnabled[\s\S]*?getTetrahedralStereoBonds/);
   assert.match(page, /const tetrahedralBadgeDescriptors = viewMode === "semi-developed"[\s\S]*?semiDevelopedStereoCenters : tetrahedralStereoBonds/);
-  assert.match(page, /value="labels-and-bonds" disabled/);
+  const stereoSelect = page.match(/<select\b[^>]*\bid="semi-developed-stereo-display"[\s\S]*?<\/select>/)?.[0];
+  assert.ok(stereoSelect, "the stereochemistry display selector is present");
+  assert.deepEqual([...stereoSelect.matchAll(/<option\b[^>]*\bvalue="([^"]+)"/g)].map((match) => match[1]), ["hidden", "labels"]);
+  assert.match(stereoSelect, /<option value="hidden">\{t\("Ocultar R\/S y E\/Z"\)\}<\/option>/);
+  assert.match(stereoSelect, /<option value="labels">\{t\("Mostrar R\/S y E\/Z"\)\}<\/option>/);
+  assert.match(stereoSelect, /aria-describedby="semi-developed-stereo-help"/);
+  assert.match(page, /<label htmlFor="semi-developed-stereo-display">\{t\("Etiquetas de estereoquímica"\)\}<\/label>/);
+  assert.doesNotMatch(page, /labels-and-bonds/);
   assert.match(page, /<SemiDevelopedStereoBadgeSvg[\s\S]*?locant=\{semiDevelopedAtomGlyphs.get\(center.atomId\)\?\.element === "C"[\s\S]*?activeAnalysis.numberedAtoms.get\(center.atomId\) : undefined/);
   assert.match(page, /semiDevelopedStereoPreferenceReady/);
   assert.match(page, /getSemiDevelopedBounds\(displayPositions.values\(\), \{[^\n]*extents: visualExtents/);
