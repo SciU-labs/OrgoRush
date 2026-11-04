@@ -44,6 +44,41 @@ for (const f of fixtures) test(`FULL exact name, parent, nested components and c
   for (const c of remapped.components) assert.deepEqual(sorted(c.atomIds),sorted(f.regions[c.id].map(id=>ids.get(id))));
   assert.equal(reconcileSystematicName(graph,f.name.replace(/4-/, '3-')+' unsupported suffix'),null);
 });
+test("ibuprofen FULL derivation explains parent selection and all components in ES without changing chemistry", () => {
+  const f = fixtures[0], graph = imported(f.smiles), graphBefore = structuredClone(graph);
+  const model = reconcileSystematicName(graph, f.name);
+  assert.equal(model?.status, "FULL");
+  assert.equal(model.name, "2-[4-(2-methylpropyl)phenyl]propanoic acid");
+  const components = Object.fromEntries(model.components.map(component => [component.id, component]));
+  const chemistrySnapshot = model.components.map(({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId }) =>
+    ({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId }));
+  assert.match(components.parent.explanation, /3-carbon acyclic chain/);
+  assert.match(components.parent.explanation, /carboxyl carbon is C1/);
+  assert.match(components.parent.explanation, /principal characteristic group/);
+  assert.match(components.parent.explanation, /P-59\.2\.1\.2/);
+  assert.match(components.parent.explanation, /phenyl ring is cited as a substituent/);
+  assert.match(components.parent.explanationEs, /cadena acíclica de 3 carbonos/);
+  assert.match(components.parent.explanationEs, /C1/);
+  assert.match(components.parent.explanationEs, /función principal/);
+  assert.match(components.parent.explanationEs, /P-59\.2\.1\.2/);
+  assert.match(components.parent.explanationEs, /anillo fenilo.*sustituyente/);
+  assert.match(components.suffix.explanationEs, /carboxilo.*función principal.*oic acid/);
+  assert.match(components.suffix.explanation, /carboxyl group.*acid suffix/);
+  assert.match(components.aryl.explanationEs, /fenilo.*C1.*localizador 2.*C4/);
+  assert.match(components.aryl.explanation, /phenyl substituent attaches at 2.*ring position 1.*ring position 4/);
+  assert.match(components["aryl-prefix"].explanationEs, /2-methylpropyl.*3 carbonos.*1 carbono.*C2.*C4/);
+  assert.match(components["aryl-prefix"].explanation, /2-methylpropyl.*3 carbons.*1-carbon branch at C2.*ring position 4/);
+  for (const id of ["parent", "suffix", "aryl", "aryl-prefix"]) {
+    assert.ok(components[id].explanationEs?.trim(), `${id} has a Spanish explanation`);
+    assert.equal(f.name.slice(components[id].start, components[id].end), components[id].text);
+  }
+  assert.deepEqual(model.parentAtomIds, [13, 11, 12]);
+  assert.deepEqual(components.parent.numbering, f.locants);
+  for (const [id, expectedAtomIds] of Object.entries(f.regions)) assert.deepEqual(sorted(components[id].atomIds), expectedAtomIds);
+  assert.deepEqual(model.components.map(({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId }) =>
+    ({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId })), chemistrySnapshot);
+  assert.deepEqual(graph, graphBefore);
+});
 test('exact attachment edges distinguish nested and principal functions',()=>{
   const ib = reconcileSystematicName(imported(fixtures[0].smiles),fixtures[0].name);
   assert.ok(ib.components.find(c=>c.id==='aryl').bondIds.some(([a,b])=>a===11&&b===8));

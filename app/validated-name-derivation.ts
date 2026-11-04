@@ -39,6 +39,41 @@ export type ValidatedNameDerivation = {
 
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 
+function rootedAlkylNumbering(elements: readonly string[], bonds: readonly [number, number, number][]) {
+  if (!elements.length || elements.some(element => element !== "C") || bonds.length !== elements.length - 1
+    || bonds.some(([, , order]) => order !== 1)) return;
+  const adjacency = elements.map((): number[] => []);
+  for (const [a, b] of bonds) {
+    adjacency[a]?.push(b);
+    adjacency[b]?.push(a);
+  }
+  const paths: number[][] = [];
+  const walk = (current: number, previous: number, path: number[]) => {
+    const next = adjacency[current].filter(id => id !== previous);
+    if (!next.length) paths.push(path);
+    else for (const id of next) walk(id, current, [...path, id]);
+  };
+  walk(0, -1, [0]);
+  paths.sort((left, right) => right.length - left.length || left.join(",").localeCompare(right.join(",")));
+  const backbone = paths[0];
+  const backboneLocants = new Map(backbone.map((id, index) => [id, index + 1]));
+  const visited = new Set(backbone);
+  const branches: { locant: number; carbons: number }[] = [];
+  for (const id of backbone) for (const start of adjacency[id]) {
+    if (visited.has(start)) continue;
+    const pending = [start]; let carbons = 0;
+    visited.add(start);
+    while (pending.length) {
+      const current = pending.pop()!; carbons += 1;
+      for (const next of adjacency[current]) if (!visited.has(next)) {
+        visited.add(next); pending.push(next);
+      }
+    }
+    branches.push({ locant: backboneLocants.get(id)!, carbons });
+  }
+  return { backboneLength: backbone.length, branches };
+}
+
 /** A finite compositional grammar, not a drug-name dictionary. Parse a name,
  * construct its complete graph, then prove identity and invariant components
  * or explicitly proved equivalent assignments. Unparsed input never gets FULL.
@@ -94,9 +129,11 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     const branch = term.elements.map(e => atom(e as "C" | "O"));
     term.bonds.forEach(([a,b,o]) => bond(branch[a], branch[b], o as 1 | 2 | 3));
     bond(ids[position - 1], branch[0]);
+    const internalNumbering = rootedAlkylNumbering(term.elements, term.bonds);
     component("aryl", "substituent", text, start, [...ids, ...branch],
       `The phenyl substituent attaches at ${locant}. Its attachment carbon is ring position 1; the nested substituent is at ring position ${position}.`,
-      { locant, parentId: "parent", numbering: [[ids[0], 1], [ids[position - 1], position]], bondIds: [
+      { explanationEs: `El grupo fenilo se une a la cadena principal por el C1 del anillo, en el localizador ${locant} de la cadena. El otro sustituyente está en el C${position} del anillo; esta numeración interna no cambia la numeración del padre.`,
+        locant, parentId: "parent", numbering: [[ids[0], 1], [ids[position - 1], position]], bondIds: [
         ...graph.bonds.filter(([a,b]) => [...ids,...branch].includes(a) && [...ids,...branch].includes(b)).map(([a,b]): [number,number] => [a,b]), [anchor, ids[0]],
       ] });
     const termStart = start + text.indexOf(termName);
@@ -104,6 +141,17 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
       term.kind === "alcohol" ? `Hydroxy specifies the –OH group at ring position ${position}.`
         : `The rooted alkyl graph defines ${termName}, attached at ring position ${position}; internal branch locants belong to this substituent.`,
       { locant: position, parentId: "aryl", bondIds: [...graph.bonds.filter(([a,b]) => branch.includes(a) && branch.includes(b)).map(([a,b]): [number,number] => [a,b]), [ids[position - 1], branch[0]]] });
+    const prefixComponent = components[components.length - 1];
+    prefixComponent.explanationEs = term.kind === "alcohol"
+      ? `El prefijo «${termName}» señala el grupo –OH unido al C${position} del anillo.`
+      : internalNumbering
+        ? `La numeración interna de «${termName}» comienza en el átomo unido al anillo (C1): la cadena más larga tiene ${internalNumbering.backboneLength} carbonos${internalNumbering.branches.length ? ` y presenta ${internalNumbering.branches.map(branch => `un ramal de ${branch.carbons} ${branch.carbons === 1 ? "carbono" : "carbonos"} en C${branch.locant}`).join(" y ")}` : " y no presenta ramales"}. Esos localizadores pertenecen al sustituyente y son independientes del C${position} del fenilo.`
+        : `El sustituyente «${termName}» se une por el C${position} del fenilo; su numeración interna se cuenta desde el punto de unión y es independiente de la numeración del anillo.`;
+    prefixComponent.explanation = term.kind === "alcohol"
+      ? `Hydroxy specifies the –OH group at ring position ${position}.`
+      : internalNumbering
+        ? `Numbering within ${termName} starts at its attachment atom (C1): its longest chain has ${internalNumbering.backboneLength} carbons${internalNumbering.branches.length ? `, with ${internalNumbering.branches.map(branch => `a ${branch.carbons}-carbon branch at C${branch.locant}`).join(" and ")}` : " and no branches"}. These locants belong to the substituent and are independent of phenyl ring position ${position}.`
+        : `The ${termName} substituent attaches at phenyl ring position ${position}; its internal numbering starts from its attachment point and is separate from ring numbering.`;
     return true;
   };
 
@@ -122,10 +170,12 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     parent = chain(n); const functionIds = acid(parent[0]); group = "carboxylicAcid";
     const parentStart = name.length - `${acyclic[3]}anoic acid`.length;
     component("parent", "parent", name.slice(parentStart), parentStart, parent,
-      `The ${n}-carbon carboxylic-acid parent includes the carboxyl carbon as C1. The phenyl substituent attaches at C${position}.`,
-      { numbering: parent.map((id,i) => [id, i + 1]) });
+      `The selected parent is the ${n}-carbon acyclic chain. The carboxyl carbon is C1 and the carboxylic acid is the principal characteristic group. Because that principal group occurs only in the chain while the phenyl ring is cited as a substituent, Blue Book P-59.2.1.2 selects the acyclic parent; phenyl attaches at C${position}.`,
+      { explanationEs: `Se selecciona como padre la cadena acíclica de ${n} carbonos. El carbono carboxílico es C1 y el ácido carboxílico es la función principal. Como esta función aparece solo en la cadena y el anillo fenilo se cita como sustituyente, el criterio Blue Book P-59.2.1.2 selecciona la cadena acíclica; el fenilo se une en C${position}.`,
+        numbering: parent.map((id,i) => [id, i + 1]) });
     component("suffix", "suffix", "oic acid", name.length - 8, functionIds,
-      "The carboxyl group determines the acid suffix and numbering origin.");
+      "The carboxyl group determines the acid suffix and numbering origin.",
+      { explanationEs: "El grupo carboxilo (–COOH) es la función principal y aporta el sufijo «oic acid» del nombre sistemático inglés." });
     if (!aryl(acyclic[2], 3, parent[position - 1], position)) return null;
   } else if (amide) {
     const n = amide[2] === "acetamide" ? 2 : roots.indexOf(amide[2].slice(0, -7));
