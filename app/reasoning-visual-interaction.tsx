@@ -23,12 +23,13 @@ export function ReasoningStepNumber({ number, title, language, target, active, o
   number: string; title: string; language: "es" | "en"; target?: ReasoningVisualTarget;
   active: boolean; onActivate: (target: ReasoningVisualTarget) => void;
 }) {
+  const displayNumber = String(Number(number));
   return target
     ? <button type="button" className="reasoning-step-number" aria-pressed={active}
-        aria-label={language === "en" ? `Step ${number}: ${title}. Highlight in the molecule for two seconds`
-          : `Paso ${number}: ${title}. Resaltar en la molécula durante dos segundos`}
-        onClick={() => onActivate(target)}>{number}</button>
-    : <span>{number}</span>;
+        aria-label={language === "en" ? `Step ${displayNumber}: ${title}. Highlight in the molecule for two seconds`
+          : `Paso ${displayNumber}: ${title}. Resaltar en la molécula durante dos segundos`}
+        onClick={() => onActivate(target)}>{displayNumber}</button>
+    : <span>{displayNumber}</span>;
 }
 
 /** An editor-only SVG overlay; original atom/bond paint and editing selection stay intact. */
