@@ -205,6 +205,7 @@ import { legacyGraphsIdentical, legacyPrefixTerm } from "./iupac1979-name-struct
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
+import { parentStructureSelectionReasoning } from "./reasoning-parent-selection";
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { describeAlphabeticalOrder, type AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order";
@@ -5338,6 +5339,7 @@ export function buildIupacReasoningSteps(
   );
   const primaryKind = analysis.primaryFunctionalGroup;
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "es", displayedName);
+  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "es");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "es");
   const aromaticNitroGroups = analysis.family === "aromatic"
     ? analysis.functionalGroups.filter((group) => group.kind === "nitro")
@@ -5396,6 +5398,8 @@ export function buildIupacReasoningSteps(
   const heterocycleParentRing = heterocycleRing(molecule);
   if (retainedReasoning) {
     parentExplanation = retainedReasoning.parent;
+  } else if (structuralParentReasoning) {
+    parentExplanation = structuralParentReasoning;
   } else if (arylChainReasoning) {
     parentExplanation = arylChainReasoning.parent;
   } else if (heterocycleParentRing) {
@@ -5403,7 +5407,7 @@ export function buildIupacReasoningSteps(
   } else if (analysis.family === "aromatic") {
     parentExplanation = `Se elige como progenitor el anillo aromático de ${chainLength} carbonos${primaryKind ? " que contiene la función de sufijo prioritaria" : ""}. La conectividad y las reglas de nomenclatura determinan la elección, independientemente de la orientación visual del dibujo; el nombre base es ${analysis.chainName}.`;
   } else if (analysis.family === "polycyclic") {
-    parentExplanation = `Se comparan los anillos del sistema y se elige como principal el que conserva la función prioritaria y el mayor número de conexiones. El esqueleto seleccionado aporta ${analysis.chainName}.`;
+    parentExplanation = `El análisis estructural reconoce un sistema de anillos y selecciona ${analysis.chainName} como progenitor. La conectividad del sistema se conserva en ese nombre; la numeración y los grupos funcionales se justifican en sus pasos correspondientes.`;
   } else if (analysis.family === "cycloalkane" && exocyclicRingFunction) {
     const functionalGroup = exocyclicRingFunction.kind === "aldehyde" ? "–CHO" : "–COOH";
     const suffix = exocyclicRingFunction.kind === "aldehyde" ? "carbaldehído" : "carboxílico";
@@ -5542,6 +5546,9 @@ export function buildIupacReasoningSteps(
         ? "El hidroxilo está unido a C1. En esta cadena de dos carbonos, el localizador 1 se omite en el nombre IUPAC preferido porque su posición es inequívoca."
         : `El enlace ${analysis.tripleBondLocants.length ? "triple" : "doble"} une C1 y C2. En esta cadena no sustituida de tres carbonos, el localizador 1 se omite en el nombre IUPAC preferido porque la posición es inequívoca.`);
     }
+    if (exocyclicRingFunction && analysis.family === "cycloalkane") {
+      explanationParts.push(`El carbono del anillo unido al grupo ${exocyclicRingFunction.kind === "aldehyde" ? "–CHO" : "–COOH"} recibe el localizador C${exocyclicRingFunction.attachmentLocant}; el carbono funcional externo queda fuera de la numeración del anillo.`);
+    }
     if (analysis.doubleBondLocants.length + analysis.tripleBondLocants.length >= 2) {
       explanationParts.push(multipleUnsaturationReasoningText(molecule, analysis, "es"));
     }
@@ -5650,6 +5657,7 @@ export function buildEnglishReasoningSteps(
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en", englishName);
   const isLegacyExplanation = presentation.profile === "iupac-1979-legacy";
   const parentName = translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName;
+  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "en", parentName);
   if (analysis.steroidSystem?.constitutionNameEs) {
     const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
     const stereoExplanation = tetrahedralDescriptors.length
@@ -5914,6 +5922,8 @@ export function buildEnglishReasoningSteps(
       const heterocycleParentRing = heterocycleRing(molecule);
       if (retainedReasoning) {
         explanation = retainedReasoning.parent;
+      } else if (structuralParentReasoning) {
+        explanation = structuralParentReasoning;
       } else if (arylChainReasoning) {
         explanation = arylChainReasoning.parent;
       } else if (exocyclicRingFunction) {
@@ -5956,6 +5966,9 @@ export function buildEnglishReasoningSteps(
         : `Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents.${unsaturation}`;
       if (analysis.doubleBondLocants.length + analysis.tripleBondLocants.length >= 2) {
         explanation += ` ${multipleUnsaturationReasoningText(molecule, analysis, "en")}`;
+      }
+      if (exocyclicRingFunction && analysis.family === "cycloalkane") {
+        explanation += ` The ring carbon bonded to ${exocyclicRingFunction.kind === "aldehyde" ? "–CHO" : "–COOH"} is assigned locant C${exocyclicRingFunction.attachmentLocant}; the external functional carbon is not part of the ring numbering.`;
       }
       if (suggestedIupacNameWithOmittedLocants(analysis) !== analysis.name) {
         explanation += analysis.primaryFunctionalGroup === "alcohol"

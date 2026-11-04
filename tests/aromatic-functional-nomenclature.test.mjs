@@ -103,3 +103,50 @@ test("the aromatic correction keeps mononuclear omission and existing nonaryl na
     assert.equal(display(analyzed(smiles).analysis, "en"), en);
   }
 });
+
+test("parent-selection reasoning uses structural evidence and follows the interface language", () => {
+  const cases = [
+    {
+      label: "ibuprofen",
+      smiles: "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+      es: [/P-59\.2\.1\.2/, /grupo principal.*esa cadena/i, /anillo.*sustituyente/i],
+      en: [/P-59\.2\.1\.2/, /principal.*chain/i, /ring.*substituent/i],
+      numbering: /C1|localizador|locant/i,
+    },
+    {
+      label: "ethylbenzene",
+      smiles: "CCc1ccccc1",
+      es: [/P-52\.2\.8/, /anillo aromático/i, /sustituyente/i, /cero grupos característicos principales/i],
+      en: [/P-52\.2\.8/, /aromatic ring/i, /substituent/i, /zero principal characteristic groups/i],
+      numbering: /localizadores|locants/i,
+    },
+    {
+      label: "cyclohexanecarboxylic acid",
+      smiles: "O=C(O)C1CCCCC1",
+      es: [/P-59\.2\.1\.8/, /anillo.*padre/i, /fuera del anillo/i],
+      en: [/P-59\.2\.1\.8/, /ring.*parent/i, /outside the ring/i],
+      numbering: /C1/i,
+    },
+  ];
+
+  for (const item of cases) {
+    const imported = moleculeFromSmiles(item.smiles);
+    assert.equal(imported.ok, true, `${item.label}: reference structure imports`);
+    const molecule = imported.molecule;
+    const analysis = page.analyzeMolecule(molecule);
+    const originalName = analysis.name;
+    const spanish = page.buildIupacReasoningSteps(molecule, analysis);
+    const english = page.buildEnglishReasoningSteps(spanish, molecule, analysis);
+    const parentEs = spanish.find((step) => step.nameRole === "parent");
+    const parentEn = english.find((step) => step.nameRole === "parent");
+    assert.ok(parentEs, `${item.label}: Spanish parent-selection step exists`);
+    assert.ok(parentEn, `${item.label}: English parent-selection step exists`);
+    for (const pattern of item.es) assert.match(parentEs.explanation, pattern, `${item.label}: ${pattern}`);
+    for (const pattern of item.en) assert.match(parentEn.explanation, pattern, `${item.label}: ${pattern}`);
+    assert.doesNotMatch(parentEs.explanation, /\b(the|chain|ring|parent|outside)\b/i, `${item.label}: Spanish explanation`);
+    assert.doesNotMatch(parentEn.explanation, /\b(el|anillo|cadena|padre|fuera)\b/i, `${item.label}: English explanation`);
+    assert.ok(english.some((step) => step.number === "03" && item.numbering.test(step.explanation)),
+      `${item.label}: numbering is explained separately`);
+    assert.equal(analysis.name, originalName, `${item.label}: generated chemical name remains unchanged`);
+  }
+});
