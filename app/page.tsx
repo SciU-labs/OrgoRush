@@ -41,6 +41,7 @@ import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { deriveStructuralComponents, structuralVisualTargets } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
+import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8445,8 +8446,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
   const [symmetryChoice, setSymmetryChoice] = useState<{model: typeof reconciledDerivation; index:number}|null>(null);
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
-  const validatedDerivation=reconciledDerivation?selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex):null;
+  const validatedDerivation=useMemo(() => reconciledDerivation
+    ? selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex) : null, [reconciledDerivation,symmetryChoiceIndex]);
   const validatedTargets = validatedDerivation ? validatedNameTargets(validatedDerivation) : {};
+  const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
   const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
@@ -12445,7 +12448,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 const order = viewMode === "semi-developed" ? semiBond?.order ?? getBondOrder(bond) : getBondOrder(bond);
                 const positionA = displayPositions.get(a)!;
                 const positionB = displayPositions.get(b)!;
-                const isMainBond = mainChainSet.has(a) && mainChainSet.has(b);
+                const structuralBondCategory = structuralColoring?.bonds.get(structuralBondKey(a, b));
+                const isMainBond = structuralBondCategory && structuralBondCategory !== "unclassified"
+                  ? structuralBondCategory === "parent"
+                  : mainChainSet.has(a) && mainChainSet.has(b);
                 const atomA = getAtom(a, molecule)!;
                 const atomB = getAtom(b, molecule)!;
                 const isFunctionalBond = !isCarbonAtom(atomA) || !isCarbonAtom(atomB);
@@ -12694,7 +12700,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     {!tetrahedralStereoBond && visibleBondSegments.map((segment, index) => (
                       <line
                         key={index}
-                        className={`${isMainBond ? "bond main-bond" : "bond branch-bond"} ${isFunctionalBond ? "functional-bond" : ""} ${viewMode === "skeletal" ? "skeletal-bond" : ""} ${reasoningHighlighted ? "reasoning-bond-highlight" : ""} ${segment.role ? `skeletal-ring-double-bond ring-double-bond-${segment.role}` : ""} ${doubleBondPatternEnabled && order === 2 ? `double-bond-pattern-line double-bond-pattern-${index}` : ""}`}
+                        className={`${isMainBond ? "bond main-bond" : "bond branch-bond"} ${isFunctionalBond && (!structuralBondCategory || structuralBondCategory === "unclassified") ? "functional-bond" : ""} ${viewMode === "skeletal" ? "skeletal-bond" : ""} ${reasoningHighlighted ? "reasoning-bond-highlight" : ""} ${segment.role ? `skeletal-ring-double-bond ring-double-bond-${segment.role}` : ""} ${doubleBondPatternEnabled && order === 2 ? `double-bond-pattern-line double-bond-pattern-${index}` : ""}`}
                         data-reasoning-highlight={reasoningHighlighted ? "true" : undefined}
                         x1={segment.x}
                         y1={segment.y}
@@ -12855,6 +12861,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   numberBadgeDistance - numberingGeometry.radius - numberingGeometry.strokeWidth / 2 - 2,
                 );
                 const labelPresentation = getAtomLabelPresentation(atom);
+                const structuralAtomCategory = structuralColoring?.atoms.get(atom.id);
+                const isStructuralParentAtom = structuralAtomCategory && structuralAtomCategory !== "unclassified"
+                  ? structuralAtomCategory === "parent"
+                  : mainChainSet.has(atom.id);
                 const atomLabel = labelPresentation.label;
                 const hydrogenSubscript = labelPresentation.hydrogenSubscript;
                 const chargeText = labelPresentation.charge;
@@ -12866,7 +12876,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     data-atom-id={atom.id}
                     data-atom-element={element}
                     data-atom-configuration={atom.tetrahedralParity}
-                    className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${mainChainSet.has(atom.id) ? "on-main-chain" : "on-branch"}`}
+                    className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${isStructuralParentAtom ? "on-main-chain" : "on-branch"}`}
                     transform={`translate(${position.x} ${position.y})`}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "carbon" : undefined}
                     data-guided-tour-target={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "active" : undefined}

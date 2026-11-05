@@ -7,7 +7,7 @@ import { localizeChemicalNameForDisplay } from "../app/iupac-name-normalization.
 import { applyNomenclatureConvention, selectableNomenclatureConventions, nomenclatureConventionLabel } from "../app/nomenclature-conventions.ts";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "../app/legacy-profile-display.ts";
 import { verifiedPubChemSystematicDisplayName } from "../app/verified-common-name-equivalences.ts";
-import { reconcileSystematicName } from "../app/validated-name-derivation.ts";
+import { presentValidatedSystematicName, reconcileSystematicName } from "../app/validated-name-derivation.ts";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 
 // Expected terminology checked independently before fixing the expected text:
@@ -26,12 +26,18 @@ function findNode(predicate, node = page) {
 }
 const variants = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === "nomenclatureVariants");
 assert.ok(variants?.initializer);
-const variantCode = ts.transpileModule(`result = ${variants.initializer.getText(page)};`, {
+const initializationNames = ["verifiedSystematicModel", "verifiedSystematicPresentation", "suggestedName", "legacyDisplay", "nomenclatureVariants"];
+const initializations = initializationNames.map(name => {
+  const declaration = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === name);
+  assert.ok(declaration?.initializer, `production initialization ${name} exists`);
+  return declaration.getText(page);
+});
+const variantCode = ts.transpileModule(`result = (() => { ${initializations.join(";\n")}; return nomenclatureVariants; })();`, {
   compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext },
 }).outputText;
 function displayedVariants(language, identity, legacy = { spanishResolution: { name: "-" }, englishName: "-" }, molecule = {atoms:[],bonds:[]}) {
   const context = { language, externalNameIsPrimary: true, namingPubChemIdentity: identity, pubChemIupacName: identity.iupacName,
-    molecule,reasoningSourceName:null,reconcileSystematicName,
+    molecule,reasoningSourceName:null,reconcileSystematicName,presentValidatedSystematicName,
     verifiedPubChemSystematicDisplayName, localizeChemicalNameForDisplay, applyNomenclatureConvention,
     selectableNomenclatureConventions, nomenclatureConventionLabel, legacyProfileDisplayName, legacyResolution: legacy,
     localizedIupac() { throw new Error("external display must not re-enter the local/Legacy translator"); },

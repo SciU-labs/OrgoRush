@@ -270,9 +270,12 @@ test("CID 5793 remains protected before local profiles are selected", () => {
   assert.equal(resolvedLegacy.englishName,"-");
   assert.equal(resolvedLegacy.spanishResolution.status,"UNSUPPORTED");
   assert.match(pageSource, /const legacyResolution = useMemo\([\s\S]*?resolveLegacyNomenclature\(molecule,legacyAnalysis/);
-  assert.match(pageSource, /const suggestedName = verifiedSystematicPresentation \?\? \(externalNameIsPrimary\s*\? verifiedPubChemSystematicDisplayName\(namingPubChemIdentity!, language\)\s*\?\? localizeChemicalNameForDisplay\(pubChemIupacName!, language, \{ source: "external" \}\)/);
-  assert.match(pageSource,/const verifiedSystematicPresentation = \(pubChemIupacName[\s\S]*?reconcileSystematicName\(molecule, pubChemIupacName\)\?\.name/,
-    "a graph-verified complete name may precede the existing external identity fallback");
+  assert.match(pageSource, /reconcileSystematicName\(molecule,\s*pubChemIupacName\)/,
+    "FULL reconciliation receives the untouched PubChem name used as the structural proof key");
+  assert.match(pageSource, /presentValidatedSystematicName\(verifiedSystematicModel,\s*language\)/,
+    "localized display is derived from the reconciled FULL model and selected UI language");
+  assert.match(pageSource, /verifiedSystematicPresentation\?\.name\s*\?\?\s*\(externalNameIsPrimary/,
+    "a verified presentation takes precedence while unsupported names retain the external fallback");
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
   assert.match(pageSource, /chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,

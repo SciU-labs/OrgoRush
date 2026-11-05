@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { inspectSmilesStructure, moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
+import { classifyValidatedStructureColors, structuralBondKey } from "../app/structural-color-classification.ts";
 import { resolveChemicalName } from "../app/name-structure-resolver.ts";
 
 const imported = s => { const r = moleculeFromSmiles(s); assert.equal(r.ok,true,r.error); return r.molecule; };
@@ -107,6 +108,68 @@ test("equivalent ibuprofen SMILES share localized presentation, parent rationale
   assert.equal(models[0].components.map(component => component.id).join(","), models[1].components.map(component => component.id).join(","));
   assert.deepEqual(models[0].components.find(component => component.id === "parent").numbering.map(([, locant]) => locant), [1, 2, 3]);
   assert.deepEqual(models[1].components.find(component => component.id === "parent").numbering.map(([, locant]) => locant), [1, 2, 3]);
+});
+test("FULL structural colors include suffix heteroatoms and nested substituents, independent of IDs", () => {
+  for (const f of [fixtures[0], fixtures[1]]) {
+    const molecule = imported(f.smiles), moleculeBefore = structuredClone(molecule);
+    const model = reconcileSystematicName(molecule, f.name);
+    assert.equal(model?.status, "FULL");
+    const modelBefore = structuredClone(model);
+    const colors = classifyValidatedStructureColors(molecule, model);
+    const parentComponents = model.components.filter(component => component.id === "parent" || component.id === "suffix");
+    const substituentComponents = model.components.filter(component => component.id !== "parent" && component.id !== "suffix");
+    const parentAtoms = new Set(parentComponents.flatMap(component => component.atomIds));
+    const substituentAtoms = new Set(substituentComponents.flatMap(component => component.atomIds));
+    const parentBonds = new Set(parentComponents.flatMap(component => component.bondIds.map(([a, b]) => structuralBondKey(a, b))));
+    const substituentBonds = new Set(substituentComponents.flatMap(component => component.bondIds.map(([a, b]) => structuralBondKey(a, b))));
+    for (const atom of molecule.atoms) {
+      assert.equal(colors.atoms.get(atom.id), parentAtoms.has(atom.id) ? "parent" : substituentAtoms.has(atom.id) ? "substituent" : "unclassified");
+    }
+    for (const [a, b] of molecule.bonds) {
+      const key = structuralBondKey(a, b);
+      assert.equal(colors.bonds.get(key), parentBonds.has(key) ? "parent" : substituentBonds.has(key) ? "substituent" : "unclassified");
+    }
+    if (f === fixtures[1]) {
+      const aryl = model.components.find(component => component.id === "aryl");
+      const attachment = aryl.bondIds.find(([a, b]) => parentAtoms.has(a) !== parentAtoms.has(b));
+      assert.ok(attachment, "N–phenyl parent-to-substituent bond is explicitly assigned");
+      assert.equal(colors.bonds.get(structuralBondKey(...attachment)), "substituent");
+      const hydroxy = model.components.find(component => component.id === "aryl-prefix");
+      assert.equal(hydroxy.atomIds.length, 1);
+      assert.equal(colors.atoms.get(hydroxy.atomIds[0]), "substituent");
+      assert.ok(hydroxy.bondIds.some(([a, b]) => colors.bonds.get(structuralBondKey(a, b)) === "substituent"));
+      const amideNitrogen = model.components.find(component => component.id === "parent").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "N");
+      assert.equal(colors.atoms.get(amideNitrogen), "parent");
+      const carbonylO = model.components.find(component => component.id === "suffix").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "O");
+      assert.equal(colors.atoms.get(carbonylO), "parent");
+      for (const [a, b] of model.components.find(component => component.id === "suffix").bondIds) {
+        assert.equal(colors.bonds.get(structuralBondKey(a, b)), "parent", "amide carbonyl/N bonds retain parent colour");
+      }
+    } else {
+      const carbonylO = model.components.find(component => component.id === "suffix").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "O");
+      assert.equal(colors.atoms.get(carbonylO), "parent");
+      const alkyl = model.components.find(component => component.id === "aryl-prefix");
+      assert.ok(alkyl.atomIds.every(id => colors.atoms.get(id) === "substituent"));
+    }
+
+    const remap = new Map(molecule.atoms.map(atom => [atom.id, atom.id * 17 + 500]));
+    const remappedMolecule = { atoms: molecule.atoms.map(atom => ({ ...atom, id: remap.get(atom.id) })).reverse(),
+      bonds: molecule.bonds.map(([a, b, order, stereo]) => [remap.get(b), remap.get(a), order, stereo]).reverse() };
+    const remappedModel = { ...model, name: "unused for classification",
+      parentAtomIds: model.parentAtomIds.map(id => remap.get(id)),
+      components: model.components.map(component => ({ ...component,
+        atomIds: component.atomIds.map(id => remap.get(id)),
+        bondIds: component.bondIds.map(([a, b]) => [remap.get(a), remap.get(b)]),
+        numbering: component.numbering.map(([id, locant]) => [remap.get(id), locant]),
+      })) };
+    const remappedColors = classifyValidatedStructureColors(remappedMolecule, remappedModel);
+    for (const [oldId, newId] of remap) assert.equal(remappedColors.atoms.get(newId), colors.atoms.get(oldId));
+    for (const [a, b] of molecule.bonds) assert.equal(
+      remappedColors.bonds.get(structuralBondKey(remap.get(a), remap.get(b))), colors.bonds.get(structuralBondKey(a, b)));
+    assert.equal(classifyValidatedStructureColors(molecule, null), null);
+    assert.deepEqual(molecule, moleculeBefore);
+    assert.deepEqual(model, modelBefore);
+  }
 });
 test('exact attachment edges distinguish nested and principal functions',()=>{
   const ib = reconcileSystematicName(imported(fixtures[0].smiles),fixtures[0].name);
