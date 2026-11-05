@@ -120,13 +120,14 @@ test("aromatic nitro groups are explained as prefixes, not principal suffix grou
     const english = buildEnglishReasoningSteps(spanish, converted.molecule, analysis);
     const spanishText = spanish.map((step) => step.explanation).join(" ");
     const englishText = english.map((step) => step.explanation).join(" ");
+    assert.notEqual(analysis.primaryFunctionalGroup, "nitro", `${label}: nitro is never the principal suffix group`);
 
     if (analysis.functionalGroups.some((group) => group.kind === "nitro")) {
       assert.match(spanishText, /prefijo nitro-/i, label);
       assert.match(englishText, /(?:prefix nitro-|nitro- prefix)/i, label);
     }
     assert.match(spanishText, /anillo aromático/i, label);
-    assert.match(englishText, /aromatic ring/i, label);
+    assert.match(englishText, /aromatic (?:parent )?ring/i, label);
     assert.doesNotMatch(spanishText, /no contiene dobles ni triples enlaces/i, label);
     assert.doesNotMatch(englishText, /contains no double or triple bonds/i, label);
   }
