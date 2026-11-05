@@ -163,9 +163,14 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     term.bonds.forEach(([a,b,o]) => bond(branch[a], branch[b], o as 1 | 2 | 3));
     bond(ids[position - 1], branch[0]);
     const internalNumbering = rootedAlkylNumbering(term.elements, term.bonds);
-    component("aryl", "substituent", text, start, [...ids, ...branch],
-      `The phenyl substituent attaches at ${locant}. Its attachment carbon is ring position 1; the nested substituent is at ring position ${position}.`,
-      { explanationEs: `El grupo fenilo se une a la cadena principal por el C1 del anillo, en el localizador ${locant} de la cadena. El otro sustituyente está en el C${position} del anillo; esta numeración interna no cambia la numeración del padre.`,
+    const arylExplanation = locant === "N"
+      ? `The phenyl substituent attaches through the amide nitrogen (N), not directly to an acetamide carbon. Its attachment carbon is ring position 1; the nested substituent is at ring position ${position}.`
+      : `The phenyl substituent attaches at ${locant}. Its attachment carbon is ring position 1; the nested substituent is at ring position ${position}.`;
+    const arylExplanationEs = locant === "N"
+      ? `El fenilo se une al nitrógeno de la amida (N), no directamente a un carbono de la acetamida. El carbono de unión es C1 del anillo y el otro sustituyente está en C${position}.`
+      : `El grupo fenilo se une a la cadena principal por el C1 del anillo, en el localizador ${locant} de la cadena. El otro sustituyente está en el C${position} del anillo; esta numeración interna no cambia la numeración del padre.`;
+    component("aryl", "substituent", text, start, [...ids, ...branch], arylExplanation,
+      { explanationEs: arylExplanationEs,
         locant, parentId: "parent", numbering: [[ids[0], 1], [ids[position - 1], position]], bondIds: [
         ...graph.bonds.filter(([a,b]) => [...ids,...branch].includes(a) && [...ids,...branch].includes(b)).map(([a,b]): [number,number] => [a,b]), [anchor, ids[0]],
       ] });

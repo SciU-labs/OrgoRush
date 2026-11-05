@@ -43,6 +43,7 @@ import { deriveStructuralComponents, structuralVisualTargets } from "./structura
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
+import { verifiedStructuralReasoning } from "./verified-structural-reasoning";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8455,6 +8456,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const validatedDerivation=useMemo(() => reconciledDerivation
     ? selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex) : null, [reconciledDerivation,symmetryChoiceIndex]);
   const validatedTargets = validatedDerivation ? validatedNameTargets(validatedDerivation) : {};
+  const verifiedStructuralExplanations = useMemo(() => verifiedStructuralReasoning({
+    molecule,
+    derivation: validatedDerivation,
+    consistency: derivationConsistency.status,
+    activeProfile: activeNomenclatureConvention === "current" ? "current" : "legacy",
+    language,
+  }), [molecule, validatedDerivation, derivationConsistency.status, activeNomenclatureConvention, language]);
   const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
   const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
@@ -15094,6 +15102,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
                     && displayedIupacName === verifiedSystematicPresentation.name
                     && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
+                  {verifiedStructuralExplanations.map(item => <p key={item.id}>
+                    <button type="button" className="reasoning-name-fragment-control" data-structural-explanation={item.id}
+                      aria-pressed={reasoningVisualTarget?.stepNumber === item.id}
+                      onClick={() => activateReasoningVisual({ stepNumber: item.id, atomIds: item.atomIds,
+                        bondIds: item.bondIds, locants: item.locants })}>{item.text}</button>
+                  </p>)}
                   {validatedDerivation.symmetry && <div data-derivation-symmetry="equivalent">
                     <p>{language==="en"?validatedDerivation.symmetry.explanation
                       : `Hay ${validatedDerivation.symmetry.assignments.length} elecciones equivalentes de cadena principal por simetría. La elección mostrada no tiene preferencia química; al alternar cambian juntos el padre y sus sustituyentes.`}</p>

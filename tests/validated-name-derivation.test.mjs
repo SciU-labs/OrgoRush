@@ -4,6 +4,8 @@ import { inspectSmilesStructure, moleculeFromSmiles } from "../app/openchemlib-a
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { classifyValidatedStructureColors, structuralBondKey } from "../app/structural-color-classification.ts";
 import { resolveDerivationConsistency } from "../app/derivation-consistency.ts";
+import { verifiedStructuralReasoning } from "../app/verified-structural-reasoning.ts";
+import { parentStructureSelectionReasoning } from "../app/reasoning-parent-selection.ts";
 import { resolveChemicalName } from "../app/name-structure-resolver.ts";
 
 const imported = s => { const r = moleculeFromSmiles(s); assert.equal(r.ok,true,r.error); return r.molecule; };
@@ -223,6 +225,91 @@ test("consistency remains unverified for explicit stereo and after graph edits",
     activeProfile: "current", language: "en", currentSourceName: fixtures[0].name });
   assert.equal(afterEdit.status, "unverified", "changed connectivity cannot reuse the earlier FULL result");
   assert.equal(afterEdit.derivation, null);
+});
+test("FULL structural explanations cover cyclic parents, nested groups and N attachment in ES and EN", () => {
+  const cases = [
+    { fixture: fixtures[0], es: /estructura acíclica.*anillo.*sustituyente.*P-59\.2\.1\.2/s, en: /acyclic.*ring.*substituent.*P-59\.2\.1\.2/s },
+    { fixture: fixtures[1], es: /nitrógeno.*unión directa.*P-66\.1\.1\.3\.1\.1/s, en: /nitrogen.*direct attachment.*P-66\.1\.1\.3\.1\.1/s },
+    { fixture: fixtures[2], es: /benzoic acid.*fuera del anillo.*carbonilo.*distinto/s, en: /benzoic acid.*outside the aromatic ring.*distinct/s },
+  ];
+  for (const { fixture, es, en } of cases) {
+    const molecule = imported(fixture.smiles);
+    const verified = resolveDerivationConsistency({ molecule, activeName: fixture.name, activeProfile: "current", language: "en", currentSourceName: fixture.name });
+    assert.equal(verified.status, "verified");
+    for (const [language, expected] of [["es", es], ["en", en]]) {
+      const items = verifiedStructuralReasoning({ molecule, derivation: verified.derivation,
+        consistency: verified.status, activeProfile: "current", language });
+      assert.ok(items.length >= 1);
+      if (fixture === fixtures[1]) {
+        assert.match(items.find(item => item.id === "full-parent-selection").text, /acetamide|acetamida/);
+        assert.match(items.find(item => item.id === "full-amide-n-substitution").text, expected);
+      } else assert.match(items.find(item => item.id === "full-parent-selection").text, expected);
+      for (const item of items) {
+        assert.ok(item.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)));
+        assert.ok(item.bondIds.every(([a, b]) => molecule.bonds.some(([x, y]) => x === a && y === b || x === b && y === a)));
+      }
+      if (fixture === fixtures[0]) {
+        assert.match(items.find(item => item.id.startsWith("full-substituent-")).text, /2-methylpropyl|2-metilpropil/);
+        assert.match(items.find(item => item.id.startsWith("full-substituent-")).text, /P-59\.2\.1\.8/);
+      }
+      if (fixture === fixtures[2]) assert.doesNotMatch(items.find(item => item.id === "full-parent-selection").text, /P-59\.2\.1\.8/);
+    }
+  }
+});
+test("structural explanations require compatible FULL evidence and ignore IDs and coordinates", () => {
+  const molecule = imported(fixtures[0].smiles);
+  const model = reconcileSystematicName(molecule, fixtures[0].name);
+  const full = verifiedStructuralReasoning({ molecule, derivation: model, consistency: "verified", activeProfile: "current", language: "es" });
+  assert.ok(full.length);
+  assert.deepEqual(verifiedStructuralReasoning({ molecule, derivation: model, consistency: "profile-mismatch", activeProfile: "legacy", language: "es" }), []);
+  assert.deepEqual(verifiedStructuralReasoning({ molecule, derivation: null, consistency: "unverified", activeProfile: "current", language: "es" }), []);
+
+  const remap = new Map(molecule.atoms.map(atom => [atom.id, atom.id * 23 + 701]));
+  const remappedMolecule = { atoms: molecule.atoms.map(atom => ({ ...atom, id: remap.get(atom.id), x: atom.x + 87, y: atom.y - 41 })).reverse(),
+    bonds: molecule.bonds.map(([a, b, order, stereo]) => [remap.get(b), remap.get(a), order, stereo]).reverse(),
+    rings: molecule.rings?.map(ring => ({ ...ring, atomIds: ring.atomIds.map(id => remap.get(id)) })) };
+  const remappedModel = { ...model, parentAtomIds: model.parentAtomIds.map(id => remap.get(id)),
+    components: model.components.map(component => ({ ...component,
+      atomIds: component.atomIds.map(id => remap.get(id)),
+      bondIds: component.bondIds.map(([a, b]) => [remap.get(a), remap.get(b)]),
+      numbering: component.numbering.map(([id, locant]) => [remap.get(id), locant]),
+    })) };
+  const remapped = verifiedStructuralReasoning({ molecule: remappedMolecule, derivation: remappedModel,
+    consistency: "verified", activeProfile: "current", language: "es" });
+  assert.deepEqual(remapped.map(item => item.text), full.map(item => item.text));
+  for (let index = 0; index < full.length; index += 1) {
+    assert.deepEqual(remapped[index].atomIds.sort((a, b) => a - b), full[index].atomIds.map(id => remap.get(id)).sort((a, b) => a - b));
+  }
+});
+test("general cyclic parent guidance uses cyclic acid/aldehyde criteria and limits PIN claims", () => {
+  const makeAnalysis = (smiles, group) => {
+    const molecule = imported(smiles), ring = molecule.rings.find(item => item.kind === "cycloalkane");
+    const center = molecule.atoms.find(atom => atom.element === "C" && molecule.bonds.some(([a, b, order]) =>
+      (a === atom.id || b === atom.id) && (order ?? 1) === 2
+      && molecule.atoms.find(other => other.id === (a === atom.id ? b : a))?.element === "O"));
+    const familyName = group === "carboxylicAcid" ? "ciclohexanocarboxílico" : "ciclohexanocarbaldehído";
+    const analysis = { family: "cycloalkane", mainChain: ring.atomIds, chainName: familyName,
+      primaryFunctionalGroup: group, functionalGroups: [{ kind: group, carbonId: center.id }],
+      numberedAtoms: new Map(ring.atomIds.map((id, index) => [id, index + 1])) };
+    return { molecule, analysis };
+  };
+  const acid = makeAnalysis("O=C(O)C1CCCCC1", "carboxylicAcid");
+  const acidEs = parentStructureSelectionReasoning(acid.molecule, acid.analysis, "es");
+  assert.match(acidEs, /P-65\.1\.2\.2\.2/);
+  assert.match(acidEs, /fuera del anillo/);
+  assert.doesNotMatch(acidEs, /P-59\.2\.1\.8/);
+  const aldehyde = makeAnalysis("O=CC1CCCCC1", "aldehyde");
+  const aldehydeEn = parentStructureSelectionReasoning(aldehyde.molecule, aldehyde.analysis, "en");
+  assert.match(aldehydeEn, /P-66\.6\.1\.1\.3/);
+  assert.match(aldehydeEn, /remains outside the ring/);
+
+  const hydrocarbon = imported("CCc1ccccc1"), aromaticRing = hydrocarbon.rings.find(item => item.kind === "aromatic");
+  const general = parentStructureSelectionReasoning(hydrocarbon, { family: "aromatic", mainChain: aromaticRing.atomIds,
+    chainName: "benzene", functionalGroups: [], numberedAtoms: new Map(aromaticRing.atomIds.map((id, index) => [id, index + 1])) }, "en");
+  assert.match(general, /P-44\.1\.2\.2 and P-52\.2\.8/);
+  assert.match(general, /does not establish that it is the PIN/);
+  assert.deepEqual(verifiedStructuralReasoning({ molecule: hydrocarbon, derivation: null, consistency: "unverified",
+    activeProfile: "current", language: "en" }), [], "unsupported hydrocarbons receive no new FULL claim");
 });
 test('exact attachment edges distinguish nested and principal functions',()=>{
   const ib = reconcileSystematicName(imported(fixtures[0].smiles),fixtures[0].name);
