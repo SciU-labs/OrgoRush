@@ -42,6 +42,7 @@ import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { deriveStructuralComponents, structuralVisualTargets } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
+import { resolveDerivationConsistency } from "./derivation-consistency";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8441,9 +8442,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       && !verifiedSystematicPresentation?.localized
       && (!isPristineInitialMolecule || showPristineMethaneName),
   });
-  const reconciledDerivation = reconcileSystematicName(molecule, displayedIupacName)
-    ?? (pubChemIupacName ? reconcileSystematicName(molecule, pubChemIupacName) : null)
-    ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
+  const derivationConsistency = resolveDerivationConsistency({
+    molecule,
+    activeName: displayedIupacName,
+    activeProfile: activeNomenclatureConvention === "current" ? "current" : "legacy",
+    language,
+    currentSourceName: verifiedSystematicModel?.name,
+  });
+  const reconciledDerivation = derivationConsistency.derivation;
   const [symmetryChoice, setSymmetryChoice] = useState<{model: typeof reconciledDerivation; index:number}|null>(null);
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
   const validatedDerivation=useMemo(() => reconciledDerivation
@@ -15077,9 +15083,16 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
               <div id="iupac-reasoning-content">
+                {derivationConsistency.status === "profile-mismatch" && <p role="note">
+                  {language === "en"
+                    ? "The available FULL derivation verifies a different name or nomenclature profile; it is not used to justify the active name."
+                    : "La derivación FULL disponible verifica otro nombre o perfil de nomenclatura; no se utiliza para justificar el nombre activo."}
+                </p>}
                 {validatedDerivation ? <div data-derivation-support="FULL">
-                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{verifiedSystematicPresentation?.name ?? validatedDerivation.name}</strong></p>
-                  {language === "es" && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
+                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{displayedIupacName}</strong></p>
+                  {language === "es" && activeNomenclatureConvention === "current"
+                    && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
+                    && displayedIupacName === verifiedSystematicPresentation.name
                     && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
                   {validatedDerivation.symmetry && <div data-derivation-symmetry="equivalent">
                     <p>{language==="en"?validatedDerivation.symmetry.explanation

@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { inspectSmilesStructure, moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { classifyValidatedStructureColors, structuralBondKey } from "../app/structural-color-classification.ts";
+import { resolveDerivationConsistency } from "../app/derivation-consistency.ts";
 import { resolveChemicalName } from "../app/name-structure-resolver.ts";
 
 const imported = s => { const r = moleculeFromSmiles(s); assert.equal(r.ok,true,r.error); return r.molecule; };
@@ -170,6 +171,58 @@ test("FULL structural colors include suffix heteroatoms and nested substituents,
     assert.deepEqual(molecule, moleculeBefore);
     assert.deepEqual(model, modelBefore);
   }
+});
+test("active-name verification preserves FULL evidence only for its compatible Current presentation", () => {
+  for (const f of [fixtures[0], fixtures[1], fixtures[2]]) {
+    const molecule = imported(f.smiles);
+    const result = resolveDerivationConsistency({ molecule, activeName: f.name, activeProfile: "current", language: "en", currentSourceName: f.name });
+    assert.equal(result.status, "verified");
+    assert.equal(result.derivation?.name, f.name);
+    const spanishName = presentValidatedSystematicName(result.derivation, "es").name;
+    const localized = resolveDerivationConsistency({ molecule, activeName: spanishName, activeProfile: "current", language: "es", currentSourceName: f.name });
+    assert.equal(localized.status, "verified");
+    assert.equal(localized.derivation?.name, f.name, "localized display reuses the original structurally verified name");
+    assert.ok(classifyValidatedStructureColors(molecule, localized.derivation), "phase 2 colors remain active for a compatible FULL proof");
+  }
+
+  const smiles = ["CC(C)Cc1ccc(C(C)C(O)=O)cc1", "CC(C)Cc1ccc(cc1)C(C)C(=O)O"];
+  assert.equal(inspectSmilesStructure(smiles[0]).canonicalConnectivity, inspectSmilesStructure(smiles[1]).canonicalConnectivity);
+  const equivalentResults = smiles.map(value => resolveDerivationConsistency({
+    molecule: imported(value), activeName: fixtures[0].name, activeProfile: "current", language: "en", currentSourceName: fixtures[0].name,
+  }));
+  assert.deepEqual(equivalentResults.map(result => result.status), ["verified", "verified"]);
+  assert.deepEqual(equivalentResults.map(result => result.derivation.components.find(component => component.id === "parent").numbering.map(([, locant]) => locant)),
+    [[1, 2, 3], [1, 2, 3]]);
+
+  const ibuprofen = imported(fixtures[0].smiles);
+  const legacy = resolveDerivationConsistency({ molecule: ibuprofen, activeName: "ácido 2-(4-isobutilfenil)propanoico",
+    activeProfile: "legacy", language: "es", currentSourceName: fixtures[0].name });
+  assert.equal(legacy.status, "profile-mismatch");
+  assert.equal(legacy.derivation, null, "Current evidence must not be exposed as the Legacy derivation");
+  assert.equal(legacy.otherEvidence?.name, fixtures[0].name);
+  const unsupported = resolveDerivationConsistency({ molecule: ibuprofen, activeName: "nombre no compatible",
+    activeProfile: "current", language: "es" });
+  assert.equal(unsupported.status, "unverified");
+  assert.equal(unsupported.derivation, null);
+});
+test("consistency remains unverified for explicit stereo and after graph edits", () => {
+  const stereoName = `(2R)-${fixtures[0].name}`;
+  const stereoMolecule = imported("CC(C)Cc1ccc(cc1)[C@H](C)C(=O)O");
+  assert.ok(stereoMolecule.atoms.some(atom => atom.tetrahedralParity), "explicit stereochemistry remains on the graph");
+  const stereo = resolveDerivationConsistency({ molecule: stereoMolecule, activeName: stereoName,
+    activeProfile: "current", language: "en", currentSourceName: stereoName });
+  assert.equal(stereo.status, "unverified", "an unsupported FULL grammar is not a chemical conflict");
+  assert.equal(stereo.derivation, null);
+
+  const molecule = imported(fixtures[0].smiles);
+  const initiallyVerified = resolveDerivationConsistency({ molecule, activeName: fixtures[0].name,
+    activeProfile: "current", language: "en", currentSourceName: fixtures[0].name });
+  assert.equal(initiallyVerified.status, "verified");
+  molecule.bonds.pop();
+  const afterEdit = resolveDerivationConsistency({ molecule, activeName: fixtures[0].name,
+    activeProfile: "current", language: "en", currentSourceName: fixtures[0].name });
+  assert.equal(afterEdit.status, "unverified", "changed connectivity cannot reuse the earlier FULL result");
+  assert.equal(afterEdit.derivation, null);
 });
 test('exact attachment edges distinguish nested and principal functions',()=>{
   const ib = reconcileSystematicName(imported(fixtures[0].smiles),fixtures[0].name);
