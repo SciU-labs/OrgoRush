@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
-import { reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
+import { inspectSmilesStructure, moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { resolveChemicalName } from "../app/name-structure-resolver.ts";
 
 const imported = s => { const r = moleculeFromSmiles(s); assert.equal(r.ok,true,r.error); return r.molecule; };
@@ -78,6 +78,35 @@ test("ibuprofen FULL derivation explains parent selection and all components in 
   assert.deepEqual(model.components.map(({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId }) =>
     ({ id, text, start, end, atomIds, bondIds, numbering, locant, parentId })), chemistrySnapshot);
   assert.deepEqual(graph, graphBefore);
+});
+test("equivalent ibuprofen SMILES share localized presentation, parent rationale, and per-graph atom links", () => {
+  const name = fixtures[0].name;
+  const smiles = ["CC(C)Cc1ccc(C(C)C(O)=O)cc1", "CC(C)Cc1ccc(cc1)C(C)C(=O)O"];
+  const inspected = smiles.map(value => inspectSmilesStructure(value));
+  assert.ok(inspected.every(result => result.ok));
+  assert.equal(inspected[0].canonicalConnectivity, inspected[1].canonicalConnectivity);
+  const models = smiles.map(value => reconcileSystematicName(imported(value), name));
+  for (const model of models) {
+    assert.equal(model?.status, "FULL");
+    const presentationEs = presentValidatedSystematicName(model, "es");
+    assert.deepEqual(presentationEs, {
+      name: "ácido 2-[4-(2-metilpropil)fenil]propanoico", language: "es", localized: true,
+    });
+    assert.deepEqual(presentValidatedSystematicName(model, "en"), { name, language: "en", localized: false });
+    const parent = model.components.find(component => component.id === "parent");
+    assert.match(parent.explanation, /P-59\.2\.1\.2/);
+    assert.match(parent.explanationEs, /P-59\.2\.1\.2/);
+    assert.match(parent.explanationEs, /cadena acíclica de 3 carbonos/);
+    for (const component of model.components) {
+      assert.equal(name.slice(component.start, component.end), component.text);
+      const target = validatedNameTargets(model)[component.id];
+      assert.deepEqual(target.atomIds, component.atomIds);
+      assert.deepEqual(target.bondIds, component.bondIds);
+    }
+  }
+  assert.equal(models[0].components.map(component => component.id).join(","), models[1].components.map(component => component.id).join(","));
+  assert.deepEqual(models[0].components.find(component => component.id === "parent").numbering.map(([, locant]) => locant), [1, 2, 3]);
+  assert.deepEqual(models[1].components.find(component => component.id === "parent").numbering.map(([, locant]) => locant), [1, 2, 3]);
 });
 test('exact attachment edges distinguish nested and principal functions',()=>{
   const ib = reconcileSystematicName(imported(fixtures[0].smiles),fixtures[0].name);

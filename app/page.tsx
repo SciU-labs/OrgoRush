@@ -40,7 +40,7 @@ import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { deriveStructuralComponents, structuralVisualTargets } from "./structural-derivation";
-import { reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
+import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8125,29 +8125,29 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       {stereochemistry:stereochemistryEnabled}),
     [legacyAnalysis, legacyNameWithSelectedStereochemistry, legacyNameUnavailable, molecule, stereochemistryEnabled],
   );
-  const nomenclatureVariants = (() => {
-    // A reconciled name is already a literal chemical grammar. Translating
-    // isolated morphemes can produce invalid mixed-language names.
-    const verifiedSystematicPresentation = (pubChemIupacName
-      ? reconcileSystematicName(molecule, pubChemIupacName)?.name : undefined)
-      ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName)?.name : undefined);
-    const suggestedName = verifiedSystematicPresentation ?? (externalNameIsPrimary
+  // Validation always uses the original source string. A localized display
+  // name is produced only when the FULL grammar proves the complete construction.
+  const verifiedSystematicModel = (pubChemIupacName
+    ? reconcileSystematicName(molecule, pubChemIupacName) : null)
+    ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
+  const verifiedSystematicPresentation = verifiedSystematicModel
+    ? presentValidatedSystematicName(verifiedSystematicModel, language) : null;
+  const suggestedName = verifiedSystematicPresentation?.name ?? (externalNameIsPrimary
       ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
         ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
       : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language));
-    const legacyDisplay = legacyProfileDisplayName({
-      language,
-      suggestedName,
-      spanish1979Name: legacyResolution.spanishResolution.name,
-      english1979Name: legacyResolution.englishName,
-    });
-    return selectableNomenclatureConventions(language).map((convention) => ({
-      convention,
-      label: nomenclatureConventionLabel(convention, language),
-      name: convention === "current" ? suggestedName : legacyDisplay.name,
-      available: convention === "current" || legacyDisplay.available,
-    }));
-  })();
+  const legacyDisplay = legacyProfileDisplayName({
+    language,
+    suggestedName,
+    spanish1979Name: legacyResolution.spanishResolution.name,
+    english1979Name: legacyResolution.englishName,
+  });
+  const nomenclatureVariants = selectableNomenclatureConventions(language).map((convention) => ({
+    convention,
+    label: nomenclatureConventionLabel(convention, language),
+    name: convention === "current" ? suggestedName : legacyDisplay.name,
+    available: convention === "current" || legacyDisplay.available,
+  }));
   const activeNomenclatureConvention = !simplifiedModeEnabled
     ? migrateNomenclatureConvention(nomenclatureConvention, language)
     : "current";
@@ -8437,6 +8437,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     language,
     canHighlight: showIupacName && displayedNameCopyable
       && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary) && sourceNameOverride === null
+      && !verifiedSystematicPresentation?.localized
       && (!isPristineInitialMolecule || showPristineMethaneName),
   });
   const reconciledDerivation = reconcileSystematicName(molecule, displayedIupacName)
@@ -15067,7 +15068,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
               <div id="iupac-reasoning-content">
                 {validatedDerivation ? <div data-derivation-support="FULL">
-                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{validatedDerivation.name}</strong></p>
+                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{verifiedSystematicPresentation?.name ?? validatedDerivation.name}</strong></p>
+                  {language === "es" && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
+                    && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
                   {validatedDerivation.symmetry && <div data-derivation-symmetry="equivalent">
                     <p>{language==="en"?validatedDerivation.symmetry.explanation
                       : `Hay ${validatedDerivation.symmetry.assignments.length} elecciones equivalentes de cadena principal por simetría. La elección mostrada no tiene preferencia química; al alternar cambian juntos el padre y sus sustituyentes.`}</p>

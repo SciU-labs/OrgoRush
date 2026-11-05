@@ -4,6 +4,7 @@ import { mapStructuralRegions, analyzeStructuralEquivalence } from "./structural
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
+import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 
 export type NameComponent = {
   id: string;
@@ -36,6 +37,38 @@ export type ValidatedNameDerivation = {
     explanation: string;
   };
 };
+
+export type ValidatedNamePresentation = { name: string; language: "en" | "es"; localized: boolean };
+
+/** Localizes only a fully reconciled acid + substituted phenyl construction.
+ * The original English name remains the validation key and component spans
+ * continue to refer to it; atom mappings come from the reconciled model. */
+export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
+  if (language === "en") return { name: model.name, language: "en", localized: false };
+  const components = Object.fromEntries(model.components.map(component => [component.id, component]));
+  const parent = components.parent, suffix = components.suffix, aryl = components.aryl, prefix = components["aryl-prefix"];
+  if (model.principalGroup !== "carboxylicAcid" || model.parentSystem || !parent || !suffix || !aryl || !prefix
+    || model.components.length !== 4 || parent.atomIds.length !== parent.numbering.length
+    || prefix.parentId !== "aryl" || typeof aryl.locant !== "number"
+    || typeof prefix.locant !== "number") return { name: model.name, language: "en", localized: false };
+  const root = iupacRootForCarbonCount(parent.atomIds.length);
+  const term = legacyPrefixTerm(prefix.text);
+  if (!root || !term || term.en !== prefix.text || term.kind || term.elements.some(element => element !== "C")
+    || term.bonds.some(([, , order]) => order !== 1) || !/^oic acid$/.test(suffix.text)
+    || !/^\d+-\[\d+-\(.+\)phenyl\].+anoic acid$/.test(model.name)) {
+    return { name: model.name, language: "en", localized: false };
+  }
+  const englishRoot = englishIupacRoot(root);
+  const expected = `${aryl.locant}-[${prefix.locant}-(${prefix.text})phenyl]${englishRoot}anoic acid`;
+  if (model.name !== expected || aryl.numbering.length !== 2
+    || aryl.numbering[0]?.[1] !== 1 || aryl.numbering[1]?.[1] !== prefix.locant
+    || aryl.atomIds.length !== 6 + term.elements.length
+    || prefix.atomIds.length !== term.elements.length || prefix.bondIds.length !== term.bonds.length + 1) {
+    return { name: model.name, language: "en", localized: false };
+  }
+  const localized = `ácido ${aryl.locant}-[${prefix.locant}-(${term.es})fenil]${root}anoico`;
+  return { name: localized, language: "es", localized: true };
+}
 
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 
