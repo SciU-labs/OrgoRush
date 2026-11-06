@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { deriveStructuralComponents } from "../app/structural-derivation.ts";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
-import { reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
+import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
 
 const imported = smiles => {
@@ -143,6 +143,62 @@ test("FULL phenyl acid fragments have independent parent, ring and rooted alkyl 
   for(const [index,key] of ["name:parent-acid","name:parent-locant-2","name:phenyl","name:phenyl-locant-4","name:2-methylpropyl"].entries()){
     const original=targetsByLanguage[0][index], item=entries.find(entry=>entry.fragment?.semanticId===key), next=item.step.fragmentTargets[reasoningFragmentId(item.step.number,item.fragment)];
     assert.deepEqual([...next.atomIds].sort((a,b)=>a-b),original.atomIds.map(id=>idMap.get(id)).sort((a,b)=>a-b),key);
+  }
+});
+
+test("all ibuprofen and paracetamol controls name and target the region they describe", () => {
+  const cases = [
+    { name: "2-[4-(2-methylpropyl)phenyl]propanoic acid", smiles: "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+      expectedLabels: { aryl: "4-(2-metilpropil)fenilo", "name:phenyl": "fenilo", "name:2-methylpropyl": "2-metilpropilo" } },
+    { name: "N-(4-hydroxyphenyl)acetamide", smiles: "CC(=O)Nc1ccc(O)cc1",
+      expectedLabels: { aryl: "4-hidroxifenilo", "name:phenyl": "fenilo", "name:hydroxy": "hidroxi", "name:4-hydroxyphenyl": "4-hidroxifenilo" } },
+  ];
+  for (const fixture of cases) {
+    const graph = imported(fixture.smiles), derivation = reconcileSystematicName(graph, fixture.name);
+    const model = buildValidatedPriorityReasoning({ derivation, graph, language: "es" });
+    const entries = model.steps.flatMap(step => [step.fragments, ...(step.fragments?.additionalFragments ?? [])]
+      .filter(Boolean).map(fragment => ({ step, fragment })));
+    const bySemanticId = new Map(entries.map(entry => [entry.fragment.semanticId, entry]));
+    for (const [semanticId, label] of Object.entries(fixture.expectedLabels)) {
+      const matchingEntries = entries.filter(entry => entry.fragment.semanticId === semanticId);
+      assert.ok(matchingEntries.length, `${fixture.name}: ${semanticId} is visible`);
+      for (const entry of matchingEntries) {
+        assert.equal(entry.fragment.text, label, `${fixture.name}: ${semanticId} label`);
+        const target = entry.step.fragmentTargets[reasoningFragmentId(entry.step.number, entry.fragment)];
+        assert.deepEqual([...target.atomIds].sort((a,b) => a-b), [...entry.fragment.atomIds].sort((a,b) => a-b),
+          `${fixture.name}: ${semanticId} atom destination`);
+        assert.deepEqual(target.bondIds.map(([a,b]) => [Math.min(a,b),Math.max(a,b)]).sort(),
+          entry.fragment.bondIds.map(([a,b]) => [Math.min(a,b),Math.max(a,b)]).sort(),
+          `${fixture.name}: ${semanticId} bond destination`);
+      }
+    }
+    for (const { step, fragment } of entries) {
+      const target = step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+      assert.ok(target, `${fixture.name}: visible ${fragment.semanticId} has a target`);
+      assert.ok(target.atomIds.every(id => graph.atoms.some(atom => atom.id === id)), `${fixture.name}: ${fragment.semanticId} atoms exist`);
+      assert.ok(target.bondIds.every(([a,b]) => graph.bonds.some(([x,y]) => Math.min(a,b) === Math.min(x,y) && Math.max(a,b) === Math.max(x,y))),
+        `${fixture.name}: ${fragment.semanticId} bonds exist`);
+    }
+    const arylTarget = bySemanticId.get("aryl").step.fragmentTargets[reasoningFragmentId(bySemanticId.get("aryl").step.number, bySemanticId.get("aryl").fragment)];
+    assert.deepEqual(arylTarget.atomIds, validatedNameTargets(derivation).aryl.atomIds, `${fixture.name}: complete aryl target`);
+    if (fixture.name.startsWith("2-")) {
+      const alkyl = bySemanticId.get("name:2-methylpropyl");
+      const target = alkyl.step.fragmentTargets[reasoningFragmentId(alkyl.step.number, alkyl.fragment)];
+      assert.equal(target.atomIds.length, 4, "ibuprofen alkyl control selects its four carbons");
+    } else {
+      const ring = bySemanticId.get("name:phenyl"), target = ring.step.fragmentTargets[reasoningFragmentId(ring.step.number, ring.fragment)];
+      assert.equal(target.atomIds.length, 6, "paracetamol phenyl control selects only the ring");
+      assert.equal(target.bondIds.length, 6, "paracetamol phenyl control selects only internal ring bonds");
+    }
+    const english = buildValidatedPriorityReasoning({ derivation, graph, language: "en" });
+    const englishControls = english.steps.flatMap(step => [step.fragments, ...(step.fragments?.additionalFragments ?? [])]).filter(Boolean);
+    assert.ok(englishControls.some(fragment => fragment.semanticId === "aryl"
+      && fragment.text === (fixture.name.startsWith("2-") ? "4-(2-methylpropyl)phenyl" : "4-hydroxyphenyl")),
+    `${fixture.name}: the English complete-aryl label is preserved`);
+    if (fixture.name.startsWith("2-")) {
+      assert.equal(presentValidatedSystematicName(derivation, "es").name, "ácido 2-[4-(2-metilpropil)fenil]propanoico");
+      assert.equal(presentValidatedSystematicName(derivation, "en").name, fixture.name);
+    }
   }
 });
 

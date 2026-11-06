@@ -60,7 +60,13 @@ function componentLabel(component: NameComponent, language: AppLanguage, derivat
   if (component.id === "suffix") return groupNames[language][derivation.principalGroup];
   if (component.id === "aryl-prefix" && component.text.includes(",") && language === "es")
     return `Grupos metilo en C${component.numbering.map(([, locant]) => locant).join(" y C")}`;
-  if (component.id === "aryl" || component.text.endsWith("phenyl")) return language === "en" ? "Phenyl group" : "Grupo fenilo";
+  if (component.id === "aryl" || component.text.endsWith("phenyl")) {
+    if (language === "en") return component.text;
+    return component.text.replace(/2-methylpropyl/g, "2-metilpropil")
+      .replace(/hydroxy/g, "hidroxi")
+      .replace(/methyl/g, "metil")
+      .replace(/phenyl/g, "fenilo");
+  }
   if (component.id.startsWith("sugar-") && (component.labelEs || component.label))
     return language === "es" ? component.labelEs ?? component.label! : component.label ?? component.labelEs!;
   const term = component.text.replace(/^\d+(?:,\d+)*-/, "").replace(/^\(|\)$/g, "");
@@ -234,7 +240,7 @@ function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], deriv
   if (ringSubstituentBond===undefined || ringSubstituentBond!==arylC4) return steps;
   const internalBonds=alkyl.bondIds.filter(([a,b])=>alkyl.atomIds.includes(a)&&alkyl.atomIds.includes(b));
   if (internalBonds.length!==alkyl.atomIds.length-1 || alkyl.atomIds.some(id=>(atomById.get(id)?.element??"C")!=="C")) return steps;
-  add(substituentStep,"name:phenyl","fenil","substituent",{atomIds:ringIds,bondIds:ringEdges});
+  add(substituentStep,"name:phenyl","fenilo","substituent",{atomIds:ringIds,bondIds:ringEdges});
   add(numberingStep,"name:phenyl-locant-4","4","numbering",{atomIds:[arylC4],bondIds:[alkylAttachment]},[[arylC4,4]]);
   const rooted=alkyl.atomIds.find(id=>validBond(id,ringSubstituentBond));
   const adjacency=new Map(alkyl.atomIds.map(id=>[id,[] as number[]]));
@@ -293,7 +299,7 @@ function buildNSubstitutedAmideFragments(steps: PriorityReasoningStep[], derivat
   const nBond = aryl.bondIds.find(([a,b]) => (a === nitrogen && ringIds.includes(b)) || (b === nitrogen && ringIds.includes(a)));
   if (!nitrogen || !nBond || ringIds.length !== 6) return;
   addControl(parentStep, "name:N", "N-", "substituent", { atomIds: [nitrogen, nBond[0] === nitrogen ? nBond[1] : nBond[0]], bondIds: [nBond] });
-  addControl(substituentStep, "name:phenyl", language === "en" ? "phenyl" : "fenil", "substituent", { atomIds: ringIds, bondIds: ringEdges });
+  addControl(substituentStep, "name:phenyl", language === "en" ? "phenyl" : "fenilo", "substituent", { atomIds: ringIds, bondIds: ringEdges });
   const locant = aryl.numbering.find(([, value]) => value === 4)?.[0];
   const hydroxyO = hydroxy.atomIds.find(id => atoms.get(id)?.element === "O");
   const hydroxyBond = hydroxy.bondIds.find(([a,b]) => a === hydroxyO && ringIds.includes(b) || b === hydroxyO && ringIds.includes(a));
@@ -307,7 +313,7 @@ function buildNSubstitutedAmideFragments(steps: PriorityReasoningStep[], derivat
   numberingStep.fragments = locantFragment;
   numberingStep.fragmentTargets[locantId] = { stepNumber: numberingStep.number, fragmentId: locantId, atomIds: [locant], bondIds: [], locants: [[locant,4]] };
   addControl(substituentStep, "name:hydroxy", language === "en" ? "hydroxy" : "hidroxi", "substituent", { atomIds: [hydroxyO], bondIds: [hydroxyBond] });
-  addControl(substituentStep, "name:4-hydroxyphenyl", language === "en" ? "4-hydroxyphenyl" : "4-hidroxifenil", "substituent",
+  addControl(substituentStep, "name:4-hydroxyphenyl", language === "en" ? "4-hydroxyphenyl" : "4-hidroxifenilo", "substituent",
     merge({ atomIds: ringIds, bondIds: ringEdges }, visual.aryl, { atomIds: [nitrogen], bondIds: [nBond] }));
   return steps;
 }
