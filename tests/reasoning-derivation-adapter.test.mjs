@@ -111,6 +111,41 @@ test("N-(4-hydroxyphenyl)acetamide name fragments highlight their exact FULL gra
   }
 });
 
+test("FULL phenyl acid fragments have independent parent, ring and rooted alkyl targets in ES/EN", () => {
+  const name="2-[4-(2-methylpropyl)phenyl]propanoic acid", graph=imported("CC(C)Cc1ccc(cc1)C(C)C(=O)O");
+  const derivation=reconcileSystematicName(graph,name); assert.equal(derivation?.status,"FULL");
+  const aryl=derivation.components.find(c=>c.id==="aryl"), alkyl=derivation.components.find(c=>c.id==="aryl-prefix");
+  const ringIds=aryl.atomIds.filter(id=>(graph.atoms.find(a=>a.id===id)?.element??"C")==="C"&&!alkyl.atomIds.includes(id));
+  const ringEdges=graph.bonds.filter(([a,b])=>ringIds.includes(a)&&ringIds.includes(b)).map(([a,b])=>[a,b]);
+  const parentC2=derivation.components.find(c=>c.id==="parent").numbering.find(([,n])=>n===2)[0];
+  const ringC1=aryl.numbering.find(([,n])=>n===1)[0], ringC4=aryl.numbering.find(([,n])=>n===4)[0];
+  const junction=graph.bonds.find(([a,b])=>alkyl.atomIds.includes(a)!==alkyl.atomIds.includes(b));
+  const targetsByLanguage=[];
+  for(const language of ["es","en"]){
+    const model=buildValidatedPriorityReasoning({derivation,graph,language});
+    const entries=model.steps.flatMap(step=>[step.fragments,...(step.fragments?.additionalFragments??[])].map(fragment=>({step,fragment})));
+    const get=semanticId=>{const item=entries.find(entry=>entry.fragment?.semanticId===semanticId);assert.ok(item,semanticId);return item.step.fragmentTargets[reasoningFragmentId(item.step.number,item.fragment)];};
+    const acid=get("name:parent-acid"); assert.deepEqual([...acid.atomIds].sort((a,b)=>a-b),[...new Set([...derivation.components.find(c=>c.id==="parent").atomIds,...derivation.components.find(c=>c.id==="suffix").atomIds])].sort((a,b)=>a-b));
+    assert.equal(acid.atomIds.length,5); assert.equal(acid.bondIds.length,4);
+    const parentLocant=get("name:parent-locant-2"); assert.deepEqual([...parentLocant.atomIds].sort((a,b)=>a-b),[parentC2,ringC1].sort((a,b)=>a-b));
+    assert.equal(parentLocant.bondIds.length,1);
+    const phenyl=get("name:phenyl"); assert.deepEqual([...phenyl.atomIds].sort((a,b)=>a-b),[...ringIds].sort((a,b)=>a-b)); assert.deepEqual([...phenyl.bondIds].map(([a,b])=>[Math.min(a,b),Math.max(a,b)]).sort(),ringEdges.map(([a,b])=>[Math.min(a,b),Math.max(a,b)]).sort());
+    const ring4=get("name:phenyl-locant-4"); assert.deepEqual(ring4.atomIds,[ringC4]); assert.ok(ring4.bondIds.some(([a,b])=>a===junction[0]&&b===junction[1]||a===junction[1]&&b===junction[0]));
+    const alkylTarget=get("name:2-methylpropyl"); assert.deepEqual([...alkylTarget.atomIds].sort((a,b)=>a-b),[...alkyl.atomIds].sort((a,b)=>a-b));
+    assert.equal(alkylTarget.atomIds.length,4); assert.equal(alkylTarget.bondIds.length,4); assert.ok(alkylTarget.locants.some(([id,locant])=>locant===2&&alkyl.atomIds.includes(id)));
+    targetsByLanguage.push([acid,parentLocant,phenyl,ring4,alkylTarget]);
+  }
+  assert.deepEqual(targetsByLanguage[0].map(t=>[...t.atomIds].sort((a,b)=>a-b)),targetsByLanguage[1].map(t=>[...t.atomIds].sort((a,b)=>a-b)));
+  const idMap=new Map(graph.atoms.map(a=>[a.id,a.id*41+1000]));
+  const permuted={atoms:graph.atoms.map(a=>({...a,id:idMap.get(a.id)})).reverse(),bonds:graph.bonds.map(([a,b,o])=>[idMap.get(b),idMap.get(a),o]).reverse()};
+  const remappedDerivation=reconcileSystematicName(permuted,name), remapped=buildValidatedPriorityReasoning({derivation:remappedDerivation,graph:permuted,language:"es"});
+  const entries=remapped.steps.flatMap(step=>[step.fragments,...(step.fragments?.additionalFragments??[])].map(fragment=>({step,fragment})));
+  for(const [index,key] of ["name:parent-acid","name:parent-locant-2","name:phenyl","name:phenyl-locant-4","name:2-methylpropyl"].entries()){
+    const original=targetsByLanguage[0][index], item=entries.find(entry=>entry.fragment?.semanticId===key), next=item.step.fragmentTargets[reasoningFragmentId(item.step.number,item.fragment)];
+    assert.deepEqual([...next.atomIds].sort((a,b)=>a-b),original.atomIds.map(id=>idMap.get(id)).sort((a,b)=>a-b),key);
+  }
+});
+
 test("Spanish fragment controls expose component IDs and preserve their verified target", () => {
   const fragment = { text: "Fenilo", label: "Seleccionar fenilo", kind: "substituent", semanticId: "aryl" };
   const id = reasoningFragmentId("04", fragment);
