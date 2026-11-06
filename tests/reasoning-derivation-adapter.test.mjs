@@ -50,13 +50,64 @@ test("FULL derivations become concise priority steps with independently selectab
       const step = model.steps.find(item => [item.fragments, ...(item.fragments?.additionalFragments ?? [])]
         .some(fragment => fragment?.semanticId === id));
       const target = step.fragmentTargets[reasoningFragmentId(step.number, control)];
-      const expected = validatedNameTargets(derivation)[id];
+      const expected = id === "parent" && derivation.principalGroup === "amide"
+        ? { atomIds: [...new Set([...validatedNameTargets(derivation).parent.atomIds, ...validatedNameTargets(derivation).suffix.atomIds])],
+            bondIds: [...new Map([...validatedNameTargets(derivation).parent.bondIds, ...validatedNameTargets(derivation).suffix.bondIds]
+              .map(([a,b]) => [`${Math.min(a,b)}:${Math.max(a,b)}`, [a,b]])).values()] }
+        : validatedNameTargets(derivation)[id];
       assert.deepEqual(target.atomIds, expected.atomIds);
       assert.deepEqual(target.bondIds, expected.bondIds);
     }
     const numbering = model.steps.find(step => step.title === "Numeración");
     const localizerButtons = [numbering.fragments, ...(numbering.fragments?.additionalFragments ?? [])];
     assert.ok(localizerButtons.some(fragment => fragment?.kind === "numbering"), `${fixture.name}: locant controls exist`);
+  }
+});
+
+test("N-(4-hydroxyphenyl)acetamide name fragments highlight their exact FULL graph regions", () => {
+  const smiles = "CC(=O)Nc1ccc(O)cc1", graph = imported(smiles), name = fullCases[0].name;
+  const derivation = reconcileSystematicName(graph, name), model = buildValidatedPriorityReasoning({ derivation, graph, language: "es" });
+  const controls = model.steps.flatMap(step => [step.fragments, ...(step.fragments?.additionalFragments ?? [])].map(fragment => ({ step, fragment })));
+  const targetFor = semanticId => {
+    const { step, fragment } = controls.find(item => item.fragment?.semanticId === semanticId) ?? {};
+    assert.ok(step && fragment, `${semanticId} control exists`);
+    return step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+  };
+  const componentTargets = validatedNameTargets(derivation), bonds = graph.bonds.map(([a,b]) => `${Math.min(a,b)}:${Math.max(a,b)}`);
+  const acetamide = targetFor("parent");
+  const acylAtoms = [...new Set([...componentTargets.parent.atomIds, ...componentTargets.suffix.atomIds])];
+  assert.deepEqual([...acetamide.atomIds].sort((a,b)=>a-b), acylAtoms.sort((a,b)=>a-b));
+  assert.ok(acetamide.atomIds.some(id => graph.atoms.find(atom=>atom.id===id)?.element === "N"));
+  const n = acetamide.atomIds.find(id => graph.atoms.find(atom=>atom.id===id)?.element === "N");
+  const nControl = targetFor("name:N");
+  const ringC1 = derivation.components.find(item=>item.id==="aryl").numbering.find(([,value])=>value===1)[0];
+  assert.deepEqual([...nControl.atomIds].sort((a,b)=>a-b), [n, ringC1].sort((a,b)=>a-b));
+  assert.equal(nControl.bondIds.length, 1);
+  const phenyl = targetFor("name:phenyl"), ring = derivation.components.find(item=>item.id==="aryl").atomIds
+    .filter(id => (graph.atoms.find(atom=>atom.id===id)?.element ?? "C") === "C");
+  assert.deepEqual([...phenyl.atomIds].sort((a,b)=>a-b), [...ring].sort((a,b)=>a-b));
+  assert.equal(phenyl.bondIds.length, 6);
+  const locant4 = targetFor("name:phenyl-locant-4");
+  assert.deepEqual(locant4.atomIds, [derivation.components.find(item=>item.id==="aryl").numbering.find(([,value])=>value===4)[0]]);
+  const hydroxy = targetFor("name:hydroxy");
+  assert.equal(hydroxy.atomIds.length, 1);
+  assert.equal(graph.atoms.find(atom=>atom.id===hydroxy.atomIds[0]).element, "O");
+  assert.equal(hydroxy.bondIds.length, 1);
+  const complete = targetFor("name:4-hydroxyphenyl");
+  assert.ok(componentTargets.aryl.atomIds.every(id => complete.atomIds.includes(id)));
+  assert.ok(complete.bondIds.some(([a,b])=>`${Math.min(a,b)}:${Math.max(a,b)}`===`${Math.min(n,complete.atomIds.find(id=>id!==n))}:${Math.max(n,complete.atomIds.find(id=>id!==n))}`));
+  assert.ok(complete.bondIds.every(([a,b])=>bonds.includes(`${Math.min(a,b)}:${Math.max(a,b)}`)));
+
+  const ids = new Map(graph.atoms.map(atom=>[atom.id,atom.id*23+900]));
+  const permuted = { atoms: graph.atoms.map(atom=>({...atom,id:ids.get(atom.id)})).reverse(),
+    bonds: graph.bonds.map(([a,b,o])=>[ids.get(b),ids.get(a),o]).reverse() };
+  const remappedDerivation = reconcileSystematicName(permuted,name);
+  const remapped = buildValidatedPriorityReasoning({ derivation: remappedDerivation, graph: permuted, language: "es" });
+  for (const semanticId of ["parent","name:N","name:phenyl","name:phenyl-locant-4","name:hydroxy","name:4-hydroxyphenyl"]) {
+    const original = targetFor(semanticId), nextControls = remapped.steps.flatMap(step=>[step.fragments,...(step.fragments?.additionalFragments??[])].map(fragment=>({step,fragment})));
+    const found = nextControls.find(item=>item.fragment?.semanticId===semanticId);
+    const next = found.step.fragmentTargets[reasoningFragmentId(found.step.number,found.fragment)];
+    assert.deepEqual([...next.atomIds].sort((a,b)=>a-b), original.atomIds.map(id=>ids.get(id)).sort((a,b)=>a-b), semanticId);
   }
 });
 
