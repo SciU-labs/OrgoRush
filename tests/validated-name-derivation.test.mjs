@@ -48,6 +48,113 @@ for (const f of fixtures) test(`FULL exact name, parent, nested components and c
   for (const c of remapped.components) assert.deepEqual(sorted(c.atomIds),sorted(f.regions[c.id].map(id=>ids.get(id))));
   assert.equal(reconcileSystematicName(graph,f.name.replace(/4-/, '3-')+' unsupported suffix'),null);
 });
+const multiArylCases = [
+  { name: "N-(3,4-dimethylphenyl)acetamide", smiles: "CC(=O)Nc1cc(C)c(C)cc1", group: "amide", locants: [3, 4], prefixes: ["aryl-prefix"] },
+  { name: "N-(3-hydroxy-4-methylphenyl)acetamide", smiles: "CC(=O)Nc1cc(O)c(C)cc1", group: "amide", locants: [3, 4], prefixes: ["aryl-prefix-3", "aryl-prefix-4"] },
+  { name: "2-(3,4-dimethylphenyl)propanoic acid", smiles: "CC(C(=O)O)c1cc(C)c(C)cc1", group: "carboxylicAcid", locants: [3, 4], prefixes: ["aryl-prefix"] },
+  { name: "N-(2,4-dimethylphenyl)acetamide", smiles: "CC(=O)Nc1c(C)cc(C)cc1", group: "amide", locants: [2, 4], prefixes: ["aryl-prefix"] },
+  { name: "N-(3-hydroxy-4-(2-methylpropyl)phenyl)acetamide", smiles: "CC(=O)Nc1cc(O)c(CC(C)C)cc1", group: "amide", locants: [3, 4], prefixes: ["aryl-prefix-3", "aryl-prefix-4"] },
+  { name: "N-(3-methyl-4-(2-methylpropyl)phenyl)acetamide", smiles: "CC(=O)Nc1cc(C)c(CC(C)C)cc1", group: "amide", locants: [3, 4], prefixes: ["aryl-prefix-3", "aryl-prefix-4"] },
+  { name: "N-(2-hydroxy-6-methylphenyl)acetamide", smiles: "CC(=O)Nc1c(O)cccc1C", group: "amide", locants: [2, 6], prefixes: ["aryl-prefix-2", "aryl-prefix-6"] },
+];
+for (const f of multiArylCases) test(`FULL proves two phenyl substituents and complete component links: ${f.name}`, () => {
+  const graph = imported(f.smiles), model = reconcileSystematicName(graph, f.name);
+  assert.equal(model?.status, "FULL");
+  assert.equal(model.principalGroup, f.group);
+  const components = Object.fromEntries(model.components.map(component => [component.id, component]));
+  const aryl = components.aryl;
+  assert.equal(aryl.text.match(/phenyl$/)?.[0], "phenyl");
+  assert.deepEqual(aryl.numbering.map(([, locant]) => locant), [1, ...f.locants]);
+  for (const component of model.components) {
+    assert.ok(component.explanation.trim(), `${component.id} has an English explanation`);
+    assert.ok(component.explanationEs?.trim(), `${component.id} has a Spanish explanation`);
+  }
+  assert.deepEqual(f.prefixes, model.components.filter(component => component.parentId === "aryl").map(component => component.id));
+  for (const id of ["parent", "suffix", "aryl", ...f.prefixes]) {
+    const component = components[id];
+    assert.ok(component, `component ${id} exists`);
+    assert.equal(f.name.slice(component.start, component.end), component.text);
+    assert.ok(component.atomIds.length > 0);
+    const target = validatedNameTargets(model)[id];
+    assert.deepEqual(target.atomIds, component.atomIds);
+    assert.deepEqual(target.bondIds, component.bondIds);
+    for (const [a, b] of component.bondIds) assert.ok(graph.bonds.some(([x, y]) => x === a && y === b || x === b && y === a));
+  }
+  const colors = classifyValidatedStructureColors(graph, model);
+  assert.ok([...colors.atoms.values()].every(category => category !== "unclassified"));
+  assert.ok([...colors.bonds.values()].every(category => category !== "unclassified"));
+  const attachment = aryl.bondIds.find(([a, b]) => components.parent.atomIds.includes(a) !== components.parent.atomIds.includes(b));
+  assert.ok(attachment, "parent-to-phenyl attachment is part of the aryl component");
+  const prefixAtoms = new Set(f.prefixes.flatMap(id => components[id].atomIds));
+  const ringAtoms = new Set(aryl.atomIds.filter(id => !prefixAtoms.has(id)));
+  for (const prefixId of f.prefixes) {
+    const prefix = components[prefixId];
+    assert.equal(prefix.parentId, "aryl");
+    const prefixAtomIds = new Set(prefix.atomIds);
+    const joins = prefix.bondIds.filter(([a, b]) => prefixAtomIds.has(a) !== prefixAtomIds.has(b));
+    assert.equal(joins.length, prefix.numbering.length, "each named locant has its own phenyl attachment bond");
+    assert.ok(joins.every(([a, b]) => ringAtoms.has(prefixAtomIds.has(a) ? b : a)), "prefix joins terminate at phenyl atoms");
+    assert.ok(prefix.bondIds.length >= prefix.atomIds.length, "internal and phenyl attachment bonds are mapped");
+  }
+  if (f.name.includes("dimethyl")) {
+    const methyl = components["aryl-prefix"];
+    assert.equal(methyl.atomIds.length, 2);
+    assert.deepEqual(methyl.numbering.map(([, locant]) => locant), f.locants);
+    assert.equal(new Set(methyl.atomIds).size, 2);
+  }
+  if (f.name.includes("hydroxy-4-methyl")) {
+    assert.equal(reconcileSystematicName(graph, "N-(4-hydroxy-3-methylphenyl)acetamide"), null,
+      "the exchanged hydroxy/methyl isomer does not match the graph");
+  }
+  if (f.name === "N-(2,4-dimethylphenyl)acetamide") {
+    assert.equal(reconcileSystematicName(graph, "N-(3,4-dimethylphenyl)acetamide"), null,
+      "the 2,4 positional isomer is not confused with the 3,4 isomer");
+  }
+  const idMap = new Map(graph.atoms.map(atom => [atom.id, atom.id * 19 + 700]));
+  const permuted = { atoms: graph.atoms.map(atom => ({ ...atom, id: idMap.get(atom.id) })).reverse(),
+    bonds: graph.bonds.map(([a, b, order, stereo]) => [idMap.get(b), idMap.get(a), order, stereo]).reverse() };
+  const remapped = reconcileSystematicName(permuted, f.name);
+  assert.equal(remapped?.status, "FULL", "ID and import ordering do not decide classification");
+  assert.deepEqual(remapped.components.map(component => component.id), model.components.map(component => component.id));
+});
+test("multi-substituted phenyl grammar rejects unsupported, incomplete, wrong-locant and stale-graph claims", () => {
+  const graph = imported(multiArylCases[1].smiles);
+  for (const invalid of [
+    "N-(3-hydroxy-4-methylphenyl)acetamide-extra",
+    "N-(3-hydroxy-4-methylphenylacetamide",
+    "N-(3-hydroxyphenyl)acetamide",
+    "N-(3-hydroxy-4-methyl-5-methylphenyl)acetamide",
+    "N-(3-chloro-4-methylphenyl)acetamide",
+    "N-(3,4,5-trimethylphenyl)acetamide",
+    "N-(2,3,4-dimethylphenyl)acetamide",
+    "N-(3-hydroxy-3-methylphenyl)acetamide",
+    "N-(4-hydroxy-5-methylphenyl)acetamide",
+  ]) assert.equal(reconcileSystematicName(graph, invalid), null, invalid);
+  assert.equal(reconcileSystematicName(imported("CC(=O)Nc1c(O)cccc1C"),
+    "N-(2-methyl-6-hydroxyphenyl)acetamide"), null, "equal locant sets use alphabetical prefix tie-breaking");
+  const stereochemical = imported("C[C@H](C(=O)O)c1cc(C)c(C)cc1");
+  assert.equal(reconcileSystematicName(stereochemical, multiArylCases[2].name), null,
+    "explicit stereochemistry is not discarded by the achiral grammar");
+  const edited = imported(multiArylCases[0].smiles);
+  assert.equal(reconcileSystematicName(edited, multiArylCases[0].name)?.status, "FULL");
+  edited.atoms.pop();
+  assert.equal(reconcileSystematicName(edited, multiArylCases[0].name), null,
+    "editing a graph invalidates its earlier cached FULL proof");
+});
+test("equivalent multi-substituted phenyl SMILES retain the same connectivity and locants", () => {
+  const name = multiArylCases[2].name;
+  const smiles = ["CC(C(=O)O)c1cc(C)c(C)cc1", "CC(C(=O)O)c1cc(C)c(cc1)C"];
+  const inspected = smiles.map(value => inspectSmilesStructure(value));
+  assert.ok(inspected.every(result => result.ok));
+  assert.equal(inspected[0].canonicalConnectivity, inspected[1].canonicalConnectivity);
+  const models = smiles.map(value => reconcileSystematicName(imported(value), name));
+  for (const model of models) {
+    assert.equal(model?.status, "FULL");
+    assert.deepEqual(model.components.find(component => component.id === "aryl").numbering.map(([, locant]) => locant), [1, 3, 4]);
+    assert.deepEqual(presentValidatedSystematicName(model, "es"), { name, language: "en", localized: false },
+      "new multi-prefix name stays in its verified source language until safe localization exists");
+  }
+});
 test("ibuprofen FULL derivation explains parent selection and all components in ES without changing chemistry", () => {
   const f = fixtures[0], graph = imported(f.smiles), graphBefore = structuredClone(graph);
   const model = reconcileSystematicName(graph, f.name);

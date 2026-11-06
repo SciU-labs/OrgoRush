@@ -151,6 +151,111 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   // One substituent at a specified position on phenyl, reusable for positional
   // isomers and the bounded alkyl grammar already used by the legacy engine.
   const aryl = (text: string, start: number, anchor: number, locant: number | "N"): boolean => {
+    type ArylSubstituent = { position: number; termName: string; offset: number };
+    let substituents: ArylSubstituent[] | undefined;
+    let multiplicativeText: string | undefined;
+    const dimethyl = /^([2-6]),([2-6])-dimethylphenyl$/.exec(text);
+    if (dimethyl) {
+      const positions = [Number(dimethyl[1]), Number(dimethyl[2])];
+      if (positions[0] === positions[1]) return false;
+      substituents = positions.map(position => ({ position, termName: "methyl", offset: 0 }));
+      multiplicativeText = text.slice(0, -"phenyl".length);
+    } else {
+      const distinct = /^([2-6])-(hydroxy|methyl)-([2-6])-(?:(hydroxy|methyl)|\((2-methylpropyl)\)|(2-methylpropyl))phenyl$/.exec(text);
+      if (distinct) {
+        const firstPosition = Number(distinct[1]), secondPosition = Number(distinct[3]);
+        const secondTerm = distinct[4] ?? distinct[5] ?? distinct[6];
+        if (!secondTerm || firstPosition === secondPosition) return false;
+        const alpha = (term: string) => term === "hydroxy" ? "hydroxy" : term === "methyl" ? "methyl" : "methylpropyl";
+        if (distinct[2] === secondTerm || alpha(distinct[2]).localeCompare(alpha(secondTerm)) > 0) return false;
+        const firstOffset = text.indexOf(distinct[2]);
+        const secondOffset = text.indexOf(secondTerm, firstOffset + distinct[2].length);
+        if (firstOffset < 0 || secondOffset < 0) return false;
+        substituents = [
+          { position: firstPosition, termName: distinct[2], offset: firstOffset },
+          { position: secondPosition, termName: secondTerm, offset: secondOffset },
+        ];
+      }
+    }
+    if (substituents) {
+      // Ring numbering starts at the parent attachment. Of the two possible
+      // directions, retain the lexicographically lower locant set; when the
+      // sets tie, alphabetic prefix order assigns the lower locant.
+      const positions = substituents.map(item => item.position).sort((a, b) => a - b);
+      const reversePositions = positions.map(position => 8 - position).sort((a, b) => a - b);
+      const compare = (a: number[], b: number[]) => {
+        for (let index = 0; index < a.length; index += 1) {
+          const difference = a[index] - b[index];
+          if (difference) return difference;
+        }
+        return 0;
+      };
+      if (compare(positions, reversePositions) > 0) return false;
+      if (compare(positions, reversePositions) === 0) {
+        const ordered = [...substituents].sort((a, b) => a.position - b.position);
+        const alpha = (term: string) => term === "hydroxy" ? "hydroxy" : term === "methyl" ? "methyl" : "methylpropyl";
+        if (alpha(ordered[0].termName).localeCompare(alpha(ordered[1].termName)) > 0) return false;
+      }
+
+      const ids = ring(); bond(anchor, ids[0]);
+      const branches: { item: ArylSubstituent; ids: number[]; bonds: [number, number][] }[] = [];
+      for (const item of substituents) {
+        const term = legacyPrefixTerm(item.termName);
+        if (!term || term.en !== item.termName || term.charges || term.elements.some(element => !["C", "O"].includes(element))
+          || term.kind && term.kind !== "alcohol"
+          || term.kind !== "alcohol" && term.bonds.some(([, , order]) => order !== 1)) return false;
+        const branch = term.elements.map(element => atom(element as "C" | "O"));
+        term.bonds.forEach(([a, b, order]) => bond(branch[a], branch[b], order as 1 | 2 | 3));
+        bond(ids[item.position - 1], branch[0]);
+        branches.push({ item, ids: branch, bonds: term.bonds.map(([a, b]) => [branch[a], branch[b]] as [number, number]) });
+      }
+      const allBranchIds = branches.flatMap(branch => branch.ids);
+      const ringNumbering: [number, number | string][] = [[ids[0], 1], ...positions.map(position => [ids[position - 1], position] as [number, number])];
+      const ringIds = [...ids, ...allBranchIds];
+      const arylBonds: [number, number][] = [
+        ...graph.bonds.filter(([a, b]) => ringIds.includes(a) && ringIds.includes(b)).map(([a, b]) => [a, b] as [number, number]),
+        [anchor, ids[0]],
+      ];
+      const groupList = substituents.map(item => `${item.termName} at ring position ${item.position}`).join(" and ");
+      const groupListEs = substituents.map(item => `${item.termName === "hydroxy" ? "hidroxi" : item.termName} en C${item.position}`).join(" y ");
+      component("aryl", "substituent", text, start, ringIds,
+        `The phenyl ring attaches to the parent at ring position 1; its additional substituents are ${groupList}. Ring locants are independent of parent locants.`,
+        { explanationEs: `El anillo fenilo se une al padre por C1; sus sustituyentes adicionales son ${groupListEs}. Los localizadores del anillo son independientes de los del padre.`,
+          locant, parentId: "parent", numbering: ringNumbering, bondIds: arylBonds });
+
+      if (multiplicativeText) {
+        const methylBranches = branches;
+        const methylIds = methylBranches.flatMap(branch => branch.ids);
+        const methylBonds: [number, number][] = methylBranches.flatMap(branch => [
+          ...branch.bonds, [ids[branch.item.position - 1], branch.ids[0]] as [number, number],
+        ]);
+        component("aryl-prefix", "prefix", multiplicativeText, start, methylIds,
+          `The multiplicative prefix dimethyl denotes two distinct methyl groups at ring positions ${positions.join(" and ")}.`,
+          { start, end: start + multiplicativeText.length, locant: positions[0], parentId: "aryl",
+            numbering: methylBranches.map(branch => [branch.ids[0], branch.item.position]), bondIds: methylBonds,
+            explanationEs: `El prefijo multiplicativo «dimetil» representa dos grupos metilo distintos en C${positions[0]} y C${positions[1]} del anillo. Cada localizador se vincula con el carbono de su grupo.` });
+      } else {
+        for (const branch of branches) {
+          const { item } = branch;
+          const term = legacyPrefixTerm(item.termName)!;
+          const termStart = start + item.offset;
+          const internalNumbering = rootedAlkylNumbering(term.elements, term.bonds);
+          const explanation = term.kind === "alcohol"
+            ? `Hydroxy specifies the –OH group at ring position ${item.position}.`
+            : `The rooted ${item.termName} graph attaches at ring position ${item.position}; its internal numbering starts at the attachment atom and is separate from ring numbering.`;
+          const explanationEs = term.kind === "alcohol"
+            ? `El prefijo «hidroxi» identifica el grupo –OH unido al C${item.position} del anillo.`
+            : internalNumbering
+              ? `La numeración interna de «${item.termName}» comienza en el átomo unido al anillo (C1): la cadena más larga tiene ${internalNumbering.backboneLength} carbonos${internalNumbering.branches.length ? ` y presenta ${internalNumbering.branches.map(branchInfo => `un ramal de ${branchInfo.carbons} ${branchInfo.carbons === 1 ? "carbono" : "carbonos"} en C${branchInfo.locant}`).join(" y ")}` : " y no presenta ramales"}. Esos localizadores son independientes del C${item.position} del fenilo.`
+              : `El sustituyente «${item.termName}» se une al C${item.position} del fenilo; su numeración interna es independiente de la numeración del anillo.`;
+          component(`aryl-prefix-${item.position}`, "prefix", item.termName, termStart, branch.ids, explanation,
+            { locant: item.position, parentId: "aryl", numbering: [[branch.ids[0], item.position]],
+              bondIds: [...branch.bonds, [ids[item.position - 1], branch.ids[0]]], explanationEs });
+        }
+      }
+      return true;
+    }
+
     const m = /^([2-4])-(?:\(([^()]+)\)|(hydroxy|[a-z]+))phenyl$/.exec(text);
     if (!m) return false;
     const position = Number(m[1]), termName = m[2] ?? m[3];
@@ -197,16 +302,16 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   let parent: number[];
   let allowEquivalentParents = false;
   let parentSystem: ValidatedNameDerivation["parentSystem"];
-  const acyclic = /^([2-9])-\[(.+)\]([a-z]+)anoic acid$/.exec(name);
+  const acyclic = /^([2-9])-(?:\[(.+)\]|\((.+)\))([a-z]+)anoic acid$/.exec(name);
   const amide = /^N-\((.+)\)(acetamide|[a-z]+anamide)$/.exec(name);
   // Parentheses are optional only around this single, unambiguous prefix.
   // Keep paired delimiters explicit rather than deleting punctuation globally.
   const benzoic = /^([2-4])-(?:\((acetyloxy|[a-z]+anoyloxy)\)|(acetyloxy|[a-z]+anoyloxy))benzoic acid$/.exec(name);
   if (acyclic) {
-    const n = roots.indexOf(acyclic[3]), position = Number(acyclic[1]);
+    const n = roots.indexOf(acyclic[4]), position = Number(acyclic[1]);
     if (n < 2 || position > n) return null;
     parent = chain(n); const functionIds = acid(parent[0]); group = "carboxylicAcid";
-    const parentStart = name.length - `${acyclic[3]}anoic acid`.length;
+    const parentStart = name.length - `${acyclic[4]}anoic acid`.length;
     component("parent", "parent", name.slice(parentStart), parentStart, parent,
       `The selected parent is the ${n}-carbon acyclic chain. The carboxyl carbon is C1 and the carboxylic acid is the principal characteristic group. Because that principal group occurs only in the chain while the phenyl ring is cited as a substituent, Blue Book P-59.2.1.2 selects the acyclic parent; phenyl attaches at C${position}.`,
       { explanationEs: `Se selecciona como padre la cadena acíclica de ${n} carbonos. El carbono carboxílico es C1 y el ácido carboxílico es la función principal. Como esta función aparece solo en la cadena y el anillo fenilo se cita como sustituyente, el criterio Blue Book P-59.2.1.2 selecciona la cadena acíclica; el fenilo se une en C${position}.`,
@@ -214,7 +319,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     component("suffix", "suffix", "oic acid", name.length - 8, functionIds,
       "The carboxyl group determines the acid suffix and numbering origin.",
       { explanationEs: "El grupo carboxilo (–COOH) es la función principal y aporta el sufijo «oic acid» del nombre sistemático inglés." });
-    if (!aryl(acyclic[2], 3, parent[position - 1], position)) return null;
+    if (!aryl(acyclic[2] ?? acyclic[3], 3, parent[position - 1], position)) return null;
   } else if (amide) {
     const n = amide[2] === "acetamide" ? 2 : roots.indexOf(amide[2].slice(0, -7));
     if (n < 2) return null;
@@ -222,8 +327,10 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     const parentStart = name.length - amide[2].length;
     component("parent", "parent", amide[2], parentStart, [...parent, nitrogen],
       `The ${n}-carbon amide is the parent. N- identifies substitution on nitrogen rather than on a numbered carbon.`,
-      { numbering: parent.map((id,i) => [id, i + 1]) });
-    component("suffix", "suffix", "amide", name.length - 5, [parent[0], oxygen, nitrogen], "C(=O)–N establishes the amide suffix.");
+      { numbering: parent.map((id,i) => [id, i + 1]),
+        explanationEs: `La estructura principal incluye la cadena de ${n} carbonos y el grupo amida. El prefijo «N-» indica que la sustitución ocurre en el nitrógeno, no en un carbono numerado.` });
+    component("suffix", "suffix", "amide", name.length - 5, [parent[0], oxygen, nitrogen], "C(=O)–N establishes the amide suffix.",
+      { explanationEs: "El grupo C(=O)–N establece el sufijo de amida y forma parte de la estructura principal." });
     if (!aryl(amide[1], 3, nitrogen, "N")) return null;
     parent = [...parent, nitrogen];
   } else if (benzoic) {
