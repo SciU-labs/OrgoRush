@@ -44,6 +44,7 @@ import { presentValidatedSystematicName, reconcileSystematicName, selectEquivale
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
+import { buildValidatedVisualNumbering } from "./visual-numbering";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8460,30 +8461,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain), [molecule, activeAnalysis.mainChain]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
-    ? (() => {
-        const parent = validatedDerivation.components.find(component => component.role === "parent");
-        const parentAtomIds = parent?.atomIds ?? [];
-        const numbering = new Map(parent?.numbering ?? []);
-        const ringCarbonIds = parentAtomIds.filter(id => (molecule.atoms.find(atom => atom.id === id)?.element ?? "C") === "C"
-          && molecule.bonds.filter(([a,b]) => a === id && parentAtomIds.includes(b) || b === id && parentAtomIds.includes(a)).length === 2);
-        if (ringCarbonIds.length === 6) {
-          const anchors = [...numbering].filter(([id, locant]) => ringCarbonIds.includes(id) && typeof locant === "number");
-          const start = anchors.find(([,locant]) => locant === 1)?.[0];
-          if (start !== undefined) {
-            const ring = new Set(ringCarbonIds), paths: number[][] = [];
-            const walk = (id: number, previous: number, path: number[]) => {
-              if (path.length === 6) { if (id === start) paths.push(path); return; }
-              const next = molecule.bonds.flatMap(([a,b]) => a === id ? [b] : b === id ? [a] : [])
-                .filter(other => ring.has(other) && other !== previous && !path.includes(other));
-              for (const other of next) walk(other, id, [...path, other]);
-            };
-            for (const next of molecule.bonds.flatMap(([a,b]) => a === start ? [b] : b === start ? [a] : []).filter(id => ring.has(id))) walk(next, start, [start,next]);
-            const matching = paths.find(path => anchors.every(([id,locant]) => path[Number(locant)-1] === id));
-            if (matching) matching.forEach((id,index) => numbering.set(id,index+1));
-          }
-        }
-        return numbering;
-      })()
+    ? buildValidatedVisualNumbering(molecule, validatedDerivation)
     : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
   // An external name or source override has no verified correspondence to the
