@@ -39,11 +39,11 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
-import { deriveStructuralComponents, structuralVisualTargets } from "./structural-derivation";
-import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, selectEquivalentAssignment } from "./validated-name-derivation";
+import { deriveStructuralComponents } from "./structural-derivation";
+import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
-import { verifiedStructuralReasoning } from "./verified-structural-reasoning";
+import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning } from "./reasoning-derivation-adapter";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -757,6 +757,7 @@ export function ReasoningNameFragmentView({
           <div key={part.semanticId ? `${part.semanticId}:${part.start ?? index}:${part.text}` : index} className={`reasoning-name-fragment reasoning-name-fragment--${part.kind}`}>
             {selectable
               ? <button type="button" className={`reasoning-name-fragment-control ${selected ? "is-selected" : ""}`}
+                  data-name-fragment={part.semanticId}
                   aria-label={visualTargets
                     ? language === "en" ? `${part.text}: ${part.label}. Highlight in the molecule for two seconds`
                       : `${part.text}: ${part.label}. Resaltar en la molécula durante dos segundos`
@@ -8455,16 +8456,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
   const validatedDerivation=useMemo(() => reconciledDerivation
     ? selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex) : null, [reconciledDerivation,symmetryChoiceIndex]);
-  const validatedTargets = validatedDerivation ? validatedNameTargets(validatedDerivation) : {};
-  const verifiedStructuralExplanations = useMemo(() => verifiedStructuralReasoning({
-    molecule,
-    derivation: validatedDerivation,
-    consistency: derivationConsistency.status,
-    activeProfile: activeNomenclatureConvention === "current" ? "current" : "legacy",
-    language,
-  }), [molecule, validatedDerivation, derivationConsistency.status, activeNomenclatureConvention, language]);
   const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
-  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, ""), [molecule]);
+  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain), [molecule, activeAnalysis.mainChain]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
     ? new Map(validatedDerivation.components.find(c => c.role === "parent")!.numbering)
@@ -8478,7 +8471,6 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     || (!!structuralEvidence.carbohydrate && !validatedDerivation);
   const structuralDerivation = { ...structuralEvidence,
     name: { ...structuralEvidence.name, text: displayedIupacName } };
-  const structuralTargets = structuralVisualTargets(structuralDerivation);
   const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
   const selectedUnsaturationSemanticId = selectedUnsaturationReference?.key === reasoningReferenceKey && selectedUnsaturationReference.molecule === molecule
     ? selectedUnsaturationReference.semanticId
@@ -8496,6 +8488,17 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const reasoningVisualReferences = buildReasoningVisualReferences({ molecule, analysis: activeAnalysis,
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualTargets = reasoningVisualReferences.steps;
+  const fullPriorityReasoning = useMemo(() => validatedDerivation ? buildValidatedPriorityReasoning({
+    derivation: validatedDerivation, graph: molecule, language,
+    alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
+  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps]);
+  const structuralPriorityReasoning = useMemo(() => reasoningUnsupported && structuralDerivation.status === "PARTIAL"
+    ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language }) : null,
+  [reasoningUnsupported, structuralEvidence, language]);
+  const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
+    ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
+      fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,
+      componentIds: [], componentKind: undefined, source: "local" as const }));
   const reasoningVisualContextKey = `${reasoningReferenceKey}|${JSON.stringify(localizedReasoningSteps)}|${JSON.stringify(reasoningVisualReferences)}|${JSON.stringify(validatedDerivation)}`;
   const { target: reasoningVisualTarget, activate: activateReasoningVisual, clear: clearReasoningVisual } =
     useReasoningVisualInteraction(reasoningVisualContextKey, molecule, reasoningVisualsEnabled
@@ -15090,80 +15093,57 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             </div>
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
-              <div id="iupac-reasoning-content">
+              <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning ? "PARTIAL" : undefined}>
                 {derivationConsistency.status === "profile-mismatch" && <p role="note">
                   {language === "en"
                     ? "The available FULL derivation verifies a different name or nomenclature profile; it is not used to justify the active name."
                     : "La derivación FULL disponible verifica otro nombre o perfil de nomenclatura; no se utiliza para justificar el nombre activo."}
                 </p>}
-                {validatedDerivation ? <div data-derivation-support="FULL">
-                  <p>{language === "en" ? "Validated derivation of" : "Derivación validada de"} <strong>{displayedIupacName}</strong></p>
-                  {language === "es" && activeNomenclatureConvention === "current"
-                    && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
-                    && displayedIupacName === verifiedSystematicPresentation.name
-                    && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
-                  {verifiedStructuralExplanations.map(item => <p key={item.id}>
-                    <button type="button" className="reasoning-name-fragment-control" data-structural-explanation={item.id}
-                      aria-pressed={reasoningVisualTarget?.stepNumber === item.id}
-                      onClick={() => activateReasoningVisual({ stepNumber: item.id, atomIds: item.atomIds,
-                        bondIds: item.bondIds, locants: item.locants })}>{item.text}</button>
-                  </p>)}
-                  {validatedDerivation.symmetry && <div data-derivation-symmetry="equivalent">
-                    <p>{language==="en"?validatedDerivation.symmetry.explanation
-                      : `Hay ${validatedDerivation.symmetry.assignments.length} elecciones equivalentes de cadena principal por simetría. La elección mostrada no tiene preferencia química; al alternar cambian juntos el padre y sus sustituyentes.`}</p>
-                    <button type="button" data-symmetry-choice={symmetryChoiceIndex} onClick={()=>setSymmetryChoice({model:reconciledDerivation,
-                      index:(symmetryChoiceIndex+1)%validatedDerivation.symmetry!.assignments.length})}>
-                      {language==="en"?"Show equivalent parent":"Mostrar padre equivalente"} ({symmetryChoiceIndex+1}/{validatedDerivation.symmetry.assignments.length})
-                    </button>
-                  </div>}
-                  <ol>{validatedDerivation.components.map((component, index) => <li key={component.id} data-name-component={component.id}>
-                    <ReasoningStepNumber number={String(index + 1)} title={component.text} language={language}
-                      target={validatedTargets[component.id]} active={reasoningVisualTarget?.stepNumber === component.id}
-                      onActivate={activateReasoningVisual} />
-                    <div><button type="button" className="reasoning-name-fragment-control" data-name-fragment={component.id}
-                      aria-pressed={reasoningVisualTarget?.stepNumber === component.id}
-                      onClick={() => activateReasoningVisual(validatedTargets[component.id])}>{language==="es"?(component.labelEs??component.label??component.text):(component.label??component.text)}</button>
-                      <p>{language==="es"?(component.explanationEs??component.explanation):component.explanation}</p></div>
-                  </li>)}</ol>
-                </div> : reasoningUnsupported ? <div data-derivation-support={structuralDerivation.status}>
-                  <p>{language === "en"
-                  ? "A verified derivation is not available for this structure and displayed name. Parent and substituent colours are suppressed. A name from an external source is not automatically a preferred IUPAC name."
-                  : "No hay una derivación verificada disponible para esta estructura y el nombre mostrado. Se desactivan los colores del esqueleto principal y de los sustituyentes. Un nombre de una fuente externa no es automáticamente un nombre IUPAC preferido."}</p>
-                  {structuralDerivation.status === "PARTIAL" && <>
-                    <p>{structuralDerivation.carbohydrate ? language === "en"
-                      ? "PARTIAL: the carbohydrate skeleton is verified. Contextual numbers are structural carbohydrate locants; the complete displayed name has not been proved. Missing configurations are not assigned."
-                      : "PARTIAL: esqueleto del carbohidrato verificado. Los números contextuales son localizadores estructurales del carbohidrato; el nombre completo mostrado no está demostrado. No se asignan configuraciones ausentes."
-                      : language === "en" ? "PARTIAL: verified structural components. Select a component to inspect its atoms and bonds; no name locants are assigned."
-                      : "PARTIAL: componentes estructurales verificados. Selecciona un componente para ver sus átomos y enlaces; no se asignan localizadores del nombre."}</p>
-                    <ol>{structuralDerivation.components.map((component, index) => <li key={component.id} data-structural-kind={component.kind}>
-                      <ReasoningStepNumber number={String(index + 1)} title={language==="es"?(component.kindEs??component.kind):component.kind} language={language}
-                        target={structuralTargets[component.id]} active={reasoningVisualTarget?.stepNumber === component.id}
-                        onActivate={activateReasoningVisual} />
-                      <div><strong>{language==="es"?(component.kindEs??component.kind):component.kind}</strong><p>{language==="es"?(component.evidenceEs??component.evidence):component.evidence}</p></div>
-                    </li>)}</ol>
-                  </>}
-                </div> : <ol>
-                  {localizedReasoningSteps.map((step) => (
-                    <li key={step.number} id={`iupac-reasoning-step-${step.number}`} className={activeReasoningStep === step.number ? "reasoning-step-target" : undefined}>
+                {validatedDerivation && <p className="reasoning-validated-name"><strong>{displayedIupacName}</strong></p>}
+                {language === "es" && activeNomenclatureConvention === "current"
+                  && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
+                  && displayedIupacName === verifiedSystematicPresentation.name
+                  && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
+                {structuralPriorityReasoning && <p role="note">{language === "en"
+                  ? "PARTIAL: the active name is not reconciled. These steps show graph evidence only; candidate regions do not establish its parent or name locants."
+                  : "PARTIAL: el nombre activo no está conciliado. Estos pasos muestran evidencia del grafo; las regiones candidatas no establecen su padre ni sus localizadores."}</p>}
+                {structuralPriorityReasoning && structuralDerivation.carbohydrate && <p role="note">{language === "en"
+                  ? "Carbohydrate numbers shown here are structural locants; they do not verify the displayed name."
+                  : "Los números del carbohidrato son localizadores estructurales; no verifican el nombre mostrado."}</p>}
+                {structuralPriorityReasoning?.steps.length === 0 && <p>{language === "en"
+                  ? "No selectable structural region can be established from this graph."
+                  : "El grafo no permite establecer una región estructural seleccionable."}</p>}
+                <ol>
+                  {displayedReasoningSteps.map(step => {
+                    const stepActive = reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId;
+                    return <li key={step.number} id={`iupac-reasoning-step-${step.number}`}
+                      className={activeReasoningStep === step.number ? "reasoning-step-target" : undefined}
+                      data-name-component={step.source === "FULL" && step.componentIds.length === 1 ? step.componentIds[0] : undefined}
+                      data-structural-kind={step.componentKind}>
                       <ReasoningStepNumber number={step.number} title={step.title} language={language}
-                        target={reasoningVisualTargets[step.number]} active={reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId}
-                        onActivate={activateReasoningCanvasReference} />
+                        target={step.target} active={stepActive} onActivate={activateReasoningCanvasReference} />
                       <div>
                         <strong>{step.title}</strong>
                         {step.alphabeticalOrder
                           ? <ReasoningAlphabeticalContent presentation={step.alphabeticalOrder} />
                           : <p><ChemicalNotationText value={step.explanation} /></p>}
-                        {reasoningNameFragments[step.number] && (
-                        <ReasoningNameFragmentView fragment={reasoningNameFragments[step.number]}
-                          stepNumber={step.number} language={language}
-                          visualTargets={reasoningVisualReferences.fragments}
+                        {step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
+                          language={language} visualTargets={step.fragmentTargets}
                           selectedFragmentId={reasoningVisualTarget?.fragmentId}
-                          onActivateTarget={activateReasoningCanvasReference} />
-                        )}
+                          onActivateTarget={activateReasoningCanvasReference} />}
+                        {validatedDerivation?.symmetry && step.source === "FULL" && step.componentIds.includes("parent")
+                          && <div data-derivation-symmetry="equivalent">
+                            <button type="button" data-symmetry-choice={symmetryChoiceIndex}
+                              aria-label={language === "en" ? "Show an equivalent parent assignment" : "Mostrar una asignación equivalente del padre"}
+                              onClick={() => setSymmetryChoice({ model: reconciledDerivation,
+                                index: (symmetryChoiceIndex + 1) % validatedDerivation.symmetry!.assignments.length })}>
+                              {language === "en" ? "Equivalent parent assignment" : "Asignación equivalente del padre"} ({symmetryChoiceIndex + 1}/{validatedDerivation.symmetry.assignments.length})
+                            </button>
+                          </div>}
                       </div>
-                    </li>
-                  ))}
-                </ol>}
+                    </li>;
+                  })}
+                </ol>
               </div>
             </div>
           </div>

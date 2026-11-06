@@ -8,7 +8,8 @@ import { recognizeCarbohydrate, type CarbohydrateStructure } from "./carbohydrat
 export type StructuralComponent = {
   id: string;
   kind: "carboxylicAcid" | "ester" | "amide" | "carbonyl" | "hydroxyl" | "ringSystem" | "stereo" | "N-bound methyl"
-    | "carbohydrate backbone" | "ring oxygen" | "hemiacetal" | "hemiketal" | "configurational reference" | "anomeric centre";
+    | "carbohydrate backbone" | "ring oxygen" | "hemiacetal" | "hemiketal" | "configurational reference" | "anomeric centre"
+    | "candidate carbon skeleton" | "connected fragment";
   atomIds: number[];
   bondIds: [number, number][];
   evidence: string;
@@ -24,6 +25,56 @@ export type StructuralDerivation = {
   carbohydrate?: CarbohydrateStructure;
 };
 const key = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
+
+/** Returns a unique longest path in the acyclic carbon-only graph, if one is
+ * structurally distinguishable. This is candidate skeleton evidence only;
+ * it never assigns IUPAC parent status or locants. */
+function uniqueLongestAcyclicCarbonPath(graph: GeneratedMolecule, ringAtomIds: ReadonlySet<number>): number[] | null {
+  const carbonIds = graph.atoms.filter(atom => (atom.element ?? "C") === "C" && !ringAtomIds.has(atom.id)).map(atom => atom.id);
+  const allowed = new Set(carbonIds);
+  const adjacency = new Map(carbonIds.map(id => [id, [] as number[]]));
+  const edges = graph.bonds.filter(([a, b]) => allowed.has(a) && allowed.has(b));
+  for (const [a, b] of edges) { adjacency.get(a)!.push(b); adjacency.get(b)!.push(a); }
+  const seen = new Set<number>(), candidates: number[][] = [];
+  for (const start of carbonIds) {
+    if (seen.has(start)) continue;
+    const component: number[] = [], queue = [start]; seen.add(start);
+    while (queue.length) {
+      const id = queue.pop()!; component.push(id);
+      for (const next of adjacency.get(id)!) if (!seen.has(next)) { seen.add(next); queue.push(next); }
+    }
+    if (component.length < 2) continue;
+    const componentSet = new Set(component);
+    const componentEdges = edges.filter(([a, b]) => componentSet.has(a) && componentSet.has(b));
+    if (componentEdges.length !== component.length - 1) continue;
+    let longest = 0;
+    const pathSets = new Map<string, number[]>();
+    for (const source of component) {
+      const parent = new Map<number, number | null>([[source, null]]), distances = new Map([[source, 0]]), pending = [source];
+      while (pending.length) {
+        const id = pending.shift()!;
+        for (const next of adjacency.get(id)!) if (!distances.has(next)) {
+          distances.set(next, distances.get(id)! + 1); parent.set(next, id); pending.push(next);
+        }
+      }
+      for (const target of component) {
+        if (target === source) continue;
+        const length = distances.get(target)!;
+        let path: number[] = [], current: number | null = target;
+        while (current !== null) { path.push(current); current = parent.get(current) ?? null; }
+        const signature = [...path].sort((a, b) => a - b).join(",");
+        if (length > longest) { longest = length; pathSets.clear(); }
+        if (length === longest) pathSets.set(signature, path.reverse());
+      }
+    }
+    if (pathSets.size === 1) candidates.push([...pathSets.values()][0]);
+  }
+  if (!candidates.length) return null;
+  const maximum = Math.max(...candidates.map(path => path.length));
+  const longestCandidates = candidates.filter(path => path.length === maximum);
+  const signatures = new Set(longestCandidates.map(path => [...path].sort((a, b) => a - b).join(",")));
+  return signatures.size === 1 ? longestCandidates[0] : null;
+}
 
 /** Text cards and SVG selections consume exactly the same component evidence. */
 export function structuralVisualTargets(model: StructuralDerivation): Record<string, ReasoningVisualTarget> {
@@ -125,7 +176,7 @@ export function analyzeStructuralEquivalence(source: GeneratedMolecule, target: 
 
 /** Structural evidence only: no external-name token parsing, parent selection,
  * locants or unspecified stereo assignments are performed by this fallback. */
-export function deriveStructuralComponents(graph: GeneratedMolecule, displayedName: string): StructuralDerivation {
+export function deriveStructuralComponents(graph: GeneratedMolecule, displayedName: string, analyzedCandidate?: readonly number[]): StructuralDerivation {
   const result: StructuralDerivation = { status: "UNSUPPORTED", name: { text: displayedName, classification: "unverified", preferred: false },
     components: [], limitations: ["External-name fragments, parent selection and locants have not been reconciled with this graph."] };
   try {
@@ -135,11 +186,11 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
     const atom = (id: number) => graph.atoms.find(a => a.id === id)!;
     const neutral = (id: number) => !(atom(id).charge ?? 0);
     const hydrogen = (id: number) => molecule.getImplicitHydrogens(atomIdToIndex.get(id)!);
-    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering'], evidenceEs?:string) => {
+    const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering'], evidenceEs?:string, extraBonds:[number,number][] = []) => {
       const region = [...new Set(ids)], included = new Set(region);
       result.components.push({ id: `structural-${result.components.length}`, kind, atomIds: region,
-        bondIds: graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b]), evidence,...(numbering?{numbering}:{}),
-        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico'} as const)[kind] });
+        bondIds: [...graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b] as [number,number]), ...extraBonds], evidence,...(numbering?{numbering}:{}),
+        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico','candidate carbon skeleton':'Candidato de cadena carbonada','connected fragment':'Fragmento conectado'} as const)[kind] });
     };
     const acylOxygens = new Set<number>();
     for (const c of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
@@ -172,6 +223,37 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
       }
       const ids = [...region], count = ringEdges.filter(([a, b]) => region.has(a) && region.has(b)).length - ids.length + 1;
       add("ringSystem", ids, `Connected ring system with ${count} independent cycle(s). Shared ring atoms belong to this same system; no parent numbering is assigned.`,undefined,`Sistema de anillos conectado con ${count} ciclo(s) independiente(s). Los átomos compartidos pertenecen al mismo sistema; no se asigna numeración parental.`);
+    }
+    const ringAtomIds = new Set(ringEdges.flatMap(([a, b]) => [a, b]));
+    const analyzedPath = analyzedCandidate && analyzedCandidate.length >= 2 && new Set(analyzedCandidate).size === analyzedCandidate.length
+      && analyzedCandidate.every(id => graph.atoms.some(atom => atom.id === id && (atom.element ?? "C") === "C" && !ringAtomIds.has(id)))
+      && analyzedCandidate.slice(1).every((id, index) => graph.bonds.some(([a, b]) => a === analyzedCandidate[index] && b === id || b === analyzedCandidate[index] && a === id))
+      ? [...analyzedCandidate] : undefined;
+    const carbonSkeleton = analyzedPath ?? uniqueLongestAcyclicCarbonPath(graph, ringAtomIds);
+    if (carbonSkeleton) {
+      const skeleton = new Set(carbonSkeleton);
+      add("candidate carbon skeleton", carbonSkeleton,
+        analyzedPath
+          ? `The local structure analysis identifies a connected ${carbonSkeleton.length}-carbon path. It remains a candidate only; longest-parent priority and name locants are not inferred.`
+          : `The graph contains a unique longest acyclic carbon path of ${carbonSkeleton.length} atoms. This is a structural candidate only; no IUPAC parent priority or locants are assigned.`, undefined,
+        analyzedPath
+          ? `El análisis estructural local identifica un camino conectado de ${carbonSkeleton.length} carbonos. Sigue siendo candidato; no se infieren la prioridad del padre más largo ni localizadores del nombre.`
+          : `El grafo contiene un camino carbonado acíclico máximo y único de ${carbonSkeleton.length} átomos. Es solo un candidato estructural; no se asignan prioridad de padre IUPAC ni localizadores.`);
+      const outside = new Set(graph.atoms.map(atom => atom.id).filter(id => !skeleton.has(id))), pendingOutside = new Set(outside);
+      while (pendingOutside.size) {
+        const start = pendingOutside.values().next().value!, region = new Set<number>(), queue = [start];
+        while (queue.length) {
+          const id = queue.pop()!; if (region.has(id)) continue;
+          region.add(id); pendingOutside.delete(id);
+          for (const [a, b] of graph.bonds) if (a === id && outside.has(b) || b === id && outside.has(a)) queue.push(a === id ? b : a);
+        }
+        const attachments = graph.bonds.filter(([a, b]) => region.has(a) && skeleton.has(b) || region.has(b) && skeleton.has(a))
+          .map(([a, b]) => [a, b] as [number, number]);
+        if (!attachments.length) continue;
+        add("connected fragment", [...region],
+          `This connected graph fragment lies outside the candidate carbon path and retains ${attachments.length} attachment bond(s). No substituent name or locant is inferred.`, undefined,
+          `Este fragmento conectado queda fuera del camino carbonado candidato y conserva ${attachments.length} enlace(s) de unión. No se infieren nombres de sustituyentes ni localizadores.`, attachments);
+      }
     }
     for(const c of graph.atoms.filter(a=>(a.element??"C")==="C" && neutral(a.id))) {
       const ns=neighbors(c.id);
