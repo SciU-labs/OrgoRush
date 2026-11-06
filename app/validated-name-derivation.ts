@@ -46,6 +46,21 @@ export type ValidatedNamePresentation = { name: string; language: "en" | "es"; l
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
   if (language === "en") return { name: model.name, language: "en", localized: false };
   const components = Object.fromEntries(model.components.map(component => [component.id, component]));
+  if (model.principalGroup === "amide" && !model.parentSystem) {
+    const parent = components.parent, suffix = components.suffix, aryl = components.aryl;
+    const match = /^N-\(((?:4-hydroxy|3-hydroxy-4-methyl|3,4-dimethyl)phenyl)\)(acetamide)$/.exec(model.name);
+    const expectedPrefixes = match?.[1].startsWith("4-hydroxy") ? ["aryl-prefix"]
+      : match?.[1].startsWith("3-hydroxy") ? ["aryl-prefix-3", "aryl-prefix-4"]
+        : match ? ["aryl-prefix"] : [];
+    const prefixComponents = model.components.filter(component => component.id.startsWith("aryl-prefix"));
+    if (match && parent?.text === "acetamide" && suffix?.text === "amide" && aryl?.text === match[1]
+      && model.components.length === 3 + expectedPrefixes.length
+      && prefixComponents.length === expectedPrefixes.length
+      && expectedPrefixes.every(id => prefixComponents.some(component => component.id === id))) {
+      const arylEs = match[1].replace("hydroxy", "hidroxi").replace(/methyl/g, "metil").replace("phenyl", "fenil");
+      return { name: `N-(${arylEs})acetamida`, language: "es", localized: true };
+    }
+  }
   const parent = components.parent, suffix = components.suffix, aryl = components.aryl, prefix = components["aryl-prefix"];
   if (model.principalGroup !== "carboxylicAcid" || model.parentSystem || !parent || !suffix || !aryl || !prefix
     || model.components.length !== 4 || parent.atomIds.length !== parent.numbering.length

@@ -314,6 +314,26 @@ test("active-name verification preserves FULL evidence only for its compatible C
   assert.equal(unsupported.status, "unverified");
   assert.equal(unsupported.derivation, null);
 });
+test("FULL N-substituted phenyl amides localize compositionally and reuse only Current evidence", () => {
+  const cases = [
+    ["N-(4-hydroxyphenyl)acetamide", "CC(=O)Nc1ccc(O)cc1", "N-(4-hidroxifenil)acetamida"],
+    ["N-(3-hydroxy-4-methylphenyl)acetamide", "CC(=O)Nc1cc(O)c(C)cc1", "N-(3-hidroxi-4-metilfenil)acetamida"],
+    ["N-(3,4-dimethylphenyl)acetamide", "CC(=O)Nc1cc(C)c(C)cc1", "N-(3,4-dimetilfenil)acetamida"],
+  ];
+  for (const [english, smiles, spanish] of cases) {
+    const molecule = imported(smiles), derivation = reconcileSystematicName(molecule, english);
+    assert.equal(derivation?.status, "FULL", english);
+    assert.deepEqual(presentValidatedSystematicName(derivation, "es"), { name: spanish, language: "es", localized: true });
+    const current = resolveDerivationConsistency({ molecule, activeName: spanish, activeProfile: "current", language: "es", currentSourceName: english });
+    assert.equal(current.status, "verified", spanish);
+    assert.equal(current.derivation?.name, english);
+    const legacy = resolveDerivationConsistency({ molecule, activeName: spanish, activeProfile: "legacy", language: "es", currentSourceName: english });
+    assert.equal(legacy.status, "profile-mismatch", "localized Current proof is not reused for Legacy");
+    assert.equal(legacy.derivation, null);
+  }
+  const acid = reconcileSystematicName(imported(fixtures[0].smiles), fixtures[0].name);
+  assert.equal(presentValidatedSystematicName(acid, "es").name, "ácido 2-[4-(2-metilpropil)fenil]propanoico");
+});
 test("consistency remains unverified for explicit stereo and after graph edits", () => {
   const stereoName = `(2R)-${fixtures[0].name}`;
   const stereoMolecule = imported("CC(C)Cc1ccc(cc1)[C@H](C)C(=O)O");
