@@ -47,8 +47,16 @@ function localTerm(text: string, language: AppLanguage) {
 }
 
 function componentLabel(component: NameComponent, language: AppLanguage, derivation: ValidatedNameDerivation) {
-  if (component.id === "parent") return derivation.principalGroup === "amide" && derivation.components.some(item => item.id === "aryl")
-    ? language === "en" ? "acetamide" : "acetamida" : language === "en" ? "Validated parent" : "Padre validado";
+  if (component.id === "parent") {
+    if (derivation.principalGroup === "amide" && component.text === "acetamide") return language === "en" ? "acetamide" : "acetamida";
+    if (derivation.principalGroup === "carboxylicAcid" && component.text === "benzoic acid") return language === "en" ? component.text : "ácido benzoico";
+    const acyclicAcid = /^(meth|eth|prop|but|pent|hex|hept|oct|non|dec)anoic acid$/.exec(component.text);
+    if (derivation.principalGroup === "carboxylicAcid" && acyclicAcid) {
+      const es = { meth:"metanoico", eth:"etanoico", prop:"propanoico", but:"butanoico", pent:"pentanoico", hex:"hexanoico", hept:"heptanoico", oct:"octanoico", non:"nonanoico", dec:"decanoico" }[acyclicAcid[1]];
+      return language === "en" ? component.text : `ácido ${es}`;
+    }
+    return component.text;
+  }
   if (component.id === "suffix") return groupNames[language][derivation.principalGroup];
   if (component.id === "aryl-prefix" && component.text.includes(",") && language === "es")
     return `Grupos metilo en C${component.numbering.map(([, locant]) => locant).join(" y C")}`;

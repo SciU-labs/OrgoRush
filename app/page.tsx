@@ -8089,8 +8089,6 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       : calculatedAnalysis,
     [calculatedAnalysis, sourceNameOverride],
   );
-  const automaticNumberingAvailable = sourceNameOverride === null;
-  const effectiveShowNumbering = showNumbering && automaticNumberingAvailable;
   const hasActiveSelection = selectedId !== null;
   const selectedAtom = molecule.atoms.find((atom) => atom.id === selectedId) ?? molecule.atoms[0];
   const pinName = useMemo(
@@ -8456,11 +8454,36 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
   const validatedDerivation=useMemo(() => reconciledDerivation
     ? selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex) : null, [reconciledDerivation,symmetryChoiceIndex]);
+  const automaticNumberingAvailable = sourceNameOverride === null || derivationConsistency.status === "verified";
+  const effectiveShowNumbering = showNumbering && automaticNumberingAvailable;
   const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
   const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain), [molecule, activeAnalysis.mainChain]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
-    ? new Map(validatedDerivation.components.find(c => c.role === "parent")!.numbering)
+    ? (() => {
+        const parent = validatedDerivation.components.find(component => component.role === "parent");
+        const parentAtomIds = parent?.atomIds ?? [];
+        const numbering = new Map(parent?.numbering ?? []);
+        const ringCarbonIds = parentAtomIds.filter(id => (molecule.atoms.find(atom => atom.id === id)?.element ?? "C") === "C"
+          && molecule.bonds.filter(([a,b]) => a === id && parentAtomIds.includes(b) || b === id && parentAtomIds.includes(a)).length === 2);
+        if (ringCarbonIds.length === 6) {
+          const anchors = [...numbering].filter(([id, locant]) => ringCarbonIds.includes(id) && typeof locant === "number");
+          const start = anchors.find(([,locant]) => locant === 1)?.[0];
+          if (start !== undefined) {
+            const ring = new Set(ringCarbonIds), paths: number[][] = [];
+            const walk = (id: number, previous: number, path: number[]) => {
+              if (path.length === 6) { if (id === start) paths.push(path); return; }
+              const next = molecule.bonds.flatMap(([a,b]) => a === id ? [b] : b === id ? [a] : [])
+                .filter(other => ring.has(other) && other !== previous && !path.includes(other));
+              for (const other of next) walk(other, id, [...path, other]);
+            };
+            for (const next of molecule.bonds.flatMap(([a,b]) => a === start ? [b] : b === start ? [a] : []).filter(id => ring.has(id))) walk(next, start, [start,next]);
+            const matching = paths.find(path => anchors.every(([id,locant]) => path[Number(locant)-1] === id));
+            if (matching) matching.forEach((id,index) => numbering.set(id,index+1));
+          }
+        }
+        return numbering;
+      })()
     : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
   // An external name or source override has no verified correspondence to the
@@ -12860,8 +12883,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               )}
 
               {viewMode !== "condensed" && <ReasoningVisualOverlay target={reasoningVisualTarget}
-                positions={displayPositions} showLocants={!effectiveShowNumbering || contextualDerivationNumbering}
-                semiDeveloped={viewMode === "semi-developed"} numberOffsets={skeletalNumberBadgeOffsets} />}
+                positions={displayPositions} showLocants
+                semiDeveloped={viewMode === "semi-developed"} numberOffsets={skeletalNumberBadgeOffsets} visibleNumbering={visualNumbering} />}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
                 const element = getElement(atom);

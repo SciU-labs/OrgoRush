@@ -33,11 +33,12 @@ export function ReasoningStepNumber({ number, title, language, target, active, o
 }
 
 /** An editor-only SVG overlay; original atom/bond paint and editing selection stay intact. */
-export function ReasoningVisualOverlay({ target, positions, showLocants, semiDeveloped = false, numberOffsets }: {
+export function ReasoningVisualOverlay({ target, positions, showLocants, semiDeveloped = false, numberOffsets, visibleNumbering }: {
   target: ReasoningVisualTarget | null;
   positions: ReadonlyMap<number, { x: number; y: number }>;
   showLocants: boolean; semiDeveloped?: boolean;
   numberOffsets?: ReadonlyMap<number, { x: number; y: number }>;
+  visibleNumbering?: ReadonlyMap<number, number | string>;
 }) {
   if (!target) return null;
   return <g className="reasoning-visual-overlay" data-reasoning-step={target.stepNumber} data-editor-only="true" aria-hidden="true" pointerEvents="none">
@@ -51,7 +52,7 @@ export function ReasoningVisualOverlay({ target, positions, showLocants, semiDev
       return position ? <circle key={id} className="reasoning-visual-atom" data-reasoning-atom={id}
         cx={position.x} cy={position.y} r={semiDeveloped ? 32 : 19} /> : null;
     })}
-    {showLocants && target.locants.map(([id, locant]) => {
+    {showLocants && target.locants.filter(([id, locant]) => String(visibleNumbering?.get(id)) !== String(locant)).map(([id, locant]) => {
       const position = positions.get(id), offset = numberOffsets?.get(id) ?? { x: 16, y: -24 };
       return position ? <g className="reasoning-visual-locant" key={id} data-reasoning-locant={id}
         transform={`translate(${position.x + offset.x} ${position.y + offset.y})`}>
