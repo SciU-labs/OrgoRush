@@ -22,6 +22,12 @@ export type PriorityReasoningStep = {
 
 export type PriorityReasoningModel = { steps: PriorityReasoningStep[]; name: string };
 
+export function shouldShowStructuralPriorityReasoning(input: {
+  hasValidatedDerivation: boolean; reasoningUnsupported: boolean; structuralStatus: StructuralDerivation["status"];
+}) {
+  return !input.hasValidatedDerivation && input.reasoningUnsupported && input.structuralStatus === "PARTIAL";
+}
+
 const groupNames = {
   en: { carboxylicAcid: "carboxylic acid", amide: "amide", ester: "ester", aldehyde: "aldehyde", ketone: "ketone", alcohol: "alcohol", heterocycle: "heterocyclic function" },
   es: { carboxylicAcid: "ácido carboxílico", amide: "amida", ester: "éster", aldehyde: "aldehído", ketone: "cetona", alcohol: "alcohol", heterocycle: "función heterocíclica" },
@@ -69,7 +75,9 @@ function componentLabel(component: NameComponent, language: AppLanguage, derivat
   }
   if (component.id.startsWith("sugar-") && (component.labelEs || component.label))
     return language === "es" ? component.labelEs ?? component.label! : component.label ?? component.labelEs!;
-  const term = component.text.replace(/^\d+(?:,\d+)*-/, "").replace(/^\(|\)$/g, "");
+  // Translate the complete rooted substituent first: dropping its leading
+  // locant turns e.g. 2-methylpropyl into the unrecognized "methylpropyl".
+  const term = component.text.replace(/^\(|\)$/g, "");
   const translated = localTerm(term, language);
   const locant = component.locant === undefined ? "" : language === "en" ? ` at ${component.locant}` : ` en ${component.locant}`;
   return `${translated}${locant}`;
@@ -183,7 +191,16 @@ export function buildValidatedPriorityReasoning(input: {
   if (substituents.length) stages.push({ title: language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores",
     explanation: language === "en" ? "Each component and its attachment are selected from the reconciled molecular graph."
       : "Cada componente y su enlace de unión se seleccionan desde el grafo molecular reconciliado.", components: substituents });
-  if (input.alphabeticalOrder && (roots.length + descendants.length) > 1)
+  // Compare siblings attached to the same parent/ring. A nested group is not
+  // another independent substituent unless another sibling requires ordering.
+  const alphabeticalPeers = [...roots, ...descendants].filter(component =>
+    component.role === "substituent" || component.role === "prefix");
+  const peerCounts = new Map<string, number>();
+  for (const component of alphabeticalPeers) {
+    const parentId = component.parentId ?? "parent";
+    peerCounts.set(parentId, (peerCounts.get(parentId) ?? 0) + 1);
+  }
+  if (input.alphabeticalOrder && [...peerCounts.values()].some(count => count > 1))
     stages.push({ title: language === "en" ? "Alphabetical order" : "Orden alfabético",
       explanation: input.alphabeticalOrder.paragraphs.join(" "), components: substituents, alphabeticalOrder: input.alphabeticalOrder });
   if (stereoComponents.length) stages.push({ title: language === "en" ? "Stereochemistry" : "Estereoquímica",
@@ -206,6 +223,11 @@ function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], deriv
   const numberingStep = steps.find(step => step.title === (language === "en" ? "Numbering" : "Numeración"));
   const substituentStep = steps.find(step => step.title === (language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores"));
   if (!parentStep || !numberingStep || !substituentStep) return;
+  // This specialized acid/aryl presentation uses position controls below;
+  // remove the generic whole-component controls and duplicate locants first.
+  numberingStep.fragments = undefined;
+  numberingStep.fragmentTargets = {};
+  numberingStep.target = undefined;
   const bondKey = (a:number,b:number) => `${Math.min(a,b)}:${Math.max(a,b)}`;
   const validBond = (a:number,b:number) => graph.bonds.some(([x,y]) => bondKey(a,b) === bondKey(x,y));
   const merge = (...regions: {atomIds: readonly number[]; bondIds: readonly (readonly [number,number])[]}[]) => ({
@@ -226,10 +248,24 @@ function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], deriv
     : "Propan- identifica la cadena principal de tres carbonos; el grupo carboxilo aporta el sufijo del ácido.";
   parentStep.fragments=undefined; parentStep.fragmentTargets={};
   add(parentStep,"name:parent-acid",language === "en" ? "propanoic acid" : "ácido propanoico","parent",acid);
+  add(parentStep,"parent",language === "en" ? "propanoic acid chain" : "cadena del ácido propanoico","parent",parent);
   const parentC2=parent.numbering.find(([,locant])=>locant===2)?.[0], ringC1=aryl.numbering.find(([,locant])=>locant===1)?.[0];
   const parentBond=parentC2===undefined?undefined:aryl.bondIds.find(([a,b])=>a===parentC2&&aryl.atomIds.includes(b)||b===parentC2&&aryl.atomIds.includes(a));
   if (parentC2===undefined || ringC1===undefined || !parentBond || !validBond(...parentBond)) return steps;
-  add(numberingStep,"name:parent-locant-2","2","numbering",{atomIds:[parentC2,ringC1],bondIds:[parentBond]},[[parentC2,2]]);
+  const addLocant = (semanticId:string, text:string, label:string, atomId:number, locant:number|string,
+    relatedAtomIds:readonly number[] = [], bondIds:readonly (readonly [number,number])[] = []) => {
+    const atomIds=[atomId,...relatedAtomIds];
+    const fragment:ReasoningNameFragment = {semanticId,text,kind:"numbering",label,atomIds};
+    const id=reasoningFragmentId(numberingStep.number,fragment);
+    numberingStep.fragments=numberingStep.fragments
+      ? {...numberingStep.fragments,additionalFragments:[...(numberingStep.fragments.additionalFragments??[]),fragment]}
+      : fragment;
+    numberingStep.fragmentTargets[id]={stepNumber:numberingStep.number,fragmentId:id,atomIds,bondIds,locants:[[atomId,locant]]};
+  };
+  const parentLocants=parent.numbering.filter(([,locant])=>[1,2,3].includes(Number(locant)));
+  for(const [atomId,locant] of parentLocants) addLocant(`name:parent-locant-${locant}`,String(locant),
+    language === "en" ? `Propanoic acid chain C${locant}` : `Cadena del ácido propanoico C${locant}`,atomId,locant,
+    locant===2?[ringC1]:[],locant===2?[parentBond]:[]);
   const ringIds=aryl.atomIds.filter(id=>(atomById.get(id)?.element??"C")==="C" && !alkyl.atomIds.includes(id));
   const ringEdges=graph.bonds.filter(([a,b])=>ringIds.includes(a)&&ringIds.includes(b)).map(([a,b])=>[a,b] as [number,number]);
   if (ringIds.length!==6 || ringEdges.length!==6) return steps;
@@ -241,7 +277,9 @@ function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], deriv
   const internalBonds=alkyl.bondIds.filter(([a,b])=>alkyl.atomIds.includes(a)&&alkyl.atomIds.includes(b));
   if (internalBonds.length!==alkyl.atomIds.length-1 || alkyl.atomIds.some(id=>(atomById.get(id)?.element??"C")!=="C")) return steps;
   add(substituentStep,"name:phenyl","fenilo","substituent",{atomIds:ringIds,bondIds:ringEdges});
-  add(numberingStep,"name:phenyl-locant-4","4","numbering",{atomIds:[arylC4],bondIds:[alkylAttachment]},[[arylC4,4]]);
+  if(ringC1===undefined)return steps;
+  addLocant("name:phenyl-locant-1","1",language === "en" ? "Phenyl ring C1" : "Anillo fenilo C1",ringC1,1);
+  addLocant("name:phenyl-locant-4","4",language === "en" ? "Phenyl ring C4" : "Anillo fenilo C4",arylC4,4,[],[alkylAttachment]);
   const rooted=alkyl.atomIds.find(id=>validBond(id,ringSubstituentBond));
   const adjacency=new Map(alkyl.atomIds.map(id=>[id,[] as number[]]));
   for(const [a,b] of internalBonds){adjacency.get(a)?.push(b);adjacency.get(b)?.push(a);}
@@ -256,6 +294,12 @@ function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], deriv
   const canonical=numberingCandidates[0];
   const locants=canonical?[...canonical].map(([id,locant])=>[id,locant] as [number,number]):[];
   const internalC2=locants.find(([,locant])=>locant===2)?.[0];
+  const displayedAlkylLocants=new Set<number>();
+  for(const [atomId,locant] of locants) if((locant===1||locant===2||locant===3)&&!displayedAlkylLocants.has(locant)) {
+    displayedAlkylLocants.add(locant);
+    addLocant(`name:alkyl-locant-${locant}`,String(locant),
+      language === "en" ? `2-methylpropyl substituent C${locant}` : `Sustituyente 2-metilpropilo C${locant}`,atomId,locant);
+  }
   const alkylLabel=language === "en" ? "2-methylpropyl" : "2-metilpropilo";
   const explanation=language === "en" ? `The rooted substituent is –CH₂–CH(CH₃)₂; its internal C2 numbering starts at the ring attachment and is independent of parent C2.`
     : `El sustituyente tiene estructura –CH₂–CH(CH₃)₂; su numeración interna comienza en el punto de unión al anillo y es independiente del C2 del padre.`;

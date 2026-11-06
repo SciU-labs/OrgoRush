@@ -43,7 +43,7 @@ import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
-import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning } from "./reasoning-derivation-adapter";
+import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8515,9 +8515,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     derivation: validatedDerivation, graph: molecule, language,
     alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
   }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps]);
-  const structuralPriorityReasoning = useMemo(() => reasoningUnsupported && structuralDerivation.status === "PARTIAL"
+  const structuralPriorityReasoning = useMemo(() => shouldShowStructuralPriorityReasoning({
+    hasValidatedDerivation: !!validatedDerivation, reasoningUnsupported, structuralStatus: structuralDerivation.status,
+  })
     ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language }) : null,
-  [reasoningUnsupported, structuralEvidence, language]);
+  [validatedDerivation, reasoningUnsupported, structuralEvidence, language]);
   const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
     ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
       fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,

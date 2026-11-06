@@ -5,7 +5,7 @@ import { createServer } from "vite";
 import { renderToStaticMarkup } from "react-dom/server";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { deriveStructuralComponents } from "../app/structural-derivation.ts";
-import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
+import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
 
@@ -185,6 +185,17 @@ test("all ibuprofen and paracetamol controls name and target the region they des
       const alkyl = bySemanticId.get("name:2-methylpropyl");
       const target = alkyl.step.fragmentTargets[reasoningFragmentId(alkyl.step.number, alkyl.fragment)];
       assert.equal(target.atomIds.length, 4, "ibuprofen alkyl control selects its four carbons");
+      assert.match(alkyl.fragment.text, /2-metilpropilo/, "the internal substituent locant survives localization");
+      assert.doesNotMatch(entries.map(entry => entry.fragment.text).join(" "), /methyl|phenyl|hydroxy|propyl/i,
+        "Spanish Ibuprofen controls contain no untranslated chemical terms");
+      const numbering = model.steps.find(step => step.title === "Numeración");
+      const locators = [numbering.fragments, ...(numbering.fragments?.additionalFragments ?? [])].filter(Boolean);
+      assert.ok(locators.every(fragment => fragment.kind === "numbering"), "numbering shows locants, not whole structures");
+      for (const [system, expected] of [["Cadena del ácido propanoico", [1,2,3]], ["Anillo fenilo", [1,4]], ["Sustituyente 2-metilpropilo", [1,2,3]]]) {
+        const values = locators.filter(fragment => fragment.label.startsWith(system)).map(fragment => Number(fragment.text));
+        assert.deepEqual(values, expected, `${system} keeps its own numbering system without duplicate controls`);
+      }
+      assert.ok(!model.steps.some(step => step.title === "Orden alfabético"), "nested alkyl is not counted as a peer substituent");
     } else {
       const ring = bySemanticId.get("name:phenyl"), target = ring.step.fragmentTargets[reasoningFragmentId(ring.step.number, ring.fragment)];
       assert.equal(target.atomIds.length, 6, "paracetamol phenyl control selects only the ring");
@@ -196,10 +207,29 @@ test("all ibuprofen and paracetamol controls name and target the region they des
       && fragment.text === (fixture.name.startsWith("2-") ? "4-(2-methylpropyl)phenyl" : "4-hydroxyphenyl")),
     `${fixture.name}: the English complete-aryl label is preserved`);
     if (fixture.name.startsWith("2-")) {
+      const englishNumbering = english.steps.find(step => step.title === "Numbering");
+      const englishLocators = [englishNumbering.fragments, ...(englishNumbering.fragments?.additionalFragments ?? [])].filter(Boolean);
+      assert.ok(englishLocators.some(fragment => fragment.label === "Propanoic acid chain C2"));
+      assert.ok(englishLocators.some(fragment => fragment.label === "Phenyl ring C4"));
+      assert.ok(englishLocators.some(fragment => fragment.label === "2-methylpropyl substituent C2"));
       assert.equal(presentValidatedSystematicName(derivation, "es").name, "ácido 2-[4-(2-metilpropil)fenil]propanoico");
       assert.equal(presentValidatedSystematicName(derivation, "en").name, fixture.name);
     }
   }
+});
+
+test("alphabetical comparison remains for independent substituents on a shared parent", () => {
+  const graph = imported("CC(=O)Nc1cc(O)c(C)cc1");
+  const derivation = reconcileSystematicName(graph, "N-(3-hydroxy-4-methylphenyl)acetamide");
+  const model = buildValidatedPriorityReasoning({ derivation, graph, language: "es",
+    alphabeticalOrder: { paragraphs: ["Hidroxi y metilo se ordenan alfabéticamente."], fragment: "hidroxi → metilo", groups: [] } });
+  assert.ok(model.steps.some(step => step.title === "Orden alfabético"));
+});
+
+test("FULL evidence suppresses PARTIAL even when an external source keeps reasoning unsupported", () => {
+  assert.equal(shouldShowStructuralPriorityReasoning({ hasValidatedDerivation: true, reasoningUnsupported: true, structuralStatus: "PARTIAL" }), false);
+  assert.equal(shouldShowStructuralPriorityReasoning({ hasValidatedDerivation: false, reasoningUnsupported: true, structuralStatus: "PARTIAL" }), true);
+  assert.equal(shouldShowStructuralPriorityReasoning({ hasValidatedDerivation: false, reasoningUnsupported: false, structuralStatus: "PARTIAL" }), false);
 });
 
 test("Spanish fragment controls expose component IDs and preserve their verified target", () => {
