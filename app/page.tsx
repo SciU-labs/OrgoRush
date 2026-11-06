@@ -45,6 +45,7 @@ import { classifyValidatedStructureColors, structuralBondKey } from "./structura
 import { resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
 import { buildValidatedVisualNumbering } from "./visual-numbering";
+import { selectedAromaticCarboxylCarbonContext } from "./selected-atom-context";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
   localizeChemicalNameForDisplay,
@@ -8463,6 +8464,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
     ? buildValidatedVisualNumbering(molecule, validatedDerivation)
     : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
+  const selectedCarboxylContext = selectedAromaticCarboxylCarbonContext({
+    molecule, derivation: validatedDerivation, selectedAtomId: selectedId, language, visualNumbering,
+  });
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
   // An external name or source override has no verified correspondence to the
   // local naming analysis. Do not present its parent colours as authoritative.
@@ -13711,11 +13715,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
           <div
             className="notice"
-            role={advancedScreenReaderEnabled ? "status" : undefined}
-            aria-live={advancedScreenReaderEnabled ? "polite" : undefined}
+            role={advancedScreenReaderEnabled || selectedCarboxylContext ? "status" : undefined}
+            aria-live={advancedScreenReaderEnabled || selectedCarboxylContext ? "polite" : undefined}
           >
             <span>i</span>
-            {localizedDynamicText(notice)}
+            {selectedCarboxylContext ? <><strong>{selectedCarboxylContext.heading}</strong> {selectedCarboxylContext.explanation}</>
+              : localizedDynamicText(notice)}
           </div>
 
             </div>
