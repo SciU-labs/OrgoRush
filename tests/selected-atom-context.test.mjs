@@ -121,5 +121,7 @@ test("mouse and keyboard atom selection both feed the contextual notice from sel
   assert.match(page,/selectedAromaticCarboxylCarbonContext\(\{[\s\S]*?selectedAtomId:\s*selectedId/);
   assert.match(page,/onClick=\{\(event\)\s*=>\s*\{[\s\S]*?setSelectedId\(atom\.id\)/);
   assert.match(page,/onKeyDown=\{\(event\)\s*=>\s*\{[\s\S]*?setSelectedId\(atom\.id\)/);
-  assert.match(page,/selectedCarboxylContext\s*\?\s*<>\s*<strong>\{selectedCarboxylContext\.heading\}/);
+  assert.match(page,/const notice = selectedCarboxylContext\s*\?[\s\S]*?:\s*baseNotice/);
+  assert.match(page,/selectedCarboxylContext && !advancedScreenReaderEnabled\s*&&\s*\([\s\S]*?className="contextual-atom-announcement" role="status" aria-live="polite"/);
+  assert.match(page,/className="notice"\s*role=\{advancedScreenReaderEnabled \? "status" : undefined\}\s*aria-live=\{advancedScreenReaderEnabled \? "polite" : undefined\}[\s\S]*?\{localizedDynamicText\(notice\)\}/);
 });

@@ -7779,7 +7779,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const [themePreference, setThemePreference] = useState<ThemePreference>("auto");
   const [automaticDark, setAutomaticDark] = useState(false);
   const [showCreatorCredit, setShowCreatorCredit] = useState(false);
-  const [notice, setNotice] = useState("Selecciona un carbono para añadir otro o toca un enlace para cambiar su orden.");
+  const [baseNotice, setNotice] = useState("Selecciona un carbono para añadir otro o toca un enlace para cambiar su orden.");
   const [valenceAlert, setValenceAlert] = useState<string | null>(null);
   const [nameBuilderOpen, setNameBuilderOpen] = useState(false);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
@@ -8467,6 +8467,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const selectedCarboxylContext = selectedAromaticCarboxylCarbonContext({
     molecule, derivation: validatedDerivation, selectedAtomId: selectedId, language, visualNumbering,
   });
+  const notice = selectedCarboxylContext
+    ? `${selectedCarboxylContext.heading} ${selectedCarboxylContext.explanation}`
+    : baseNotice;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
   // An external name or source override has no verified correspondence to the
   // local naming analysis. Do not present its parent colours as authoritative.
@@ -13226,6 +13229,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 </>
               )}
             </div>
+            {selectedCarboxylContext && !advancedScreenReaderEnabled && (
+              <span className="contextual-atom-announcement" role="status" aria-live="polite">{notice}</span>
+            )}
 
             <div
               className="bond-order-picker"
@@ -13715,12 +13721,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
           <div
             className="notice"
-            role={advancedScreenReaderEnabled || selectedCarboxylContext ? "status" : undefined}
-            aria-live={advancedScreenReaderEnabled || selectedCarboxylContext ? "polite" : undefined}
+            role={advancedScreenReaderEnabled ? "status" : undefined}
+            aria-live={advancedScreenReaderEnabled ? "polite" : undefined}
           >
             <span>i</span>
-            {selectedCarboxylContext ? <><strong>{selectedCarboxylContext.heading}</strong> {selectedCarboxylContext.explanation}</>
-              : localizedDynamicText(notice)}
+            {localizedDynamicText(notice)}
           </div>
 
             </div>
