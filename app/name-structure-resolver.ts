@@ -73,7 +73,13 @@ async function resolveNameWithPubChem(
 ): Promise<PubChemResolutionResult> {
   const fetchImpl = options.fetchImpl ?? fetch;
   const verifiedEquivalent = verifiedCommonNameQuery(originalName);
-  const candidates: Array<{ query: string; expectedInchiKey?: string }> = [...new Map([
+  const candidates: Array<{
+    query: string;
+    expectedInchiKey?: string;
+    expectedCid?: number;
+    expectedFormula?: string;
+    referenceSmiles?: string;
+  }> = [...new Map([
     originalName.trim(),
     ...getOpsinNameCandidates(originalName),
   ].filter(Boolean).map((query) => [query, { query }])).values()];
@@ -98,6 +104,7 @@ async function resolveNameWithPubChem(
       const cids = [...new Set(cidResponse.value?.IdentifierList?.CID ?? [])]
         .filter((cid) => Number.isInteger(cid) && cid > 0);
       if (!cids.length) continue;
+      if (candidate.expectedCid && !cids.includes(candidate.expectedCid)) continue;
       if (cids.length > 8) {
         return {
           ok: false,
@@ -119,12 +126,19 @@ async function resolveNameWithPubChem(
         const molecularFormula = clean(property.MolecularFormula);
         const inspection = smiles ? inspectSmilesStructure(smiles) : null;
         const inchiKey = clean(property.InChIKey).toLocaleUpperCase("en");
+        const referenceInspection = candidate.referenceSmiles
+          ? inspectSmilesStructure(candidate.referenceSmiles)
+          : null;
         if (
           !property.CID
+          || (candidate.expectedCid && property.CID !== candidate.expectedCid)
           || !inspection?.ok
           || !molecularFormula
           || inspection.formula !== molecularFormula
+          || (candidate.expectedFormula && molecularFormula !== candidate.expectedFormula)
           || (candidate.expectedInchiKey && inchiKey !== candidate.expectedInchiKey)
+          || (candidate.referenceSmiles && (!referenceInspection?.ok
+            || inspection.canonicalConnectivity !== referenceInspection.canonicalConnectivity))
         ) return [];
         const identity = inchiKey
           || `${inspection.canonicalConnectivity}|${molecularFormula}|${smiles}`;

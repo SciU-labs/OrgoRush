@@ -9214,7 +9214,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         || (advancedNameResolved
         && localNamerCannotSafelyName(next, generatedAnalysis));
       const preserveGraphSourceName = preserveTrustedSourceName && !hasGraphRenderableAlias;
-      const preferredSourceName = localPreflight.inputFamily === "alkene-stereo" ? normalizedInput : submittedName;
+      // Keep a PubChem common-name input as the recorded reasoning source,
+      // while any preserved graph override must be a systematic name from the
+      // verified record rather than the user's common-name spelling.
+      const preferredSourceName = localPreflight.inputFamily === "alkene-stereo"
+        ? normalizedInput
+        : resolvedPubChemIdentity?.iupacName ?? submittedName;
       const resultName = preserveGraphSourceName ? preferredSourceName : generatedAnalysis.name;
       const commonName = generatedAnalysis.commonName
         ? `; también se conoce como ${generatedAnalysis.commonName}`

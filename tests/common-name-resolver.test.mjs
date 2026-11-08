@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { getSteroidLike6565System } from "../app/fused-ring-nomenclature.ts";
 import { calculateMolecule2DLayout } from "../app/molecule-2d-layout.ts";
 import { resolveChemicalName } from "../app/name-structure-resolver.ts";
 import { inspectSmilesStructure, moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { presentValidatedSystematicName, reconcileSystematicName } from "../app/validated-name-derivation.ts";
 
 const fixtures = [
   { cid: 180, names: ["acetona", "acetone"], formula: "C3H6O", smiles: "CC(=O)C", iupac: "propan-2-one" },
@@ -29,6 +31,14 @@ const fixtures = [
     smiles: "CC(C)CCC[C@@H](C)[C@H]1CC[C@@H]2[C@@H]3CC=C4C[C@@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
     iupac: "cholesterol",
     inchiKey: "HVYWMOMLDIMFJA-DPAQBDIFSA-N",
+  },
+  {
+    cid: 2244,
+    names: ["aspirina", "aspirin", "ácido acetilsalicílico", "acido acetilsalicilico", "acetylsalicylic acid", "2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid"],
+    formula: "C9H8O4",
+    smiles: "CC(=O)Oc1ccccc1C(=O)O",
+    iupac: "2-acetyloxybenzoic acid",
+    inchiKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
   },
   {
     cid: 2519,
@@ -117,7 +127,9 @@ function mockedChemicalServices() {
       const requestedName = normalizeName(decodeURIComponent(nameMatch[1]));
       // Mirrors the real PUG REST behavior observed for the Spanish spelling:
       // /name/colesterol returns 404, while /name/cholesterol returns CID 5997.
-      const fixture = requestedName === "colesterol" ? undefined : byName.get(requestedName);
+      const fixture = ["colesterol", "aspirina", "acido acetilsalicilico", "ácido acetilsalicílico"].includes(requestedName)
+        ? undefined
+        : byName.get(requestedName);
       return fixture
         ? json({ IdentifierList: { CID: [fixture.cid] } })
         : json({}, 404);
@@ -165,6 +177,39 @@ test("resolves the requested Spanish and English common names through validated 
   }
   assert.ok(calls.some((url) => url.includes("/name/colesterol/cids/JSON")));
   assert.ok(calls.some((url) => url.includes("/name/cholesterol/cids/JSON")));
+  assert.ok(calls.some((url) => url.includes("/name/aspirin/cids/JSON")));
+});
+
+test("aspirin aliases resolve to the exact CID, InChIKey, formula, connectivity and FULL systematic names", async () => {
+  const { calls, fetchImpl } = mockedChemicalServices();
+  const expectedSmiles = "CC(=O)Oc1ccccc1C(=O)O";
+  const expectedConnectivity = inspectSmilesStructure(expectedSmiles).canonicalConnectivity;
+  for (const name of ["aspirina", "aspirin", "ácido acetilsalicílico", "acido acetilsalicilico", "acetylsalicylic acid", "2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid"]) {
+    const result = await resolveChemicalName(name, { fetchImpl, timeoutMs: 1_000 });
+    assert.equal(result.ok, true, name);
+    assert.equal(result.value.cid, 2244, name);
+    assert.equal(result.value.inchiKey, "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", name);
+    assert.equal(result.value.molecularFormula, "C9H8O4", name);
+    const inspection = inspectSmilesStructure(result.value.smiles);
+    assert.equal(inspection.ok, true, name);
+    assert.equal(inspection.canonicalConnectivity, expectedConnectivity, name);
+    const graph = moleculeFromSmiles(result.value.smiles);
+    assert.equal(graph.ok, true, name);
+    const model = reconcileSystematicName(graph.molecule, result.value.iupacName);
+    assert.equal(model?.status, "FULL", name);
+    assert.equal(result.value.iupacName, "2-acetyloxybenzoic acid", name);
+    assert.equal(presentValidatedSystematicName(model, "en").name, "2-acetyloxybenzoic acid", name);
+    assert.equal(presentValidatedSystematicName(model, "es").name, "ácido 2-(acetiloxi)benzoico", name);
+  }
+  assert.ok(calls.some((url) => url.includes("/name/aspirina/cids/JSON")));
+  assert.ok(calls.some((url) => url.includes("/name/aspirin/cids/JSON")));
+});
+
+test("By name retains the submitted common term as source and only preserves a PubChem IUPAC override", () => {
+  const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
+  assert.match(page, /setReasoningSourceName\(submittedName\);/);
+  assert.match(page, /const preferredSourceName = localPreflight\.inputFamily === "alkene-stereo"\s*\? normalizedInput\s*:\s*resolvedPubChemIdentity\?\.iupacName \?\? submittedName;/);
+  assert.match(page, /setSourceNameOverride\(preserveGraphSourceName \? preferredSourceName : null\);/);
 });
 
 test("does not warn when every PubChem tetrahedral center is preserved", async () => {
@@ -281,6 +326,26 @@ test("a verified Spanish equivalence is rejected if PubChem returns the wrong id
     },
   });
   assert.equal(result.ok, false);
+});
+
+test("aspirin equivalence rejects a wrong CID, InChIKey, formula or connectivity", async () => {
+  for (const property of [
+    { CID: 999, InChIKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", IsomericSMILES: "CC(=O)Oc1ccccc1C(=O)O", MolecularFormula: "C9H8O4" },
+    { CID: 2244, InChIKey: "AAAAAAAAAAAAAA-UHFFFAOYSA-N", IsomericSMILES: "CC(=O)Oc1ccccc1C(=O)O", MolecularFormula: "C9H8O4" },
+    { CID: 2244, InChIKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", IsomericSMILES: "CC(=O)Oc1ccccc1C(=O)O", MolecularFormula: "C8H8O4" },
+    { CID: 2244, InChIKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", IsomericSMILES: "CC(=O)Oc1ccccc1C(=O)C", MolecularFormula: "C10H10O3" },
+  ]) {
+    const result = await resolveChemicalName("aspirina", {
+      fetchImpl: async (input) => {
+        const url = String(input);
+        if (url.includes("ebi.ac.uk/opsin")) return json({ status: "FAILURE" }, 404);
+        if (url.includes("/name/aspirina/")) return json({}, 404);
+        if (url.includes("/name/aspirin/")) return json({ IdentifierList: { CID: [2244] } });
+        return json({ PropertyTable: { Properties: [property] } });
+      },
+    });
+    assert.equal(result.ok, false);
+  }
 });
 
 test("resolves caffeine through the neutral fused-heterocycle import route", async () => {

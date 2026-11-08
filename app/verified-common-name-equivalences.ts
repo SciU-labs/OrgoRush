@@ -2,6 +2,9 @@ type VerifiedCommonNameEquivalence = {
   aliases: readonly string[];
   pubChemQuery: string;
   inchiKey: string;
+  cid?: number;
+  formula?: string;
+  referenceSmiles?: string;
 };
 
 // These are exact bilingual synonym sets pinned to a PubChem identity. They
@@ -27,6 +30,17 @@ const VERIFIED_COMMON_NAME_EQUIVALENCES: readonly VerifiedCommonNameEquivalence[
     aliases: ["colesterol", "cholesterol"],
     pubChemQuery: "cholesterol",
     inchiKey: "HVYWMOMLDIMFJA-DPAQBDIFSA-N",
+  },
+  {
+    aliases: [
+      "aspirina", "aspirin", "ácido acetilsalicílico", "acido acetilsalicilico",
+      "acetylsalicylic acid", "2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid",
+    ],
+    pubChemQuery: "aspirin",
+    inchiKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+    cid: 2244,
+    formula: "C9H8O4",
+    referenceSmiles: "CC(=O)Oc1ccccc1C(=O)O",
   },
 ];
 
@@ -87,7 +101,13 @@ export function verifiedCommonNameQuery(value: string) {
     aliases.some((alias) => normalizeExactAlias(alias) === normalized),
   );
   return equivalence
-    ? { query: equivalence.pubChemQuery, expectedInchiKey: equivalence.inchiKey }
+    ? {
+      query: equivalence.pubChemQuery,
+      expectedInchiKey: equivalence.inchiKey,
+      ...(equivalence.cid ? { expectedCid: equivalence.cid } : {}),
+      ...(equivalence.formula ? { expectedFormula: equivalence.formula } : {}),
+      ...(equivalence.referenceSmiles ? { referenceSmiles: equivalence.referenceSmiles } : {}),
+    }
     : null;
 }
 

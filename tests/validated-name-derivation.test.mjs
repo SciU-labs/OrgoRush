@@ -494,7 +494,7 @@ for (const [i, aliases, cid, formula] of [
   const result=await resolveChemicalName(alias,{fetchImpl:async input=>{
     const url=String(input);
     if (url.includes('/cids/JSON')) return Response.json({IdentifierList:{CID:[cid]}});
-    if (url.includes('/property/')) return Response.json({PropertyTable:{Properties:[{CID:cid,IUPACName:f.name,IsomericSMILES:f.smiles,MolecularFormula:formula}]}});
+    if (url.includes('/property/')) return Response.json({PropertyTable:{Properties:[{CID:cid,IUPACName:f.name,InChIKey:i===2?'BSYNRYMUTXBXSQ-UHFFFAOYSA-N':undefined,IsomericSMILES:f.smiles,MolecularFormula:formula}]}});
     return new Response('{}',{status:404});
   }});
   assert.equal(result.ok,true);
