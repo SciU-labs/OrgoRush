@@ -153,6 +153,8 @@ test("ES/EN configuration, accessible locants and explicit atom-ID fallback are 
     ["Etiquetas de estereoquímica", "Stereochemistry labels"],
     ["Ocultar R/S y E/Z", "Hide R/S and E/Z labels"],
     ["Mostrar R/S y E/Z", "Show R/S and E/Z labels"],
+    ["Las etiquetas R/S y E/Z se ocultan en las vistas esquelética y semidesarrollada. Los enlaces estereoquímicos permanecen visibles.",
+      "R/S and E/Z labels are hidden in skeletal and semi-developed views. Stereochemical bonds remain visible."],
   ]) {
     assert.equal(uiText("es", text), text);
     assert.equal(uiText("en", text), translation);
@@ -176,4 +178,28 @@ test("page wires default labels to fit bounds and exportable informational glyph
   assert.match(page, /getSemiDevelopedBounds\(displayPositions.values\(\), \{[^\n]*extents: visualExtents/);
   assert.match(page, /cleanSvgForExport\(clonedSvg\)/);
   assert.match(page, /if \(isolatedBuild \|\| !semiDevelopedStereoPreferenceReady\) return/);
+});
+
+
+test("hidden stereo labels retain visible bond drawings and accessible configuration controls", () => {
+  const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const styles = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+  const wedge = page.match(/\{tetrahedralStereoBond\?\.style === "wedge"[\s\S]*?\/\>\s*\)\}/)?.[0];
+  const hash = page.match(/\{tetrahedralStereoBond\?\.style === "hash"[\s\S]*?<\/g>\s*\)\}/)?.[0];
+  for (const drawing of [wedge, hash]) {
+    assert.ok(drawing, "stereochemical bond drawing exists");
+    assert.doesNotMatch(drawing, /semiDevelopedStereoDisplay/, "bond drawing is independent of label visibility");
+  }
+  const rs = page.match(/className="tetrahedral-center-marker"[\s\S]*?<\/g>\s*\)\}/)?.[0];
+  const ez = page.match(/className=\{`stereo-bond-marker[\s\S]*?<\/g>\s*\)\}/)?.[0];
+  for (const control of [rs, ez]) {
+    assert.ok(control, "configuration control exists");
+    assert.match(control, /role="button"/);
+    assert.match(control, /tabIndex=\{0\}/);
+    assert.match(control, /aria-label=\{language === "en"/);
+    assert.match(control, /onKeyDown=/);
+    assert.match(control, /semiDevelopedStereoDisplay === "labels"/);
+  }
+  assert.match(ez, /semiDevelopedStereoDisplay === "hidden" \? " stereo-labels-hidden"/);
+  assert.match(styles, /\.stereo-bond-marker\.stereo-labels-hidden rect\s*\{[^}]*fill: transparent;[^}]*stroke: transparent;/);
 });

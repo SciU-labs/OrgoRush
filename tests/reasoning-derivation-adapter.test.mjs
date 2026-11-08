@@ -7,7 +7,8 @@ import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { deriveStructuralComponents } from "../app/structural-derivation.ts";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
-import { reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
+import { buildReasoningVisualReferences, reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
+import { functionalNameEvidence } from "../app/reasoning-functional-groups.ts";
 import { buildValidatedVisualNumbering } from "../app/visual-numbering.ts";
 import { resolveDerivationConsistency } from "../app/derivation-consistency.ts";
 
@@ -396,4 +397,25 @@ test("TNT remains on the original local priority path when no FULL production ap
   assert.ok(steps.some(step => step.nameRole === "numbering"));
   assert.ok(steps.some(step => step.alphabeticalOrder));
   assert.equal(analysis.name, "2-metil-1,3,5-trinitrobenceno");
+});
+
+
+test("TNT nitro name controls keep valid graph targets without claiming phenyl", () => {
+  const graph = imported("CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-]");
+  const analysis = page.analyzeMolecule(graph);
+  const evidence = functionalNameEvidence(analysis, analysis.name, "es").filter(item => item.kind === "substituent");
+  assert.ok(evidence.some(item => /trinitro/i.test(item.text)), "TNT retains nitro name evidence");
+  const step = { number: "04", nameRole: "substituent" };
+  const fragments = { "04": { ...evidence[0], additionalFragments: evidence.slice(1) } };
+  const refs = buildReasoningVisualReferences({ molecule: graph, analysis, steps: [step], fragments,
+    displayedName: analysis.name, enabled: true });
+  for (const item of evidence) {
+    assert.doesNotMatch(item.label, /^(?:grupo\s+)?fenil|^phenyl(?:\s|$)/i);
+    if (item.atomIds?.length) {
+      const target = refs.fragments[reasoningFragmentId(step.number, item)];
+      assert.ok(target, `fragment ${item.text} has a visual target`);
+      assert.ok(target.atomIds.every(id => graph.atoms.some(atom => atom.id === id)));
+      assert.ok(target.bondIds.every(edge => graph.bonds.some(bond => edgeKey(bond) === edgeKey(edge))));
+    }
+  }
 });
