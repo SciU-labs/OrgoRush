@@ -7,53 +7,95 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  verified-build:
     if: github.ref == 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Descargar el proyecto
-        uses: actions/checkout@v4
-
-      - name: Preparar Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - run: npm ci
+      - name: Compilar y validar artefacto de pruebas
+        run: |
+          npm run build
+          tar -cf verified-dist.tar dist
+          sha256sum verified-dist.tar > verified-dist.sha256
+          git rev-parse HEAD > verified-dist.commit
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-dist
+          path: |
+            verified-dist.tar
+            verified-dist.sha256
+            verified-dist.commit
+          if-no-files-found: error
+          retention-days: 1
 
-      - name: Instalar dependencias
-        run: npm ci
+  tests:
+    needs: verified-build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-dist
+      - name: Comprobar procedencia y extraer artefacto
+        run: |
+          test "$(cat verified-dist.commit)" = "$(git rev-parse HEAD)"
+          sha256sum --check verified-dist.sha256
+          tar -xf verified-dist.tar
+      - name: Ejecutar grupo de pruebas ${{ matrix.shard }} de 4
+        run: node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 tests/*.test.mjs
 
-      - name: Ejecutar regresiones críticas
-        run: npm run test:critical
-
-      - name: Ejecutar la batería completa antes de publicar
-        run: npm test
-
+  pages-build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - name: Construir la versión estática
         run: npm run build:pages
-
       - name: Validar rutas y recursos del artefacto
         run: npm run validate:pages
-
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Preparar archivos para publicación
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist-pages
 
+  deploy:
+    needs: [tests, pages-build]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v5
