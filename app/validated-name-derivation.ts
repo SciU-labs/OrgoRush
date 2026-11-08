@@ -40,7 +40,7 @@ export type ValidatedNameDerivation = {
 
 export type ValidatedNamePresentation = { name: string; language: "en" | "es"; localized: boolean };
 
-/** Localizes only a fully reconciled acid + substituted phenyl construction.
+/** Localizes supported FULL constructions.
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
@@ -62,6 +62,11 @@ export function presentValidatedSystematicName(model: ValidatedNameDerivation, l
     }
   }
   const parent = components.parent, suffix = components.suffix, aryl = components.aryl, prefix = components["aryl-prefix"];
+  const acyloxy = components.acyloxy;
+  if (model.status === "FULL" && model.principalGroup === "carboxylicAcid" && parent?.text === "benzoic acid"
+    && acyloxy?.parentId === parent.id && acyloxy.labelEs && typeof acyloxy.locant === "number") {
+    return { name: `ácido ${acyloxy.locant}-(${acyloxy.labelEs})benzoico`, language: "es", localized: true };
+  }
   if (model.principalGroup !== "carboxylicAcid" || model.parentSystem || !parent || !suffix || !aryl || !prefix
     || model.components.length !== 4 || parent.atomIds.length !== parent.numbering.length
     || prefix.parentId !== "aryl" || typeof aryl.locant !== "number"
@@ -364,7 +369,8 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     const ids = [oxygen, ...acyl, oxo];
     component("acyloxy", "substituent", prefix, prefixStart, ids,
       `The ${prefix} group is ring–O–C(=O)–alkyl at ring position ${position}. Its atoms are distinct from the principal carboxyl group.`,
-      { locant: position, parentId: "parent", bondIds: [...graph.bonds.filter(([a,b]) => ids.includes(a) && ids.includes(b)).map(([a,b]): [number,number] => [a,b]), [parent[position - 1], oxygen]] });
+      { locant: position, parentId: "parent", labelEs: n === 2 ? "acetiloxi" : `${iupacRootForCarbonCount(n)}anoiloxi`,
+        bondIds: [...graph.bonds.filter(([a,b]) => ids.includes(a) && ids.includes(b)).map(([a,b]): [number,number] => [a,b]), [parent[position - 1], oxygen]] });
     parent = [...parent, carbon];
   } else {
     const family = parseAdditionalSystematicFamily(name);

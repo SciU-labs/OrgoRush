@@ -2,6 +2,7 @@ import type { AppLanguage } from "./i18n.ts";
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import type { StructuralComponent, StructuralDerivation } from "./structural-derivation.ts";
 import type { AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order.ts";
+import { resolveAcyloxyRegions } from "./reasoning-acyloxy-regions.ts";
 import type { ReasoningNameFragment } from "./reasoning-name-fragments.ts";
 import { reasoningFragmentId } from "./reasoning-visual-targets.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
@@ -47,7 +48,7 @@ function localTerm(text: string, language: AppLanguage) {
   if (language === "en") return text;
   const terms: Record<string, string> = {
     phenyl: "fenilo", hydroxy: "hidroxi", methyl: "metilo", "2-methylpropyl": "2-metilpropilo",
-    acetyloxy: "acetiloxi", "oic acid": "ácido carboxílico", amide: "amida",
+    "oic acid": "ácido carboxílico", amide: "amida",
   };
   return terms[text] ?? text;
 }
@@ -78,7 +79,8 @@ function componentLabel(component: NameComponent, language: AppLanguage, derivat
   // Translate the complete rooted substituent first: dropping its leading
   // locant turns e.g. 2-methylpropyl into the unrecognized "methylpropyl".
   const term = component.text.replace(/^\(|\)$/g, "");
-  const translated = localTerm(term, language);
+  const translated = language === "es" && component.id === "acyloxy" && component.labelEs
+    ? component.labelEs : localTerm(term, language);
   const locant = component.locant === undefined ? "" : language === "en" ? ` at ${component.locant}` : ` en ${component.locant}`;
   return `${translated}${locant}`;
 }
@@ -207,9 +209,76 @@ export function buildValidatedPriorityReasoning(input: {
     explanation: language === "en" ? "Only configurations included in the FULL structural proof are stated."
       : "Solo se expresan configuraciones incluidas en la prueba estructural FULL.", components: stereoComponents });
   const steps = stages.map((stage, index) => makeStep({ ...stage, number: String(index + 1).padStart(2, "0"), derivation, language, graph }));
+  const acyloxy = byId.get("acyloxy");
+  if (parent && suffix && acyloxy) addAcyloxyReasoning(steps, derivation, graph, language, parent, suffix, acyloxy);
   const amideFragments = buildNSubstitutedAmideFragments(steps, derivation, graph, language);
   const acidFragments = buildSubstitutedArylAcidFragments(steps, derivation, graph, language);
   return { name: derivation.name, steps: amideFragments ?? acidFragments ?? steps };
+}
+
+function addAcyloxyReasoning(steps: PriorityReasoningStep[], derivation: ValidatedNameDerivation,
+  graph: GeneratedMolecule, language: AppLanguage, parent: NameComponent, suffix: NameComponent, acyloxy: NameComponent) {
+  const regions = resolveAcyloxyRegions(derivation, graph, parent, suffix, acyloxy);
+  if (!regions) return;
+  const en = language === "en";
+  const functionStep = steps.find(step => step.componentIds.includes(suffix.id));
+  const parentStep = steps.find(step => step.componentIds.includes(parent.id));
+  const numberingStep = steps.find(step => step.title === (en ? "Numbering" : "Numeración"));
+  const substituentStep = steps.find(step => step.componentIds.includes(acyloxy.id));
+  if (!functionStep || !parentStep || !numberingStep || !substituentStep) return;
+
+  type Region = Pick<ReasoningVisualTarget, "atomIds" | "bondIds">;
+  type RegionControl = ReasoningNameFragment & Region;
+  const control = (semanticId: string, text: string, kind: ReasoningNameFragment["kind"], region: Region): RegionControl =>
+    ({ semanticId, text, kind, label: en ? `Select ${text}` : `Seleccionar ${text}`, ...region });
+  const replace = (step: PriorityReasoningStep, componentId: string, ...controls: RegionControl[]) => {
+    const current = step.fragments ? [step.fragments, ...(step.fragments.additionalFragments ?? [])] : [];
+    const fragments = current.flatMap(fragment => {
+      if (fragment.semanticId !== componentId) return [fragment];
+      delete step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+      return controls;
+    });
+    for (const fragment of controls) {
+      const fragmentId = reasoningFragmentId(step.number, fragment);
+      step.fragmentTargets[fragmentId] = { stepNumber: step.number, fragmentId, atomIds: fragment.atomIds,
+        bondIds: fragment.bondIds, locants: [] };
+    }
+    step.fragments = fragments.length ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
+  };
+
+  functionStep.explanation = en ? "The carboxylic acid (–COOH) is the principal function and gives the parent its name, benzoic acid."
+    : "El ácido carboxílico (–COOH) es la función principal y da nombre a la estructura principal, el ácido benzoico.";
+  replace(functionStep, suffix.id, control(suffix.id, en ? "Carboxyl group" : "Grupo carboxilo", "function", regions.carboxyl));
+  parentStep.explanation = en ? "Benzoic acid includes the aromatic ring and the carboxyl group."
+    : "El ácido benzoico comprende el anillo aromático y el grupo carboxilo.";
+  replace(parentStep, parent.id, control(parent.id, en ? "Benzoic acid" : "Ácido benzoico", "parent", regions.parent),
+    control("name:aromatic-ring", en ? "Aromatic ring" : "Anillo aromático", "parent", regions.ring));
+  numberingStep.explanation = en
+    ? `Ring C1 bears the carboxyl group and C${regions.locant} bears the substituent. The external carboxyl carbon is outside the C1–C6 numbering.`
+    : `El C1 del anillo lleva el carboxilo y el C${regions.locant} lleva el sustituyente. El carbono carboxílico externo queda fuera de la numeración C1–C6.`;
+  replace(numberingStep, parent.id);
+
+  const term = en ? acyloxy.text : acyloxy.labelEs ?? "aciloxi";
+  const acylTerm = en ? (regions.methyl ? "Acetyl" : "Acyl") : (regions.methyl ? "acetilo" : "acilo");
+  substituentStep.explanation = en
+    ? `The complete ${term} group is attached at ring C${regions.locant}. It contains an ester, while the carboxylic acid remains the principal function. The smaller selections show parts of the substituent.`
+    : `El grupo ${term} completo se une al C${regions.locant} del anillo. Contiene un éster y el ácido carboxílico conserva la prioridad. Las selecciones menores muestran partes del sustituyente.`;
+  const subregions = [
+    control(acyloxy.id, en ? `${term} group` : `Grupo ${term}`, "substituent", regions.acyloxy),
+    control("name:linking-oxygen", en ? "Linking oxygen" : "Oxígeno de unión", "substituent", regions.linker),
+    control("name:acyl", en ? `${acylTerm} fragment` : `Fragmento ${acylTerm}`,
+      "substituent", regions.acyl),
+    control("name:acyl-carbonyl", en ? `${acylTerm} carbonyl` : `Carbonilo del ${acylTerm}`,
+      "substituent", regions.carbonyl),
+  ];
+  if (regions.methyl) subregions.push(control("name:acetyl-methyl", en ? "Acetyl methyl" : "Metilo del acetilo",
+    "substituent", regions.methyl));
+  replace(substituentStep, acyloxy.id, ...subregions);
+
+  // Each of these steps already has a control for its complete region.
+  for (const step of [functionStep, parentStep, substituentStep]) {
+    if (step.componentIds.length === 1) step.target = undefined;
+  }
 }
 
 function buildSubstitutedArylAcidFragments(steps: PriorityReasoningStep[], derivation: ValidatedNameDerivation,

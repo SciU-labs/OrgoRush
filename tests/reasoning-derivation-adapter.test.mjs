@@ -8,6 +8,8 @@ import { deriveStructuralComponents } from "../app/structural-derivation.ts";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets } from "../app/validated-name-derivation.ts";
 import { reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
+import { buildValidatedVisualNumbering } from "../app/visual-numbering.ts";
+import { resolveDerivationConsistency } from "../app/derivation-consistency.ts";
 
 const imported = smiles => {
   const result = moleculeFromSmiles(smiles);
@@ -28,6 +30,10 @@ const fullCases = [
   { name: "2-(acetyloxy)benzoic acid", smiles: "CC(=O)Oc1ccccc1C(=O)O", ids: ["suffix", "parent", "acyloxy"] },
   { name: "N-(3-hydroxy-4-methylphenyl)acetamide", smiles: "CC(=O)Nc1cc(O)c(C)cc1", ids: ["suffix", "parent", "aryl", "aryl-prefix-3", "aryl-prefix-4"] },
 ];
+const sortedIds = ids => [...ids].sort((a, b) => a - b);
+const edgeKey = ([a, b]) => sortedIds([a, b]).join(":");
+const sortedEdges = edges => edges.map(edgeKey).sort();
+const fragmentsOf = step => step.fragments ? [step.fragments, ...(step.fragments.additionalFragments ?? [])] : [];
 
 test("FULL derivations become concise priority steps with independently selectable graph regions", () => {
   for (const fixture of fullCases) {
@@ -50,18 +56,129 @@ test("FULL derivations become concise priority steps with independently selectab
       const step = model.steps.find(item => [item.fragments, ...(item.fragments?.additionalFragments ?? [])]
         .some(fragment => fragment?.semanticId === id));
       const target = step.fragmentTargets[reasoningFragmentId(step.number, control)];
-      const expected = id === "parent" && derivation.principalGroup === "amide"
-        ? { atomIds: [...new Set([...validatedNameTargets(derivation).parent.atomIds, ...validatedNameTargets(derivation).suffix.atomIds])],
-            bondIds: [...new Map([...validatedNameTargets(derivation).parent.bondIds, ...validatedNameTargets(derivation).suffix.bondIds]
-              .map(([a,b]) => [`${Math.min(a,b)}:${Math.max(a,b)}`, [a,b]])).values()] }
-        : validatedNameTargets(derivation)[id];
-      assert.deepEqual(target.atomIds, expected.atomIds);
-      assert.deepEqual(target.bondIds, expected.bondIds);
+      const targets = validatedNameTargets(derivation);
+      const includesSuffix = id === "parent" && (derivation.principalGroup === "amide" || fixture.ids.includes("acyloxy"));
+      const atomIds = includesSuffix ? [...new Set([...targets.parent.atomIds, ...targets.suffix.atomIds])] : targets[id].atomIds;
+      const bondIds = includesSuffix ? [...new Set([...sortedEdges(targets.parent.bondIds), ...sortedEdges(targets.suffix.bondIds)])].sort()
+        : sortedEdges(targets[id].bondIds);
+      assert.deepEqual(sortedIds(target.atomIds), sortedIds(atomIds));
+      assert.deepEqual(sortedEdges(target.bondIds), bondIds);
     }
     const numbering = model.steps.find(step => step.title === "Numeración");
     const localizerButtons = [numbering.fragments, ...(numbering.fragments?.additionalFragments ?? [])];
     assert.ok(localizerButtons.some(fragment => fragment?.kind === "numbering"), `${fixture.name}: locant controls exist`);
   }
+});
+
+test("both FULL acetyloxy names give exact localized controls for the two distinct carbonyls and every other region", () => {
+  const englishNames = ["2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid"];
+  const spanishName = "ácido 2-(acetiloxi)benzoico";
+  for (const smiles of [fullCases[2].smiles, "O=C(O)c1ccccc1OC(C)=O", "CC(=O)OC1=CC=CC=C1C(O)=O"]) {
+    const graph = imported(smiles);
+    const ring = graph.rings.find(item => item.kind === "aromatic").atomIds;
+    const element = id => graph.atoms.find(atom => atom.id === id)?.element ?? "C";
+    const adjacent = id => graph.bonds.flatMap(([a, b, order = 1]) => a === id ? [[b, order]] : b === id ? [[a, order]] : []);
+    const [c1, c2] = ["C", "O"].map(symbol => ring.find(id => adjacent(id)
+      .some(([other]) => !ring.includes(other) && element(other) === symbol)));
+    const acid = adjacent(c1).find(([id]) => !ring.includes(id))[0];
+    const acidOxygens = adjacent(acid).filter(([id]) => element(id) === "O").map(([id]) => id);
+    const linker = adjacent(c2).find(([id]) => element(id) === "O")[0];
+    const acyl = adjacent(linker).find(([id]) => id !== c2)[0];
+    const oxo = adjacent(acyl).find(([, order]) => order === 2)[0];
+    const methyl = adjacent(acyl).find(([id]) => element(id) === "C")[0];
+    const internal = ids => graph.bonds.filter(([a, b]) => ids.includes(a) && ids.includes(b));
+    const main = [...ring, acid, ...acidOxygens], carboxyl = [acid, ...acidOxygens];
+    const expected = [
+      ["Ácido benzoico", "Benzoic acid", main, internal(main)],
+      ["Grupo carboxilo", "Carboxyl group", carboxyl, internal(carboxyl)],
+      ["Anillo aromático", "Aromatic ring", ring, internal(ring)],
+      ["1", "1", [c1], [], [[c1, 1]]],
+      ["2", "2", [c2], [], [[c2, 2]]],
+      ["Grupo acetiloxi", "acetyloxy group", [linker, acyl, oxo, methyl], [[c2, linker], [linker, acyl], [acyl, oxo], [acyl, methyl]]],
+      ["Oxígeno de unión", "Linking oxygen", [linker], []],
+      ["Fragmento acetilo", "Acetyl fragment", [acyl, oxo, methyl], [[acyl, oxo], [acyl, methyl]]],
+      ["Carbonilo del acetilo", "Acetyl carbonyl", [acyl, oxo], [[acyl, oxo]]],
+      ["Metilo del acetilo", "Acetyl methyl", [methyl], []],
+    ];
+    const remap = new Map(graph.atoms.map(({ id }, index) => [id, (graph.atoms.length - index) * 23 + 500]));
+    const permuted = {
+      atoms: [...graph.atoms].reverse().map(atom => ({ ...atom, id: remap.get(atom.id) })),
+      bonds: [...graph.bonds].reverse().map(([a, b, order]) => [remap.get(b), remap.get(a), order]),
+    };
+    assert.equal(main.length, 9);
+    assert.equal(internal(ring).length, 6);
+    assert.ok(!carboxyl.includes(acyl) && !carboxyl.includes(oxo));
+
+    for (const name of englishNames) for (const language of ["es", "en"]) {
+      const derivation = reconcileSystematicName(graph, name);
+      assert.equal(derivation?.status, "FULL");
+      assert.equal(presentValidatedSystematicName(derivation, language).name, language === "es" ? spanishName : name);
+      const consistency = resolveDerivationConsistency({ molecule: graph, activeProfile: "current", language,
+        activeName: language === "es" ? spanishName : name, currentSourceName: name });
+      assert.equal(consistency.derivation?.name, name, "display localization preserves the FULL source name");
+      const numbering = buildValidatedVisualNumbering(graph, derivation);
+      assert.equal(numbering.get(c1), 1);
+      assert.equal(numbering.get(c2), 2);
+      assert.equal(numbering.has(acid), false);
+
+      for (const [molecule, mapId] of [[graph, id => id], [permuted, id => remap.get(id)]]) {
+        const proof = reconcileSystematicName(molecule, name);
+        assert.equal(proof?.status, "FULL");
+        const { steps } = buildValidatedPriorityReasoning({ derivation: proof, graph: molecule, language });
+        const controls = new Map();
+        for (const step of steps) {
+          const targets = [];
+          if (step.target) targets.push(step.target);
+          for (const fragment of fragmentsOf(step)) {
+            const target = step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+            assert.ok(target, fragment.text);
+            assert.ok(!controls.has(fragment.text), fragment.text);
+            targets.push(target);
+            controls.set(fragment.text, target);
+          }
+          const signatures = targets.map(target => JSON.stringify([sortedIds(target.atomIds), sortedEdges(target.bondIds)]));
+          assert.equal(new Set(signatures).size, signatures.length, `no duplicate regions in ${step.title}`);
+        }
+        assert.equal(controls.size, expected.length);
+        for (const [es, en, atomIds, bondIds, locants = []] of expected) {
+          const text = language === "es" ? es : en, target = controls.get(text);
+          assert.ok(target, text);
+          assert.deepEqual(sortedIds(target.atomIds), sortedIds(atomIds.map(mapId)), text);
+          assert.deepEqual(sortedEdges(target.bondIds), sortedEdges(bondIds.map(edge => edge.map(mapId))), text);
+          assert.deepEqual(target.locants, locants.map(([id, locant]) => [mapId(id), locant]), text);
+        }
+        assert.match(steps[3].explanation, language === "es" ? /C2.*éster.*ácido carboxílico/ : /C2.*ester.*carboxylic acid/);
+      }
+    }
+  }
+});
+
+test("FULL acyloxy reasoning handles a longer acyl group and requires compatible graph evidence", () => {
+  const name = "3-propanoyloxybenzoic acid";
+  const graph = imported("CCC(=O)Oc1cccc(C(=O)O)c1");
+  const derivation = reconcileSystematicName(graph, name);
+  assert.equal(derivation?.status, "FULL");
+  const model = buildValidatedPriorityReasoning({ derivation, graph, language: "es" });
+  const acyl = model.steps.flatMap(fragmentsOf);
+  assert.equal(acyl.find(fragment => fragment.text === "Grupo propanoiloxi").atomIds.length, 5);
+  assert.equal(acyl.find(fragment => fragment.text === "Fragmento acilo").atomIds.length, 4);
+  assert.equal(acyl.find(fragment => fragment.text === "Carbonilo del acilo").bondIds.length, 1);
+  assert.ok(!acyl.some(fragment => fragment.semanticId === "name:acetyl-methyl"));
+  assert.ok(model.steps[3].explanation.includes("C3"));
+
+  const carbonyl = acyl.find(fragment => fragment.text === "Carbonilo del acilo").bondIds[0];
+  const edited = { ...graph, bonds: graph.bonds.map(bond => edgeKey(bond) === edgeKey(carbonyl) ? [bond[0], bond[1], 1] : bond) };
+  assert.equal(reconcileSystematicName(edited, name), null);
+  const stale = buildValidatedPriorityReasoning({ derivation, graph: edited, language: "es" });
+  assert.ok(!stale.steps.flatMap(fragmentsOf).some(fragment => fragment.semanticId === "name:acyl-carbonyl"));
+
+  const aspirin = imported(fullCases[2].smiles), unverifiedName = "3-acetyloxybenzoic acid";
+  assert.equal(reconcileSystematicName(aspirin, unverifiedName), null);
+  const partial = deriveStructuralComponents(aspirin, unverifiedName);
+  assert.equal(partial.status, "PARTIAL");
+  const structural = buildStructuralPriorityReasoning({ derivation: partial, language: "es" });
+  assert.ok(!structural.steps.flatMap(fragmentsOf).some(fragment =>
+    fragment.semanticId === "acyloxy" || fragment.semanticId?.startsWith("name:")));
 });
 
 test("N-(4-hydroxyphenyl)acetamide name fragments highlight their exact FULL graph regions", () => {
