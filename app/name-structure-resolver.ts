@@ -251,16 +251,43 @@ export async function resolveChemicalName(
     } };
   }
   const opsin = await resolveNameWithOpsin(originalName, options);
-  if (opsin.ok) return opsin;
+  let opsinFailure: Extract<NameStructureResolutionResult, { ok: false }> | null = null;
+  if (opsin.ok) {
+    const verifiedEquivalent = verifiedCommonNameQuery(originalName);
+    if (verifiedEquivalent) {
+      const actual = inspectSmilesStructure(opsin.value.smiles);
+      const reference = verifiedEquivalent.referenceSmiles
+        ? inspectSmilesStructure(verifiedEquivalent.referenceSmiles)
+        : null;
+      if (!actual?.ok || !reference?.ok
+        || actual.formula !== verifiedEquivalent.expectedFormula
+        || actual.canonicalConnectivity !== reference.canonicalConnectivity) {
+        // OPSIN can successfully parse a name while returning a different
+        // structure. Verified aliases must still match their pinned identity.
+        opsinFailure = {
+          ok: false,
+          serviceReached: true,
+          error: "OPSIN devolvió una estructura incompatible con la identidad verificada para ese nombre.",
+          detail: "La estructura de OPSIN no coincide con la fórmula y conectividad de referencia.",
+        };
+      } else {
+        return opsin;
+      }
+    } else {
+      return opsin;
+    }
+  } else {
+    opsinFailure = opsin;
+  }
 
   const pubchem = await resolveNameWithPubChem(originalName, options);
   if (pubchem.ok || pubchem.ambiguous) return pubchem;
-  if (!pubchem.serviceReached) return opsin;
+  if (!pubchem.serviceReached) return opsinFailure ?? pubchem;
   return {
     ok: false,
     serviceReached: true,
     error: "OPSIN y PubChem no pudieron resolver ese nombre de forma inequívoca.",
-    detail: `${opsin.detail} ${pubchem.detail}`.trim(),
+    detail: `${opsinFailure?.detail ?? "OPSIN no proporcionó evidencia verificada."} ${pubchem.detail}`.trim(),
   };
 }
 

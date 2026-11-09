@@ -187,6 +187,7 @@ test("aspirin aliases resolve to the exact CID, InChIKey, formula, connectivity 
   for (const name of ["aspirina", "aspirin", "ácido acetilsalicílico", "acido acetilsalicilico", "acetylsalicylic acid", "2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid"]) {
     const result = await resolveChemicalName(name, { fetchImpl, timeoutMs: 1_000 });
     assert.equal(result.ok, true, name);
+    assert.equal(result.value.originalName, name, name);
     assert.equal(result.value.cid, 2244, name);
     assert.equal(result.value.inchiKey, "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", name);
     assert.equal(result.value.molecularFormula, "C9H8O4", name);
@@ -346,6 +347,65 @@ test("aspirin equivalence rejects a wrong CID, InChIKey, formula or connectivity
     });
     assert.equal(result.ok, false);
   }
+});
+
+test("aspirin aliases validate successful OPSIN structures against the pinned identity", async () => {
+  const expectedSmiles = "CC(=O)Oc1ccccc1C(=O)O";
+  const calls = [];
+  const valid = await resolveChemicalName("2-acetyloxybenzoic acid", {
+    fetchImpl: async (input) => {
+      const url = String(input);
+      calls.push(url);
+      if (url.includes("ebi.ac.uk/opsin")) return json({ status: "SUCCESS", smiles: expectedSmiles });
+      throw new Error("PubChem should not be queried after a verified OPSIN response");
+    },
+  });
+  assert.equal(valid.ok, true);
+  assert.equal(valid.value.source, "OPSIN");
+  assert.equal(inspectSmilesStructure(valid.value.smiles).canonicalConnectivity,
+    inspectSmilesStructure(expectedSmiles).canonicalConnectivity);
+  assert.equal(calls.some((url) => url.includes("pubchem")), false);
+
+  const recovered = await resolveChemicalName("2-acetyloxybenzoic acid", {
+    fetchImpl: async (input) => {
+      const url = String(input);
+      if (url.includes("ebi.ac.uk/opsin")) return json({ status: "SUCCESS", smiles: "CC(=O)Oc1ccccc1C(=O)C" });
+      if (url.includes("/name/")) return json({ IdentifierList: { CID: [2244] } });
+      return json({ PropertyTable: { Properties: [{
+        CID: 2244,
+        IUPACName: "2-acetyloxybenzoic acid",
+        InChIKey: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+        IsomericSMILES: expectedSmiles,
+        MolecularFormula: "C9H8O4",
+      }] } });
+    },
+  });
+  assert.equal(recovered.ok, true);
+  assert.equal(recovered.value.source, "PubChem");
+  assert.equal(recovered.value.cid, 2244);
+  assert.equal(inspectSmilesStructure(recovered.value.smiles).canonicalConnectivity,
+    inspectSmilesStructure(expectedSmiles).canonicalConnectivity);
+});
+
+test("aspirin resolution reports network failure without accepting an unverified identity", async () => {
+  const result = await resolveChemicalName("aspirina", {
+    timeoutMs: 25,
+    fetchImpl: async () => { throw new Error("simulated network failure"); },
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.serviceReached, false);
+  assert.match(result.error, /conectar con OPSIN/i);
+
+  const incompatible = await resolveChemicalName("2-acetyloxybenzoic acid", {
+    fetchImpl: async (input) => {
+      if (String(input).includes("ebi.ac.uk/opsin")) {
+        return json({ status: "SUCCESS", smiles: "CC(=O)Oc1ccccc1C(=O)C" });
+      }
+      throw new Error("simulated PubChem network failure");
+    },
+  });
+  assert.equal(incompatible.ok, false);
+  assert.match(incompatible.error, /OPSIN devolvió una estructura incompatible/i);
 });
 
 test("resolves caffeine through the neutral fused-heterocycle import route", async () => {
