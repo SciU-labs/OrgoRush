@@ -39,6 +39,7 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
+import { inspectHydroxyalkyl, inspectAminoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
@@ -586,6 +587,8 @@ type NamedSubstituent = {
   sortName: string;
   complex: boolean;
   atomIds: number[];
+  hydroxyAlkyl?: HydroxyalkylEvidence;
+  aminoAlkyl?: AminoalkylEvidence;
   aryl?: MonomethylPhenyl;
   unsaturatedBonds?: { locant: number; order: BondOrder; atomIds: [number, number] }[];
 };
@@ -3640,7 +3643,19 @@ function analyzeFunctionalAcyclic(
         if (pathSet.has(neighbor)) continue;
         const attachmentOrder = bondOrders.get(bondKey(atomId, neighbor)) ?? 1;
         const named = nameSubstituent(neighbor, atomId, adjacency, bondOrders, true, attachmentOrder);
-        carbonSubstituents.push({ ...named, locant: index + 1 });
+        const hydroxyAlkyl = groups.some(group => group.kind === "alcohol" && named.atomIds.includes(group.carbonId))
+          ? inspectHydroxyalkyl(molecule, path, atomId, neighbor, groups) : null;
+        const amines = groups.filter(group => group.kind === "amine");
+        const aminoAlkyl = amines.length === 1 && named.atomIds.includes(amines[0].carbonId)
+          ? inspectAminoalkyl(molecule, path, atomId, neighbor, groups) : null;
+        const proof = hydroxyAlkyl ?? aminoAlkyl;
+        const rootName = proof && alkylNames[proof.carbonPath.length];
+        if (proof && rootName) {
+          const name = hydroxyAlkyl ? `${hydroxyAlkyl.hydroxy.locant}-hidroxi${rootName}`
+            : `${aminoAlkyl!.amino.locant}-amino${rootName}`;
+          carbonSubstituents.push({ name, sortName: stripForAlphabetizing(name), complex: true,
+            atomIds: proof.atomIds, ...(hydroxyAlkyl ? { hydroxyAlkyl } : { aminoAlkyl: aminoAlkyl! }), locant: index + 1 });
+        } else carbonSubstituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
         .filter((external) => external.anchorId === atomId)
@@ -3654,7 +3669,9 @@ function analyzeFunctionalAcyclic(
           .sort((a, b) => a - b)
       : [];
     const functionalPrefixes = functionalPrefixSubstituents(
-      groups,
+      groups.filter(group => !carbonSubstituents.some(item =>
+        group.kind === "alcohol" && item.hydroxyAlkyl?.hydroxy.oxygenId === group.heteroAtomId
+        || group.kind === "amine" && item.aminoAlkyl?.amino.nitrogenId === group.heteroAtomId)),
       path,
       primaryKind,
       molecule,
@@ -6405,6 +6422,33 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
         || group.kind === "nitrile"
         || group.kind === "aldehyde");
     if (supportedExocyclicRingSuffix) return false;
+
+    // Accept a supported branch function only after rebuilding and checking its complete
+    // graph evidence against the current molecule and the emitted component.
+    if (analysis.family === "acyclic" && (group.kind === "alcohol" || group.kind === "amine")) {
+      const hydroxy = group.kind === "alcohol";
+      const component = analysis.substituents.find(item => hydroxy
+        ? item.hydroxyAlkyl?.hydroxy.oxygenId === group.heteroAtomId
+        : item.aminoAlkyl?.amino.nitrogenId === group.heteroAtomId);
+      const proof = hydroxy ? component?.hydroxyAlkyl : component?.aminoAlkyl;
+      const currentHydroxy = proof && hydroxy && inspectHydroxyalkyl(molecule, analysis.mainChain, proof.parentAtomId, proof.rootAtomId, analysis.functionalGroups);
+      const currentAmino = proof && !hydroxy && analysis.functionalGroups.filter(item => item.kind === "amine").length === 1
+        && inspectAminoalkyl(molecule, analysis.mainChain, proof.parentAtomId, proof.rootAtomId, analysis.functionalGroups);
+      const current = currentHydroxy || currentAmino;
+      const represented = currentHydroxy ? currentHydroxy.hydroxy : currentAmino ? currentAmino.amino : null;
+      const rootName = current && alkylNames[current.carbonPath.length];
+      const expectedName = represented && rootName ? `${represented.locant}-${hydroxy ? "hidroxi" : "amino"}${rootName}` : null;
+      const peers = expectedName ? analysis.substituents.filter(item => (hydroxy ? item.hydroxyAlkyl : item.aminoAlkyl) && item.name === expectedName) : [];
+      const fragment = peers.length ? formatSubstituentGroups(peers)[0] : "";
+      const fragmentIndex = fragment ? analysis.name.indexOf(fragment) : -1;
+      const hasBoundedFragment = fragmentIndex >= 0
+        && (fragmentIndex === 0 || !/[0-9,]/.test(analysis.name[fragmentIndex - 1]));
+      if (component && current && represented && expectedName && represented.carbonId === group.carbonId
+        && component.locant === analysis.mainChain.indexOf(current.parentAtomId) + 1
+        && component.name === expectedName && hasBoundedFragment
+        && component.atomIds.length === current.atomIds.length
+        && current.atomIds.every(id => component.atomIds.includes(id))) return false;
+    }
 
     // A simple acyl group is a complete, supported substituent grammar
     // (acetil, propionil, butiril, ...), rather than an unnamed oxo branch.
