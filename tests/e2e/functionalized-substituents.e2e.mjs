@@ -1,19 +1,45 @@
 import assert from 'node:assert/strict';
 import {before,after,test} from 'node:test';
+import {mkdir,writeFile} from 'node:fs/promises';
 import {createServer} from 'vite';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {resolve} from 'node:path';
 const {chromium}=await import(process.env.ORGORUSH_PLAYWRIGHT_MODULE
   ? pathToFileURL(resolve(process.env.ORGORUSH_PLAYWRIGHT_MODULE)).href : 'playwright');
 let server,browser,base;
+const diagnosticsRoot=resolve('outputs/functionalized-e2e/deterministic');
 before(async()=>{
-  server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0}});
-  await server.listen();base=`http://127.0.0.1:${server.httpServer.address().port}/OrgoRush/es/`;
-  browser=await chromium.launch({headless:true,timeout:20000,...(process.env.ORGORUSH_CHROMIUM_EXECUTABLE
-    ? {executablePath:process.env.ORGORUSH_CHROMIUM_EXECUTABLE}: {})});
+  await mkdir(diagnosticsRoot,{recursive:true});
+  try{
+    server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0}});
+    await server.listen();base=`http://127.0.0.1:${server.httpServer.address().port}/OrgoRush/es/`;
+    browser=await chromium.launch({headless:true,timeout:20000,...(process.env.ORGORUSH_CHROMIUM_EXECUTABLE
+      ? {executablePath:process.env.ORGORUSH_CHROMIUM_EXECUTABLE}: {})});
+  }catch(error){
+    await writeFile(resolve(diagnosticsRoot,'suite-setup-failure.json'),JSON.stringify({case:'suite setup',
+      control:'Vite startup or Playwright Chromium launch',expected:'Vite server and headless Chromium available',
+      observed:safeMessage(error?.message??String(error)),exception:{name:error?.name??'Error',message:safeMessage(error?.message??error)}},null,2));
+    throw error;
+  }
 },{timeout:60000});
 after(async()=>{await browser?.close();await server?.close()});
 const edge=([a,b])=>[Number(a),Number(b)].sort((x,y)=>x-y).join(':');
+const safeUrl=value=>{try{const url=new URL(value);return `${url.origin}${url.pathname}`}catch{return '[invalid URL]'}};
+const safeMessage=value=>String(value).replace(/https?:\/\/[^\s)]+/g,match=>safeUrl(match))
+  .replace(/[A-Za-z]:\\Users\\[^\\\s]+/g,'[user-path-redacted]')
+  .replace(/\b(token|password|authorization)=?[^\s&]*/ig,'$1=[redacted]');
+async function saveFailureDiagnostics(page,{caseId,control,expected,observed,errors,networkErrors,unexpected},error){
+  const payload={case:caseId,control:control??'case setup or interaction',expected:expected??null,observed:observed??null,
+    pageErrors:errors.map(safeMessage),networkErrors:networkErrors.map(item=>typeof item==='string'?safeUrl(item):{
+      ...item,failure:item.failure?safeMessage(item.failure):item.failure}),
+    unexpectedOrigins:[...new Set(unexpected)],exception:{name:error?.name??'Error',message:safeMessage(error?.message??error)}};
+  try{await page.screenshot({path:resolve(diagnosticsRoot,`${caseId}-failure.png`),fullPage:true,animations:'disabled'})}catch{}
+  try{await writeFile(resolve(diagnosticsRoot,`${caseId}-failure.json`),JSON.stringify(payload,null,2))}catch{}
+}
+function assertObserved(diagnostics,control,observed,expected){
+  diagnostics.control=control;diagnostics.expected=expected;diagnostics.observed=observed;
+  assert.deepEqual(observed,expected,`${control}: observed graph/UI evidence differs from fixture`);
+}
 async function capture(page,selector,keyboard=false){
   await page.locator('.reasoning-visual-overlay').waitFor({state:'hidden'});
   const [handle]=await Promise.all([page.waitForFunction(()=>{
@@ -33,17 +59,22 @@ const cases=[
   ['CC(=O)C(CCN)CCC',[4,5,6,7],[[4,5],[5,6],[6,7]],[6,7],[1,2,4,8,9,10],4,3,[2,3]],
   ['O=CC(CC(=O)C)CCCC',[3,4,5,6,7],[[3,4],[4,5],[5,6],[5,7]],[5,6],[2,3,8,9,10,11],3,2,[1,2]],
 ];
-for(const [smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,otherOH] of cases)test(`functionalized branch canvas: ${smiles}`,async()=>{
+for(const [caseIndex,[smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,otherOH]] of cases.entries())test(`functionalized branch canvas: ${smiles}`,async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],networkErrors=[],unexpected=[];
+  const diagnostics={caseId:`single-${String(caseIndex+1).padStart(2,'0')}`,control:'page setup',expected:null,observed:null};
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-  page.on('requestfailed',r=>networkErrors.push(r.url()));
-  page.on('response',r=>{if(r.status()>=400)networkErrors.push(`${r.status()} ${r.url()}`)});
+  page.on('requestfailed',r=>networkErrors.push({url:safeUrl(r.url()),method:r.method(),failure:r.failure()?.errorText}));
+  page.on('response',r=>{if(r.status()>=400)networkErrors.push({url:safeUrl(r.url()),method:r.request().method(),status:r.status()})});
   await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
   await page.route('**/*',async route=>{
     const url=new URL(route.request().url());
     if(url.origin===new URL(base).origin&&!url.pathname.includes('/api/'))return route.continue();
     if(url.hostname==='www.googletagmanager.com')return route.fulfill({status:200,contentType:'application/javascript',body:''});
     if(url.hostname==='fonts.gstatic.com')return route.fulfill({status:204,body:''});
+    if(/^(en|es)\.wikipedia\.org$/.test(url.hostname)&&url.pathname==='/w/api.php')
+      return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({query:{pages:{}}})});
+    if(url.hostname==='www.wikidata.org'&&url.pathname==='/w/api.php')
+      return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({search:[]})});
     if(!['pubchem.ncbi.nlm.nih.gov','www.ebi.ac.uk','en.wikipedia.org','es.wikipedia.org','www.wikidata.org',new URL(base).hostname].includes(url.hostname))unexpected.push(url.origin);
     return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:'{}'});
   });
@@ -51,6 +82,7 @@ for(const [smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,oth
     await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
     await page.getByRole('button',{name:'Español',exact:true}).click();
     await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    diagnostics.control='import deterministic SMILES fixture';diagnostics.expected={submitted:smiles,accepted:true};
     await page.locator('#smiles-text-input').fill(smiles);
     await page.locator('#smiles-interop-panel button[type="submit"]').click();
     const help=page.locator('.reasoning-visibility-button');
@@ -59,36 +91,45 @@ for(const [smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,oth
     await complete.waitFor({state:'visible',timeout:20000});
     assert.match(await complete.getAttribute('aria-label'),/Sustituyente completo/);
     assert.match(await page.locator('[data-name-fragment="functionalized:function"]').getAttribute('aria-label'),/Función secundaria/);
+    diagnostics.control='complete functionalized branch';diagnostics.expected={atoms,bonds:bonds.map(edge).sort()};
     let selection=await capture(page,complete);
-    assert.deepEqual(selection.atoms,atoms);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),bonds.map(edge).sort());
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
+    diagnostics.control='parent-chain target';diagnostics.expected={atoms:parent};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent"]'));
-    assert.deepEqual(selection.atoms,parent);
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms},diagnostics.expected);
+    diagnostics.control='branch-to-parent attachment';diagnostics.expected={atoms:[...bonds[0]].sort((a,b)=>a-b),bonds:[edge(bonds[0])]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:attachment"]'));
-    assert.deepEqual(selection.atoms,[...bonds[0]].sort((a,b)=>a-b));
-    assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(bonds[0])]);
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     if(principal){
+      diagnostics.control='principal functional group';diagnostics.expected={atoms:principal,bonds:[edge(principal)]};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:principal"]'));
-      assert.deepEqual(selection.atoms,principal);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(principal)]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     }
     if(parentNumber===3){
+      diagnostics.control='principal carbonyl locant';diagnostics.expected={atoms:[2]};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:principal-locant"]'),true);
-      assert.deepEqual(selection.atoms,[2]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms},diagnostics.expected);
       assert.equal(await page.locator('.molecule-stage [data-atom-id="2"] .number-label').textContent(),'2');
     }
+    diagnostics.control='secondary functional group';diagnostics.expected={atoms:group,bonds:[edge(group)]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:function"]'),true);
-    assert.deepEqual(selection.atoms,group);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(group)]);
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     if(smiles===cases[0][0]){
+      diagnostics.control='parent hydroxyl';diagnostics.expected={atoms:[6,7],bonds:['6:7']};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent-function-4"]'));
-      assert.deepEqual(selection.atoms,[6,7]);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),['6:7']);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     }
     if(otherOH){
+      diagnostics.control='other parent hydroxyl';diagnostics.expected={atoms:otherOH,bonds:[edge(otherOH)]};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent-function-4"]'));
-      assert.deepEqual(selection.atoms,otherOH);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(otherOH)]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     }
+    diagnostics.control='substituent internal locant';diagnostics.expected={locants:[[group[0],'2']]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:local-locant"]'));
-    assert.deepEqual(selection.locants,[[group[0],'2']]);
+    assertObserved(diagnostics,diagnostics.control,{locants:selection.locants},diagnostics.expected);
+    diagnostics.control='parent attachment locant';diagnostics.expected={atoms:[anchor]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent-locant"]'));
-    assert.deepEqual(selection.atoms,[anchor]);
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms},diagnostics.expected);
     // Existing parent badges suppress an identical transient badge.
     assert.equal(await page.locator(`.molecule-stage [data-atom-id="${anchor}"] .number-label`).textContent(),String(parentNumber));
     assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
@@ -97,10 +138,14 @@ for(const [smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,oth
     await page.locator('[data-name-fragment="functionalized:complete"]').waitFor({state:'visible'});
     assert.match(await page.locator('[data-name-fragment="functionalized:complete"]').getAttribute('aria-label'),/Complete substituent/);
     assert.match(await page.locator('[data-name-fragment="functionalized:function"]').getAttribute('aria-label'),/Secondary functional group/);
+    diagnostics.control='secondary function after language switch';diagnostics.expected={atoms:group,bonds:[edge(group)]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:function"]'),true);
-    assert.deepEqual(selection.atoms,group);assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(group)]);
-    assert.deepEqual(errors,[]);assert.deepEqual(networkErrors,[]);assert.deepEqual(unexpected,[]);
-  }finally{await page.close()}
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
+    diagnostics.control='console, network and external-origin isolation';
+    assertObserved(diagnostics,diagnostics.control,{pageErrors:errors,networkErrors,unexpectedOrigins:unexpected},
+      {pageErrors:[],networkErrors:[],unexpectedOrigins:[]});
+  }catch(error){await saveFailureDiagnostics(page,{...diagnostics,errors,networkErrors,unexpected},error);throw error}
+  finally{await page.close()}
 },{timeout:90000});
 
 const multipleCases=[
@@ -120,16 +165,22 @@ const multipleCases=[
     branches:[{atoms:[4,8,9,10],bonds:[[4,8],[8,9],[9,10]],function:[9,10]},
       {atoms:[4,5,6,7],bonds:[[4,5],[5,6],[6,7]],function:[6,7]}]},
 ];
-for(const fixture of multipleCases)test(`independent functionalized branches canvas: ${fixture.smiles}`,async()=>{
+for(const [fixtureIndex,fixture] of multipleCases.entries())test(`independent functionalized branches canvas: ${fixture.smiles}`,async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],networkErrors=[],unexpected=[];
+  const diagnostics={caseId:`multiple-${['acid','aldehyde','ketone'][fixtureIndex]}`,control:'page setup',expected:null,observed:null};
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-  page.on('requestfailed',r=>networkErrors.push(r.url()));page.on('response',r=>{if(r.status()>=400)networkErrors.push(`${r.status()} ${r.url()}`)});
+  page.on('requestfailed',r=>networkErrors.push({url:safeUrl(r.url()),method:r.method(),failure:r.failure()?.errorText}));
+  page.on('response',r=>{if(r.status()>=400)networkErrors.push({url:safeUrl(r.url()),method:r.request().method(),status:r.status()})});
   await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
   await page.route('**/*',async route=>{
     const url=new URL(route.request().url());
     if(url.origin===new URL(base).origin&&!url.pathname.includes('/api/'))return route.continue();
     if(url.hostname==='www.googletagmanager.com')return route.fulfill({status:200,contentType:'application/javascript',body:''});
     if(url.hostname==='fonts.gstatic.com')return route.fulfill({status:204,body:''});
+    if(/^(en|es)\.wikipedia\.org$/.test(url.hostname)&&url.pathname==='/w/api.php')
+      return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({query:{pages:{}}})});
+    if(url.hostname==='www.wikidata.org'&&url.pathname==='/w/api.php')
+      return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({search:[]})});
     if(!['pubchem.ncbi.nlm.nih.gov','www.ebi.ac.uk','en.wikipedia.org','es.wikipedia.org','www.wikidata.org',new URL(base).hostname].includes(url.hostname))unexpected.push(url.origin);
     return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:'{}'});
   });
@@ -137,56 +188,84 @@ for(const fixture of multipleCases)test(`independent functionalized branches can
     await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
     await page.getByRole('button',{name:'Español',exact:true}).click();
     await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    diagnostics.control='import deterministic two-branch SMILES';diagnostics.expected={submitted:fixture.smiles,accepted:true};
     await page.locator('#smiles-text-input').fill(fixture.smiles);
     await page.locator('#smiles-interop-panel button[type="submit"]').click();
+    diagnostics.control='molecular identity formula';diagnostics.expected={visibleFormulaCount:1};
+    diagnostics.observed={visibleFormulaCount:await page.getByText(fixture.formula,{exact:true}).count()};
     await page.getByText(fixture.formula,{exact:true}).waitFor({state:'visible'});
+    assertObserved(diagnostics,diagnostics.control,{visibleFormulaCount:await page.getByText(fixture.formula,{exact:true}).count()},diagnostics.expected);
     const help=page.locator('.reasoning-visibility-button');if(await help.getAttribute('aria-expanded')!=='true')await help.click();
-    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
-    assert.equal(await page.locator('[data-derivation-support="PARTIAL"]').count(),1);
-    await page.getByText(fixture.esName,{exact:true}).waitFor({state:'visible'});
+    diagnostics.control='validated reasoning support remains PARTIAL';diagnostics.expected={FULL:0,PARTIAL:1};
+    assertObserved(diagnostics,diagnostics.control,{FULL:await page.locator('[data-derivation-support="FULL"]').count(),
+      PARTIAL:await page.locator('[data-derivation-support="PARTIAL"]').count()},diagnostics.expected);
+    diagnostics.control='Spanish systematic name';diagnostics.expected={visibleName:true};
+    const spanishName=page.getByText(fixture.esName,{exact:true}),spanishNameCount=await spanishName.count();
+    diagnostics.observed={visibleName:spanishNameCount>0,matchingElements:spanishNameCount};
+    await spanishName.first().waitFor({state:'visible'});
+    assert.ok(diagnostics.observed.visibleName,`${diagnostics.control} is visible`);
+    diagnostics.control='parent chain';diagnostics.expected={atoms:fixture.parent,bonds:fixture.parentBonds.map(edge).sort()};
     let selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent"]'),true);
-    assert.deepEqual(selection.atoms,fixture.parent);
-    assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),fixture.parentBonds.map(edge).sort());
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
+    diagnostics.control='principal functional group';diagnostics.expected={atoms:fixture.principal,bonds:fixture.principalBonds.map(edge).sort()};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:principal"]'));
-    assert.deepEqual(selection.atoms,fixture.principal);
-    assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),fixture.principalBonds.map(edge).sort());
+    assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
     for(let index=0;index<fixture.branches.length;index++){
       const expected=fixture.branches[index],prefix=`functionalized:branch-${index+1}:`;
       const complete=page.locator(`[data-name-fragment="${prefix}complete"]`),func=page.locator(`[data-name-fragment="${prefix}function"]`);
-      assert.equal(await complete.count(),1);assert.equal(await func.count(),1);
+      diagnostics.control=`branch ${index+1} control multiplicity`;diagnostics.expected={complete:1,function:1};
+      assertObserved(diagnostics,diagnostics.control,{complete:await complete.count(),function:await func.count()},diagnostics.expected);
       await complete.waitFor({state:'visible',timeout:20000});
-      assert.match(await complete.getAttribute('aria-label'),/Sustituyente completo/);
-      assert.match(await func.getAttribute('aria-label'),/Función secundaria/);
+      diagnostics.control=`branch ${index+1} accessible labels`;diagnostics.expected={complete:/Sustituyente completo/.source,function:/Función secundaria/.source};
+      diagnostics.observed={complete:await complete.getAttribute('aria-label'),function:await func.getAttribute('aria-label')};
+      assert.match(diagnostics.observed.complete,/Sustituyente completo/);assert.match(diagnostics.observed.function,/Función secundaria/);
+      diagnostics.control=`branch ${index+1} complete region`;diagnostics.expected={atoms:expected.atoms,bonds:expected.bonds.map(edge).sort()};
       let selection=await capture(page,complete,index===1);
-      assert.deepEqual(selection.atoms,expected.atoms);
-      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),expected.bonds.map(edge).sort());
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
+      diagnostics.control=`branch ${index+1} secondary function`;diagnostics.expected={atoms:expected.function,bonds:[edge(expected.function)]};
       selection=await capture(page,func,index===0);
-      assert.deepEqual(selection.atoms,expected.function);
-      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(expected.function)]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
+      diagnostics.control=`branch ${index+1} carbon skeleton`;diagnostics.expected={
+        atoms:expected.atoms.filter(id=>id!==fixture.anchor&&id!==expected.function[1]),
+        bonds:expected.bonds.filter(([a,b])=>a!==fixture.anchor&&b!==fixture.anchor&&a!==expected.function[1]&&b!==expected.function[1]).map(edge).sort()};
       selection=await capture(page,page.locator(`[data-name-fragment="${prefix}skeleton"]`));
-      assert.deepEqual(selection.atoms,expected.atoms.filter(id=>id!==fixture.anchor&&id!==expected.function[1]));
-      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),expected.bonds
-        .filter(([a,b])=>a!==fixture.anchor&&b!==fixture.anchor&&a!==expected.function[1]&&b!==expected.function[1]).map(edge).sort());
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
+      diagnostics.control=`branch ${index+1} attachment bond`;diagnostics.expected={atoms:[...new Set(expected.bonds[0])].sort((a,b)=>a-b),bonds:[edge(expected.bonds[0])]};
       selection=await capture(page,page.locator(`[data-name-fragment="${prefix}attachment"]`));
-      assert.deepEqual(selection.atoms,[...new Set(expected.bonds[0])].sort((a,b)=>a-b));
-      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(expected.bonds[0])]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
+      diagnostics.control=`branch ${index+1} internal locant`;diagnostics.expected={locants:[[expected.function[0],'2']]};
       selection=await capture(page,page.locator(`[data-name-fragment="${prefix}local-locant"]`));
-      assert.deepEqual(selection.locants,[[expected.function[0],'2']]);
+      assertObserved(diagnostics,diagnostics.control,{locants:selection.locants},diagnostics.expected);
+      diagnostics.control=`branch ${index+1} parent locant`;diagnostics.expected={atoms:[fixture.anchor]};
       selection=await capture(page,page.locator(`[data-name-fragment="${prefix}parent-locant"]`));
-      assert.deepEqual(selection.atoms,[fixture.anchor]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms},diagnostics.expected);
     }
-    assert.equal(await page.locator(`.molecule-stage [data-atom-id="${fixture.anchor}"] .number-label`).textContent(),String(fixture.locant));
+    diagnostics.control='external branch locant display';diagnostics.expected={atom:fixture.anchor,locant:String(fixture.locant)};
+    diagnostics.observed={atom:fixture.anchor,locant:await page.locator(`.molecule-stage [data-atom-id="${fixture.anchor}"] .number-label`).textContent()};
+    assertObserved(diagnostics,diagnostics.control,diagnostics.observed,diagnostics.expected);
     await page.getByRole('button',{name:'English',exact:true}).click();
-    await page.getByText(fixture.enName,{exact:true}).waitFor({state:'visible'});
+    diagnostics.control='English name after language switch';diagnostics.expected={visibleName:true};
+    const englishName=page.getByText(fixture.enName,{exact:true}),englishNameCount=await englishName.count();
+    diagnostics.observed={visibleName:englishNameCount>0,matchingElements:englishNameCount};
+    await englishName.first().waitFor({state:'visible'});
+    assert.ok(diagnostics.observed.visibleName,`${diagnostics.control} is visible`);
     for(let index=0;index<fixture.branches.length;index++){
       const prefix=`functionalized:branch-${index+1}:`;
       await page.locator(`[data-name-fragment="${prefix}complete"]`).waitFor({state:'visible'});
+      diagnostics.control=`branch ${index+1} accessible labels in English`;diagnostics.expected={complete:/Complete substituent/.source,function:/Secondary functional group/.source};
+      diagnostics.observed={complete:await page.locator(`[data-name-fragment="${prefix}complete"]`).getAttribute('aria-label'),
+        function:await page.locator(`[data-name-fragment="${prefix}function"]`).getAttribute('aria-label')};
+      assert.match(diagnostics.observed.complete,/Complete substituent/);assert.match(diagnostics.observed.function,/Secondary functional group/);
       assert.match(await page.locator(`[data-name-fragment="${prefix}complete"]`).getAttribute('aria-label'),/Complete substituent/);
       assert.match(await page.locator(`[data-name-fragment="${prefix}function"]`).getAttribute('aria-label'),/Secondary functional group/);
+      diagnostics.control=`branch ${index+1} keyboard function target in English`;diagnostics.expected={
+        atoms:fixture.branches[index].function,bonds:[edge(fixture.branches[index].function)]};
       const selection=await capture(page,page.locator(`[data-name-fragment="${prefix}function"]`),true);
-      assert.deepEqual(selection.atoms,fixture.branches[index].function);
-      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(fixture.branches[index].function)]);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     }
-    assert.deepEqual(errors,[]);assert.deepEqual(networkErrors,[]);assert.deepEqual(unexpected,[]);
-  }finally{await page.close()}
+    diagnostics.control='console, network and external-origin isolation';
+    assertObserved(diagnostics,diagnostics.control,{pageErrors:errors,networkErrors,unexpectedOrigins:unexpected},
+      {pageErrors:[],networkErrors:[],unexpectedOrigins:[]});
+  }catch(error){await saveFailureDiagnostics(page,{...diagnostics,errors,networkErrors,unexpected},error);throw error}
+  finally{await page.close()}
 },{timeout:90000});
