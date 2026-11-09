@@ -39,7 +39,7 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
-import { inspectHydroxyalkyl, inspectAminoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence } from "./hydroxyalkyl-substituent";
+import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
@@ -589,6 +589,7 @@ type NamedSubstituent = {
   atomIds: number[];
   hydroxyAlkyl?: HydroxyalkylEvidence;
   aminoAlkyl?: AminoalkylEvidence;
+  oxoAlkyl?: OxoalkylEvidence;
   aryl?: MonomethylPhenyl;
   unsaturatedBonds?: { locant: number; order: BondOrder; atomIds: [number, number] }[];
 };
@@ -3648,13 +3649,17 @@ function analyzeFunctionalAcyclic(
         const amines = groups.filter(group => group.kind === "amine");
         const aminoAlkyl = amines.length === 1 && named.atomIds.includes(amines[0].carbonId)
           ? inspectAminoalkyl(molecule, path, atomId, neighbor, groups) : null;
-        const proof = hydroxyAlkyl ?? aminoAlkyl;
+        const secondaryCarbonyls = groups.filter(group => (group.kind === "ketone" || group.kind === "aldehyde") && group.kind !== primaryKind);
+        const oxoAlkyl = primaryKind && groups.some(group => group.kind === primaryKind && locantForGroup(group, path))
+          && secondaryCarbonyls.length === 1 && named.atomIds.includes(secondaryCarbonyls[0].carbonId)
+          ? inspectOxoalkyl(molecule, path, atomId, neighbor, groups) : null;
+        const proof = hydroxyAlkyl ?? aminoAlkyl ?? oxoAlkyl;
         const rootName = proof && alkylNames[proof.carbonPath.length];
         if (proof && rootName) {
           const name = hydroxyAlkyl ? `${hydroxyAlkyl.hydroxy.locant}-hidroxi${rootName}`
-            : `${aminoAlkyl!.amino.locant}-amino${rootName}`;
+            : aminoAlkyl ? `${aminoAlkyl.amino.locant}-amino${rootName}` : `${oxoAlkyl!.oxo.locant}-oxo${rootName}`;
           carbonSubstituents.push({ name, sortName: stripForAlphabetizing(name), complex: true,
-            atomIds: proof.atomIds, ...(hydroxyAlkyl ? { hydroxyAlkyl } : { aminoAlkyl: aminoAlkyl! }), locant: index + 1 });
+            atomIds: proof.atomIds, ...(hydroxyAlkyl ? { hydroxyAlkyl } : aminoAlkyl ? { aminoAlkyl } : { oxoAlkyl: oxoAlkyl! }), locant: index + 1 });
         } else carbonSubstituents.push({ ...named, locant: index + 1 });
       }
       externalSubstituents
@@ -3671,7 +3676,8 @@ function analyzeFunctionalAcyclic(
     const functionalPrefixes = functionalPrefixSubstituents(
       groups.filter(group => !carbonSubstituents.some(item =>
         group.kind === "alcohol" && item.hydroxyAlkyl?.hydroxy.oxygenId === group.heteroAtomId
-        || group.kind === "amine" && item.aminoAlkyl?.amino.nitrogenId === group.heteroAtomId)),
+        || group.kind === "amine" && item.aminoAlkyl?.amino.nitrogenId === group.heteroAtomId
+        || (group.kind === "aldehyde" || group.kind === "ketone") && item.oxoAlkyl?.oxo.groupId === group.id)),
       path,
       primaryKind,
       molecule,
@@ -6401,6 +6407,17 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
   if (!parentAtoms.size) return false;
   const skeleton = carbonSkeleton(molecule);
 
+  // A multiplicative principal suffix and the same function inside a branch
+  // need distinct interactive evidence for every suffix group and the branch.
+  // The current reasoning grammar cannot establish that distinction yet.
+  // Keep the generated structural analysis, but do not admit it as a name
+  // with validated reasoning until those regions can be represented.
+  const principal = analysis.primaryFunctionalGroup;
+  const principalGroups = analysis.functionalGroups.filter(group => group.kind === principal);
+  if (analysis.family === "acyclic" && principal
+    && principalGroups.filter(group => group.carbonIds.some(id => parentAtoms.has(id))).length > 1
+    && principalGroups.some(group => !group.carbonIds.some(id => parentAtoms.has(id)))) return true;
+
   // The local namer is reliable when a secondary functional group is directly
   // on the chosen parent skeleton. Once that group lives inside a carbon
   // substituent, it needs its own substituent numbering (e.g. 2-oxopropyl).
@@ -6422,6 +6439,44 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
         || group.kind === "nitrile"
         || group.kind === "aldehyde");
     if (supportedExocyclicRingSuffix) return false;
+
+    if (analysis.family === "acyclic" && (group.kind === "aldehyde" || group.kind === "ketone")
+      && group.kind !== analysis.primaryFunctionalGroup
+      && analysis.functionalGroups.some(item => item.kind === analysis.primaryFunctionalGroup
+        && item.carbonIds.some(id => parentAtoms.has(id)))
+      && analysis.functionalGroups.filter(item => (item.kind === "aldehyde" || item.kind === "ketone")
+        && item.kind !== analysis.primaryFunctionalGroup).length === 1) {
+      const detected = detectFunctionalGroups(molecule);
+      const groupsMatch = detected.length === analysis.functionalGroups.length && detected.every(actual =>
+        analysis.functionalGroups.some(recorded => recorded.id === actual.id && recorded.kind === actual.kind
+          && recorded.carbonId === actual.carbonId && recorded.heteroAtomId === actual.heteroAtomId
+          && recorded.alkylCarbonId === actual.alkylCarbonId
+          && recorded.atomIds.length === actual.atomIds.length && actual.atomIds.every(id => recorded.atomIds.includes(id))
+          && recorded.carbonIds.length === actual.carbonIds.length && actual.carbonIds.every(id => recorded.carbonIds.includes(id))));
+      const parentConnected = analysis.mainChain.slice(1).every((id,index) => {
+        const bonds = molecule.bonds.filter(([a,b]) => a === id && b === analysis.mainChain[index]
+          || b === id && a === analysis.mainChain[index]);
+        const expectedOrder = analysis.doubleBondLocants.includes(index + 1) ? 2
+          : analysis.tripleBondLocants.includes(index + 1) ? 3 : 1;
+        return bonds.length === 1 && getBondOrder(bonds[0]) === expectedOrder;
+      });
+      const component = analysis.substituents.find(item => item.oxoAlkyl?.oxo.groupId === group.id);
+      const proof = component?.oxoAlkyl;
+      const current = proof && groupsMatch && parentConnected
+        && inspectOxoalkyl(molecule, analysis.mainChain, proof.parentAtomId, proof.rootAtomId, detected);
+      const rootName = current && alkylNames[current.carbonPath.length];
+      const expectedName = current && rootName ? `${current.oxo.locant}-oxo${rootName}` : null;
+      const fragment = component && expectedName ? formatSubstituentGroups([component])[0] : "";
+      const index = fragment ? analysis.name.indexOf(fragment) : -1;
+      if (component && proof && current && expectedName && JSON.stringify(proof) === JSON.stringify(current)
+        && current.oxo.kind === group.kind && current.oxo.carbonId === group.carbonId
+        && current.oxo.oxygenId === group.heteroAtomId
+        && component.locant === analysis.mainChain.indexOf(current.parentAtomId) + 1
+        && component.name === expectedName && component.complex
+        && index >= 0 && (index === 0 || !/[0-9,]/.test(analysis.name[index - 1]))
+        && component.atomIds.length === current.atomIds.length
+        && current.atomIds.every(id => component.atomIds.includes(id))) return false;
+    }
 
     // Accept a supported branch function only after rebuilding and checking its complete
     // graph evidence against the current molecule and the emitted component.

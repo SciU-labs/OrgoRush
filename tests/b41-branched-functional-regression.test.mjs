@@ -160,6 +160,22 @@ test('hydroxyalkyl proofs preserve every branch atom and bond across independent
   }
 });
 
+test('a repeated principal suffix plus a same-kind functionalized branch stays outside validated reasoning', () => {
+  for (const smiles of ['OCCC(CO)CCCCO','OCCC(CCO)CCCCO']) {
+    const parsed=moleculeFromSmiles(smiles); assert.equal(parsed.ok,true,smiles);
+    for (const graph of [parsed.molecule,permute(parsed.molecule)]) {
+      const analysis=chemistry.engine.analyzeMolecule(graph);
+      const alcohols=analysis.functionalGroups.filter(group=>group.kind==='alcohol');
+      assert.equal(analysis.primaryFunctionalGroup,'alcohol',smiles);
+      assert.equal(alcohols.length,3,smiles);
+      assert.equal(alcohols.filter(group=>analysis.mainChain.includes(group.carbonId)).length,2,smiles);
+      assert.ok(analysis.substituents.some(item=>item.hydroxyAlkyl),smiles);
+      assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,analysis),true,smiles);
+      assert.equal(chemistry.engine.externalCandidateNeedsNeutralLocalName(graph,analysis),true,smiles);
+    }
+  }
+});
+
 test('branched, multiply hydroxylated or explicitly stereogenic hydroxy branches stay fail-closed', () => {
   for (const smiles of [
     'O=C(O)C([C@H](O)C)CCC',
@@ -257,4 +273,96 @@ test('aminoalkyl evidence becomes unsafe after changing the name, locant or N bo
   const edited={...parsed.molecule,bonds:parsed.molecule.bonds.filter(([a,b])=>
     !(a===proof.amino.nitrogenId&&b===proof.amino.carbonId||b===proof.amino.nitrogenId&&a===proof.amino.carbonId))};
   assert.equal(chemistry.engine.localNamerCannotSafelyName(edited,analysis),true);
+});
+
+test('oxoalkyl branches preserve aldehyde and ketone carbonyls with independent local numbering', () => {
+  // Frozen OPSIN interpretations; two requested candidates select a parent
+  // containing the ketone; the remaining examples require branch proof.
+  const examples = [
+    ['O=C(O)C(CC(=O)C)CCC','ácido 4-oxo-2-propilpentanoico','O=C(CC(C(=O)O)CCC)C','C8H14O3',null],
+    ['O=CC(CC(=O)C)CCC','4-oxo-2-propilpentanal','O=C(CC(C=O)CCC)C','C8H14O2',null],
+    ['O=C(O)C(CC=O)CCC','ácido 2-(2-oxoetil)pentanoico','O=CCC(C(=O)O)CCC','C7H12O3','aldehyde',2,'2-(2-oxoethyl)pentanoic acid'],
+    ['O=C(O)C(CC(=O)C)CCCC','ácido 2-(2-oxopropil)hexanoico','O=C(CC(C(=O)O)CCCC)C','C9H16O3','ketone',2,'2-(2-oxopropyl)hexanoic acid'],
+    ['O=C(O)C(CCC=O)CCCC','ácido 2-(3-oxopropil)hexanoico','O=CCCC(C(=O)O)CCCC','C9H16O3','aldehyde',3,'2-(3-oxopropyl)hexanoic acid'],
+    ['O=C(O)C(CCC(=O)C)CCCCC','ácido 2-(3-oxobutil)heptanoico','O=C(CCC(C(=O)O)CCCCC)C','C11H20O3','ketone',3,'2-(3-oxobutyl)heptanoic acid'],
+  ];
+  for (const [smiles,name,reference,formula,kind,locant,english] of examples) {
+    assert.equal(structuralIdentity(smiles),structuralIdentity(reference),smiles);
+    for (const source of [smiles,reference]) {
+      assert.equal(inspectSmilesStructure(source).formula,formula,source);
+      const parsed=moleculeFromSmiles(source); assert.equal(parsed.ok,true,source);
+      for (const graph of [parsed.molecule,permute(parsed.molecule)]) {
+        const analysis=chemistry.engine.analyzeMolecule(graph);
+        assert.equal(analysis.name,name,source);
+        assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,analysis),false,source);
+        const exported=moleculeToSmiles(graph); assert.equal(exported.ok,true);
+        assert.equal(structuralIdentity(exported.smiles),structuralIdentity(reference));
+        if (!kind) continue;
+        const proof=analysis.substituents.find(item=>item.oxoAlkyl)?.oxoAlkyl;
+        assert.ok(proof,source);
+        assert.equal(proof.oxo.kind,kind);
+        assert.equal(proof.oxo.source,'detected-group-and-graph');
+        assert.equal(proof.attachmentOrder,1);
+        assert.equal(analysis.mainChain[analysis.substituents.find(item=>item.oxoAlkyl).locant-1],proof.parentAtomId);
+        assert.equal(proof.atomIds.length,proof.carbonPath.length+1);
+        assert.equal(proof.bonds.length,proof.atomIds.length);
+        assert.ok(proof.bonds.every(([a,b,order])=>graph.bonds.some(([x,y,o])=>
+          (a===x&&b===y||a===y&&b===x)&&(order??1)===(o??1))));
+        assert.ok(analysis.functionalGroups.some(group=>group.id===proof.oxo.groupId && group.kind===kind
+          && group.carbonId===proof.oxo.carbonId && group.heteroAtomId===proof.oxo.oxygenId));
+        assert.deepEqual(proof.numbering[0],[proof.rootAtomId,1]);
+        assert.equal(proof.numbering.find(([id])=>id===proof.oxo.carbonId)[1],locant);
+        assert.ok(proof.bonds.some(([a,b,order])=>order===2 &&
+          (a===proof.oxo.carbonId&&b===proof.oxo.oxygenId||b===proof.oxo.carbonId&&a===proof.oxo.oxygenId)));
+        assert.equal(translateSpanishIupacToOpsin(name),english);
+        assert.equal(reconcileSystematicName(graph,english),null);
+      }
+    }
+  }
+});
+
+test('oxoalkyl proof rejects altered carbonyl evidence and unsupported branch structures', () => {
+  for (const smiles of [
+    'O=C(O)C(CC(=O)O)CCCC', 'O=C(O)C(CC(=O)OC)CCCC', 'O=C(O)C(CC(=O)N)CCCC',
+    'O=C(O)C(CC(=O)CC(C)C)CCCCCCC', 'O=C(O)C(CC(=O)C=O)CCCCC',
+    'O=C(O)C(C=CC=O)CCCC', 'O=C(O)C([C@H](C)C=O)CCCCC',
+  ]) {
+    const parsed=moleculeFromSmiles(smiles); assert.equal(parsed.ok,true,smiles);
+    const analysis=chemistry.engine.analyzeMolecule(parsed.molecule);
+    assert.ok(!analysis.substituents.some(item=>item.oxoAlkyl),smiles);
+    // A complete parent can contain both functional groups, e.g. a diacid.
+    // When a group remains in a branch, the incomplete name is blocked.
+    if (analysis.functionalGroups.some(group => group.carbonIds.length
+      && !group.carbonIds.some(id => analysis.mainChain.includes(id))))
+      assert.equal(chemistry.engine.localNamerCannotSafelyName(parsed.molecule,analysis),true,smiles);
+  }
+  const parsed=moleculeFromSmiles('O=C(O)C(CC(=O)C)CCCC'); assert.equal(parsed.ok,true);
+  const analysis=chemistry.engine.analyzeMolecule(parsed.molecule);
+  const component=analysis.substituents.find(item=>item.oxoAlkyl), proof=component.oxoAlkyl;
+  const changed={...parsed.molecule,bonds:parsed.molecule.bonds.map(bond=>
+    (bond[0]===proof.oxo.carbonId&&bond[1]===proof.oxo.oxygenId||bond[1]===proof.oxo.carbonId&&bond[0]===proof.oxo.oxygenId)
+      ? [bond[0],bond[1],1] : bond)};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(changed,analysis),true);
+  const acid=analysis.functionalGroups.find(group=>group.kind==='carboxylicAcid');
+  const missingPrincipalOxygen={...parsed.molecule,atoms:parsed.molecule.atoms.filter(atom=>atom.id!==acid.heteroAtomId),
+    bonds:parsed.molecule.bonds.filter(([a,b])=>a!==acid.heteroAtomId&&b!==acid.heteroAtomId)};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(missingPrincipalOxygen,analysis),true,'stale principal function');
+  const [p1,p2]=analysis.mainChain.slice(-2);
+  const changedParent={...parsed.molecule,bonds:parsed.molecule.bonds.map(bond=>
+    (bond[0]===p1&&bond[1]===p2||bond[1]===p1&&bond[0]===p2) ? [bond[0],bond[1],2] : bond)};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(changedParent,analysis),true,'stale parent bond');
+  const terminal=analysis.mainChain.at(-1), addedId=Math.max(...parsed.molecule.atoms.map(atom=>atom.id))+100;
+  const extended={...parsed.molecule,atoms:[...parsed.molecule.atoms,{id:addedId,x:0,y:0}],
+    bonds:[...parsed.molecule.bonds,[terminal,addedId,1]]};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(extended,analysis),true,'stale complete graph');
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(parsed.molecule,{...analysis,name:analysis.name.replace('2-(2-oxo','3-(2-oxo')}),true);
+  const forged={...component,oxoAlkyl:{...proof,oxo:{...proof.oxo,locant:3}}};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(parsed.molecule,{...analysis,
+    substituents:analysis.substituents.map(item=>item===component?forged:item)}),true);
+  const misplaced={...component,oxoAlkyl:{...proof,oxo:{...proof.oxo,carbonId:proof.rootAtomId}}};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(parsed.molecule,{...analysis,
+    substituents:analysis.substituents.map(item=>item===component?misplaced:item)}),true);
+  const acyl=moleculeFromSmiles('O=C(O)C(C(=O)C)CCCC'); assert.equal(acyl.ok,true);
+  const acylAnalysis=chemistry.engine.analyzeMolecule(acyl.molecule);
+  assert.ok(!acylAnalysis.substituents.some(item=>item.oxoAlkyl),'attachment at carbonyl is acyl, not oxoalkyl');
 });
