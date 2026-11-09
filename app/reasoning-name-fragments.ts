@@ -15,6 +15,11 @@ export type ReasoningNameEvidence = {
   bondType?: "double" | "triple";
   locant?: number;
   bondIds?: readonly (readonly [number, number])[];
+  /** Graph-verified target with its own numbering scope, when supplied by a structural proof. */
+  explicitTarget?: { atomIds: readonly number[]; bondIds: readonly (readonly [number, number])[];
+    locants: readonly (readonly [number, number | string])[] };
+  structuralContext?: { functionKind: string; numberingScope: "parent" | "substituent";
+    attachment: readonly [number, number]; locant?: number };
   explanation?: string;
   contributions?: FunctionalContribution[];
 };

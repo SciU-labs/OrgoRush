@@ -217,6 +217,7 @@ import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { describeAlphabeticalOrder, type AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order";
 import { activateReasoningReference, cancelReasoningHover, scheduleReasoningHover, scrollToReasoningStep } from "./reasoning-name-navigation";
 import { buildReasoningVisualReferences, reasoningFragmentId, type ReasoningVisualTarget } from "./reasoning-visual-targets";
+import { functionalizedBranchFragments } from "./reasoning-functionalized-substituents";
 import { ReasoningStepNumber, ReasoningVisualOverlay, useReasoningVisualInteraction } from "./reasoning-visual-interaction";
 import {
   GUIDED_TOUR_STEP_COUNT,
@@ -6096,6 +6097,18 @@ export function buildActiveIupacReasoning(input: {
   const fragments = deriveReasoningNameFragments({
     analysis, convention, language, displayedName, generatedNames, canHighlight, steps,
   });
+  if (canHighlight && convention === "current" && analysis.substituents.some(item => item.hydroxyAlkyl || item.aminoAlkyl || item.oxoAlkyl)
+    && !localNamerCannotSafelyName(molecule, analysis)) {
+    // The accepted branch proof must belong to the current whole-graph analysis,
+    // not just to an unchanged side chain in a stale parent/name.
+    const current = analyzeMolecule(molecule, input.enabledAliases);
+    const projection = (value: Analysis) => JSON.stringify({ name:value.name, chainName:value.chainName,
+      mainChain:value.mainChain, groups:value.functionalGroups, substituents:value.substituents });
+    if (projection(current) === projection(analysis)) {
+      const branchFragments = functionalizedBranchFragments({ molecule, analysis, name: displayedName, language, steps });
+      if (branchFragments) Object.assign(fragments, branchFragments);
+    }
+  }
   if (canHighlight && methylidene) {
     const term = language === "en" ? "methylidene" : "metilideno";
     const start = displayedName.indexOf(`${methylidene.locant}-${term}`);
@@ -8576,6 +8589,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     || (activeNomenclatureConvention === "current" && externalNameIsPrimary)
     || sourceNameOverride !== null
     || (!!structuralEvidence.carbohydrate && !validatedDerivation);
+  const functionalizedLocalReasoning = !reasoningUnsupported && !validatedDerivation
+    && Object.values(reasoningNameFragments).some(fragment => fragment.semanticId === "functionalized:complete");
   const structuralDerivation = { ...structuralEvidence,
     name: { ...structuralEvidence.name, text: displayedIupacName } };
   const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
@@ -15210,7 +15225,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             </div>
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
-              <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning ? "PARTIAL" : undefined}>
+              <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning || functionalizedLocalReasoning ? "PARTIAL" : undefined}>
+                {functionalizedLocalReasoning && <p role="note">{language === "en"
+                  ? "PARTIAL: branch regions and local numbering are supported by the molecular graph; the full name has not been independently reconciled."
+                  : "PARTIAL: las regiones de la rama y su numeración local están respaldadas por el grafo; el nombre completo no se ha conciliado independientemente."}</p>}
                 {derivationConsistency.status === "profile-mismatch" && <p role="note">
                   {language === "en"
                     ? "The available FULL derivation verifies a different name or nomenclature profile; it is not used to justify the active name."

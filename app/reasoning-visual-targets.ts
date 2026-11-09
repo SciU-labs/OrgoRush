@@ -181,6 +181,17 @@ export function buildReasoningVisualReferences(input: VisualInput): {
     const numberedFragments: ReasoningVisualTarget[] = [];
     for (const part of [evidence, ...(evidence.additionalFragments ?? [])]) {
       if (!isWrittenFragment(part, input.displayedName)) continue;
+      if (part.explicitTarget) {
+        const explicit = part.explicitTarget, atoms = new Set(explicit.atomIds);
+        const known = new Set(input.molecule.atoms.map(atom => atom.id));
+        const edges = new Set(input.molecule.bonds.map(([a,b]) => bondKey(a,b)));
+        if (!atoms.size || [...atoms].some(id => !known.has(id))
+          || explicit.bondIds.some(([a,b]) => !atoms.has(a) || !atoms.has(b) || !edges.has(bondKey(a,b)))
+          || explicit.locants.some(([id]) => !atoms.has(id))) continue;
+        const fragmentId = reasoningFragmentId(step.number, part);
+        fragments[fragmentId] = { ...explicit, stepNumber: step.number, fragmentId };
+        continue;
+      }
       let projected: ReasoningNameEvidence = part;
       if (step.nameRole === "numbering" && part.kind !== "numbering") {
         // Older numbering cards contain a whole unsaturation morpheme. Borrow
