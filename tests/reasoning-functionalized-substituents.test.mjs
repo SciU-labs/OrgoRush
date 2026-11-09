@@ -167,3 +167,84 @@ test('a changed formula, principal carbonyl or locant invalidates the functional
   const badNumbering=analyzeBoth(molecule,chemistry.engine);badNumbering.current.numberedAtoms.set(principal.carbonId,4);
   assertUnavailable(run(molecule,badNumbering));
 });
+
+test('two independently supported hydroxy/amino branches retain separate graph evidence in both languages',()=>{
+  // OPSIN independently parses these complete English names to the listed equivalent graphs.
+  const rows=[
+    ['O=C(O)C(CCO)(CCN)CCC','NCCC(C(=O)O)(CCC)CCO','O=C(O)C(CCN)(CCO)CCC',
+      'ácido 2-(2-aminoetil)-2-(2-hidroxietil)pentanoico','2-(2-aminoethyl)-2-(2-hydroxyethyl)pentanoic acid','C9H19NO3','carboxylicAcid'],
+    ['O=CC(CCO)(CCN)CCC','NCCC(C=O)(CCC)CCO','O=CC(CCN)(CCO)CCC',
+      '2-(2-aminoetil)-2-(2-hidroxietil)pentanal','2-(2-aminoethyl)-2-(2-hydroxyethyl)pentanal','C9H19NO2','aldehyde'],
+    ['CC(=O)C(CCO)(CCN)CCC','NCCC(C(C)=O)(CCC)CCO','CC(=O)C(CCN)(CCO)CCC',
+      '3-(2-aminoetil)-3-(2-hidroxietil)hexan-2-ona','3-(2-aminoethyl)-3-(2-hydroxyethyl)hexan-2-one','C10H21NO2','ketone'],
+  ];
+  const targetBySemantic=(model,refs,semanticId)=>{
+    for(const [step,value] of Object.entries(model.fragments))for(const part of [value,...(value.additionalFragments??[])])
+      if(part.semanticId===semanticId)return {part,target:refs.fragments[reasoningFragmentId(step,part)]};
+    assert.fail(`missing ${semanticId}`);
+  };
+  for(const [source,opsin,swapped,es,en,formula,principalKind] of rows){
+    assert.equal(structuralIdentity(source),structuralIdentity(opsin),en);
+    assert.equal(inspectSmilesStructure(source).formula,formula);
+    for(const smiles of [source,opsin,swapped]){
+      const parsed=moleculeFromSmiles(smiles);assert.equal(parsed.ok,true);
+      const permutation=permute(parsed.molecule);
+      for(const graph of [parsed.molecule,permutation.graph]){
+        const analyses=analyzeBoth(graph,chemistry.engine),analysis=analyses.current;
+        assert.equal(analysis.formula.replace(/[₀-₉]/g,d=>'₀₁₂₃₄₅₆₇₈₉'.indexOf(d)),formula);
+        assert.equal(analysis.primaryFunctionalGroup,principalKind);
+        assert.equal(analysis.substituents.filter(s=>s.hydroxyAlkyl||s.aminoAlkyl||s.oxoAlkyl).length,2);
+        const profiles=displayedProfiles(graph,analyses,chemistry.engine);
+        for(const [profile,name] of [['2013-es',es],['2013-en',en]]){
+          const selection=profiles[profile];assert.equal(selection.name,name);
+          const model=chemistry.engine.buildActiveIupacReasoning({molecule:graph,analyses,...selection,displayedName:name,
+            generatedNames:Object.values(profiles).map(p=>p.name).filter(Boolean),canHighlight:true});
+          assertReasoningIntegrity(model,graph);
+          const refs=buildReasoningVisualReferences({molecule:graph,analysis,steps:model.steps,fragments:model.fragments,displayedName:name,enabled:true});
+          const scopes=parseParenthesizedScopes(name);assert.equal(scopes.length,2);assert.ok(scopes.every(scope=>scope.children.length===0));
+          const branchItems=analysis.substituents.filter(s=>s.hydroxyAlkyl||s.aminoAlkyl||s.oxoAlkyl);
+          const ordered=scopes.map(scope=>{
+            const inner=name.slice(scope.span.start+1,scope.span.end-1),locant=Number(/(\d+)-$/.exec(name.slice(0,scope.span.start))?.[1]);
+            return branchItems.find(item=>item.locant===locant
+              && (profile.endsWith('en')?inner===item.name.replace('hidroxi','hydroxy').replace('etil','ethyl'):inner===item.name));
+          });
+          assert.ok(ordered.every(Boolean),'every name scope maps bijectively to one structural branch');
+          assert.deepEqual(new Set(ordered.map(item=>`${item.locant}:${item.hydroxyAlkyl?'hydroxy':'amino'}`)).size,2);
+          const internalSets=ordered.map(item=>new Set(item.hydroxyAlkyl?.atomIds??item.aminoAlkyl.atomIds));
+          assert.equal([...internalSets[0]].some(id=>internalSets[1].has(id)),false,'branch internal atoms never overlap');
+          for(let index=0;index<ordered.length;index++){
+            const item=ordered[index],proof=item.hydroxyAlkyl??item.aminoAlkyl,func=proof.hydroxy??proof.amino;
+            const hetero=func.oxygenId??func.nitrogenId,prefix=`functionalized:branch-${index+1}:`;
+            const get=key=>targetBySemantic(model,refs,prefix+key).target;
+            assert.deepEqual(new Set(get('complete').atomIds),new Set([proof.parentAtomId,...proof.atomIds]));
+            assert.deepEqual(get('complete').bondIds.map(key).sort(),proof.bonds.map(key).sort());
+            assert.deepEqual(new Set(get('skeleton').atomIds),new Set(proof.carbonPath));
+            assert.deepEqual(get('skeleton').bondIds.map(key).sort(),proof.bonds.filter(([a,b])=>proof.carbonPath.includes(a)&&proof.carbonPath.includes(b)).map(key).sort());
+            assert.deepEqual(new Set(get('function').atomIds),new Set([func.carbonId,hetero]));
+            assert.deepEqual(get('function').bondIds.map(key),[key([func.carbonId,hetero])]);
+            assert.deepEqual(get('attachment').atomIds.sort((a,b)=>a-b),[proof.parentAtomId,proof.rootAtomId].sort((a,b)=>a-b));
+            assert.deepEqual(get('attachment').bondIds.map(key),[key([proof.parentAtomId,proof.rootAtomId])]);
+            assert.deepEqual(get('parent-locant').locants,[[proof.parentAtomId,item.locant]]);
+            assert.deepEqual(get('local-locant').locants,[[func.carbonId,func.locant]]);
+            assert.equal(targetBySemantic(model,refs,prefix+'function').part.structuralContext.numberingScope,'substituent');
+          }
+          assert.deepEqual(new Set(targetBySemantic(model,refs,'functionalized:parent').target.atomIds),new Set(analysis.mainChain));
+          assert.equal(reconcileSystematicName(graph,en),null,'interactive branch proof does not promote FULL');
+        }
+      }
+    }
+  }
+});
+
+test('equal-function, internally multi-functional, branched, unsaturated, stereo and nested branches stay outside this grammar',()=>{
+  const unsupported=['O=C(O)C(CCN)(CCN)CCC','O=C(O)C(CCO)(CCO)CCC','O=C(O)C(CC(O)N)CCC',
+    'O=C(O)C(CC(C)O)CCC','O=C(O)C(CC=CO)CCC','O=C(O)C(C[C@H](O)C)CCC'];
+  for(const smiles of unsupported){
+    const parsed=moleculeFromSmiles(smiles);assert.equal(parsed.ok,true,smiles);
+    const analyses=analyzeBoth(parsed.molecule,chemistry.engine),name=analyses.current.name;
+    const model=chemistry.engine.buildActiveIupacReasoning({molecule:parsed.molecule,analyses,language:'es',convention:'current',
+      displayedName:name,generatedNames:[name],canHighlight:true});
+    assert.ok(!Object.values(model.fragments).flatMap(f=>[f,...(f.additionalFragments??[])]).some(f=>f.semanticId?.startsWith('functionalized:branch-')),smiles);
+  }
+  assert.ok(parseParenthesizedScopes('2-(2-(x)y)z')[0].children.length,'nested parenthesis depth is preserved so the renderer can reject it');
+});

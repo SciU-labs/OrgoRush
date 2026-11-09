@@ -102,3 +102,91 @@ for(const [smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,oth
     assert.deepEqual(errors,[]);assert.deepEqual(networkErrors,[]);assert.deepEqual(unexpected,[]);
   }finally{await page.close()}
 },{timeout:90000});
+
+const multipleCases=[
+  {smiles:'O=C(O)C(CCO)(CCN)CCC',formula:'C₉H₁₉NO₃',anchor:4,locant:2,
+    esName:'ácido 2-(2-aminoetil)-2-(2-hidroxietil)pentanoico',enName:'2-(2-aminoethyl)-2-(2-hydroxyethyl)pentanoic acid',
+    parent:[2,4,11,12,13],parentBonds:[[2,4],[4,11],[11,12],[12,13]],principal:[1,2,3],principalBonds:[[1,2],[2,3]],
+    branches:[{atoms:[4,8,9,10],bonds:[[4,8],[8,9],[9,10]],function:[9,10]},
+      {atoms:[4,5,6,7],bonds:[[4,5],[5,6],[6,7]],function:[6,7]}]},
+  {smiles:'O=CC(CCO)(CCN)CCC',formula:'C₉H₁₉NO₂',anchor:3,locant:2,
+    esName:'2-(2-aminoetil)-2-(2-hidroxietil)pentanal',enName:'2-(2-aminoethyl)-2-(2-hydroxyethyl)pentanal',
+    parent:[2,3,10,11,12],parentBonds:[[2,3],[3,10],[10,11],[11,12]],principal:[1,2],principalBonds:[[1,2]],
+    branches:[{atoms:[3,7,8,9],bonds:[[3,7],[7,8],[8,9]],function:[8,9]},
+      {atoms:[3,4,5,6],bonds:[[3,4],[4,5],[5,6]],function:[5,6]}]},
+  {smiles:'CC(=O)C(CCO)(CCN)CCC',formula:'C₁₀H₂₁NO₂',anchor:4,locant:3,
+    esName:'3-(2-aminoetil)-3-(2-hidroxietil)hexan-2-ona',enName:'3-(2-aminoethyl)-3-(2-hydroxyethyl)hexan-2-one',
+    parent:[1,2,4,11,12,13],parentBonds:[[1,2],[2,4],[4,11],[11,12],[12,13]],principal:[2,3],principalBonds:[[2,3]],
+    branches:[{atoms:[4,8,9,10],bonds:[[4,8],[8,9],[9,10]],function:[9,10]},
+      {atoms:[4,5,6,7],bonds:[[4,5],[5,6],[6,7]],function:[6,7]}]},
+];
+for(const fixture of multipleCases)test(`independent functionalized branches canvas: ${fixture.smiles}`,async()=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],networkErrors=[],unexpected=[];
+  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
+  page.on('requestfailed',r=>networkErrors.push(r.url()));page.on('response',r=>{if(r.status()>=400)networkErrors.push(`${r.status()} ${r.url()}`)});
+  await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
+  await page.route('**/*',async route=>{
+    const url=new URL(route.request().url());
+    if(url.origin===new URL(base).origin&&!url.pathname.includes('/api/'))return route.continue();
+    if(url.hostname==='www.googletagmanager.com')return route.fulfill({status:200,contentType:'application/javascript',body:''});
+    if(url.hostname==='fonts.gstatic.com')return route.fulfill({status:204,body:''});
+    if(!['pubchem.ncbi.nlm.nih.gov','www.ebi.ac.uk','en.wikipedia.org','es.wikipedia.org','www.wikidata.org',new URL(base).hostname].includes(url.hostname))unexpected.push(url.origin);
+    return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:'{}'});
+  });
+  try{
+    await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
+    await page.getByRole('button',{name:'Español',exact:true}).click();
+    await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    await page.locator('#smiles-text-input').fill(fixture.smiles);
+    await page.locator('#smiles-interop-panel button[type="submit"]').click();
+    await page.getByText(fixture.formula,{exact:true}).waitFor({state:'visible'});
+    const help=page.locator('.reasoning-visibility-button');if(await help.getAttribute('aria-expanded')!=='true')await help.click();
+    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
+    assert.equal(await page.locator('[data-derivation-support="PARTIAL"]').count(),1);
+    await page.getByText(fixture.esName,{exact:true}).waitFor({state:'visible'});
+    let selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent"]'),true);
+    assert.deepEqual(selection.atoms,fixture.parent);
+    assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),fixture.parentBonds.map(edge).sort());
+    selection=await capture(page,page.locator('[data-name-fragment="functionalized:principal"]'));
+    assert.deepEqual(selection.atoms,fixture.principal);
+    assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),fixture.principalBonds.map(edge).sort());
+    for(let index=0;index<fixture.branches.length;index++){
+      const expected=fixture.branches[index],prefix=`functionalized:branch-${index+1}:`;
+      const complete=page.locator(`[data-name-fragment="${prefix}complete"]`),func=page.locator(`[data-name-fragment="${prefix}function"]`);
+      assert.equal(await complete.count(),1);assert.equal(await func.count(),1);
+      await complete.waitFor({state:'visible',timeout:20000});
+      assert.match(await complete.getAttribute('aria-label'),/Sustituyente completo/);
+      assert.match(await func.getAttribute('aria-label'),/Función secundaria/);
+      let selection=await capture(page,complete,index===1);
+      assert.deepEqual(selection.atoms,expected.atoms);
+      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),expected.bonds.map(edge).sort());
+      selection=await capture(page,func,index===0);
+      assert.deepEqual(selection.atoms,expected.function);
+      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(expected.function)]);
+      selection=await capture(page,page.locator(`[data-name-fragment="${prefix}skeleton"]`));
+      assert.deepEqual(selection.atoms,expected.atoms.filter(id=>id!==fixture.anchor&&id!==expected.function[1]));
+      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))).sort(),expected.bonds
+        .filter(([a,b])=>a!==fixture.anchor&&b!==fixture.anchor&&a!==expected.function[1]&&b!==expected.function[1]).map(edge).sort());
+      selection=await capture(page,page.locator(`[data-name-fragment="${prefix}attachment"]`));
+      assert.deepEqual(selection.atoms,[...new Set(expected.bonds[0])].sort((a,b)=>a-b));
+      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(expected.bonds[0])]);
+      selection=await capture(page,page.locator(`[data-name-fragment="${prefix}local-locant"]`));
+      assert.deepEqual(selection.locants,[[expected.function[0],'2']]);
+      selection=await capture(page,page.locator(`[data-name-fragment="${prefix}parent-locant"]`));
+      assert.deepEqual(selection.atoms,[fixture.anchor]);
+    }
+    assert.equal(await page.locator(`.molecule-stage [data-atom-id="${fixture.anchor}"] .number-label`).textContent(),String(fixture.locant));
+    await page.getByRole('button',{name:'English',exact:true}).click();
+    await page.getByText(fixture.enName,{exact:true}).waitFor({state:'visible'});
+    for(let index=0;index<fixture.branches.length;index++){
+      const prefix=`functionalized:branch-${index+1}:`;
+      await page.locator(`[data-name-fragment="${prefix}complete"]`).waitFor({state:'visible'});
+      assert.match(await page.locator(`[data-name-fragment="${prefix}complete"]`).getAttribute('aria-label'),/Complete substituent/);
+      assert.match(await page.locator(`[data-name-fragment="${prefix}function"]`).getAttribute('aria-label'),/Secondary functional group/);
+      const selection=await capture(page,page.locator(`[data-name-fragment="${prefix}function"]`),true);
+      assert.deepEqual(selection.atoms,fixture.branches[index].function);
+      assert.deepEqual(selection.bonds.map(s=>edge(s.split(':'))),[edge(fixture.branches[index].function)]);
+    }
+    assert.deepEqual(errors,[]);assert.deepEqual(networkErrors,[]);assert.deepEqual(unexpected,[]);
+  }finally{await page.close()}
+},{timeout:90000});

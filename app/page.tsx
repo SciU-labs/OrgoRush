@@ -8591,7 +8591,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     || sourceNameOverride !== null
     || (!!structuralEvidence.carbohydrate && !validatedDerivation);
   const functionalizedLocalReasoning = !reasoningUnsupported && !validatedDerivation
-    && Object.values(reasoningNameFragments).some(fragment => fragment.semanticId === "functionalized:complete");
+    && Object.values(reasoningNameFragments).some(fragment => fragment.semanticId === "functionalized:complete"
+      || /^functionalized:branch-[1-2]:complete$/.test(fragment.semanticId ?? ""));
   const structuralDerivation = { ...structuralEvidence,
     name: { ...structuralEvidence.name, text: displayedIupacName } };
   const reasoningReferenceKey = `${language}|${activeNomenclatureConvention}|${displayedIupacName}|${currentMoleculeSmiles.ok ? currentMoleculeSmiles.smiles : ""}`;
