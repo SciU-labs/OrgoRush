@@ -133,6 +133,30 @@ Para una base local vacía, aplíquelas una vez y en orden. No repita las
 migraciones ya aplicadas. El despliegue Sites remoto necesita su propio binding
 y proceso de migración; estos comandos no preparan una base remota.
 
+## Pruebas E2E con Playwright
+
+Después de `npm ci`, instale el Chromium headless de Playwright y ejecute la
+prueba determinista de la interfaz estática:
+
+```sh
+node node_modules/playwright/cli.js install chromium --only-shell
+npm run test:derivation:e2e
+```
+
+La prueba cubre aspirina, ibuprofeno y paracetamol con servicios químicos
+simulados; no necesita D1. En Windows también puede usar Microsoft Edge
+instalado, indicando su ruta real en PowerShell antes de ejecutar la prueba:
+
+```powershell
+$env:ORGORUSH_CHROMIUM_EXECUTABLE = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+npm run test:derivation:e2e
+```
+
+Compruebe esa ruta en su equipo. En GitHub, abra **Actions**, seleccione
+**Verificación E2E de OrgoRush** y pulse **Run workflow**. Si falla, consulte
+el artefacto `orgorush-e2e-diagnostico` de la ejecución. Este workflow manual es
+independiente del despliegue de Pages y no retrasa su publicación.
+
 ## Persistencia y privacidad
 
 En la versión estática, molécula en edición, History y Save usan almacenamiento

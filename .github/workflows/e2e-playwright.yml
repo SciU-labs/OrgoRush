@@ -1,0 +1,39 @@
+name: Verificación E2E de OrgoRush
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ORGORUSH_E2E_LIVE: '0'
+      ORGORUSH_E2E_GENERALIZED: '0'
+      ORGORUSH_E2E_PHASE6: '0'
+      ORGORUSH_E2E_PHASE7: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Instalar Chromium headless y dependencias
+        run: node node_modules/playwright/cli.js install --with-deps chromium --only-shell
+      - name: Ejecutar E2E determinista
+        run: npm run test:derivation:e2e
+      - name: Guardar evidencias de fallo
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: orgorush-e2e-diagnostico
+          path: |
+            outputs/derivation-e2e/original/deterministic/*.png
+            outputs/derivation-e2e/original/deterministic/*.json
+            outputs/derivation-e2e/original/deterministic/*.txt
+          if-no-files-found: ignore
+          retention-days: 7
