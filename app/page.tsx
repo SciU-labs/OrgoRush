@@ -6102,8 +6102,9 @@ export function buildActiveIupacReasoning(input: {
     // The accepted branch proof must belong to the current whole-graph analysis,
     // not just to an unchanged side chain in a stale parent/name.
     const current = analyzeMolecule(molecule, input.enabledAliases);
-    const projection = (value: Analysis) => JSON.stringify({ name:value.name, chainName:value.chainName,
-      mainChain:value.mainChain, groups:value.functionalGroups, substituents:value.substituents });
+    const projection = (value: Analysis) => JSON.stringify({ name:value.name, chainName:value.chainName, formula:value.formula,
+      mainChain:value.mainChain, numbering:[...value.numberedAtoms], doubleBonds:value.doubleBondLocants,
+      tripleBonds:value.tripleBondLocants, groups:value.functionalGroups, substituents:value.substituents });
     if (projection(current) === projection(analysis)) {
       const branchFragments = functionalizedBranchFragments({ molecule, analysis, name: displayedName, language, steps });
       if (branchFragments) Object.assign(fragments, branchFragments);

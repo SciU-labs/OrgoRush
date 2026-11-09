@@ -55,9 +55,21 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
   const fullParent=chain.replace(/^ácido /,"");
   const parentStart=name.lastIndexOf(fullParent);
   if (parentStart < scope.end || parentStart + fullParent.length !== name.length) return null;
-  const suffix=language==="en"?"oic acid":"oico";
+  const principal=analysis.functionalGroups.filter(g=>g.kind===analysis.primaryFunctionalGroup && analysis.mainChain.includes(g.carbonId));
+  if (principal.length!==1 || !["carboxylicAcid","aldehyde","ketone"].includes(analysis.primaryFunctionalGroup ?? "")) return null;
+  const principalKind=analysis.primaryFunctionalGroup!;
+  const suffix=principalKind === "carboxylicAcid" ? language==="en"?"oic acid":"oico"
+    : principalKind === "aldehyde" ? "al" : language === "en" ? "one" : "ona";
   if (!fullParent.endsWith(suffix)) return null;
-  const parentText=fullParent.slice(0,-suffix.length);
+  const ketoneLocant = principalKind === "ketone" ? /-(\d+)-(?:ona|one)$/.exec(fullParent) : null;
+  if (principalKind === "ketone" && (!ketoneLocant
+    || analysis.mainChain[Number(ketoneLocant[1])-1] !== principal[0].carbonId)) return null;
+  if (principalKind === "aldehyde" && analysis.mainChain[0] !== principal[0].carbonId) return null;
+  const carbonyl=molecule.bonds.filter(([a,b,order]) => order===2
+    && (a===principal[0].carbonId && b===principal[0].heteroAtomId || b===principal[0].carbonId && a===principal[0].heteroAtomId));
+  if (carbonyl.length!==1) return null;
+  const parentText=ketoneLocant ? fullParent.slice(0,ketoneLocant.index) : fullParent.slice(0,-suffix.length);
+  if (!parentText) return null;
   const step=(role:string)=>steps.find(s=>s.nameRole===role)?.number;
   const parentStep=step("parent"),numberStep=step("numbering"),subStep=step("substituent"),functionStep=step("function");
   if (!parentStep || !numberStep || !subStep || !functionStep) return null;
@@ -67,11 +79,11 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
   const part=(text:string,start:number,kind:ReasoningNameEvidence["kind"],key:string,label:string,
     explicitTarget:NonNullable<ReasoningNameEvidence["explicitTarget"]>):ReasoningNameEvidence=>
     ({text,start,kind,label,semanticId:`functionalized:${key}`,atomIds:explicitTarget.atomIds,bondIds:explicitTarget.bondIds,explicitTarget,
-      structuralContext:{functionKind:key === "principal" ? analysis.primaryFunctionalGroup! : key.startsWith("parent-function-") ? "alcohol"
+      structuralContext:{functionKind:key === "principal" || key === "principal-locant" ? analysis.primaryFunctionalGroup! : key.startsWith("parent-function-") ? "alcohol"
         : item.hydroxyAlkyl ? "alcohol" : item.aminoAlkyl ? "amine" : item.oxoAlkyl!.oxo.kind,
-      numberingScope:key === "parent" || key === "principal" || key === "parent-locant" || key.startsWith("parent-function-") ? "parent" : "substituent",
+      numberingScope:key === "parent" || key === "principal" || key === "principal-locant" || key === "parent-locant" || key.startsWith("parent-function-") ? "parent" : "substituent",
       attachment:[proof.parentAtomId,proof.rootAtomId],
-      ...(key === "parent-locant" ? {locant:item.locant} : key === "local-locant" || key === "function" ? {locant:group.locant} : {})}});
+      ...(key === "parent-locant" ? {locant:item.locant} : key === "principal-locant" ? {locant:Number(ketoneLocant![1])} : key === "local-locant" || key === "function" ? {locant:group.locant} : {})}});
   const en=language==="en", labels={ parent:en?"Parent chain":"Cadena principal", complete:en?"Complete substituent":"Sustituyente completo",
     anchor:en?"Parent attachment locant":"Localizador de unión en el progenitor", local:en?"Substituent internal locant":"Localizador interno del sustituyente",
     function:en?"Secondary functional group":"Función secundaria", skeleton:en?"Substituent carbon skeleton":"Esqueleto carbonado del sustituyente" };
@@ -81,15 +93,19 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
   const parentPart=part(parentText,parentStart,"parent","parent",labels.parent,target(analysis.mainChain,bondsWithin(analysis.mainChain)));
   const parentLocant=part(parentMatch[1],parentNumberStart,"numbering","parent-locant",labels.anchor,target([proof.parentAtomId],[],[[proof.parentAtomId,item.locant]]));
   const localLocant=part(String(group.locant),innerStart,"numbering","local-locant",labels.local,target([group.carbonId],[],[[group.carbonId,group.locant]]));
+  const principalLocant=ketoneLocant ? part(ketoneLocant[1],parentStart+ketoneLocant.index+1,"numbering","principal-locant",
+    en?"Principal carbonyl locant":"Localizador del carbonilo principal",target([principal[0].carbonId],[],[[principal[0].carbonId,Number(ketoneLocant[1])]])) : undefined;
   const complete=part(name.slice(scope.start,scope.end),scope.start,"substituent","complete",labels.complete,target(branchAtoms,branchBonds));
+  const attachment=part("(",scope.start,"substituent","attachment",en?"Bond to the parent":"Enlace al progenitor",
+    target([proof.parentAtomId,proof.rootAtomId],[[proof.parentAtomId,proof.rootAtomId]]));
   const functional=part(prefix,innerStart+String(group.locant).length+1,"function","function",labels.function,target(functionAtoms,bondsWithin(functionAtoms)));
   const skeletonText=inner.slice(startText.length), skeletonStart=innerStart+startText.length;
   const skeleton=part(skeletonText,skeletonStart,"substituent","skeleton",labels.skeleton,target(proof.carbonPath,bondsWithin(proof.carbonPath)));
-  const principal=analysis.functionalGroups.filter(g=>g.kind===analysis.primaryFunctionalGroup && analysis.mainChain.includes(g.carbonId));
-  if (principal.length!==1 || analysis.primaryFunctionalGroup!=="carboxylicAcid") return null;
   const suffixStart=name.lastIndexOf(suffix);
   if (suffixStart<parentStart) return null;
-  const primary=part(suffix,suffixStart,"function","principal",en?"Principal carboxyl group":"Grupo carboxilo principal",target(principal[0].atomIds,bondsWithin(principal[0].atomIds)));
+  const primaryLabel=principalKind === "carboxylicAcid" ? en?"Principal carboxyl group":"Grupo carboxilo principal"
+    : principalKind === "aldehyde" ? en?"Principal aldehyde":"Aldehído principal" : en?"Principal ketone":"Cetona principal";
+  const primary=part(suffix,suffixStart,"function","principal",primaryLabel,target(principal[0].atomIds,bondsWithin(principal[0].atomIds)));
   // Other named functions directly on the parent keep their own graph target.
   const extra:ReasoningNameEvidence[]=[];
   for (const other of analysis.substituents.filter(s=>s!==item)) {
@@ -100,6 +116,6 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
     if (pos<0 || pos>=scope.start) return null;
     extra.push(part(token,pos,"function",`parent-function-${other.locant}`,en?"Hydroxyl on parent":"Hidroxilo del progenitor",target(groupOnParent.atomIds,bondsWithin(groupOnParent.atomIds))));
   }
-  return { [parentStep]:parentPart, [numberStep]:{...parentLocant,additionalFragments:[localLocant]},
-    [subStep]:{...complete,additionalFragments:[skeleton]}, [functionStep]:{...primary,additionalFragments:[functional,...extra]} };
+  return { [parentStep]:parentPart, [numberStep]:{...parentLocant,additionalFragments:[localLocant,...(principalLocant?[principalLocant]:[])]},
+    [subStep]:{...complete,additionalFragments:[attachment,skeleton]}, [functionStep]:{...primary,additionalFragments:[functional,...extra]} };
 }
