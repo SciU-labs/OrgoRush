@@ -126,11 +126,12 @@ Para inicializar D1 **solo localmente**, después de `npm run build`:
 ```sh
 npx wrangler d1 execute site-creator-d1 --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_nervous_husk.sql
 npx wrangler d1 execute site-creator-d1 --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_blue_lightspeed.sql
+npx wrangler d1 execute site-creator-d1 --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0002_view_mode_version.sql
 ```
 
-Son migraciones iniciales: aplíquelas una sola vez a una base vacía. El despliegue
-Sites remoto necesita su propio binding y proceso de migración; estos comandos
-no preparan una base remota.
+Para una base local vacía, aplíquelas una vez y en orden. No repita las
+migraciones ya aplicadas. El despliegue Sites remoto necesita su propio binding
+y proceso de migración; estos comandos no preparan una base remota.
 
 ## Persistencia y privacidad
 

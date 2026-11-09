@@ -23,9 +23,9 @@ const caffeine=fusedRecords.find(f=>f.name==='caffeine');
 const phase6Fixtures=[generalizationCases.find(f=>f.common==='3-methylbutanoic acid'),
   {common:'caffeine',name:caffeine.IUPACName,smiles:caffeine.SMILES,cid:caffeine.CID,formula:caffeine.MolecularFormula}];
 const originalFixtures = [
-  { common:'ibuprofen', name:'2-[4-(2-methylpropyl)phenyl]propanoic acid', smiles:'CC(C)Cc1ccc(cc1)C(C)C(=O)O', cid:3672, formula:'C13H18O2', parent:[11,12,13], prefix:[1,2,3,4], component:'aryl-prefix', bonds:['1:2','2:3','2:4','4:5'] },
-  { common:'paracetamol', name:'N-(4-hydroxyphenyl)acetamide', smiles:'CC(=O)Nc1ccc(O)cc1', cid:1983, formula:'C8H9NO2', parent:[1,2,4], prefix:[9], component:'aryl-prefix', bonds:['8:9'] },
-  { common:'aspirin', name:'2-acetyloxybenzoic acid', smiles:'CC(=O)Oc1ccccc1C(=O)O', cid:2244, formula:'C9H8O4', parent:[5,6,7,8,9,10,11], prefix:[1,2,3,4], component:'acyloxy', bonds:['1:2','2:3','2:4','4:5'] },
+  { common:'ibuprofen', name:'2-[4-(2-methylpropyl)phenyl]propanoic acid', smiles:'CC(C)Cc1ccc(cc1)C(C)C(=O)O', cid:3672, formula:'C13H18O2', parent:[11,12,13,14,15], prefix:[1,2,3,4], component:'aryl-prefix', bonds:['1:2','2:3','2:4','4:5'] },
+  { common:'paracetamol', name:'N-(4-hydroxyphenyl)acetamide', smiles:'CC(=O)Nc1ccc(O)cc1', cid:1983, formula:'C8H9NO2', parent:[1,2,3,4], prefix:[9], component:'aryl-prefix', bonds:['8:9'] },
+  { common:'aspirin', name:'2-acetyloxybenzoic acid', smiles:'CC(=O)Oc1ccccc1C(=O)O', cid:2244, formula:'C9H8O4', parent:[5,6,7,8,9,10,11,12,13], prefix:[1,2,3,4], component:'acyloxy', bonds:['1:2','2:3','2:4','4:5'] },
 ];
 const selectedNames=process.env.ORGORUSH_E2E_NAMES?.split('|');
 const fixtures = (phase7?purineCases:phase6?phase6Fixtures:generalized ? generalizationCases.filter(f=>f.expected!=='PARTIAL').map(f=>({...f,bonds:generalizationEdges[f.common]})) : originalFixtures)
@@ -39,7 +39,7 @@ function sameFixtureGraph(left,right){
 before(async()=>{
   server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0,strictPort:false}});
   await server.listen();
-  base=`http://127.0.0.1:${server.httpServer.address().port}/OrgoRush/`;
+  base=`http://127.0.0.1:${server.httpServer.address().port}/OrgoRush/en/`;
   const response=await fetch(base,{signal:AbortSignal.timeout(10000)});
   assert.equal(response.status,200,'HTTP readiness must succeed before browser testing');
   browser=await chromium.launch({headless:true,timeout:15000,
@@ -50,17 +50,21 @@ after(async()=>{ await browser?.close(); await server?.close(); });
 
 async function pageForRun() {
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
-  await page.addInitScript(()=>localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped'));
+  await page.addInitScript(()=>{ localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped'); localStorage.setItem('hydrocarbon-lab-language','en'); });
   page.setDefaultTimeout(15000);
   const errors=[]; page.on('pageerror',e=>errors.push(e.message));
   const consoleErrors=[]; page.on('console',m=>{ if(m.type()==='error')consoleErrors.push(m.text()); });
+  const networkIssues=[], unexpected=[];
+  const safeUrl=url=>{ try { const u=new URL(url); return `${u.origin}/[redacted]`; } catch { return '[invalid URL]'; } };
+  page.on('requestfailed',request=>networkIssues.push({url:safeUrl(request.url()),method:request.method(),failure:request.failure()?.errorText}));
+  page.on('response',response=>{ if(response.status()>=400) networkIssues.push({url:safeUrl(response.url()),method:response.request().method(),status:response.status(),expected:!live && decodeURIComponent(response.url()).toLowerCase().includes('/name/unrecognized e2e molecule/cids/json')}); });
   const received=[];
   const network=[];
   if(live)page.on('response',async response=>{
     if(/\/property\/|opsin|\/api\/name-to-structure/.test(response.url()))try {
       const body=await response.json();
       received.push(...(body.PropertyTable?.Properties??[]).map(p=>p.IUPACName).filter(Boolean));
-      network.push({url:response.url(),status:response.status(),body});
+      network.push({url:safeUrl(response.url()),method:response.request().method(),status:response.status()});
     }catch { /* Failed transport is diagnosed by the build assertions. */ }
   });
   if (!live) await page.route('**/*',async route=>{
@@ -68,29 +72,46 @@ async function pageForRun() {
     if(url.startsWith(new URL(base).origin) && !url.includes('/api/')) return route.continue();
     const headers={'access-control-allow-origin':'*','content-type':'application/json'};
     if(req.method()==='OPTIONS')return route.fulfill({status:204,headers});
+    const endpoint = new URL(url);
+    if(endpoint.hostname==='www.googletagmanager.com' && endpoint.pathname==='/gtag/js')
+      return route.fulfill({status:200,contentType:'application/javascript',body:'/* analytics disabled in deterministic tests */'});
+    if(endpoint.hostname==='fonts.gstatic.com' && /^\/s\/(inter|sora)\//.test(endpoint.pathname))
+      return route.fulfill({status:204,body:''});
+    if(/^(en|es)\.wikipedia\.org$/.test(endpoint.hostname) && endpoint.pathname==='/w/api.php')
+      return route.fulfill({status:200,headers,body:JSON.stringify({query:{pages:{}}})});
+    if(endpoint.hostname==='www.wikidata.org' && endpoint.pathname==='/w/api.php')
+      return route.fulfill({status:200,headers,body:JSON.stringify({search:[]})});
     const input=decodeURIComponent(url).toLowerCase();
     const nameQuery=/\/name\/([^/]+)\/cids\/json/.exec(input)?.[1];
     const structureQuery=/\/smiles\/([^/]+)\/cids\/json/.exec(input)?.[1];
     const rawStructureQuery=/\/smiles\/([^/]+)\/cids\/json/i.exec(decodeURIComponent(url))?.[1];
     const body=req.postDataJSON?.();
     const f=fixtures.find(f=>nameQuery===f.common||nameQuery===f.name.toLowerCase()||input.includes(`/cid/${f.cid}/`)
+      || f.common==='aspirin' && nameQuery==='aspirina'
       ||phase6&&f.common==='3-methylbutanoic acid'&&['cc(c)cc(o)=o','cc(c)cc(=o)o'].includes(structureQuery)
-      ||phase7&&rawStructureQuery&&sameFixtureGraph(rawStructureQuery,f.smiles)
+      ||rawStructureQuery&&sameFixtureGraph(rawStructureQuery,f.smiles)
       ||f.common==='aspirin'&&nameQuery==='2-(acetyloxy)benzoic acid'
       ||body?.name===f.common||body?.name===f.name||body?.name==='2-(acetyloxy)benzoic acid'&&f.common==='aspirin');
     if(url.includes('opsin')) return route.fulfill({status:200,headers,body:JSON.stringify({status:'FAILURE',message:'No OPSIN fixture; exercise PubChem fallback'})});
     if(f && url.includes('/cids/JSON'))return route.fulfill({status:200,headers,body:JSON.stringify({IdentifierList:{CID:[f.cid]}})});
     if(f && url.includes('/property/')) {
       received.push(f.name);
-      return route.fulfill({status:200,headers,body:JSON.stringify({PropertyTable:{Properties:[{CID:f.cid,IUPACName:f.name,IsomericSMILES:f.smiles,MolecularFormula:f.formula}]}})});
+      return route.fulfill({status:200,headers,body:JSON.stringify({PropertyTable:{Properties:[{CID:f.cid,IUPACName:f.name,IsomericSMILES:f.smiles,MolecularFormula:f.formula,...(f.cid===2244?{InChIKey:'BSYNRYMUTXBXSQ-UHFFFAOYSA-N'}:{})}]}})});
     }
     if(f && url.includes('/api/name-to-structure'))return route.fulfill({status:200,headers,body:JSON.stringify({source:'PubChem',originalName:body.name,interpretedName:f.name,iupacName:f.name,smiles:f.smiles,cid:f.cid,molecularFormula:f.formula,warnings:[]})});
-    return route.fulfill({status:200,headers,body:'{}'});
+    if(endpoint.hostname==='pubchem.ncbi.nlm.nih.gov' && /^\/rest\/pug\/compound\/(?:smiles|inchikey)\/[^/]+\/cids\/JSON$/i.test(endpoint.pathname))
+      return route.fulfill({status:200,headers,body:JSON.stringify({IdentifierList:{CID:[]}})});
+    if(endpoint.hostname==='pubchem.ncbi.nlm.nih.gov' && /^\/rest\/pug\/compound\/cid\/\d+\/description\/JSON$/i.test(endpoint.pathname))
+      return route.fulfill({status:200,headers,body:JSON.stringify({InformationList:{Information:[]}})});
+    if(nameQuery==='unrecognized e2e molecule') return route.fulfill({status:404,headers,body:JSON.stringify({error:'Expected negative fixture'})});
+    unexpected.push({url:safeUrl(url),method:req.method()});
+    return route.abort('blockedbyclient');
   });
   await page.goto(base,{waitUntil:'domcontentloaded',timeout:45000});
+  await page.getByRole('button',{name:'English',exact:true}).click();
   const skip=page.locator('.guided-tour-skip');
   try { await skip.waitFor({state:'visible',timeout:3000}); await skip.click(); } catch { /* A returning browser may have dismissed the tour. */ }
-  return {page,errors,received,consoleErrors,network};
+  return {page,errors,received,consoleErrors,network,networkIssues,unexpected};
 }
 async function build(page, name, support='FULL') {
   await page.locator('[aria-controls="iupac-name-builder"]').click();
@@ -104,26 +125,61 @@ async function build(page, name, support='FULL') {
 
 // Start observing before the native click. Snapshot the transient selection in
 // one browser operation so its 2s expiry cannot split presence and data reads.
-async function captureRegion(page, trigger) {
-  const expectedStep=await trigger.getAttribute('data-name-fragment');
+async function captureRegion(page, trigger, keyboard = false) {
+  await page.locator('.reasoning-visual-overlay').waitFor({state:'hidden'});
   const [snapshot]=await Promise.all([
-    page.waitForFunction(expectedStep=>{
+    page.waitForFunction(()=>{
       const node=document.querySelector('.reasoning-visual-overlay');
-      if(!node || expectedStep&&node.dataset.reasoningStep!==expectedStep)return null;
+      if(!node)return null;
       return {
         atoms:[...node.querySelectorAll('[data-reasoning-atom]')].map(n=>Number(n.dataset.reasoningAtom)).sort((a,b)=>a-b),
         bonds:[...node.querySelectorAll('[data-reasoning-bond]')].map(n=>n.dataset.reasoningBond),
         locants:[...node.querySelectorAll('[data-reasoning-locant]')].map(n=>n.dataset.reasoningLocant),
         numbering:[...node.querySelectorAll('[data-reasoning-locant]')].map(n=>[Number(n.dataset.reasoningLocant),n.querySelector('text').textContent]),
       };
-    },expectedStep),
-    trigger.click(),
+    }),
+    keyboard ? trigger.press('Space') : trigger.click(),
   ]);
   const value=await snapshot.jsonValue();await snapshot.dispose();return value;
 }
 
+if (!live && !phase6 && !phase7 && fixtures.some(f => f.common === 'aspirin')) test('aspirina: bilingual FULL controls operate on the actual canvas', async () => {
+  const {page, errors, consoleErrors, networkIssues, unexpected} = await pageForRun();
+  try {
+    await page.getByRole('button',{name:'Español',exact:true}).click();
+    await build(page, 'aspirina');
+    const panel = page.locator('[data-derivation-support="FULL"]');
+    assert.match(await panel.innerText(), /ácido 2-\(acetiloxi\)benzoico/i);
+    assert.match(await page.locator('body').innerText(), /C₉H₈O₄/);
+    assert.match(await page.locator('body').innerText(), /aspirina/i);
+    const graph = () => page.locator('.molecule-stage').evaluate(node => ({
+      atoms: [...node.querySelectorAll('[data-atom-id]')].map(n => [n.dataset.atomId,n.dataset.atomElement]).sort(),
+      bonds: [...node.querySelectorAll('[data-bond-a]')].map(n => [n.dataset.bondA,n.dataset.bondB,n.dataset.bondOrder]).sort(),
+    }));
+    const before = await graph();
+    for (const locant of [1,2]) assert.equal(await panel.getByRole('button',{name:new RegExp(`Localizador del padre ${locant}`)}).count(),1);
+    const group = await captureRegion(page,panel.locator('[data-name-fragment="acyloxy"]'));
+    assert.deepEqual(group.atoms,[1,2,3,4]);
+    assert.deepEqual(group.bonds.map(s=>key(...s.split(':'))).sort(),['1:2','2:3','2:4','4:5']);
+    const oxygen = await captureRegion(page,panel.locator('[data-name-fragment="name:linking-oxygen"]'),true);
+    assert.deepEqual(oxygen.atoms,[4]);
+    assert.deepEqual(oxygen.bonds,[]);
+    await page.getByRole('button',{name:'English',exact:true}).click();
+    assert.match(await panel.innerText(), /2-acetyloxybenzoic acid/i);
+    assert.match(await page.locator('body').innerText(), /aspirina/i);
+    assert.deepEqual(await graph(),before);
+    assert.deepEqual(errors,[]);
+    assert.deepEqual(consoleErrors,[]);
+    assert.deepEqual(networkIssues,[]);
+    assert.deepEqual(unexpected,[]);
+  } finally {
+    await writeFile(resolve(output,'aspirina-interaction.json'),JSON.stringify({errors,consoleErrors,networkIssues,unexpected},null,2));
+    await page.close();
+  }
+},{timeout:90000});
+
 if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} common names → FULL → exact editor regions → molecule replacement`,async()=>{
-  const {page,errors,received,consoleErrors}=await pageForRun();
+  const {page,errors,received,consoleErrors,networkIssues,unexpected}=await pageForRun();
   try {
     for (const f of fixtures) {
       await build(page,f.common);
@@ -141,20 +197,21 @@ if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} common names → FULL �
       }
       await panel.locator(`[data-name-fragment="${f.component}"]`).click();
       await page.screenshot({path:resolve(output,`${f.common}.png`),fullPage:true,animations:'disabled'});
-      await writeFile(resolve(output,`${f.common}.json`),JSON.stringify({mode:live?'live':'deterministic',namePanel:await panel.innerText(),received,errors,consoleErrors},null,2));
+      await writeFile(resolve(output,`${f.common}.json`),JSON.stringify({mode:live?'live':'deterministic',namePanel:await panel.innerText(),received,errors,consoleErrors,networkIssues,unexpected},null,2));
       assert.deepEqual(errors,[],'no uncaught application errors');
+      if(!live) { assert.deepEqual(consoleErrors,[]); assert.deepEqual(networkIssues,[]); assert.deepEqual(unexpected,[]); }
     }
     if(!live)assert.ok(received.includes(fixtures.at(-1).name),'provider names must reach the application');
   } catch(error) {
     await page.screenshot({path:resolve(output,'common-failure.png'),fullPage:true});
     await writeFile(resolve(output,'common-failure.txt'),await page.locator('body').innerText());
-    await writeFile(resolve(output,'common-failure.json'),JSON.stringify({received,errors,consoleErrors},null,2));
+    await writeFile(resolve(output,'common-failure.json'),JSON.stringify({received,errors,consoleErrors,networkIssues,unexpected},null,2));
     throw error;
   } finally { await page.close(); }
 },{timeout:240000});
 
 if(!live&&!phase6&&!phase7)test('HTTP FIXTURES loading and failure preserve the currently visible molecule',async()=>{
-  const {page,errors}=await pageForRun();
+  const {page,errors,consoleErrors,networkIssues,unexpected}=await pageForRun();
   try {
     await build(page,fixtures[0].common);
     const before=await page.locator('.molecule-stage [data-atom-id]').count();
@@ -175,11 +232,17 @@ if(!live&&!phase6&&!phase7)test('HTTP FIXTURES loading and failure preserve the 
     assert.equal(await page.locator('.molecule-stage [data-atom-id]').count(),before);
     assert.ok((await page.locator('[data-derivation-support="FULL"]').innerText()).includes(fixtures[0].name));
     assert.deepEqual(errors,[]);
-  }finally{await page.close();}
+    assert.ok(networkIssues.some(issue=>issue.expected && issue.status===404),'the unknown-name fixture returns the expected 404');
+    assert.deepEqual(networkIssues.filter(issue=>!issue.expected),[]);
+    assert.deepEqual(unexpected,[]);
+  }finally{
+    await writeFile(resolve(output,'negative-network.json'),JSON.stringify({errors,consoleErrors,networkIssues,unexpected},null,2));
+    await page.close();
+  }
 },{timeout:60000});
 
 if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} systematic names and parenthesized variant`,async()=>{
-  const {page,errors}=await pageForRun();
+  const {page,errors,consoleErrors,networkIssues,unexpected}=await pageForRun();
   try {
     for(const name of [...fixtures.map(f=>f.name),...(generalized?[]:['2-(acetyloxy)benzoic acid'])]) {
       await build(page,name);
@@ -187,11 +250,15 @@ if(!phase6&&!phase7)test(`${live?'LIVE':'HTTP FIXTURES'} systematic names and pa
         || name==='2-(acetyloxy)benzoic acid');
     }
     assert.deepEqual(errors,[]);
+    if(!live) { assert.deepEqual(consoleErrors,[]); assert.deepEqual(networkIssues,[]); assert.deepEqual(unexpected,[]); }
   } catch(error) {
     await page.screenshot({path:resolve(output,'systematic-failure.png'),fullPage:true});
     await writeFile(resolve(output,'systematic-failure.txt'),await page.locator('body').innerText());
     throw error;
-  } finally {await page.close();}
+  } finally {
+    await writeFile(resolve(output,'systematic-network.json'),JSON.stringify({errors,consoleErrors,networkIssues,unexpected},null,2));
+    await page.close();
+  }
 },{timeout:240000});
 
 if(phase6)test(`${live?'LIVE':'HTTP FIXTURES'} symmetry choices and safe fused-heterocycle partial import`,async()=>{
