@@ -3555,6 +3555,19 @@ function combinePrefixAndParent(prefixParts: string[], parentName: string) {
     : `${prefix}${parentName}`;
 }
 
+/** Build a narrow functionalized alkyl prefix from graph-validated branch evidence. */
+function functionalizedAlkylName(proof: HydroxyalkylEvidence | AminoalkylEvidence | OxoalkylEvidence,
+  role: "hydroxy" | "amino" | "oxo") {
+  const rootName = alkylNames[proof.carbonPath.length];
+  if (!rootName || proof.internalBranches.length > 1) return null;
+  const functionLocant = role === "hydroxy" ? (proof as HydroxyalkylEvidence).hydroxy.locant
+    : role === "amino" ? (proof as AminoalkylEvidence).amino.locant : (proof as OxoalkylEvidence).oxo.locant;
+  const pieces = [{ text: `${functionLocant}-${role === "hydroxy" ? "hidroxi" : role}`, order:role },
+    ...proof.internalBranches.map(branch => ({ text:`${branch.locant}-metil`, order:"methyl" }))]
+    .sort((a,b) => a.order.localeCompare(b.order));
+  return `${pieces.map(piece=>piece.text).join("-")}${rootName}`;
+}
+
 function nitrogenSubstituentPrefixes(
   group: FunctionalGroup | undefined,
   parentPath: number[],
@@ -3655,10 +3668,8 @@ function analyzeFunctionalAcyclic(
           && secondaryCarbonyls.length === 1 && named.atomIds.includes(secondaryCarbonyls[0].carbonId)
           ? inspectOxoalkyl(molecule, path, atomId, neighbor, groups) : null;
         const proof = hydroxyAlkyl ?? aminoAlkyl ?? oxoAlkyl;
-        const rootName = proof && alkylNames[proof.carbonPath.length];
-        if (proof && rootName) {
-          const name = hydroxyAlkyl ? `${hydroxyAlkyl.hydroxy.locant}-hidroxi${rootName}`
-            : aminoAlkyl ? `${aminoAlkyl.amino.locant}-amino${rootName}` : `${oxoAlkyl!.oxo.locant}-oxo${rootName}`;
+        const name = proof ? functionalizedAlkylName(proof, hydroxyAlkyl ? "hydroxy" : aminoAlkyl ? "amino" : "oxo") : null;
+        if (proof && name) {
           carbonSubstituents.push({ name, sortName: stripForAlphabetizing(name), complex: true,
             atomIds: proof.atomIds, ...(hydroxyAlkyl ? { hydroxyAlkyl } : aminoAlkyl ? { aminoAlkyl } : { oxoAlkyl: oxoAlkyl! }), locant: index + 1 });
         } else carbonSubstituents.push({ ...named, locant: index + 1 });
@@ -6478,8 +6489,7 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
       const proof = component?.oxoAlkyl;
       const current = proof && groupsMatch && parentConnected
         && inspectOxoalkyl(molecule, analysis.mainChain, proof.parentAtomId, proof.rootAtomId, detected);
-      const rootName = current && alkylNames[current.carbonPath.length];
-      const expectedName = current && rootName ? `${current.oxo.locant}-oxo${rootName}` : null;
+      const expectedName = current ? functionalizedAlkylName(current, "oxo") : null;
       const fragment = component && expectedName ? formatSubstituentGroups([component])[0] : "";
       const index = fragment ? analysis.name.indexOf(fragment) : -1;
       if (component && proof && current && expectedName && JSON.stringify(proof) === JSON.stringify(current)
@@ -6505,14 +6515,14 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
         && inspectAminoalkyl(molecule, analysis.mainChain, proof.parentAtomId, proof.rootAtomId, analysis.functionalGroups);
       const current = currentHydroxy || currentAmino;
       const represented = currentHydroxy ? currentHydroxy.hydroxy : currentAmino ? currentAmino.amino : null;
-      const rootName = current && alkylNames[current.carbonPath.length];
-      const expectedName = represented && rootName ? `${represented.locant}-${hydroxy ? "hidroxi" : "amino"}${rootName}` : null;
+      const expectedName = current ? functionalizedAlkylName(current, hydroxy ? "hydroxy" : "amino") : null;
       const peers = expectedName ? analysis.substituents.filter(item => (hydroxy ? item.hydroxyAlkyl : item.aminoAlkyl) && item.name === expectedName) : [];
       const fragment = peers.length ? formatSubstituentGroups(peers)[0] : "";
       const fragmentIndex = fragment ? analysis.name.indexOf(fragment) : -1;
       const hasBoundedFragment = fragmentIndex >= 0
         && (fragmentIndex === 0 || !/[0-9,]/.test(analysis.name[fragmentIndex - 1]));
-      if (component && current && represented && expectedName && represented.carbonId === group.carbonId
+      if (component && proof && current && represented && expectedName && JSON.stringify(proof) === JSON.stringify(current)
+        && represented.carbonId === group.carbonId
         && component.locant === analysis.mainChain.indexOf(current.parentAtomId) + 1
         && component.name === expectedName && hasBoundedFragment
         && component.atomIds.length === current.atomIds.length

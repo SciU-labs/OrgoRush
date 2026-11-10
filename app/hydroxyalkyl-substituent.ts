@@ -2,7 +2,16 @@ import type { GeneratedMolecule, GeneratedBond } from './name-to-molecule';
 
 type DetectedGroup = { id: string; kind: string; carbonId: number; heteroAtomId: number };
 
-/** Shared evidence for a saturated, unbranched monofunctional substituent. */
+/** One graph-derived carbon branch on a functionalized substituent skeleton. */
+export type InternalAlkylBranch = {
+  anchorAtomId: number;
+  atomIds: number[];
+  bonds: GeneratedBond[];
+  locant: number;
+  kind: 'methyl';
+};
+
+/** Shared evidence for a saturated functionalized alkyl substituent. */
 type LinearFunctionalizedAlkyl = {
   parentAtomId: number;
   rootAtomId: number;
@@ -11,7 +20,7 @@ type LinearFunctionalizedAlkyl = {
   bonds: GeneratedBond[];
   carbonPath: number[];
   numbering: [number, number][];
-  internalBranches: [];
+  internalBranches: InternalAlkylBranch[];
   stereo: 'no-explicit-configuration';
 };
 
@@ -87,25 +96,48 @@ function inspectLinearFunctionalizedAlkyl(
   if (matchingGroups.length !== 1) return null;
   if (atoms.get(rootAtomId)?.element && atoms.get(rootAtomId)?.element !== 'C') return null;
 
-  const carbonPath: number[] = [];
-  let current: number | undefined = rootAtomId;
-  let previous: number | undefined;
-  while (current !== undefined) {
-    carbonPath.push(current);
-    const children: number[] = adjacent(current).map(bond => other(bond,current!))
-      .filter(id => ids.has(id) && id !== previous && (atoms.get(id)?.element ?? 'C') === 'C');
-    if (children.length > 1) return null;
-    previous = current;
-    current = children[0];
+  // The numbered substituent skeleton starts at its free valence and follows
+  // the unique carbon path to the secondary function. At most one extra carbon
+  // is admitted, and only as a terminal methyl branch on that path. This keeps
+  // the initial grammar narrow while preserving every atom and bond.
+  const carbonIds = [...ids].filter(id => (atoms.get(id)?.element ?? 'C') === 'C');
+  const carbonNeighbors = (id: number) => adjacent(id).map(bond => other(bond,id))
+    .filter(next => ids.has(next) && (atoms.get(next)?.element ?? 'C') === 'C');
+  const paths: number[][] = [];
+  const walk = (id: number, previous: number | undefined, path: number[]) => {
+    const next = carbonNeighbors(id).filter(candidate=>candidate!==previous&&!path.includes(candidate));
+    if (!next.length) { paths.push(path); return; }
+    for (const candidate of next) walk(candidate,id,[...path,candidate]);
+  };
+  walk(rootAtomId,undefined,[rootAtomId]);
+  const candidates=paths.filter(path=>path.includes(carbonId)).sort((a,b)=>b.length-a.length);
+  if (!candidates.length) return null;
+  const carbonPath = candidates[0];
+  if (candidates.length>1&&candidates[1].length===carbonPath.length) return null;
+  const offPath = carbonIds.filter(id => !carbonPath.includes(id));
+  if (offPath.length > 1) return null;
+  const internalBranches: InternalAlkylBranch[] = [];
+  if (offPath.length) {
+    const branchId = offPath[0];
+    const branchNeighbors = carbonNeighbors(branchId);
+    if (branchNeighbors.length !== 1 || !carbonPath.includes(branchNeighbors[0])) return null;
+    const anchorAtomId = branchNeighbors[0];
+    if (carbonNeighbors(anchorAtomId).filter(id => id !== branchId).length < 1) return null;
+    const branchBonds = adjacent(branchId).filter(([a,b]) => a === anchorAtomId || b === anchorAtomId);
+    if (branchBonds.length !== 1 || (branchBonds[0][2] ?? 1) !== 1) return null;
+    internalBranches.push({ anchorAtomId, atomIds:[branchId], bonds:branchBonds.map(bond=>[...bond] as GeneratedBond),
+      locant:carbonPath.indexOf(anchorAtomId)+1, kind:'methyl' });
   }
-  if (carbonPath.length !== ids.size - 1 || !carbonPath.includes(carbonId)) return null;
+  if (carbonPath.length + offPath.length !== carbonIds.length || carbonPath.length !== ids.size - heteroAtoms.length - offPath.length
+    || !carbonPath.includes(carbonId)) return null;
   if (kind === 'oxo' && (matchingGroups[0].kind === 'aldehyde') !== (carbonPath.at(-1) === carbonId)) return null;
   return {
     parentAtomId, rootAtomId, attachmentOrder: 1,
-    atomIds: [...carbonPath,heteroId], bonds: [attachments[0],...bonds].map(bond => [...bond] as GeneratedBond),
+    atomIds: [...carbonPath,...offPath,heteroId], bonds: [attachments[0],...bonds].map(bond => [...bond] as GeneratedBond),
     carbonPath, numbering: carbonPath.map((id,index) => [id,index + 1]),
+    internalBranches,
     functionGroup: { groupId: matchingGroups[0].id, kind: matchingGroups[0].kind, carbonId, heteroId, locant: carbonPath.indexOf(carbonId) + 1 },
-    internalBranches: [], stereo: 'no-explicit-configuration',
+    stereo: 'no-explicit-configuration',
   };
 }
 

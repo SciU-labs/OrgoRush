@@ -110,6 +110,7 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
         numberingScope:key==="parent"||key==="principal"||key==="principal-locant"||key==="parent-locant"||key.startsWith("parent-function-")?"parent":"substituent",
         attachment:[contextProof.parentAtomId,contextProof.rootAtomId],
         ...(key==="parent-locant"?{locant:contextItem.locant}:key==="principal-locant"?{locant:Number(ketoneLocant![1])}
+          :key==="branch-locant"?{locant:contextProof.internalBranches[0]?.locant}
           :key==="local-locant"||key==="function"?{locant:contextItem.hydroxyAlkyl?.hydroxy.locant??contextItem.aminoAlkyl?.amino.locant??contextItem.oxoAlkyl!.oxo.locant}:{})}});
   const parentTextStart=parentStart;
   const parentPart=part(parentText,parentTextStart,"parent","parent",labels.parent,target(analysis.mainChain,bondsWithin(analysis.mainChain)));
@@ -131,7 +132,19 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
       target([branchProof.parentAtomId,branchProof.rootAtomId],[[branchProof.parentAtomId,branchProof.rootAtomId]]),branchProof,branchItem,semanticPrefix);
     const skeletonText=inner.slice(prefixText.length), skeleton=part(skeletonText,innerStart+prefixText.length,"substituent","skeleton",labels.skeleton,
       target(branchProof.carbonPath,bondsWithin(branchProof.carbonPath)),branchProof,branchItem,semanticPrefix);
-    completeParts.push({...complete,additionalFragments:[attachment,skeleton]});
+    const extraFragments:ReasoningNameFragment[]=[attachment,skeleton];
+    for(const branch of branchProof.internalBranches){
+      if(branch.kind!=="methyl"||branch.atomIds.length!==1) return null;
+      const token=`${branch.locant}-${en?"methyl":"metil"}`,at=inner.indexOf(token);
+      if(at<0||inner.indexOf(token,at+1)>=0) return null;
+      const branchPart=part(token,innerStart+at,"substituent","internal-branch",en?"Internal methyl branch":"Ramificación metilo interna",
+        target([branch.anchorAtomId,...branch.atomIds],branch.bonds.map(([a,b])=>[a,b] as const)),branchProof,branchItem,semanticPrefix);
+      const branchLocant=part(String(branch.locant),innerStart+at,"numbering","branch-locant",
+        en?"Internal branch locant":"Localizador de la ramificación interna",
+        target([branch.anchorAtomId],[],[[branch.anchorAtomId,branch.locant]]),branchProof,branchItem,semanticPrefix);
+      extraFragments.push(branchPart);locantParts.push(branchLocant);
+    }
+    completeParts.push({...complete,additionalFragments:extraFragments});
     const secondary=part(prefix,innerStart+String(group.locant).length+1,"function","function",labels.function,
       target(groupAtoms,bondsWithin(groupAtoms)),branchProof,branchItem,semanticPrefix);
     functionParts.push(secondary);
