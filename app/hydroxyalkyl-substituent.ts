@@ -97,9 +97,10 @@ function inspectLinearFunctionalizedAlkyl(
   if (atoms.get(rootAtomId)?.element && atoms.get(rootAtomId)?.element !== 'C') return null;
 
   // The numbered substituent skeleton starts at its free valence and follows
-  // the unique carbon path to the secondary function. At most one extra carbon
-  // is admitted, and only as a terminal methyl branch on that path. This keeps
-  // the initial grammar narrow while preserving every atom and bond.
+  // the unique carbon path to the secondary function. Up to two extra carbons
+  // are admitted, each only as a terminal methyl branch on that path. Branch
+  // records remain graph-distinct even when equal locants make the methyls
+  // chemically equivalent; presentation can then group those symmetrically.
   const carbonIds = [...ids].filter(id => (atoms.get(id)?.element ?? 'C') === 'C');
   const carbonNeighbors = (id: number) => adjacent(id).map(bond => other(bond,id))
     .filter(next => ids.has(next) && (atoms.get(next)?.element ?? 'C') === 'C');
@@ -115,19 +116,19 @@ function inspectLinearFunctionalizedAlkyl(
   const carbonPath = candidates[0];
   if (candidates.length>1&&candidates[1].length===carbonPath.length) return null;
   const offPath = carbonIds.filter(id => !carbonPath.includes(id));
-  if (offPath.length > 1) return null;
+  if (offPath.length > 2) return null;
   const internalBranches: InternalAlkylBranch[] = [];
-  if (offPath.length) {
-    const branchId = offPath[0];
+  for (const branchId of offPath) {
     const branchNeighbors = carbonNeighbors(branchId);
     if (branchNeighbors.length !== 1 || !carbonPath.includes(branchNeighbors[0])) return null;
     const anchorAtomId = branchNeighbors[0];
-    if (carbonNeighbors(anchorAtomId).filter(id => id !== branchId).length < 1) return null;
     const branchBonds = adjacent(branchId).filter(([a,b]) => a === anchorAtomId || b === anchorAtomId);
-    if (branchBonds.length !== 1 || (branchBonds[0][2] ?? 1) !== 1) return null;
+    if (branchBonds.length !== 1 || (branchBonds[0][2] ?? 1) !== 1
+      || adjacent(branchId).length !== 1 || atoms.get(branchId)?.element && atoms.get(branchId)?.element !== 'C') return null;
     internalBranches.push({ anchorAtomId, atomIds:[branchId], bonds:branchBonds.map(bond=>[...bond] as GeneratedBond),
       locant:carbonPath.indexOf(anchorAtomId)+1, kind:'methyl' });
   }
+  internalBranches.sort((a,b)=>a.locant-b.locant);
   if (carbonPath.length + offPath.length !== carbonIds.length || carbonPath.length !== ids.size - heteroAtoms.length - offPath.length
     || !carbonPath.includes(carbonId)) return null;
   if (kind === 'oxo' && (matchingGroups[0].kind === 'aldehyde') !== (carbonPath.at(-1) === carbonId)) return null;

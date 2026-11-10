@@ -110,7 +110,8 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
         numberingScope:key==="parent"||key==="principal"||key==="principal-locant"||key==="parent-locant"||key.startsWith("parent-function-")?"parent":"substituent",
         attachment:[contextProof.parentAtomId,contextProof.rootAtomId],
         ...(key==="parent-locant"?{locant:contextItem.locant}:key==="principal-locant"?{locant:Number(ketoneLocant![1])}
-          :key==="branch-locant"?{locant:contextProof.internalBranches[0]?.locant}
+          :key.startsWith("branch-locant")?{locant:contextProof.internalBranches[Number(key.split("-").at(-1)) - 1]?.locant
+            ?? contextProof.internalBranches[0]?.locant}
           :key==="local-locant"||key==="function"?{locant:contextItem.hydroxyAlkyl?.hydroxy.locant??contextItem.aminoAlkyl?.amino.locant??contextItem.oxoAlkyl!.oxo.locant}:{})}});
   const parentTextStart=parentStart;
   const parentPart=part(parentText,parentTextStart,"parent","parent",labels.parent,target(analysis.mainChain,bondsWithin(analysis.mainChain)));
@@ -133,16 +134,41 @@ export function functionalizedBranchFragments(input: { molecule: GeneratedMolecu
     const skeletonText=inner.slice(prefixText.length), skeleton=part(skeletonText,innerStart+prefixText.length,"substituent","skeleton",labels.skeleton,
       target(branchProof.carbonPath,bondsWithin(branchProof.carbonPath)),branchProof,branchItem,semanticPrefix);
     const extraFragments:ReasoningNameFragment[]=[attachment,skeleton];
-    for(const branch of branchProof.internalBranches){
-      if(branch.kind!=="methyl"||branch.atomIds.length!==1) return null;
-      const token=`${branch.locant}-${en?"methyl":"metil"}`,at=inner.indexOf(token);
-      if(at<0||inner.indexOf(token,at+1)>=0) return null;
-      const branchPart=part(token,innerStart+at,"substituent","internal-branch",en?"Internal methyl branch":"Ramificación metilo interna",
-        target([branch.anchorAtomId,...branch.atomIds],branch.bonds.map(([a,b])=>[a,b] as const)),branchProof,branchItem,semanticPrefix);
-      const branchLocant=part(String(branch.locant),innerStart+at,"numbering","branch-locant",
-        en?"Internal branch locant":"Localizador de la ramificación interna",
-        target([branch.anchorAtomId],[],[[branch.anchorAtomId,branch.locant]]),branchProof,branchItem,semanticPrefix);
-      extraFragments.push(branchPart);locantParts.push(branchLocant);
+    const branches=branchProof.internalBranches;
+    if(branches.length>2||branches.some(branch=>branch.kind!=="methyl"||branch.atomIds.length!==1)) return null;
+    if(branches.length){
+      const locants=branches.map(branch=>branch.locant).sort((a,b)=>a-b);
+      const multiplier=branches.length===1?"":branches.length===2?"di":"";
+      const branchToken=`${locants.join(",")}-${multiplier}${en?"methyl":"metil"}`;
+      const at=inner.indexOf(branchToken);
+      if(at<0||inner.indexOf(branchToken,at+1)>=0) return null;
+      const branchAtoms=[...new Set(branches.flatMap(branch=>[branch.anchorAtomId,...branch.atomIds]))];
+      const branchBonds=branches.flatMap(branch=>branch.bonds.map(([a,b])=>[a,b] as const));
+      const branchLabel=branches.length===1
+        ? en?"Internal methyl branch":"Ramificación metilo interna"
+        : en?"Two internal methyl branches":"Dos ramificaciones metilo internas";
+      extraFragments.push(part(branchToken,innerStart+at,"substituent","internal-branch",branchLabel,
+        target(branchAtoms,branchBonds),branchProof,branchItem,semanticPrefix));
+      let offset=0;
+      if(branches.length===2&&locants[0]===locants[1]){
+        const span=locants.join(",");
+        locantParts.push(part(span,innerStart+at,"numbering","branch-locant",
+          en?"Equivalent internal methyl locants":"Localizadores equivalentes de metilo interno",
+          target([...new Set(branches.map(branch=>branch.anchorAtomId))],[],[...new Map(branches
+            .map(branch=>[`${branch.anchorAtomId}:${branch.locant}`,[branch.anchorAtomId,branch.locant] as const])).values()]),
+          branchProof,branchItem,semanticPrefix));
+      }else{
+        for(let index=0;index<branches.length;index++){
+          const branch=branches[index],text=String(branch.locant),numberAt=innerStart+at+offset;
+          const key=branches.length===1?"branch-locant":`branch-locant-${index+1}`;
+          locantParts.push(part(text,numberAt,"numbering",key,
+            branches.length===1
+              ? en?"Internal branch locant":"Localizador de la ramificación interna"
+              : en?`Internal methyl locant ${index+1}`:`Localizador del metilo interno ${index+1}`,
+            target([branch.anchorAtomId],[],[[branch.anchorAtomId,branch.locant]]),branchProof,branchItem,semanticPrefix));
+          offset+=text.length+1;
+        }
+      }
     }
     completeParts.push({...complete,additionalFragments:extraFragments});
     const secondary=part(prefix,innerStart+String(group.locant).length+1,"function","function",labels.function,

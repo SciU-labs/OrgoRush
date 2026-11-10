@@ -61,8 +61,14 @@ const cases=[
   ['O=C(O)C(C(CO)C)CCCC',[4,5,6,7,8],[[4,5],[5,6],[6,7],[5,8]],[6,7],[2,4,9,10,11,12],4,2,[1,2,3],undefined,{atoms:[5,8],bonds:[[5,8]],locantAtom:5,skeletonAtoms:[5,6],skeletonBonds:[[5,6]]},[[1,2],[2,3]]],
   ['O=CC(C(CN)C)CCCC',[3,4,5,6,7],[[3,4],[4,5],[5,6],[4,7]],[5,6],[2,3,8,9,10,11],3,2,[1,2],undefined,{atoms:[4,7],bonds:[[4,7]],locantAtom:4,skeletonAtoms:[4,5],skeletonBonds:[[4,5]]}],
   ['CC(=O)C(C(CO)C)CCCC',[4,5,6,7,8],[[4,5],[5,6],[6,7],[5,8]],[6,7],[1,2,4,9,10,11,12],4,3,[2,3],undefined,{atoms:[5,8],bonds:[[5,8]],locantAtom:5,skeletonAtoms:[5,6],skeletonBonds:[[5,6]]}],
+  ['O=C(O)C(C(C)(C)CO)CCCC',[4,5,6,7,8,9],[[4,5],[5,6],[5,7],[5,8],[8,9]],[8,9],[2,4,10,11,12,13],4,2,[1,2,3],undefined,
+    {atoms:[5,6,7],bonds:[[5,6],[5,7]],locantAtom:5,locants:[[5,1],[5,1]],skeletonAtoms:[5,8],skeletonBonds:[[5,8]]},[[1,2],[2,3]]],
+  ['O=C(O)C(C(C)C(C)CO)CCCC',[4,5,6,7,8,9,10],[[4,5],[5,6],[5,7],[7,8],[7,9],[9,10]],[9,10],[2,4,11,12,13,14],4,2,[1,2,3],undefined,
+    {atoms:[5,6,7,8],bonds:[[5,6],[7,8]],locantAtom:5,locants:[[5,1],[7,2]],skeletonAtoms:[5,7,9],skeletonBonds:[[5,7],[7,9]]},[[1,2],[2,3]],3],
+  ['O=CC(C(C)(C)CN)CCCC',[3,4,5,6,7,8],[[3,4],[4,5],[4,6],[4,7],[7,8]],[7,8],[2,3,9,10,11,12],3,2,[1,2],undefined,
+    {atoms:[4,5,6],bonds:[[4,5],[4,6]],locantAtom:4,locants:[[4,1],[4,1]],skeletonAtoms:[4,7],skeletonBonds:[[4,7]]}],
 ];
-for(const [caseIndex,[smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,otherOH,internalBranch,principalEdges]] of cases.entries())test(`functionalized branch canvas: ${smiles}`,async()=>{
+for(const [caseIndex,[smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,principal,otherOH,internalBranch,principalEdges,secondaryLocant=2]] of cases.entries())test(`functionalized branch canvas: ${smiles}`,async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],networkErrors=[],unexpected=[];
   const diagnostics={caseId:`single-${String(caseIndex+1).padStart(2,'0')}`,control:'page setup',expected:null,observed:null};
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
@@ -127,25 +133,36 @@ for(const [caseIndex,[smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,pr
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent-function-4"]'));
       assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
     }
-    diagnostics.control='substituent internal locant';diagnostics.expected={locants:[[group[0],'2']]};
+    diagnostics.control='substituent internal locant';diagnostics.expected={locants:[[group[0],String(secondaryLocant)]]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:local-locant"]'));
     assertObserved(diagnostics,diagnostics.control,{locants:selection.locants},diagnostics.expected);
     diagnostics.control='parent attachment locant';diagnostics.expected={atoms:[anchor]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:parent-locant"]'));
     assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms},diagnostics.expected);
     if(internalBranch){
-      diagnostics.control='internal carbon branch';diagnostics.expected={atoms:internalBranch.atoms,bonds:internalBranch.bonds.map(edge)};
+      const branchLocants=internalBranch.locants??[[internalBranch.locantAtom,1]];
+      diagnostics.control='internal carbon branch';diagnostics.expected={atoms:[...internalBranch.atoms].sort((a,b)=>a-b),bonds:internalBranch.bonds.map(edge).sort()};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:internal-branch"]'));
-      assert.match(await page.locator('[data-name-fragment="functionalized:internal-branch"]').getAttribute('aria-label'),/Ramificación metilo interna/);
-      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
+      assert.match(await page.locator('[data-name-fragment="functionalized:internal-branch"]').getAttribute('aria-label'),
+        branchLocants.length===1?/Ramificación metilo interna/:/Dos ramificaciones metilo internas/);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
       diagnostics.control='substituent carbon skeleton';diagnostics.expected={atoms:internalBranch.skeletonAtoms,bonds:internalBranch.skeletonBonds.map(edge)};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:skeleton"]'));
       assert.match(await page.locator('[data-name-fragment="functionalized:skeleton"]').getAttribute('aria-label'),/Esqueleto carbonado del sustituyente/);
       assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},
         {atoms:diagnostics.expected.atoms,bonds:[...diagnostics.expected.bonds].sort()});
-      diagnostics.control='internal branch locant by keyboard';diagnostics.expected={locants:[[internalBranch.locantAtom,'1']]};
-      selection=await capture(page,page.locator('[data-name-fragment="functionalized:branch-locant"]'),true);
-      assertObserved(diagnostics,diagnostics.control,{locants:selection.locants},diagnostics.expected);
+      const locantControls=page.locator('[data-name-fragment^="functionalized:branch-locant"]');
+      diagnostics.control='internal branch locant control count';diagnostics.expected={count:branchLocants.length===2
+        &&branchLocants[0][1]!==branchLocants[1][1]?2:1};
+      assertObserved(diagnostics,diagnostics.control,{count:await locantControls.count()},diagnostics.expected);
+      const expectedLocants=branchLocants.length===2&&branchLocants[0][1]===branchLocants[1][1]
+        ?[branchLocants[0]]:branchLocants;
+      for(let index=0;index<expectedLocants.length;index++){
+        diagnostics.control=`internal branch locant ${index+1} by keyboard`;
+        diagnostics.expected={locants:[[expectedLocants[index][0],String(expectedLocants[index][1])]]};
+        selection=await capture(page,locantControls.nth(index),true);
+        assertObserved(diagnostics,diagnostics.control,{locants:selection.locants},diagnostics.expected);
+      }
     }
     // Existing parent badges suppress an identical transient badge.
     assert.equal(await page.locator(`.molecule-stage [data-atom-id="${anchor}"] .number-label`).textContent(),String(parentNumber));
@@ -156,11 +173,13 @@ for(const [caseIndex,[smiles,atoms,bonds,group,parent,anchor=4,parentNumber=2,pr
     assert.match(await page.locator('[data-name-fragment="functionalized:complete"]').getAttribute('aria-label'),/Complete substituent/);
     assert.match(await page.locator('[data-name-fragment="functionalized:function"]').getAttribute('aria-label'),/Secondary functional group/);
     if(internalBranch){
-      assert.match(await page.locator('[data-name-fragment="functionalized:internal-branch"]').getAttribute('aria-label'),/Internal methyl branch/);
+      const branchLocants=internalBranch.locants??[[internalBranch.locantAtom,1]];
+      assert.match(await page.locator('[data-name-fragment="functionalized:internal-branch"]').getAttribute('aria-label'),
+        branchLocants.length===1?/Internal methyl branch/:/Two internal methyl branches/);
       assert.match(await page.locator('[data-name-fragment="functionalized:skeleton"]').getAttribute('aria-label'),/Substituent carbon skeleton/);
-      diagnostics.control='internal branch target after language switch';diagnostics.expected={atoms:internalBranch.atoms,bonds:internalBranch.bonds.map(edge)};
+      diagnostics.control='internal branch target after language switch';diagnostics.expected={atoms:[...internalBranch.atoms].sort((a,b)=>a-b),bonds:internalBranch.bonds.map(edge).sort()};
       selection=await capture(page,page.locator('[data-name-fragment="functionalized:internal-branch"]'),true);
-      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':')))},diagnostics.expected);
+      assertObserved(diagnostics,diagnostics.control,{atoms:selection.atoms,bonds:selection.bonds.map(s=>edge(s.split(':'))).sort()},diagnostics.expected);
     }
     diagnostics.control='secondary function after language switch';diagnostics.expected={atoms:group,bonds:[edge(group)]};
     selection=await capture(page,page.locator('[data-name-fragment="functionalized:function"]'),true);

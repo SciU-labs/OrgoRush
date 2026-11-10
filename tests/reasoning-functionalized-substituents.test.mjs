@@ -321,13 +321,115 @@ test('two independently supported hydroxy/amino branches retain separate graph e
 
 test('equal-function, internally multi-functional, branched, unsaturated, stereo and nested branches stay outside this grammar',()=>{
   const unsupported=['O=C(O)C(CCN)(CCN)CCC','O=C(O)C(CCO)(CCO)CCC','O=C(O)C(CC(O)N)CCC',
-    'O=C(O)C(C(C)(C)CO)CCCC','O=C(O)C(CC=CO)CCC','O=C(O)C(C[C@H](O)C)CCC'];
+    'O=C(O)C(C(C)(C)C(C)CO)CCCC','O=C(O)C(CC=CO)CCC','O=C(O)C(C[C@H](O)C)CCC',
+    'O=C(O)C(C1CC(O)CC1)CCCC'];
   for(const smiles of unsupported){
     const parsed=moleculeFromSmiles(smiles);assert.equal(parsed.ok,true,smiles);
     const analyses=analyzeBoth(parsed.molecule,chemistry.engine),name=analyses.current.name;
+    if(smiles==='O=C(O)C(C(C)(C)C(C)CO)CCCC')
+      assert.equal(chemistry.engine.localNamerCannotSafelyName(parsed.molecule,analyses.current),true,'more than two internal methyl branches stay blocked');
     const model=chemistry.engine.buildActiveIupacReasoning({molecule:parsed.molecule,analyses,language:'es',convention:'current',
       displayedName:name,generatedNames:[name],canHighlight:true});
     assert.ok(!Object.values(model.fragments).flatMap(f=>[f,...(f.additionalFragments??[])]).some(f=>f.semanticId?.startsWith('functionalized:branch-')),smiles);
   }
   assert.ok(parseParenthesizedScopes('2-(2-(x)y)z')[0].children.length,'nested parenthesis depth is preserved so the renderer can reject it');
+});
+
+test('two internal methyl branches retain graph identity, numbering and equivalent-group symmetry',()=>{
+  const rows=[
+    {smiles:'O=C(O)C(C(C)(C)CO)CCCC',es:'ácido 2-(2-hidroxi-1,1-dimetiletil)hexanoico',
+      en:'2-(2-hydroxy-1,1-dimethylethyl)hexanoic acid',formula:'C10H20O3',parentLocant:2,
+      carbonPath:[5,8],branchLocants:[1,1],branchAtoms:[[5,6],[5,7]],branchBonds:[[5,6],[5,7]],function:[8,9],functionLocant:2,
+      principal:[1,2,3],principalEdges:[[1,2],[2,3]],parent:[2,4,10,11,12,13]},
+    {smiles:'O=C(O)C(C(C)C(C)CO)CCCC',es:'ácido 2-(3-hidroxi-1,2-dimetilpropil)hexanoico',
+      en:'2-(3-hydroxy-1,2-dimethylpropyl)hexanoic acid',formula:'C11H22O3',parentLocant:2,
+      carbonPath:[5,7,9],branchLocants:[1,2],branchAtoms:[[5,6],[7,8]],branchBonds:[[5,6],[7,8]],function:[9,10],functionLocant:3,
+      principal:[1,2,3],principalEdges:[[1,2],[2,3]],parent:[2,4,11,12,13,14]},
+    {smiles:'O=CC(C(C)(C)CN)CCCC',es:'2-(2-amino-1,1-dimetiletil)hexanal',
+      en:'2-(2-amino-1,1-dimethylethyl)hexanal',formula:'C10H21NO',parentLocant:2,
+      carbonPath:[4,7],branchLocants:[1,1],branchAtoms:[[4,5],[4,6]],branchBonds:[[4,5],[4,6]],function:[7,8],functionLocant:2,
+      principal:[1,2],principalEdges:[[1,2]],parent:[2,3,9,10,11,12]},
+  ];
+  for(const row of rows){
+    const {molecule,...parsed}=moleculeFromSmiles(row.smiles);assert.equal(parsed.ok,true,row.smiles);
+    assert.equal(inspectSmilesStructure(row.smiles).formula,row.formula);
+    const permutation=permute(molecule);
+    for(const [graph,map] of [[molecule,new Map(molecule.atoms.map(atom=>[atom.id,atom.id]))],[permutation.graph,permutation.map]]){
+      const analyses=analyzeBoth(graph,chemistry.engine),analysis=analyses.current,profiles=displayedProfiles(graph,analyses,chemistry.engine);
+      const branch=analysis.substituents.find(item=>item.hydroxyAlkyl||item.aminoAlkyl||item.oxoAlkyl);
+      assert.ok(branch,row.smiles);
+      const proof=branch.hydroxyAlkyl??branch.aminoAlkyl??branch.oxoAlkyl;
+      const func=proof.hydroxy??proof.amino??proof.oxo,hetero=func.oxygenId??func.nitrogenId;
+      assert.equal(analysis.name,row.es);
+      assert.equal(branch.locant,row.parentLocant);
+      assert.deepEqual(proof.carbonPath,row.carbonPath.map(id=>map.get(id)));
+      assert.deepEqual(proof.internalBranches.map(item=>item.locant),row.branchLocants);
+      const actualBranches=proof.internalBranches.map(item=>[item.anchorAtomId,...item.atomIds].sort((a,b)=>a-b).join(':')).sort();
+      const expectedBranches=row.branchAtoms.map(ids=>ids.map(id=>map.get(id)).sort((a,b)=>a-b).join(':')).sort();
+      assert.deepEqual(actualBranches,expectedBranches);
+      assert.equal(func.locant,row.functionLocant);
+      assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,analysis),false,row.es);
+      const principal=analysis.functionalGroups.find(group=>group.kind===analysis.primaryFunctionalGroup&&analysis.mainChain.includes(group.carbonId));
+      assert.deepEqual(new Set(analysis.mainChain),new Set(row.parent.map(id=>map.get(id))));
+      assert.deepEqual(new Set(principal.atomIds),new Set(row.principal.map(id=>map.get(id))));
+      for(const [profile,name] of [['2013-es',row.es],['2013-en',row.en]]){
+        assert.equal(profiles[profile].name,name,profile);
+        const model=chemistry.engine.buildActiveIupacReasoning({molecule:graph,analyses,...profiles[profile],displayedName:name,
+          generatedNames:Object.values(profiles).map(item=>item.name).filter(Boolean),canHighlight:true});
+        assertReasoningIntegrity(model,graph);
+        const refs=buildReasoningVisualReferences({molecule:graph,analysis,steps:model.steps,fragments:model.fragments,displayedName:name,enabled:true});
+        const get=keyName=>targetFor(model,refs,keyName);
+        const complete=get('complete'),internal=get('internal-branch'),skeleton=get('skeleton'),secondary=get('function');
+        assert.deepEqual(new Set(complete.target.atomIds),new Set([proof.parentAtomId,...proof.atomIds]));
+        assert.deepEqual(complete.target.bondIds.map(key).sort(),proof.bonds.map(key).sort());
+        assert.deepEqual(new Set(internal.target.atomIds),new Set(row.branchAtoms.flat().map(id=>map.get(id))));
+        assert.deepEqual(internal.target.bondIds.map(key).sort(),row.branchBonds.map(pair=>key(pair.map(id=>map.get(id)))).sort());
+        assert.deepEqual(new Set(skeleton.target.atomIds),new Set(row.carbonPath.map(id=>map.get(id))));
+        assert.deepEqual(new Set(secondary.target.atomIds),new Set([func.carbonId,hetero]));
+        assert.deepEqual(secondary.target.bondIds.map(key),[key([func.carbonId,hetero])]);
+        assert.deepEqual(get('parent-locant').target.locants,[[proof.parentAtomId,row.parentLocant]]);
+        assert.deepEqual(get('local-locant').target.locants,[[func.carbonId,row.functionLocant]]);
+        if(row.branchLocants[0]===row.branchLocants[1]){
+          const branchLocant=get('branch-locant');
+          assert.equal(branchLocant.part.label,profile.endsWith('en')?'Equivalent internal methyl locants':'Localizadores equivalentes de metilo interno');
+          assert.deepEqual(branchLocant.target.locants,[[map.get(row.branchAtoms[0][0]),1]]);
+          assert.deepEqual(new Set(branchLocant.target.atomIds),new Set([map.get(row.branchAtoms[0][0])]));
+        }else{
+          for(let i=0;i<2;i++){
+            const branchLocant=get(`branch-locant-${i+1}`);
+            assert.deepEqual(branchLocant.target.locants,[[map.get(row.branchAtoms[i][0]),row.branchLocants[i]]]);
+          }
+        }
+        assert.equal(reconcileSystematicName(graph,row.en),null,'two-branch evidence must remain PARTIAL');
+      }
+    }
+  }
+});
+
+test('two-branch admission rejects deleted, moved, relabeled and stale graph evidence',()=>{
+  const parsed=moleculeFromSmiles('O=C(O)C(C(C)C(C)CO)CCCC');assert.equal(parsed.ok,true);
+  const graph=parsed.molecule,analysis=chemistry.engine.analyzeMolecule(graph);
+  const component=analysis.substituents.find(item=>item.hydroxyAlkyl),proof=component.hydroxyAlkyl;
+  assert.equal(proof.internalBranches.length,2);
+  const [first,second]=proof.internalBranches;
+  const badProof={...component,hydroxyAlkyl:{...proof,internalBranches:proof.internalBranches.slice(0,1)}};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,{...analysis,
+    substituents:analysis.substituents.map(item=>item===component?badProof:item)}),true,'omitted methyl proof');
+  const [methyl]=first.atomIds;
+  const deletedEdge={...graph,bonds:graph.bonds.filter(([a,b])=>!((a===methyl&&b===first.anchorAtomId)||(b===methyl&&a===first.anchorAtomId)))};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(deletedEdge,analysis),true,'deleted methyl edge');
+  const movedEdge={...graph,bonds:graph.bonds.map(bond=>
+    (bond[0]===methyl&&bond[1]===first.anchorAtomId)||(bond[1]===methyl&&bond[0]===first.anchorAtomId)
+      ? [second.anchorAtomId,methyl,bond[2]??1] : bond)};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(movedEdge,analysis),true,'methyl shifted to another path carbon');
+  const alteredLocant={...component,hydroxyAlkyl:{...proof,internalBranches:proof.internalBranches.map((branch,index)=>
+    index===0?{...branch,locant:3}:branch)}};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,{...analysis,
+    substituents:analysis.substituents.map(item=>item===component?alteredLocant:item)}),true,'altered methyl locant');
+  const alteredFunction={...component,hydroxyAlkyl:{...proof,hydroxy:{...proof.hydroxy,locant:1}}};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(graph,{...analysis,
+    substituents:analysis.substituents.map(item=>item===component?alteredFunction:item)}),true,'altered secondary function locant');
+  const changedAttachment={...graph,bonds:graph.bonds.filter(([a,b])=>!((a===proof.parentAtomId&&b===proof.rootAtomId)
+    ||(b===proof.parentAtomId&&a===proof.rootAtomId))).concat([[proof.parentAtomId,proof.carbonPath[1],1]])};
+  assert.equal(chemistry.engine.localNamerCannotSafelyName(changedAttachment,analysis),true,'changed branch attachment');
 });

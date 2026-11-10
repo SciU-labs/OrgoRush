@@ -3559,11 +3559,15 @@ function combinePrefixAndParent(prefixParts: string[], parentName: string) {
 function functionalizedAlkylName(proof: HydroxyalkylEvidence | AminoalkylEvidence | OxoalkylEvidence,
   role: "hydroxy" | "amino" | "oxo") {
   const rootName = alkylNames[proof.carbonPath.length];
-  if (!rootName || proof.internalBranches.length > 1) return null;
+  if (!rootName || proof.internalBranches.length > 2
+    || proof.internalBranches.some(branch => branch.kind !== "methyl" || branch.atomIds.length !== 1)) return null;
   const functionLocant = role === "hydroxy" ? (proof as HydroxyalkylEvidence).hydroxy.locant
     : role === "amino" ? (proof as AminoalkylEvidence).amino.locant : (proof as OxoalkylEvidence).oxo.locant;
+  const methylPrefix = proof.internalBranches.length
+    ? `${proof.internalBranches.map(branch => branch.locant).sort((a,b)=>a-b).join(",")}-${simplePrefixes[proof.internalBranches.length] ?? `${proof.internalBranches.length}`}metil`
+    : undefined;
   const pieces = [{ text: `${functionLocant}-${role === "hydroxy" ? "hidroxi" : role}`, order:role },
-    ...proof.internalBranches.map(branch => ({ text:`${branch.locant}-metil`, order:"methyl" }))]
+    ...(methylPrefix ? [{ text:methylPrefix, order:"methyl" }] : [])]
     .sort((a,b) => a.order.localeCompare(b.order));
   return `${pieces.map(piece=>piece.text).join("-")}${rootName}`;
 }

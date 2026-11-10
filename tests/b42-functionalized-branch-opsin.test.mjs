@@ -8,7 +8,7 @@ test('B4.2 functionalized branch names match frozen independent OPSIN structures
   assert.equal(source.service,'https://www.ebi.ac.uk/opsin/ws/');
   assert.match(source.repository,/github\.com\/dan2097\/opsin/);
   assert.ok(Number.isFinite(Date.parse(source.retrievedAt)));
-  assert.equal(records.length,3);
+  assert.equal(records.length,6);
   for(const record of records){
     assert.equal(record.status,'SUCCESS',record.name);
     assert.equal(structuralIdentity(record.inputSmiles),structuralIdentity(record.smiles),record.name);
