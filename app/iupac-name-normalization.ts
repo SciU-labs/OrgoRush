@@ -318,6 +318,10 @@ export function normalizeHalogenatedNameForOpsin(value: string) {
 
 function translateCore(value: string) {
   const aliasesAndAcylGroups = translateSubstituentAliasesForOpsin(value)
+    // A locanted alkyl prefix may be joined to the vinyl radical. Translate
+    // the whole unit before the generic alkyl pass removes its boundary.
+    .replace(new RegExp(`(^|[-,(])(\\d+(?:,\\d+)*-)(${alkylRootPattern})ilvinil(?=[a-z),.-]|$)`, "g"),
+      (_match, boundary: string, locants: string, root: string) => `${boundary}${locants}${englishIupacRoot(root)}ylethenyl`)
     // Translate these complete lexical units before the systematic alkyl-root
     // pass so the embedded "etil" in "acetil" is never treated as ethyl.
     .replace(/(^|[-(])acetil(?=[a-z-]|$)/g, "$1acetyl")

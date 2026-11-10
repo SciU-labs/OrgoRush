@@ -9,6 +9,8 @@ const LOCAL_COMMON_NAMES: Record<string, Record<AppLanguage, string>> = {
     en: "TNT · 2,4,6-trinitrotoluene",
   },
   "OCC(CO)O": { es: "glicerol", en: "glycerol" },
+  // PubChem CID 7731 lists 4-methylanisole for this exact para-substituted graph.
+  "Cc(cc1)ccc1OC": { es: "4-metilanisol", en: "4-methylanisole" },
 };
 
 export function curatedCommonNameForSmiles(smiles: string | undefined, language: AppLanguage) {

@@ -28,10 +28,15 @@ export function displayedProfiles(molecule, analyses, engine) {
   const current = unavailable ? null : withStereo(analyses.current, currentBase);
   const legacyUnavailable = engine.legacyLocalNameIsUnavailable(molecule, analyses.legacy);
   const legacy = legacyUnavailable ? null : withStereo(analyses.legacy, analyses.legacy.name);
-  const currentName = (language) => current === null ? null : applyNomenclatureConvention(
-    engine.localizeSupportedSteroidConstitutionName(current, language)
-      ?? (language === "en" ? translateSpanishIupacForDisplay(current) || current : localizeChemicalNameForDisplay(current, "es")),
-    "current", language);
+  const currentName = (language) => {
+    if(current === null) return null;
+    const localized=engine.resolveLocalizedCurrentAnalysis(molecule,analyses.current,language);
+    const source=localized===analyses.current ? current
+      : withStereo(localized,stripStereochemicalDescriptors(engine.suggestedIupacNameWithOmittedLocants(localized)));
+    return applyNomenclatureConvention(engine.localizeSupportedSteroidConstitutionName(source, language)
+      ?? (language === "en" ? translateSpanishIupacForDisplay(source) || source : localizeChemicalNameForDisplay(source, "es")),
+      "current", language);
+  };
   const resolution=legacy===null?null:engine.resolveLegacyNomenclature(molecule,analyses.legacy,legacy,{stereochemistry:true});
   const spanishLegacy=resolution?.spanishResolution.name??"-";
   const englishLegacy=resolution?.englishName??"-";
@@ -45,7 +50,8 @@ export function displayedProfiles(molecule, analyses, engine) {
 
 /** Mirrors the UI's selected language numbering without mutating analyses. */
 export function resolvedProfileAnalyses(molecule,analyses,profile,engine) {
-  if(profile.selected==="current"||(!["aromatic","acyclic"].includes(analyses.legacy.family)
+  if(profile.selected==="current")return {...analyses,current:engine.resolveLocalizedCurrentAnalysis(molecule,analyses.current,profile.language)};
+  if((!["aromatic","acyclic"].includes(analyses.legacy.family)
     &&!(profile.language==="en"&&analyses.legacy.retainedFused?.status==="SUPPORTED")))return analyses;
   const resolution=engine.resolveLegacyNomenclature(molecule,analyses.legacy);
   return {...analyses,legacy:profile.language==="es"?resolution.spanishAnalysis:resolution.englishAnalysis};

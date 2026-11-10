@@ -1,0 +1,232 @@
+{
+  "source": "https://pubchem.ncbi.nlm.nih.gov/",
+  "retrievedAt": "2026-11-10T05:34:39Z",
+  "note": "PubChem IUPAC names are calculated names, not independent PIN certification; stereochemistry is represented only when present in SMILES.",
+  "records": [
+    {
+      "cid": 1254,
+      "smiles": "CC1CCC(C(C1)O)C(C)C",
+      "connectivitySmiles": "CC1CCC(C(C1)O)C(C)C",
+      "formula": "C10H20O",
+      "iupacName": "5-methyl-2-propan-2-ylcyclohexan-1-ol",
+      "inchiKey": "NOOLISFMXDJSKH-UHFFFAOYSA-N",
+      "synonyms": [
+        "MENTHOL",
+        "1490-04-6",
+        "2-Isopropyl-5-methylcyclohexanol",
+        "Menthyl alcohol",
+        "Mentholum"
+      ]
+    },
+    {
+      "cid": 7731,
+      "smiles": "CC1=CC=C(C=C1)OC",
+      "connectivitySmiles": "CC1=CC=C(C=C1)OC",
+      "formula": "C8H10O",
+      "iupacName": "1-methoxy-4-methylbenzene",
+      "inchiKey": "CHLICZRVGGXEOD-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-Methylanisole",
+        "1-METHOXY-4-METHYLBENZENE",
+        "104-93-8",
+        "4-Methoxytoluene",
+        "Benzene, 1-methoxy-4-methyl-"
+      ]
+    },
+    {
+      "cid": 326,
+      "smiles": "CC(C)C1=CC=C(C=C1)C=O",
+      "connectivitySmiles": "CC(C)C1=CC=C(C=C1)C=O",
+      "formula": "C10H12O",
+      "iupacName": "4-propan-2-ylbenzaldehyde",
+      "inchiKey": "WTWBUQJHJGUZCY-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-isopropylbenzaldehyde",
+        "cuminaldehyde",
+        "122-03-2",
+        "cuminic aldehyde",
+        "cumaldehyde"
+      ]
+    },
+    {
+      "cid": 7439,
+      "smiles": "CC1=CCC(CC1=O)C(=C)C",
+      "connectivitySmiles": "CC1=CCC(CC1=O)C(=C)C",
+      "formula": "C10H14O",
+      "iupacName": "2-methyl-5-prop-1-en-2-ylcyclohex-2-en-1-one",
+      "inchiKey": "ULDHMXUKGWMISQ-UHFFFAOYSA-N",
+      "synonyms": [
+        "CARVONE",
+        "99-49-0",
+        "2-methyl-5-(prop-1-en-2-yl)cyclohex-2-enone",
+        "Karvon",
+        "1-Carvone"
+      ]
+    },
+    {
+      "cid": 3672,
+      "smiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
+      "connectivitySmiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
+      "formula": "C13H18O2",
+      "iupacName": "2-[4-(2-methylpropyl)phenyl]propanoic acid",
+      "inchiKey": "HEFNNWSXXWATRW-UHFFFAOYSA-N",
+      "synonyms": [
+        "58560-75-1",
+        "IBUPROFEN, (+-)-",
+        "RefChem:6648",
+        "ibuprofen",
+        "15687-27-1"
+      ]
+    },
+    {
+      "cid": 7455,
+      "smiles": "CC1=CC=C(C=C1)C(=O)OC",
+      "connectivitySmiles": "CC1=CC=C(C=C1)C(=O)OC",
+      "formula": "C9H10O2",
+      "iupacName": "methyl 4-methylbenzoate",
+      "inchiKey": "QSSJZLPUHJDYKF-UHFFFAOYSA-N",
+      "synonyms": [
+        "METHYL 4-METHYLBENZOATE",
+        "Methyl p-toluate",
+        "99-75-2",
+        "Methyl-p-toluate",
+        "Methyl 4-toluate"
+      ]
+    },
+    {
+      "cid": 7813,
+      "smiles": "CC1=CC=C(C=C1)N",
+      "connectivitySmiles": "CC1=CC=C(C=C1)N",
+      "formula": "C7H9N",
+      "iupacName": "4-methylaniline",
+      "inchiKey": "RZXMPPFPUUCRFN-UHFFFAOYSA-N",
+      "synonyms": [
+        "p-Toluidine",
+        "4-Methylaniline",
+        "106-49-0",
+        "4-Toluidine",
+        "4-Methylbenzenamine"
+      ]
+    },
+    {
+      "cid": 69274,
+      "smiles": "CC1=CC=C(C=C1)C(=O)N",
+      "connectivitySmiles": "CC1=CC=C(C=C1)C(=O)N",
+      "formula": "C8H9NO",
+      "iupacName": "4-methylbenzamide",
+      "inchiKey": "UHBGYFCCKRAEHA-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-Methylbenzamide",
+        "p-Toluamide",
+        "Benzamide, 4-methyl-",
+        "4-Methyl-benzamide",
+        "UNII-N0V326V2F5"
+      ]
+    },
+    {
+      "cid": 7724,
+      "smiles": "CC1=CC=C(C=C1)C#N",
+      "connectivitySmiles": "CC1=CC=C(C=C1)C#N",
+      "formula": "C8H7N",
+      "iupacName": "4-methylbenzonitrile",
+      "inchiKey": "VCZNNAKNUVJVGX-UHFFFAOYSA-N",
+      "synonyms": [
+        "p-Tolunitrile",
+        "4-METHYLBENZONITRILE",
+        "104-85-8",
+        "4-Cyanotoluene",
+        "4-Tolunitrile"
+      ]
+    },
+    {
+      "cid": 7473,
+      "smiles": "CC1=CC=C(C=C1)[N+](=O)[O-]",
+      "connectivitySmiles": "CC1=CC=C(C=C1)[N+](=O)[O-]",
+      "formula": "C7H7NO2",
+      "iupacName": "1-methyl-4-nitrobenzene",
+      "inchiKey": "ZPTVNYMJQHSSEA-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-NITROTOLUENE",
+        "p-Nitrotoluene",
+        "1-Methyl-4-nitrobenzene",
+        "99-99-0",
+        "4-Nitrotoluol"
+      ]
+    },
+    {
+      "cid": 9603,
+      "smiles": "CC1=CC=C(C=C1)F",
+      "connectivitySmiles": "CC1=CC=C(C=C1)F",
+      "formula": "C7H7F",
+      "iupacName": "1-fluoro-4-methylbenzene",
+      "inchiKey": "WRWPPGUCZBJXKX-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-Fluorotoluene",
+        "P-FLUOROTOLUENE",
+        "352-32-9",
+        "1-Fluoro-4-methylbenzene",
+        "Benzene, 1-fluoro-4-methyl-"
+      ]
+    },
+    {
+      "cid": 7931,
+      "smiles": "CC1=CC(=CC=C1)Cl",
+      "connectivitySmiles": "CC1=CC(=CC=C1)Cl",
+      "formula": "C7H7Cl",
+      "iupacName": "1-chloro-3-methylbenzene",
+      "inchiKey": "OSOUNOBYRMOXQQ-UHFFFAOYSA-N",
+      "synonyms": [
+        "3-Chlorotoluene",
+        "108-41-8",
+        "1-Chloro-3-methylbenzene",
+        "M-CHLOROTOLUENE",
+        "m-Tolyl chloride"
+      ]
+    },
+    {
+      "cid": 7236,
+      "smiles": "CC1=CC=CC=C1Br",
+      "connectivitySmiles": "CC1=CC=CC=C1Br",
+      "formula": "C7H7Br",
+      "iupacName": "1-bromo-2-methylbenzene",
+      "inchiKey": "QSSXJPIWXQTSIX-UHFFFAOYSA-N",
+      "synonyms": [
+        "2-BROMOTOLUENE",
+        "95-46-5",
+        "1-Bromo-2-methylbenzene",
+        "o-Bromotoluene",
+        "Benzene, 1-bromo-2-methyl-"
+      ]
+    },
+    {
+      "cid": 12207,
+      "smiles": "CC1=CC=C(C=C1)I",
+      "connectivitySmiles": "CC1=CC=C(C=C1)I",
+      "formula": "C7H7I",
+      "iupacName": "1-iodo-4-methylbenzene",
+      "inchiKey": "UDHAWRUAECEBHC-UHFFFAOYSA-N",
+      "synonyms": [
+        "4-Iodotoluene",
+        "1-Iodo-4-methylbenzene",
+        "624-31-7",
+        "P-IODOTOLUENE",
+        "Benzene, 1-iodo-4-methyl-"
+      ]
+    },
+    {
+      "cid": 11419,
+      "smiles": "CC1CCCCC1=O",
+      "connectivitySmiles": "CC1CCCCC1=O",
+      "formula": "C7H12O",
+      "iupacName": "2-methylcyclohexan-1-one",
+      "inchiKey": "LFSAPCRASZRSKS-UHFFFAOYSA-N",
+      "synonyms": [
+        "2-METHYLCYCLOHEXANONE",
+        "583-60-8",
+        "2-methylcyclohexan-1-one",
+        "o-Methylcyclohexanone",
+        "2-Methyl-1-cyclohexanone"
+      ]
+    }
+  ]
+}

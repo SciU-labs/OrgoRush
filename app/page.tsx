@@ -1896,6 +1896,7 @@ function sortFormattedPrefixParts(prefixParts: string[]) {
 function formatSubstituentGroups(
   substituents: NamedSubstituent[],
   enabledAliases: readonly string[] = [],
+  language: AppLanguage = "es",
 ) {
   const enabled = new Set(enabledAliases);
   const groups = new Map<string, { items: NamedSubstituent[]; name: string; complex: boolean; sortName: string }>();
@@ -1914,7 +1915,10 @@ function formatSubstituentGroups(
 
   return [...groups.values()]
     .sort((left, right) => {
-      return compareAlphabeticalNames(left.sortName, right.sortName);
+      return language === "en"
+        ? stripForAlphabetizing(translateSpanishIupacForDisplay(left.sortName)).localeCompare(
+          stripForAlphabetizing(translateSpanishIupacForDisplay(right.sortName)), "en", { sensitivity: "base" })
+        : compareAlphabeticalNames(left.sortName, right.sortName);
     })
     .map((group) => {
       const locants = group.items.map((item) => item.locant).sort((a, b) => a - b).join(",");
@@ -2173,6 +2177,44 @@ function orientedRingPaths(ring: RingInfo) {
     });
   });
   return paths;
+}
+
+/** Propose a localized numbering for a single aromatic parent with no suffix. */
+export function proposeLocalizedAromaticNumbering(molecule: Molecule, analysis: Analysis, language: AppLanguage) {
+  if (analysis.family !== "aromatic" || analysis.chainName !== "benceno" || analysis.primaryFunctionalGroup
+    || analysis.doubleBondLocants.length || analysis.tripleBondLocants.length
+    || molecule.rings?.length !== 1 || analysis.substituents.some(item => item.complex)) return null;
+  const ring = molecule.rings[0], pathSet = new Set(analysis.mainChain);
+  if (ring.kind !== "aromatic" || ring.atomIds.length !== 6 || ring.atomIds.some(id => {
+    const atom=molecule.atoms.find(item => item.id===id);
+    return !atom || (atom.element ?? "C") !== "C";
+  }) || ring.atomIds.length !== analysis.mainChain.length
+    || pathSet.size !== ring.atomIds.length || ring.atomIds.some(id => !pathSet.has(id))
+    || ring.atomIds.some((id,index) => !molecule.bonds.some(([a,b]) =>
+      a === id && b === ring.atomIds[(index+1)%ring.atomIds.length]
+      || b === id && a === ring.atomIds[(index+1)%ring.atomIds.length]))) return null;
+  const anchored = analysis.substituents.map(item => ({item,anchor:analysis.mainChain[item.locant-1]}));
+  if (anchored.some(({anchor}) => anchor === undefined || !pathSet.has(anchor))) return null;
+  const candidates = orientedRingPaths(ring).map(path => ({path,
+    substituents:anchored.map(({item,anchor}) => ({...item,locant:path.indexOf(anchor)+1})),
+    doubleBondLocants:[] as number[], tripleBondLocants:[] as number[]}));
+  const chosen = numberParent(candidates, candidate => numberingCriteria({...candidate,
+    substituents:candidate.substituents.map(item => ({...item,sortName:language === "en"
+      ? translateSpanishIupacForDisplay(item.sortName) : item.sortName}))}));
+  return {mainChain:chosen.path, numberedAtoms:new Map(chosen.path.map((id,index) => [id,index+1])),
+    substituents:chosen.substituents};
+}
+
+/** Keep name, reasoning and canvas on one graph-derived localized analysis. */
+export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: Analysis, language: AppLanguage,
+  enabledAliases: readonly string[] = []): Analysis {
+  if (language !== "en" || enabledAliases.length || analysis.substituents.length < 2
+    || molecule.atoms.some(atom => atom.tetrahedralParity || atom.tetrahedralBondTo)
+    || molecule.bonds.some(bond => bond[3])) return analysis;
+  const proposal = proposeLocalizedAromaticNumbering(molecule, analysis, language);
+  if (!proposal) return analysis;
+  const name = `${formatSubstituentGroups(proposal.substituents, [], language).join("-")}${analysis.chainName}`;
+  return {...analysis, ...proposal, name};
 }
 
 function ringCandidates(
@@ -8215,8 +8257,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const analysis = useMemo(
     () => sourceNameOverride
       ? { ...calculatedAnalysis, name: sourceNameOverride }
-      : calculatedAnalysis,
-    [calculatedAnalysis, sourceNameOverride],
+      : localSuggestedNameUnavailable || externalNameIsPrimary
+        ? calculatedAnalysis
+        : resolveLocalizedCurrentAnalysis(molecule, calculatedAnalysis, language, commonAlkylNameSelections),
+    [calculatedAnalysis, sourceNameOverride, localSuggestedNameUnavailable, externalNameIsPrimary,
+      molecule, language, commonAlkylNameSelections],
   );
   const hasActiveSelection = selectedId !== null;
   const selectedAtom = molecule.atoms.find((atom) => atom.id === selectedId) ?? molecule.atoms[0];
