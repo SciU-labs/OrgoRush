@@ -4,17 +4,27 @@ import type { ValidatedNameDerivation } from "./validated-name-derivation.ts";
 /**
  * Expands verified locants around a six-carbon aromatic parent ring only when
  * its topology and all explicitly named positions determine one orientation.
- * Ambiguous or incomplete evidence leaves the FULL locants untouched.
+ * Ambiguous or incomplete evidence keeps only the supported visual anchors;
+ * the derivation's complete internal numbering is never changed.
  */
 export function buildValidatedVisualNumbering(
   molecule: GeneratedMolecule,
   derivation: ValidatedNameDerivation | null | undefined,
 ): ReadonlyMap<number, number | string> {
   const parent = derivation?.components.find(component => component.role === "parent");
-  const numbering = new Map<number, number | string>(parent?.numbering ?? []);
+  const retainedAromatic = derivation?.evidence?.construction === "retained-aromatic"
+    || derivation?.evidence?.construction === "aromatic-ester";
+  // Compositional parents carry all six internal locants for reconstruction.
+  // Only implicit C1 and written parent locants constrain the visual direction.
+  // Legacy derivations already store their explicit anchors in parent.numbering.
+  const visualAnchors = retainedAromatic && parent?.writtenLocants !== undefined
+    ? parent.numbering.filter(([id, locant]) => locant === 1
+      || parent.writtenLocants!.some(written => written.atomId === id && written.locant === locant))
+    : parent?.numbering ?? [];
+  const numbering = new Map<number, number | string>(visualAnchors);
   if (!parent || !molecule.rings?.length) return numbering;
 
-  const anchors = parent.numbering.filter(([id, locant]) => typeof locant === "number"
+  const anchors = visualAnchors.filter(([id, locant]) => typeof locant === "number"
     && Number.isInteger(locant) && locant >= 1 && locant <= 6);
   if (!anchors.some(([, locant]) => locant === 1)) return numbering;
   const parentAtoms = new Set(parent.atomIds);

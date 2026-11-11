@@ -52,6 +52,45 @@ test("aspirin FULL names expand the verified aromatic numbering from C1 through 
   for (const name of names) verifyAspirin(graph,name);
 });
 
+test("benzoic-acid visual anchors do not inherit the complete internal ring orientation", () => {
+  for (const source of ["O=C(O)c1ccccc1", "c1ccc(cc1)C(O)=O"]) {
+    const graph = imported(source);
+    const idMap = new Map(graph.atoms.map((atom, index) => [atom.id, 1500 - index * 23]));
+    const permuted = {
+      atoms: graph.atoms.toReversed().map(atom => ({ ...atom, id: idMap.get(atom.id) })),
+      bonds: graph.bonds.toReversed().map(([a,b,...rest]) => [idMap.get(b), idMap.get(a), ...rest]),
+      rings: graph.rings.map(ring => ({ ...ring, atomIds: ring.atomIds.toReversed().map(id => idMap.get(id)) })),
+    };
+    for (const molecule of [graph, permuted]) {
+      const derivation = reconcileSystematicName(molecule, "benzoic acid");
+      assert.equal(derivation?.status, "FULL");
+      const parent = derivation.components.find(component => component.role === "parent");
+      assert.equal(parent.numbering.length, 6, "chemical reconstruction retains complete internal numbering");
+      const before = JSON.stringify({ molecule, derivation });
+      assert.deepEqual([...buildValidatedVisualNumbering(molecule, derivation)],
+        parent.numbering.filter(([,locant]) => locant === 1));
+      assert.equal(JSON.stringify({ molecule, derivation }), before, "visual projection never mutates graph or FULL proof");
+    }
+  }
+});
+
+test("written aromatic locants distinguish a resolved salicylic orientation from a symmetric para ring", () => {
+  for (const [source, name, expectedLocants] of [
+    ["O=C(O)c1ccccc1O", "2-hydroxybenzoic acid", [1,2,3,4,5,6]],
+    ["O=C(O)c1ccc(O)cc1", "4-hydroxybenzoic acid", [1,4]],
+  ]) {
+    const graph = imported(source), derivation = reconcileSystematicName(graph, name);
+    assert.equal(derivation?.status, "FULL", name);
+    const parent = derivation.components.find(component => component.role === "parent");
+    const prefix = derivation.components.find(component => component.role === "prefix");
+    const numbering = buildValidatedVisualNumbering(graph, derivation);
+    assert.deepEqual([...numbering.values()].sort((a,b) => a-b), expectedLocants);
+    for (const [id, locant] of prefix.numbering) assert.equal(numbering.get(id), locant, "hydroxy attachment keeps its verified ring position");
+    for (const id of prefix.atomIds) assert.equal(numbering.has(id), false, "substituent atoms never receive parent-ring labels");
+    assert.equal(parent.numbering.length, 6);
+  }
+});
+
 test("aspirin ring numbering is stable across equivalent SMILES and permuted atom IDs", () => {
   const sources=[smiles,"O=C(O)c1ccccc1OC(C)=O","O=C(O)c1ccccc1OC(=O)C"];
   let reference;
