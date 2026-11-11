@@ -2680,11 +2680,99 @@ function formatHeterocycleNitrogenPrefixes(
     });
 }
 
+/**
+ * Recognize only neutral pyridine parents bearing one or two complete,
+ * directly attached carboxylic-acid groups. This deliberately excludes
+ * esters, amides, extra ring substituents, and more complex heterocycles.
+ */
+function simplePyridineCarboxylicAcidAnalysis(
+  molecule: Molecule,
+  ring: RingInfo,
+): Analysis | undefined {
+  const definition = registeredHeterocycleParentForRing(molecule, ring);
+  if (definition?.id !== "pyridine" || ring.kind !== "aromatic" || ring.atomIds.length !== 6) return;
+  if (molecule.atoms.some((atom) => (atom.charge ?? 0) !== 0)) return;
+
+  const ringAtoms = new Set(ring.atomIds);
+  const ringNitrogens = ring.atomIds.filter((id) => getElement(getAtom(id, molecule)!) === "N");
+  const ringCarbons = ring.atomIds.filter((id) => getElement(getAtom(id, molecule)!) === "C");
+  if (ringNitrogens.length !== 1 || ringCarbons.length !== 5) return;
+
+  const acids = detectFunctionalGroups(molecule).filter((group) => group.kind === "carboxylicAcid");
+  if (acids.length < 1 || acids.length > 2) return;
+  const expectedAtomIds = new Set(ring.atomIds);
+  const attachmentByAcid = new Map<string, number>();
+  const seenGroupAtoms = new Set<number>();
+  for (const acid of acids) {
+    const carbonyl = getAtom(acid.carbonId, molecule);
+    const neighbors = atomNeighbors(acid.carbonId, molecule);
+    const ringAttachments = neighbors.filter(({ atomId }) => ringAtoms.has(atomId));
+    const oxygens = neighbors.filter(({ atomId }) => getElement(getAtom(atomId, molecule)!) === "O");
+    const doubleOxygens = oxygens.filter(({ order }) => order === 2);
+    const singleOxygens = oxygens.filter(({ order }) => order === 1);
+    if (!carbonyl || !isCarbonAtom(carbonyl)
+      || ringAttachments.length !== 1 || ringAttachments[0].order !== 1
+      || !ringCarbons.includes(ringAttachments[0].atomId)
+      || oxygens.length !== 2 || doubleOxygens.length !== 1 || singleOxygens.length !== 1
+      || neighbors.length !== 3 || acid.atomIds.length !== 3
+      || new Set(acid.atomIds).size !== 3
+      || acid.atomIds.some((id) => seenGroupAtoms.has(id))) return;
+
+    const singleOxygenId = singleOxygens[0].atomId;
+    if (atomNeighbors(singleOxygenId, molecule).length !== 1) return;
+    acid.atomIds.forEach((id) => {
+      seenGroupAtoms.add(id);
+      expectedAtomIds.add(id);
+    });
+    attachmentByAcid.set(acid.id, ringAttachments[0].atomId);
+  }
+  if (expectedAtomIds.size !== molecule.atoms.length
+    || molecule.atoms.some((atom) => !expectedAtomIds.has(atom.id))) return;
+
+  const bondOrders = new Map(
+    molecule.bonds.map((bond) => [bondKey(bond[0], bond[1]), getBondOrder(bond)]),
+  );
+  const candidates = heterocycleNumberedPaths(molecule, ring).map((path) => {
+    const attachmentLocants = acids
+      .map((acid) => path.indexOf(attachmentByAcid.get(acid.id)! ) + 1)
+      .sort((left, right) => left - right);
+    const doubleBondLocants = path.flatMap((atomId, index) =>
+      bondOrders.get(bondKey(atomId, path[(index + 1) % path.length])) === 2 ? [index + 1] : []);
+    const tripleBondLocants = path.flatMap((atomId, index) =>
+      bondOrders.get(bondKey(atomId, path[(index + 1) % path.length])) === 3 ? [index + 1] : []);
+    return { path, attachmentLocants, doubleBondLocants, tripleBondLocants };
+  });
+  candidates.sort((left, right) => compareNumberLists(left.attachmentLocants, right.attachmentLocants));
+  const chosen = candidates[0];
+  if (!chosen || chosen.attachmentLocants.some((locant) => locant < 1)) return;
+
+  const locants = chosen.attachmentLocants.join(",");
+  const multiplier = acids.length === 1 ? "" : "di";
+  const suffix = `piridina-${locants}-${multiplier}carboxílico`;
+  const chainName = `ácido ${suffix}`;
+  return {
+    name: chainName,
+    formula: molecularFormula(molecule),
+    family: ring.kind,
+    mainChain: chosen.path,
+    chainName,
+    substituents: [],
+    numberedAtoms: new Map(chosen.path.map((atomId, index) => [atomId, index + 1])),
+    doubleBondLocants: chosen.doubleBondLocants,
+    tripleBondLocants: chosen.tripleBondLocants,
+    functionalGroups: acids,
+    primaryFunctionalGroup: "carboxylicAcid",
+    primaryFunctionalLabel: functionalGroupLabels.carboxylicAcid,
+  };
+}
+
 function analyzeHeterocycleMolecule(
   molecule: Molecule,
   ring: RingInfo,
   enabledAliases: readonly string[] = [],
 ): Analysis {
+  const acidAnalysis = simplePyridineCarboxylicAcidAnalysis(molecule, ring);
+  if (acidAnalysis) return acidAnalysis;
   const adjacency = buildAdjacency(molecule);
   const ringSet = new Set(ring.atomIds);
   const bondOrders = new Map(
@@ -8680,6 +8768,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     || (activeNomenclatureConvention === "current" && externalNameIsPrimary)
     || sourceNameOverride !== null
     || (!!structuralEvidence.carbohydrate && !validatedDerivation);
+  // These conservative pyridine-acid names remain unreconciled (PARTIAL), but
+  // their graph-backed ring and carboxyl evidence can still be shown without
+  // presenting the name's parent locants as verified.
+  const pyridineRingForPartialEvidence = useMemo(() => heterocycleRing(molecule), [molecule]);
+  const unreconciledPyridineAcid = useMemo(() => !validatedDerivation
+    && Boolean(pyridineRingForPartialEvidence
+      && simplePyridineCarboxylicAcidAnalysis(molecule, pyridineRingForPartialEvidence)),
+  [molecule, pyridineRingForPartialEvidence, validatedDerivation]);
   const functionalizedLocalReasoning = !reasoningUnsupported && !validatedDerivation
     && Object.values(reasoningNameFragments).some(fragment => fragment.semanticId === "functionalized:complete"
       || /^functionalized:branch-[1-2]:complete$/.test(fragment.semanticId ?? ""));
@@ -8707,10 +8803,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
   }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps]);
   const structuralPriorityReasoning = useMemo(() => shouldShowStructuralPriorityReasoning({
-    hasValidatedDerivation: !!validatedDerivation, reasoningUnsupported, structuralStatus: structuralDerivation.status,
+    hasValidatedDerivation: !!validatedDerivation,
+    reasoningUnsupported: reasoningUnsupported || unreconciledPyridineAcid,
+    structuralStatus: structuralDerivation.status,
   })
     ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language }) : null,
-  [validatedDerivation, reasoningUnsupported, structuralEvidence, language]);
+  [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language]);
   const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
     ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
       fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,
