@@ -1,0 +1,1176 @@
+{
+  "executedAt": "2026-11-11T04:05:06.767Z",
+  "corpusSha256": "15e8eeb2074a59a5fcb670b90920dc13966ee1bcd3cb185039740841f497cbc6",
+  "interpreter": "local OPSIN 2.9.0",
+  "comparator": "OpenChemLib shared with product",
+  "rows": [
+    {
+      "id": "B62-I01",
+      "cid": 10243,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I02",
+      "cid": 10241,
+      "import": {
+        "ok": false,
+        "error": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+      },
+      "profiles": {},
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I03",
+      "cid": 7678,
+      "profiles": {
+        "es": {
+          "name": "1-fenilpropan-2-ona",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "1-phenylpropan-2-one",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C1(=CC=CC=C1)CC(C)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I04",
+      "cid": 11310,
+      "import": {
+        "ok": false,
+        "error": "OpenChemLib reconoció un sistema policíclico complejo (fusionado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado."
+      },
+      "profiles": {},
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I05",
+      "cid": 11074,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I06",
+      "cid": 11487,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I07",
+      "cid": 12137,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I08",
+      "cid": 18635,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I09",
+      "cid": 638011,
+      "profiles": {
+        "es": {
+          "name": "(2E)-3,7-dimetilocta-2,6-dienal",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "(2E)-3,7-dimethylocta-2,6-dienal",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C\\C(=C/C=O)\\CCC=C(C)C",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I10",
+      "cid": 637511,
+      "profiles": {
+        "es": {
+          "name": "(2E)-3-fenilprop-2-enal",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "(2E)-3-phenylprop-2-enal",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C1(=CC=CC=C1)/C=C/C=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I11",
+      "cid": 10366,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I12",
+      "cid": 10865,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    },
+    {
+      "id": "B62-I13",
+      "cid": 20474,
+      "profiles": {
+        "es": {
+          "name": "2-etilciclohexanona",
+          "internalSupport": "FULL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 8,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 9,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                1
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                1
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                6,
+                1
+              ],
+              [
+                6,
+                1,
+                1
+              ],
+              [
+                1,
+                7,
+                2
+              ],
+              [
+                8,
+                9,
+                1
+              ],
+              [
+                2,
+                8,
+                1
+              ]
+            ]
+          }
+        },
+        "en": {
+          "name": "2-ethylcyclohexanone",
+          "internalSupport": "FULL",
+          "independentStatus": "FULL-OPSIN-CONFIRMED",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 8,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 9,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                1
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                1
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                6,
+                1
+              ],
+              [
+                6,
+                1,
+                1
+              ],
+              [
+                1,
+                7,
+                2
+              ],
+              [
+                8,
+                9,
+                1
+              ],
+              [
+                2,
+                8,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)C1C(CCCC1)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I14",
+      "cid": 67855,
+      "profiles": {
+        "es": {
+          "name": "2-fluorobenzonitrilo",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "2-fluorobenzonitrile",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "FC1=C(C#N)C=CC=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I15",
+      "cid": 11959,
+      "profiles": {
+        "es": {
+          "name": "N-etilbenzamida",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "N-ethylbenzamide",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)NC(C1=CC=CC=C1)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I16",
+      "cid": 67880,
+      "profiles": {
+        "es": {
+          "name": "3-fluorobenzonitrilo",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "3-fluorobenzonitrile",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "FC=1C=C(C#N)C=CC1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I17",
+      "cid": 12084,
+      "profiles": {
+        "es": {
+          "name": "4-clorobenzamida",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "4-chlorobenzamide",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "ClC1=CC=C(C(=O)N)C=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I18",
+      "cid": 16896,
+      "profiles": {
+        "es": {
+          "name": "4-bromo-2-metilfenol",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "4-bromo-2-methylphenol",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "BrC1=CC(=C(C=C1)O)C",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I19",
+      "cid": 89908,
+      "profiles": {
+        "es": {
+          "name": "3-etoxibenzaldehído",
+          "internalSupport": "FULL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 8,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 9,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 10,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 11,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                2
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                6,
+                2
+              ],
+              [
+                6,
+                1,
+                1
+              ],
+              [
+                1,
+                7,
+                1
+              ],
+              [
+                7,
+                8,
+                2
+              ],
+              [
+                9,
+                10,
+                1
+              ],
+              [
+                10,
+                11,
+                1
+              ],
+              [
+                3,
+                9,
+                1
+              ]
+            ]
+          }
+        },
+        "en": {
+          "name": "3-ethoxybenzaldehyde",
+          "internalSupport": "FULL",
+          "independentStatus": "FULL-OPSIN-CONFIRMED",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 8,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 9,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 10,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 11,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                2
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                6,
+                2
+              ],
+              [
+                6,
+                1,
+                1
+              ],
+              [
+                1,
+                7,
+                1
+              ],
+              [
+                7,
+                8,
+                2
+              ],
+              [
+                9,
+                10,
+                1
+              ],
+              [
+                10,
+                11,
+                1
+              ],
+              [
+                3,
+                9,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)OC=1C=C(C=O)C=CC1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B62-I20",
+      "cid": 14265,
+      "profiles": {
+        "es": {
+          "name": "2-metilciclopentanona",
+          "internalSupport": "FULL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                1
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                1
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                1,
+                1
+              ],
+              [
+                1,
+                6,
+                2
+              ],
+              [
+                2,
+                7,
+                1
+              ]
+            ]
+          }
+        },
+        "en": {
+          "name": "2-methylcyclopentanone",
+          "internalSupport": "FULL",
+          "independentStatus": "FULL-OPSIN-CONFIRMED",
+          "internalReconstruction": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 3,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 4,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 5,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 6,
+                "element": "O",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "id": 7,
+                "element": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "bonds": [
+              [
+                1,
+                2,
+                1
+              ],
+              [
+                2,
+                3,
+                1
+              ],
+              [
+                3,
+                4,
+                1
+              ],
+              [
+                4,
+                5,
+                1
+              ],
+              [
+                5,
+                1,
+                1
+              ],
+              [
+                1,
+                6,
+                2
+              ],
+              [
+                2,
+                7,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC1C(CCC1)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    }
+  ],
+  "priorCases": [
+    {
+      "id": "B61-I07",
+      "cid": 10758,
+      "profiles": {
+        "es": {
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "2-hydroxy-2-phenylethanenitrile",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "OC(C#N)C1=CC=CC=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B61-I08",
+      "cid": 31266,
+      "profiles": {
+        "es": {
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "prop-2-en-1-yl hexanoate",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(CCCCC)(=O)OCC=C",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B61-I14",
+      "cid": 11142,
+      "profiles": {
+        "es": {
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "internalSupport": "PARTIAL",
+          "independentStatus": "EQUIVALENT",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC(C)C1C=CC(CC1)=C",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:\r\n",
+        "exitCode": 0,
+        "error": null
+      }
+    },
+    {
+      "id": "B61-I15",
+      "cid": 637563,
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-SPANISH-INDEPENDENT-REVIEW",
+          "internalReconstruction": null
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED",
+          "independentStatus": "PENDING-OPSIN",
+          "internalReconstruction": null
+        }
+      },
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    }
+  ]
+}

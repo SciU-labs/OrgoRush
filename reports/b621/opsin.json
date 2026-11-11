@@ -1,0 +1,64 @@
+{
+  "audit": "B6.2.1 local independent OPSIN comparison",
+  "interpreter": "OPSIN 2.9.0 local CLI; Java Temurin 21.0.13+9-jre",
+  "comparison": "OpenChemLib structural identity (shared comparator; not an independent graph canonicalizer)",
+  "result": "PASS",
+  "cases": [
+    {
+      "name": "pyridine-2,3-dicarboxylic acid",
+      "referenceSmiles": "n1c(C(=O)O)c(C(=O)O)ccc1",
+      "opsinSmiles": "N1=C(C(=CC=C1)C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-2,4-dicarboxylic acid",
+      "referenceSmiles": "n1c(C(=O)O)cc(C(=O)O)cc1",
+      "opsinSmiles": "N1=C(C=C(C=C1)C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-2,5-dicarboxylic acid",
+      "referenceSmiles": "n1c(C(=O)O)ccc(C(=O)O)c1",
+      "opsinSmiles": "N1=C(C=CC(=C1)C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-2,6-dicarboxylic acid",
+      "referenceSmiles": "n1c(C(=O)O)cccc1C(=O)O",
+      "opsinSmiles": "N1=C(C=CC=C1C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-3,4-dicarboxylic acid",
+      "referenceSmiles": "n1cc(C(=O)O)c(C(=O)O)cc1",
+      "opsinSmiles": "N1=CC(=C(C=C1)C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-3,5-dicarboxylic acid",
+      "referenceSmiles": "n1cc(C(=O)O)cc(C(=O)O)c1",
+      "opsinSmiles": "N1=CC(=CC(=C1)C(=O)O)C(=O)O",
+      "referenceFormula": "C7H5NO4",
+      "opsinFormula": "C7H5NO4",
+      "equivalent": true
+    },
+    {
+      "name": "pyridine-2-carboxylic acid",
+      "referenceSmiles": "O=C(O)c1ccccn1",
+      "opsinSmiles": "N1=C(C=CC=C1)C(=O)O",
+      "referenceFormula": "C6H5NO2",
+      "opsinFormula": "C6H5NO2",
+      "equivalent": true
+    }
+  ]
+}

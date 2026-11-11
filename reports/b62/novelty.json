@@ -1,0 +1,512 @@
+{
+  "method": "AST/JSON literal SMILES and static graphs from pre-B6.1 tests/reports, plus B6.1 frozen references and explicit mutation structures; stereo-stripped constitutions",
+  "candidateStrings": 22436,
+  "parseableStrings": 3118,
+  "staticGraphConstitutions": 309,
+  "historicalConstitutions": 1748,
+  "records": [
+    {
+      "cid": 10758,
+      "name": "2-hydroxy-2-phenylacetonitrile",
+      "formula": "C8H7NO",
+      "smiles": "C1=CC=C(C=C1)C(C#N)O",
+      "constitutionKey": "deVH@BAIemQfk@@@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 12180,
+      "name": "methyl butanoate",
+      "formula": "C5H10O2",
+      "smiles": "CCCC(=O)OC",
+      "constitutionKey": "gNp`@dfWZj@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/capability-audit.test.mjs",
+        "../tests/iupac79-reasoning-007.test.mjs",
+        "../reports/external-molecule-audit/fixtures.json",
+        "../reports/external-molecule-audit/nomenclature-review.json",
+        "../reports/external-molecule-audit/results.json",
+        "../reports/external-molecule-audit-current/mechanical-results.json",
+        "../reports/external-molecule-audit-current/raw-results.json",
+        "../reports/external-molecule-audit-current/results.json",
+        "../reports/naming-audit/aud-nom-005/batches/0301-0325.json",
+        "../reports/naming-audit/aud-nom-005/current-results.json"
+      ]
+    },
+    {
+      "cid": 10243,
+      "name": "quinoline-4-carboxylic acid",
+      "formula": "C10H7NO2",
+      "smiles": "C1=CC=C2C(=C1)C(=CC=N2)C(=O)O",
+      "constitutionKey": "dk^D@IALbfbbTQF]Mh@@@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 10241,
+      "name": "fluoren-9-one",
+      "formula": "C13H8O",
+      "smiles": "C1=CC=C2C(=C1)C3=CC=CC=C3C2=O",
+      "constitutionKey": "fgAA@@@ILsJkdYHvkM@@@D@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 11849,
+      "name": "1,3,5-trimethyl-2,4-dinitrobenzene",
+      "formula": "C9H10N2O4",
+      "smiles": "CC1=CC(=C(C(=C1[N+](=O)[O-])C)[N+](=O)[O-])C",
+      "constitutionKey": "do}B@hTDNxeNV[{HihhhiXauhBJF`@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 13156,
+      "name": "1-bromobutan-2-one",
+      "formula": "C4H7BrO",
+      "smiles": "CCC(=O)CBr",
+      "constitutionKey": "gGQHLLQI[ih@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 65577,
+      "name": "1-dioctylphosphoryloctane",
+      "formula": "C24H51OP",
+      "smiles": "CCCCCCCCP(=O)(CCCCCCCC)CCCCCCCC",
+      "constitutionKey": "fesAB@H@|DjmUUUUUUVjjjjjjjh@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 31249,
+      "name": "diethyl butanedioate",
+      "formula": "C8H14O4",
+      "smiles": "CCOC(=O)CCC(=O)OCC",
+      "constitutionKey": "dctB@@PYRYU{Vjij@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/helpers/fallback-006.mjs",
+        "../reports/orgorush-iupac79-fallback-006.audit.json"
+      ]
+    },
+    {
+      "cid": 31266,
+      "name": "prop-2-enyl hexanoate",
+      "formula": "C9H16O2",
+      "smiles": "CCCCCC(=O)OCC=C",
+      "constitutionKey": "dmTD@@QIeU]jjZ@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 7678,
+      "name": "1-phenylpropan-2-one",
+      "formula": "C9H10O",
+      "smiles": "CC(=O)CC1=CC=CC=C1",
+      "constitutionKey": "deTH@@RYyTYZ`@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 7420,
+      "name": "3-hydroxybenzoic acid",
+      "formula": "C7H6O3",
+      "smiles": "C1=CC(=CC(=C1)O)C(=O)O",
+      "constitutionKey": "deTL@@PTfyVzV`B@@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/double-bond-stereochemistry.test.mjs",
+        "../tests/generalized-derivation.test.mjs"
+      ]
+    },
+    {
+      "cid": 7498,
+      "name": "bromomethylbenzene",
+      "formula": "C7H7Br",
+      "smiles": "C1=CC=C(C=C1)CBr",
+      "constitutionKey": "daD@`@qDeeVz`@@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 8465,
+      "name": "1-(3,4-dihydroxyphenyl)-2-(propan-2-ylamino)ethanone",
+      "formula": "C11H15NO3",
+      "smiles": "CC(C)NCC(=O)C1=CC(=C(C=C1)O)O",
+      "constitutionKey": "do~L@FAWRYeUnquhHJJ`@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 11310,
+      "name": "(4-acetyloxy-3-methylnaphthalen-1-yl) acetate",
+      "formula": "C15H14O4",
+      "smiles": "CC1=C(C2=CC=CC=C2C(=C1)OC(=O)C)OC(=O)C",
+      "constitutionKey": "fle@P@@H]GHhmEEEDUmIZmyj@B@bX@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 11074,
+      "name": "2-methylisoindole-1,3-dione",
+      "formula": "C9H7NO2",
+      "smiles": "CN1C(=O)C2=CC=CC=C2C1=O",
+      "constitutionKey": "dcnD@D@TfYg\\fWVjA@`@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 11487,
+      "name": "N-phenylaniline",
+      "formula": "C12H11N",
+      "smiles": "C1=CC=C(C=C1)NC2=CC=CC=C2",
+      "constitutionKey": "dk^@@@RfYU\\]Tz@@@@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 11612,
+      "name": "hept-3-ene",
+      "formula": "C7H14",
+      "smiles": "CCCC=CCC",
+      "constitutionKey": "gNp@DiUZj@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/capability-audit.test.mjs"
+      ]
+    },
+    {
+      "cid": 12137,
+      "name": "N-methyl-4-phenyldiazenylaniline",
+      "formula": "C13H13N3",
+      "smiles": "CNC1=CC=C(C=C1)N=NC2=CC=CC=C2",
+      "constitutionKey": "f`qp@@@P\\eKLjo|cZlt@@@T@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 18635,
+      "name": "3-methylsulfanylpropanal",
+      "formula": "C4H8OS",
+      "smiles": "CSCCC=O",
+      "constitutionKey": "gGQHJ@aJ]jd@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 23427,
+      "name": "benzeneseleninic acid",
+      "formula": "C6H6O2Se",
+      "smiles": "C1=CC=C(C=C1)[Se](=O)O",
+      "constitutionKey": "didD`HPDSIHXdnEh@@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 638011,
+      "name": "(2E)-3,7-dimethylocta-2,6-dienal",
+      "formula": "C10H16O",
+      "smiles": "CC(=CCC/C(=C/C=O)/C)C",
+      "constitutionKey": "dmTH@@RUgVYjf`@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 637511,
+      "name": "(E)-3-phenylprop-2-enal",
+      "formula": "C9H8O",
+      "smiles": "C1=CC=C(C=C1)/C=C/C=O",
+      "constitutionKey": "deTH@@RUYTYY`@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 637563,
+      "name": "1-methoxy-4-[(E)-prop-1-enyl]benzene",
+      "formula": "C10H12O",
+      "smiles": "C/C=C/C1=CC=C(C=C1)OC",
+      "constitutionKey": "dmtH@@Rfuu[j@BX@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 10366,
+      "name": "pyridine-3,5-dicarboxylic acid",
+      "formula": "C7H5NO4",
+      "smiles": "C1=C(C=NC=C1C(=O)O)C(=O)O",
+      "constitutionKey": "dcNB@FAEuInU^xV`@f@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 10865,
+      "name": "2-(2-phenylethylamino)guanidine",
+      "formula": "C9H14N4",
+      "smiles": "C1=CC=C(C=C1)CCNN=C(N)N",
+      "constitutionKey": "dkl`@@`jrQJHjIKSfj`@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 11142,
+      "name": "3-methylidene-6-propan-2-ylcyclohexene",
+      "formula": "C10H16",
+      "smiles": "CC(C)C1CCC(=C)C=C1",
+      "constitutionKey": "deT@@Dj]viifjh@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 11230,
+      "name": "4-methyl-1-propan-2-ylcyclohex-3-en-1-ol",
+      "formula": "C10H18O",
+      "smiles": "CC1=CCC(CC1)(C(C)C)O",
+      "constitutionKey": "dmtH@@rJQQHxYjjih@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 6552009,
+      "name": "(1R,2S,4R)-1,7,7-trimethylbicyclo[2.2.1]heptan-2-ol",
+      "formula": "C10H18O",
+      "smiles": "C[C@@]12CC[C@@H](C1(C)C)C[C@@H]2O",
+      "constitutionKey": "dmLH@@RYiYKnVjjjh@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 557975,
+      "name": "3-ethyl-3,5,5-trimethylcyclohexan-1-one",
+      "formula": "C11H20O",
+      "smiles": "CCC1(CC(=O)CC(C1)(C)C)C",
+      "constitutionKey": "dcLH@@RYVfzYjjjh@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 6993418,
+      "name": "(2R)-2-ethylcyclohexan-1-one",
+      "formula": "C8H14O",
+      "smiles": "CC[C@@H]1CCCCC1=O",
+      "constitutionKey": "didH@@RYeVyjjh@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 20474,
+      "name": "2-ethylcyclohexan-1-one",
+      "formula": "C8H14O",
+      "smiles": "CCC1CCCCC1=O",
+      "constitutionKey": "didH@@RYeVyjjh@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 522591,
+      "name": "2-ethyl-3-methylcyclohexan-1-one",
+      "formula": "C9H16O",
+      "smiles": "CCC1C(CCCC1=O)C",
+      "constitutionKey": "deTH@@RYeenZjj`@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 79506,
+      "name": "4-ethylcyclohexan-1-one",
+      "formula": "C8H14O",
+      "smiles": "CCC1CCC(=O)CC1",
+      "constitutionKey": "didH@@RYWZYjjh@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 117869,
+      "name": "N-ethyl-4-methylbenzamide",
+      "formula": "C10H13NO",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)C",
+      "constitutionKey": "dcNH@DAIee_eVhHB@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 14517,
+      "name": "4-fluorobenzonitrile",
+      "formula": "C7H4FN",
+      "smiles": "C1=CC(=CC=C1C#N)F",
+      "constitutionKey": "dif@`ABPRYWZZ@Bp@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 7020622,
+      "name": "4-ethylbenzamide",
+      "formula": "C9H11NO",
+      "smiles": "CCC1=CC=C(C=C1)C(=O)N",
+      "constitutionKey": "dmvH@DAInUwaZ@B`@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 67855,
+      "name": "2-fluorobenzonitrile",
+      "formula": "C7H4FN",
+      "smiles": "C1=CC=C(C(=C1)C#N)F",
+      "constitutionKey": "dif@`NBPRYeVFBC@@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 587203,
+      "name": "3,4-difluorobenzonitrile",
+      "formula": "C7H3F2N",
+      "smiles": "C1=CC(=C(C=C1C#N)F)F",
+      "constitutionKey": "deV@PIBPJPRYg]n``K@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 11959,
+      "name": "N-ethylbenzamide",
+      "formula": "C9H11NO",
+      "smiles": "CCNC(=O)C1=CC=CC=C1",
+      "constitutionKey": "dmvH@DAIee^UZ``@@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/fixtures/b61-mutations.mjs"
+      ]
+    },
+    {
+      "cid": 67880,
+      "name": "3-fluorobenzonitrile",
+      "formula": "C7H4FN",
+      "smiles": "C1=CC(=CC(=C1)F)C#N",
+      "constitutionKey": "dif@`ABPRYVzz@Hp@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 24834,
+      "name": "4-ethoxybenzaldehyde",
+      "formula": "C9H10O2",
+      "smiles": "CCOC1=CC=C(C=C1)C=O",
+      "constitutionKey": "dmtD@@EIYWUnX@J`@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 11950,
+      "name": "2-ethoxybenzaldehyde",
+      "formula": "C9H10O2",
+      "smiles": "CCOC1=CC=CC=C1C=O",
+      "constitutionKey": "dmtD@@iIYe_iXHH`@@",
+      "novel": false,
+      "historicalPaths": [
+        "../tests/fixtures/b61-mutations.mjs",
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 11560,
+      "name": "1-bromo-3-methylbenzene",
+      "formula": "C7H7Br",
+      "smiles": "CC1=CC(=CC=C1)Br",
+      "constitutionKey": "daD@`@qDfUjZ@B@@",
+      "novel": false,
+      "historicalPaths": [
+        "../reports/naming-audit/aud-nom-004-after.json",
+        "../reports/naming-audit/aud-nom-004-before.json",
+        "../reports/naming-audit/aud-nom-005/batches/0151-0175.json",
+        "../reports/naming-audit/aud-nom-005/current-results.json",
+        "../reports/naming-audit/audit-cases.json",
+        "../reports/naming-audit/audit-matrix.json",
+        "../reports/naming-audit/batches/0151-0175.json"
+      ]
+    },
+    {
+      "cid": 23094808,
+      "name": "3,5-dichloro-2-ethoxybenzaldehyde",
+      "formula": "C9H8Cl2O2",
+      "smiles": "CCOC1=C(C=C(C=C1Cl)Cl)C=O",
+      "constitutionKey": "dklDPBLHaXaIfUevFBBJd@@",
+      "novel": false,
+      "historicalPaths": [
+        "b61-frozen"
+      ]
+    },
+    {
+      "cid": 12084,
+      "name": "4-chlorobenzamide",
+      "formula": "C7H6ClNO",
+      "smiles": "C1=CC(=CC=C1C(=O)N)Cl",
+      "constitutionKey": "deVH`IDHaIe]jZ@BX@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 16896,
+      "name": "4-bromo-2-methylphenol",
+      "formula": "C7H7BrO",
+      "smiles": "CC1=C(C=CC(=C1)Br)O",
+      "constitutionKey": "didH`ACDRYVzZ@B`@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 89908,
+      "name": "3-ethoxybenzaldehyde",
+      "formula": "C9H10O2",
+      "smiles": "CCOC1=CC=CC(=C1)C=O",
+      "constitutionKey": "dmtD@@yIYV}aX@b`@@",
+      "novel": true,
+      "historicalPaths": []
+    },
+    {
+      "cid": 14265,
+      "name": "2-methylcyclopentan-1-one",
+      "formula": "C6H10O",
+      "smiles": "CC1CCCC1=O",
+      "constitutionKey": "gOq@@dsI[UT@@",
+      "novel": true,
+      "historicalPaths": []
+    }
+  ],
+  "limitation": "Does not enumerate arbitrary procedurally generated molecules absent from archived fixtures and observations"
+}

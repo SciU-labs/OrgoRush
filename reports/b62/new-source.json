@@ -1,0 +1,54 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 12084,
+        "MolecularFormula": "C7H6ClNO",
+        "SMILES": "C1=CC(=CC=C1C(=O)N)Cl",
+        "ConnectivitySMILES": "C1=CC(=CC=C1C(=O)N)Cl",
+        "InChIKey": "BLNVISNJTIRAHF-UHFFFAOYSA-N",
+        "IUPACName": "4-chlorobenzamide",
+        "DefinedAtomStereoCount": 0,
+        "UndefinedAtomStereoCount": 0,
+        "DefinedBondStereoCount": 0,
+        "UndefinedBondStereoCount": 0
+      },
+      {
+        "CID": 16896,
+        "MolecularFormula": "C7H7BrO",
+        "SMILES": "CC1=C(C=CC(=C1)Br)O",
+        "ConnectivitySMILES": "CC1=C(C=CC(=C1)Br)O",
+        "InChIKey": "IWJGMJHAIUBWKT-UHFFFAOYSA-N",
+        "IUPACName": "4-bromo-2-methylphenol",
+        "DefinedAtomStereoCount": 0,
+        "UndefinedAtomStereoCount": 0,
+        "DefinedBondStereoCount": 0,
+        "UndefinedBondStereoCount": 0
+      },
+      {
+        "CID": 89908,
+        "MolecularFormula": "C9H10O2",
+        "SMILES": "CCOC1=CC=CC(=C1)C=O",
+        "ConnectivitySMILES": "CCOC1=CC=CC(=C1)C=O",
+        "InChIKey": "QZMGMXBYJZVAJN-UHFFFAOYSA-N",
+        "IUPACName": "3-ethoxybenzaldehyde",
+        "DefinedAtomStereoCount": 0,
+        "UndefinedAtomStereoCount": 0,
+        "DefinedBondStereoCount": 0,
+        "UndefinedBondStereoCount": 0
+      },
+      {
+        "CID": 14265,
+        "MolecularFormula": "C6H10O",
+        "SMILES": "CC1CCCC1=O",
+        "ConnectivitySMILES": "CC1CCCC1=O",
+        "InChIKey": "ZIXLDMFVRPABBX-UHFFFAOYSA-N",
+        "IUPACName": "2-methylcyclopentan-1-one",
+        "DefinedAtomStereoCount": 0,
+        "UndefinedAtomStereoCount": 1,
+        "DefinedBondStereoCount": 0,
+        "UndefinedBondStereoCount": 0
+      }
+    ]
+  }
+}

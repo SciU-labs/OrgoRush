@@ -1,0 +1,3975 @@
+{
+  "originalB62": {
+    "invocations": 83,
+    "uniqueNames": 66,
+    "equivalent": 82,
+    "contradicted": 1,
+    "fullOpsinConfirmed": 47,
+    "source": "reports/b62/README.md and matrix.md"
+  },
+  "currentRun": {
+    "executedAt": "2026-11-11T06:21:35.535Z",
+    "branch": "main",
+    "commit": "7d0396964935a687bb2d448303a0251c3129d964",
+    "interpreter": "OPSIN 2.9.0 local CLI with Temurin JRE 21.0.13+9",
+    "comparator": "OpenChemLib 9.25.0 CanonizerUtil.NORMAL, shared with OrgoRush",
+    "corpusRecords": 84,
+    "repeatRows": 4,
+    "invocationCount": 69,
+    "uniqueEnglishNames": 66,
+    "opsinStatuses": {
+      "EQUIVALENT": 69
+    },
+    "englishAuditStatuses": {
+      "FULL-OPSIN-CONFIRMED": 47,
+      "PARTIAL-VERIFIED": 22
+    },
+    "spanishAuditStatuses": {
+      "FULL-INTERNAL": 47,
+      "UNSUPPORTED-SAFE": 15,
+      "PARTIAL-VERIFIED": 20,
+      "INCONCLUSIVE": 2
+    },
+    "frozenFixtures": [
+      {
+        "fixturePath": "tests/fixtures/b62-independent-reference.json",
+        "sha256": "15e8eeb2074a59a5fcb670b90920dc13966ee1bcd3cb185039740841f497cbc6",
+        "count": 20
+      },
+      {
+        "fixturePath": "tests/fixtures/b62-supplemental.json",
+        "sha256": "735c9c0ea9a5433f10689da66bc0fa6651e42731f3fd68fa6c0cd23ae657f948",
+        "count": 1
+      }
+    ]
+  },
+  "limitations": [
+    "OPSIN directly interprets English only; Spanish is not independently parsed.",
+    "Structural equivalence uses OpenChemLib, a dependency shared with OrgoRush.",
+    "An OPSIN match does not certify a preferred IUPAC name (PIN)."
+  ],
+  "rows": [
+    {
+      "ordinal": 1,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G01",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=Cc1c(C)cccc1",
+      "formulaReference": "C8H8O",
+      "originalB62EnglishName": "2-methylbenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H8O",
+      "profiles": {
+        "es": {
+          "name": "2-metilbenzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-methylbenzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-methylbenzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=C(C=O)C=CC=C1",
+            "stdout": "CC1=C(C=O)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RVY^E`H@@@",
+            "interpretedIdentity": "didH@@RVY^E`H@@@",
+            "referenceFormula": "C8H8O",
+            "interpretedFormula": "C8H8O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 2,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G02",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=Cc1cc(CC)ccc1",
+      "formulaReference": "C9H10O",
+      "originalB62EnglishName": "3-ethylbenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O",
+      "profiles": {
+        "es": {
+          "name": "3-etilbenzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-ethylbenzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-ethylbenzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C=1C=C(C=O)C=CC1",
+            "stdout": "C(C)C=1C=C(C=O)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deTH@@rIQIPms@AP@@",
+            "interpretedIdentity": "deTH@@rIQIPms@AP@@",
+            "referenceFormula": "C9H10O",
+            "interpretedFormula": "C9H10O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 3,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G03",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=Cc1ccc(CC(C)C)cc1",
+      "formulaReference": "C11H14O",
+      "originalB62EnglishName": "4-(2-methylpropyl)benzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C11H14O",
+      "profiles": {
+        "es": {
+          "name": "4-(2-metilpropil)benzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-(2-methylpropyl)benzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-(2-methylpropyl)benzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(CC1=CC=C(C=O)C=C1)C",
+            "stdout": "CC(CC1=CC=C(C=O)C=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcLH@@RVUufy`@j`@@",
+            "interpretedIdentity": "dcLH@@RVUufy`@j`@@",
+            "referenceFormula": "C11H14O",
+            "interpretedFormula": "C11H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 4,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G04",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "COC(=O)c1c(CC)cccc1",
+      "formulaReference": "C10H12O2",
+      "originalB62EnglishName": "methyl 2-ethylbenzoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H12O2",
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzoato de metilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "methyl 2-ethylbenzoate",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "methyl 2-ethylbenzoate",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=C(C(=O)OC)C=CC=C1",
+            "stdout": "C(C)C1=C(C(=O)OC)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcLD@@QIenUeVhBB@@",
+            "interpretedIdentity": "dcLD@@QIenUeVhBB@@",
+            "referenceFormula": "C10H12O2",
+            "interpretedFormula": "C10H12O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 5,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G05",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "CCOC(=O)c1cc(C)ccc1",
+      "formulaReference": "C10H12O2",
+      "originalB62EnglishName": "ethyl 3-methylbenzoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H12O2",
+      "profiles": {
+        "es": {
+          "name": "3-metilbenzoato de etilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "ethyl 3-methylbenzoate",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "ethyl 3-methylbenzoate",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC=1C=C(C(=O)OCC)C=CC1",
+            "stdout": "CC=1C=C(C(=O)OCC)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcLD@@QIee^eVhHB@@",
+            "interpretedIdentity": "dcLD@@QIee^eVhHB@@",
+            "referenceFormula": "C10H12O2",
+            "interpretedFormula": "C10H12O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 6,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G06",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "CCCOC(=O)c1ccc(CC)cc1",
+      "formulaReference": "C12H16O2",
+      "originalB62EnglishName": "propyl 4-ethylbenzoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C12H16O2",
+      "profiles": {
+        "es": {
+          "name": "4-etilbenzoato de propilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "propyl 4-ethylbenzoate",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "propyl 4-ethylbenzoate",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=CC=C(C(=O)OCCC)C=C1",
+            "stdout": "C(C)C1=CC=C(C(=O)OCCC)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dg\\D@@SHheDddUNmPPQP@@",
+            "interpretedIdentity": "dg\\D@@SHheDddUNmPPQP@@",
+            "referenceFormula": "C12H16O2",
+            "interpretedFormula": "C12H16O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 7,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G07",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "Nc1c(CC)cccc1",
+      "formulaReference": "C8H11N",
+      "originalB62EnglishName": "2-ethylaniline",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H11N",
+      "profiles": {
+        "es": {
+          "name": "2-etilanilina",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethylaniline",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethylaniline",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=C(N)C=CC=C1",
+            "stdout": "C(C)C1=C(N)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dif@@@RYeVz@``@@",
+            "interpretedIdentity": "dif@@@RYeVz@``@@",
+            "referenceFormula": "C8H11N",
+            "interpretedFormula": "C8H11N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 8,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G08",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "Nc1cc(CCC)ccc1",
+      "formulaReference": "C9H13N",
+      "originalB62EnglishName": "3-propylaniline",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H13N",
+      "profiles": {
+        "es": {
+          "name": "3-propilanilina",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-propylaniline",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-propylaniline",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CC)C=1C=C(N)C=CC1",
+            "stdout": "C(CC)C=1C=C(N)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deV@@@rJIJETt@EP@@",
+            "interpretedIdentity": "deV@@@rJIJETt@EP@@",
+            "referenceFormula": "C9H13N",
+            "interpretedFormula": "C9H13N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 9,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G09",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "Nc1ccc(C(C)C)cc1",
+      "formulaReference": "C9H13N",
+      "originalB62EnglishName": "4-(1-methylethyl)aniline",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H13N",
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)anilina",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-(1-methylethyl)aniline",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-(1-methylethyl)aniline",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(C)C1=CC=C(N)C=C1",
+            "stdout": "CC(C)C1=CC=C(N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deV@@@RYWZf`@j@@",
+            "interpretedIdentity": "deV@@@RYWZf`@j@@",
+            "referenceFormula": "C9H13N",
+            "interpretedFormula": "C9H13N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 10,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G10",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "NC(=O)c1c(CC)cccc1",
+      "formulaReference": "C9H11NO",
+      "originalB62EnglishName": "2-ethylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H11NO",
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzamida",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethylbenzamide",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethylbenzamide",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=C(C(=O)N)C=CC=C1",
+            "stdout": "C(C)C1=C(C(=O)N)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmvH@DAInYTYZ@``@@",
+            "interpretedIdentity": "dmvH@DAInYTYZ@``@@",
+            "referenceFormula": "C9H11NO",
+            "interpretedFormula": "C9H11NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 11,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G11",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "NC(=O)c1cc(CCC)ccc1",
+      "formulaReference": "C10H13NO",
+      "originalB62EnglishName": "3-propylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H13NO",
+      "profiles": {
+        "es": {
+          "name": "3-propilbenzamida",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-propylbenzamide",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-propylbenzamide",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CC)C=1C=C(C(=O)N)C=CC1",
+            "stdout": "C(CC)C=1C=C(C(=O)N)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcNH@DCHihdhUpm@AT@@",
+            "interpretedIdentity": "dcNH@DCHihdhUpm@AT@@",
+            "referenceFormula": "C10H13NO",
+            "interpretedFormula": "C10H13NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 12,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G12",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "NC(=O)c1ccc(CC(C)C)cc1",
+      "formulaReference": "C11H15NO",
+      "originalB62EnglishName": "4-(2-methylpropyl)benzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C11H15NO",
+      "profiles": {
+        "es": {
+          "name": "4-(2-metilpropil)benzamida",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-(2-methylpropyl)benzamide",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-(2-methylpropyl)benzamide",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(CC1=CC=C(C(=O)N)C=C1)C",
+            "stdout": "CC(CC1=CC=C(C(=O)N)C=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dknH@DAInUunEh@Jh@@",
+            "interpretedIdentity": "dknH@DAInUunEh@Jh@@",
+            "referenceFormula": "C11H15NO",
+            "interpretedFormula": "C11H15NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 13,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G13",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "N#Cc1c(CC)cccc1",
+      "formulaReference": "C9H9N",
+      "originalB62EnglishName": "2-ethylbenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H9N",
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzonitrilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethylbenzonitrile",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethylbenzonitrile",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=C(C#N)C=CC=C1",
+            "stdout": "C(C)C1=C(C#N)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deV@@@RVYWaxBB@@",
+            "interpretedIdentity": "deV@@@RVYWaxBB@@",
+            "referenceFormula": "C9H9N",
+            "interpretedFormula": "C9H9N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 14,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G14",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "N#Cc1cc(CCC)ccc1",
+      "formulaReference": "C10H11N",
+      "originalB62EnglishName": "3-propylbenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H11N",
+      "profiles": {
+        "es": {
+          "name": "3-propilbenzonitrilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-propylbenzonitrile",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-propylbenzonitrile",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CC)C=1C=C(C#N)C=CC1",
+            "stdout": "C(CC)C=1C=C(C#N)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmv@@@rIQIPinx@J`@@",
+            "interpretedIdentity": "dmv@@@rIQIPinx@J`@@",
+            "referenceFormula": "C10H11N",
+            "interpretedFormula": "C10H11N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 15,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G15",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "N#Cc1ccc(C(C)C)cc1",
+      "formulaReference": "C10H11N",
+      "originalB62EnglishName": "4-(1-methylethyl)benzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H11N",
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)benzonitrilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-(1-methylethyl)benzonitrile",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-(1-methylethyl)benzonitrile",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(C)C1=CC=C(C#N)C=C1",
+            "stdout": "CC(C)C1=CC=C(C#N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmv@@@RVUv[n@Bh@@",
+            "interpretedIdentity": "dmv@@@RVUv[n@Bh@@",
+            "referenceFormula": "C10H11N",
+            "interpretedFormula": "C10H11N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 16,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G16",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "OC1C(CC)CCC1",
+      "formulaReference": "C7H14O",
+      "originalB62EnglishName": "2-ethylcyclopentanol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H14O",
+      "profiles": {
+        "es": {
+          "name": "2-etilciclopentanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethylcyclopentanol",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethylcyclopentanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1C(CCC1)O",
+            "stdout": "C(C)C1C(CCC1)O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daDH@@RYgIjjj@@",
+            "interpretedIdentity": "daDH@@RYgIjjj@@",
+            "referenceFormula": "C7H14O",
+            "interpretedFormula": "C7H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 17,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G17",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "OC1CC(C)CCCC1",
+      "formulaReference": "C8H16O",
+      "originalB62EnglishName": "3-methylcycloheptanol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H16O",
+      "profiles": {
+        "es": {
+          "name": "3-metilcicloheptanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-methylcycloheptanol",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-methylcycloheptanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1CC(CCCC1)O",
+            "stdout": "CC1CC(CCCC1)O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RYVVFjjh@@",
+            "interpretedIdentity": "didH@@RYVVFjjh@@",
+            "referenceFormula": "C8H16O",
+            "interpretedFormula": "C8H16O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 18,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G18",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "OC1C(C)C(C)CCC1",
+      "formulaReference": "C8H16O",
+      "originalB62EnglishName": "2,3-dimethylcyclohexanol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H16O",
+      "profiles": {
+        "es": {
+          "name": "2,3-dimetilciclohexanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2,3-dimethylcyclohexanol",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2,3-dimethylcyclohexanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1C(CCCC1C)O",
+            "stdout": "CC1C(CCCC1C)O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RYefzjjh@@",
+            "interpretedIdentity": "didH@@RYefzjjh@@",
+            "referenceFormula": "C8H16O",
+            "interpretedFormula": "C8H16O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 19,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G19",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1CC(CC)CC1",
+      "formulaReference": "C7H12O",
+      "originalB62EnglishName": "3-ethylcyclopentanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H12O",
+      "profiles": {
+        "es": {
+          "name": "3-etilciclopentanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-ethylcyclopentanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-ethylcyclopentanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1CC(CC1)=O",
+            "stdout": "C(C)C1CC(CC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daDH@@RYWJfjj@@",
+            "interpretedIdentity": "daDH@@RYWJfjj@@",
+            "referenceFormula": "C7H12O",
+            "interpretedFormula": "C7H12O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 20,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G20",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1C(CCC)CCCCC1",
+      "formulaReference": "C10H18O",
+      "originalB62EnglishName": "2-propylcycloheptanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H18O",
+      "profiles": {
+        "es": {
+          "name": "2-propilcicloheptanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-propylcycloheptanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-propylcycloheptanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CC)C1C(CCCCC1)=O",
+            "stdout": "C(CC)C1C(CCCCC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtH@@RYeWzVjjj@@",
+            "interpretedIdentity": "dmtH@@RYeWzVjjj@@",
+            "referenceFormula": "C10H18O",
+            "interpretedFormula": "C10H18O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 21,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G21",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1C(C)CC(C)CC1",
+      "formulaReference": "C8H14O",
+      "originalB62EnglishName": "2,4-dimethylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H14O",
+      "profiles": {
+        "es": {
+          "name": "2,4-dimetilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2,4-dimethylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2,4-dimethylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1C(CCC(C1)C)=O",
+            "stdout": "CC1C(CCC(C1)C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@rJJIEnZjj@@",
+            "interpretedIdentity": "didH@@rJJIEnZjj@@",
+            "referenceFormula": "C8H14O",
+            "interpretedFormula": "C8H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 22,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G22",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1C=C(C)CC1",
+      "formulaReference": "C6H8O",
+      "originalB62EnglishName": "3-methylcyclopent-2-en-1-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C6H8O",
+      "profiles": {
+        "es": {
+          "name": "3-metilciclopent-2-en-1-ona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-methylcyclopent-2-en-1-one",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-methylcyclopent-2-en-1-one",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC(CC1)=O",
+            "stdout": "CC1=CC(CC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "gOq@@drikST@@",
+            "interpretedIdentity": "gOq@@drikST@@",
+            "referenceFormula": "C6H8O",
+            "interpretedFormula": "C6H8O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 23,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G23",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1C=CC(CC)CC1",
+      "formulaReference": "C8H12O",
+      "originalB62EnglishName": "4-ethylcyclohex-2-en-1-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H12O",
+      "profiles": {
+        "es": {
+          "name": "4-etilciclohex-2-en-1-ona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-ethylcyclohex-2-en-1-one",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-ethylcyclohex-2-en-1-one",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1C=CC(CC1)=O",
+            "stdout": "C(C)C1C=CC(CC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RYWZYijh@@",
+            "interpretedIdentity": "didH@@RYWZYijh@@",
+            "referenceFormula": "C8H12O",
+            "interpretedFormula": "C8H12O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 24,
+      "cohort": "B60-constructed-current",
+      "repeatOfMainCohort": false,
+      "id": "B60-G24",
+      "cid": null,
+      "source": "Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification",
+      "smilesReference": "O=C1C(C)=CC(C)CCC1",
+      "formulaReference": "C9H14O",
+      "originalB62EnglishName": "2,4-dimethylcyclohept-2-en-1-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H14O",
+      "profiles": {
+        "es": {
+          "name": "2,4-dimetilciclohept-2-en-1-ona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2,4-dimethylcyclohept-2-en-1-one",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2,4-dimethylcyclohept-2-en-1-one",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC=1C(CCCC(C1)C)=O",
+            "stdout": "CC=1C(CCCC(C1)C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deTH@@RYewaZZj`@",
+            "interpretedIdentity": "deTH@@RYewaZZj`@",
+            "referenceFormula": "C9H14O",
+            "interpretedFormula": "C9H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 25,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID1254",
+      "cid": 1254,
+      "source": null,
+      "smilesReference": "CC1CCC(C(C1)O)C(C)C",
+      "formulaReference": "C10H20O",
+      "originalB62EnglishName": "5-methyl-2-(1-methylethyl)cyclohexanol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H20O",
+      "profiles": {
+        "es": {
+          "name": "5-metil-2-(1-metiletil)ciclohexanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1CCC(C(C1)O)C(C)C",
+            "stdout": "CC1CCC(C(C1)O)C(C)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtH@@RYeeZZjjj@@",
+            "interpretedIdentity": "dmtH@@RYeeZZjjj@@",
+            "referenceFormula": "C10H20O",
+            "interpretedFormula": "C10H20O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 26,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7731",
+      "cid": 7731,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)OC",
+      "formulaReference": "C8H10O",
+      "originalB62EnglishName": "1-methoxy-4-methylbenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H10O",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-metoxibenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-methyl-4-methoxybenzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-methoxy-4-methylbenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "COC1=CC=C(C=C1)C",
+            "stdout": "COC1=CC=C(C=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@Rfuvz`@`@@",
+            "interpretedIdentity": "didH@@Rfuvz`@`@@",
+            "referenceFormula": "C8H10O",
+            "interpretedFormula": "C8H10O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 27,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID326",
+      "cid": 326,
+      "source": null,
+      "smilesReference": "CC(C)C1=CC=C(C=C1)C=O",
+      "formulaReference": "C10H12O",
+      "originalB62EnglishName": "4-(1-methylethyl)benzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H12O",
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)benzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-(1-methylethyl)benzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-(1-methylethyl)benzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(C)C1=CC=C(C=O)C=C1",
+            "stdout": "CC(C)C1=CC=C(C=O)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtH@@RVUv[f@Bh@@",
+            "interpretedIdentity": "dmtH@@RVUv[f@Bh@@",
+            "referenceFormula": "C10H12O",
+            "interpretedFormula": "C10H12O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 28,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7439",
+      "cid": 7439,
+      "source": null,
+      "smilesReference": "CC1=CCC(CC1=O)C(=C)C",
+      "formulaReference": "C10H14O",
+      "originalB62EnglishName": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H14O",
+      "profiles": {
+        "es": {
+          "name": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC=1C(CC(CC1)C(=C)C)=O",
+            "stdout": "CC=1C(CC(CC1)C(=C)C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtH@@RYe~[ffjZ@@",
+            "interpretedIdentity": "dmtH@@RYe~[ffjZ@@",
+            "referenceFormula": "C10H14O",
+            "interpretedFormula": "C10H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 29,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID3672",
+      "cid": 3672,
+      "source": null,
+      "smilesReference": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
+      "formulaReference": "C13H18O2",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": null,
+      "importStatus": "IMPORTED",
+      "formulaActual": "C13H18O2",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 30,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7455",
+      "cid": 7455,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)C(=O)OC",
+      "formulaReference": "C9H10O2",
+      "originalB62EnglishName": "methyl 4-methylbenzoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O2",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzoato de metilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "methyl 4-methylbenzoate",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "methyl 4-methylbenzoate",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC=C(C(=O)OC)C=C1",
+            "stdout": "CC1=CC=C(C(=O)OC)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtD@@QIem\\YZ`@`@@",
+            "interpretedIdentity": "dmtD@@QIem\\YZ`@`@@",
+            "referenceFormula": "C9H10O2",
+            "interpretedFormula": "C9H10O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 31,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7813",
+      "cid": 7813,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)N",
+      "formulaReference": "C7H9N",
+      "originalB62EnglishName": "4-methylaniline",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H9N",
+      "profiles": {
+        "es": {
+          "name": "4-metilanilina",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-methylaniline",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-methylaniline",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC=C(N)C=C1",
+            "stdout": "CC1=CC=C(N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daF@@@RYWih@H@@",
+            "interpretedIdentity": "daF@@@RYWih@H@@",
+            "referenceFormula": "C7H9N",
+            "interpretedFormula": "C7H9N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 32,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID69274",
+      "cid": 69274,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)C(=O)N",
+      "formulaReference": "C8H9NO",
+      "originalB62EnglishName": "4-methylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H9NO",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzamida",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-methylbenzamide",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-methylbenzamide",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC=C(C(=O)N)C=C1",
+            "stdout": "CC1=CC=C(C(=O)N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deVH@DAInU~Eh@H@@",
+            "interpretedIdentity": "deVH@DAInU~Eh@H@@",
+            "referenceFormula": "C8H9NO",
+            "interpretedFormula": "C8H9NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 33,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7724",
+      "cid": 7724,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)C#N",
+      "formulaReference": "C8H7N",
+      "originalB62EnglishName": "4-methylbenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H7N",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzonitrilo",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-methylbenzonitrile",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-methylbenzonitrile",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC=C(C#N)C=C1",
+            "stdout": "CC1=CC=C(C#N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dif@@@RVUv{`@`@@",
+            "interpretedIdentity": "dif@@@RVUv{`@`@@",
+            "referenceFormula": "C8H7N",
+            "interpretedFormula": "C8H7N",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 34,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7473",
+      "cid": 7473,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)[N+](=O)[O-]",
+      "formulaReference": "C7H7NO2",
+      "originalB62EnglishName": "1-methyl-4-nitrobenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7NO2",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-nitrobenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-methyl-4-nitrobenzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-methyl-4-nitrobenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CC=C(C=C1)[N+](=O)[O-]",
+            "stdout": "CC1=CC=C(C=C1)[N+](=O)[O-]\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deVDAHAHeNR[e_aZ@B@@",
+            "interpretedIdentity": "deVDAHAHeNR[e_aZ@B@@",
+            "referenceFormula": "C7H7NO2",
+            "interpretedFormula": "C7H7NO2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 35,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID9603",
+      "cid": 9603,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)F",
+      "formulaReference": "C7H7F",
+      "originalB62EnglishName": "1-fluoro-4-methylbenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7F",
+      "profiles": {
+        "es": {
+          "name": "1-fluoro-4-metilbenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-fluoro-4-methylbenzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-fluoro-4-methylbenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "FC1=CC=C(C=C1)C",
+            "stdout": "FC1=CC=C(C=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daD@`@dDfUzZ@B@@",
+            "interpretedIdentity": "daD@`@dDfUzZ@B@@",
+            "referenceFormula": "C7H7F",
+            "interpretedFormula": "C7H7F",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 36,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7931",
+      "cid": 7931,
+      "source": null,
+      "smilesReference": "CC1=CC(=CC=C1)Cl",
+      "formulaReference": "C7H7Cl",
+      "originalB62EnglishName": "1-chloro-3-methylbenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7Cl",
+      "profiles": {
+        "es": {
+          "name": "1-cloro-3-metilbenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-chloro-3-methylbenzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-chloro-3-methylbenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "ClC1=CC(=CC=C1)C",
+            "stdout": "ClC1=CC(=CC=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daD@`@bDfUjZ@B@@",
+            "interpretedIdentity": "daD@`@bDfUjZ@B@@",
+            "referenceFormula": "C7H7Cl",
+            "interpretedFormula": "C7H7Cl",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 37,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID7236",
+      "cid": 7236,
+      "source": null,
+      "smilesReference": "CC1=CC=CC=C1Br",
+      "formulaReference": "C7H7Br",
+      "originalB62EnglishName": "1-bromo-2-methylbenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7Br",
+      "profiles": {
+        "es": {
+          "name": "1-bromo-2-metilbenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-bromo-2-methylbenzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-bromo-2-methylbenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "BrC1=C(C=CC=C1)C",
+            "stdout": "BrC1=C(C=CC=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daD@`@qDfYVz@`@@",
+            "interpretedIdentity": "daD@`@qDfYVz@`@@",
+            "referenceFormula": "C7H7Br",
+            "interpretedFormula": "C7H7Br",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 38,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID12207",
+      "cid": 12207,
+      "source": null,
+      "smilesReference": "CC1=CC=C(C=C1)I",
+      "formulaReference": "C7H7I",
+      "originalB62EnglishName": "1-iodo-4-methylbenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7I",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-yodobenceno",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-methyl-4-iodo-benzene",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "1-iodo-4-methylbenzene",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "IC1=CC=C(C=C1)C",
+            "stdout": "IC1=CC=C(C=C1)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daD@`@kDfUzZ@B@@",
+            "interpretedIdentity": "daD@`@kDfUzZ@B@@",
+            "referenceFormula": "C7H7I",
+            "interpretedFormula": "C7H7I",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 39,
+      "cohort": "B50-historical-current",
+      "repeatOfMainCohort": false,
+      "id": "B50-CID11419",
+      "cid": 11419,
+      "source": null,
+      "smilesReference": "CC1CCCCC1=O",
+      "formulaReference": "C7H12O",
+      "originalB62EnglishName": "2-methylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H12O",
+      "profiles": {
+        "es": {
+          "name": "2-metilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-methylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-methylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1C(CCCC1)=O",
+            "stdout": "CC1C(CCCC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "daDH@@RYe[fjj@@",
+            "interpretedIdentity": "daDH@@RYe[fjj@@",
+            "referenceFormula": "C7H12O",
+            "interpretedFormula": "C7H12O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 40,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I01",
+      "cid": 24834,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/24834",
+      "smilesReference": "CCOC1=CC=C(C=C1)C=O",
+      "formulaReference": "C9H10O2",
+      "originalB62EnglishName": "4-ethoxybenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O2",
+      "profiles": {
+        "es": {
+          "name": "4-etoxibenzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-ethoxybenzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-ethoxybenzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)OC1=CC=C(C=O)C=C1",
+            "stdout": "C(C)OC1=CC=C(C=O)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtD@@EIYWUnX@J`@@",
+            "interpretedIdentity": "dmtD@@EIYWUnX@J`@@",
+            "referenceFormula": "C9H10O2",
+            "interpretedFormula": "C9H10O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 41,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I02",
+      "cid": 11950,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11950",
+      "smilesReference": "CCOC1=CC=CC=C1C=O",
+      "formulaReference": "C9H10O2",
+      "originalB62EnglishName": "2-ethoxybenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O2",
+      "profiles": {
+        "es": {
+          "name": "2-etoxibenzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethoxybenzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethoxybenzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)OC1=C(C=O)C=CC=C1",
+            "stdout": "C(C)OC1=C(C=O)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtD@@iIYe_iXHH`@@",
+            "interpretedIdentity": "dmtD@@iIYe_iXHH`@@",
+            "referenceFormula": "C9H10O2",
+            "interpretedFormula": "C9H10O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 42,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I03",
+      "cid": 7020622,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7020622",
+      "smilesReference": "CCC1=CC=C(C=C1)C(=O)N",
+      "formulaReference": "C9H11NO",
+      "originalB62EnglishName": "4-ethylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H11NO",
+      "profiles": {
+        "es": {
+          "name": "4-etilbenzamida",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-ethylbenzamide",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-ethylbenzamide",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1=CC=C(C(=O)N)C=C1",
+            "stdout": "C(C)C1=CC=C(C(=O)N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmvH@DAInUwaZ@B`@@",
+            "interpretedIdentity": "dmvH@DAInUwaZ@B`@@",
+            "referenceFormula": "C9H11NO",
+            "interpretedFormula": "C9H11NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 43,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I04",
+      "cid": 117869,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/117869",
+      "smilesReference": "CCNC(=O)C1=CC=C(C=C1)C",
+      "formulaReference": "C10H13NO",
+      "originalB62EnglishName": "N-ethyl-4-methylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H13NO",
+      "profiles": {
+        "es": {
+          "name": "N-etil-4-metilbenzamida",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "N-ethyl-4-methylbenzamide",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "N-ethyl-4-methylbenzamide",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)NC(C1=CC=C(C=C1)C)=O",
+            "stdout": "C(C)NC(C1=CC=C(C=C1)C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcNH@DAIee_eVhHB@@",
+            "interpretedIdentity": "dcNH@DAIee_eVhHB@@",
+            "referenceFormula": "C10H13NO",
+            "interpretedFormula": "C10H13NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 44,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I05",
+      "cid": 14517,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/14517",
+      "smilesReference": "C1=CC(=CC=C1C#N)F",
+      "formulaReference": "C7H4FN",
+      "originalB62EnglishName": "4-fluorobenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H4NF",
+      "profiles": {
+        "es": {
+          "name": "4-fluorobenzonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-fluorobenzonitrile",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "4-fluorobenzonitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "FC1=CC=C(C#N)C=C1",
+            "stdout": "FC1=CC=C(C#N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dif@`ABPRYWZZ@Bp@@",
+            "interpretedIdentity": "dif@`ABPRYWZZ@Bp@@",
+            "referenceFormula": "C7H4NF",
+            "interpretedFormula": "C7H4NF",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 45,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I06",
+      "cid": 587203,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/587203",
+      "smilesReference": "C1=CC(=C(C=C1C#N)F)F",
+      "formulaReference": "C7H3F2N",
+      "originalB62EnglishName": "3,4-difluorobenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H3NF2",
+      "profiles": {
+        "es": {
+          "name": "3,4-difluorobenzonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3,4-difluorobenzonitrile",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "3,4-difluorobenzonitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "FC=1C=C(C#N)C=CC1F",
+            "stdout": "FC=1C=C(C#N)C=CC1F\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deV@PIBPJPRYg]n``K@@",
+            "interpretedIdentity": "deV@PIBPJPRYg]n``K@@",
+            "referenceFormula": "C7H3NF2",
+            "interpretedFormula": "C7H3NF2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 46,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I07",
+      "cid": 10758,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10758",
+      "smilesReference": "C1=CC=C(C=C1)C(C#N)O",
+      "formulaReference": "C8H7NO",
+      "originalB62EnglishName": "2-hydroxy-2-phenylethanenitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H7NO",
+      "profiles": {
+        "es": {
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-phenyl-2-hydroxyethanenitrile",
+          "fullProof": false,
+          "auditStatus": "INCONCLUSIVE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": "2-hydroxy-2-phenylethanenitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "OC(C#N)C1=CC=CC=C1",
+            "stdout": "OC(C#N)C1=CC=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deVH@BAIemQfk@@@@",
+            "interpretedIdentity": "deVH@BAIemQfk@@@@",
+            "referenceFormula": "C8H7NO",
+            "interpretedFormula": "C8H7NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 47,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I08",
+      "cid": 31266,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/31266",
+      "smilesReference": "CCCCCC(=O)OCC=C",
+      "formulaReference": "C9H16O2",
+      "originalB62EnglishName": "prop-2-en-1-yl hexanoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H16O2",
+      "profiles": {
+        "es": {
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "prop-2-en-1-yl hexanoate",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "prop-2-en-1-yl hexanoate",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CCCCC)(=O)OCC=C",
+            "stdout": "C(CCCCC)(=O)OCC=C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmTD@@QIeU]jjZ@@",
+            "interpretedIdentity": "dmTD@@QIeU]jjZ@@",
+            "referenceFormula": "C9H16O2",
+            "interpretedFormula": "C9H16O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 48,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I09",
+      "cid": 13156,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/13156",
+      "smilesReference": "CCC(=O)CBr",
+      "formulaReference": "C4H7BrO",
+      "originalB62EnglishName": "1-bromobutan-2-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C4H7OBr",
+      "profiles": {
+        "es": {
+          "name": "1-bromobutan-2-ona",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-bromobutan-2-one",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "1-bromobutan-2-one",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "BrCC(CC)=O",
+            "stdout": "BrCC(CC)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "gGQHLLQI[ih@",
+            "interpretedIdentity": "gGQHLLQI[ih@",
+            "referenceFormula": "C4H7OBr",
+            "interpretedFormula": "C4H7OBr",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 49,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I10",
+      "cid": 557975,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/557975",
+      "smilesReference": "CCC1(CC(=O)CC(C1)(C)C)C",
+      "formulaReference": "C11H20O",
+      "originalB62EnglishName": "3-ethyl-3,5,5-trimethylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C11H20O",
+      "profiles": {
+        "es": {
+          "name": "3-etil-3,5,5-trimetilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1(CC(CC(C1)(C)C)=O)C",
+            "stdout": "C(C)C1(CC(CC(C1)(C)C)=O)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcLH@@RYVfzYjjjh@@",
+            "interpretedIdentity": "dcLH@@RYVfzYjjjh@@",
+            "referenceFormula": "C11H20O",
+            "interpretedFormula": "C11H20O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 50,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I11",
+      "cid": 79506,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/79506",
+      "smilesReference": "CCC1CCC(=O)CC1",
+      "formulaReference": "C8H14O",
+      "originalB62EnglishName": "4-ethylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H14O",
+      "profiles": {
+        "es": {
+          "name": "4-etilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-ethylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "4-ethylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1CCC(CC1)=O",
+            "stdout": "C(C)C1CCC(CC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RYWZYjjh@@",
+            "interpretedIdentity": "didH@@RYWZYjjh@@",
+            "referenceFormula": "C8H14O",
+            "interpretedFormula": "C8H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 51,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I12",
+      "cid": 522591,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/522591",
+      "smilesReference": "CCC1C(CCCC1=O)C",
+      "formulaReference": "C9H16O",
+      "originalB62EnglishName": "2-ethyl-3-methylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H16O",
+      "profiles": {
+        "es": {
+          "name": "2-etil-3-metilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethyl-3-methylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethyl-3-methylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1C(CCCC1C)=O",
+            "stdout": "C(C)C1C(CCCC1C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deTH@@RYeenZjj`@",
+            "interpretedIdentity": "deTH@@RYeenZjj`@",
+            "referenceFormula": "C9H16O",
+            "interpretedFormula": "C9H16O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 52,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I13",
+      "cid": 11230,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11230",
+      "smilesReference": "CC1=CCC(CC1)(C(C)C)O",
+      "formulaReference": "C10H18O",
+      "originalB62EnglishName": "4-methyl-1-(1-methylethyl)cyclohex-3-en-1-ol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H18O",
+      "profiles": {
+        "es": {
+          "name": "4-metil-1-(1-metiletil)ciclohex-3-en-1-ol",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-methyl-1-(1-methylethyl)cyclohex-3-en-1-ol",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "4-methyl-1-(1-methylethyl)cyclohex-3-en-1-ol",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=CCC(CC1)(O)C(C)C",
+            "stdout": "CC1=CCC(CC1)(O)C(C)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtH@@rJQQHxYjjih@@",
+            "interpretedIdentity": "dmtH@@rJQQHxYjjih@@",
+            "referenceFormula": "C10H18O",
+            "interpretedFormula": "C10H18O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 53,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I14",
+      "cid": 11142,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11142",
+      "smilesReference": "CC(C)C1CCC(=C)C=C1",
+      "formulaReference": "C10H16",
+      "originalB62EnglishName": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H16",
+      "profiles": {
+        "es": {
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(C)C1C=CC(CC1)=C",
+            "stdout": "CC(C)C1C=CC(CC1)=C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deT@@Dj]viifjh@@",
+            "interpretedIdentity": "deT@@Dj]viifjh@@",
+            "referenceFormula": "C10H16",
+            "interpretedFormula": "C10H16",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 54,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I15",
+      "cid": 637563,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/637563",
+      "smilesReference": "C/C=C/C1=CC=C(C=C1)OC",
+      "formulaReference": "C10H12O",
+      "originalB62EnglishName": "1-methoxy-4-propylbenzene",
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H12O",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 55,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I16",
+      "cid": 6552009,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/6552009",
+      "smilesReference": "C[C@@]12CC[C@@H](C1(C)C)C[C@@H]2O",
+      "formulaReference": "C10H18O",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": null,
+      "importStatus": "IMPORT-BLOCKED",
+      "profiles": {
+        "es": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE"
+        },
+        "en": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME"
+          }
+        }
+      }
+    },
+    {
+      "ordinal": 56,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I17",
+      "cid": 8465,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/8465",
+      "smilesReference": "CC(C)NCC(=O)C1=CC(=C(C=C1)O)O",
+      "formulaReference": "C11H15NO3",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": null,
+      "importStatus": "IMPORTED",
+      "formulaActual": "C11H15NO3",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 57,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I18",
+      "cid": 11849,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11849",
+      "smilesReference": "CC1=CC(=C(C(=C1[N+](=O)[O-])C)[N+](=O)[O-])C",
+      "formulaReference": "C9H10N2O4",
+      "originalB62EnglishName": "1,3,5-trimethyl-2,4-dinitrobenzene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10N2O4",
+      "profiles": {
+        "es": {
+          "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1=C(C(=C(C(=C1)C)[N+](=O)[O-])C)[N+](=O)[O-]",
+            "stdout": "CC1=C(C(=C(C(=C1)C)[N+](=O)[O-])C)[N+](=O)[O-]\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "do}B@hTDNxeNV[{HihhhiXauhBJF`@@",
+            "interpretedIdentity": "do}B@hTDNxeNV[{HihhhiXauhBJF`@@",
+            "referenceFormula": "C9H10N2O4",
+            "interpretedFormula": "C9H10N2O4",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 58,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I19",
+      "cid": 7498,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7498",
+      "smilesReference": "C1=CC=C(C=C1)CBr",
+      "formulaReference": "C7H7Br",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": null,
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7Br",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 59,
+      "cohort": "B61-independent-current",
+      "repeatOfMainCohort": false,
+      "id": "B61-I20",
+      "cid": 23094808,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/23094808",
+      "smilesReference": "CCOC1=C(C=C(C=C1Cl)Cl)C=O",
+      "formulaReference": "C9H8Cl2O2",
+      "originalB62EnglishName": "3,5-dichloro-2-ethoxybenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H8O2Cl2",
+      "profiles": {
+        "es": {
+          "name": "3,5-dicloro-2-etoxibenzaldehído",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3,5-dichloro-2-ethoxybenzaldehyde",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "3,5-dichloro-2-ethoxybenzaldehyde",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "ClC=1C(=C(C=O)C=C(C1)Cl)OCC",
+            "stdout": "ClC=1C(=C(C=O)C=C(C1)Cl)OCC\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dklDPBLHaXaIfUevFBBJd@@",
+            "interpretedIdentity": "dklDPBLHaXaIfUevFBBJd@@",
+            "referenceFormula": "C9H8O2Cl2",
+            "interpretedFormula": "C9H8O2Cl2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 60,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I01",
+      "cid": 10243,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10243",
+      "smilesReference": "C1=CC=C2C(=C1)C(=CC=N2)C(=O)O",
+      "formulaReference": "C10H7NO2",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H7NO2",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 61,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I02",
+      "cid": 10241,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10241",
+      "smilesReference": "C1=CC=C2C(=C1)C3=CC=CC=C3C2=O",
+      "formulaReference": "C13H8O",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORT-BLOCKED",
+      "profiles": {
+        "es": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE"
+        },
+        "en": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME"
+          }
+        }
+      }
+    },
+    {
+      "ordinal": 62,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I03",
+      "cid": 7678,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7678",
+      "smilesReference": "CC(=O)CC1=CC=CC=C1",
+      "formulaReference": "C9H10O",
+      "originalB62EnglishName": "1-phenylpropan-2-one",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O",
+      "profiles": {
+        "es": {
+          "name": "1-fenilpropan-2-ona",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "1-phenylpropan-2-one",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "1-phenylpropan-2-one",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C1(=CC=CC=C1)CC(C)=O",
+            "stdout": "C1(=CC=CC=C1)CC(C)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deTH@@RYyTYZ`@@@",
+            "interpretedIdentity": "deTH@@RYyTYZ`@@@",
+            "referenceFormula": "C9H10O",
+            "interpretedFormula": "C9H10O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 63,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I04",
+      "cid": 11310,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11310",
+      "smilesReference": "CC1=C(C2=CC=CC=C2C(=C1)OC(=O)C)OC(=O)C",
+      "formulaReference": "C15H14O4",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORT-BLOCKED",
+      "profiles": {
+        "es": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE"
+        },
+        "en": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME"
+          }
+        }
+      }
+    },
+    {
+      "ordinal": 64,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I05",
+      "cid": 11074,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11074",
+      "smilesReference": "CN1C(=O)C2=CC=CC=C2C1=O",
+      "formulaReference": "C9H7NO2",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H7NO2",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 65,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I06",
+      "cid": 11487,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11487",
+      "smilesReference": "C1=CC=C(C=C1)NC2=CC=CC=C2",
+      "formulaReference": "C12H11N",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C12H11N",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 66,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I07",
+      "cid": 12137,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12137",
+      "smilesReference": "CNC1=CC=C(C=C1)N=NC2=CC=CC=C2",
+      "formulaReference": "C13H13N3",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C13H13N3",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 67,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I08",
+      "cid": 18635,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/18635",
+      "smilesReference": "CSCCC=O",
+      "formulaReference": "C4H8OS",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C4H8OS",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 68,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I09",
+      "cid": 638011,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/638011",
+      "smilesReference": "CC(=CCC/C(=C/C=O)/C)C",
+      "formulaReference": "C10H16O",
+      "originalB62EnglishName": "(2E)-3,7-dimethylocta-2,6-dienal",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H16O",
+      "profiles": {
+        "es": {
+          "name": "(2E)-3,7-dimetilocta-2,6-dienal",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "(2E)-3,7-dimethylocta-2,6-dienal",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "(2E)-3,7-dimethylocta-2,6-dienal",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C\\C(=C/C=O)\\CCC=C(C)C",
+            "stdout": "C\\C(=C/C=O)\\CCC=C(C)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmTH@@RUgVYjf`aH",
+            "interpretedIdentity": "dmTH@@RUgVYjf`aH",
+            "referenceFormula": "C10H16O",
+            "interpretedFormula": "C10H16O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 69,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I10",
+      "cid": 637511,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/637511",
+      "smilesReference": "C1=CC=C(C=C1)/C=C/C=O",
+      "formulaReference": "C9H8O",
+      "originalB62EnglishName": "(2E)-3-phenylprop-2-enal",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H8O",
+      "profiles": {
+        "es": {
+          "name": "(2E)-3-fenilprop-2-enal",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "(2E)-3-phenylprop-2-enal",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "(2E)-3-phenylprop-2-enal",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C1(=CC=CC=C1)/C=C/C=O",
+            "stdout": "C1(=CC=CC=C1)/C=C/C=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deTH@@RUYTYY`@@aH",
+            "interpretedIdentity": "deTH@@RUYTYY`@@aH",
+            "referenceFormula": "C9H8O",
+            "interpretedFormula": "C9H8O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 70,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I11",
+      "cid": 10366,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10366",
+      "smilesReference": "C1=C(C=NC=C1C(=O)O)C(=O)O",
+      "formulaReference": "C7H5NO4",
+      "originalB62EnglishName": "3,5-bis(1-methylethyl)pyridine",
+      "originalB62AuditResult": "DIFFERENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H5NO4",
+      "profiles": {
+        "es": {
+          "name": "ácido piridina-3,5-dicarboxílico",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "pyridine-3,5-dicarboxylic acid",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "pyridine-3,5-dicarboxylic acid",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "N1=CC(=CC(=C1)C(=O)O)C(=O)O",
+            "stdout": "N1=CC(=CC(=C1)C(=O)O)C(=O)O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dcNB@FAEuInU^xV`@f@@",
+            "interpretedIdentity": "dcNB@FAEuInU^xV`@f@@",
+            "referenceFormula": "C7H5NO4",
+            "interpretedFormula": "C7H5NO4",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 71,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I12",
+      "cid": 10865,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10865",
+      "smilesReference": "C1=CC=C(C=C1)CCNN=C(N)N",
+      "formulaReference": "C9H14N4",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H14N4",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    },
+    {
+      "ordinal": 72,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I13",
+      "cid": 20474,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/20474",
+      "smilesReference": "CCC1CCCCC1=O",
+      "formulaReference": "C8H14O",
+      "originalB62EnglishName": "2-ethylcyclohexanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H14O",
+      "profiles": {
+        "es": {
+          "name": "2-etilciclohexanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-ethylcyclohexanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-ethylcyclohexanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)C1C(CCCC1)=O",
+            "stdout": "C(C)C1C(CCCC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH@@RYeVyjjh@@",
+            "interpretedIdentity": "didH@@RYeVyjjh@@",
+            "referenceFormula": "C8H14O",
+            "interpretedFormula": "C8H14O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 73,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I14",
+      "cid": 67855,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/67855",
+      "smilesReference": "C1=CC=C(C(=C1)C#N)F",
+      "formulaReference": "C7H4FN",
+      "originalB62EnglishName": "2-fluorobenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H4NF",
+      "profiles": {
+        "es": {
+          "name": "2-fluorobenzonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-fluorobenzonitrile",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "2-fluorobenzonitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "FC1=C(C#N)C=CC=C1",
+            "stdout": "FC1=C(C#N)C=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dif@`NBPRYeVFBC@@@",
+            "interpretedIdentity": "dif@`NBPRYeVFBC@@@",
+            "referenceFormula": "C7H4NF",
+            "interpretedFormula": "C7H4NF",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 74,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I15",
+      "cid": 11959,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11959",
+      "smilesReference": "CCNC(=O)C1=CC=CC=C1",
+      "formulaReference": "C9H11NO",
+      "originalB62EnglishName": "N-ethylbenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H11NO",
+      "profiles": {
+        "es": {
+          "name": "N-etilbenzamida",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "N-ethylbenzamide",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "N-ethylbenzamide",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)NC(C1=CC=CC=C1)=O",
+            "stdout": "C(C)NC(C1=CC=CC=C1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmvH@DAIee^UZ``@@@",
+            "interpretedIdentity": "dmvH@DAIee^UZ``@@@",
+            "referenceFormula": "C9H11NO",
+            "interpretedFormula": "C9H11NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 75,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I16",
+      "cid": 67880,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/67880",
+      "smilesReference": "C1=CC(=CC(=C1)F)C#N",
+      "formulaReference": "C7H4FN",
+      "originalB62EnglishName": "3-fluorobenzonitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H4NF",
+      "profiles": {
+        "es": {
+          "name": "3-fluorobenzonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-fluorobenzonitrile",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "3-fluorobenzonitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "FC=1C=C(C#N)C=CC1",
+            "stdout": "FC=1C=C(C#N)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dif@`ABPRYVzz@Hp@@",
+            "interpretedIdentity": "dif@`ABPRYVzz@Hp@@",
+            "referenceFormula": "C7H4NF",
+            "interpretedFormula": "C7H4NF",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 76,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I17",
+      "cid": 12084,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12084",
+      "smilesReference": "C1=CC(=CC=C1C(=O)N)Cl",
+      "formulaReference": "C7H6ClNO",
+      "originalB62EnglishName": "4-chlorobenzamide",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H6NOCl",
+      "profiles": {
+        "es": {
+          "name": "4-clorobenzamida",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-chlorobenzamide",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "4-chlorobenzamide",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "ClC1=CC=C(C(=O)N)C=C1",
+            "stdout": "ClC1=CC=C(C(=O)N)C=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deVH`IDHaIe]jZ@BX@@",
+            "interpretedIdentity": "deVH`IDHaIe]jZ@BX@@",
+            "referenceFormula": "C7H6NOCl",
+            "interpretedFormula": "C7H6NOCl",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 77,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I18",
+      "cid": 16896,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/16896",
+      "smilesReference": "CC1=C(C=CC(=C1)Br)O",
+      "formulaReference": "C7H7BrO",
+      "originalB62EnglishName": "4-bromo-2-methylphenol",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C7H7OBr",
+      "profiles": {
+        "es": {
+          "name": "4-bromo-2-metilfenol",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "4-bromo-2-methylphenol",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "4-bromo-2-methylphenol",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "BrC1=CC(=C(C=C1)O)C",
+            "stdout": "BrC1=CC(=C(C=C1)O)C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "didH`ACDRYVzZ@B`@@",
+            "interpretedIdentity": "didH`ACDRYVzZ@B`@@",
+            "referenceFormula": "C7H7OBr",
+            "interpretedFormula": "C7H7OBr",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 78,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I19",
+      "cid": 89908,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/89908",
+      "smilesReference": "CCOC1=CC=CC(=C1)C=O",
+      "formulaReference": "C9H10O2",
+      "originalB62EnglishName": "3-ethoxybenzaldehyde",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H10O2",
+      "profiles": {
+        "es": {
+          "name": "3-etoxibenzaldehído",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-ethoxybenzaldehyde",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "3-ethoxybenzaldehyde",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(C)OC=1C=C(C=O)C=CC1",
+            "stdout": "C(C)OC=1C=C(C=O)C=CC1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmtD@@yIYV}aX@b`@@",
+            "interpretedIdentity": "dmtD@@yIYV}aX@b`@@",
+            "referenceFormula": "C9H10O2",
+            "interpretedFormula": "C9H10O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 79,
+      "cohort": "B62-frozen-original-cohort",
+      "repeatOfMainCohort": false,
+      "id": "B62-I20",
+      "cid": 14265,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/14265",
+      "smilesReference": "CC1CCCC1=O",
+      "formulaReference": "C6H10O",
+      "originalB62EnglishName": "2-methylcyclopentanone",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C6H10O",
+      "profiles": {
+        "es": {
+          "name": "2-metilciclopentanona",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-methylcyclopentanone",
+          "fullProof": true,
+          "auditStatus": "FULL-INTERNAL",
+          "independence": "Internal reconstruction only; no OPSIN Spanish parser was used."
+        },
+        "en": {
+          "name": "2-methylcyclopentanone",
+          "internalSupport": "FULL-INTERNAL",
+          "consistencyStatus": "verified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": true,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC1C(CCC1)=O",
+            "stdout": "CC1C(CCC1)=O\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "gOq@@dsI[UT@@",
+            "interpretedIdentity": "gOq@@dsI[UT@@",
+            "referenceFormula": "C6H10O",
+            "interpretedFormula": "C6H10O",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "FULL-OPSIN-CONFIRMED"
+        }
+      }
+    },
+    {
+      "ordinal": 80,
+      "cohort": "B62-separately-frozen-supplement",
+      "repeatOfMainCohort": false,
+      "id": "B62-S01",
+      "cid": 65577,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/65577",
+      "smilesReference": "CCCCCCCCP(=O)(CCCCCCCC)CCCCCCCC",
+      "formulaReference": "C24H51OP",
+      "originalB62EnglishName": null,
+      "originalB62AuditResult": null,
+      "importStatus": "IMPORT-BLOCKED",
+      "profiles": {
+        "es": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE"
+        },
+        "en": {
+          "name": null,
+          "support": "UNSUPPORTED-SAFE",
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME"
+          }
+        }
+      }
+    },
+    {
+      "ordinal": 81,
+      "cohort": "B61-targeted-prior-failure-recheck",
+      "repeatOfMainCohort": true,
+      "id": "B61-I07",
+      "cid": 10758,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10758",
+      "smilesReference": "C1=CC=C(C=C1)C(C#N)O",
+      "formulaReference": "C8H7NO",
+      "originalB62EnglishName": "2-hydroxy-2-phenylethanenitrile",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C8H7NO",
+      "profiles": {
+        "es": {
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "2-phenyl-2-hydroxyethanenitrile",
+          "fullProof": false,
+          "auditStatus": "INCONCLUSIVE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": "2-hydroxy-2-phenylethanenitrile",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "OC(C#N)C1=CC=CC=C1",
+            "stdout": "OC(C#N)C1=CC=CC=C1\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deVH@BAIemQfk@@@@",
+            "interpretedIdentity": "deVH@BAIemQfk@@@@",
+            "referenceFormula": "C8H7NO",
+            "interpretedFormula": "C8H7NO",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 82,
+      "cohort": "B61-targeted-prior-failure-recheck",
+      "repeatOfMainCohort": true,
+      "id": "B61-I08",
+      "cid": 31266,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/31266",
+      "smilesReference": "CCCCCC(=O)OCC=C",
+      "formulaReference": "C9H16O2",
+      "originalB62EnglishName": "prop-2-en-1-yl hexanoate",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C9H16O2",
+      "profiles": {
+        "es": {
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "prop-2-en-1-yl hexanoate",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "prop-2-en-1-yl hexanoate",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "C(CCCCC)(=O)OCC=C",
+            "stdout": "C(CCCCC)(=O)OCC=C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "dmTD@@QIeU]jjZ@@",
+            "interpretedIdentity": "dmTD@@QIeU]jjZ@@",
+            "referenceFormula": "C9H16O2",
+            "interpretedFormula": "C9H16O2",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 83,
+      "cohort": "B61-targeted-prior-failure-recheck",
+      "repeatOfMainCohort": true,
+      "id": "B61-I14",
+      "cid": 11142,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11142",
+      "smilesReference": "CC(C)C1CCC(=C)C=C1",
+      "formulaReference": "C10H16",
+      "originalB62EnglishName": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+      "originalB62AuditResult": "EQUIVALENT",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H16",
+      "profiles": {
+        "es": {
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "SpanishToOpsinCandidate": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "fullProof": false,
+          "auditStatus": "PARTIAL-VERIFIED",
+          "independence": "Compositional Spanish-to-English bridge agrees with the displayed EN name and OPSIN graph; Spanish was not independently parsed."
+        },
+        "en": {
+          "name": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "internalSupport": "PARTIAL-CANDIDATE",
+          "consistencyStatus": "unverified",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "EQUIVALENT",
+            "exitCode": 0,
+            "smiles": "CC(C)C1C=CC(CC1)=C",
+            "stdout": "CC(C)C1C=CC(CC1)=C\r\n",
+            "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+            "warnings": [],
+            "error": null,
+            "referenceIdentity": "deT@@Dj]viifjh@@",
+            "interpretedIdentity": "deT@@Dj]viifjh@@",
+            "referenceFormula": "C10H16",
+            "interpretedFormula": "C10H16",
+            "structurallyEquivalent": true,
+            "formulaEquivalent": true
+          },
+          "auditStatus": "PARTIAL-VERIFIED"
+        }
+      }
+    },
+    {
+      "ordinal": 84,
+      "cohort": "B61-targeted-prior-failure-recheck",
+      "repeatOfMainCohort": true,
+      "id": "B61-I15",
+      "cid": 637563,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/637563",
+      "smilesReference": "C/C=C/C1=CC=C(C=C1)OC",
+      "formulaReference": "C10H12O",
+      "originalB62EnglishName": "1-methoxy-4-propylbenzene",
+      "originalB62AuditResult": "NOT-RUN-NO-NAME",
+      "importStatus": "IMPORTED",
+      "formulaActual": "C10H12O",
+      "profiles": {
+        "es": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "auditStatus": "UNSUPPORTED-SAFE",
+          "independence": "No independent Spanish parser; requires terminology review."
+        },
+        "en": {
+          "name": null,
+          "internalSupport": "UNSUPPORTED-SAFE",
+          "consistencyStatus": "NAME-UNAVAILABLE",
+          "structuralEvidence": "PARTIAL",
+          "fullProof": false,
+          "opsin": {
+            "status": "NOT-RUN-NO-NAME",
+            "exitCode": null,
+            "smiles": null,
+            "warnings": []
+          },
+          "auditStatus": "UNSUPPORTED-SAFE"
+        }
+      }
+    }
+  ]
+}

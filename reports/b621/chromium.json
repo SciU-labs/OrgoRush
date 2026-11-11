@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "names": {
+    "es": "ácido piridina-3,5-dicarboxílico",
+    "en": "pyridine-3,5-dicarboxylic acid"
+  },
+  "browser": "157.0.4341.46",
+  "errors": [],
+  "interceptedExternalRequests": [
+    "GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/C/cids/JSON",
+    "GET https://es.wikipedia.org/w/api.php",
+    "GET https://en.wikipedia.org/w/api.php",
+    "GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/OC(c1cncc(C(O)%3DO)c1)%3DO/cids/JSON"
+  ],
+  "externalRequestPolicy": "All non-app requests are intercepted and answered locally; none supplies a chemical name.",
+  "geometryPreserved": true
+}

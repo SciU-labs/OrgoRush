@@ -1,0 +1,1055 @@
+{
+  "executedAt": "2026-11-11T04:11:10.373Z",
+  "rows": [
+    {
+      "id": "B60-G01",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-metilbenzaldehído",
+          "full": true,
+          "previousName": "2-metilbenzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-methylbenzaldehyde",
+          "full": true,
+          "previousName": "2-methylbenzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G02",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-etilbenzaldehído",
+          "full": true,
+          "previousName": "3-etilbenzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-ethylbenzaldehyde",
+          "full": true,
+          "previousName": "3-ethylbenzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G03",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-(2-metilpropil)benzaldehído",
+          "full": true,
+          "previousName": "4-(2-metilpropil)benzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-(2-methylpropyl)benzaldehyde",
+          "full": true,
+          "previousName": "4-(2-methylpropyl)benzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G04",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzoato de metilo",
+          "full": true,
+          "previousName": "2-etilbenzoato de metilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "methyl 2-ethylbenzoate",
+          "full": true,
+          "previousName": "methyl 2-ethylbenzoate",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G05",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-metilbenzoato de etilo",
+          "full": true,
+          "previousName": "3-metilbenzoato de etilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "ethyl 3-methylbenzoate",
+          "full": true,
+          "previousName": "ethyl 3-methylbenzoate",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G06",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-etilbenzoato de propilo",
+          "full": true,
+          "previousName": "4-etilbenzoato de propilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "propyl 4-ethylbenzoate",
+          "full": true,
+          "previousName": "propyl 4-ethylbenzoate",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G07",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-etilanilina",
+          "full": true,
+          "previousName": "2-etilanilina",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethylaniline",
+          "full": true,
+          "previousName": "2-ethylaniline",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G08",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-propilanilina",
+          "full": true,
+          "previousName": "3-propilanilina",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-propylaniline",
+          "full": true,
+          "previousName": "3-propylaniline",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G09",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)anilina",
+          "full": true,
+          "previousName": "4-(1-metiletil)anilina",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-(1-methylethyl)aniline",
+          "full": true,
+          "previousName": "4-(1-methylethyl)aniline",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G10",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzamida",
+          "full": true,
+          "previousName": "2-etilbenzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethylbenzamide",
+          "full": true,
+          "previousName": "2-ethylbenzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G11",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-propilbenzamida",
+          "full": true,
+          "previousName": "3-propilbenzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-propylbenzamide",
+          "full": true,
+          "previousName": "3-propylbenzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G12",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-(2-metilpropil)benzamida",
+          "full": true,
+          "previousName": "4-(2-metilpropil)benzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-(2-methylpropyl)benzamide",
+          "full": true,
+          "previousName": "4-(2-methylpropyl)benzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G13",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-etilbenzonitrilo",
+          "full": true,
+          "previousName": "2-etilbenzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethylbenzonitrile",
+          "full": true,
+          "previousName": "2-ethylbenzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G14",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-propilbenzonitrilo",
+          "full": true,
+          "previousName": "3-propilbenzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-propylbenzonitrile",
+          "full": true,
+          "previousName": "3-propylbenzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G15",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)benzonitrilo",
+          "full": true,
+          "previousName": "4-(1-metiletil)benzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-(1-methylethyl)benzonitrile",
+          "full": true,
+          "previousName": "4-(1-methylethyl)benzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G16",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-etilciclopentanol",
+          "full": true,
+          "previousName": "2-etilciclopentanol",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethylcyclopentanol",
+          "full": true,
+          "previousName": "2-ethylcyclopentanol",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G17",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-metilcicloheptanol",
+          "full": true,
+          "previousName": "3-metilcicloheptanol",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-methylcycloheptanol",
+          "full": true,
+          "previousName": "3-methylcycloheptanol",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G18",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2,3-dimetilciclohexanol",
+          "full": true,
+          "previousName": "2,3-dimetilciclohexanol",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2,3-dimethylcyclohexanol",
+          "full": true,
+          "previousName": "2,3-dimethylcyclohexanol",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G19",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-etilciclopentanona",
+          "full": true,
+          "previousName": "3-etilciclopentanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-ethylcyclopentanone",
+          "full": true,
+          "previousName": "3-ethylcyclopentanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G20",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2-propilcicloheptanona",
+          "full": true,
+          "previousName": "2-propilcicloheptanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-propylcycloheptanone",
+          "full": true,
+          "previousName": "2-propylcycloheptanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G21",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2,4-dimetilciclohexanona",
+          "full": true,
+          "previousName": "2,4-dimetilciclohexanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2,4-dimethylcyclohexanone",
+          "full": true,
+          "previousName": "2,4-dimethylcyclohexanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G22",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "3-metilciclopent-2-en-1-ona",
+          "full": true,
+          "previousName": "3-metilciclopent-2-en-1-ona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-methylcyclopent-2-en-1-one",
+          "full": true,
+          "previousName": "3-methylcyclopent-2-en-1-one",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G23",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "4-etilciclohex-2-en-1-ona",
+          "full": true,
+          "previousName": "4-etilciclohex-2-en-1-ona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-ethylcyclohex-2-en-1-one",
+          "full": true,
+          "previousName": "4-ethylcyclohex-2-en-1-one",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B60-G24",
+      "cid": null,
+      "profiles": {
+        "es": {
+          "name": "2,4-dimetilciclohept-2-en-1-ona",
+          "full": true,
+          "previousName": "2,4-dimetilciclohept-2-en-1-ona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2,4-dimethylcyclohept-2-en-1-one",
+          "full": true,
+          "previousName": "2,4-dimethylcyclohept-2-en-1-one",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID1254",
+      "cid": 1254,
+      "profiles": {
+        "es": {
+          "name": "5-metil-2-(1-metiletil)ciclohexanol",
+          "full": true,
+          "previousName": "5-metil-2-(1-metiletil)ciclohexanol",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "full": true,
+          "previousName": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7731",
+      "cid": 7731,
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-metoxibenceno",
+          "full": true,
+          "previousName": "1-metil-4-metoxibenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-methoxy-4-methylbenzene",
+          "full": true,
+          "previousName": "1-methoxy-4-methylbenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID326",
+      "cid": 326,
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)benzaldehído",
+          "full": true,
+          "previousName": "4-(1-metiletil)benzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-(1-methylethyl)benzaldehyde",
+          "full": true,
+          "previousName": "4-(1-methylethyl)benzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7439",
+      "cid": 7439,
+      "profiles": {
+        "es": {
+          "name": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "full": true,
+          "previousName": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "full": true,
+          "previousName": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID3672",
+      "cid": 3672,
+      "profiles": {
+        "es": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7455",
+      "cid": 7455,
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzoato de metilo",
+          "full": true,
+          "previousName": "4-metilbenzoato de metilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "methyl 4-methylbenzoate",
+          "full": true,
+          "previousName": "methyl 4-methylbenzoate",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7813",
+      "cid": 7813,
+      "profiles": {
+        "es": {
+          "name": "4-metilanilina",
+          "full": true,
+          "previousName": "4-metilanilina",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-methylaniline",
+          "full": true,
+          "previousName": "4-methylaniline",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID69274",
+      "cid": 69274,
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzamida",
+          "full": true,
+          "previousName": "4-metilbenzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-methylbenzamide",
+          "full": true,
+          "previousName": "4-methylbenzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7724",
+      "cid": 7724,
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzonitrilo",
+          "full": true,
+          "previousName": "4-metilbenzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-methylbenzonitrile",
+          "full": true,
+          "previousName": "4-methylbenzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7473",
+      "cid": 7473,
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-nitrobenceno",
+          "full": true,
+          "previousName": "1-metil-4-nitrobenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-methyl-4-nitrobenzene",
+          "full": true,
+          "previousName": "1-methyl-4-nitrobenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID9603",
+      "cid": 9603,
+      "profiles": {
+        "es": {
+          "name": "1-fluoro-4-metilbenceno",
+          "full": true,
+          "previousName": "1-fluoro-4-metilbenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-fluoro-4-methylbenzene",
+          "full": true,
+          "previousName": "1-fluoro-4-methylbenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7931",
+      "cid": 7931,
+      "profiles": {
+        "es": {
+          "name": "1-cloro-3-metilbenceno",
+          "full": true,
+          "previousName": "1-cloro-3-metilbenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-chloro-3-methylbenzene",
+          "full": true,
+          "previousName": "1-chloro-3-methylbenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID7236",
+      "cid": 7236,
+      "profiles": {
+        "es": {
+          "name": "1-bromo-2-metilbenceno",
+          "full": true,
+          "previousName": "1-bromo-2-metilbenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-bromo-2-methylbenzene",
+          "full": true,
+          "previousName": "1-bromo-2-methylbenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID12207",
+      "cid": 12207,
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-yodobenceno",
+          "full": true,
+          "previousName": "1-metil-4-yodobenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-iodo-4-methylbenzene",
+          "full": true,
+          "previousName": "1-iodo-4-methylbenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B50-CID11419",
+      "cid": 11419,
+      "profiles": {
+        "es": {
+          "name": "2-metilciclohexanona",
+          "full": true,
+          "previousName": "2-metilciclohexanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-methylcyclohexanone",
+          "full": true,
+          "previousName": "2-methylcyclohexanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I01",
+      "cid": 24834,
+      "profiles": {
+        "es": {
+          "name": "4-etoxibenzaldehído",
+          "full": true,
+          "previousName": "4-etoxibenzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-ethoxybenzaldehyde",
+          "full": true,
+          "previousName": "4-ethoxybenzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I02",
+      "cid": 11950,
+      "profiles": {
+        "es": {
+          "name": "2-etoxibenzaldehído",
+          "full": true,
+          "previousName": "2-etoxibenzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethoxybenzaldehyde",
+          "full": true,
+          "previousName": "2-ethoxybenzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I03",
+      "cid": 7020622,
+      "profiles": {
+        "es": {
+          "name": "4-etilbenzamida",
+          "full": true,
+          "previousName": "4-etilbenzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-ethylbenzamide",
+          "full": true,
+          "previousName": "4-ethylbenzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I04",
+      "cid": 117869,
+      "profiles": {
+        "es": {
+          "name": "N-etil-4-metilbenzamida",
+          "full": false,
+          "previousName": "N-etil-4-metilbenzamida",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "N-ethyl-4-methylbenzamide",
+          "full": false,
+          "previousName": "N-ethyl-4-methylbenzamide",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I05",
+      "cid": 14517,
+      "profiles": {
+        "es": {
+          "name": "4-fluorobenzonitrilo",
+          "full": false,
+          "previousName": "4-fluorobenzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-fluorobenzonitrile",
+          "full": false,
+          "previousName": "4-fluorobenzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I06",
+      "cid": 587203,
+      "profiles": {
+        "es": {
+          "name": "3,4-difluorobenzonitrilo",
+          "full": false,
+          "previousName": "3,4-difluorobenzonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3,4-difluorobenzonitrile",
+          "full": false,
+          "previousName": "3,4-difluorobenzonitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I07",
+      "cid": 10758,
+      "profiles": {
+        "es": {
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "full": false,
+          "previousName": "2-fenil-2-hidroxietanonitrilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-hydroxy-2-phenylethanenitrile",
+          "full": false,
+          "previousName": "2-hydroxy-2-phenylethanenitrile",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I08",
+      "cid": 31266,
+      "profiles": {
+        "es": {
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "full": false,
+          "previousName": "hexanoato de prop-2-en-1-ilo",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "prop-2-en-1-yl hexanoate",
+          "full": false,
+          "previousName": "prop-2-en-1-yl hexanoate",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I09",
+      "cid": 13156,
+      "profiles": {
+        "es": {
+          "name": "1-bromobutan-2-ona",
+          "full": false,
+          "previousName": "1-bromobutan-2-ona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1-bromobutan-2-one",
+          "full": false,
+          "previousName": "1-bromobutan-2-one",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I10",
+      "cid": 557975,
+      "profiles": {
+        "es": {
+          "name": "3-etil-3,5,5-trimetilciclohexanona",
+          "full": true,
+          "previousName": "3-etil-3,5,5-trimetilciclohexanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "full": true,
+          "previousName": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I11",
+      "cid": 79506,
+      "profiles": {
+        "es": {
+          "name": "4-etilciclohexanona",
+          "full": true,
+          "previousName": "4-etilciclohexanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-ethylcyclohexanone",
+          "full": true,
+          "previousName": "4-ethylcyclohexanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I12",
+      "cid": 522591,
+      "profiles": {
+        "es": {
+          "name": "2-etil-3-metilciclohexanona",
+          "full": true,
+          "previousName": "2-etil-3-metilciclohexanona",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "2-ethyl-3-methylcyclohexanone",
+          "full": true,
+          "previousName": "2-ethyl-3-methylcyclohexanone",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I13",
+      "cid": 11230,
+      "profiles": {
+        "es": {
+          "name": "4-metil-1-(1-metiletil)ciclohex-3-en-1-ol",
+          "full": false,
+          "previousName": "4-metil-1-(1-metiletil)ciclohex-3-en-1-ol",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "4-methyl-1-(1-methylethyl)cyclohex-3-en-1-ol",
+          "full": false,
+          "previousName": "4-methyl-1-(1-methylethyl)cyclohex-3-en-1-ol",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I14",
+      "cid": 11142,
+      "profiles": {
+        "es": {
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "full": false,
+          "previousName": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "full": false,
+          "previousName": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I15",
+      "cid": 637563,
+      "profiles": {
+        "es": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I16",
+      "cid": 6552009,
+      "importError": "OpenChemLib reconoció un sistema policíclico complejo (puenteado). El análisis y edición de estructuras fusionadas, puenteadas o espiro todavía tienen soporte limitado.",
+      "profiles": {}
+    },
+    {
+      "id": "B61-I17",
+      "cid": 8465,
+      "profiles": {
+        "es": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I18",
+      "cid": 11849,
+      "profiles": {
+        "es": {
+          "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+          "full": false,
+          "previousName": "1,3,5-trimetil-2,4-dinitrobenceno",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "full": false,
+          "previousName": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I19",
+      "cid": 7498,
+      "profiles": {
+        "es": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": null,
+          "full": false,
+          "previousName": null,
+          "matchesPrevious": true
+        }
+      }
+    },
+    {
+      "id": "B61-I20",
+      "cid": 23094808,
+      "profiles": {
+        "es": {
+          "name": "3,5-dicloro-2-etoxibenzaldehído",
+          "full": false,
+          "previousName": "3,5-dicloro-2-etoxibenzaldehído",
+          "matchesPrevious": true
+        },
+        "en": {
+          "name": "3,5-dichloro-2-ethoxybenzaldehyde",
+          "full": false,
+          "previousName": "3,5-dichloro-2-ethoxybenzaldehyde",
+          "matchesPrevious": true
+        }
+      }
+    }
+  ]
+}

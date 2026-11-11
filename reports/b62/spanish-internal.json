@@ -1,0 +1,29 @@
+{
+  "method": "OrgoRush Spanish reconstruction vs OPSIN English graph, compared with shared OCL; not independent Spanish validation",
+  "rows": [
+    {
+      "id": "B62-I13",
+      "es": "2-etilciclohexanona",
+      "opsin": "C(C)C1C(CCCC1)=O",
+      "internalSmiles": "CCC(CCCC1)C1=O",
+      "result": "EQUIVALENT",
+      "error": null
+    },
+    {
+      "id": "B62-I19",
+      "es": "3-etoxibenzaldehído",
+      "opsin": "C(C)OC=1C=C(C=O)C=CC1",
+      "internalSmiles": "CCOc1cccc(C=O)c1",
+      "result": "EQUIVALENT",
+      "error": null
+    },
+    {
+      "id": "B62-I20",
+      "es": "2-metilciclopentanona",
+      "opsin": "CC1C(CCC1)=O",
+      "internalSmiles": "CC(CCC1)C1=O",
+      "result": "EQUIVALENT",
+      "error": null
+    }
+  ]
+}

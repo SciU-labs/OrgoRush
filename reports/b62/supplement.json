@@ -1,0 +1,21 @@
+{
+  "executedAt": "2026-11-11T04:15:30.214Z",
+  "corpusSha256": "735c9c0ea9a5433f10689da66bc0fa6651e42731f3fd68fa6c0cd23ae657f948",
+  "interpreter": "local OPSIN 2.9.0",
+  "comparator": "OpenChemLib shared with product",
+  "rows": [
+    {
+      "id": "B62-S01",
+      "cid": 65577,
+      "import": {
+        "ok": false,
+        "error": "La estructura contiene P. Por ahora el laboratorio admite C, O, N, S y halógenos."
+      },
+      "profiles": {},
+      "opsin": {
+        "status": "NOT-RUN-NO-NAME"
+      }
+    }
+  ],
+  "priorCases": []
+}

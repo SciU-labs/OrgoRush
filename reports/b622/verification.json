@@ -1,0 +1,45 @@
+{
+  "verification": "B6.2.2",
+  "commit": "7d0396964935a687bb2d448303a0251c3129d964",
+  "checks": [
+    {
+      "command": "node --test tests/visual-numbering.test.mjs tests/selected-atom-context.test.mjs tests/b621-pyridinedicarboxylic-acids.test.mjs tests/b61-safety-regression.test.mjs tests/generalized-derivation.test.mjs",
+      "exitCode": 0,
+      "passed": 52,
+      "failed": 0
+    },
+    {
+      "command": "node --test --test-concurrency=1 --test-shard=3/4 tests/*.test.mjs",
+      "exitCode": 0,
+      "passed": 693,
+      "failed": 0,
+      "durationMs": 558308.5341
+    },
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": "node scripts/b622-b621-controls.mjs",
+      "exitCode": 0,
+      "passed": 7,
+      "opsinEquivalent": 7,
+      "fullPromotions": 0
+    },
+    {
+      "command": "node scripts/b622-independent-audit.mjs",
+      "exitCode": 0,
+      "manifestRows": 84,
+      "opsinCalls": 69,
+      "opsinEquivalent": 69,
+      "opsinDifferent": 0,
+      "opsinUnrecognized": 0,
+      "technicalFailures": 0
+    }
+  ]
+}
