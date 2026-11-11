@@ -9,19 +9,20 @@ const {records}=JSON.parse(await readFile(new URL('../fixtures/b50-pubchem-rings
 const edge=([a,b])=>[Number(a),Number(b)].sort((x,y)=>x-y).join(':');
 async function select(page,kind,text,keyboard=false){
   await page.locator('.reasoning-visual-overlay').waitFor({state:'hidden'});
-  const control=page.locator(`.reasoning-name-fragment--${kind} button`).filter({hasText:new RegExp(`^${text}$`)});
+  const step={parent:'01',numbering:'02',substituent:'03'}[kind];
+  const control=page.locator(`#iupac-reasoning-step-${step} .reasoning-name-fragment--${kind} button`).filter({hasText:new RegExp(`^${text}$`)});
   assert.equal(await control.count(),1,`${kind}: ${text}`);
   const [handle]=await Promise.all([page.waitForFunction(()=>{
     const node=document.querySelector('.reasoning-visual-overlay');if(!node)return null;
     return {atoms:[...node.querySelectorAll('[data-reasoning-atom]')].map(n=>Number(n.dataset.reasoningAtom)).sort((a,b)=>a-b),
-      bonds:[...node.querySelectorAll('[data-reasoning-bond]')].map(n=>n.dataset.reasoningBond).sort(),
+      bonds:[...node.querySelectorAll('[data-reasoning-bond]')].map(n=>n.dataset.reasoningBond.split(':').map(Number).sort((a,b)=>a-b).join(':')).sort(),
       locants:[...node.querySelectorAll('[data-reasoning-locant]')].map(n=>[Number(n.dataset.reasoningLocant),n.querySelector('text').textContent])};
   }),keyboard?control.press('Space'):control.click()]);
   const result=await handle.jsonValue();await handle.dispose();return result;
 }
 const cases=[
-  {cid:7731,es:'1-metil-4-metoxibenceno',en:'1-methoxy-4-methylbenzene',esSecond:'4-metoxi',enSecond:'1-methoxy',secondAtoms:[5,8,9],secondBonds:[[5,8],[8,9]],esReason:'metil en C1; metoxi en C4',enReason:'methyl at C4; methoxy at C1',alias:true},
-  {cid:12207,es:'1-metil-4-yodobenceno',en:'1-iodo-4-methylbenzene',esSecond:'4-yodo',enSecond:'1-iodo',secondAtoms:[5,8],secondBonds:[[5,8]],esReason:'metil en C1; yodo en C4',enReason:'methyl at C4; iodo at C1'},
+  {cid:7731,es:'1-metil-4-metoxibenceno',en:'1-methoxy-4-methylbenzene',esSecond:'4-metoxi',enSecond:'1-methoxy',secondAtoms:[8,9],secondBonds:[[5,8],[8,9]],esReason:'metoxi identifica el sustituyente unido al C4',enReason:'methoxy identifies the ether substituent attached at benzene ring position 1',alias:true},
+  {cid:12207,es:'1-metil-4-yodobenceno',en:'1-iodo-4-methylbenzene',esSecond:'4-yodo',enSecond:'1-iodo',secondAtoms:[8],secondBonds:[[5,8]],esReason:'yodo identifica el sustituyente unido al C4',enReason:'iodo identifies the halogen substituent attached at benzene ring position 1'},
 ];
 for(const fixture of cases)test(`localized aromatic name, locants and canvas CID ${fixture.cid}`,async()=>{
   const server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0}});
@@ -48,7 +49,7 @@ for(const fixture of cases)test(`localized aromatic name, locants and canvas CID
     assert.ok((await page.locator('#iupac-reasoning-step-03').innerText()).includes(fixture.esReason));
     const alias=page.locator('.iupac-dock-common-name');if(fixture.alias)assert.match(await alias.textContent(),/4-metilanisol/);
     let result=await select(page,'substituent','1-metil');
-    assert.deepEqual(result.atoms,[1,2]);assert.deepEqual(result.bonds,['1:2']);
+    assert.deepEqual(result.atoms,[1]);assert.deepEqual(result.bonds,['1:2']);
     result=await select(page,'numbering','4',true);assert.deepEqual(result.atoms,[5]);
     assert.equal(await page.locator('.molecule-stage [data-atom-id="5"] .number-label').textContent(),'4');
     result=await select(page,'substituent',fixture.esSecond);assert.deepEqual(result.atoms,fixture.secondAtoms);
@@ -62,7 +63,7 @@ for(const fixture of cases)test(`localized aromatic name, locants and canvas CID
     assert.equal(await page.locator('.molecule-stage [data-atom-id="5"] .number-label').textContent(),'1');
     result=await select(page,'substituent',fixture.enSecond);assert.deepEqual(result.atoms,fixture.secondAtoms);
     assert.deepEqual(result.bonds,fixture.secondBonds.map(edge).sort());
-    result=await select(page,'substituent','4-methyl',true);assert.deepEqual(result.atoms,[1,2]);assert.deepEqual(result.bonds,['1:2']);
+    result=await select(page,'substituent','4-methyl',true);assert.deepEqual(result.atoms,[1]);assert.deepEqual(result.bonds,['1:2']);
     result=await select(page,'parent','benzene');assert.deepEqual(result.atoms,[2,3,4,5,6,7]);
     const after=await page.locator('.molecule-stage .carbon-node').evaluateAll(nodes=>nodes.map(n=>[n.getAttribute('data-atom-id'),n.getAttribute('transform')]));
     assert.deepEqual(after,before,'changing language preserves molecular geometry');

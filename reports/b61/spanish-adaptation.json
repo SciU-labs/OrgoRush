@@ -1,0 +1,154 @@
+{
+  "method": "Bounded manual adaptation review against independent published rules; no production ES→EN translation used as an oracle",
+  "source": "https://rseq.org/wp-content/uploads/2018/05/2021-Guia-Breve-para-la-Nomenclatura-en-Quimica-Organica.pdf",
+  "sections": [
+    "3e",
+    "5.4",
+    "7c–f",
+    "8"
+  ],
+  "wholeNameCertification": false,
+  "independentSpanishWholeNameRecords": 0,
+  "records": [
+    {
+      "id": "B61-I01",
+      "name": "4-etoxibenzaldehído",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etoxi, benzaldehído y localizador 4; misma posición del registro EN.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I02",
+      "name": "2-etoxibenzaldehído",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etoxi, benzaldehído y localizador 2; regioisómero distinto de I01.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I03",
+      "name": "4-etilbenzamida",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etil, benzamida y localizador 4.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I04",
+      "name": "N-etil-4-metilbenzamida",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "N-etil distingue sustitución del nitrógeno; metil del anillo conserva C4.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I05",
+      "name": "4-fluorobenzonitrilo",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "fluoro en C4 y sufijo benzonitrilo.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I06",
+      "name": "3,4-difluorobenzonitrilo",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "di-fluoro y conjunto 3,4 del benzonitrilo.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I07",
+      "name": "2-fenil-2-hidroxietanonitrilo",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "fenil precede a hidroxi en español; ambos en C2 del etanonitrilo. acetonitrilo/etanonitrilo no se igualan sólo por texto.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I08",
+      "name": "hexanoato de prop-2-en-1-ilo",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "éster con «de»; prop-2-en-1-ilo expresa el doble enlace y la posición de unión. La omisión de -1- de la referencia no se penaliza por texto.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I09",
+      "name": "1-bromobutan-2-ona",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "bromo en C1 y cetona en C2; sufijo -ona.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I10",
+      "name": "3-etil-3,5,5-trimetilciclohexanona",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etil precede a metil; tri- conserva 3,5,5; cetona cíclica con C1 omitido.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I11",
+      "name": "4-etilciclohexanona",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etil en C4 y cetona cíclica con C1 omitido.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I12",
+      "name": "2-etil-3-metilciclohexanona",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "etil en C2 antes de metil en C3; cetona cíclica con C1 omitido.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I13",
+      "name": "4-metil-1-(1-metiletil)ciclohex-3-en-1-ol",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "-3-en-1-ol conserva función e insaturación; 1-metiletil es una presentación alternativa de propan-2-il.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I14",
+      "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "metilideno conserva =CH2; 1-metiletil y metilideno cambian orden de cita respecto de la pareja methylidene/propan-2-yl de la fuente. Diferencia textual no implica fallo.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I15",
+      "name": null,
+      "status": "BLOCKED-NO-NAME",
+      "note": "No se emite nombre local; sin afirmación de adaptación completa.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I16",
+      "name": null,
+      "status": "BLOCKED-NO-NAME",
+      "note": "No se emite nombre local; sin afirmación de adaptación completa.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I17",
+      "name": null,
+      "status": "BLOCKED-NO-NAME",
+      "note": "No se emite nombre local; sin afirmación de adaptación completa.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I18",
+      "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "metil antes de nitro, sin ordenar por tri-/di-; conjuntos 1,3,5 y 2,4.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I19",
+      "name": null,
+      "status": "BLOCKED-NO-NAME",
+      "note": "No se emite nombre local; sin afirmación de adaptación completa.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    },
+    {
+      "id": "B61-I20",
+      "name": "3,5-dicloro-2-etoxibenzaldehído",
+      "status": "LIMITED-ADAPTATION-REVIEW",
+      "note": "cloro antes de etoxi; di- y posiciones 3,5/2 conservadas.",
+      "remaining": "PENDING-EXTERNAL whole-name equivalence"
+    }
+  ]
+}

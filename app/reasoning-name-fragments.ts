@@ -10,6 +10,8 @@ export type ReasoningNameEvidence = {
   label: string;
   kind: "function" | "parent" | "numbering" | "substituent" | "unsaturation" | "stereo";
   start?: number;
+  language?: AppLanguage;
+  numberingScope?: string;
   atomIds?: readonly number[];
   semanticId?: string;
   bondType?: "double" | "triple";
@@ -827,7 +829,18 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
       && group.atomIds.every((id) => item.atomIds!.includes(id))));
   const complexAryl = analysis.substituents.some((item) => item.complex && item.aryl);
   const stereo = verifiedStereoPrefix(input);
+  // Parentheses are accepted only when they wrap an analyzed substituent at
+  // its assigned parent locant. This keeps the character gate from discarding
+  // ordinary branched substituents while refusing unparsed parenthetical text.
+  const nameWithVerifiedSubstituentParentheses = analysis.substituents.reduce((text, item) => {
+    const substituent = localizedName(item.name, language);
+    const written = `${item.locant}-(${substituent})`;
+    return text.includes(written) ? text.replace(written, `${item.locant}-${substituent}`) : text;
+  }, name);
+  const verifiedParentheses = !/[()]/.test(nameWithVerifiedSubstituentParentheses)
+    && /^[a-záéíóúüñ0-9, -]+$/i.test(nameWithVerifiedSubstituentParentheses);
   const supportedText = /^[a-záéíóúüñ0-9, -]+$/i.test(name)
+    || verifiedParentheses
     || stereo && /^[a-záéíóúüñ0-9, -]+$/i.test(name.slice(stereo.text.length + 1))
     || (complexEther || complexAryl) && /^[a-záéíóúüñ0-9(), -]+$/i.test(name);
   if (!canHighlight || !supportedText

@@ -1958,7 +1958,8 @@ function nameSubstituent(
 ): Omit<NamedSubstituent, "locant"> {
   const component = collectSubtree(root, new Set(parent === null ? [] : [parent]), adjacency);
   // P-29.2/P-56.4: a terminal carbon attached by = is methylidene, not methyl.
-  // Only the current acyclic hydrocarbon caller supplies this attachment order.
+  // Carbon parents supply the actual attachment order; ring attachments must
+  // not silently turn an exocyclic =CH2 group into methyl either.
   if (attachmentOrder === 2 && component.length === 1) {
     return { name: "metilideno", sortName: "metilideno", complex: false, atomIds: component };
   }
@@ -2001,6 +2002,18 @@ function nameSubstituent(
       return { path, branches };
     })
     .sort((left, right) => {
+      const pathUnsaturation = (path: readonly number[]) => path.slice(0, -1).flatMap((atomId, index) => {
+        const order = bondOrders?.get(bondKey(atomId, path[index + 1])) ?? 1;
+        return order > 1 ? [{ locant: index + 1, order }] : [];
+      });
+      const leftUnsaturation = pathUnsaturation(left.path), rightUnsaturation = pathUnsaturation(right.path);
+      if (leftUnsaturation.length !== rightUnsaturation.length) return rightUnsaturation.length - leftUnsaturation.length;
+      const unsaturationLocants = compareNumberLists(
+        leftUnsaturation.map(({ locant }) => locant), rightUnsaturation.map(({ locant }) => locant));
+      if (unsaturationLocants) return unsaturationLocants;
+      const unsaturationOrder = compareNumberLists(
+        leftUnsaturation.map(({ order }) => order), rightUnsaturation.map(({ order }) => order));
+      if (unsaturationOrder) return unsaturationOrder;
       if (left.branches.length !== right.branches.length) return right.branches.length - left.branches.length;
       const leftLocants = left.branches.map((branch) => branch.locant).sort((a, b) => a - b);
       const rightLocants = right.branches.map((branch) => branch.locant).sort((a, b) => a - b);
@@ -2019,7 +2032,7 @@ function nameSubstituent(
   const internalBondOrder = chosen.path.length === 2
     ? bondOrders?.get(bondKey(chosen.path[0], chosen.path[1]))
     : undefined;
-  const unsaturatedPrefixName = preferSystematicUnsaturatedPrefix
+  const unsaturatedPrefixName = preferSystematicUnsaturatedPrefix || chosen.path.length > 2
     ? makeUnsaturatedSubstituentName(chosen.path.length, doubleBondLocants, tripleBondLocants)
     : undefined;
   const parentName = chosen.path.length === 2 && internalBondOrder === 2
@@ -2211,6 +2224,16 @@ export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: An
   if (language !== "en" || enabledAliases.length || analysis.substituents.length < 2
     || molecule.atoms.some(atom => atom.tetrahedralParity || atom.tetrahedralBondTo)
     || molecule.bonds.some(bond => bond[3])) return analysis;
+  // A single terminal suffix fixes the acyclic origin independently of prefix
+  // citation. Reorder the complete flat prefix list using the target language,
+  // only when the generic rendering accounts for the whole source name.
+  const terminalGroups=analysis.functionalGroups.filter(group=>group.kind===analysis.primaryFunctionalGroup);
+  if(analysis.family==="acyclic" && ["carboxylicAcid","amide","aldehyde","nitrile"].includes(analysis.primaryFunctionalGroup??"")
+    && terminalGroups.length===1 && locantForGroup(terminalGroups[0],analysis.mainChain)===1
+    && combinePrefixAndParent(formatSubstituentGroups(analysis.substituents,[],"es"),analysis.chainName)===analysis.name) {
+    const name=combinePrefixAndParent(formatSubstituentGroups(analysis.substituents,[],language),analysis.chainName);
+    return name===analysis.name?analysis:{...analysis,name};
+  }
   const proposal = proposeLocalizedAromaticNumbering(molecule, analysis, language);
   if (!proposal) return analysis;
   const name = `${formatSubstituentGroups(proposal.substituents, [], language).join("-")}${analysis.chainName}`;
@@ -2271,7 +2294,8 @@ function ringCandidates(
               complex: true,
               atomIds: component,
             }
-          : nameSubstituent(neighbor, atomId, adjacency, bondOrders);
+          : nameSubstituent(neighbor, atomId, adjacency, bondOrders, false,
+            bondOrders.get(bondKey(atomId,neighbor))??1);
         substituents.push({ ...named, locant: index + 1 });
       }
     });
@@ -3011,7 +3035,7 @@ function alkoxyName(startId: number, skeleton: Molecule) {
 function etherAlkoxySubstituent(startId: number, oxygenId: number, skeleton: Molecule) {
   const component = new Set(carbonComponent(startId, skeleton));
   const bonds = skeleton.bonds.filter(([a, b]) => component.has(a) && component.has(b));
-  // Reuse the existing rooted alkyl analysis only for saturated acyclic fragments.
+  // Reuse rooted tree analysis with actual bond orders for acyclic fragments.
   // The attachment to O is the substituent root, not an arbitrary chain end.
   if (bonds.length !== component.size - 1 || bonds.some((bond) => getBondOrder(bond) !== 1)) {
     return { name: alkoxyName(startId, skeleton), complex: false };
@@ -3027,14 +3051,15 @@ function esterAlkylName(startId: number | undefined, skeleton: Molecule) {
   if (!startId) return "alquilo";
   const component = new Set(carbonComponent(startId, skeleton));
   const bonds = skeleton.bonds.filter(([a, b]) => component.has(a) && component.has(b));
-  if (bonds.length === component.size - 1 && bonds.every((bond) => getBondOrder(bond) === 1)) {
+  if (bonds.length === component.size - 1) {
     // The O-linked carbon is the organyl root, even when it is an internal
     // carbon of an otherwise linear component. The carbon-only skeleton has
     // already separated it from the acid component, so no carbon parent is
     // blocked. Reuse rooted chain/branch naming, not a carbon-count lookup.
-    return `${nameSubstituent(startId, null, buildAdjacency(skeleton)).name}o`;
+    const orders=new Map(skeleton.bonds.map(bond=>[bondKey(bond[0],bond[1]),getBondOrder(bond)]));
+    return `${nameSubstituent(startId, null, buildAdjacency(skeleton),orders,true).name}o`;
   }
-  // Preserve the existing fallback outside saturated acyclic organyl fragments.
+  // Preserve the existing fallback outside acyclic organyl fragments.
   const length = simpleAlkylLength(startId, skeleton);
   const name = alkylNames[length];
   return name ? `${name}o` : "alquilo";
@@ -6457,6 +6482,12 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
   if (analysis.substituents.some(item => item.unsupported)) return true;
   if (analysis.cyclicUnsupported) return true;
+  const numberedParent=new Set(analysis.mainChain);
+  // The local stereo formatter projects onto the numbered parent. A configured
+  // double bond in another scope must not lose its descriptor on presentation.
+  if(molecule.bonds.some(([a,b,order=1,stereo])=>order>1 && stereo!==undefined
+    && getElement(getAtom(a,molecule)!)==="C" && getElement(getAtom(b,molecule)!)==="C"
+    && !(numberedParent.has(a)&&numberedParent.has(b))))return true;
   if (analysis.cyclicParent1979) return false;
   molecule = perceiveNamingRings(molecule).molecule;
   if (analysis.saturatedFused1979?.status === "SUPPORTED") return false;

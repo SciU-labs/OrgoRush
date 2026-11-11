@@ -96,15 +96,17 @@ export function verifiedStructuralReasoning(input: {
   const ringParent = Boolean(cyclicParent || derivation.parentSystem);
   const principalGroup = derivation.principalGroup;
   const groupName = (kind: ValidatedNameDerivation["principalGroup"]) => language === "en"
-    ? ({ carboxylicAcid: "carboxylic acid", amide: "amide", ester: "ester", aldehyde: "aldehyde", ketone: "ketone", alcohol: "alcohol", heterocycle: "heterocyclic function" } as const)[kind]
-    : ({ carboxylicAcid: "ácido carboxílico", amide: "amida", ester: "éster", aldehyde: "aldehído", ketone: "cetona", alcohol: "alcohol", heterocycle: "función heterocíclica" } as const)[kind];
+    ? ({ none: "no characteristic suffix group", carboxylicAcid: "carboxylic acid", amide: "amide", ester: "ester", aldehyde: "aldehyde", ketone: "ketone", alcohol: "alcohol", amine:"amine",nitrile:"nitrile", heterocycle: "heterocyclic function" } as const)[kind]
+    : ({ none: "sin grupo característico de sufijo", carboxylicAcid: "ácido carboxílico", amide: "amida", ester: "éster", aldehyde: "aldehído", ketone: "cetona", alcohol: "alcohol", amine:"amina",nitrile:"nitrilo", heterocycle: "función heterocíclica" } as const)[kind];
   const allMainAtoms = [...mainAtoms];
   const parentAtomsText = parent.text;
   const mainAtomIds = allMainAtoms;
   const mainBondIds = [...mainBonds.values()];
 
   let parentText: string;
-  if (!ringParent) {
+  if (derivation.evidence?.construction==="functional-monocycle") {
+    parentText=language==="en"?parent.explanation:parent.explanationEs??parent.explanation;
+  } else if (!ringParent) {
     const cyclicSubstituent = rootData.find(data => data.rings.length > 0 && data.attachments.length > 0);
     const acidOnMain = principalGroup === "carboxylicAcid" && carboxylCenters.length === 1
       && mainAtoms.has(carboxylCenters[0]) && !cyclicParent;
@@ -138,7 +140,7 @@ export function verifiedStructuralReasoning(input: {
       && parent.text === "benzoic acid";
     const retainedBenzaldehydeParent = derivation.principalGroup === "aldehyde"
       && cyclicParent?.kind === "aromatic" && cyclicParent.atomIds.length === 6
-      && parent.text === "benzaldehyde";
+      && ["benzaldehyde", "benzaldehído"].includes(parent.text);
     if (externalCenter !== undefined && ringLocant !== undefined && principalGroup === "carboxylicAcid" && cyclicParent?.kind === "cycloalkane") {
       parentText = language === "en"
         ? `The validated parent is the cyclic structure “${parentAtomsText}”. The carbon of the attached –COOH group is exocyclic and is not a ring locant; it attaches at ring C${ringLocant}. Blue Book P-65.1.2.2.2 gives the cyclic-parent carboxylic-acid form.`
@@ -154,6 +156,10 @@ export function verifiedStructuralReasoning(input: {
       parentText = language === "en"
         ? `The FULL name retains the validated benzoic-acid parent “${parentAtomsText}”. The carboxyl carbon is outside the aromatic ring and is not assigned a ring locant; ring C${ringLocant} bears the carboxyl group. The carbonyl in the independent substituent component is distinct from the principal carboxyl carbonyl.`
         : `El nombre FULL conserva el padre validado de ácido benzoico «${parentAtomsText}». El carbono carboxílico queda fuera del anillo aromático y no recibe un localizador del anillo; el carboxilo se une por C${ringLocant}. El carbonilo del componente sustituyente pertenece a ese fragmento y es distinto del carbonilo carboxílico principal.`;
+    } else if (principalGroup === "none" && cyclicParent?.kind === "aromatic" && cyclicParent.atomIds.length === 6) {
+      parentText = language === "en"
+        ? `The validated parent is benzene. Its six ring carbons are numbered C1–C6; the lowest locant set fixes the direction, and alphabetic order assigns the lower locant when the two directions tie. The substituents are evidenced separately.`
+        : `El padre validado es benceno. Sus seis carbonos reciben C1–C6; el conjunto más bajo fija el sentido y el orden alfabético asigna el localizador menor cuando ambos sentidos empatan. Los sustituyentes se justifican por separado.`;
     } else {
       parentText = language === "en"
         ? `The validated parent component “${parentAtomsText}” contains the cyclic parent structure and the principal ${groupName(principalGroup)}. The FULL proof establishes this parent for the active name; it does not by itself demonstrate comparisons with every alternative parent.`

@@ -1,0 +1,729 @@
+{
+  "version": "B6.1-frozen-1",
+  "frozenAt": "2026-11-11T00:52:44.625Z",
+  "selectionBeforeGenerator": true,
+  "selectionProtocol": "20 source-based strata spanning admitted families and deliberate boundary combinations; no generator outputs used in selection",
+  "historicalInventory": 1692,
+  "records": [
+    {
+      "id": "B61-I01",
+      "externalId": "PubChem:CID24834",
+      "cid": 24834,
+      "stratum": "aromatic-aldehyde-ether",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/24834",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/24834,11950,11560,23094808/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:49.041Z",
+      "receiptSha256": "730ede1ddcd6ad8fe24b99b7908f01bd83670a59ba7b4f09b37d256f7e352413",
+      "smiles": "CCOC1=CC=C(C=C1)C=O",
+      "connectivitySmiles": "CCOC1=CC=C(C=C1)C=O",
+      "formula": "C9H10O2",
+      "referenceName": "4-ethoxybenzaldehyde",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "JRHHJNMASOIRDS-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmtD@@EIYWUnX@J`@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I02",
+      "externalId": "PubChem:CID11950",
+      "cid": 11950,
+      "stratum": "aromatic-aldehyde-regioisomer",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11950",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/24834,11950,11560,23094808/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:49.041Z",
+      "receiptSha256": "730ede1ddcd6ad8fe24b99b7908f01bd83670a59ba7b4f09b37d256f7e352413",
+      "smiles": "CCOC1=CC=CC=C1C=O",
+      "connectivitySmiles": "CCOC1=CC=CC=C1C=O",
+      "formula": "C9H10O2",
+      "referenceName": "2-ethoxybenzaldehyde",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "DUVJMSPTZMCSTQ-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmtD@@iIYe_iXHH`@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I03",
+      "externalId": "PubChem:CID7020622",
+      "cid": 7020622,
+      "stratum": "primary-aromatic-amide",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7020622",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/79506,117869,14517,7020622/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:09.131Z",
+      "receiptSha256": "3f8d6076b27fc6eb8f5ba768de79a7190e19064429443688654caeb1c59ff708",
+      "smiles": "CCC1=CC=C(C=C1)C(=O)N",
+      "connectivitySmiles": "CCC1=CC=C(C=C1)C(=O)N",
+      "formula": "C9H11NO",
+      "referenceName": "4-ethylbenzamide",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "YKFAFWKDOSYQIP-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmvH@DAInUwaZ@B`@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I04",
+      "externalId": "PubChem:CID117869",
+      "cid": 117869,
+      "stratum": "N-substituted-aromatic-amide",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/117869",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/79506,117869,14517,7020622/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:09.131Z",
+      "receiptSha256": "3f8d6076b27fc6eb8f5ba768de79a7190e19064429443688654caeb1c59ff708",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)C",
+      "connectivitySmiles": "CCNC(=O)C1=CC=C(C=C1)C",
+      "formula": "C10H13NO",
+      "referenceName": "N-ethyl-4-methylbenzamide",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "QLPRAXXGCFGXLJ-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dcNH@DAIee_eVhHB@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I05",
+      "externalId": "PubChem:CID14517",
+      "cid": 14517,
+      "stratum": "halogenated-aromatic-nitrile",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/14517",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/79506,117869,14517,7020622/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:09.131Z",
+      "receiptSha256": "3f8d6076b27fc6eb8f5ba768de79a7190e19064429443688654caeb1c59ff708",
+      "smiles": "C1=CC(=CC=C1C#N)F",
+      "connectivitySmiles": "C1=CC(=CC=C1C#N)F",
+      "formula": "C7H4FN",
+      "referenceName": "4-fluorobenzonitrile",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "AEKVBBNGWBBYLL-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dif@`ABPRYWZZ@Bp@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I06",
+      "externalId": "PubChem:CID587203",
+      "cid": 587203,
+      "stratum": "multiply-halogenated-nitrile",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/587203",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/67855,587203,11959,67880/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:09.917Z",
+      "receiptSha256": "f5136016e2dc341a8df4932db5e99a3ec3edbb45b30c1c5fdf03ea8ec9ed1fb2",
+      "smiles": "C1=CC(=C(C=C1C#N)F)F",
+      "connectivitySmiles": "C1=CC(=C(C=C1C#N)F)F",
+      "formula": "C7H3F2N",
+      "referenceName": "3,4-difluorobenzonitrile",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "BTBFCBQZFMQBNT-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "deV@PIBPJPRYg]n``K@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I07",
+      "externalId": "PubChem:CID10758",
+      "cid": 10758,
+      "stratum": "functionalized-side-chain-nitrile",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10758",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10758,12180,10243,10241/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:40.452Z",
+      "receiptSha256": "2685cda4074511318023c8a9a11337b30126c65d92efe16a8df3969f30f7226d",
+      "smiles": "C1=CC=C(C=C1)C(C#N)O",
+      "connectivitySmiles": "C1=CC=C(C=C1)C(C#N)O",
+      "formula": "C8H7NO",
+      "referenceName": "2-hydroxy-2-phenylacetonitrile",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "NNICRUQPODTGRU-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "deVH@BAIemQfk@@@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I08",
+      "externalId": "PubChem:CID31266",
+      "cid": 31266,
+      "stratum": "unsaturated-alcohol-derived-ester",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/31266",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/31266,7678,7420,7498/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:51.157Z",
+      "receiptSha256": "3016eab5164005f2d5ee3857d003714ec8a2b22b693a88df7f8864f03d05cd16",
+      "smiles": "CCCCCC(=O)OCC=C",
+      "connectivitySmiles": "CCCCCC(=O)OCC=C",
+      "formula": "C9H16O2",
+      "referenceName": "prop-2-enyl hexanoate",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "RCSBILYQLVXLJG-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmTD@@QIeU]jjZ@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I09",
+      "externalId": "PubChem:CID13156",
+      "cid": 13156,
+      "stratum": "halogenated-side-chain-ketone",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/13156",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11849,13156,65577,31249/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:50.378Z",
+      "receiptSha256": "ec4bb568183c7a6043f8f7950beb1fe3eb0a41f52d811535b9f665267e0c0768",
+      "smiles": "CCC(=O)CBr",
+      "connectivitySmiles": "CCC(=O)CBr",
+      "formula": "C4H7BrO",
+      "referenceName": "1-bromobutan-2-one",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "CCXQVBSQUQCEEO-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "gGQHLLQI[ih@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I10",
+      "externalId": "PubChem:CID557975",
+      "cid": 557975,
+      "stratum": "geminal-multiply-branched-cyclic-ketone",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/557975",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/557975,6993418,20474,522591/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:08.468Z",
+      "receiptSha256": "4f62b184e6134e9d8b8f5b04d024cda1095c9c4b72f361d391067451b7911bc2",
+      "smiles": "CCC1(CC(=O)CC(C1)(C)C)C",
+      "connectivitySmiles": "CCC1(CC(=O)CC(C1)(C)C)C",
+      "formula": "C11H20O",
+      "referenceName": "3-ethyl-3,5,5-trimethylcyclohexan-1-one",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "FQCSWWXRWLUNLH-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dcLH@@RYVfzYjjjh@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I11",
+      "externalId": "PubChem:CID79506",
+      "cid": 79506,
+      "stratum": "symmetric-cyclic-ketone",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/79506",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/79506,117869,14517,7020622/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:09.131Z",
+      "receiptSha256": "3f8d6076b27fc6eb8f5ba768de79a7190e19064429443688654caeb1c59ff708",
+      "smiles": "CCC1CCC(=O)CC1",
+      "connectivitySmiles": "CCC1CCC(=O)CC1",
+      "formula": "C8H14O",
+      "referenceName": "4-ethylcyclohexan-1-one",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "OKSDJGWHKXFVME-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "didH@@RYWZYjjh@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I12",
+      "externalId": "PubChem:CID522591",
+      "cid": 522591,
+      "stratum": "mixed-branched-cyclic-ketone",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/522591",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/557975,6993418,20474,522591/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:08.468Z",
+      "receiptSha256": "4f62b184e6134e9d8b8f5b04d024cda1095c9c4b72f361d391067451b7911bc2",
+      "smiles": "CCC1C(CCCC1=O)C",
+      "connectivitySmiles": "CCC1C(CCCC1=O)C",
+      "formula": "C9H16O",
+      "referenceName": "2-ethyl-3-methylcyclohexan-1-one",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "HTQHLWXFLJBAPR-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 2,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "deTH@@RYeenZjj`@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I13",
+      "externalId": "PubChem:CID11230",
+      "cid": 11230,
+      "stratum": "branched-unsaturated-cyclic-alcohol",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11230",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10865,11142,11230,6552009/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:54.022Z",
+      "receiptSha256": "40323534ea0038c5b95f393364862d26cc7f9fb113dfee6f37b9dad7c053ad6d",
+      "smiles": "CC1=CCC(CC1)(C(C)C)O",
+      "connectivitySmiles": "CC1=CCC(CC1)(C(C)C)O",
+      "formula": "C10H18O",
+      "referenceName": "4-methyl-1-propan-2-ylcyclohex-3-en-1-ol",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "WRYLYDPHFGVWKC-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmtH@@rJQQHxYjjih@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I14",
+      "externalId": "PubChem:CID11142",
+      "cid": 11142,
+      "stratum": "ring-and-exocyclic-unsaturation",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11142",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10865,11142,11230,6552009/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:54.022Z",
+      "receiptSha256": "40323534ea0038c5b95f393364862d26cc7f9fb113dfee6f37b9dad7c053ad6d",
+      "smiles": "CC(C)C1CCC(=C)C=C1",
+      "connectivitySmiles": "CC(C)C1CCC(=C)C=C1",
+      "formula": "C10H16",
+      "referenceName": "3-methylidene-6-propan-2-ylcyclohexene",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "LFJQCDVYDGGFCH-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "deT@@Dj]viifjh@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I15",
+      "externalId": "PubChem:CID637563",
+      "cid": 637563,
+      "stratum": "stereo-aromatic-alkenyl-ether",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/637563",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/638011,637511,637563,10366/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:53.316Z",
+      "receiptSha256": "8d24925404bb58f3ecd26e96acaa70b050d462cb1f6905e596fb392b93c1200a",
+      "smiles": "C/C=C/C1=CC=C(C=C1)OC",
+      "connectivitySmiles": "CC=CC1=CC=C(C=C1)OC",
+      "formula": "C10H12O",
+      "referenceName": "1-methoxy-4-[(E)-prop-1-enyl]benzene",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "RUVINXPYWBROJD-ONEGZZNKSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 1,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmtH@@Rfuu[j@BX@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I16",
+      "externalId": "PubChem:CID6552009",
+      "cid": 6552009,
+      "stratum": "explicit-stereo-bicyclic-alcohol",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/6552009",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10865,11142,11230,6552009/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:54.022Z",
+      "receiptSha256": "40323534ea0038c5b95f393364862d26cc7f9fb113dfee6f37b9dad7c053ad6d",
+      "smiles": "C[C@@]12CC[C@@H](C1(C)C)C[C@@H]2O",
+      "connectivitySmiles": "CC1(C2CCC1(C(C2)O)C)C",
+      "formula": "C10H18O",
+      "referenceName": "(1R,2S,4R)-1,7,7-trimethylbicyclo[2.2.1]heptan-2-ol",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "DTGKSKDOIYIVQL-WEDXCCLWSA-N",
+      "stereo": {
+        "definedAtoms": 3,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dmLH@@RYiYKnVjjjh@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I17",
+      "externalId": "PubChem:CID8465",
+      "cid": 8465,
+      "stratum": "amino-functionalized-side-chain",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/8465",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/8465,11310,11074,11487/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:51.831Z",
+      "receiptSha256": "231e8b988840b4aa8c8b50da0ed22d347cd72edb458754f6530e8e6c8601c8ce",
+      "smiles": "CC(C)NCC(=O)C1=CC(=C(C=C1)O)O",
+      "connectivitySmiles": "CC(C)NCC(=O)C1=CC(=C(C=C1)O)O",
+      "formula": "C11H15NO3",
+      "referenceName": "1-(3,4-dihydroxyphenyl)-2-(propan-2-ylamino)ethanone",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "BIQMIYWSZZTXEX-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "do~L@FAWRYeUnquhHJJ`@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I18",
+      "externalId": "PubChem:CID11849",
+      "cid": 11849,
+      "stratum": "multiple-nitro-and-methyl-prefixes",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11849",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11849,13156,65577,31249/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:50.378Z",
+      "receiptSha256": "ec4bb568183c7a6043f8f7950beb1fe3eb0a41f52d811535b9f665267e0c0768",
+      "smiles": "CC1=CC(=C(C(=C1[N+](=O)[O-])C)[N+](=O)[O-])C",
+      "connectivitySmiles": "CC1=CC(=C(C(=C1[N+](=O)[O-])C)[N+](=O)[O-])C",
+      "formula": "C9H10N2O4",
+      "referenceName": "1,3,5-trimethyl-2,4-dinitrobenzene",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "OFMLQCPPVSVIDD-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "do}B@hTDNxeNV[{HihhhiXauhBJF`@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I19",
+      "externalId": "PubChem:CID7498",
+      "cid": 7498,
+      "stratum": "halogen-in-side-chain-versus-ring",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7498",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/31266,7678,7420,7498/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:46:51.157Z",
+      "receiptSha256": "3016eab5164005f2d5ee3857d003714ec8a2b22b693a88df7f8864f03d05cd16",
+      "smiles": "C1=CC=C(C=C1)CBr",
+      "connectivitySmiles": "C1=CC=C(C=C1)CBr",
+      "formula": "C7H7Br",
+      "referenceName": "bromomethylbenzene",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "AGEZXYOZHKGVCM-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "daD@`@qDeeVz`@@@",
+        "historicalOverlap": false
+      }
+    },
+    {
+      "id": "B61-I20",
+      "externalId": "PubChem:CID23094808",
+      "cid": 23094808,
+      "stratum": "combined-halogens-ether-aldehyde",
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/23094808",
+      "retrievalUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/24834,11950,11560,23094808/property/IUPACName,MolecularFormula,CanonicalSMILES,IsomericSMILES,InChIKey,DefinedAtomStereoCount,UndefinedAtomStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount/JSON",
+      "retrievedAt": "2026-11-11T00:50:49.041Z",
+      "receiptSha256": "730ede1ddcd6ad8fe24b99b7908f01bd83670a59ba7b4f09b37d256f7e352413",
+      "smiles": "CCOC1=C(C=C(C=C1Cl)Cl)C=O",
+      "connectivitySmiles": "CCOC1=C(C=C(C=C1Cl)Cl)C=O",
+      "formula": "C9H8Cl2O2",
+      "referenceName": "3,5-dichloro-2-ethoxybenzaldehyde",
+      "referenceNameKind": "PubChem computed IUPAC name; not PIN certification",
+      "referenceSpanish": null,
+      "inchiKey": "TYAUZCVQOQWESM-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "availableEvidence": [
+        "independent-public-name-structure-record",
+        "independent-formula",
+        "explicit-stereo-metadata"
+      ],
+      "unavailableEvidence": [
+        "local-OPSIN-not-installed",
+        "no-independent-Spanish-whole-name-oracle"
+      ],
+      "novelty": {
+        "constitutionKey": "dklDPBLHaXaIfUevFBBJd@@",
+        "historicalOverlap": false
+      }
+    }
+  ]
+}

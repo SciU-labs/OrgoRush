@@ -1,0 +1,23 @@
+ M app/page.tsx
+ M app/reasoning-derivation-adapter.ts
+ M app/reasoning-functional-groups.ts
+ M app/reasoning-name-fragments.ts
+ M app/reasoning-visual-targets.ts
+ M app/systematic-family-grammar.ts
+ M app/validated-name-derivation.ts
+ M app/verified-structural-reasoning.ts
+ M tests/e2e/b504-localized-ring.e2e.mjs
+?? app/compositional-name-model.ts
+?? reports/b60/
+?? scripts/b60-derivation-report.mjs
+?? scripts/b60-render-report.mjs
+?? scripts/b61-fetch-reference-pool.mjs
+?? tests/b52-cyclic-branched-reasoning.test.mjs
+?? tests/b53-full-partial-support.test.mjs
+?? tests/b54-disubstituted-benzene-derivation.test.mjs
+?? tests/b55-localized-aromatic-derivation.test.mjs
+?? tests/b60-compositional-derivation.test.mjs
+?? tests/b60-generalization.test.mjs
+?? tests/e2e/b52-cyclic-branched-reasoning.e2e.mjs
+?? tests/e2e/b60-compositional.e2e.mjs
+?? tests/fixtures/b60-generalization-input.mjs

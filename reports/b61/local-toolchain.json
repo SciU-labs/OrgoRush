@@ -1,0 +1,28 @@
+{
+  "javaOnPath": false,
+  "opsinOnPath": false,
+  "javaExecutableFound": false,
+  "opsinJarFound": false,
+  "installedJavaVersion": null,
+  "installedOpsinVersion": null,
+  "locationsChecked": [
+    "PATH",
+    "C:\\Dev",
+    "C:\\Users\\Alex_\\.m2",
+    "C:\\Users\\Alex_\\.jdks",
+    "C:\\Users\\Alex_\\scoop\\apps",
+    "C:\\Tools",
+    "C:\\Program Files",
+    "C:\\Program Files (x86)",
+    "C:\\Users\\Alex_\\AppData\\Local\\Programs",
+    "C:\\Users\\Alex_\\Downloads",
+    "C:\\Users\\Alex_\\.codex"
+  ],
+  "officialDocumentation": "https://github.com/dan2097/opsin",
+  "documentedVersion": "2.9.0",
+  "documentedJavaRequirement": "Java 8 or higher",
+  "installationPerformed": false,
+  "remoteNameRequests": 0,
+  "status": "LOCAL_TOOLCHAIN_NOT_FOUND",
+  "scope": "PATH and named standard installation/cache locations; not a claim about every file on every drive"
+}

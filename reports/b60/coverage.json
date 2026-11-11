@@ -1,0 +1,30 @@
+{
+  "historicalB54Full": 14,
+  "initial": {
+    "FULL": 16,
+    "PARTIAL": 12,
+    "UNSUPPORTED": 2
+  },
+  "final": {
+    "FULL": 28,
+    "PARTIAL": 0,
+    "UNSUPPORTED": 2
+  },
+  "newlyFullSinceStart": 12,
+  "newlyFullSinceB54": 14,
+  "localMolecules": 14,
+  "imported": 15,
+  "generalization": {
+    "constructedMolecules": 24,
+    "families": 8,
+    "positiveProfiles": 48,
+    "negativePairings": 1104,
+    "externalValidation": false
+  },
+  "ui": {
+    "chromium": "140.0.7339.186",
+    "molecules": 14,
+    "languageStates": 56,
+    "activations": 408
+  }
+}

@@ -1,0 +1,36 @@
+// Holdout structures authored after the shared rules, not used to implement them.
+// Constructed controls, not PubChem/OPSIN records. The network cross-check was
+// unavailable. SMILES and formula are specified without the production parser.
+const formulas = ['C8H8O','C9H10O','C11H14O','C10H12O2','C10H12O2','C12H16O2',
+  'C8H11N','C9H13N','C9H13N','C9H11NO','C10H13NO','C11H15NO','C9H9N','C10H11N','C10H11N',
+  'C7H14O','C8H16O','C8H16O','C7H12O','C10H18O','C8H14O','C6H8O','C8H12O','C9H14O'];
+export const generalizationInput = [
+  ['aldehyde','2-metilbenzaldehído','2-methylbenzaldehyde','O=Cc1c(C)cccc1'],
+  ['aldehyde','3-etilbenzaldehído','3-ethylbenzaldehyde','O=Cc1cc(CC)ccc1'],
+  ['aldehyde','4-(2-metilpropil)benzaldehído','4-(2-methylpropyl)benzaldehyde','O=Cc1ccc(CC(C)C)cc1'],
+  ['ester','2-etilbenzoato de metilo','methyl 2-ethylbenzoate','COC(=O)c1c(CC)cccc1'],
+  ['ester','3-metilbenzoato de etilo','ethyl 3-methylbenzoate','CCOC(=O)c1cc(C)ccc1'],
+  ['ester','4-etilbenzoato de propilo','propyl 4-ethylbenzoate','CCCOC(=O)c1ccc(CC)cc1'],
+  ['amine','2-etilanilina','2-ethylaniline','Nc1c(CC)cccc1'],
+  ['amine','3-propilanilina','3-propylaniline','Nc1cc(CCC)ccc1'],
+  ['amine','4-(1-metiletil)anilina','4-(1-methylethyl)aniline','Nc1ccc(C(C)C)cc1'],
+  ['amide','2-etilbenzamida','2-ethylbenzamide','NC(=O)c1c(CC)cccc1'],
+  ['amide','3-propilbenzamida','3-propylbenzamide','NC(=O)c1cc(CCC)ccc1'],
+  ['amide','4-(2-metilpropil)benzamida','4-(2-methylpropyl)benzamide','NC(=O)c1ccc(CC(C)C)cc1'],
+  ['nitrile','2-etilbenzonitrilo','2-ethylbenzonitrile','N#Cc1c(CC)cccc1'],
+  ['nitrile','3-propilbenzonitrilo','3-propylbenzonitrile','N#Cc1cc(CCC)ccc1'],
+  ['nitrile','4-(1-metiletil)benzonitrilo','4-(1-methylethyl)benzonitrile','N#Cc1ccc(C(C)C)cc1'],
+  ['cyclic-alcohol','2-etilciclopentanol','2-ethylcyclopentanol','OC1C(CC)CCC1'],
+  ['cyclic-alcohol','3-metilcicloheptanol','3-methylcycloheptanol','OC1CC(C)CCCC1'],
+  ['cyclic-alcohol','2,3-dimetilciclohexanol','2,3-dimethylcyclohexanol','OC1C(C)C(C)CCC1'],
+  ['cyclic-ketone','3-etilciclopentanona','3-ethylcyclopentanone','O=C1CC(CC)CC1'],
+  ['cyclic-ketone','2-propilcicloheptanona','2-propylcycloheptanone','O=C1C(CCC)CCCCC1'],
+  ['cyclic-ketone','2,4-dimetilciclohexanona','2,4-dimethylcyclohexanone','O=C1C(C)CC(C)CC1'],
+  ['cyclic-enone','3-metilciclopent-2-en-1-ona','3-methylcyclopent-2-en-1-one','O=C1C=C(C)CC1'],
+  ['cyclic-enone','4-etilciclohex-2-en-1-ona','4-ethylcyclohex-2-en-1-one','O=C1C=CC(CC)CC1'],
+  ['cyclic-enone','2,4-dimetilciclohept-2-en-1-ona','2,4-dimethylcyclohept-2-en-1-one','O=C1C(C)=CC(C)CCC1'],
+].map(([family,es,en,smiles],index)=>({id:`B60-G${String(index+1).padStart(2,'0')}`,family,es,en,smiles,
+  formula:formulas[index],createdOn:'2026-11-10',retrievedAt:null,
+  provenance:'constructed-control',source:'Manually specified SMILES and formula; Blue Book P-59.2, P-62–66; no remote interpretation or PIN certification',
+  independentStructure:'SMILES authored separately from the name parser; OCL parses this connectivity only',
+  stereo:'absent',expectedSupport:{es:'FULL',en:'FULL'}}));

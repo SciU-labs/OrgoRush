@@ -133,7 +133,30 @@ function resolveVisualTargets({ molecule, analysis, steps, fragments, displayedN
       for (const part of [...evidence, ...(step.unsaturationContributions ?? [])]) {
         if (part.kind !== step.nameRole) continue;
         if (part.contributions?.length) {
-          for (const contribution of part.contributions) addRegion(contribution.atomIds);
+          for (const contribution of part.contributions) {
+            addRegion(contribution.atomIds);
+            const functionalGroup = analysis.functionalGroups.find(group =>
+              group.kind === contribution.group && contribution.atomIds.includes(group.carbonId));
+            // Exocyclic characteristic groups include the exact bond joining
+            // the functional region to the selected parent, regardless of
+            // whether the group is an aldehyde, acid, ester, amide or nitrile.
+            if (functionalGroup && contribution.role !== "ester-alkyl") {
+              for (const [a, b] of molecule.bonds) {
+                if (contribution.atomIds.includes(a) && !parent.has(a) && parent.has(b)
+                  || contribution.atomIds.includes(b) && !parent.has(b) && parent.has(a)) addBond(a, b);
+              }
+            }
+            // The alkyl part of an ester is represented by a separate literal
+            // function fragment. Preserve its O–C attachment in that target.
+            if (contribution.role === "ester-alkyl") {
+              const ester = analysis.functionalGroups.find(group => group.kind === "ester"
+                && contribution.atomIds.includes(group.alkylCarbonId ?? -1));
+              if (ester) for (const [a, b] of molecule.bonds) {
+                if (contribution.atomIds.includes(a) && ester.atomIds?.includes(b)
+                  || contribution.atomIds.includes(b) && ester.atomIds?.includes(a)) addBond(a, b);
+              }
+            }
+          }
         } else if (part.atomIds?.length) {
           // Multiple-bond and stereochemical evidence already identifies exact edges.
           if (part.bondIds?.length) addAtoms(part.atomIds);

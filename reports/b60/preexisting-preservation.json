@@ -1,0 +1,54 @@
+[
+  {
+    "path": "app/page.tsx",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "app/reasoning-derivation-adapter.ts",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "app/reasoning-functional-groups.ts",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "app/reasoning-name-fragments.ts",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "app/reasoning-visual-targets.ts",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "app/systematic-family-grammar.ts",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "app/validated-name-derivation.ts",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "app/verified-structural-reasoning.ts",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "tests/b52-cyclic-branched-reasoning.test.mjs",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "tests/b53-full-partial-support.test.mjs",
+    "unchangedSinceStart": false
+  },
+  {
+    "path": "tests/b54-disubstituted-benzene-derivation.test.mjs",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "tests/b55-localized-aromatic-derivation.test.mjs",
+    "unchangedSinceStart": true
+  },
+  {
+    "path": "tests/e2e/b52-cyclic-branched-reasoning.e2e.mjs",
+    "unchangedSinceStart": false
+  }
+]

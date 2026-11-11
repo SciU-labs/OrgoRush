@@ -1,0 +1,1028 @@
+{
+  "browser": "140.0.7339.186",
+  "method": "Latest successful observation for each distinct case; first failed attempts preserved in e2e/results.json and e2e.log",
+  "initialRun": "e2e/results.json",
+  "focusedRetest": "e2e-final/results.json",
+  "nitroTransientHighlightRetest": "e2e-nitro-final/results.json",
+  "discardedInfrastructureRun": "e2e-retest/results.json.gz",
+  "cases": [
+    {
+      "cid": 24834,
+      "names": {
+        "es": "4-etoxibenzaldehído",
+        "en": "4-ethoxybenzaldehyde"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-etoxibenzaldehído",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "4-ethoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "4-etoxibenzaldehído",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-ethoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 16,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CCOc1ccc(C%3DO)cc1/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 557975,
+      "names": {
+        "es": "3-etil-3,5,5-trimetilciclohexanona",
+        "en": "3-ethyl-3,5,5-trimethylcyclohexanone"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "3-etil-3,5,5-trimetilciclohexanona",
+          "support": "FULL",
+          "controls": 9
+        },
+        {
+          "language": "en",
+          "name": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "support": "FULL",
+          "controls": 9
+        },
+        {
+          "language": "es",
+          "name": "3-etil-3,5,5-trimetilciclohexanona",
+          "support": "FULL",
+          "controls": 4
+        },
+        {
+          "language": "en",
+          "name": "3-ethyl-3,5,5-trimethylcyclohexanone",
+          "support": "FULL",
+          "controls": 4
+        }
+      ],
+      "controls": 26,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CCC(C)(CC(C)(C)C1)CC1%3DO/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 326,
+      "names": {
+        "es": "4-(1-metiletil)benzaldehído",
+        "en": "4-(1-methylethyl)benzaldehyde"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-(1-metiletil)benzaldehído",
+          "support": "FULL",
+          "controls": 6
+        },
+        {
+          "language": "en",
+          "name": "4-(1-methylethyl)benzaldehyde",
+          "support": "FULL",
+          "controls": 6
+        },
+        {
+          "language": "es",
+          "name": "4-(1-metiletil)benzaldehído",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-(1-methylethyl)benzaldehyde",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 18,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CC(C)c1ccc(C%3DO)cc1/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7455,
+      "names": {
+        "es": "4-metilbenzoato de metilo",
+        "en": "methyl 4-methylbenzoate"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-metilbenzoato de metilo",
+          "support": "FULL",
+          "controls": 6
+        },
+        {
+          "language": "en",
+          "name": "methyl 4-methylbenzoate",
+          "support": "FULL",
+          "controls": 6
+        },
+        {
+          "language": "es",
+          "name": "4-metilbenzoato de metilo",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "methyl 4-methylbenzoate",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 18,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1C(OC)%3DO/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7813,
+      "names": {
+        "es": "4-metilanilina",
+        "en": "4-methylaniline"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-metilanilina",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "4-methylaniline",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "4-metilanilina",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-methylaniline",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 16,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1N/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 69274,
+      "names": {
+        "es": "4-metilbenzamida",
+        "en": "4-methylbenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-metilbenzamida",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "4-methylbenzamide",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "4-metilbenzamida",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-methylbenzamide",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 16,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1C(N)%3DO/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7724,
+      "names": {
+        "es": "4-metilbenzonitrilo",
+        "en": "4-methylbenzonitrile"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-metilbenzonitrilo",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "4-methylbenzonitrile",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "4-metilbenzonitrilo",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-methylbenzonitrile",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 16,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1C%23N/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 1254,
+      "names": {
+        "es": "5-metil-2-(1-metiletil)ciclohexanol",
+        "en": "5-methyl-2-(1-methylethyl)cyclohexanol"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "5-metil-2-(1-metiletil)ciclohexanol",
+          "support": "FULL",
+          "controls": 11
+        },
+        {
+          "language": "en",
+          "name": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "support": "FULL",
+          "controls": 11
+        },
+        {
+          "language": "es",
+          "name": "5-metil-2-(1-metiletil)ciclohexanol",
+          "support": "FULL",
+          "controls": 4
+        },
+        {
+          "language": "en",
+          "name": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "support": "FULL",
+          "controls": 4
+        }
+      ],
+      "controls": 30,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CC(C)C(CCC(C)C1)C1O/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 11419,
+      "names": {
+        "es": "2-metilciclohexanona",
+        "en": "2-methylcyclohexanone"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "2-metilciclohexanona",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "2-methylcyclohexanone",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "2-metilciclohexanona",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "2-methylcyclohexanone",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 16,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CC(CCCC1)C1%3DO/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7439,
+      "names": {
+        "es": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+        "en": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "support": "FULL",
+          "controls": 14
+        },
+        {
+          "language": "en",
+          "name": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "support": "FULL",
+          "controls": 14
+        },
+        {
+          "language": "es",
+          "name": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "support": "FULL",
+          "controls": 5
+        }
+      ],
+      "controls": 38,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CC(C(CC%3DC1C)CC1%3DO)%3DC/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7731,
+      "names": {
+        "es": "1-metil-4-metoxibenceno",
+        "en": "1-methoxy-4-methylbenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-metil-4-metoxibenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-methoxy-4-methylbenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-metil-4-metoxibenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-methoxy-4-methylbenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1OC/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7473,
+      "names": {
+        "es": "1-metil-4-nitrobenceno",
+        "en": "1-methyl-4-nitrobenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-metil-4-nitrobenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-methyl-4-nitrobenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-metil-4-nitrobenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-methyl-4-nitrobenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1%5BN%2B%5D(%5BO-%5D)%3DO/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 666.8000000007451
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1134.800000000745
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:2:1",
+          "observedAfterMs": 660.7999999988824
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 1185.7000000011176
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:3",
+          "observedAfterMs": 611.7000000011176
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 1332.3999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:6:5",
+          "observedAfterMs": 666.2000000011176
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:6",
+          "observedAfterMs": 1341.2000000011176
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 900.8000000007451
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 998.9000000003725
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 455.30000000074506
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 786.5
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 521.2000000011176
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1091.2000000011176
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:2:1",
+          "observedAfterMs": 572.8000000007451
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 913.8000000007451
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:3",
+          "observedAfterMs": 700.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 1278.199999999255
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:6:5",
+          "observedAfterMs": 600
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:6",
+          "observedAfterMs": 1408.9000000003725
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 731.2000000011176
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 1447.0999999996275
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 780.0999999996275
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 1292.0999999996275
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 647.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1238.6000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:2:1",
+          "observedAfterMs": 634.7000000011176
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 1102.0999999996275
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:3",
+          "observedAfterMs": 617.5999999996275
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 1203.699999999255
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:6:5",
+          "observedAfterMs": 609.4000000003725
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:6",
+          "observedAfterMs": 1330.0999999996275
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 630.8000000007451
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1745.2000000011176
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:2:1",
+          "observedAfterMs": 620.8000000007451
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 1141.800000000745
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:3",
+          "observedAfterMs": 622.5
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 1066.800000000745
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:6:5",
+          "observedAfterMs": 518.5999999996275
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:6",
+          "observedAfterMs": 1083.7000000011176
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 9603,
+      "names": {
+        "es": "1-fluoro-4-metilbenceno",
+        "en": "1-fluoro-4-methylbenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-fluoro-4-metilbenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-fluoro-4-methylbenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-fluoro-4-metilbenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-fluoro-4-methylbenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1F/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7931,
+      "names": {
+        "es": "1-cloro-3-metilbenceno",
+        "en": "1-chloro-3-methylbenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-cloro-3-metilbenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-chloro-3-methylbenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-cloro-3-metilbenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-chloro-3-methylbenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc1cc(Cl)ccc1/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 7236,
+      "names": {
+        "es": "1-bromo-2-metilbenceno",
+        "en": "1-bromo-2-methylbenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-bromo-2-metilbenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-bromo-2-methylbenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-bromo-2-metilbenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-bromo-2-methylbenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc1ccccc1Br/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 12207,
+      "names": {
+        "es": "1-metil-4-yodobenceno",
+        "en": "1-iodo-4-methylbenzene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "1-metil-4-yodobenceno",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "1-iodo-4-methylbenzene",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "1-metil-4-yodobenceno",
+          "support": "FULL",
+          "controls": 8
+        },
+        {
+          "language": "en",
+          "name": "1-iodo-4-methylbenzene",
+          "support": "FULL",
+          "controls": 8
+        }
+      ],
+      "controls": 40,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/Cc(cc1)ccc1I/cids/JSON"
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 10758,
+      "names": {
+        "es": "2-fenil-2-hidroxietanonitrilo",
+        "en": "2-hydroxy-2-phenylethanenitrile"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "en",
+          "name": "2-hydroxy-2-phenylethanenitrile",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "es",
+          "name": "2-fenil-2-hidroxietanonitrilo",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        }
+      ],
+      "controls": 0,
+      "errors": [],
+      "unexpected": [],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 31266,
+      "names": {
+        "es": "hexanoato de prop-2-en-1-ilo",
+        "en": "prop-2-en-1-yl hexanoate"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "en",
+          "name": "prop-2-en-1-yl hexanoate",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "es",
+          "name": "hexanoato de prop-2-en-1-ilo",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        }
+      ],
+      "controls": 0,
+      "errors": [],
+      "unexpected": [],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 11142,
+      "names": {
+        "es": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+        "en": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "en",
+          "name": "3-(1-methylethyl)-6-methylidenecyclohex-1-ene",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        },
+        {
+          "language": "es",
+          "name": "3-(1-metiletil)-6-metilidenociclohex-1-eno",
+          "auditSupport": "PARTIAL-SAFE",
+          "uiDerivationSupport": null
+        }
+      ],
+      "controls": 0,
+      "errors": [],
+      "unexpected": [],
+      "geometryPreserved": true
+    }
+  ]
+}

@@ -1,0 +1,934 @@
+[
+  {
+    "path": "reports/b60\\validation-ledger.json",
+    "sha256": "9DED7FFD2E9F59A4AC6D04D064F555A78A48A66680A20ED35055A42CD013B8E5"
+  },
+  {
+    "path": "reports/b60\\typecheck.log",
+    "sha256": "5DF061B4889CFB001A20F26BE69D975648A5151D9279C1DFF9471111EEE9BDF0"
+  },
+  {
+    "path": "reports/b60\\scope-check.log",
+    "sha256": "4D8B70262BF3239A5666BC370D6FCC0175DC103A335530C6A308E6D04CE0E2AD"
+  },
+  {
+    "path": "reports/b60\\regressions.log",
+    "sha256": "42805677D8D5AE896C4A74498F6941E4F76D86B3D1BD6A6CF830D602C1979138"
+  },
+  {
+    "path": "reports/b60\\regressions-before-alphabetical.log",
+    "sha256": "E41AB6FAC926F48869729D831188130FDE66A7DC6CC8984E11BC16709C4A7C97"
+  },
+  {
+    "path": "reports/b60\\README.md",
+    "sha256": "5901A29A97D6F2562824DCB3302A44E9B50C3DDA6D0795FFFC3A25B69D47140E"
+  },
+  {
+    "path": "reports/b60\\protected-verification.json",
+    "sha256": "8BFA5AB67ABA9832D5EA1139F765E432157E21706B0D5CC57101942757355EAC"
+  },
+  {
+    "path": "reports/b60\\protected-files.json",
+    "sha256": "E138A46AD2DE4A90AD9D6BD5E16D68189B2EE37CF840984432BF1638F5BB5889"
+  },
+  {
+    "path": "reports/b60\\preexisting-preservation.json",
+    "sha256": "AA1360DD7386BFA748B0D7C58830D6F9A3737CD7605CD083EB52F82D6E9092E9"
+  },
+  {
+    "path": "reports/b60\\preexisting-files.json",
+    "sha256": "065849551D9A70EEA76B277230019DC60D586265DA549E3E274A9DA51198D08A"
+  },
+  {
+    "path": "reports/b60\\matrix.md",
+    "sha256": "882437CC33A594EACAE355E401538418370093E62A8F91BE08DE1DF04BC9C059"
+  },
+  {
+    "path": "reports/b60\\matrix-run.log",
+    "sha256": "148445575E1ADD546C56F7EE94E7C8BE83A098A236CF6FD231FF9590C7617359"
+  },
+  {
+    "path": "reports/b60\\initial.json",
+    "sha256": "41385FA0A06C673A89E7BCC7FDC824339FA1E32FA177491CF3F1A261AE4EFFD2"
+  },
+  {
+    "path": "reports/b60\\generalization.md",
+    "sha256": "07042932C921099A20DA677258E087E1BAF9913BEBACE89A6D81500AA043BC7F"
+  },
+  {
+    "path": "reports/b60\\final.json",
+    "sha256": "0E6FE033253771150F0A1B1D947810ED74A481716F55C49666B126285094ED87"
+  },
+  {
+    "path": "reports/b60\\b52-e2e-recheck.log",
+    "sha256": "7D3686253F9D3CF6199394D69880F95143A12CA14D56ADFF99B80CF81B9F9F4D"
+  },
+  {
+    "path": "reports/b60\\b52-e2e-initial.log",
+    "sha256": "4BFBBFE6FBCD5A8D4B47B778BD632317E6035BD05937E167626577158A8FCED1"
+  },
+  {
+    "path": "reports/b60\\b504-e2e.log",
+    "sha256": "E7EF2C20438C0F4034F2B1B87978A4962E96E7BB9B3421C04686DBD94F8657FB"
+  },
+  {
+    "path": "reports/b60\\architecture-before.md",
+    "sha256": "08433A3989B3ADA0078127266418AAB02BE05BBDDD5F1C8DA3A1D2507331767E"
+  },
+  {
+    "path": "reports/b60\\b60-e2e.log",
+    "sha256": "9F1205C072B90387348844A4FFD199EA487AF3B639ADBF2944031AC873298A4A"
+  },
+  {
+    "path": "reports/b60\\b52-e2e.log",
+    "sha256": "4BFBBFE6FBCD5A8D4B47B778BD632317E6035BD05937E167626577158A8FCED1"
+  },
+  {
+    "path": "reports/b60\\coverage.json",
+    "sha256": "21A0948A329552BA742F39FF970364C589E84E542A005A2F3427A2C1A79CB370"
+  },
+  {
+    "path": "reports/b60\\diff-check.log",
+    "sha256": "B52D6DA5D631D48B1297BF88393FE36B7B8282CABB3CFEC90B65245C3D1ADCDD"
+  },
+  {
+    "path": "tests/reference-corpus\\aldehydes.json",
+    "sha256": "987ABBA90B0E8FCB031DE4E38F9C4C01E3C6DD41FBF214EEB20956C1B0A56D3D"
+  },
+  {
+    "path": "tests/reference-corpus\\alcohols.json",
+    "sha256": "3794958763996FEDAF305799E8E73B464520037C305BF894732AA79A4669785F"
+  },
+  {
+    "path": "tests/reference-corpus\\alkanes.json",
+    "sha256": "E446D01FB2ED78F19CB434725D788EA1D1A4C22FC869F3DD32622C1D28F82038"
+  },
+  {
+    "path": "tests/reference-corpus\\alkenes.json",
+    "sha256": "FE27A18E6F7ED93488BB20E50CBFD860545277195E1D26FD0D6AED70D38849A4"
+  },
+  {
+    "path": "tests/reference-corpus\\alkynes.json",
+    "sha256": "BFD0742DF9E831E805C59CCD0DE576558F767D28DC8706517B07EA02DA964394"
+  },
+  {
+    "path": "tests/reference-corpus\\amides.json",
+    "sha256": "8EA1DF87F171F5231955536B1F114735B3863DD111B7EEB12BBF46A12F415C5F"
+  },
+  {
+    "path": "tests/reference-corpus\\schema.json",
+    "sha256": "4AB76661E329090EB6A245816AC80C2A6699D211729EB025D64A2459966FA06A"
+  },
+  {
+    "path": "tests/reference-corpus\\rings.json",
+    "sha256": "A4B001C377A21A0D65A86A4010209E1F9B7964E2168299A0F2DD342A1E52C31A"
+  },
+  {
+    "path": "tests/reference-corpus\\README.md",
+    "sha256": "82441DB834D34FDA90159119B13067FAE2B30547C99DC4F3A8E422B15E7459D5"
+  },
+  {
+    "path": "tests/reference-corpus\\opsin-snapshots.json",
+    "sha256": "090A674563A93F78179CEF026BFA7D498783980B359A5663FB6958F57ADF5C5E"
+  },
+  {
+    "path": "tests/reference-corpus\\ketones.json",
+    "sha256": "9A195B5AF2275813A5214B0757C7A2669723692EC53953F21F6B8CCDD54CF121"
+  },
+  {
+    "path": "tests/reference-corpus\\ethers.json",
+    "sha256": "43E567F92E19E92018384FB36922A68CFC1D3F6D034D475F0850F97AB0977063"
+  },
+  {
+    "path": "tests/reference-corpus\\esters.json",
+    "sha256": "0C8144B7C5DEAF7DBA077A3D1176481EA28C08F95F176679100FF492962BEF2A"
+  },
+  {
+    "path": "tests/reference-corpus\\carboxylic-acids.json",
+    "sha256": "4C8AA15E87A60A84FBDDD512724879193D07114E44959FD57E932597A29FA7B8"
+  },
+  {
+    "path": "tests/reference-corpus\\aromatics.json",
+    "sha256": "ED3CE0F4966377336C8CE03E632FC5D9545865BBD28BFFC6EDFF56A6477C5FE4"
+  },
+  {
+    "path": "tests/reference-corpus\\amines.json",
+    "sha256": "97C98E0BA21DCB09D5640F10CD8A608B3AC80669B84D677805BAAAA926A50A78"
+  },
+  {
+    "path": "reports/b60\\e2e\\results.json",
+    "sha256": "A6E316D959B386E11594B4F344D1EC027C311889C8887158042894A411E31FC4"
+  },
+  {
+    "path": "reports/b60\\e2e\\optional-metadata-request-failure.json",
+    "sha256": "4F71F94546A80D76F9B4A1D260AC9F25A3C8B64CC3B62418E4F77FE35751749E"
+  },
+  {
+    "path": "reports/b60\\e2e\\initial-overlay-expectation-failures.json",
+    "sha256": "26249DA5ECB184B1987864E01F05BC759659D832CC36B8BE7D31B7D3A0AF6350"
+  },
+  {
+    "path": "reports/b60\\e2e\\development-reload-failure.json",
+    "sha256": "FAA81E6C874657B2139BC63394544C37232CF88B929E3F2EB8E5DA7EA1DF4420"
+  },
+  {
+    "path": ".github\\workflows\\validation-014.yml",
+    "sha256": "3EE7FF011CD04D9191E3C7E47B25889EEFA1F92BF84F9CC3E6AADB2818EFB3C0"
+  },
+  {
+    "path": ".github\\workflows\\e2e-playwright.yml",
+    "sha256": "B5BE858F53CEC9296F4B890A226989C94D57EAA7E3BD9E3E3A9F76A7367E703B"
+  },
+  {
+    "path": ".github\\workflows\\deploy-pages.yml",
+    "sha256": "FC25D05D0C4E96FF7B61EB4E8296290B5E961B3762B57AF2FEA6277271A461CA"
+  },
+  {
+    "path": ".github\\ISSUE_TEMPLATE\\bug_report.md",
+    "sha256": "7EE5A64F66FBCA9391AFED67BB89B3F9880BDB10CA63E27188C9BEC568920C75"
+  },
+  {
+    "path": "tests/fixtures\\reference-corpus-v1-manifest.json",
+    "sha256": "C6B7FBEE5D276E00F0126E32DDD86846D1CDE52DD96FF76E1960FE9A2F4570E8"
+  },
+  {
+    "path": "tests/fixtures\\purine-derivation.mjs",
+    "sha256": "95D4834BDCDC61069344AC2EAFB9D0FD081F952A3C6CE046DE3B27DE0758169A"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-014.opsin.json",
+    "sha256": "F4097298ACCD6E34CB5E020FC08CD0F1FEF7D4D99AF3B5E8587A4458FCB45E56"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-014.mjs",
+    "sha256": "83A206A107CFE8BC9D0ECDA766D3E771E6A187398E7C70243401690D08BA4876"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-014.integrity.json",
+    "sha256": "FEC0657F81C84C6872C59B9B603C7792FE08B2CD5FDDDD6C72410E8A367E7C77"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-008.review.mjs",
+    "sha256": "6D25213D46E7ADEDDFD20F0E79342A4F3AFBA5069F93F5F6FC1822819D96EF0E"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-008.opsin.json",
+    "sha256": "BDCCA40447FBFCE2EB1C7C7994493DE49EBC302CC788E802A7061F39C0E4ED77"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-validation-008.mjs",
+    "sha256": "9121E0E59787D0C0D7CF86A208D36B02B64433AFB34D8DAED36C47D3C0F7C8FE"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-iupac79-polyenes-011.mjs",
+    "sha256": "F2DEA28603EF81B74428354F72181E1138A7228E04EC5DB1E5FCADFD7B2C6269"
+  },
+  {
+    "path": "tests/fixtures\\orgorush-iupac2013-unsaturation-013.mjs",
+    "sha256": "A5C78634AC2C82243AF6185ADB92D72221627DC910EE0E98C53EB228B1E26674"
+  },
+  {
+    "path": "tests/fixtures\\iupac79-polycyclic-002.json",
+    "sha256": "20C61A4132BDF790E91CD5C54EAF670E996E2B381CC2C076B07E62B91CCEFAC3"
+  },
+  {
+    "path": "tests/fixtures\\iupac79-fused.json",
+    "sha256": "9663F75AAB5E6F90CA7703712DD132288D556B6E855EDE9A0F91A0B9E267598D"
+  },
+  {
+    "path": "tests/fixtures\\iupac79-cyclic-audit-003.mjs",
+    "sha256": "A80AD81CAB46AA028D1C17E9A13CA895DC2DD9E1C67F064237145E645AF5F2F4"
+  },
+  {
+    "path": "tests/fixtures\\iupac79-aromatic-004.mjs",
+    "sha256": "C1E8A9266735CD96164785653C45A4EF841BA05DE9C73DA6E1202C35BE3F37A0"
+  },
+  {
+    "path": "tests/fixtures\\iupac-engine-nom002-cyclic-ketones.json",
+    "sha256": "D51D476D3A89B4D6F2763A2554C0D781730C7066A4E792B29027924B5C0FD1E7"
+  },
+  {
+    "path": "tests/fixtures\\iupac-engine-audit-observed.json",
+    "sha256": "24E61A179155D09F6D993DC67F26DCAED44CA29015285279DA65328D30433E3D"
+  },
+  {
+    "path": "tests/fixtures\\iupac-engine-audit-nom003-conforming.json",
+    "sha256": "679E7F00CF6332A522ED5923AD15A9129018CAEFB42D189ABD97A26E7751150E"
+  },
+  {
+    "path": "tests/fixtures\\iupac-engine-audit-nom001-conforming.json",
+    "sha256": "D75B62A3D424E6C69C2A12877B967303603411D04169F9565461FE526AC4C9CF"
+  },
+  {
+    "path": "tests/fixtures\\generalized-derivation.mjs",
+    "sha256": "CB174C6AAE142128525AC7CA08FBDC8761BF72B785BFA181AADEC48DE5E0F275"
+  },
+  {
+    "path": "tests/fixtures\\ester-organyl-interpretations.json",
+    "sha256": "49CACA5851107DDEA6C4D114449C751264A8E3E1D5A325BE32EDBD80C8ADBA53"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d5-hard-v4-session.json",
+    "sha256": "F0257E5AF9437531E5DD8E8995721765BFFB74D5979E7C08CBD64FBA71C4F7CC"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d4-hard-foundation.json",
+    "sha256": "C2F096BB10E77C41C636471C44F9E62BD50B707B7F5D70C07BEDBEAB23A1F406"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d4-frozen-v3-session.json",
+    "sha256": "7B6E81AE379702BA338B56F58299C13031F23B5E790F080756009BFFA4E29583"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d4-2b-hard-structural.json",
+    "sha256": "A95A0CE1A24091ADFE56E10825F074EE67AEB9C93492F88E30496ECDDC86DBC7"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d4-2a-hard-functional.json",
+    "sha256": "40BA6BB25D9A5F702236267C4195B93F3F87B3544AC9C3B8C9D27D2CC2E01133"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d3-intermediate-session.json",
+    "sha256": "62A644C086660358EC029B2190722CAE9214FE656567BA09EA7F94E2999480FF"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d3-frozen-v2-session.json",
+    "sha256": "393AF70FCE3541ECF13C413D6D6009AE146F7F66EAD812F226D0A2225BC25B68"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d2-easy-session.json",
+    "sha256": "F4E9FF453ED678EF76C1F3D5B60D9748F4F87C04E8AD3A8CA06EF85DD5B7DA7B"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d1-nonbasic-session.json",
+    "sha256": "7D246EA6614D20474B1B2D4F73DE8919B3BB23147361FB3A9A1170058C62D5DE"
+  },
+  {
+    "path": "tests/fixtures\\difficulty-d1-basic-session.json",
+    "sha256": "BCA9036140B15732D62189D6705837A4BF479FF53C063FE975E24E138C1CC3ED"
+  },
+  {
+    "path": "tests/fixtures\\carbohydrate-derivation.mjs",
+    "sha256": "2D25BB5718C9D90EDAE05311324A032F0637002457613D9A057A7B32FB7009F5"
+  },
+  {
+    "path": "tests/fixtures\\b60-generalization-input.mjs",
+    "sha256": "6E63DC82403987AFCFC17CC3B0104BE8F5ECDA81FEF0E9ECD97C7ECB693642E9"
+  },
+  {
+    "path": "tests/fixtures\\b50-pubchem-rings.json",
+    "sha256": "B28E2016AD282208BE08D67F5FEB2A9F09E79202FCDB8637F7B51DD8C72E3573"
+  },
+  {
+    "path": "tests/fixtures\\b42-functionalized-branch-opsin.mjs",
+    "sha256": "E20F128EBFED4378CD1ACE4FD03B3877E8FF5FFA2E8FCC678817925E5C35A632"
+  },
+  {
+    "path": "tests/fixtures\\aromatic-functional-derivation.mjs",
+    "sha256": "1128A983FC5FE28A9D4F5C6D94B9CB31E65F2D45512C704DD2AF60B4AADE6E81"
+  },
+  {
+    "path": "app\\coordinate-flip.ts",
+    "sha256": "D64570B33286CAC5CCCA6F92175A12388A5BCB98F950023D8C1C155B8D86BA84"
+  },
+  {
+    "path": "app\\condensed-renderer.tsx",
+    "sha256": "495059373206184DC2AD4F7684D9E1AD4A4946171C12830B880E553DAD33A748"
+  },
+  {
+    "path": "app\\condensed-layout.ts",
+    "sha256": "BF665C35D8E910CB2038391F02B30E0A587670391418B770ABA0CB90524E7D11"
+  },
+  {
+    "path": "app\\condensed-bond-geometry.ts",
+    "sha256": "A9927948FC1A9C040669F074A6687BF7AFA2F9FDFBAFB45AFE21ED6EA6FC7D51"
+  },
+  {
+    "path": "app\\compound-context.ts",
+    "sha256": "60D9F00F93E1D420DC09D9A89D2A245EF00C973BF0D46DC0A71138953CA8C2F0"
+  },
+  {
+    "path": "app\\compositional-name-model.ts",
+    "sha256": "7218A11AC022AF8123E2692439F8B6603DAF2FEA3BB003840AF75547264789E7"
+  },
+  {
+    "path": "app\\class-variants-panel.tsx",
+    "sha256": "A8051254C0A34075600DBFF0BB5F90016ED315D8E86E4DFB42E453AEC4BA1784"
+  },
+  {
+    "path": "app\\class-assignment.ts",
+    "sha256": "41EA08CE1D48D4D7D415AF533D946DE9087B417C7A0C9838A5672C01AC3B33B7"
+  },
+  {
+    "path": "app\\class-assignment-csv.ts",
+    "sha256": "B4E948480D10E46842E959644D8339283FCD6F3F016715295BC61D90D8C11838"
+  },
+  {
+    "path": "app\\chemistry-document-validation.ts",
+    "sha256": "AFB3D1AB0283412ECC689AF0AAAA71F495416178D7DAC8FE39C87B2ADC85A491"
+  },
+  {
+    "path": "app\\chatgpt-auth.ts",
+    "sha256": "1407F614CC83D7049FDB08CD713D2516866BA58E24E820F7F4FD9D718B9D3007"
+  },
+  {
+    "path": "app\\carbohydrate-structure.ts",
+    "sha256": "EED5BD7FF023646A3F92CFBB6C3F211CDFDD3C3438D78E1D75BCA91AFF972ED4"
+  },
+  {
+    "path": "app\\carbohydrate-derivation.ts",
+    "sha256": "57A1B01AE5C52D9AA1B9459D6C8245D45F00E775635AAE408B2B44CA46A350E6"
+  },
+  {
+    "path": "app\\bond-label-geometry.ts",
+    "sha256": "C3A6540FC52CC5BA4978A92104E17B43EFB524773DFC4B5A17BE45785A4D0629"
+  },
+  {
+    "path": "app\\bond-interaction-hints.ts",
+    "sha256": "334C384E384B5B477C0170495CA0E45008F4DAB9EA1CC7F847ACE04679A126AA"
+  },
+  {
+    "path": "app\\api\\saved\\route.ts",
+    "sha256": "312C8CD50C9E364FC207B46F24A6F546F81CCB09ADA004A9FCCAEE4C3BBCC62A"
+  },
+  {
+    "path": "app\\api\\molecule-payload.ts",
+    "sha256": "BDC7C6C473EB728FD5D1FEE261A8A0749608CB8981F8F7B4C7B2F36626DCFD41"
+  },
+  {
+    "path": "app\\exercise-chemistry-oracles.ts",
+    "sha256": "944FC6A473C7F5BF6485DCE8BA302A086AA3370481A9D84294DF020E3E1DB21B"
+  },
+  {
+    "path": "app\\exercise-chemical-generator.ts",
+    "sha256": "3F02C52F816BD5B1304FD8919EACF6CCC44A43D05E397E4DE650B3AC4D248656"
+  },
+  {
+    "path": "app\\exercise-chemical-candidate.ts",
+    "sha256": "142628B22F92D5CA0C2A3AB3DD69C9B63EC4C2B1B37AF6C1DAA25B8AA667CAE1"
+  },
+  {
+    "path": "app\\exercise-advanced-profile.ts",
+    "sha256": "95F8434E11C1BDF450FCAD7EBACC929279FA688C584D9C0D65A458E569ED73B1"
+  },
+  {
+    "path": "app\\exercise-advanced-candidate.ts",
+    "sha256": "988AB3983C7283959795072AD752A12D3AB3F1B448A4C315E86278D9084FACD6"
+  },
+  {
+    "path": "app\\exam-session.ts",
+    "sha256": "92F23FFD22E01E567F8BD14FC6CBB17A559A4BA14F684893E0C854E3584C0E87"
+  },
+  {
+    "path": "app\\exam-panel.tsx",
+    "sha256": "6B7A670D842217179E63480962B3D0672F590FAC59CAEC1A7EF64767E83D68DC"
+  },
+  {
+    "path": "app\\english-acyclic-prefixes.ts",
+    "sha256": "B64B07604A47807A013ECD532F8EC69248F2D3D5ED2889B9BE958977A831238E"
+  },
+  {
+    "path": "app\\editable-valence.ts",
+    "sha256": "ADC177214EE5FFEE93050B04841BB180DB94B42872507B9B6B7C3F5D61C2F753"
+  },
+  {
+    "path": "app\\double-bond-stereochemistry.ts",
+    "sha256": "1F05919E87CFF62831023255D631AFC625803BD1CA0305BB1807485FD0D59181"
+  },
+  {
+    "path": "app\\docx-structure-svg-style.js",
+    "sha256": "E14DCCEC9C4AD12BA420E9B8DD4886EEB829D12190C71F806AAA69EB6C132F6F"
+  },
+  {
+    "path": "app\\docx-structure-assets-browser.ts",
+    "sha256": "059695A5A7A2FFAD3EB1C428B00870597559325B4792EEDCD5325F1388AAC5EF"
+  },
+  {
+    "path": "app\\docx-export.ts",
+    "sha256": "2F091D863F30D74DE15A207B324129345E9862DCF58CCBD2B82156C1B2CE6BED"
+  },
+  {
+    "path": "app\\docx-export-ui-model.ts",
+    "sha256": "E395F3565F636220D48AD34825EB1B4ADE24065E390AF3F7DCED4B25D13972DD"
+  },
+  {
+    "path": "app\\docx-export-panel.tsx",
+    "sha256": "C619E70D3B75FF529599E61995D54515B05CDDFBFE657E8A5C5A56F40F61E4E2"
+  },
+  {
+    "path": "app\\docx-export-model.ts",
+    "sha256": "986FB0FDBE03BE8CE2D242F6F764B722B68C00ACF831EA1E814B77AE8B1D37F0"
+  },
+  {
+    "path": "app\\docx-browser-export.ts",
+    "sha256": "6ADA5BAB3A619863EA23A96941316E513A578702A30837CEF2EE098A7A99ADF8"
+  },
+  {
+    "path": "app\\docx-assessment-selection.ts",
+    "sha256": "DA402C87FEF3FE73C4F6DFA80DDBDC47D4264E69D549C9DF7F8930F3125A8C37"
+  },
+  {
+    "path": "app\\difficulty-selector.tsx",
+    "sha256": "304FA75B1FE6F4146B38C223B264EEE9BF1F0D0BE737697E6AD08884D5207DE2"
+  },
+  {
+    "path": "app\\derivation-consistency.ts",
+    "sha256": "6CBD5A2476D749FF4CA44D7125EDB3A0433BD673A6ECB2742CB5955FEE18E259"
+  },
+  {
+    "path": "app\\curated-common-name-display.ts",
+    "sha256": "E44E04EEF133215B4B53C55F006B6B6D6F4D37CC09D0FC7301014E4C1667F68A"
+  },
+  {
+    "path": "app\\formula-isomers.ts",
+    "sha256": "2EBE5E50A246366B390FA7775C497F4D610074EEDF6F2C51A8C7DEFAEA230DED"
+  },
+  {
+    "path": "app\\formula-candidate-resolver.ts",
+    "sha256": "39DEBF5F12550FA3C7AC4B4EA5B7302AD035261A6D7005C346877E1517D58113"
+  },
+  {
+    "path": "app\\external-info-state.ts",
+    "sha256": "C8F358411E77A02C7C152C11B322C04AB6D0632588F6E95C2E8392A421AA06CA"
+  },
+  {
+    "path": "app\\exercise-seed.ts",
+    "sha256": "CFD3FACD9911FF3F5C9DA03247F8950F360FC967B87C25B3EF19C0281D3CF3B5"
+  },
+  {
+    "path": "app\\exercise-model.ts",
+    "sha256": "78C53F9973F67CD22B7E8BF6AC519D669962C855BC95DD80BDDB5E8373902D29"
+  },
+  {
+    "path": "app\\exercise-intermediate-profile.ts",
+    "sha256": "6AC992CC337EBB2F8E4C089AF5F139FAB560932135E81C23246619F2A10F6568"
+  },
+  {
+    "path": "app\\exercise-intermediate-candidate.ts",
+    "sha256": "83741F2D6E64E9F3055AFEA0C6ED1F27C0846A7C54B5BC908BBC440008A08060"
+  },
+  {
+    "path": "app\\exercise-generation-profile.ts",
+    "sha256": "86242AEE9C99D27B30825A90FB00F030BF4DA7F89890FB1C980DDB6DEFCCDFFA"
+  },
+  {
+    "path": "app\\exercise-easy-profile.ts",
+    "sha256": "35BB5DE16953B7C20A25BFF0873C8982FAD586BE73647832BB861368C08F5813"
+  },
+  {
+    "path": "app\\exercise-domain.ts",
+    "sha256": "9FAA24B884A775D96D1B6B5E228461E4562744A7E7C3CE54D2C9B705B5E092C1"
+  },
+  {
+    "path": "app\\exercise-difficulty-classification.ts",
+    "sha256": "A2A56AA50D2E082DBDEF7B8F24CF0E63BF77FB0DB9F56DBD6533C4FE65D7FC8D"
+  },
+  {
+    "path": "app\\guided-tour-state.ts",
+    "sha256": "A49750F4BF65169015A2DA4BBD11C44A7D8E20B1ECFDFD3C422AD3D52B8D4DC7"
+  },
+  {
+    "path": "app\\globals.css",
+    "sha256": "236C3B8102E514F34896144D25A88191327AB1E8202B6262636424D333DDC63E"
+  },
+  {
+    "path": "app\\fused-topology.ts",
+    "sha256": "B6296EF08C078B891732A2C84A177DFCC507AD317A0C46C151D5489656CE6862"
+  },
+  {
+    "path": "app\\fused-ring.ts",
+    "sha256": "7D1F2BDEADD045FB252A8B041CA7E2E778F7F3498BEF93F5CED755737FFD2FC0"
+  },
+  {
+    "path": "app\\fused-ring-nomenclature.ts",
+    "sha256": "B065008EE5ED1226B62B8E5A00835E48869E3C8E5E28C116E50B28CBC6D56130"
+  },
+  {
+    "path": "app\\functional-group-layout.ts",
+    "sha256": "0DD03413AED22EFF0002E253578647327ECBE0CCBCBAE6F97BFB9CAA5C769FBA"
+  },
+  {
+    "path": "app\\i18n.ts",
+    "sha256": "2A57D92EFAAC631D883B29EE1A8AD2F290D321E4E8F44FE9CF6885736862DD70"
+  },
+  {
+    "path": "app\\hydroxyalkyl-substituent.ts",
+    "sha256": "F6E89F9B89D28DE5729B03921FC4415CCA2EC923D81A754E958EDF4D0EA45408"
+  },
+  {
+    "path": "app\\heterocycle-registry.ts",
+    "sha256": "316CD9414E0AAC18B8A20234F16A5375C508170C8AFF50AED3B033E1C7F92D79"
+  },
+  {
+    "path": "app\\iupac-prefixes.ts",
+    "sha256": "797464E5E42FDA62D9A2DD59D2C94DBAA5B139017E9917C76522A92F89B90265"
+  },
+  {
+    "path": "app\\iupac-name-normalization.ts",
+    "sha256": "B5EA19D3AD095B2A3C861EDEB7A71B44109EB981BDD39A8C0986A58BCD131B05"
+  },
+  {
+    "path": "app\\iupac1979-aliphatic-amines.ts",
+    "sha256": "C5143581BC0909852DFAA433EB8554ED407A65295DBBE787E7B2A51D4A123849"
+  },
+  {
+    "path": "app\\api\\history\\route.ts",
+    "sha256": "0A12059BB02FEF3C4E96ABBABDC35A3E4FB6DF58EBC31AC8DAD5A41212421BD9"
+  },
+  {
+    "path": "app\\legacy-name-numbering.ts",
+    "sha256": "D9A7E0D594E35E7DE94B3257CB7EB6EE382249DFA88B08190BDAB82B70DA5E48"
+  },
+  {
+    "path": "app\\legacy-english-nomenclature.ts",
+    "sha256": "6B2EB58CE0AC884AEFFDA49BC037B0A62F85CCFE9F9302048D220A7457848D0C"
+  },
+  {
+    "path": "app\\layout.tsx",
+    "sha256": "F1BB87A549A30B90252697E3768F6AC995B6636BEEB52652766D9F281FD117ED"
+  },
+  {
+    "path": "app\\iupac1979-saturated-fused.ts",
+    "sha256": "BF01B8A4C96A5B2602879150534678D12A8BCF01DD08565F6D7815A43BE4BAFC"
+  },
+  {
+    "path": "app\\iupac1979-retained-fused.ts",
+    "sha256": "1CB7511BB7EE722EFE134920AD4512DE285583EA1BD8AE2C86250AE74394385F"
+  },
+  {
+    "path": "app\\iupac1979-name-structure.ts",
+    "sha256": "6975394B431C8F8340D7DE27F49E9E7A9E781BA9A2BD39E72C615FEB3F06E851"
+  },
+  {
+    "path": "app\\iupac1979-english-to-spanish.ts",
+    "sha256": "D0BE6BA3A7CC706CB00D6013EE0D0AC0F027EAAF2A58E926D0BBAB6D10CF18C6"
+  },
+  {
+    "path": "app\\iupac1979-cyclic-parents.ts",
+    "sha256": "56847D1AB503406E693A94FC9D0A37C44771581EB416C28E7B8B38965BC74240"
+  },
+  {
+    "path": "app\\iupac1979-aliphatic-functions.ts",
+    "sha256": "C40F4F45F85C1EE93FA65145645C71DA7CC3924BFEFA4740D04E65832F7FE1D4"
+  },
+  {
+    "path": "app\\molecule-visual-bounds.ts",
+    "sha256": "333FC8FE1E04C5867F5D9053DDA76069BD8BE68F36DBE50F510BCD9891A6C44A"
+  },
+  {
+    "path": "app\\molecule-2d-layout.ts",
+    "sha256": "8E83E307B5A7C9BC5FF60161876A878F1E33910F99D9B95CFE8EFB294FFED272"
+  },
+  {
+    "path": "app\\manual-layout.ts",
+    "sha256": "AE914E6A19B2BFB5315F63BD5891973EF98123DEBCA7F9DF69B19DD5EBAA930B"
+  },
+  {
+    "path": "app\\manual-display-direction.ts",
+    "sha256": "CA84C1C62D3505355057031A707A8679B21586019263AD7EF88C28A280601BD0"
+  },
+  {
+    "path": "app\\legacy-profile-display.ts",
+    "sha256": "B3D9564634A32BB4C69B8B46A5B12FC740893A9B9A5E6781007E0BADD91810B6"
+  },
+  {
+    "path": "app\\name-suggestions.ts",
+    "sha256": "EFF3B1D7A2590DC4131E5B9B6E88EE2C45257D0A3BEAE34CE22E412E6EED16CD"
+  },
+  {
+    "path": "app\\name-structure-resolver.ts",
+    "sha256": "3651F74D217F1AE9195724A59AC2801FF3779358D9DBC960758822ED16A06476"
+  },
+  {
+    "path": "app\\monomethyl-phenyl.ts",
+    "sha256": "1D1E963259A1F3016709270786BB79250A19CD53A4C35EA1334555E2DFA9C350"
+  },
+  {
+    "path": "app\\name-to-molecule.ts",
+    "sha256": "367DE5EC1CF969CECD3A1FE63012209B2F0E1CE57CE834C44D6005568DCA5DA1"
+  },
+  {
+    "path": "app\\naming-ring-perception.ts",
+    "sha256": "C6922FAADC596A1331782509D4C468AD757C40318598DC02208788C7FEAB9FC7"
+  },
+  {
+    "path": "app\\api\\name-to-structure\\route.ts",
+    "sha256": "E4FA3FE0B25A5BF1F941CD6A88976BC5C3A1FD0FD047861004A481FC8F3BC973"
+  },
+  {
+    "path": "app\\practice-distractor-engine.ts",
+    "sha256": "9CF6BB01B8D0000256253F1C7C6BB73846EA8DBA7FECBC88E522BD783C982ACB"
+  },
+  {
+    "path": "app\\practice-corrections.ts",
+    "sha256": "1552FC6191392E936F7BCB5869188ACE0893DC625E1D6A29E332350D41936BFD"
+  },
+  {
+    "path": "app\\practice-build-editor.tsx",
+    "sha256": "594DEB00967A30E5AE042011DB15E4B6BDFF57EABC481B279BD1F5CCB1C4E411"
+  },
+  {
+    "path": "app\\practice-attempt.ts",
+    "sha256": "DCA00132B389E9E3174F7AF4C8151481EF9CDBF484E6156D108D9742615D1DE0"
+  },
+  {
+    "path": "app\\page.tsx",
+    "sha256": "E98AD012AA397D66CBCACE50B849409FF3E7390C4D6162496A803346D72C345E"
+  },
+  {
+    "path": "app\\opsin-name-resolver.ts",
+    "sha256": "5FF3228EFEF3E1E37CFBC8B6FC6314EF81174BB16136A13BA80B262FAA3D8778"
+  },
+  {
+    "path": "app\\openchemlib-adapter.ts",
+    "sha256": "AC6D6FE69AB591AD93907195C296030BF50FBD659FBF95528B10DC1679D28E50"
+  },
+  {
+    "path": "app\\nomenclature-conventions.ts",
+    "sha256": "A95FCC34EF941D614239D914CA670A3A52C5247BD33F26FF9F8B92F6ED15C2AF"
+  },
+  {
+    "path": "app\\practice-multiple-choice.ts",
+    "sha256": "EA776E93372AA8AEC2A58B4BC5A153EF85EF28A15D6D7E3C748EB9BB1ADAED34"
+  },
+  {
+    "path": "app\\practice-molecule-layout.ts",
+    "sha256": "E7342581919178A40C01D624DD24F73B64E7321E0356BBBFFD27F0B3256210CB"
+  },
+  {
+    "path": "app\\practice-metrics.ts",
+    "sha256": "84B3DDF08906AB28DFE9FE85AAA642FC9F25019D8BBC05099BC546052A3FFE0C"
+  },
+  {
+    "path": "app\\practice-distractor-recipes.ts",
+    "sha256": "25E3697EE7234A485055CF0D8BEB9CB23364DE31C4970397F3C0C2867E965A06"
+  },
+  {
+    "path": "app\\practice-question.ts",
+    "sha256": "20D1EEF66E84022AAFFE7DEC3C0FEA377BA79DB36F22D264F6FAA102613D7751"
+  },
+  {
+    "path": "app\\practice-panel.tsx",
+    "sha256": "4735B310DA3FA440845DC1EC2AED6D8B7F8FBDD8BBC20E4FF84A19E5067A81A0"
+  },
+  {
+    "path": "app\\practice-reference-answer.ts",
+    "sha256": "F465C9C0F6B1223178AD0C123A5D6FE7E6CBC124CFD01E3D9A5C30C9283A8AFB"
+  },
+  {
+    "path": "app\\practice-review-diagnosis.ts",
+    "sha256": "CD493A131DCDCF7DDBBD5C5119BA09E67868F2A7F6BA1D3E6213185C35C666D1"
+  },
+  {
+    "path": "app\\practice-review-i18n.ts",
+    "sha256": "E432E9638D10AAD2C4547E7C15450692042C025653FAD89E0C487F4205A0B148"
+  },
+  {
+    "path": "app\\reasoning-visual-interaction.tsx",
+    "sha256": "D093134C5820AB73A975852B014E26231E109C91E4C72F76A8BFE0FAB74A15D2"
+  },
+  {
+    "path": "app\\semi-developed-svg-renderer.tsx",
+    "sha256": "BA3142E048BFB3DD9651AD21E27CE81014533B0073232C333C0CD1C2E5BD3167"
+  },
+  {
+    "path": "app\\reasoning-alphabetical-order.ts",
+    "sha256": "85429383648DE68487EBF2B43180B6E0341D704C5FE8A2C24C50A5A7F36C477E"
+  },
+  {
+    "path": "app\\session-review.ts",
+    "sha256": "609403E4C9B52D8020B4DD5D500B839E058E19A0796F0754B7ADB08F46D8E171"
+  },
+  {
+    "path": "app\\reasoning-acyloxy-regions.ts",
+    "sha256": "86190391D9F8363504BFD92D6AA384568B35F385B354FA390AE3612EE875B65E"
+  },
+  {
+    "path": "app\\purine-derivation.ts",
+    "sha256": "2B21C45D2EF2552CB7214B6A2E4BB3811F7A5AB85C61D8EF94758A0B513CDE5B"
+  },
+  {
+    "path": "app\\practice-timing.ts",
+    "sha256": "5ED99384C0D4F960A611E9590EA0B4B4577DDF7D7E43178CBFA9D06523BE1315"
+  },
+  {
+    "path": "app\\practice-summary.tsx",
+    "sha256": "22D22AFCD73F9DCFA65FBBF4F4C545A130E16F4C6D9B865D262CDC5E9B4FBAEF"
+  },
+  {
+    "path": "app\\practice-structural-answer.ts",
+    "sha256": "7DCFA21DBE61AC57A2882255751009F6D0B80CE070B1AF6EE72FF98095AF185E"
+  },
+  {
+    "path": "app\\practice-session.ts",
+    "sha256": "A10F5DBBFD5011854B25C2B7BEF6D8A5A2974BECA67AF2E3447FF0AB918B275C"
+  },
+  {
+    "path": "app\\practice-review.ts",
+    "sha256": "531462E96C946FA5DED7503F83A54303654FC46C1E22C7600A284386D3BD32FA"
+  },
+  {
+    "path": "app\\practice-review-panel.tsx",
+    "sha256": "53766ECD248CF951EA72A815565BACBF8E0757F04216BD35FF8A2D4DAE0C0D07"
+  },
+  {
+    "path": "app\\reasoning-parent-selection.ts",
+    "sha256": "17613650817341B8EDB5D4C1160DB9664F70BB70B0016F0E4277789486E4B364"
+  },
+  {
+    "path": "app\\reasoning-functionalized-substituents.ts",
+    "sha256": "20B95B488D09FC609303EFCBE28D8E5AA896A1606AA9C5BB5D3B976B8041E17F"
+  },
+  {
+    "path": "app\\reasoning-functional-groups.ts",
+    "sha256": "5E467AAF6515D68D19BBF1D96DC554885F9C0F0FFD93638C6F08DB62C371D908"
+  },
+  {
+    "path": "app\\reasoning-derivation-adapter.ts",
+    "sha256": "A22D0D7791253F27D7075E29BEE6736A453080F4DCD4ECD01A9C0B6129BD5F0A"
+  },
+  {
+    "path": "app\\reasoning-aromatic-substituents.ts",
+    "sha256": "A6541FB3F034C18DCDDE08CF0CD36E669A93C0D6FBE2FE74DEB0EB2834002CC6"
+  },
+  {
+    "path": "app\\reasoning-name-links.ts",
+    "sha256": "73F0220979B2F943281EE15FD7EE1B5D3FBC7320F6895FAD7747CC8B5399EFDB"
+  },
+  {
+    "path": "app\\reasoning-name-fragments.ts",
+    "sha256": "B95692D58C4A93F632F4247E7C9EFB240C4B92EE2BAED33A2B8C2FA853AABD7F"
+  },
+  {
+    "path": "app\\reasoning-name-navigation.ts",
+    "sha256": "575E72B00CD49A18E227EC27E47063C5EAF4E484B63C39335A9CED367C3974D7"
+  },
+  {
+    "path": "app\\semi-developed-bond-geometry.ts",
+    "sha256": "D701BAD002D52B1B4790C27F9BCBEA146D4BF27AA07BC40D4389D2CC0540F271"
+  },
+  {
+    "path": "app\\selected-atom-context.ts",
+    "sha256": "7068B3C5E76D8B13BE963DD52753BC9EDF855573378F9E1E84A799BE5598C142"
+  },
+  {
+    "path": "app\\seeded-rng.ts",
+    "sha256": "99BA77736FDD54B46D1725AEAE7D269AF545F1EE5A66A8024712ED8527EF62EB"
+  },
+  {
+    "path": "app\\reasoning-visual-targets.ts",
+    "sha256": "1EE41A271B7D910BA8F81F49E40BB9D486B1A784CECF857D6C746BFF99404C93"
+  },
+  {
+    "path": "app\\semi-developed-layout.ts",
+    "sha256": "392079539239431DFCD169E470E1A2F595CFF92A1C2AF3FCB62DCAC934DE5631"
+  },
+  {
+    "path": "app\\semi-developed-label-geometry.ts",
+    "sha256": "99D10FCCDD08D344BE9A5E3C7833911EF7F704C278001CE531CAA0966CDF1384"
+  },
+  {
+    "path": "app\\semi-developed-renderer.ts",
+    "sha256": "1569ACFC81B87E45EB0BE7CC24E33F7DBB04C10B0841E5E36EEE57412C411E9B"
+  },
+  {
+    "path": "app\\session-review-question.ts",
+    "sha256": "090C35167FB001F2E2ABA4AE5948CAFBDF0270C93D208F87DC5D9EB2573EF18D"
+  },
+  {
+    "path": "app\\session-question-selection.ts",
+    "sha256": "0BE9F0C1FB5CDCAC7A066DE5F9A19D7D38F47DEF6A25E609823B13CDD6A78E67"
+  },
+  {
+    "path": "app\\session-answer-evaluation.ts",
+    "sha256": "5E6CDDCF26D44EF36E462933C1961D5EB6A7A3169DC4B93257427D3BCB22CA83"
+  },
+  {
+    "path": "app\\session-review-dashboard.tsx",
+    "sha256": "A8AA3D390093F13ECF2B602676A52CD7454C1CAC0B4D089D4B62AD257F25B7FB"
+  },
+  {
+    "path": "app\\skeletal-layout.ts",
+    "sha256": "FF90B7BAF0D33907CCB2E17FF8754BAD29E02189A582C03A49D378D18CD02FBD"
+  },
+  {
+    "path": "app\\skeletal-bond-geometry.ts",
+    "sha256": "BAC6306C4BD86CA5C5A1C84394A15CDA0832F4C73A1D8507B57E012D4553E9AC"
+  },
+  {
+    "path": "app\\simple-cycle.ts",
+    "sha256": "587932E64793A7DDB0B18D2FC2317EA03E2A7F8F357CB2B27CB50B1C60261CC2"
+  },
+  {
+    "path": "app\\smiles-file.ts",
+    "sha256": "91EB132E2C8B6C075B2FE1144BC462AB6DFB713769246F2CCB1CA97E6FDAD0BE"
+  },
+  {
+    "path": "app\\semi-developed-stereo.ts",
+    "sha256": "CD0774769E053485822E2CDF514CFAB2C03775524C10568DBD1183E013327EC5"
+  },
+  {
+    "path": "app\\sound.ts",
+    "sha256": "E5775B465177A8E40330346B5F31DCBEDD0285E38829C6466F1EEC3B40EB9A75"
+  },
+  {
+    "path": "app\\steroid-ring-label-layout.ts",
+    "sha256": "C21AB1C9D7187508954EA8F5E1EC4B58A18CB3A29A4234023DA6DD3E076AA78F"
+  },
+  {
+    "path": "app\\structural-color-classification.ts",
+    "sha256": "C6BFD0017BE3AE57175D0AFD1FF2303093E8A27852F322C082D28751B9916BC7"
+  },
+  {
+    "path": "app\\structural-derivation.ts",
+    "sha256": "F4C6ECCB33BD61DA22A00551BDB907072A61D68B84B7A1E529C98E9817CB238C"
+  },
+  {
+    "path": "app\\substituent-aliases.ts",
+    "sha256": "0DC45F7D0D321E9CC34F4F8A63903ED2287B8764EF950AC66A763EBAEC00DF5F"
+  },
+  {
+    "path": "app\\[lang]\\page.tsx",
+    "sha256": "C8487B1E0F21C4096D744648C48BDB1A7A7B181E29CDF1DDDF7AE1D3BBA25E66"
+  },
+  {
+    "path": "app\\wikipedia-chemistry.ts",
+    "sha256": "8A1208EC03E9A287612504FA8BEE9BC8A95D7F66F0EBAEF65C40E4623EC44794"
+  },
+  {
+    "path": "app\\wikidata-article-resolver.ts",
+    "sha256": "1AA348628085FEADD7412070C59B8C5D13426BEB5B354EBFC8992B17F24C7229"
+  },
+  {
+    "path": "app\\visual-numbering.ts",
+    "sha256": "ED3E4F36C360AB0BCED9D4F26AE153DFD66F5D7992AD8DA91AD682C446B95CD6"
+  },
+  {
+    "path": "app\\view-mode.ts",
+    "sha256": "1764DFF1B25C874386636F36D6C4495E25AD640B615A9B2229FE1AFE1945D983"
+  },
+  {
+    "path": "app\\verified-structural-reasoning.ts",
+    "sha256": "D53756A105479971DE9EEEEF7F79C5E78ADB6787BB4D210C2C153F9EECEF4DBE"
+  },
+  {
+    "path": "app\\verified-common-name-equivalences.ts",
+    "sha256": "DF0F5DC964EE2EFC88609340EC7958AFB665CEA09A464F7C09A44498A6B2F141"
+  },
+  {
+    "path": "app\\validated-name-derivation.ts",
+    "sha256": "92F4987D03D8FBB2A82EE8360BDD230A96C6EA13A72D98ADF3A8B9D748BBEDEC"
+  },
+  {
+    "path": "app\\traditional-nomenclature.ts",
+    "sha256": "5E6EEA9F69EA04625E01AD78FFEFB559224A7CA42C88F80170B4A3CBB6657974"
+  },
+  {
+    "path": "app\\tetrahedral-stereochemistry.ts",
+    "sha256": "AA7C90C46BD97BF5A257D9A3ADF7245E72DB540052581C290A22E228B8B267E0"
+  },
+  {
+    "path": "app\\systematic-family-grammar.ts",
+    "sha256": "8C51EB0E160B1F81FBA7068B006BEDDD295A87D2B7D1995C96CCD6E78FF0D661"
+  }
+]

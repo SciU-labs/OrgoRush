@@ -1,0 +1,7 @@
+{
+  "sha256": "c51a27f2193d7706c289fc348a48febefc19a2617603a0750f20c4beddce7e69",
+  "records": 20,
+  "frozenAt": "2026-11-11T00:52:44.625Z",
+  "path": "tests/fixtures/b61-independent-reference.json",
+  "engineNotImported": true
+}

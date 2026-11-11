@@ -1,0 +1,54 @@
+[
+  {
+    "path": "app/page.tsx",
+    "sha256": "E98AD012AA397D66CBCACE50B849409FF3E7390C4D6162496A803346D72C345E"
+  },
+  {
+    "path": "app/reasoning-derivation-adapter.ts",
+    "sha256": "A43B6AC8760AE99CFE99C17DA7323EA2E3D729127437253E055B39AFEAA9A7AF"
+  },
+  {
+    "path": "app/reasoning-functional-groups.ts",
+    "sha256": "5E467AAF6515D68D19BBF1D96DC554885F9C0F0FFD93638C6F08DB62C371D908"
+  },
+  {
+    "path": "app/reasoning-name-fragments.ts",
+    "sha256": "AE4CB79C1FBE364B031BA74C2A524E66DBE9CD151FD09420766BFA41BFBF84BB"
+  },
+  {
+    "path": "app/reasoning-visual-targets.ts",
+    "sha256": "1EE41A271B7D910BA8F81F49E40BB9D486B1A784CECF857D6C746BFF99404C93"
+  },
+  {
+    "path": "app/systematic-family-grammar.ts",
+    "sha256": "C08FC88E3E05D14F415A8DE8B92A7927AB7917FAE54ABC92907710A7282291DF"
+  },
+  {
+    "path": "app/validated-name-derivation.ts",
+    "sha256": "1E79A8E5023BC5F317CC5414737F1A2DDC41C9FB6AAC3B3CF501B9C7C4148EF5"
+  },
+  {
+    "path": "app/verified-structural-reasoning.ts",
+    "sha256": "03B0E2D7692FAACCF6953DCC76CB2F4A95EF8230768EE9A2561C3C796A181B83"
+  },
+  {
+    "path": "tests/b52-cyclic-branched-reasoning.test.mjs",
+    "sha256": "3650688804FC0FA34946F26C68AF82A2661D9CE072A8E26F0EBF924FB261E760"
+  },
+  {
+    "path": "tests/b53-full-partial-support.test.mjs",
+    "sha256": "AE86110F0F19BBB81D3A1BD037F0F728E17E4C42D2849F6D652D661C3F78760E"
+  },
+  {
+    "path": "tests/b54-disubstituted-benzene-derivation.test.mjs",
+    "sha256": "8FE1A301BACF91C113A6248031D6404A1CA841DFCCDC75EBAD4186C0488ACB0C"
+  },
+  {
+    "path": "tests/b55-localized-aromatic-derivation.test.mjs",
+    "sha256": "6204BC26958DA7AF331DA91972AB91C9DF7ECB6F3528F761D7D561E5CB8F778F"
+  },
+  {
+    "path": "tests/e2e/b52-cyclic-branched-reasoning.e2e.mjs",
+    "sha256": "0A6B27BDD76FF634793617EEC50E54B1F5306F0392672FA0325CE302679A56D9"
+  }
+]

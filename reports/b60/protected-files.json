@@ -1,0 +1,42 @@
+[
+  {
+    "path": "reports/carbohydrate-editor-baseline.json",
+    "sha256": "92EFDEE34FAA661C136828504D840574148D91151EDE7D9B9B5369C5FC028566"
+  },
+  {
+    "path": "reports/naming-audit/aud-nom-009/baseline.json",
+    "sha256": "642FDBE83F554C6DB31322A65D8E10BA02AAD3E5D0F378E5F16D6E9DF67D46DE"
+  },
+  {
+    "path": "reports/naming-audit/aud-nom-009/document-baseline.json",
+    "sha256": "43316766CA35438FDEC2397A1F6FA2A357B1CCB829344A84D89DA5DF385F7909"
+  },
+  {
+    "path": "reports/naming-audit/baseline.json",
+    "sha256": "B9EDC08195264614570352D4842B1E9178AA2045AE118375980080E94211B89D"
+  },
+  {
+    "path": "reports/orgorush-iupac79-aromatic-004.baseline.json",
+    "sha256": "24AB579DE762D114FBAF02900486DBE38FDFE16661000A5B806E29CB12C8ADA4"
+  },
+  {
+    "path": "reports/orgorush-iupac79-cyclic-audit-003.baseline.json",
+    "sha256": "73E43FB158C22F2AB8EDE68666B9851A3910FA9D09A4BEB9C679707E8035A7DB"
+  },
+  {
+    "path": "reports/orgorush-iupac79-fallback-005.baseline.json",
+    "sha256": "927CAF003B1D563087DCAF18C8C3B29F934A13C28FE192AEF20D57D708992134"
+  },
+  {
+    "path": "reports/orgorush-iupac79-fallback-006.baseline.json",
+    "sha256": "CFB1B35132B6C004C1A2E12D2EC48167D5473B2E2EBACA9A70E190B295F30601"
+  },
+  {
+    "path": "reports/orgorush-quality-010.baseline.json",
+    "sha256": "A1FB98A754D1E0D06CFDA9338628038A9EA07B1ADA4D7E2D6FFB2DAF7B669F2A"
+  },
+  {
+    "path": "tests/fixtures/b50-pubchem-rings.json",
+    "sha256": "B28E2016AD282208BE08D67F5FEB2A9F09E79202FCDB8637F7B51DD8C72E3573"
+  }
+]

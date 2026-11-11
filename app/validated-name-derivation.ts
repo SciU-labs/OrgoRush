@@ -5,31 +5,18 @@ import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
-
-export type NameComponent = {
-  id: string;
-  role: "parent" | "suffix" | "substituent" | "prefix";
-  text: string;
-  start: number;
-  end: number;
-  parentId?: string;
-  locant?: number | "N";
-  atomIds: number[];
-  bondIds: [number, number][];
-  numbering: [number, number | string][];
-  explanation: string;
-  explanationEs?: string;
-  label?: string;
-  labelEs?: string;
-};
+import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedCompositionalEvidence } from "./compositional-name-model.ts";
+// Preserve the existing public import path while keeping shared types acyclic.
+export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
   status: "FULL";
   name: string;
   preferred: false;
-  principalGroup: "carboxylicAcid" | "amide" | "ester" | "aldehyde" | "ketone" | "alcohol" | "heterocycle";
+  principalGroup: PrincipalGroup;
   parentSystem?: "purine" | "carbohydrate";
   components: NameComponent[];
   parentAtomIds: number[];
+  evidence?: ValidatedCompositionalEvidence;
   symmetry?: {
     mappingCount: number;
     atomOrbits: number[][];
@@ -321,7 +308,9 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   let group: ValidatedNameDerivation["principalGroup"];
   let parent: number[];
   let allowEquivalentParents = false;
+  let allowEquivalentNumbering = false;
   let parentSystem: ValidatedNameDerivation["parentSystem"];
+  let ruleEvidence: NameRuleEvidence | undefined;
   const acyclic = /^([2-9])-(?:\[(.+)\]|\((.+)\))([a-z]+)anoic acid$/.exec(name);
   const amide = /^N-\((.+)\)(acetamide|[a-z]+anamide)$/.exec(name);
   // Parentheses are optional only around this single, unambiguous prefix.
@@ -378,13 +367,19 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     graph.atoms.push(...family.graph.atoms); graph.bonds.push(...family.graph.bonds);
     components.push(...family.components); parent=family.parent; group=family.group;
     allowEquivalentParents=!!family.equivalentParentPaths;
+    allowEquivalentNumbering=!!family.allowEquivalentNumbering;
     parentSystem=family.parentSystem;
+    ruleEvidence=family.evidence;
   }
 
   // Every named span is literal and every graph atom must be accounted for.
   if (components.some(c => name.slice(c.start, c.end) !== c.text)
     || graph.atoms.some(a => !components.some(c => c.atomIds.includes(a.id)))) return null;
-  const regions = components.flatMap(c => [c.atomIds, ...c.numbering.map(([id]) => [id])]);
+  // A ring with proved numbering can retain a reflection exchanging equivalent
+  // atoms. The representative is one complete valid numbered assignment; named
+  // chemical regions must still have invariant images under all isomorphisms.
+  // Families without this proof retain strict per-locant invariance.
+  const regions = components.flatMap(c => [c.atomIds, ...(allowEquivalentNumbering ? [] : c.numbering.map(([id]) => [id]))]);
   const equivalence=allowEquivalentParents?analyzeStructuralEquivalence(graph,actual):null;
   const mapping = allowEquivalentParents ? equivalence?.representative : mapStructuralRegions(graph, actual, regions);
   if (!mapping) return null;
@@ -392,9 +387,13 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     components:components.map(c=>({...c,atomIds:c.atomIds.map(id=>map.get(id)!),
       bondIds:c.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
       numbering:c.numbering.map(([id,n]):[number,number|string]=>[map.get(id)!,n]),
+      ...(c.internalNumbering ? {internalNumbering:c.internalNumbering.map(([id,n]):[number,number]=>[map.get(id)!,n])} : {}),
+      ...(c.writtenLocants ? {writtenLocants:c.writtenLocants.map(item=>({...item,atomId:map.get(item.atomId)!}))} : {}),
     }))});
   const representative=assignment(mapping);
-  if(!equivalence)return {status:"FULL",name,preferred:false,principalGroup:group,...representative,...(parentSystem?{parentSystem}:{})};
+  const evidence: ValidatedCompositionalEvidence | undefined = ruleEvidence ? {...ruleEvidence,
+    reconstructedGraph: graph, atomMapping: [...mapping], equivalence: "complete-graph-isomorphism"} : undefined;
+  if(!equivalence)return {status:"FULL",name,preferred:false,principalGroup:group,...representative,...(parentSystem?{parentSystem}:{}),...(evidence?{evidence}:{})};
   // Deduplicate internal automorphisms that do not change any named region or
   // locant. Each remaining assignment is a complete valid decomposition, not
   // the union of mutually exclusive parent chains.

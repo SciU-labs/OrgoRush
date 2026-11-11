@@ -81,7 +81,12 @@ function prefixGroups(analysis: FunctionalReasoningAnalysis) {
     const representedAryl = item.aryl && item.name === monomethylPhenylNameEs(item.aryl)
       && item.atomIds?.length === item.aryl.atomIds.length
       && item.aryl.atomIds.every((id) => item.atomIds!.includes(id));
-    if (item.complex && !representedAryl && !origins.some((group) => group.kind === "ether")) continue;
+    // A complex substituent is still name-addressable when the selected
+    // analysis supplies its complete atom region. Its literal parenthetical
+    // span is validated below; graph projection remains responsible for the
+    // attachment edge. This creates structural evidence, never FULL proof.
+    if (item.complex && !representedAryl && !origins.some((group) => group.kind === "ether")
+      && !item.atomIds?.length) continue;
     const entry = groups.get(item.name) ?? { locants: [], contributions: [], atomIds: [], complex: Boolean(item.complex) };
     entry.locants.push(item.locant);
     entry.atomIds.push(...item.atomIds ?? []);

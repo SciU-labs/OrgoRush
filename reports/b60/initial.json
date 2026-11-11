@@ -1,0 +1,5083 @@
+{
+  "stage": "initial",
+  "counts": {
+    "FULL": 16,
+    "PARTIAL": 12,
+    "UNSUPPORTED": 2
+  },
+  "rows": [
+    {
+      "cid": 1254,
+      "imported": true,
+      "formula": "C10H20O",
+      "profiles": {
+        "es": {
+          "name": "5-metil-2-(1-metiletil)ciclohexanol",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "5-methyl-2-(1-methylethyl)cyclohexanol",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 7731,
+      "imported": true,
+      "formula": "C8H10O",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-metoxibenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 16,
+            "end": 23,
+            "atomIds": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "bondIds": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                7,
+                2
+              ]
+            ],
+            "numbering": [
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                7,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 16,
+              "end": 23,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-metil",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "metil identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-metoxi",
+              "start": 8,
+              "end": 16,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "metoxi identifies the ether substituent attached at benzene ring position 4.",
+              "explanationEs": "metoxi identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-methoxy-4-methylbenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 18,
+            "end": 25,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                7,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 18,
+              "end": 25,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-methoxy",
+              "start": 0,
+              "end": 9,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "methoxy identifies the ether substituent attached at benzene ring position 1.",
+              "explanationEs": "methoxy identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-methyl",
+              "start": 10,
+              "end": 18,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "methyl identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 326,
+      "imported": true,
+      "formula": "C10H12O",
+      "profiles": {
+        "es": {
+          "name": "4-(1-metiletil)benzaldehído",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "aldehyde",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzaldehído",
+            "start": 15,
+            "end": 27,
+            "atomIds": [
+              7,
+              6,
+              5,
+              4,
+              9,
+              8,
+              10
+            ],
+            "bondIds": [
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                9
+              ],
+              [
+                9,
+                8
+              ],
+              [
+                8,
+                7
+              ],
+              [
+                7,
+                10
+              ]
+            ],
+            "numbering": [
+              [
+                7,
+                1
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "explanation": "benzaldehído establece el padre aldehído aromático. El grupo característico ocupa la posición 1 del anillo; el localizador del sustituyente es 4."
+          },
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-metiletil",
+              "start": 3,
+              "end": 14,
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «1-metiletil» forma un esqueleto ramificado de 3 carbonos y se une al anillo en el localizador 4; ese localizador pertenece al padre aromático.",
+              "parentId": "parent",
+              "locant": 4,
+              "explanationEs": "El sustituyente «1-metiletil» forma un esqueleto ramificado de 3 carbonos y se une al anillo en el localizador 4; ese localizador pertenece al padre aromático."
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzaldehído",
+              "start": 15,
+              "end": 27,
+              "atomIds": [
+                7,
+                6,
+                5,
+                4,
+                9,
+                8,
+                10
+              ],
+              "bondIds": [
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  9,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  4,
+                  4
+                ]
+              ],
+              "explanation": "benzaldehído establece el padre aldehído aromático. El grupo característico ocupa la posición 1 del anillo; el localizador del sustituyente es 4."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzaldehído",
+              "start": 15,
+              "end": 27,
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo aldehído queda representado por sus átomos y enlaces característicos."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  4
+                ]
+              ]
+            },
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                7,
+                6,
+                5,
+                4,
+                9,
+                8,
+                10
+              ],
+              "bondIds": [
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  9,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  10
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  4,
+                  4
+                ]
+              ]
+            },
+            "suffix": {
+              "stepNumber": "suffix",
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "locants": []
+            }
+          }
+        },
+        "en": {
+          "name": "4-(1-methylethyl)benzaldehyde",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "aldehyde",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzaldehyde",
+            "start": 17,
+            "end": 29,
+            "atomIds": [
+              7,
+              6,
+              5,
+              4,
+              9,
+              8,
+              10
+            ],
+            "bondIds": [
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                9
+              ],
+              [
+                9,
+                8
+              ],
+              [
+                8,
+                7
+              ],
+              [
+                7,
+                10
+              ]
+            ],
+            "numbering": [
+              [
+                7,
+                1
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "explanation": "benzaldehyde establishes the aldehyde parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+          },
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-methylethyl",
+              "start": 3,
+              "end": 16,
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  4
+                ]
+              ],
+              "explanation": "1-methylethyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 4
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzaldehyde",
+              "start": 17,
+              "end": 29,
+              "atomIds": [
+                7,
+                6,
+                5,
+                4,
+                9,
+                8,
+                10
+              ],
+              "bondIds": [
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  9,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  4,
+                  4
+                ]
+              ],
+              "explanation": "benzaldehyde establishes the aldehyde parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzaldehyde",
+              "start": 17,
+              "end": 29,
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The aldehyde group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  4
+                ]
+              ]
+            },
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                7,
+                6,
+                5,
+                4,
+                9,
+                8,
+                10
+              ],
+              "bondIds": [
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  9,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  10
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  4,
+                  4
+                ]
+              ]
+            },
+            "suffix": {
+              "stepNumber": "suffix",
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "locants": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 7439,
+      "imported": true,
+      "formula": "C10H14O",
+      "profiles": {
+        "es": {
+          "name": "2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 3672,
+      "imported": true,
+      "formula": "C13H18O2",
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 7455,
+      "imported": true,
+      "formula": "C9H10O2",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzoato de metilo",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "ester",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzoato",
+            "start": 7,
+            "end": 15,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6,
+              8
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                8
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            "explanation": "benzoato establece el padre éster aromático. El grupo característico ocupa la posición 1 del anillo; el localizador del sustituyente es 4."
+          },
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "metil",
+              "start": 2,
+              "end": 7,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre aromático.",
+              "parentId": "parent",
+              "locant": 4,
+              "explanationEs": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre aromático."
+            },
+            {
+              "id": "ester-alkyl",
+              "role": "substituent",
+              "text": "metilo",
+              "start": 19,
+              "end": 25,
+              "atomIds": [
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo alquilo procedente del alcohol se une al oxígeno del éster, no directamente al anillo aromático.",
+              "parentId": "suffix"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzoato",
+              "start": 7,
+              "end": 15,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6,
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "benzoato establece el padre éster aromático. El grupo característico ocupa la posición 1 del anillo; el localizador del sustituyente es 4."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzoato",
+              "start": 7,
+              "end": 15,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo éster queda representado por sus átomos y enlaces característicos."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            },
+            "ester-alkyl": {
+              "stepNumber": "ester-alkyl",
+              "atomIds": [
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "locants": []
+            },
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6,
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  2,
+                  4
+                ]
+              ]
+            },
+            "suffix": {
+              "stepNumber": "suffix",
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ]
+              ],
+              "locants": []
+            }
+          }
+        },
+        "en": {
+          "name": "methyl 4-methylbenzoate",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "ester",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzoate",
+            "start": 15,
+            "end": 23,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6,
+              8
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                8
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            "explanation": "benzoate establishes the ester parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+          },
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "methyl",
+              "start": 9,
+              "end": 15,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "methyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 4
+            },
+            {
+              "id": "ester-alkyl",
+              "role": "substituent",
+              "text": "methyl",
+              "start": 0,
+              "end": 6,
+              "atomIds": [
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The alcohol-derived alkyl group is bonded to the ester oxygen, not to the aromatic ring.",
+              "parentId": "suffix"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzoate",
+              "start": 15,
+              "end": 23,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6,
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "benzoate establishes the ester parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzoate",
+              "start": 15,
+              "end": 23,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The ester group supplies the characteristic suffix. Secondary functions are expressed as prefixes."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            },
+            "ester-alkyl": {
+              "stepNumber": "ester-alkyl",
+              "atomIds": [
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "locants": []
+            },
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6,
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  2,
+                  4
+                ]
+              ]
+            },
+            "suffix": {
+              "stepNumber": "suffix",
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ]
+              ],
+              "locants": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 7813,
+      "imported": true,
+      "formula": "C7H9N",
+      "profiles": {
+        "es": {
+          "name": "4-metilanilina",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "4-methylaniline",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 69274,
+      "imported": true,
+      "formula": "C8H9NO",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzamida",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "4-methylbenzamide",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 7724,
+      "imported": true,
+      "formula": "C8H7N",
+      "profiles": {
+        "es": {
+          "name": "4-metilbenzonitrilo",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "4-methylbenzonitrile",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    },
+    {
+      "cid": 7473,
+      "imported": true,
+      "formula": "C7H7NO2",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-nitrobenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 15,
+            "end": 22,
+            "atomIds": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "bondIds": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                7,
+                2
+              ]
+            ],
+            "numbering": [
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                7,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-metil",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "metil identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-nitro",
+              "start": 8,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "nitro identifies the nitro substituent attached at benzene ring position 4.",
+              "explanationEs": "nitro identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-methyl-4-nitrobenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 16,
+            "end": 23,
+            "atomIds": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "bondIds": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                7,
+                2
+              ]
+            ],
+            "numbering": [
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                7,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 16,
+              "end": 23,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-methyl",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "methyl identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-nitro",
+              "start": 9,
+              "end": 16,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "nitro identifies the nitro substituent attached at benzene ring position 4.",
+              "explanationEs": "nitro identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 9603,
+      "imported": true,
+      "formula": "C7H7F",
+      "profiles": {
+        "es": {
+          "name": "1-fluoro-4-metilbenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 16,
+            "end": 23,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                7,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 16,
+              "end": 23,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-fluoro",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "fluoro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "fluoro identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-metil",
+              "start": 9,
+              "end": 16,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "metil identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-fluoro-4-methylbenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 17,
+            "end": 24,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                7,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 17,
+              "end": 24,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-fluoro",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "fluoro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "fluoro identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-methyl",
+              "start": 9,
+              "end": 17,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "methyl identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 7931,
+      "imported": true,
+      "formula": "C7H7Cl",
+      "profiles": {
+        "es": {
+          "name": "1-cloro-3-metilbenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 15,
+            "end": 22,
+            "atomIds": [
+              4,
+              3,
+              2,
+              7,
+              6,
+              5
+            ],
+            "bondIds": [
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "numbering": [
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                4,
+                3,
+                2,
+                7,
+                6,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-cloro",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  4,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ]
+              ],
+              "explanation": "cloro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "cloro identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "3-metil",
+              "start": 8,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 3,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  3
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 3.",
+              "explanationEs": "metil identifica el sustituyente unido al C3 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                4,
+                3,
+                2,
+                7,
+                6,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  4,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-chloro-3-methylbenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 17,
+            "end": 24,
+            "atomIds": [
+              4,
+              3,
+              2,
+              7,
+              6,
+              5
+            ],
+            "bondIds": [
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "numbering": [
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                7,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                5,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 17,
+              "end": 24,
+              "atomIds": [
+                4,
+                3,
+                2,
+                7,
+                6,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-chloro",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  4,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ]
+              ],
+              "explanation": "chloro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "chloro identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "3-methyl",
+              "start": 9,
+              "end": 17,
+              "parentId": "parent",
+              "locant": 3,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  3
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 3.",
+              "explanationEs": "methyl identifica el sustituyente unido al C3 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                4,
+                3,
+                2,
+                7,
+                6,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  4,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  4,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 7236,
+      "imported": true,
+      "formula": "C7H7Br",
+      "profiles": {
+        "es": {
+          "name": "1-bromo-2-metilbenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 15,
+            "end": 22,
+            "atomIds": [
+              7,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "bondIds": [
+              [
+                7,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ]
+            ],
+            "numbering": [
+              [
+                7,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                7,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bondIds": [
+                [
+                  7,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-bromo",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ]
+              ],
+              "explanation": "bromo identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "bromo identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "2-metil",
+              "start": 8,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 2,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  2
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 2.",
+              "explanationEs": "metil identifica el sustituyente unido al C2 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                7,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bondIds": [
+                [
+                  7,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-bromo-2-methylbenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 16,
+            "end": 23,
+            "atomIds": [
+              7,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "bondIds": [
+              [
+                7,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ]
+            ],
+            "numbering": [
+              [
+                7,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 16,
+              "end": 23,
+              "atomIds": [
+                7,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bondIds": [
+                [
+                  7,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-bromo",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  1
+                ]
+              ],
+              "explanation": "bromo identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "bromo identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "2-methyl",
+              "start": 8,
+              "end": 16,
+              "parentId": "parent",
+              "locant": 2,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  2
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 2.",
+              "explanationEs": "methyl identifica el sustituyente unido al C2 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                7,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bondIds": [
+                [
+                  7,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  4,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  7,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  2
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 12207,
+      "imported": true,
+      "formula": "C7H7I",
+      "profiles": {
+        "es": {
+          "name": "1-metil-4-yodobenceno",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benceno",
+            "start": 14,
+            "end": 21,
+            "atomIds": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "bondIds": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                7,
+                2
+              ]
+            ],
+            "numbering": [
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ],
+              [
+                6,
+                5
+              ],
+              [
+                7,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 14,
+              "end": 21,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-metil",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "metil identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-yodo",
+              "start": 8,
+              "end": 14,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "yodo identifies the halogen substituent attached at benzene ring position 4.",
+              "explanationEs": "yodo identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  2
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        "en": {
+          "name": "1-iodo-4-methylbenzene",
+          "status": "FULL",
+          "independentlyParsed": true,
+          "preferred": false,
+          "principalGroup": "none",
+          "parent": {
+            "id": "parent",
+            "role": "parent",
+            "text": "benzene",
+            "start": 15,
+            "end": 22,
+            "atomIds": [
+              5,
+              4,
+              3,
+              2,
+              7,
+              6
+            ],
+            "bondIds": [
+              [
+                5,
+                4
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                2,
+                7
+              ],
+              [
+                7,
+                6
+              ],
+              [
+                6,
+                5
+              ]
+            ],
+            "numbering": [
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                7,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+            "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+          },
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor."
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-iodo",
+              "start": 0,
+              "end": 6,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "iodo identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "iodo identifica el sustituyente unido al C1 del anillo de benceno."
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-methyl",
+              "start": 7,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "methyl identifica el sustituyente unido al C4 del anillo de benceno."
+            }
+          ],
+          "evidence": null,
+          "targets": {
+            "parent": {
+              "stepNumber": "parent",
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                7,
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  6,
+                  6
+                ]
+              ]
+            },
+            "prefix-0": {
+              "stepNumber": "prefix-0",
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  5,
+                  8
+                ]
+              ],
+              "locants": [
+                [
+                  5,
+                  1
+                ]
+              ]
+            },
+            "prefix-1": {
+              "stepNumber": "prefix-1",
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "locants": [
+                [
+                  2,
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "cid": 11419,
+      "imported": true,
+      "formula": "C7H12O",
+      "profiles": {
+        "es": {
+          "name": "2-metilciclohexanona",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        },
+        "en": {
+          "name": "2-methylcyclohexanone",
+          "status": "PARTIAL",
+          "independentlyParsed": false,
+          "preferred": false,
+          "principalGroup": null,
+          "parent": null,
+          "components": [],
+          "evidence": null,
+          "targets": null
+        }
+      }
+    }
+  ]
+}

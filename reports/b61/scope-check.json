@@ -1,0 +1,28 @@
+{
+  "executedAt": "2026-11-11T01:56:34.912Z",
+  "filesChecked": 233,
+  "changed": [
+    {
+      "path": "app/compositional-name-model.ts",
+      "allowed": true,
+      "before": "7218A11AC022AF8123E2692439F8B6603DAF2FEA3BB003840AF75547264789E7",
+      "after": "58157cb0e06d09deb980cf28be3ead81c395ebfb045fc64da5ab51ba05e4d3b9"
+    },
+    {
+      "path": "app/page.tsx",
+      "allowed": true,
+      "before": "E98AD012AA397D66CBCACE50B849409FF3E7390C4D6162496A803346D72C345E",
+      "after": "a11a3d701105658e504588ebf699ec276bf60d2468a06120c25f5534972050d5"
+    },
+    {
+      "path": "app/systematic-family-grammar.ts",
+      "allowed": true,
+      "before": "8C51EB0E160B1F81FBA7068B006BEDDD295A87D2B7D1995C96CCD6E78FF0D661",
+      "after": "63f96478261b120d8236ff15958354593b2923f9fa10b1f4163c704dd940dd21"
+    }
+  ],
+  "missing": [],
+  "unexpectedChanges": [],
+  "status": "PASS",
+  "note": "Compared with B6.1 entry snapshot, not Git HEAD: preserves already modified B4/B5/B6 files. B6.0 PNGs were never written by B6.1; initial snapshot covers its non-image evidence."
+}

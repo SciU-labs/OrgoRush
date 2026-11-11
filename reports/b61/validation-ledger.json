@@ -1,0 +1,53 @@
+{
+  "regressionsInitial": {
+    "tests": 344,
+    "pass": 336,
+    "fail": 8,
+    "skipped": 0
+  },
+  "generalizationFinal": {
+    "tests": 38,
+    "pass": 38,
+    "fail": 0,
+    "skipped": 0
+  },
+  "safetyFinal": {
+    "tests": 7,
+    "pass": 7,
+    "fail": 0,
+    "skipped": 0
+  },
+  "unsaturationPositionRetest": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "skipped": 0
+  },
+  "historicalRegressionPasses": 299,
+  "finalUniquePassingTests": 344,
+  "chromiumInitial": {
+    "tests": 19,
+    "pass": 14,
+    "fail": 5,
+    "skipped": 0
+  },
+  "chromiumFocusedRetest": {
+    "tests": 5,
+    "pass": 4,
+    "fail": 1,
+    "skipped": 0
+  },
+  "chromiumNitroFinal": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "skipped": 0
+  },
+  "browser": "140.0.7339.186",
+  "browserCases": 19,
+  "browserPassed": 19,
+  "controls": 450,
+  "typecheck": "PASS",
+  "diffCheck": "see diff-check.log",
+  "note": "Focused suites only; historical frozen OPSIN tests consume existing snapshots, not new local/remote parser calls."
+}
