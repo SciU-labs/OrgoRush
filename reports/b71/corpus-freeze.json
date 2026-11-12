@@ -1,0 +1,8 @@
+{
+  "frozenAt": "2026-11-12T06:10:49.013Z",
+  "fixture": "tests/fixtures/b71-independent-reference.json",
+  "sha256": "4874bc940b600cef345814a06a91e21a13502a2d0ae93bb9cc6d7c256f1dcfac",
+  "count": 12,
+  "preMeasurement": true,
+  "novelty": "OCL identity against B50/B61/B62/B701 fixture records; not all incidental test structures"
+}

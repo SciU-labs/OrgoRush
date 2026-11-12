@@ -10,6 +10,7 @@ export type NameComponent = {
   start: number;
   end: number;
   parentId?: string;
+  attachmentScope?: "ring" | "amide-nitrogen";
   locant?: number | "N";
   atomIds: number[];
   bondIds: [number, number][];
@@ -94,6 +95,6 @@ export function proveMonocycleNumbering(size: number, positions: readonly (reado
     selected, reflected, comparison };
 }
 
-export function blueBookRule(id: string, chapter: "P3" | "P5" | "P6" | "P6a") {
+export function blueBookRule(id: string, chapter: "P1" | "P3" | "P5" | "P6" | "P6a") {
   return { id, source: `https://iupac.qmul.ac.uk/BlueBook/${chapter}.html#${id.replace(/[-.]/g, "")}` };
 }

@@ -142,6 +142,18 @@ function makeStep(input: {
   }
   // Literal internal locants select branch atoms only. Never merge these into
   // parent numbering or the canvas's global map.
+  for (const component of components) if (component.attachmentScope === "amide-nitrogen" && component.locant === "N") {
+    const atomId=component.numbering.find(([,locant])=>locant==="N")?.[0];
+    const start=component.start-2;
+    if(atomId!==undefined && derivation.name.slice(start,start+2)==="N-") {
+      const item: ReasoningNameFragment={text:"N",start,kind:"numbering",language,numberingScope:component.id,
+        atomIds:[atomId],semanticId:`amide-n-locant:${component.id}`,
+        label:language==="en"?"Amide nitrogen locant":"Localizador del nitrógeno amídico"};
+      locantFragments.push(item);
+      const fragmentId=reasoningFragmentId(number,item);
+      fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[]};
+    }
+  }
   for(const component of components) if(component.internalNumbering) {
     const systematic = /^prop-([1-9])-en-([1-9])-(?:il|yl)$/.exec(component.text);
     if (systematic) {
@@ -254,7 +266,7 @@ export function buildValidatedPriorityReasoning(input: {
   // narrative from a generator analysis can leave historical synonyms (e.g.
   // methylvinyl) in an active methylethenyl proof after localization.
   const directPeers=alphabeticalPeers.filter(component=>component.parentId==="parent"
-    && (derivation.evidence || component.language===language));
+    && (derivation.evidence || component.language===language)).sort((a,b)=>a.start-b.start);
   const alphabeticalOrder=directPeers.length>1?describeAlphabeticalOrder(directPeers.map(component=>{
     const term=derivation.evidence?component.text:component.text.replace(/^[\d,]+-/,"");
     const multiplied=/^(di|tri)(.+)$/.exec(term);

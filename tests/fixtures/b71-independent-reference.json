@@ -1,0 +1,138 @@
+{
+  "frozenAt": "2026-11-12T06:10:49.013Z",
+  "source": "PubChem; descriptor transcription, not a raw HTTP receipt",
+  "records": [
+    {
+      "id": "B71-01",
+      "cid": 4060517,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/4060517",
+      "referenceName": "N-ethyl-2-methylbenzamide",
+      "smiles": "CCNC(=O)C1=CC=CC=C1C",
+      "formula": "C10H13NO",
+      "inchiKey": "HRJDPMNBBKGHKT-UHFFFAOYSA-N",
+      "identity": "dcNH@DAIeegWVhH`@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-02",
+      "cid": 81897,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/81897",
+      "referenceName": "N-ethyl-4-methoxybenzamide",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)OC",
+      "formula": "C10H13NO2",
+      "inchiKey": "KIOWCVBPJXEJLN-UHFFFAOYSA-N",
+      "identity": "dknD@DCTfVU}eVhHB`@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-03",
+      "cid": 669440,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/669440",
+      "referenceName": "N-ethyl-3-methoxybenzamide",
+      "smiles": "CCNC(=O)C1=CC(=CC=C1)OC",
+      "formula": "C10H13NO2",
+      "inchiKey": "HTGKXUZEDPDFIO-UHFFFAOYSA-N",
+      "identity": "dknD@DATfVU{gVhHH`@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-04",
+      "cid": 4070371,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/4070371",
+      "referenceName": "4-bromo-N-ethylbenzamide",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)Br",
+      "formula": "C9H10BrNO",
+      "inchiKey": "JXFKDGIMTQHLIT-UHFFFAOYSA-N",
+      "identity": "dcNH`IDLQIe]mih@Ij@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-05",
+      "cid": 4150792,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/4150792",
+      "referenceName": "3-chloro-N-methylbenzamide",
+      "smiles": "CNC(=O)C1=CC(=CC=C1)Cl",
+      "formula": "C8H8ClNO",
+      "inchiKey": "WJJLGPQRUCWHKZ-UHFFFAOYSA-N",
+      "identity": "dmvH`IDHcHhdihZz@HZ@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-06",
+      "cid": 347959,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/347959",
+      "referenceName": "2-chloro-N-methylbenzamide",
+      "smiles": "CNC(=O)C1=CC=CC=C1Cl",
+      "formula": "C8H8ClNO",
+      "inchiKey": "ITXNDDPDABTCBO-UHFFFAOYSA-N",
+      "identity": "dmvH`AxHcHhheDVfBAb@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-07",
+      "cid": 2425972,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/2425972",
+      "referenceName": "2-fluoro-N-methylbenzamide",
+      "smiles": "CNC(=O)C1=CC=CC=C1F",
+      "formula": "C8H8FNO",
+      "inchiKey": "NAGFMACWWJYORB-UHFFFAOYSA-N",
+      "identity": "dmvH`AxICHhheDVfBAb@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-08",
+      "cid": 11954,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11954",
+      "referenceName": "N-methylbenzamide",
+      "smiles": "CNC(=O)C1=CC=CC=C1",
+      "formula": "C8H9NO",
+      "inchiKey": "NCCHARWOCKOHIH-UHFFFAOYSA-N",
+      "identity": "deVH@DAIemQej@@@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-09",
+      "cid": 3719193,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/3719193",
+      "referenceName": "N-chloro-N-methylbenzamide",
+      "smiles": "CN(C(=O)C1=CC=CC=C1)Cl",
+      "formula": "C8H8ClNO",
+      "inchiKey": "SZDQYZRQIGILMN-UHFFFAOYSA-N",
+      "identity": "dmvH`HHHcHhhXdiVi`@@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-10",
+      "cid": 54316973,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/54316973",
+      "referenceName": "N-fluoro-N-methylbenzamide",
+      "smiles": "CN(C(=O)C1=CC=CC=C1)F",
+      "formula": "C8H8FNO",
+      "inchiKey": "SOXCYPXQYYRALB-UHFFFAOYSA-N",
+      "identity": "dmvH`HHICHhhXdiVi`@@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-11",
+      "cid": 2288603,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/2288603",
+      "referenceName": "N-butyl-N-ethyl-4-methoxybenzamide",
+      "smiles": "CCCCN(CC)C(=O)C1=CC=C(C=C1)OC",
+      "formula": "C14H21NO2",
+      "inchiKey": "PYFBEXAGXADZGP-UHFFFAOYSA-N",
+      "identity": "fhq``@D@|dsLjoojsUAPQT@@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    },
+    {
+      "id": "B71-12",
+      "cid": 668829,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/668829",
+      "referenceName": "N-cyclohexyl-N-ethyl-4-methoxybenzamide",
+      "smiles": "CCN(C1CCCCC1)C(=O)C2=CC=C(C=C2)OC",
+      "formula": "C16H23NO2",
+      "inchiKey": "MVZCFFOGUVJZLM-UHFFFAOYSA-N",
+      "identity": "fle``@D@bdsLrjyoNBuPUAQTP@@",
+      "stereo": "unspecified; no stereo descriptor in source SMILES"
+    }
+  ]
+}

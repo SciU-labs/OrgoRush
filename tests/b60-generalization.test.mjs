@@ -40,7 +40,8 @@ for(const row of generalizationInput)test(`B6 holdout ${row.id} ${row.family}: E
 });
 
 test('B6 finite grammar rejects unsupported families and malformed names explicitly',()=>{
-  for(const name of ['4-nitroaniline','4-cyanobenzamide','N-methylbenzamide','2-aminocyclohexanol',
+  // N-methylbenzamide was a B6 boundary; B7.1 now proves its graph independently.
+  for(const name of ['4-nitroaniline','4-cyanobenzamide','2-aminocyclohexanol',
     'cyclohexane-1,2-diol','cyclohexane-1,3-dione','cyclohex-2,4-dien-1-one','2-methylcyclononanone',
     '(1R)-2-methylcyclohexanol','2-(2-methylethyl)cyclohexanone','2-((1-methylethyl))cyclohexanol',
     '2,3-di(methyl)cyclohexanol','2-methyl-3-methylcyclohexanol','2-metilcyclohexanol'])

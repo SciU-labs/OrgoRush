@@ -1,0 +1,29 @@
+{
+  "corpusCount": 12,
+  "baseline": {
+    "es": {
+      "PARTIAL": 9,
+      "UNSUPPORTED": 3
+    },
+    "en": {
+      "PARTIAL": 9,
+      "UNSUPPORTED": 3
+    }
+  },
+  "post": {
+    "es": {
+      "FULL": 8,
+      "UNSUPPORTED": 3,
+      "PARTIAL": 1
+    },
+    "en": {
+      "FULL": 8,
+      "UNSUPPORTED": 3,
+      "PARTIAL": 1
+    }
+  },
+  "postDevelopedOnCorpus": true,
+  "baselineOpsinEquivalent": 9,
+  "postOpsinEquivalent": 9,
+  "corpusSha256": "4874bc940b600cef345814a06a91e21a13502a2d0ae93bb9cc6d7c256f1dcfac"
+}

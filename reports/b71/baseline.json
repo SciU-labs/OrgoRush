@@ -1,0 +1,473 @@
+{
+  "executedAt": "2026-11-12T06:11:48.679Z",
+  "pageSha256": "474216ccfbf84cc6d8fcfec6ae2452a52433138af2c37995a55ef48cef97082b",
+  "corpusSha256": "4874bc940b600cef345814a06a91e21a13502a2d0ae93bb9cc6d7c256f1dcfac",
+  "opsinVersion": "2.9.0",
+  "rows": [
+    {
+      "id": "B61-I04",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)C",
+      "formula": "C10H13NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            12
+          ],
+          "unsaturatedBonds": [],
+          "locant": 4
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-etil-4-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-ethyl-4-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(C)NC(C1=CC=C(C=C1)C)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B701-18",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=C(C=C(C=C2)Br)F",
+      "formula": "C14H11BrFNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B71-01",
+      "smiles": "CCNC(=O)C1=CC=CC=C1C",
+      "formula": "C10H13NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            12
+          ],
+          "unsaturatedBonds": [],
+          "locant": 2
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-etil-2-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-ethyl-2-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(C)NC(C1=C(C=CC=C1)C)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-02",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)OC",
+      "formula": "C10H13NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 4,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            12,
+            9,
+            13
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-etil-4-metoxibenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-ethyl-4-methoxybenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(C)NC(C1=CC=C(C=C1)OC)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-03",
+      "smiles": "CCNC(=O)C1=CC(=CC=C1)OC",
+      "formula": "C10H13NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 3,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            12,
+            8,
+            13
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-etil-3-metoxibenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-ethyl-3-methoxybenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(C)NC(C1=CC(=CC=C1)OC)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-04",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)Br",
+      "formula": "C9H10BrNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 4,
+          "name": "bromo",
+          "sortName": "bromo",
+          "complex": false,
+          "atomIds": [
+            9,
+            12
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "4-bromo-N-etilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "4-bromo-N-ethylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "BrC1=CC=C(C(=O)NCC)C=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-05",
+      "smiles": "CNC(=O)C1=CC(=CC=C1)Cl",
+      "formula": "C8H8ClNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 3,
+          "name": "cloro",
+          "sortName": "cloro",
+          "complex": false,
+          "atomIds": [
+            7,
+            11
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "3-cloro-N-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "3-chloro-N-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "ClC=1C=C(C(=O)NC)C=CC1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-06",
+      "smiles": "CNC(=O)C1=CC=CC=C1Cl",
+      "formula": "C8H8ClNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 2,
+          "name": "cloro",
+          "sortName": "cloro",
+          "complex": false,
+          "atomIds": [
+            10,
+            11
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "2-cloro-N-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "2-chloro-N-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "ClC1=C(C(=O)NC)C=CC=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-07",
+      "smiles": "CNC(=O)C1=CC=CC=C1F",
+      "formula": "C8H8FNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 2,
+          "name": "fluoro",
+          "sortName": "fluoro",
+          "complex": false,
+          "atomIds": [
+            10,
+            11
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "2-fluoro-N-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "2-fluoro-N-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "FC1=C(C(=O)NC)C=CC=C1",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-08",
+      "smiles": "CNC(=O)C1=CC=CC=C1",
+      "formula": "C8H9NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [],
+      "profiles": {
+        "es": {
+          "name": "N-metilbenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-methylbenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "CNC(C1=CC=CC=C1)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-09",
+      "smiles": "CN(C(=O)C1=CC=CC=C1)Cl",
+      "formula": "C8H8ClNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B71-10",
+      "smiles": "CN(C(=O)C1=CC=CC=C1)F",
+      "formula": "C8H8FNO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B71-11",
+      "smiles": "CCCCN(CC)C(=O)C1=CC=C(C=C1)OC",
+      "formula": "C14H21NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 4,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            16,
+            13,
+            17
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-butil-N-etil-4-metoxibenzamida",
+          "status": "PARTIAL",
+          "proof": null
+        },
+        "en": {
+          "name": "N-butyl-N-ethyl-4-methoxybenzamide",
+          "status": "PARTIAL",
+          "proof": null
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(CCC)N(C(C1=CC=C(C=C1)OC)=O)CC",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B71-12",
+      "smiles": "CCN(C1CCCCC1)C(=O)C2=CC=C(C=C2)OC",
+      "formula": "C16H23NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 4,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            18,
+            15,
+            19
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    }
+  ]
+}

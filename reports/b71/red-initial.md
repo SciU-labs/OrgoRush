@@ -1,0 +1,3 @@
+# Prueba roja previa a producción
+
+Antes de editar la gramática se ejecutó `node --test tests/b71-n-alkyl-benzamide.test.mjs`. El primer caso, B61-I04, falló porque `reconcileSystematicName` devolvió `null` para `N-etil-4-metilbenzamida`, donde la prueba exigía una reconstrucción `FULL`. El grafo de entrada fue el SMILES congelado `CCNC(=O)C1=CC=C(C=C1)C`. La línea base, medida antes de modificar producción y conservada en `baseline.json`, registró PARTIAL en ES y EN y OPSIN equivalente para el nombre inglés. Después se agregaron los controles negativos, de ámbito e invariancia a la misma suite.

@@ -1,0 +1,90 @@
+{
+  "retrievedAt": "2026-11-12T06:19:31.8696251Z",
+  "note": "Retrieved after freeze and baseline; not pre-freeze receipts",
+  "receipts": [
+    {
+      "cid": 4060517,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4060517/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "5971bff6a5d48b7e5370a88a774c01430f2e783f4a37d827892c9427947b01c8",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 4060517,\n        \"MolecularFormula\": \"C10H13NO\",\n        \"ConnectivitySMILES\": \"CCNC(=O)C1=CC=CC=C1C\",\n        \"InChIKey\": \"HRJDPMNBBKGHKT-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-ethyl-2-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 81897,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/81897/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "7c48222cbb1f52de6c058ee7ef59a672b991fdbf5805388fe2b610fb3047825f",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 81897,\n        \"MolecularFormula\": \"C10H13NO2\",\n        \"ConnectivitySMILES\": \"CCNC(=O)C1=CC=C(C=C1)OC\",\n        \"InChIKey\": \"KIOWCVBPJXEJLN-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-ethyl-4-methoxybenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 669440,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/669440/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "f26a6960bcda73ebd5ed1a73119e3f481e617fb5e5823349987ede5c05d0b0d8",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 669440,\n        \"MolecularFormula\": \"C10H13NO2\",\n        \"ConnectivitySMILES\": \"CCNC(=O)C1=CC(=CC=C1)OC\",\n        \"InChIKey\": \"HTGKXUZEDPDFIO-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-ethyl-3-methoxybenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 4070371,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4070371/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "79c7761a8b401a146f02bd43f71c75e55c58e1d7c1ee3f7f256efef422a5413d",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 4070371,\n        \"MolecularFormula\": \"C9H10BrNO\",\n        \"ConnectivitySMILES\": \"CCNC(=O)C1=CC=C(C=C1)Br\",\n        \"InChIKey\": \"JXFKDGIMTQHLIT-UHFFFAOYSA-N\",\n        \"IUPACName\": \"4-bromo-N-ethylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 4150792,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4150792/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "df26bf946c90c59d583d0f7f9718fa10c995375dc26a95f5a0f26f2a9bcd9ebb",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 4150792,\n        \"MolecularFormula\": \"C8H8ClNO\",\n        \"ConnectivitySMILES\": \"CNC(=O)C1=CC(=CC=C1)Cl\",\n        \"InChIKey\": \"WJJLGPQRUCWHKZ-UHFFFAOYSA-N\",\n        \"IUPACName\": \"3-chloro-N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 347959,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/347959/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "a8862b543b5f18518071ae7cc8e0f87ef7afa7b9e6d5c0ab3da71fa9277d04bc",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 347959,\n        \"MolecularFormula\": \"C8H8ClNO\",\n        \"ConnectivitySMILES\": \"CNC(=O)C1=CC=CC=C1Cl\",\n        \"InChIKey\": \"ITXNDDPDABTCBO-UHFFFAOYSA-N\",\n        \"IUPACName\": \"2-chloro-N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 2425972,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2425972/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "d859ad7f770951b5d28d920cbfa8f520d1ac970174a68d02cc1eaaecc092e70c",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 2425972,\n        \"MolecularFormula\": \"C8H8FNO\",\n        \"ConnectivitySMILES\": \"CNC(=O)C1=CC=CC=C1F\",\n        \"InChIKey\": \"NAGFMACWWJYORB-UHFFFAOYSA-N\",\n        \"IUPACName\": \"2-fluoro-N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 11954,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11954/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "fa24ae9e744b6e13c3cfee8e01d4108971aa1c9e75b66afd0c74442c450e50a8",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 11954,\n        \"MolecularFormula\": \"C8H9NO\",\n        \"ConnectivitySMILES\": \"CNC(=O)C1=CC=CC=C1\",\n        \"InChIKey\": \"NCCHARWOCKOHIH-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 3719193,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/3719193/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "a55f1cbfc0b0674085e5a700d33f7a52ba5569d4c85d15e4db4e5d729ceb339e",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 3719193,\n        \"MolecularFormula\": \"C8H8ClNO\",\n        \"ConnectivitySMILES\": \"CN(C(=O)C1=CC=CC=C1)Cl\",\n        \"InChIKey\": \"SZDQYZRQIGILMN-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-chloro-N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 54316973,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/54316973/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "6ff5401e156821662ea929a22237bc1951bcf0b623ed9b736a43f11d8cb31878",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 54316973,\n        \"MolecularFormula\": \"C8H8FNO\",\n        \"ConnectivitySMILES\": \"CN(C(=O)C1=CC=CC=C1)F\",\n        \"InChIKey\": \"SOXCYPXQYYRALB-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-fluoro-N-methylbenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 2288603,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2288603/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "5c3a3d718df5987b9d232eed18ae2d673e3bd4d8deb8a169496169e198a01867",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 2288603,\n        \"MolecularFormula\": \"C14H21NO2\",\n        \"ConnectivitySMILES\": \"CCCCN(CC)C(=O)C1=CC=C(C=C1)OC\",\n        \"InChIKey\": \"PYFBEXAGXADZGP-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-butyl-N-ethyl-4-methoxybenzamide\"\n      }\n    ]\n  }\n}\n"
+    },
+    {
+      "cid": 668829,
+      "uri": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/668829/property/IUPACName,MolecularFormula,CanonicalSMILES,InChIKey/JSON",
+      "status": 200,
+      "sha256": "1367187f7f84cc3f910e08542851612e63e35b1fb1b280e5540ec4ababa7d119",
+      "body": "{\n  \"PropertyTable\": {\n    \"Properties\": [\n      {\n        \"CID\": 668829,\n        \"MolecularFormula\": \"C16H23NO2\",\n        \"ConnectivitySMILES\": \"CCN(C1CCCCC1)C(=O)C2=CC=C(C=C2)OC\",\n        \"InChIKey\": \"MVZCFFOGUVJZLM-UHFFFAOYSA-N\",\n        \"IUPACName\": \"N-cyclohexyl-N-ethyl-4-methoxybenzamide\"\n      }\n    ]\n  }\n}\n"
+    }
+  ]
+}
