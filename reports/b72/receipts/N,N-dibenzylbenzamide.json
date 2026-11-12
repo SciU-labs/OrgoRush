@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 101312,
+        "MolecularFormula": "C21H19NO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CN(CC2=CC=CC=C2)C(=O)C3=CC=CC=C3",
+        "InChIKey": "VEQBFCHDNFXWFH-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

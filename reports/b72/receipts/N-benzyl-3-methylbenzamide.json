@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 723535,
+        "MolecularFormula": "C15H15NO",
+        "ConnectivitySMILES": "CC1=CC(=CC=C1)C(=O)NCC2=CC=CC=C2",
+        "InChIKey": "KNQRVGSKGZJGQV-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

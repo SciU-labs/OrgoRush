@@ -363,6 +363,7 @@ function translateCore(value: string) {
     .replace(/benceno/g, "benzene")
     .replace(/fenol/g, "phenol")
     .replace(/fenoxi/g, "phenoxy")
+    .replace(/bencil/g, "benzyl")
     .replace(/fenil/g, "phenyl")
     .replace(/cloro/g, "chloro")
     .replace(/yodo/g, "iodo")

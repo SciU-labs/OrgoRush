@@ -1,0 +1,299 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "cid": 73878,
+      "names": {
+        "es": "N-bencilbenzamida",
+        "en": "N-benzylbenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "N-bencilbenzamida",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "N-benzylbenzamide",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "es",
+          "name": "N-bencilbenzamida",
+          "support": "FULL",
+          "controls": 2
+        },
+        {
+          "language": "en",
+          "name": "N-benzylbenzamide",
+          "support": "FULL",
+          "controls": 2
+        }
+      ],
+      "controls": 14,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/O%3DC(c1ccccc1)NCc1ccccc1/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 1268.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1741.6000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 903.2999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 9887.29999999702
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 802.3000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 500.20000000298023
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1385.5
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 596.8000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 1181.1000000014901
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 952.6000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 778.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 709.7000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 317.29999999701977
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 705.8000000044703
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 346668,
+      "names": {
+        "es": "N-bencil-4-clorobenzamida",
+        "en": "N-benzyl-4-chlorobenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "N-bencil-4-clorobenzamida",
+          "support": "FULL",
+          "controls": 10
+        },
+        {
+          "language": "en",
+          "name": "N-benzyl-4-chlorobenzamide",
+          "support": "FULL",
+          "controls": 10
+        },
+        {
+          "language": "es",
+          "name": "N-bencil-4-clorobenzamida",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "N-benzyl-4-chlorobenzamide",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 26,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/O%3DC(c(cc1)ccc1Cl)NCc1ccccc1/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 913.2000000029802
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1806.2999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 830.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:14:4",
+          "observedAfterMs": 1615.8000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 736.8999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 1508.1000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 873.8000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 1699.2000000029802
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 788.1999999955297
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 2123.5
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 757.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 2660.6999999955297
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1079.2000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:14:4",
+          "observedAfterMs": 1595.5
+        },
+        {
+          "language": "en",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 822.2999999970198
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 2089.8000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 812.3999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "n-benzyl",
+          "observedAfterMs": 2257.39999999851
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 996
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-benzyl",
+          "observedAfterMs": 1790.7000000029802
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 927.3000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1619.8000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:14:4",
+          "observedAfterMs": 750.7999999970198
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 747
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1682.4000000059605
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:14:4",
+          "observedAfterMs": 937.3999999985099
+        }
+      ],
+      "geometryPreserved": true
+    }
+  ]
+}

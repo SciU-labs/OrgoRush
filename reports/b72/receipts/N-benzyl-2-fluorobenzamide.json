@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 677559,
+        "MolecularFormula": "C14H12FNO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=CC=C2F",
+        "InChIKey": "UGXWQXTTYOYCCP-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

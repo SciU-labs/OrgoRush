@@ -22,16 +22,19 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
     const multiplied = /^(di|tri)(.+)$/.exec(written);
     const termName = multiplied ? multiplied[2] : written;
     const systematicPropenyl = alkenyl && ["prop-1-en-2-il", "prop-1-en-2-yl"].includes(termName);
-    const term = systematicPropenyl
+    const benzyl = onAmideN && (language === "en" ? termName === "benzyl" : termName === "bencil");
+    const term = benzyl
+      ? {es:"bencil",en:"benzyl",elements:["C","C","C","C","C","C","C"],bonds:[[0,1,1],[1,2,2],[2,3,1],[3,4,2],[4,5,1],[5,6,2],[6,1,1]] as [number,number,number][]}
+      : systematicPropenyl
       ? {es:"prop-1-en-2-il",en:"prop-1-en-2-yl",elements:["C","C","C"],bonds:[[0,1,2],[0,2,1]] as [number,number,number][]}
       : alkenyl && ["1-metilvinil", "1-methylethenyl"].includes(termName)
       ? {es:"1-metilvinil",en:"1-methylethenyl",elements:["C","C","C"],bonds:[[0,1,2],[0,2,1]] as [number,number,number][]}
       : legacyPrefixTerm(termName);
     if (!term || term[language] !== termName || term.charges
-      || term.bonds.some(([, , order]) => order !== 1 && !(alkenyl && order === 2))
+      || term.bonds.some(([, , order]) => order !== 1 && !((alkenyl || benzyl) && order === 2))
       || term.kind && !["alcohol", "amine", "ether", ...(aromaticHalogens ? ["halogen"] : [])].includes(term.kind)
       || positions.some(p => p < 1 || p > maximum)
-      || onAmideN && (multiplied || m[2] || !["metil", "etil", "propil", "methyl", "ethyl", "propyl"].includes(termName))
+      || onAmideN && (multiplied || m[2] || !["metil", "etil", "propil", "methyl", "ethyl", "propyl", "bencil", "benzyl"].includes(termName))
       || !onAmideN && positions.length !== (multiplied ? multiplied[1] === "di" ? 2 : 3 : 1)
       || positions.some((p,i) => i > 0 && (repeated ? p < positions[i-1] : p <= positions[i-1]))) return null;
     let locantOffset=offset+consumed;
@@ -244,8 +247,11 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
       const alkyl=nPrefix.term.elements.map(()=>atom());
       nPrefix.term.bonds.forEach(([a,b,order])=>edge(alkyl[a],alkyl[b],order as 1|2|3));
       edge(linkage,alkyl[0]);
-      add("n-alkyl","substituent",nPrefix.text,nPrefix.start,alkyl,
-        language==="en"?"N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring."
+      const isBenzyl=nPrefix.term.en==="benzyl";
+      add(isBenzyl?"n-benzyl":"n-alkyl","substituent",nPrefix.text,nPrefix.start,alkyl,
+        isBenzyl ? (language==="en" ? "N links benzyl through CH2 to the amide nitrogen; its phenyl ring is distinct from the carbonyl-bearing parent."
+          : "N une el bencilo por CH2 al nitrógeno amídico; su anillo fenilo es distinto del anillo progenitor unido al carbonilo.")
+        : language==="en"?"N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring."
           :"N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
         {parentId:"parent",locant:"N",attachmentScope:"amide-nitrogen",numbering:[[linkage,"N"]],
           bondIds:[...graph.bonds.filter(([a,b])=>alkyl.includes(a)&&alkyl.includes(b)).map(([a,b]):[number,number]=>[a,b]),[linkage,alkyl[0]]]});
@@ -276,7 +282,8 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
       : suffix==="benzaldehyde" ? blueBookRule("P-66.6.1.2.1", "P6a")
       : esterInput ? blueBookRule("P-65.6.3.3.1", "P6") : blueBookRule("P-59.2.1.4", "P5");
     evidence={source:"active-name",language,construction:esterInput?"aromatic-ester":"retained-aromatic",
-      rules:[rule,blueBookRule("P-59.2.5","P5"),...(nPrefix?[blueBookRule("P-66.1.1.3.1.1","P6a"),blueBookRule("P-14.5","P1")]:[])],parentSelection:"retained-functional-parent",
+      rules:[rule,blueBookRule("P-59.2.5","P5"),...(nPrefix?[blueBookRule("P-66.1.1.3.1.1","P6a"),blueBookRule("P-14.5","P1")]:[]),
+        ...(nPrefix?.term.en==="benzyl"?[blueBookRule("P-57.1.2","P5")]:[])],parentSelection:"retained-functional-parent",
       numbering:proveMonocycleNumbering(6,ps.map(p=>p.positions)),stereo:"unspecified-only"};
     allowEquivalentNumbering=true;
   } else if(cyclicInput) {

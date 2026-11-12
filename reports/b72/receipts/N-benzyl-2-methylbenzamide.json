@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 226952,
+        "MolecularFormula": "C15H15NO",
+        "ConnectivitySMILES": "CC1=CC=CC=C1C(=O)NCC2=CC=CC=C2",
+        "InChIKey": "SQDLPGKVRZFDKW-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -3776,6 +3776,34 @@ function functionalizedAlkylName(proof: HydroxyalkylEvidence | AminoalkylEvidenc
   return `${pieces.map(piece=>piece.text).join("-")}${rootName}`;
 }
 
+/** A single unsubstituted phenylmethyl branch, proven from the amide nitrogen. */
+function amideBenzylEvidence(molecule: Molecule, group: FunctionalGroup | undefined) {
+  if (!group || group.kind !== "amide" || (molecule.rings?.length ?? 0) !== 2
+    || findMoleculeValenceViolation(molecule)) return undefined;
+  const nitrogen = getAtom(group.heteroAtomId, molecule);
+  if (!nitrogen || (nitrogen.charge ?? 0) !== 0 || nitrogen.tetrahedralParity !== undefined) return undefined;
+  const nNeighbors = atomNeighbors(group.heteroAtomId, molecule);
+  if (nNeighbors.length !== 2 || nNeighbors.some(n => n.order !== 1)
+    || !nNeighbors.some(n => n.atomId === group.carbonId)) return undefined;
+  const methylene = nNeighbors.find(n => n.atomId !== group.carbonId)?.atomId;
+  if (methylene === undefined) return undefined;
+  const carbon = getAtom(methylene, molecule), neighbors = atomNeighbors(methylene, molecule);
+  if (!carbon || !isCarbonAtom(carbon) || (carbon.charge ?? 0) !== 0
+    || carbon.tetrahedralParity !== undefined || neighbors.length !== 2 || neighbors.some(n => n.order !== 1)) return undefined;
+  const attached = neighbors.find(n => n.atomId !== group.heteroAtomId)?.atomId;
+  const rings = molecule.rings!;
+  if (rings.some(r => r.kind !== "aromatic" || r.atomIds.length !== 6
+    || r.atomIds.some(id => !getAtom(id,molecule) || !isCarbonAtom(getAtom(id,molecule)!)))
+    || rings[0].atomIds.some(id => rings[1].atomIds.includes(id))) return undefined;
+  const benzylRing = rings.find(r => attached !== undefined && r.atomIds.includes(attached));
+  const parentRing = rings.find(r => r !== benzylRing && r.atomIds.some(id =>
+    atomNeighbors(id,molecule).some(n => n.atomId === group.carbonId && n.order === 1)));
+  if (!benzylRing || !parentRing || benzylRing.atomIds.includes(methylene)
+    || benzylRing.atomIds.some(id => atomNeighbors(id,molecule).some(n =>
+      !benzylRing.atomIds.includes(n.atomId) && !(id === attached && n.atomId === methylene)))) return undefined;
+  return {methylene, benzylRing, parentRing, atomIds:[methylene,...benzylRing.atomIds]};
+}
+
 function nitrogenSubstituentPrefixes(
   group: FunctionalGroup | undefined,
   parentPath: number[],
@@ -3792,6 +3820,7 @@ function nitrogenSubstituentPrefixes(
       return !parentPath.includes(atomId);
     });
   const names = extraCarbonIds.map((atomId) => {
+    if (amideBenzylEvidence(molecule, group)?.methylene === atomId) return "bencil";
     const length = simpleAlkylLength(atomId, skeleton);
     return alkylNames[length] ?? "alquil";
   });
@@ -3818,14 +3847,15 @@ function nitrogenSubstituentsForParent(molecule: Molecule, analysis: Analysis) {
       const length = simpleAlkylLength(atomId, skeleton);
       // The existing N-prefix grammar admits unbranched alkyl groups attached
       // through an end atom. Other N branches require their own grammar.
-      const supported = length > 0 && Boolean(alkylNames[length])
+      const benzyl=amideBenzylEvidence(molecule,group);
+      const supported = benzyl?.methylene === atomId || length > 0 && Boolean(alkylNames[length])
         && (adjacency.get(atomId)?.length ?? 0) <= 1
         && !molecule.rings?.some((ring) => ring.atomIds.some((id) => atomIds.includes(id)))
         && skeleton.bonds.every(([a, b, order = 1]) => !atomIds.includes(a) || !atomIds.includes(b) || order === 1)
         && atomIds.every((id) => atomNeighbors(id, molecule).every(({ atomId: neighbor }) =>
           atomIds.includes(neighbor) || neighbor === group.heteroAtomId));
-      return { systematicName: alkylNames[length] ?? "alquil", complex: false,
-        atomIds, nitrogenAtomId: group.heteroAtomId, supported };
+      return { systematicName: benzyl?.methylene === atomId ? "bencil" : alkylNames[length] ?? "alquil", complex: false,
+        atomIds: benzyl?.methylene === atomId ? benzyl.atomIds : atomIds, nitrogenAtomId: group.heteroAtomId, supported };
     });
 }
 
@@ -4543,7 +4573,12 @@ function analyzePerceivedMolecule(
     return withExplicitGeometricName(molecule, { ...chainAnalysis, formula: molecularFormula(molecule) });
   }
 
-  const baseAnalysis = analyzeHydrocarbonMolecule(skeleton, enabledAliases, [], convention,
+  const benzyl = primaryKind === "amide" && groups.filter(g => g.kind === "amide").length === 1
+    ? amideBenzylEvidence(molecule, groups.find(g => g.kind === "amide")) : undefined;
+  const benzylParent = benzyl && skeleton.rings?.find(r => r.atomIds.length === benzyl.parentRing.atomIds.length
+    && r.atomIds.every(id => benzyl.parentRing.atomIds.includes(id)));
+  const baseAnalysis = benzylParent ? buildRingAnalysis(skeleton,benzylParent,"aromatic",enabledAliases)
+    : analyzeHydrocarbonMolecule(skeleton, enabledAliases, [], convention,
     convention === "blue-book-2013" && !groups.length && molecule.atoms.every(isCarbonAtom));
   if (!groups.length) {
     return withExplicitGeometricName(molecule, {

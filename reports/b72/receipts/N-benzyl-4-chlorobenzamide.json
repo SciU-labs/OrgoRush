@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 346668,
+        "MolecularFormula": "C14H12ClNO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)Cl",
+        "InChIKey": "LSMWDKIFKGLNSW-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

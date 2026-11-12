@@ -1,0 +1,18 @@
+{
+  "count": 14,
+  "initial": {
+    "FULL": 0,
+    "PARTIAL": 0,
+    "UNSUPPORTED": 14
+  },
+  "post": {
+    "FULL": 12,
+    "PARTIAL": 0,
+    "UNSUPPORTED": 2
+  },
+  "opsinEquivalent": 12,
+  "postIsBlind": false,
+  "maximumNovelCount": 13,
+  "knownPriorControl": "B72-13",
+  "method": "Comparison uses OpenChemLib, also used in OrgoRush."
+}

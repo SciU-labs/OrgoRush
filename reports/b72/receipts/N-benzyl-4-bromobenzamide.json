@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 781117,
+        "MolecularFormula": "C14H12BrNO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)Br",
+        "InChIKey": "RLXPLHLLCIBNAN-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

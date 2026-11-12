@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 700577,
+        "MolecularFormula": "C15H15NO2",
+        "ConnectivitySMILES": "COC1=CC=CC=C1C(=O)NCC2=CC=CC=C2",
+        "InChIKey": "YJJRNVSVZRWSNI-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

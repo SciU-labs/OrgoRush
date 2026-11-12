@@ -1,0 +1,1377 @@
+{
+  "executedAt": "2026-11-12T06:56:18.161Z",
+  "pageSha256": "474216ccfbf84cc6d8fcfec6ae2452a52433138af2c37995a55ef48cef97082b",
+  "corpusSha256": "441157f0e24a956256e638dfa274c5ab2cca32a3cacb37f3c28d15906b0c3ccc",
+  "opsinVersion": "2.9.0",
+  "rows": [
+    {
+      "id": "B61-I04",
+      "smiles": "CCNC(=O)C1=CC=C(C=C1)C",
+      "formula": "C10H13NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            12
+          ],
+          "unsaturatedBonds": [],
+          "locant": 4
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": "N-etil-4-metilbenzamida",
+          "status": "FULL",
+          "proof": {
+            "status": "FULL",
+            "name": "N-etil-4-metilbenzamida",
+            "preferred": false,
+            "principalGroup": "amide",
+            "parentAtomIds": [
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              4
+            ],
+            "components": [
+              {
+                "id": "prefix-0",
+                "role": "prefix",
+                "text": "metil",
+                "start": 9,
+                "end": 14,
+                "atomIds": [
+                  12,
+                  9
+                ],
+                "bondIds": [
+                  [
+                    9,
+                    12
+                  ]
+                ],
+                "numbering": [
+                  [
+                    9,
+                    4
+                  ]
+                ],
+                "explanation": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+                "parentId": "parent",
+                "locant": 4,
+                "attachmentScope": "ring",
+                "explanationEs": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+                "language": "es",
+                "numberingScope": "parent"
+              },
+              {
+                "id": "n-alkyl",
+                "role": "substituent",
+                "text": "etil",
+                "start": 2,
+                "end": 6,
+                "atomIds": [
+                  2,
+                  1
+                ],
+                "bondIds": [
+                  [
+                    2,
+                    1
+                  ],
+                  [
+                    3,
+                    2
+                  ]
+                ],
+                "numbering": [
+                  [
+                    3,
+                    "N"
+                  ]
+                ],
+                "explanation": "N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
+                "parentId": "parent",
+                "locant": "N",
+                "attachmentScope": "amide-nitrogen",
+                "language": "es",
+                "numberingScope": "n-alkyl"
+              },
+              {
+                "id": "parent",
+                "role": "parent",
+                "text": "benzamida",
+                "start": 14,
+                "end": 23,
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  4
+                ],
+                "bondIds": [
+                  [
+                    6,
+                    7
+                  ],
+                  [
+                    7,
+                    8
+                  ],
+                  [
+                    8,
+                    9
+                  ],
+                  [
+                    9,
+                    10
+                  ],
+                  [
+                    10,
+                    11
+                  ],
+                  [
+                    11,
+                    6
+                  ],
+                  [
+                    6,
+                    4
+                  ]
+                ],
+                "numbering": [
+                  [
+                    6,
+                    1
+                  ],
+                  [
+                    7,
+                    2
+                  ],
+                  [
+                    8,
+                    3
+                  ],
+                  [
+                    9,
+                    4
+                  ],
+                  [
+                    10,
+                    5
+                  ],
+                  [
+                    11,
+                    6
+                  ]
+                ],
+                "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son 4.",
+                "language": "es",
+                "numberingScope": "parent",
+                "writtenLocants": [
+                  {
+                    "start": 7,
+                    "end": 8,
+                    "locant": 4,
+                    "atomId": 9
+                  }
+                ]
+              },
+              {
+                "id": "suffix",
+                "role": "suffix",
+                "text": "benzamida",
+                "start": 14,
+                "end": 23,
+                "atomIds": [
+                  4,
+                  5,
+                  3
+                ],
+                "bondIds": [
+                  [
+                    4,
+                    5
+                  ],
+                  [
+                    4,
+                    3
+                  ]
+                ],
+                "numbering": [],
+                "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+                "language": "es",
+                "numberingScope": "suffix"
+              }
+            ],
+            "evidence": {
+              "source": "active-name",
+              "language": "es",
+              "construction": "retained-aromatic",
+              "rules": [
+                {
+                  "id": "P-66.1.1.1.2",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P6a.html#P661112"
+                },
+                {
+                  "id": "P-59.2.5",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P5.html#P5925"
+                },
+                {
+                  "id": "P-66.1.1.3.1.1",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P6a.html#P6611311"
+                },
+                {
+                  "id": "P-14.5",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P1.html#P145"
+                }
+              ],
+              "parentSelection": "retained-functional-parent",
+              "numbering": {
+                "scope": "parent",
+                "priorities": [
+                  "suffix",
+                  "unsaturation",
+                  "prefix-set",
+                  "prefix-citation-order"
+                ],
+                "selected": [
+                  [
+                    1
+                  ],
+                  [],
+                  [
+                    4
+                  ],
+                  [],
+                  [
+                    4
+                  ]
+                ],
+                "reflected": [
+                  [
+                    1
+                  ],
+                  [],
+                  [
+                    4
+                  ],
+                  [],
+                  [
+                    4
+                  ]
+                ],
+                "comparison": 0
+              },
+              "stereo": "unspecified-only",
+              "reconstructedGraph": {
+                "atoms": [
+                  {
+                    "id": 1,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 2,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 3,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 4,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 5,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 6,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 7,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 8,
+                    "element": "O",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 9,
+                    "element": "N",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 10,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 11,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 12,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "bonds": [
+                  [
+                    1,
+                    2,
+                    2
+                  ],
+                  [
+                    2,
+                    3,
+                    1
+                  ],
+                  [
+                    3,
+                    4,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    1
+                  ],
+                  [
+                    5,
+                    6,
+                    2
+                  ],
+                  [
+                    6,
+                    1,
+                    1
+                  ],
+                  [
+                    1,
+                    7,
+                    1
+                  ],
+                  [
+                    7,
+                    8,
+                    2
+                  ],
+                  [
+                    7,
+                    9,
+                    1
+                  ],
+                  [
+                    4,
+                    10,
+                    1
+                  ],
+                  [
+                    11,
+                    12,
+                    1
+                  ],
+                  [
+                    9,
+                    11,
+                    1
+                  ]
+                ]
+              },
+              "atomMapping": [
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  3
+                ],
+                [
+                  11,
+                  2
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  1
+                ],
+                [
+                  1,
+                  6
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  3,
+                  8
+                ],
+                [
+                  5,
+                  10
+                ],
+                [
+                  6,
+                  11
+                ]
+              ],
+              "equivalence": "complete-graph-isomorphism"
+            }
+          }
+        },
+        "en": {
+          "name": "N-ethyl-4-methylbenzamide",
+          "status": "FULL",
+          "proof": {
+            "status": "FULL",
+            "name": "N-ethyl-4-methylbenzamide",
+            "preferred": false,
+            "principalGroup": "amide",
+            "parentAtomIds": [
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              4
+            ],
+            "components": [
+              {
+                "id": "prefix-0",
+                "role": "prefix",
+                "text": "methyl",
+                "start": 10,
+                "end": 16,
+                "atomIds": [
+                  12,
+                  9
+                ],
+                "bondIds": [
+                  [
+                    9,
+                    12
+                  ]
+                ],
+                "numbering": [
+                  [
+                    9,
+                    4
+                  ]
+                ],
+                "explanation": "methyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+                "parentId": "parent",
+                "locant": 4,
+                "attachmentScope": "ring",
+                "language": "en",
+                "numberingScope": "parent"
+              },
+              {
+                "id": "n-alkyl",
+                "role": "substituent",
+                "text": "ethyl",
+                "start": 2,
+                "end": 7,
+                "atomIds": [
+                  2,
+                  1
+                ],
+                "bondIds": [
+                  [
+                    2,
+                    1
+                  ],
+                  [
+                    3,
+                    2
+                  ]
+                ],
+                "numbering": [
+                  [
+                    3,
+                    "N"
+                  ]
+                ],
+                "explanation": "N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring.",
+                "parentId": "parent",
+                "locant": "N",
+                "attachmentScope": "amide-nitrogen",
+                "language": "en",
+                "numberingScope": "n-alkyl"
+              },
+              {
+                "id": "parent",
+                "role": "parent",
+                "text": "benzamide",
+                "start": 16,
+                "end": 25,
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  4
+                ],
+                "bondIds": [
+                  [
+                    6,
+                    7
+                  ],
+                  [
+                    7,
+                    8
+                  ],
+                  [
+                    8,
+                    9
+                  ],
+                  [
+                    9,
+                    10
+                  ],
+                  [
+                    10,
+                    11
+                  ],
+                  [
+                    11,
+                    6
+                  ],
+                  [
+                    6,
+                    4
+                  ]
+                ],
+                "numbering": [
+                  [
+                    6,
+                    1
+                  ],
+                  [
+                    7,
+                    2
+                  ],
+                  [
+                    8,
+                    3
+                  ],
+                  [
+                    9,
+                    4
+                  ],
+                  [
+                    10,
+                    5
+                  ],
+                  [
+                    11,
+                    6
+                  ]
+                ],
+                "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 4.",
+                "language": "en",
+                "numberingScope": "parent",
+                "writtenLocants": [
+                  {
+                    "start": 8,
+                    "end": 9,
+                    "locant": 4,
+                    "atomId": 9
+                  }
+                ]
+              },
+              {
+                "id": "suffix",
+                "role": "suffix",
+                "text": "benzamide",
+                "start": 16,
+                "end": 25,
+                "atomIds": [
+                  4,
+                  5,
+                  3
+                ],
+                "bondIds": [
+                  [
+                    4,
+                    5
+                  ],
+                  [
+                    4,
+                    3
+                  ]
+                ],
+                "numbering": [],
+                "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+                "language": "en",
+                "numberingScope": "suffix"
+              }
+            ],
+            "evidence": {
+              "source": "active-name",
+              "language": "en",
+              "construction": "retained-aromatic",
+              "rules": [
+                {
+                  "id": "P-66.1.1.1.2",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P6a.html#P661112"
+                },
+                {
+                  "id": "P-59.2.5",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P5.html#P5925"
+                },
+                {
+                  "id": "P-66.1.1.3.1.1",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P6a.html#P6611311"
+                },
+                {
+                  "id": "P-14.5",
+                  "source": "https://iupac.qmul.ac.uk/BlueBook/P1.html#P145"
+                }
+              ],
+              "parentSelection": "retained-functional-parent",
+              "numbering": {
+                "scope": "parent",
+                "priorities": [
+                  "suffix",
+                  "unsaturation",
+                  "prefix-set",
+                  "prefix-citation-order"
+                ],
+                "selected": [
+                  [
+                    1
+                  ],
+                  [],
+                  [
+                    4
+                  ],
+                  [],
+                  [
+                    4
+                  ]
+                ],
+                "reflected": [
+                  [
+                    1
+                  ],
+                  [],
+                  [
+                    4
+                  ],
+                  [],
+                  [
+                    4
+                  ]
+                ],
+                "comparison": 0
+              },
+              "stereo": "unspecified-only",
+              "reconstructedGraph": {
+                "atoms": [
+                  {
+                    "id": 1,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 2,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 3,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 4,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 5,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 6,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 7,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 8,
+                    "element": "O",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 9,
+                    "element": "N",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 10,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 11,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "id": 12,
+                    "element": "C",
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "bonds": [
+                  [
+                    1,
+                    2,
+                    2
+                  ],
+                  [
+                    2,
+                    3,
+                    1
+                  ],
+                  [
+                    3,
+                    4,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    1
+                  ],
+                  [
+                    5,
+                    6,
+                    2
+                  ],
+                  [
+                    6,
+                    1,
+                    1
+                  ],
+                  [
+                    1,
+                    7,
+                    1
+                  ],
+                  [
+                    7,
+                    8,
+                    2
+                  ],
+                  [
+                    7,
+                    9,
+                    1
+                  ],
+                  [
+                    4,
+                    10,
+                    1
+                  ],
+                  [
+                    11,
+                    12,
+                    1
+                  ],
+                  [
+                    9,
+                    11,
+                    1
+                  ]
+                ]
+              },
+              "atomMapping": [
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  3
+                ],
+                [
+                  11,
+                  2
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  1
+                ],
+                [
+                  1,
+                  6
+                ],
+                [
+                  4,
+                  9
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  2,
+                  7
+                ],
+                [
+                  3,
+                  8
+                ],
+                [
+                  5,
+                  10
+                ],
+                [
+                  6,
+                  11
+                ]
+              ],
+              "equivalence": "complete-graph-isomorphism"
+            }
+          }
+        }
+      },
+      "opsin": {
+        "status": 0,
+        "smiles": "C(C)NC(C1=CC=C(C=C1)C)=O",
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "equivalent": true
+      }
+    },
+    {
+      "id": "B701-18",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=C(C=C(C=C2)Br)F",
+      "formula": "C14H11BrFNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-01",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=CC=C2",
+      "formula": "C14H13NO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-02",
+      "smiles": "CC1=CC=CC=C1C(=O)NCC2=CC=CC=C2",
+      "formula": "C15H15NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            1
+          ],
+          "unsaturatedBonds": [],
+          "locant": 2
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-03",
+      "smiles": "CC1=CC(=CC=C1)C(=O)NCC2=CC=CC=C2",
+      "formula": "C15H15NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            1
+          ],
+          "unsaturatedBonds": [],
+          "locant": 3
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-04",
+      "smiles": "CC1=CC=C(C=C1)C(=O)NCC2=CC=CC=C2",
+      "formula": "C15H15NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            1
+          ],
+          "unsaturatedBonds": [],
+          "locant": 4
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-05",
+      "smiles": "COC1=CC=CC=C1C(=O)NCC2=CC=CC=C2",
+      "formula": "C15H15NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 2,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            2,
+            1,
+            3
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-06",
+      "smiles": "COC1=CC=C(C=C1)C(=O)NCC2=CC=CC=C2",
+      "formula": "C15H15NO2",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "locant": 4,
+          "name": "metoxi",
+          "sortName": "metoxi",
+          "complex": false,
+          "atomIds": [
+            2,
+            1,
+            3
+          ]
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-07",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=CC=C2F",
+      "formula": "C14H12FNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-08",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)F",
+      "formula": "C14H12FNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-09",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=CC=C2Cl",
+      "formula": "C14H12ClNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-10",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)Cl",
+      "formula": "C14H12ClNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-11",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)Br",
+      "formula": "C14H12BrNO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-12",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)I",
+      "formula": "C14H12INO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "metil",
+          "sortName": "metil",
+          "complex": false,
+          "atomIds": [
+            7
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-13",
+      "smiles": "C1=CC=C(C=C1)C(=O)NC2=CC=CC=C2",
+      "formula": "C13H11NO",
+      "parent": "benzamida",
+      "function": "amide",
+      "substituents": [],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    },
+    {
+      "id": "B72-14",
+      "smiles": "C1=CC=C(C=C1)CCNC(=O)C2=CC=CC=C2",
+      "formula": "C15H15NO",
+      "parent": "benceno--carboxamida",
+      "function": "amide",
+      "substituents": [
+        {
+          "name": "etil",
+          "sortName": "etil",
+          "complex": false,
+          "atomIds": [
+            7,
+            8
+          ],
+          "unsaturatedBonds": [],
+          "locant": 1
+        }
+      ],
+      "profiles": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "proof": null
+        }
+      }
+    }
+  ]
+}

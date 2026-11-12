@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 826977,
+        "MolecularFormula": "C14H12FNO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)F",
+        "InChIKey": "XCRBOSJQBAFSMZ-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -26,7 +26,8 @@ test('B7.0.1: adversarial controls never equate incompatible names and graphs',(
     ['función','B701-08','2-bromo-3-fluorobenzaldehyde'],
     ['longitud alquilo','B701-07','3-chloro-2-ethylbenzamide'],
     ['regioisómero misma fórmula','B701-03','2-iodo-4-methoxybenzaldehyde'],
-    ['amida N-sustituida','B701-18','N-benzyl-4-bromo-2-fluorobenzamide'],
+    // B7.2 proves the historical N-benzyl case; retain a wrong-locant control.
+    ['amida N-sustituida con localizador incorrecto','B701-18','N-benzyl-4-bromo-3-fluorobenzamide'],
     ['nitro fuera de cobertura','B701-17','3-iodo-4-nitrobenzonitrile'],
     ['fuera de familia','B701-03','4-iodo-2-methoxybenzene'],
   ];

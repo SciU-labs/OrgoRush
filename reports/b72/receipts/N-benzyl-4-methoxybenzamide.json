@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 346035,
+        "MolecularFormula": "C15H15NO2",
+        "ConnectivitySMILES": "COC1=CC=C(C=C1)C(=O)NCC2=CC=CC=C2",
+        "InChIKey": "GEFZSLMGZREDTO-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

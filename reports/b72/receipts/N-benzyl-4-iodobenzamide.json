@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 961956,
+        "MolecularFormula": "C14H12INO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=C(C=C2)I",
+        "InChIKey": "WOLLYHQQIPVFOA-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

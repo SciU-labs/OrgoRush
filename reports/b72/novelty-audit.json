@@ -1,0 +1,11 @@
+{
+  "scope": "Post-freeze audit of incidental named tests in addition to the fixture-only duplicate check in corpus-freeze.json; not exhaustive over all historical structures.",
+  "excludedFromNovelty": [
+    {
+      "id": "B72-13",
+      "reason": "N-phenylbenzamide already appeared as a negative control in tests/b71-n-alkyl-benzamide.test.mjs."
+    }
+  ],
+  "historicalB70118": "Measured separately and excluded from the 14 frozen records.",
+  "maximumNovelCount": 13
+}

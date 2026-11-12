@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 95083,
+        "MolecularFormula": "C15H15NO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CCNC(=O)C2=CC=CC=C2",
+        "InChIKey": "DAVRGGJTJDTVQT-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "frozenAt": "2026-11-12T06:55:43.540Z",
+  "sha256": "441157f0e24a956256e638dfa274c5ab2cca32a3cacb37f3c28d15906b0c3ccc",
+  "count": 14,
+  "preMeasurement": true,
+  "receipts": "Original responses obtained before freeze",
+  "duplicateScope": [
+    "b50-pubchem-rings.json",
+    "b61-independent-reference.json",
+    "b62-independent-reference.json",
+    "b62-supplemental.json",
+    "b701-independent-reference.json",
+    "b71-independent-reference.json"
+  ],
+  "previous": []
+}
