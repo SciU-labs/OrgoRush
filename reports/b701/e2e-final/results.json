@@ -1,0 +1,560 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "cid": 15128239,
+      "names": {
+        "es": "2-metoxi-4-yodobenzaldehído",
+        "en": "4-iodo-2-methoxybenzaldehyde"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "2-metoxi-4-yodobenzaldehído",
+          "support": "FULL",
+          "controls": 9
+        },
+        {
+          "language": "en",
+          "name": "4-iodo-2-methoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 9
+        },
+        {
+          "language": "es",
+          "name": "2-metoxi-4-yodobenzaldehído",
+          "support": "FULL",
+          "controls": 4
+        },
+        {
+          "language": "en",
+          "name": "4-iodo-2-methoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 4
+        }
+      ],
+      "controls": 26,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/COc1c(C%3DO)ccc(I)c1/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 228.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 451.29999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 226.10000000149012
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 472.90000000596046
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:4",
+          "observedAfterMs": 216.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 464.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 222.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 453.30000000447035
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 229
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 214.59999999403954
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 431
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 213.60000000149012
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:4",
+          "observedAfterMs": 440.20000000298023
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 214.19999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 441.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 217.09999999403954
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 424.5
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 227.39999999850988
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 204.89999999850988
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 409.59999999403954
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 216.20000000298023
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:4",
+          "observedAfterMs": 430.20000000298023
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 215.40000000596046
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 454.5
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:4",
+          "observedAfterMs": 225.19999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:2",
+          "observedAfterMs": 456.8999999985099
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 46864076,
+      "names": {
+        "es": "5-bromo-4-metoxi-2-yodobenzaldehído",
+        "en": "5-bromo-2-iodo-4-methoxybenzaldehyde"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "5-bromo-4-metoxi-2-yodobenzaldehído",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "en",
+          "name": "5-bromo-2-iodo-4-methoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 12
+        },
+        {
+          "language": "es",
+          "name": "5-bromo-4-metoxi-2-yodobenzaldehído",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "5-bromo-2-iodo-4-methoxybenzaldehyde",
+          "support": "FULL",
+          "controls": 5
+        }
+      ],
+      "controls": 34,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/COc(cc(c(C%3DO)c1)I)c1Br/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 259.90000000596046
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 462.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 233
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 547.3000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:4",
+          "observedAfterMs": 231.30000000447035
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:2",
+          "observedAfterMs": 457.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 224.5
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 460.3999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-2",
+          "observedAfterMs": 224.70000000298023
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 491.8999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 218.30000000447035
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-2",
+          "observedAfterMs": 452.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 226.09999999403954
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 441.80000000447035
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 233.60000000149012
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 442.69999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:2",
+          "observedAfterMs": 218.79999999701977
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:4",
+          "observedAfterMs": 432.5
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 225.80000000447035
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 436.59999999403954
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-2",
+          "observedAfterMs": 228.10000000149012
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 447.69999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-1",
+          "observedAfterMs": 221
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-2",
+          "observedAfterMs": 454.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 693.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 453.5
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 218.40000000596046
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:3:4",
+          "observedAfterMs": 429.80000000447035
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:7:2",
+          "observedAfterMs": 225.19999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 221.39999999850988
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 445.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 226.90000000596046
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:7:2",
+          "observedAfterMs": 450.19999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:3:4",
+          "observedAfterMs": 223.80000000447035
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 593814,
+      "names": {
+        "es": "3,4,5-trifluorobenzonitrilo",
+        "en": "3,4,5-trifluorobenzonitrile"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "3,4,5-trifluorobenzonitrilo",
+          "support": "FULL",
+          "controls": 7
+        },
+        {
+          "language": "en",
+          "name": "3,4,5-trifluorobenzonitrile",
+          "support": "FULL",
+          "controls": 7
+        },
+        {
+          "language": "es",
+          "name": "3,4,5-trifluorobenzonitrilo",
+          "support": "FULL",
+          "controls": 5
+        },
+        {
+          "language": "en",
+          "name": "3,4,5-trifluorobenzonitrile",
+          "support": "FULL",
+          "controls": 5
+        }
+      ],
+      "controls": 24,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/N%23Cc(cc1F)cc(F)c1F/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 208.39999999850988
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 717.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 216.5
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:6:3",
+          "observedAfterMs": 518
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 253.79999999701977
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 426.5
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 218.29999999701977
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 209.29999999701977
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 425.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 211.19999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:6:3",
+          "observedAfterMs": 427
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 210
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 415.70000000298023
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 213
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 202.10000000149012
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 423.90000000596046
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:6:3",
+          "observedAfterMs": 201.60000000149012
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 402.6000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 203.5
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 218.69999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 421.69999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:6:3",
+          "observedAfterMs": 204.69999999552965
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:5:4",
+          "observedAfterMs": 411.80000000447035
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:4:5",
+          "observedAfterMs": 212
+        }
+      ],
+      "geometryPreserved": true
+    }
+  ]
+}

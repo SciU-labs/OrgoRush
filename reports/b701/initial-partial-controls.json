@@ -1,0 +1,1200 @@
+{
+  "baselinePageSha256": "113f82df8d47cac7d077377a5ba07d3afe841b740136ec544d3dd9b37abeafc8",
+  "note": "Historical HEAD page loaded after measurement; local PARTIAL model, not an independent name proof",
+  "rows": [
+    {
+      "id": "B701-03",
+      "language": "en",
+      "name": "2-methoxy-4-iodobenzaldehyde",
+      "fragments": {
+        "01": {
+          "text": "aldehyde",
+          "start": 20,
+          "kind": "function",
+          "label": "Principal functional group suffix",
+          "contributions": [
+            {
+              "group": "aldehyde",
+              "role": "suffix",
+              "atomIds": [
+                10,
+                11
+              ]
+            }
+          ]
+        },
+        "02": {
+          "text": "benz",
+          "start": 16,
+          "label": "Aromatic parent ring · 6 carbons",
+          "kind": "parent",
+          "atomIds": [
+            4,
+            3,
+            8,
+            7,
+            6,
+            5
+          ]
+        },
+        "04": {
+          "text": "2-methoxy-4-iodo",
+          "label": "Substituents and locants",
+          "kind": "substituent",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "2-methoxy",
+              "start": 0,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "ether",
+                  "role": "prefix",
+                  "atomIds": [
+                    2,
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "atomIds": [
+                2,
+                1,
+                3
+              ]
+            },
+            {
+              "text": "4-iodo",
+              "start": 10,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    7,
+                    9
+                  ]
+                }
+              ],
+              "atomIds": [
+                7,
+                9
+              ]
+            }
+          ]
+        },
+        "03": {
+          "text": "2",
+          "label": "Substituent locants",
+          "kind": "numbering",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4",
+              "start": 10,
+              "label": "Numbering",
+              "kind": "numbering"
+            }
+          ]
+        }
+      },
+      "targets": {
+        "[\"01\",\"function\",20,\"aldehyde\",null]": {
+          "stepNumber": "01",
+          "atomIds": [
+            10,
+            11,
+            4
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"01\",\"function\",20,\"aldehyde\",null]"
+        },
+        "[\"02\",\"parent\",16,\"benz\",null]": {
+          "stepNumber": "02",
+          "atomIds": [
+            4,
+            3,
+            8,
+            7,
+            6,
+            5
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              3,
+              8
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"02\",\"parent\",16,\"benz\",null]"
+        },
+        "[\"03\",\"numbering\",0,\"2\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              3,
+              2
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",0,\"2\",null]"
+        },
+        "[\"03\",\"numbering\",10,\"4\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            7
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              4
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",10,\"4\",null]"
+        },
+        "[\"04\",\"substituent\",0,\"2-methoxy\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            2,
+            1,
+            3
+          ],
+          "bondIds": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",0,\"2-methoxy\",null]"
+        },
+        "[\"04\",\"substituent\",10,\"4-iodo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            7,
+            9
+          ],
+          "bondIds": [
+            [
+              7,
+              9
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",10,\"4-iodo\",null]"
+        }
+      }
+    },
+    {
+      "id": "B701-04",
+      "language": "en",
+      "name": "4-methoxy-2-iodobenzaldehyde",
+      "fragments": {
+        "01": {
+          "text": "aldehyde",
+          "start": 20,
+          "kind": "function",
+          "label": "Principal functional group suffix",
+          "contributions": [
+            {
+              "group": "aldehyde",
+              "role": "suffix",
+              "atomIds": [
+                9,
+                10
+              ]
+            }
+          ]
+        },
+        "02": {
+          "text": "benz",
+          "start": 16,
+          "label": "Aromatic parent ring · 6 carbons",
+          "kind": "parent",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            8,
+            7
+          ]
+        },
+        "04": {
+          "text": "4-methoxy-2-iodo",
+          "label": "Substituents and locants",
+          "kind": "substituent",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4-methoxy",
+              "start": 0,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "ether",
+                  "role": "prefix",
+                  "atomIds": [
+                    2,
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "atomIds": [
+                2,
+                1,
+                3
+              ]
+            },
+            {
+              "text": "2-iodo",
+              "start": 10,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    5,
+                    11
+                  ]
+                }
+              ],
+              "atomIds": [
+                5,
+                11
+              ]
+            }
+          ]
+        },
+        "03": {
+          "text": "4",
+          "label": "Substituent locants",
+          "kind": "numbering",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "2",
+              "start": 10,
+              "label": "Numbering",
+              "kind": "numbering"
+            }
+          ]
+        }
+      },
+      "targets": {
+        "[\"01\",\"function\",20,\"aldehyde\",null]": {
+          "stepNumber": "01",
+          "atomIds": [
+            9,
+            10,
+            6
+          ],
+          "bondIds": [
+            [
+              9,
+              10
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"01\",\"function\",20,\"aldehyde\",null]"
+        },
+        "[\"02\",\"parent\",16,\"benz\",null]": {
+          "stepNumber": "02",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            8,
+            7
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              3,
+              8
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"02\",\"parent\",16,\"benz\",null]"
+        },
+        "[\"03\",\"numbering\",0,\"4\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              3,
+              4
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",0,\"4\",null]"
+        },
+        "[\"03\",\"numbering\",10,\"2\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            5
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              5,
+              2
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",10,\"2\",null]"
+        },
+        "[\"04\",\"substituent\",0,\"4-methoxy\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            2,
+            1,
+            3
+          ],
+          "bondIds": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",0,\"4-methoxy\",null]"
+        },
+        "[\"04\",\"substituent\",10,\"2-iodo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            5,
+            11
+          ],
+          "bondIds": [
+            [
+              5,
+              11
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",10,\"2-iodo\",null]"
+        }
+      }
+    },
+    {
+      "id": "B701-05",
+      "language": "en",
+      "name": "5-bromo-4-methoxy-2-iodobenzaldehyde",
+      "fragments": {
+        "01": {
+          "text": "aldehyde",
+          "start": 28,
+          "kind": "function",
+          "label": "Principal functional group suffix",
+          "contributions": [
+            {
+              "group": "aldehyde",
+              "role": "suffix",
+              "atomIds": [
+                10,
+                11
+              ]
+            }
+          ]
+        },
+        "02": {
+          "text": "benz",
+          "start": 24,
+          "label": "Aromatic parent ring · 6 carbons",
+          "kind": "parent",
+          "atomIds": [
+            6,
+            7,
+            8,
+            3,
+            4,
+            5
+          ]
+        },
+        "04": {
+          "text": "5-bromo-4-methoxy-2-iodo",
+          "label": "Substituents and locants",
+          "kind": "substituent",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4-methoxy",
+              "start": 8,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "ether",
+                  "role": "prefix",
+                  "atomIds": [
+                    2,
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "atomIds": [
+                2,
+                1,
+                3
+              ]
+            },
+            {
+              "text": "2-iodo",
+              "start": 18,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    7,
+                    9
+                  ]
+                }
+              ],
+              "atomIds": [
+                7,
+                9
+              ]
+            },
+            {
+              "text": "5-bromo",
+              "start": 0,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    4,
+                    12
+                  ]
+                }
+              ],
+              "atomIds": [
+                4,
+                12
+              ]
+            }
+          ]
+        },
+        "03": {
+          "text": "5",
+          "label": "Substituent locants",
+          "kind": "numbering",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4",
+              "start": 8,
+              "label": "Numbering",
+              "kind": "numbering"
+            },
+            {
+              "text": "2",
+              "start": 18,
+              "label": "Numbering",
+              "kind": "numbering"
+            }
+          ]
+        }
+      },
+      "targets": {
+        "[\"01\",\"function\",28,\"aldehyde\",null]": {
+          "stepNumber": "01",
+          "atomIds": [
+            10,
+            11,
+            6
+          ],
+          "bondIds": [
+            [
+              10,
+              11
+            ],
+            [
+              6,
+              10
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"01\",\"function\",28,\"aldehyde\",null]"
+        },
+        "[\"02\",\"parent\",24,\"benz\",null]": {
+          "stepNumber": "02",
+          "atomIds": [
+            6,
+            7,
+            8,
+            3,
+            4,
+            5
+          ],
+          "bondIds": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              3,
+              8
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"02\",\"parent\",24,\"benz\",null]"
+        },
+        "[\"03\",\"numbering\",0,\"5\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              4,
+              5
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",0,\"5\",null]"
+        },
+        "[\"03\",\"numbering\",8,\"4\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              3,
+              4
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",8,\"4\",null]"
+        },
+        "[\"03\",\"numbering\",18,\"2\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            7
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              7,
+              2
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",18,\"2\",null]"
+        },
+        "[\"04\",\"substituent\",8,\"4-methoxy\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            2,
+            1,
+            3
+          ],
+          "bondIds": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",8,\"4-methoxy\",null]"
+        },
+        "[\"04\",\"substituent\",18,\"2-iodo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            7,
+            9
+          ],
+          "bondIds": [
+            [
+              7,
+              9
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",18,\"2-iodo\",null]"
+        },
+        "[\"04\",\"substituent\",0,\"5-bromo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            4,
+            12
+          ],
+          "bondIds": [
+            [
+              4,
+              12
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",0,\"5-bromo\",null]"
+        }
+      }
+    },
+    {
+      "id": "B701-17",
+      "language": "es",
+      "name": "4-nitro-3-yodobenzonitrilo",
+      "fragments": {
+        "01": {
+          "text": "nitrilo",
+          "start": 19,
+          "kind": "function",
+          "label": "Sufijo del grupo funcional principal",
+          "contributions": [
+            {
+              "group": "nitrile",
+              "role": "suffix",
+              "atomIds": [
+                7,
+                8
+              ]
+            }
+          ]
+        },
+        "02": {
+          "text": "benzo",
+          "start": 14,
+          "label": "Anillo principal aromático · 6 carbonos",
+          "kind": "parent",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        },
+        "04": {
+          "text": "4-nitro-3-yodo",
+          "label": "Sustituyentes y localizadores",
+          "kind": "substituent",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4-nitro",
+              "start": 0,
+              "kind": "substituent",
+              "label": "Prefijo funcional y localizadores",
+              "contributions": [
+                {
+                  "group": "nitro",
+                  "role": "prefix",
+                  "atomIds": [
+                    3,
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ],
+              "atomIds": [
+                3,
+                10,
+                11,
+                12
+              ]
+            },
+            {
+              "text": "3-yodo",
+              "start": 8,
+              "kind": "substituent",
+              "label": "Prefijo funcional y localizadores",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    4,
+                    9
+                  ]
+                }
+              ],
+              "atomIds": [
+                4,
+                9
+              ]
+            }
+          ]
+        },
+        "03": {
+          "text": "4",
+          "label": "Localizadores de los sustituyentes",
+          "kind": "numbering",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "3",
+              "start": 8,
+              "label": "Numeración razonada",
+              "kind": "numbering"
+            }
+          ]
+        }
+      },
+      "targets": {
+        "[\"01\",\"function\",19,\"nitrilo\",null]": {
+          "stepNumber": "01",
+          "atomIds": [
+            7,
+            8,
+            6
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"01\",\"function\",19,\"nitrilo\",null]"
+        },
+        "[\"02\",\"parent\",14,\"benzo\",null]": {
+          "stepNumber": "02",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              1,
+              6
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"02\",\"parent\",14,\"benzo\",null]"
+        },
+        "[\"03\",\"numbering\",0,\"4\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              3,
+              4
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",0,\"4\",null]"
+        },
+        "[\"03\",\"numbering\",8,\"3\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              4,
+              3
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",8,\"3\",null]"
+        },
+        "[\"04\",\"substituent\",0,\"4-nitro\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            3,
+            10,
+            11,
+            12
+          ],
+          "bondIds": [
+            [
+              3,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              10,
+              12
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",0,\"4-nitro\",null]"
+        },
+        "[\"04\",\"substituent\",8,\"3-yodo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            4,
+            9
+          ],
+          "bondIds": [
+            [
+              4,
+              9
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",8,\"3-yodo\",null]"
+        }
+      }
+    },
+    {
+      "id": "B701-17",
+      "language": "en",
+      "name": "4-nitro-3-iodobenzonitrile",
+      "fragments": {
+        "01": {
+          "text": "nitrile",
+          "start": 19,
+          "kind": "function",
+          "label": "Principal functional group suffix",
+          "contributions": [
+            {
+              "group": "nitrile",
+              "role": "suffix",
+              "atomIds": [
+                7,
+                8
+              ]
+            }
+          ]
+        },
+        "02": {
+          "text": "benzo",
+          "start": 14,
+          "label": "Aromatic parent ring · 6 carbons",
+          "kind": "parent",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        },
+        "04": {
+          "text": "4-nitro-3-iodo",
+          "label": "Substituents and locants",
+          "kind": "substituent",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "4-nitro",
+              "start": 0,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "nitro",
+                  "role": "prefix",
+                  "atomIds": [
+                    3,
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ],
+              "atomIds": [
+                3,
+                10,
+                11,
+                12
+              ]
+            },
+            {
+              "text": "3-iodo",
+              "start": 8,
+              "kind": "substituent",
+              "label": "Functional prefix and locants",
+              "contributions": [
+                {
+                  "group": "halogen",
+                  "role": "prefix",
+                  "atomIds": [
+                    4,
+                    9
+                  ]
+                }
+              ],
+              "atomIds": [
+                4,
+                9
+              ]
+            }
+          ]
+        },
+        "03": {
+          "text": "4",
+          "label": "Substituent locants",
+          "kind": "numbering",
+          "start": 0,
+          "additionalFragments": [
+            {
+              "text": "3",
+              "start": 8,
+              "label": "Numbering",
+              "kind": "numbering"
+            }
+          ]
+        }
+      },
+      "targets": {
+        "[\"01\",\"function\",19,\"nitrile\",null]": {
+          "stepNumber": "01",
+          "atomIds": [
+            7,
+            8,
+            6
+          ],
+          "bondIds": [
+            [
+              7,
+              8
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"01\",\"function\",19,\"nitrile\",null]"
+        },
+        "[\"02\",\"parent\",14,\"benzo\",null]": {
+          "stepNumber": "02",
+          "atomIds": [
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ],
+          "bondIds": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              1,
+              6
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"02\",\"parent\",14,\"benzo\",null]"
+        },
+        "[\"03\",\"numbering\",0,\"4\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            3
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              3,
+              4
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",0,\"4\",null]"
+        },
+        "[\"03\",\"numbering\",8,\"3\",null]": {
+          "stepNumber": "03",
+          "atomIds": [
+            4
+          ],
+          "bondIds": [],
+          "locants": [
+            [
+              4,
+              3
+            ]
+          ],
+          "fragmentId": "[\"03\",\"numbering\",8,\"3\",null]"
+        },
+        "[\"04\",\"substituent\",0,\"4-nitro\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            3,
+            10,
+            11,
+            12
+          ],
+          "bondIds": [
+            [
+              3,
+              10
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              10,
+              12
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",0,\"4-nitro\",null]"
+        },
+        "[\"04\",\"substituent\",8,\"3-iodo\",null]": {
+          "stepNumber": "04",
+          "atomIds": [
+            4,
+            9
+          ],
+          "bondIds": [
+            [
+              4,
+              9
+            ]
+          ],
+          "locants": [],
+          "fragmentId": "[\"04\",\"substituent\",8,\"3-iodo\",null]"
+        }
+      }
+    }
+  ]
+}

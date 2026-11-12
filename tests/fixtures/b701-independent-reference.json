@@ -1,0 +1,187 @@
+{
+  "frozenAt": "2026-11-12T05:34:19.084Z",
+  "commit": "0a253f461371f18f16f04153007aaedaaa72cd07",
+  "source": "PubChem compound pages; transcribed descriptors, before product measurement",
+  "records": [
+    {
+      "id": "B701-01",
+      "cid": 13381028,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/13381028",
+      "referenceName": "2,3-dibromobenzaldehyde",
+      "smiles": "C1=CC(=C(C(=C1)Br)Br)C=O",
+      "formula": "C7H4Br2O",
+      "inchiKey": "GEICDMWIZIQEEI-UHFFFAOYSA-N",
+      "identity": "deTHPICDKDRYf}a``a@@"
+    },
+    {
+      "id": "B701-02",
+      "cid": 12648641,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12648641",
+      "referenceName": "2,6-dibromobenzaldehyde",
+      "smiles": "C1=CC(=C(C(=C1)Br)C=O)Br",
+      "formula": "C7H4Br2O",
+      "inchiKey": "YDYNSAUGVGAOLO-UHFFFAOYSA-N",
+      "identity": "deTHPICD{DRYeea`Ha@@"
+    },
+    {
+      "id": "B701-03",
+      "cid": 15128239,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/15128239",
+      "referenceName": "4-iodo-2-methoxybenzaldehyde",
+      "smiles": "COC1=C(C=CC(=C1)I)C=O",
+      "formula": "C8H7IO2",
+      "inchiKey": "ZDNOHFJWXJKIJF-UHFFFAOYSA-N",
+      "identity": "dmtD`FTJqIe[^n`BJP@@"
+    },
+    {
+      "id": "B701-04",
+      "cid": 11173046,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11173046",
+      "referenceName": "2-iodo-4-methoxybenzaldehyde",
+      "smiles": "COC1=CC(=C(C=C1)C=O)I",
+      "formula": "C8H7IO2",
+      "inchiKey": "HYWMSRPGGMIKKZ-UHFFFAOYSA-N",
+      "identity": "dmtD`AdJsHhhddVz@`Z@@"
+    },
+    {
+      "id": "B701-05",
+      "cid": 46864076,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/46864076",
+      "referenceName": "5-bromo-2-iodo-4-methoxybenzaldehyde",
+      "smiles": "COC1=C(C=C(C(=C1)I)C=O)Br",
+      "formula": "C8H6BrIO2",
+      "inchiKey": "YLYKODXTVWYWHT-UHFFFAOYSA-N",
+      "identity": "dcLDPAdJq\\QIfUW[hBAj@@"
+    },
+    {
+      "id": "B701-06",
+      "cid": 11810263,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11810263",
+      "referenceName": "2-bromo-3-methoxybenzaldehyde",
+      "smiles": "COC1=CC=CC(=C1Br)C=O",
+      "formula": "C8H7BrO2",
+      "inchiKey": "KELPUINOQGYPKR-UHFFFAOYSA-N",
+      "identity": "dmtD`BTLQIfY]i``hP@@"
+    },
+    {
+      "id": "B701-07",
+      "cid": 3699690,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/3699690",
+      "referenceName": "3-chloro-2-methylbenzamide",
+      "smiles": "CC1=C(C=CC=C1Cl)C(=O)N",
+      "formula": "C8H8ClNO",
+      "inchiKey": "LBGDADHDWVIRII-UHFFFAOYSA-N",
+      "identity": "dmvH`EdHcHhheCFF@bF@@"
+    },
+    {
+      "id": "B701-08",
+      "cid": 15691442,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/15691442",
+      "referenceName": "2-bromo-3-fluorobenzamide",
+      "smiles": "C1=CC(=C(C(=C1)F)Br)C(=O)N",
+      "formula": "C7H5BrFNO",
+      "inchiKey": "QIJLTAHMKMBLRZ-UHFFFAOYSA-N",
+      "identity": "dmvHPEdLPiAIf[[a`bA`@@"
+    },
+    {
+      "id": "B701-09",
+      "cid": 2778901,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/2778901",
+      "referenceName": "5-bromo-2-fluorobenzamide",
+      "smiles": "C1=CC(=C(C=C1Br)C(=O)N)F",
+      "formula": "C7H5BrFNO",
+      "inchiKey": "MAGQVUXQRXLNGB-UHFFFAOYSA-N",
+      "identity": "dmvHPEdLPYAIe[Zf`@i`@@"
+    },
+    {
+      "id": "B701-10",
+      "cid": 20372234,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/20372234",
+      "referenceName": "2-bromo-4-fluorobenzamide",
+      "smiles": "C1=CC(=C(C=C1F)Br)C(=O)N",
+      "formula": "C7H5BrFNO",
+      "inchiKey": "IWODMEGZVDWKPK-UHFFFAOYSA-N",
+      "identity": "dmvHPAxLQYAIfVUi``X`@@"
+    },
+    {
+      "id": "B701-11",
+      "cid": 593814,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/593814",
+      "referenceName": "3,4,5-trifluorobenzonitrile",
+      "smiles": "C1=C(C=C(C(=C1F)F)F)C#N",
+      "formula": "C7H2F3N",
+      "inchiKey": "XFKYJMGXZXJYBS-UHFFFAOYSA-N",
+      "identity": "dmv@pEBPJPZPrJJJXka`bBp@@"
+    },
+    {
+      "id": "B701-12",
+      "cid": 737177,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/737177",
+      "referenceName": "2,4,6-trifluorobenzonitrile",
+      "smiles": "C1=C(C=C(C(=C1F)C#N)F)F",
+      "formula": "C7H2F3N",
+      "inchiKey": "HTKFGTCCOJIUIK-UHFFFAOYSA-N",
+      "identity": "dmv@pNBPFPVPRYeYZXHNH@@"
+    },
+    {
+      "id": "B701-13",
+      "cid": 593813,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/593813",
+      "referenceName": "2,4,5-trifluorobenzonitrile",
+      "smiles": "C1=C(C(=CC(=C1F)F)F)C#N",
+      "formula": "C7H2F3N",
+      "inchiKey": "DLKNOGQOOZFICZ-UHFFFAOYSA-N",
+      "identity": "dmv@pEBPJPFPRYgW[hHBl@@"
+    },
+    {
+      "id": "B701-14",
+      "cid": 2776998,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/2776998",
+      "referenceName": "2,3,5-trifluorobenzonitrile",
+      "smiles": "C1=C(C=C(C(=C1C#N)F)F)F",
+      "formula": "C7H2F3N",
+      "inchiKey": "MMPKVFQMDMBXSG-UHFFFAOYSA-N",
+      "identity": "dmv@pIBPJPVPRYfwxXH`x@@"
+    },
+    {
+      "id": "B701-15",
+      "cid": 77529,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/77529",
+      "referenceName": "2-iodobenzamide",
+      "smiles": "C1=CC=C(C(=C1)C(=O)N)I",
+      "formula": "C7H6INO",
+      "inchiKey": "YEOYYWCXWUDVCX-UHFFFAOYSA-N",
+      "identity": "deVH`AxJqIfVVfBA`@@"
+    },
+    {
+      "id": "B701-16",
+      "cid": 87224536,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/87224536",
+      "referenceName": "2-chloro-3-ethoxybenzaldehyde",
+      "smiles": "CCOC1=CC=CC(=C1Cl)C=O",
+      "formula": "C9H9ClO2",
+      "inchiKey": "DZUVADWCDVFPAE-UHFFFAOYSA-N",
+      "identity": "dcLD`BTHaIfY]ZXHJF@@"
+    },
+    {
+      "id": "B701-17",
+      "cid": 12125938,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12125938",
+      "referenceName": "3-iodo-4-nitrobenzonitrile",
+      "smiles": "C1=CC(=C(C=C1C#N)I)[N+](=O)[O-]",
+      "formula": "C7H3IN2O2",
+      "inchiKey": "ZPOUQQLCCLKTHA-UHFFFAOYSA-N",
+      "identity": "dcMDaBwaBlJQ{HhheDjtpPLV@@"
+    },
+    {
+      "id": "B701-18",
+      "cid": 9070949,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/9070949",
+      "referenceName": "N-benzyl-4-bromo-2-fluorobenzamide",
+      "smiles": "C1=CC=C(C=C1)CNC(=O)C2=C(C=C(C=C2)Br)F",
+      "formula": "C14H11BrFNO",
+      "inchiKey": "GKZFVYKNOHAZBT-UHFFFAOYSA-N",
+      "identity": "fdyaA@ERAbLdLbbRaTrTRUNAc@DST@@@@@"
+    }
+  ]
+}

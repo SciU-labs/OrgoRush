@@ -1,0 +1,46 @@
+{
+  "fixtureSha256": "d8bd4c18125c2ba947136d6d179699c20c0ae776b8aa83d500409b0b6afca8b1",
+  "count": 18,
+  "initialProfiles": {
+    "es": {
+      "FULL": 16,
+      "PARTIAL": 1,
+      "UNSUPPORTED": 1
+    },
+    "en": {
+      "FULL": 13,
+      "PARTIAL": 4,
+      "UNSUPPORTED": 1
+    }
+  },
+  "postProfiles": {
+    "es": {
+      "FULL": 16,
+      "PARTIAL": 1,
+      "UNSUPPORTED": 1
+    },
+    "en": {
+      "FULL": 16,
+      "PARTIAL": 1,
+      "UNSUPPORTED": 1
+    }
+  },
+  "initialOpsin": {
+    "FULL-OPSIN-CONFIRMED": 13,
+    "PARTIAL-VERIFIED": 4,
+    "UNSUPPORTED-SAFE": 1
+  },
+  "postOpsin": {
+    "FULL-OPSIN-CONFIRMED": 16,
+    "PARTIAL-VERIFIED": 1,
+    "UNSUPPORTED-SAFE": 1
+  },
+  "postDevelopedOnCorpus": true,
+  "localNameOrderDefects": [
+    "B701-03",
+    "B701-04",
+    "B701-05",
+    "B701-17"
+  ],
+  "initialContradicted": []
+}

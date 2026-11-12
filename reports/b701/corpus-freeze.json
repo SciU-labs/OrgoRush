@@ -1,0 +1,9 @@
+{
+  "frozenAt": "2026-11-12T05:34:19.084Z",
+  "commit": "0a253f461371f18f16f04153007aaedaaa72cd07",
+  "fixture": "tests/fixtures/b701-independent-reference.json",
+  "sha256": "d8bd4c18125c2ba947136d6d179699c20c0ae776b8aa83d500409b0b6afca8b1",
+  "count": 18,
+  "uniqueness": "OpenChemLib canonical graph identity; compared B50/B61/B62 fixtures and B7.0 constructed examples",
+  "selectionBeforeMeasurement": true
+}

@@ -2253,6 +2253,36 @@ export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: An
     const name=combinePrefixAndParent(formatSubstituentGroups(analysis.substituents,[],language),analysis.chainName);
     return name===analysis.name?analysis:{...analysis,name};
   }
+  // A retained functional benzene fixes C1 at the suffix-bearing atom. The
+  // two remaining ring directions must still be compared with localized
+  // alphabetic keys: Spanish yodo and English iodo can reverse a tie.
+  const functionalAromatic = analysis.family === "aromatic"
+    && ["benzaldehído", "benzonitrilo", "benzamida"].includes(analysis.chainName)
+    && ["aldehyde", "nitrile", "amide"].includes(analysis.primaryFunctionalGroup ?? "")
+    && terminalGroups.length === 1 && molecule.rings?.length === 1
+    && analysis.mainChain.length === 6 && !analysis.substituents.some(item => item.complex)
+    && combinePrefixAndParent(formatSubstituentGroups(analysis.substituents, [], "es"), analysis.chainName) === analysis.name;
+  if (functionalAromatic) {
+    const ring = molecule.rings![0], parent = analysis.mainChain;
+    const validRing = ring.kind === "aromatic" && ring.atomIds.length === 6
+      && new Set(parent).size === 6 && parent.every(id => {
+        const atom = molecule.atoms.find(item => item.id === id);
+        return ring.atomIds.includes(id) && !!atom && (atom.element ?? "C") === "C";
+      })
+      && parent.every((id,index) => molecule.bonds.some(([a,b]) =>
+        a === id && b === parent[(index+1)%6] || b === id && a === parent[(index+1)%6]));
+    const anchored=analysis.substituents.map(item => ({item, anchor:parent[item.locant-1]}));
+    if (validRing && anchorLocantForGroup(terminalGroups[0], parent, carbonSkeleton(molecule)) === 1
+      && anchored.every(({anchor}) => anchor !== undefined)) {
+      const paths=[parent,[parent[0],...parent.slice(1).reverse()]];
+      const candidates=paths.map(path=>({path,primaryLocants:[1],doubleBondLocants:[] as number[],tripleBondLocants:[] as number[],
+        substituents:anchored.map(({item,anchor})=>({...item,locant:path.indexOf(anchor)+1}))}));
+      const chosen=numberParent(candidates,candidate=>numberingCriteria({...candidate,
+        substituents:candidate.substituents.map(item=>({...item,sortName:translateSpanishIupacForDisplay(item.sortName)}))}));
+      const name=combinePrefixAndParent(formatSubstituentGroups(chosen.substituents, [], language), analysis.chainName);
+      return {...analysis,name,mainChain:chosen.path,numberedAtoms:new Map(chosen.path.map((id,i)=>[id,i+1])),substituents:chosen.substituents};
+    }
+  }
   const proposal = proposeLocalizedAromaticNumbering(molecule, analysis, language);
   if (!proposal) return analysis;
   const name = `${formatSubstituentGroups(proposal.substituents, [], language).join("-")}${analysis.chainName}`;

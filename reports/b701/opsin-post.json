@@ -1,0 +1,182 @@
+{
+  "version": "2.9.0",
+  "fixtureSha256": "d8bd4c18125c2ba947136d6d179699c20c0ae776b8aa83d500409b0b6afca8b1",
+  "executedAt": "2026-11-12T05:38:20.097Z",
+  "rows": [
+    {
+      "id": "B701-01",
+      "name": "2,3-dibromobenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC1=C(C=O)C=CC=C1Br",
+      "formula": "C7H4OBr2",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-02",
+      "name": "2,6-dibromobenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC1=C(C=O)C(=CC=C1)Br",
+      "formula": "C7H4OBr2",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-03",
+      "name": "4-iodo-2-methoxybenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "IC1=CC(=C(C=O)C=C1)OC",
+      "formula": "C8H7O2I",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-04",
+      "name": "2-iodo-4-methoxybenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "IC1=C(C=O)C=CC(=C1)OC",
+      "formula": "C8H7O2I",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-05",
+      "name": "5-bromo-2-iodo-4-methoxybenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC=1C(=CC(=C(C=O)C1)I)OC",
+      "formula": "C8H6O2BrI",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-06",
+      "name": "2-bromo-3-methoxybenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC1=C(C=O)C=CC=C1OC",
+      "formula": "C8H7O2Br",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-07",
+      "name": "3-chloro-2-methylbenzamide",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "ClC=1C(=C(C(=O)N)C=CC1)C",
+      "formula": "C8H8NOCl",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-08",
+      "name": "2-bromo-3-fluorobenzamide",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC1=C(C(=O)N)C=CC=C1F",
+      "formula": "C7H5NOBrF",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-09",
+      "name": "5-bromo-2-fluorobenzamide",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC=1C=CC(=C(C(=O)N)C1)F",
+      "formula": "C7H5NOBrF",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-10",
+      "name": "2-bromo-4-fluorobenzamide",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "BrC1=C(C(=O)N)C=CC(=C1)F",
+      "formula": "C7H5NOBrF",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-11",
+      "name": "3,4,5-trifluorobenzonitrile",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "FC=1C=C(C#N)C=C(C1F)F",
+      "formula": "C7H2NF3",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-12",
+      "name": "2,4,6-trifluorobenzonitrile",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "FC1=C(C#N)C(=CC(=C1)F)F",
+      "formula": "C7H2NF3",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-13",
+      "name": "2,4,5-trifluorobenzonitrile",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "FC1=C(C#N)C=C(C(=C1)F)F",
+      "formula": "C7H2NF3",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-14",
+      "name": "2,3,5-trifluorobenzonitrile",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "FC1=C(C#N)C=C(C=C1F)F",
+      "formula": "C7H2NF3",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-15",
+      "name": "2-iodobenzamide",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "IC1=C(C(=O)N)C=CC=C1",
+      "formula": "C7H6NOI",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-16",
+      "name": "2-chloro-3-ethoxybenzaldehyde",
+      "internal": "FULL",
+      "status": "FULL-OPSIN-CONFIRMED",
+      "smiles": "ClC1=C(C=O)C=CC=C1OCC",
+      "formula": "C9H9O2Cl",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-17",
+      "name": "3-iodo-4-nitrobenzonitrile",
+      "internal": "PARTIAL",
+      "status": "PARTIAL-VERIFIED",
+      "smiles": "IC=1C=C(C#N)C=CC1[N+](=O)[O-]",
+      "formula": "C7H3N2O2I",
+      "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+      "exitCode": 0
+    },
+    {
+      "id": "B701-18",
+      "name": null,
+      "status": "UNSUPPORTED-SAFE"
+    }
+  ]
+}
