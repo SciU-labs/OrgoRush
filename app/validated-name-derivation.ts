@@ -379,7 +379,11 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   // atoms. The representative is one complete valid numbered assignment; named
   // chemical regions must still have invariant images under all isomorphisms.
   // Families without this proof retain strict per-locant invariance.
-  const regions = components.flatMap(c => [c.atomIds, ...(allowEquivalentNumbering ? [] : c.numbering.map(([id]) => [id]))]);
+  const grouped=new Map<string,number[]>();
+  for(const component of components) if(component.equivalenceGroup)
+    grouped.set(component.equivalenceGroup,[...(grouped.get(component.equivalenceGroup)??[]),...component.atomIds]);
+  const regions = [...grouped.values(),...components.flatMap(c => [
+    ...(!c.equivalenceGroup?[c.atomIds]:[]), ...(allowEquivalentNumbering ? [] : c.numbering.map(([id]) => [id]))])];
   const equivalence=allowEquivalentParents?analyzeStructuralEquivalence(graph,actual):null;
   const mapping = allowEquivalentParents ? equivalence?.representative : mapStructuralRegions(graph, actual, regions);
   if (!mapping) return null;

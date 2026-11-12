@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 3755025,
+        "MolecularFormula": "C16H16FNO",
+        "ConnectivitySMILES": "CCN(CC1=CC=CC=C1)C(=O)C2=CC=C(C=C2)F",
+        "InChIKey": "WGWBZFSWMHPPIC-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

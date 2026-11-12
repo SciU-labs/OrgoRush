@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 527045,
+        "MolecularFormula": "C10H13NO",
+        "ConnectivitySMILES": "CCN(C)C(=O)C1=CC=CC=C1",
+        "InChIKey": "YPHRECOHXALQKL-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

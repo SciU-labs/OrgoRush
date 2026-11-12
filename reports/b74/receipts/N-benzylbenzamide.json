@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 73878,
+        "MolecularFormula": "C14H13NO",
+        "ConnectivitySMILES": "C1=CC=C(C=C1)CNC(=O)C2=CC=CC=C2",
+        "InChIKey": "LKQUCICFTHBFAL-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

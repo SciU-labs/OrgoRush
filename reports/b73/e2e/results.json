@@ -1,0 +1,542 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "cid": 11916,
+      "names": {
+        "es": "N,N-dimetilbenzamida",
+        "en": "N,N-dimethylbenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "N,N-dimetilbenzamida",
+          "support": "FULL",
+          "controls": 7
+        },
+        {
+          "language": "en",
+          "name": "N,N-dimethylbenzamide",
+          "support": "FULL",
+          "controls": 7
+        },
+        {
+          "language": "es",
+          "name": "N,N-dimetilbenzamida",
+          "support": "FULL",
+          "controls": 2
+        },
+        {
+          "language": "en",
+          "name": "N,N-dimethylbenzamide",
+          "support": "FULL",
+          "controls": 2
+        }
+      ],
+      "controls": 18,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CN(C)C(c1ccccc1)%3DO/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 375
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 629.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1282.5
+        },
+        {
+          "language": "es",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 2256.60000000149
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 892.1000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 4174.79999999702
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 1069.6000000014901
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 914.7999999970198
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 2147.7000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1308.7000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 2032.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 901.8000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 1732.2000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 1026.3000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 944.5999999940395
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 2026.3999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 820.3999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1987.5999999940395
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 527045,
+      "names": {
+        "es": "N-etil-N-metilbenzamida",
+        "en": "N-ethyl-N-methylbenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "N-etil-N-metilbenzamida",
+          "support": "FULL",
+          "controls": 11
+        },
+        {
+          "language": "en",
+          "name": "N-ethyl-N-methylbenzamide",
+          "support": "FULL",
+          "controls": 11
+        },
+        {
+          "language": "es",
+          "name": "N-etil-N-metilbenzamida",
+          "support": "FULL",
+          "controls": 2
+        },
+        {
+          "language": "en",
+          "name": "N-ethyl-N-methylbenzamide",
+          "support": "FULL",
+          "controls": 2
+        }
+      ],
+      "controls": 26,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CCN(C)C(c1ccccc1)%3DO/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 875.3999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1933.8000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1123.1000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "n-alkyl-0-0",
+          "observedAfterMs": 2142.39999999851
+        },
+        {
+          "language": "es",
+          "semanticId": "n-alkyl-1-0",
+          "observedAfterMs": 1963.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-alkyl-0-0",
+          "observedAfterMs": 1752.3000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-alkyl-1-0",
+          "observedAfterMs": 1294.2999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "n-alkyl-0-0",
+          "observedAfterMs": 1990
+        },
+        {
+          "language": "es",
+          "semanticId": "n-alkyl-1-0",
+          "observedAfterMs": 1190.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-alkyl-0-0",
+          "observedAfterMs": 2091.4000000059605
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-alkyl-1-0",
+          "observedAfterMs": 1442.1999999955297
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 1011.9000000059605
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 2327.39999999851
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 995.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "n-alkyl-0-0",
+          "observedAfterMs": 2375.5
+        },
+        {
+          "language": "en",
+          "semanticId": "n-alkyl-1-0",
+          "observedAfterMs": 1209
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-alkyl-0-0",
+          "observedAfterMs": 2089.1999999955297
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-alkyl-1-0",
+          "observedAfterMs": 1089.6999999955297
+        },
+        {
+          "language": "en",
+          "semanticId": "n-alkyl-0-0",
+          "observedAfterMs": 2268.10000000149
+        },
+        {
+          "language": "en",
+          "semanticId": "n-alkyl-1-0",
+          "observedAfterMs": 1222.2000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-alkyl-0-0",
+          "observedAfterMs": 2108.10000000149
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-alkyl-1-0",
+          "observedAfterMs": 2594.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 738.5
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1487
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 821.3999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1666.8999999985099
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 84180,
+      "names": {
+        "es": "4-cloro-N,N-dimetilbenzamida",
+        "en": "4-chloro-N,N-dimethylbenzamide"
+      },
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "4-cloro-N,N-dimetilbenzamida",
+          "support": "FULL",
+          "controls": 14
+        },
+        {
+          "language": "en",
+          "name": "4-chloro-N,N-dimethylbenzamide",
+          "support": "FULL",
+          "controls": 14
+        },
+        {
+          "language": "es",
+          "name": "4-cloro-N,N-dimetilbenzamida",
+          "support": "FULL",
+          "controls": 3
+        },
+        {
+          "language": "en",
+          "name": "4-chloro-N,N-dimethylbenzamide",
+          "support": "FULL",
+          "controls": 3
+        }
+      ],
+      "controls": 34,
+      "errors": [],
+      "failed": [],
+      "unexpected": [],
+      "optionalRequests": [
+        "/rest/pug/compound/smiles/C/cids/JSON",
+        "es.wikipedia.org/w/api.php",
+        "en.wikipedia.org/w/api.php",
+        "/rest/pug/compound/smiles/CN(C)C(c(cc1)ccc1Cl)%3DO/cids/JSON"
+      ],
+      "observations": [
+        {
+          "language": "es",
+          "semanticId": "suffix",
+          "observedAfterMs": 766.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1588.6999999955297
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 833.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:9:4",
+          "observedAfterMs": 3234.39999999851
+        },
+        {
+          "language": "es",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 793.2999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 2316.7000000029802
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 1242.5
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 2003.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 1054.2999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 2132.1999999955297
+        },
+        {
+          "language": "es",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 1163.3000000044703
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 1865.8999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 948.1000000014901
+        },
+        {
+          "language": "es",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 3851.8000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "suffix",
+          "observedAfterMs": 1077.1999999955297
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 2268.8000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 1247.3000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:9:4",
+          "observedAfterMs": 2104.60000000149
+        },
+        {
+          "language": "en",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 969.9000000059605
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 2848.5999999940395
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 1981.3000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 1973
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 817.2000000029802
+        },
+        {
+          "language": "en",
+          "semanticId": "n-equivalent-0",
+          "observedAfterMs": 1979.5
+        },
+        {
+          "language": "en",
+          "semanticId": "prefix-0",
+          "observedAfterMs": 979
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:0",
+          "observedAfterMs": 2514.9000000059605
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-n-locant:n-equivalent-0:1",
+          "observedAfterMs": 1084.8999999985099
+        },
+        {
+          "language": "en",
+          "semanticId": "amide-multiplier:n-equivalent-0",
+          "observedAfterMs": 2565.2000000029802
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 1160.3999999985099
+        },
+        {
+          "language": "es",
+          "semanticId": "parent",
+          "observedAfterMs": 2123.7999999970198
+        },
+        {
+          "language": "es",
+          "semanticId": "locant:parent:9:4",
+          "observedAfterMs": 989.3000000044703
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 891.6000000014901
+        },
+        {
+          "language": "en",
+          "semanticId": "parent",
+          "observedAfterMs": 2286.2999999970198
+        },
+        {
+          "language": "en",
+          "semanticId": "locant:parent:9:4",
+          "observedAfterMs": 1194.5999999940395
+        }
+      ],
+      "geometryPreserved": true
+    },
+    {
+      "cid": 527038,
+      "status": "PASS",
+      "errors": [],
+      "support": "UNSUPPORTED"
+    }
+  ]
+}

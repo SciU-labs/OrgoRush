@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 140389,
+        "MolecularFormula": "C9H10BrNO",
+        "ConnectivitySMILES": "CN(C)C(=O)C1=CC=C(C=C1)Br",
+        "InChIKey": "BRRVYBRXLUEEJP-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

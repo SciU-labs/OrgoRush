@@ -2240,9 +2240,11 @@ export function proposeLocalizedAromaticNumbering(molecule: Molecule, analysis: 
 /** Keep name, reasoning and canvas on one graph-derived localized analysis. */
 export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: Analysis, language: AppLanguage,
   enabledAliases: readonly string[] = []): Analysis {
-  if (language !== "en" || enabledAliases.length || analysis.substituents.length < 2
-    || molecule.atoms.some(atom => atom.tetrahedralParity || atom.tetrahedralBondTo)
+  if (language !== "en" || enabledAliases.length || molecule.atoms.some(atom => atom.tetrahedralParity || atom.tetrahedralBondTo)
     || molecule.bonds.some(bond => bond[3])) return analysis;
+  const nitrogenParts=analysis.primaryFunctionalGroup==="amide" || analysis.primaryFunctionalGroup==="amine"
+    ? nitrogenSubstituentPrefixes(analysis.functionalGroups.find(g=>g.kind===analysis.primaryFunctionalGroup),analysis.mainChain,molecule,carbonSkeleton(molecule)):[];
+  if(analysis.substituents.length+nitrogenParts.length<2)return analysis;
   // A single terminal suffix fixes the acyclic origin independently of prefix
   // citation. Reorder the complete flat prefix list using the target language,
   // only when the generic rendering accounts for the whole source name.
@@ -2259,11 +2261,12 @@ export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: An
   const functionalAromatic = analysis.family === "aromatic"
     && ["benzaldehído", "benzonitrilo", "benzamida"].includes(analysis.chainName)
     && ["aldehyde", "nitrile", "amide"].includes(analysis.primaryFunctionalGroup ?? "")
-    && terminalGroups.length === 1 && molecule.rings?.length === 1
+    && terminalGroups.length === 1 && (molecule.rings?.length === 1 || Boolean(amideBenzylEvidence(molecule,terminalGroups[0])))
     && analysis.mainChain.length === 6 && !analysis.substituents.some(item => item.complex)
-    && combinePrefixAndParent(formatSubstituentGroups(analysis.substituents, [], "es"), analysis.chainName) === analysis.name;
+    && combinePrefixAndParent(sortFormattedPrefixParts([...nitrogenParts,...formatSubstituentGroups(analysis.substituents, [], "es")]), analysis.chainName) === analysis.name;
   if (functionalAromatic) {
-    const ring = molecule.rings![0], parent = analysis.mainChain;
+    const parent = analysis.mainChain, ring = molecule.rings!.find(candidate=>candidate.atomIds.length===parent.length && candidate.atomIds.every(id=>parent.includes(id)));
+    if(!ring)return analysis;
     const validRing = ring.kind === "aromatic" && ring.atomIds.length === 6
       && new Set(parent).size === 6 && parent.every(id => {
         const atom = molecule.atoms.find(item => item.id === id);
@@ -2279,7 +2282,9 @@ export function resolveLocalizedCurrentAnalysis(molecule: Molecule, analysis: An
         substituents:anchored.map(({item,anchor})=>({...item,locant:path.indexOf(anchor)+1}))}));
       const chosen=numberParent(candidates,candidate=>numberingCriteria({...candidate,
         substituents:candidate.substituents.map(item=>({...item,sortName:translateSpanishIupacForDisplay(item.sortName)}))}));
-      const name=combinePrefixAndParent(formatSubstituentGroups(chosen.substituents, [], language), analysis.chainName);
+      const parts=[...nitrogenParts,...formatSubstituentGroups(chosen.substituents, [], language)]
+        .sort((a,b)=>compareAlphabeticalNames(translateSpanishIupacForDisplay(a),translateSpanishIupacForDisplay(b)));
+      const name=combinePrefixAndParent(parts, analysis.chainName);
       return {...analysis,name,mainChain:chosen.path,numberedAtoms:new Map(chosen.path.map((id,i)=>[id,i+1])),substituents:chosen.substituents};
     }
   }
@@ -3783,25 +3788,26 @@ function amideBenzylEvidence(molecule: Molecule, group: FunctionalGroup | undefi
   const nitrogen = getAtom(group.heteroAtomId, molecule);
   if (!nitrogen || (nitrogen.charge ?? 0) !== 0 || nitrogen.tetrahedralParity !== undefined) return undefined;
   const nNeighbors = atomNeighbors(group.heteroAtomId, molecule);
-  if (nNeighbors.length !== 2 || nNeighbors.some(n => n.order !== 1)
+  if (![2,3].includes(nNeighbors.length) || nNeighbors.some(n => n.order !== 1 || !getAtom(n.atomId,molecule) || !isCarbonAtom(getAtom(n.atomId,molecule)!))
     || !nNeighbors.some(n => n.atomId === group.carbonId)) return undefined;
-  const methylene = nNeighbors.find(n => n.atomId !== group.carbonId)?.atomId;
-  if (methylene === undefined) return undefined;
-  const carbon = getAtom(methylene, molecule), neighbors = atomNeighbors(methylene, molecule);
-  if (!carbon || !isCarbonAtom(carbon) || (carbon.charge ?? 0) !== 0
-    || carbon.tetrahedralParity !== undefined || neighbors.length !== 2 || neighbors.some(n => n.order !== 1)) return undefined;
-  const attached = neighbors.find(n => n.atomId !== group.heteroAtomId)?.atomId;
   const rings = molecule.rings!;
   if (rings.some(r => r.kind !== "aromatic" || r.atomIds.length !== 6
     || r.atomIds.some(id => !getAtom(id,molecule) || !isCarbonAtom(getAtom(id,molecule)!)))
     || rings[0].atomIds.some(id => rings[1].atomIds.includes(id))) return undefined;
-  const benzylRing = rings.find(r => attached !== undefined && r.atomIds.includes(attached));
-  const parentRing = rings.find(r => r !== benzylRing && r.atomIds.some(id =>
-    atomNeighbors(id,molecule).some(n => n.atomId === group.carbonId && n.order === 1)));
-  if (!benzylRing || !parentRing || benzylRing.atomIds.includes(methylene)
-    || benzylRing.atomIds.some(id => atomNeighbors(id,molecule).some(n =>
-      !benzylRing.atomIds.includes(n.atomId) && !(id === attached && n.atomId === methylene)))) return undefined;
-  return {methylene, benzylRing, parentRing, atomIds:[methylene,...benzylRing.atomIds]};
+  const matches=nNeighbors.filter(n=>n.atomId!==group.carbonId).flatMap(({atomId:methylene})=>{
+    const carbon=getAtom(methylene,molecule), neighbors=atomNeighbors(methylene,molecule);
+    if(!carbon || !isCarbonAtom(carbon) || (carbon.charge??0)!==0 || carbon.tetrahedralParity!==undefined
+      || neighbors.length!==2 || neighbors.some(n=>n.order!==1))return [];
+    const attached=neighbors.find(n=>n.atomId!==group.heteroAtomId)?.atomId;
+    const benzylRing=rings.find(r=>attached!==undefined && r.atomIds.includes(attached));
+    const parentRing=rings.find(r=>r!==benzylRing && r.atomIds.some(id=>
+      atomNeighbors(id,molecule).some(n=>n.atomId===group.carbonId && n.order===1)));
+    if(!benzylRing || !parentRing || benzylRing.atomIds.includes(methylene)
+      || benzylRing.atomIds.some(id=>atomNeighbors(id,molecule).some(n=>
+        !benzylRing.atomIds.includes(n.atomId) && !(id===attached && n.atomId===methylene))))return [];
+    return [{methylene,benzylRing,parentRing,atomIds:[methylene,...benzylRing.atomIds]}];
+  });
+  return matches.length===1?matches[0]:undefined;
 }
 
 function nitrogenSubstituentPrefixes(
@@ -6664,6 +6670,14 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
   molecule = perceiveNamingRings(molecule).molecule;
   if (analysis.saturatedFused1979?.status === "SUPPORTED") return false;
   if (analysis.retainedFused) return analysis.retainedFused.status !== "SUPPORTED";
+  // A benzamide N directly bonded to a second aromatic ring requires an
+  // N-aryl grammar. The generic multi-ring selector can otherwise choose
+  // that ring as parent and silently omit it from the emitted local name.
+  const amide=analysis.functionalGroups.find(group=>group.kind==="amide" && group.kind===analysis.primaryFunctionalGroup);
+  if(amide && (molecule.rings?.length??0)===2 && molecule.rings!.some(ring=>ring.kind==="aromatic"
+    && ring.atomIds.some(id=>atomNeighbors(id,molecule).some(n=>n.atomId===amide.carbonId)))
+    && molecule.rings!.some(ring=>ring.kind==="aromatic" && ring.atomIds.some(id=>
+      atomNeighbors(id,molecule).some(n=>n.atomId===amide.heteroAtomId))))return true;
   if (hasUnrepresentedArylSubstitution(molecule, analysis)) return true;
   if (nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)) return true;
   if (heterocycleHasUnrepresentedHydroxylGroups(molecule)) return true;

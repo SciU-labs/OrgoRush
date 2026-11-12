@@ -1,0 +1,32 @@
+{
+  "frozenAt": "2026-11-12T08:28:23.753Z",
+  "commit": "bcd2dad plus uncommitted B7.3",
+  "sha256": "5907ac0ab5037878e7a05c09bc2c5e089892ee1b028117f283fff9053899ea6c",
+  "count": 13,
+  "preMeasurement": true,
+  "receipts": "Original responses obtained before freeze",
+  "duplicateScope": [
+    "b50-pubchem-rings.json",
+    "b61-independent-reference.json",
+    "b62-independent-reference.json",
+    "b62-supplemental.json",
+    "b701-independent-reference.json",
+    "b71-independent-reference.json",
+    "b72-independent-reference.json",
+    "b73-independent-reference.json"
+  ],
+  "previous": [
+    {
+      "id": "B74-01",
+      "previous": [
+        "B73-14"
+      ]
+    },
+    {
+      "id": "B74-13",
+      "previous": [
+        "B73-04"
+      ]
+    }
+  ]
+}

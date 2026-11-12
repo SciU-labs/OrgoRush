@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 3345219,
+        "MolecularFormula": "C16H17NO2",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC(=CC=C2)OC",
+        "InChIKey": "UEZXKKRLOIXLST-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 675006,
+        "MolecularFormula": "C15H14ClNO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC=CC=C2Cl",
+        "InChIKey": "SFRGSZYPRPCWGP-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

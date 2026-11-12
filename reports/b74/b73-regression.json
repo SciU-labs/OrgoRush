@@ -1,0 +1,245 @@
+{
+  "executedAt": "2026-11-12T08:35:30.559Z",
+  "rows": [
+    {
+      "id": "B73-01",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "2-fluoro-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "2-fluoro-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-02",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dimetil-2-metoxibenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "2-methoxy-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-03",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-cloro-N,N-dietilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-chloro-N,N-diethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-04",
+      "langs": {
+        "es": {
+          "before": "UNSUPPORTED",
+          "after": "UNSUPPORTED",
+          "name": null
+        },
+        "en": {
+          "before": "UNSUPPORTED",
+          "after": "UNSUPPORTED",
+          "name": null
+        }
+      }
+    },
+    {
+      "id": "B73-05",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dietil-4-metilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-diethyl-4-methylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-06",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dietilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-diethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-07",
+      "langs": {
+        "es": {
+          "before": "PARTIAL",
+          "after": "PARTIAL",
+          "name": "2-metil-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "PARTIAL",
+          "after": "PARTIAL",
+          "name": "2-methyl-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-08",
+      "langs": {
+        "es": {
+          "before": "PARTIAL",
+          "after": "PARTIAL",
+          "name": "3-metil-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "PARTIAL",
+          "after": "PARTIAL",
+          "name": "3-methyl-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-09",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-bromo-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-bromo-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-10",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-cloro-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-chloro-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-11",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-fluoro-N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-fluoro-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-12",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dimetil-4-metoxibenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "4-methoxy-N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-13",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dimetilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N,N-dimethylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-14",
+      "langs": {
+        "es": {
+          "before": "UNSUPPORTED",
+          "after": "FULL",
+          "name": "N-bencil-N-metilbenzamida"
+        },
+        "en": {
+          "before": "UNSUPPORTED",
+          "after": "FULL",
+          "name": "N-benzyl-N-methylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-15",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N-etil-N-metil-4-metoxibenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N-ethyl-4-methoxy-N-methylbenzamide"
+        }
+      }
+    },
+    {
+      "id": "B73-16",
+      "langs": {
+        "es": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N-etil-N-metilbenzamida"
+        },
+        "en": {
+          "before": "FULL",
+          "after": "FULL",
+          "name": "N-ethyl-N-methylbenzamide"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 11954,
+        "MolecularFormula": "C8H9NO",
+        "ConnectivitySMILES": "CNC(=O)C1=CC=CC=C1",
+        "InChIKey": "NCCHARWOCKOHIH-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

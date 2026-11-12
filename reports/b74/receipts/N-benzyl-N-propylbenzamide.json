@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 13625808,
+        "MolecularFormula": "C17H19NO",
+        "ConnectivitySMILES": "CCCN(CC1=CC=CC=C1)C(=O)C2=CC=CC=C2",
+        "InChIKey": "KZZVZFHFURXEDJ-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

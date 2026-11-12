@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 81351,
+        "MolecularFormula": "C10H13NO",
+        "ConnectivitySMILES": "CC1=CC(=CC=C1)C(=O)N(C)C",
+        "InChIKey": "SWYVHBPXKKDGLL-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

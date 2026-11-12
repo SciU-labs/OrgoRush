@@ -7,7 +7,7 @@ import type { NameComponent, CompositionalFamilyGraph, NameRuleEvidence } from "
 
 type FamilyGraph = CompositionalFamilyGraph;
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
-type Prefix = { text: string; term: NonNullable<ReturnType<typeof legacyPrefixTerm>>; positions: number[]; start: number; onAmideN?: boolean;
+type Prefix = { text: string; term: NonNullable<ReturnType<typeof legacyPrefixTerm>>; positions: number[]; start: number; onAmideN?: boolean; nCount?: number; nLocantStarts?: number[];
   locantSpans:{start:number;end:number;locant:number}[] };
 
 /** Bounded prefix grammar with paired delimiters and literal source spans.
@@ -16,9 +16,10 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
   const result: Prefix[] = []; let consumed = 0;
   while (consumed < text.length) {
     const termPattern = language === "en" ? "[a-z]+" : "[a-záéíóúñ]+";
-    const m = new RegExp(`^(${amideN ? "N|" : ""}[1-9](?:,[1-9])*)-(?:\\(([^()]+)\\)|(${termPattern}))`).exec(text.slice(consumed));
+    const m = new RegExp(`^(${amideN ? "N(?:,N)?|" : ""}[1-9](?:,[1-9])*)-(?:\\(([^()]+)\\)|(${termPattern}))`).exec(text.slice(consumed));
     if (!m) return null;
-    const written = m[2] ?? m[3], onAmideN = m[1] === "N", positions = onAmideN ? [] : m[1].split(",").map(Number);
+    const written = m[2] ?? m[3], onAmideN = m[1].startsWith("N"), positions = onAmideN ? [] : m[1].split(",").map(Number);
+    const nCount=onAmideN ? m[1].split(",").length : 0;
     const multiplied = /^(di|tri)(.+)$/.exec(written);
     const termName = multiplied ? multiplied[2] : written;
     const systematicPropenyl = alkenyl && ["prop-1-en-2-il", "prop-1-en-2-yl"].includes(termName);
@@ -34,7 +35,8 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
       || term.bonds.some(([, , order]) => order !== 1 && !((alkenyl || benzyl) && order === 2))
       || term.kind && !["alcohol", "amine", "ether", ...(aromaticHalogens ? ["halogen"] : [])].includes(term.kind)
       || positions.some(p => p < 1 || p > maximum)
-      || onAmideN && (multiplied || m[2] || !["metil", "etil", "propil", "methyl", "ethyl", "propyl", "bencil", "benzyl"].includes(termName))
+      || onAmideN && (m[2] || (nCount===1 ? Boolean(multiplied) : multiplied?.[1]!=="di") || (nCount===2 && benzyl)
+        || !["metil", "etil", "propil", "methyl", "ethyl", "propyl", "bencil", "benzyl"].includes(termName))
       || !onAmideN && positions.length !== (multiplied ? multiplied[1] === "di" ? 2 : 3 : 1)
       || positions.some((p,i) => i > 0 && (repeated ? p < positions[i-1] : p <= positions[i-1]))) return null;
     let locantOffset=offset+consumed;
@@ -42,12 +44,14 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
       const span={start:locantOffset,end:locantOffset+token.length,locant:Number(token)};
       locantOffset+=token.length+1;return span;
     });
-    result.push({ text: written, term, positions, locantSpans, onAmideN, start: offset + consumed + m[1].length + (m[2] ? 2 : 1) });
+    result.push({ text: written, term, positions, locantSpans, onAmideN, nCount,
+      nLocantStarts:onAmideN?Array.from({length:nCount},(_,i)=>offset+consumed+2*i):undefined,
+      start: offset + consumed + m[1].length + (m[2] ? 2 : 1) });
     consumed += m[0].length;
     if (consumed < text.length) { if (text[consumed] !== "-") return null; consumed++; if (consumed === text.length) return null; }
   }
   if (!repeated && new Set(result.flatMap(p => p.positions)).size !== result.flatMap(p => p.positions).length) return null;
-  if(result.filter(p=>p.onAmideN).length>1)return null;
+  if(result.reduce((sum,p)=>sum+(p.nCount??0),0)>2)return null;
   if(new Set(result.map(p=>p.term[language])).size!==result.length)return null;
   // Multiplicative prefixes do not affect alphabetical order.
   const alphabetical = (value: string) => value.replace(/^[\d,]+-/, "").replace(/[()-]/g, "");
@@ -240,21 +244,25 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
       if(suffix!=="benzaldehyde") {linkage=atom(suffix==="benzamide"?"N":"O");edge(c,linkage);functionIds.push(linkage);}
       group=esterInput?"ester":suffix==="benzaldehyde"?"aldehyde":suffix==="benzamide"?"amide":"carboxylicAcid";
     }
-    const ringPrefixes=ps.filter(p=>!p.onAmideN), nPrefix=ps.find(p=>p.onAmideN);
+    const ringPrefixes=ps.filter(p=>!p.onAmideN), nPrefixes=ps.filter(p=>p.onAmideN), nPrefix=nPrefixes[0];
     attach(ringPrefixes,ids,"parent",language,"ring");
     if(nPrefix) {
       if(suffix!=="benzamide" || linkage===undefined)return null;
+      for(const [prefixIndex,nPrefix] of nPrefixes.entries()) for(let occurrence=0;occurrence<(nPrefix.nCount??1);occurrence++) {
       const alkyl=nPrefix.term.elements.map(()=>atom());
       nPrefix.term.bonds.forEach(([a,b,order])=>edge(alkyl[a],alkyl[b],order as 1|2|3));
       edge(linkage,alkyl[0]);
       const isBenzyl=nPrefix.term.en==="benzyl";
-      add(isBenzyl?"n-benzyl":"n-alkyl","substituent",nPrefix.text,nPrefix.start,alkyl,
+      const id=nPrefixes.length===1 && nPrefix.nCount===1 ? (isBenzyl?"n-benzyl":"n-alkyl") : `n-alkyl-${prefixIndex}-${occurrence}`;
+      add(id,"substituent",nPrefix.text,nPrefix.start,alkyl,
         isBenzyl ? (language==="en" ? "N links benzyl through CH2 to the amide nitrogen; its phenyl ring is distinct from the carbonyl-bearing parent."
           : "N une el bencilo por CH2 al nitrógeno amídico; su anillo fenilo es distinto del anillo progenitor unido al carbonilo.")
         : language==="en"?"N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring."
           :"N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
         {parentId:"parent",locant:"N",attachmentScope:"amide-nitrogen",numbering:[[linkage,"N"]],
+          nLocantStarts:[nPrefix.nLocantStarts![occurrence]],...(nPrefix.nCount===2?{equivalenceGroup:`n-equivalent-${prefixIndex}`} : {}),
           bondIds:[...graph.bonds.filter(([a,b])=>alkyl.includes(a)&&alkyl.includes(b)).map(([a,b]):[number,number]=>[a,b]),[linkage,alkyl[0]]]});
+      }
       for(const component of components) if(component.attachmentScope==="ring")
         component.atomIds=[...new Set([...component.atomIds,...component.numbering.map(([id])=>id)])];
     }

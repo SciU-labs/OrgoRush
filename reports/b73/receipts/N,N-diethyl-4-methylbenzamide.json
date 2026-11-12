@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 75946,
+        "MolecularFormula": "C12H17NO",
+        "ConnectivitySMILES": "CCN(CC)C(=O)C1=CC=C(C=C1)C",
+        "InChIKey": "PUZORFQMRDHKBT-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

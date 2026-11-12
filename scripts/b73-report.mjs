@@ -1,0 +1,10 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const corpus=JSON.parse(readFileSync('tests/fixtures/b73-independent-reference.json','utf8'));
+const initial=JSON.parse(readFileSync('reports/b73/baseline.json','utf8'));
+const post=JSON.parse(readFileSync('reports/b73/post-final.json','utf8'));
+const rows=corpus.records.map(r=>({source:r,initial:initial.rows.find(x=>x.id===r.id),post:post.rows.find(x=>x.id===r.id)}));
+const counts=(phase,lang)=>Object.fromEntries(['FULL','PARTIAL','UNSUPPORTED'].map(status=>[status,rows.filter(x=>x[phase].profiles[lang].status===status).length]));
+const summary={count:rows.length,initial:{es:counts('initial','es'),en:counts('initial','en')},post:{es:counts('post','es'),en:counts('post','en')},opsinEquivalent:rows.filter(x=>x.post.opsin?.equivalent).length,priorControls:rows.filter(x=>x.source.previous.length).map(x=>x.source.id),postIsBlind:false,method:'Comparison uses OpenChemLib, also used in OrgoRush.'};
+writeFileSync('reports/b73/coverage.json',JSON.stringify(summary,null,2)+'\n');
+writeFileSync('reports/b73/matrix.md','# B7.3: matriz de mediciones\n\n| Caso | Referencia | Inicial ES / EN | Posterior ES / EN | Nombre EN | OPSIN |\n|---|---|---|---|---|---|\n'+rows.map(({source,initial,post})=>`| [${source.id}](${source.source}) | ${source.referenceName} | ${initial.profiles.es.status} / ${initial.profiles.en.status} | ${post.profiles.es.status} / ${post.profiles.en.status} | ${post.profiles.en.name??'—'} | ${post.opsin ? post.opsin.equivalent?'equivalente':'NO equivalente' : 'sin nombre'} |`).join('\n')+'\n');
+console.log(JSON.stringify(summary));

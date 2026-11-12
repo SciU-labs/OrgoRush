@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 4467000,
+        "MolecularFormula": "C9H10FNO",
+        "ConnectivitySMILES": "CN(C)C(=O)C1=CC=CC=C1F",
+        "InChIKey": "GEZAHTYEQSVVEH-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

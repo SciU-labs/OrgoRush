@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 11159646,
+        "MolecularFormula": "C10H13NO2",
+        "ConnectivitySMILES": "CN(C)C(=O)C1=CC=CC=C1OC",
+        "InChIKey": "ZBWYZLANPMFDMN-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "baselinePageSha256": "20d0b524323b59e80f7e7b0bfec0b82352df6eabfa04257c91d22a47febdb35e",
+  "method": "Vite Pages production builds in memory; B7.3 page hash verified, grammar restored from B7.4 guard",
+  "before": {
+    "chunks": 4,
+    "javascriptBytes": 2914027,
+    "gzipBytes": 879089
+  },
+  "after": {
+    "chunks": 4,
+    "javascriptBytes": 2914441,
+    "gzipBytes": 879171
+  },
+  "deltaBytes": 414,
+  "deltaGzipBytes": 82
+}

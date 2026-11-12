@@ -110,7 +110,7 @@ function makeStep(input: {
     ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
   const fragmentTargets: Record<string, ReasoningVisualTarget> = {};
   components.forEach((component, index) => {
-    const target = targets[component.id], fragment = fragments[index];
+    const target = targets[component.id] ?? (component.equivalenceGroup ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering} : undefined), fragment = fragments[index];
     if (target) fragmentTargets[reasoningFragmentId(number, fragment)] = { ...target, stepNumber: number,
       fragmentId: reasoningFragmentId(number, fragment) };
   });
@@ -144,14 +144,21 @@ function makeStep(input: {
   // parent numbering or the canvas's global map.
   for (const component of components) if (component.attachmentScope === "amide-nitrogen" && component.locant === "N") {
     const atomId=component.numbering.find(([,locant])=>locant==="N")?.[0];
-    const start=component.start-2;
-    if(atomId!==undefined && derivation.name.slice(start,start+2)==="N-") {
+    const starts=component.nLocantStarts??[component.start-2];
+    for(const [index,start] of starts.entries()) if(atomId!==undefined && derivation.name.slice(start,start+1)==="N") {
       const item: ReasoningNameFragment={text:"N",start,kind:"numbering",language,numberingScope:component.id,
-        atomIds:[atomId],semanticId:`amide-n-locant:${component.id}`,
+        atomIds:[atomId],semanticId:`amide-n-locant:${component.id}${starts.length>1?`:${index}`:""}`,
         label:language==="en"?"Amide nitrogen locant":"Localizador del nitrógeno amídico"};
       locantFragments.push(item);
       const fragmentId=reasoningFragmentId(number,item);
       fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[]};
+    }
+    if(component.equivalenceGroup && component.text.startsWith("di")) {
+      const item:ReasoningNameFragment={text:"di",start:component.start,kind:"substituent",language,
+        semanticId:`amide-multiplier:${component.id}`,atomIds:component.atomIds,bondIds:component.bondIds,
+        label:language==="en"?"Two equivalent substituents":"Dos sustituyentes equivalentes"};
+      locantFragments.push(item);const fragmentId=reasoningFragmentId(number,item);
+      fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:component.atomIds,bondIds:component.bondIds,locants:[]};
     }
   }
   for(const component of components) if(component.internalNumbering) {
@@ -187,7 +194,7 @@ function makeStep(input: {
   const allFragments = [...fragments, ...locantFragments];
   const fragmentView = allFragments.length ? { ...allFragments[0], additionalFragments: allFragments.slice(1) } : undefined;
   const stepTargets = title === (language === "en" ? "Numbering" : "Numeración")
-    ? numberingTargets : components.map(component => targets[component.id]).filter(Boolean);
+    ? numberingTargets : components.map(component => targets[component.id] ?? (component.equivalenceGroup ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering}:undefined)).filter(Boolean);
   return { number, title, explanation, target: unionTarget(number, stepTargets),
     fragments: fragmentView, fragmentTargets, componentIds: components.map(component => component.id), source: "FULL", alphabeticalOrder };
 }
@@ -204,7 +211,17 @@ export function buildValidatedPriorityReasoning(input: {
   const suffix = carbohydrate
     ? byId.get("sugar-polyol") ?? byId.get("sugar-open")
     : byId.get("suffix") ?? derivation.components.find(component => component.role === "suffix");
-  const roots = derivation.components.filter(component => component.role === "substituent"
+  const displayedComponents:NameComponent[]=[];
+  for(const component of derivation.components) {
+    if(!component.equivalenceGroup){displayedComponents.push(component);continue;}
+    if(displayedComponents.some(c=>c.equivalenceGroup===component.equivalenceGroup))continue;
+    const siblings=derivation.components.filter(c=>c.equivalenceGroup===component.equivalenceGroup);
+    displayedComponents.push({...component,id:component.equivalenceGroup,atomIds:siblings.flatMap(c=>c.atomIds),
+      bondIds:siblings.flatMap(c=>c.bondIds),nLocantStarts:siblings.flatMap(c=>c.nLocantStarts??[]),
+      explanation:language==="en"?"Two equivalent substituents attach separately to the same amide nitrogen.":"Dos sustituyentes equivalentes se unen por separado al mismo nitrógeno amídico.",
+      explanationEs:"Dos sustituyentes equivalentes se unen por separado al mismo nitrógeno amídico."});
+  }
+  const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
   const stereoComponents = derivation.components.filter(component => /stereo|cip|anomer|series/i.test(component.id));
   const descendants = derivation.components.filter(component => !stereoComponents.includes(component) && (component.role === "prefix"

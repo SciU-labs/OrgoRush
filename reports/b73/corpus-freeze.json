@@ -1,0 +1,25 @@
+{
+  "frozenAt": "2026-11-12T08:05:58.024Z",
+  "sha256": "ad38e9ddd45f97feba63bd464a9f2ac911fead9b822f630428ab54e7ad3e4df1",
+  "count": 16,
+  "preMeasurement": true,
+  "receipts": "Original responses obtained before freeze",
+  "duplicateScope": [
+    "b50-pubchem-rings.json",
+    "b61-independent-reference.json",
+    "b62-independent-reference.json",
+    "b62-supplemental.json",
+    "b701-independent-reference.json",
+    "b71-independent-reference.json",
+    "b72-independent-reference.json",
+    "B71 N,N-dimethyl negative control"
+  ],
+  "previous": [
+    {
+      "id": "B73-13",
+      "previous": [
+        "B71-negative-N,N-dimethylbenzamide"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 84180,
+        "MolecularFormula": "C9H10ClNO",
+        "ConnectivitySMILES": "CN(C)C(=O)C1=CC=C(C=C1)Cl",
+        "InChIKey": "FARSXMMESQDZMY-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

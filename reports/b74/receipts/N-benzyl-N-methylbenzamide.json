@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 527038,
+        "MolecularFormula": "C15H15NO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC=CC=C2",
+        "InChIKey": "UMDIHTNTVUNIDS-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -42,7 +42,8 @@ test('B7.1: finite N-alkyl grammar does not confuse N and ring positions',()=>{
     ['CNC(=O)c1ccccc1','4-methylbenzamide'],
     ['CCNC(=O)c1ccccc1','4-ethylbenzamide'],
     [ref.smiles,'4-ethyl-N-methylbenzamide'],
-    ['CN(C)C(=O)c1ccccc1','N,N-dimethylbenzamide'],
+    // B7.3 admits the correct dialkyl name; a missing N remains unsafe.
+    ['CN(C)C(=O)c1ccccc1','N-dimethylbenzamide'],
     ['O=C(Nc1ccccc1)c1ccccc1','N-phenylbenzamide'],
     ['C=CCNC(=O)c1ccccc1','N-(prop-2-en-1-yl)benzamide'],
     [ref.smiles,'N-propyl-4-methylbenzamide'],

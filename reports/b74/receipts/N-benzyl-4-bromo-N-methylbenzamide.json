@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 751372,
+        "MolecularFormula": "C15H14BrNO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC=C(C=C2)Br",
+        "InChIKey": "WGWVCSNOKVXKTB-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 962604,
+        "MolecularFormula": "C15H14FNO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC(=CC=C2)F",
+        "InChIKey": "QFZXFUUBDOIRHQ-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

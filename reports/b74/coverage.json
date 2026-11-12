@@ -1,0 +1,35 @@
+{
+  "count": 13,
+  "initial": {
+    "es": {
+      "FULL": 0,
+      "PARTIAL": 1,
+      "UNSUPPORTED": 12
+    },
+    "en": {
+      "FULL": 0,
+      "PARTIAL": 1,
+      "UNSUPPORTED": 12
+    }
+  },
+  "post": {
+    "es": {
+      "FULL": 11,
+      "PARTIAL": 0,
+      "UNSUPPORTED": 2
+    },
+    "en": {
+      "FULL": 11,
+      "PARTIAL": 0,
+      "UNSUPPORTED": 2
+    }
+  },
+  "opsinEquivalent": 11,
+  "opsinMismatch": [],
+  "priorControls": [
+    "B74-01",
+    "B74-13"
+  ],
+  "postIsBlind": false,
+  "method": "Comparison uses OpenChemLib, also used in OrgoRush."
+}

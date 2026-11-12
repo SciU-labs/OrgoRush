@@ -11,6 +11,9 @@ export type NameComponent = {
   end: number;
   parentId?: string;
   attachmentScope?: "ring" | "amide-nitrogen";
+  /** Equivalent named branches share one written multiplicative prefix. */
+  equivalenceGroup?: string;
+  nLocantStarts?: number[];
   locant?: number | "N";
   atomIds: number[];
   bondIds: [number, number][];

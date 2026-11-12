@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 669229,
+        "MolecularFormula": "C15H14FNO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)C2=CC=C(C=C2)F",
+        "InChIKey": "PJYDMQKKOGHSPD-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

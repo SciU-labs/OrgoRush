@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 85430,
+        "MolecularFormula": "C15H15NO",
+        "ConnectivitySMILES": "CCN(C1=CC=CC=C1)C(=O)C2=CC=CC=C2",
+        "InChIKey": "VSURRQZMKWVYIC-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 141077,
+        "MolecularFormula": "C9H10FNO",
+        "ConnectivitySMILES": "CN(C)C(=O)C1=CC=C(C=C1)F",
+        "InChIKey": "NUOGEPIJFRZXIN-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

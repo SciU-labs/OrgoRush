@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 668828,
+        "MolecularFormula": "C17H19NO2",
+        "ConnectivitySMILES": "CCN(CC1=CC=CC=C1)C(=O)C2=CC=C(C=C2)OC",
+        "InChIKey": "ZEYBOROCVUQVSX-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}

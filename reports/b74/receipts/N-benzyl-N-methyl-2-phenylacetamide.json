@@ -1,0 +1,12 @@
+{
+  "PropertyTable": {
+    "Properties": [
+      {
+        "CID": 692800,
+        "MolecularFormula": "C16H17NO",
+        "ConnectivitySMILES": "CN(CC1=CC=CC=C1)C(=O)CC2=CC=CC=C2",
+        "InChIKey": "GRFBWSZPLRQGMH-UHFFFAOYSA-N"
+      }
+    ]
+  }
+}
