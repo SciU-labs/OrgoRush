@@ -12,7 +12,7 @@ type Prefix = { text: string; term: NonNullable<ReturnType<typeof legacyPrefixTe
 
 /** Bounded prefix grammar with paired delimiters and literal source spans.
  * No common names, translation or approximate token searches. */
-function prefixes(text: string, offset: number, maximum: number, repeated = false, language: "en" | "es" = "en", alkenyl = false): Prefix[] | null {
+function prefixes(text: string, offset: number, maximum: number, repeated = false, language: "en" | "es" = "en", alkenyl = false, aromaticHalogens = false): Prefix[] | null {
   const result: Prefix[] = []; let consumed = 0;
   while (consumed < text.length) {
     const termPattern = language === "en" ? "[a-z]+" : "[a-záéíóúñ]+";
@@ -29,7 +29,7 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
       : legacyPrefixTerm(termName);
     if (!term || term[language] !== termName || term.charges
       || term.bonds.some(([, , order]) => order !== 1 && !(alkenyl && order === 2))
-      || term.kind && !["alcohol", "amine", "ether"].includes(term.kind)
+      || term.kind && !["alcohol", "amine", "ether", ...(aromaticHalogens ? ["halogen"] : [])].includes(term.kind)
       || positions.some(p => p < 1 || p > maximum)
       || positions.length !== (multiplied ? multiplied[1] === "di" ? 2 : 3 : 1)
       || positions.some((p,i) => i > 0 && (repeated ? p < positions[i-1] : p <= positions[i-1]))) return null;
@@ -114,7 +114,7 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
     return { graph, components, parent: ring, group: "none", allowEquivalentNumbering: true };
   }
   const graph: GeneratedMolecule = { atoms: [], bonds: [] }, components: NameComponent[] = [];
-  const atom = (element: "C" | "O" | "N" = "C") => { const id = graph.atoms.length + 1; graph.atoms.push({id,element,x:0,y:0}); return id; };
+  const atom = (element: "C" | "O" | "N" | "F" | "Cl" | "Br" | "I" = "C") => { const id = graph.atoms.length + 1; graph.atoms.push({id,element,x:0,y:0}); return id; };
   const edge = (a: number, b: number, order: 1 | 2 | 3 = 1) => { graph.bonds.push([a,b,order]); };
   const chain = (n: number) => { const ids = Array.from({length:n},()=>atom()); ids.slice(1).forEach((id,i)=>edge(ids[i],id)); return ids; };
   const ring = () => { const ids = Array.from({length:6},()=>atom()); ids.forEach((id,i)=>edge(id,ids[(i+1)%6],i%2?1:2)); return ids; };
@@ -134,7 +134,7 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
         ? `esqueleto ramificado de ${p.term.elements.length} carbonos`
         : `fragmento de ${p.term.elements.length} átomo${p.term.elements.length === 1 ? "" : "s"}`;
       for(const position of p.positions) {
-        const ids = p.term.elements.map(e=>atom(e as "C"|"O"|"N"));
+        const ids = p.term.elements.map(e=>atom(e as "C"|"O"|"N"|"F"|"Cl"|"Br"|"I"));
         p.term.bonds.forEach(([a,b,order])=>edge(ids[a],ids[b],order as 1|2|3)); edge(skeleton[position-1],ids[0]);
         region.push(...ids); attachments.push([skeleton[position-1],ids[0]]);
       }
@@ -159,7 +159,7 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
         {parentId,locant:p.positions.length===1?p.positions[0]:undefined,
           numbering:[...new Map(p.positions.map(p=>[skeleton[p-1],p]))],
           ...(internalNumbering?{internalNumbering}:{}),
-          ...(language === "es" ? { explanationEs: `El sustituyente «${p.text}» forma un ${spanishSkeleton} y se une al anillo en el localizador ${p.positions.join(",")}; ese localizador pertenece al padre. ${systematicPropenyl?"En la numeración independiente de la rama el doble enlace es C1=C2 y la unión está en C2.":"La numeración interna de la rama empieza en su átomo de unión y tiene un ámbito independiente."}` } : {}),
+          ...(language === "es" ? { explanationEs: `El sustituyente «${p.text}» forma un ${spanishSkeleton} y se une al anillo en el localizador ${p.positions.join(",")}; ese localizador pertenece al padre.${systematicPropenyl?" En la numeración independiente de la rama el doble enlace es C1=C2 y la unión está en C2.":internalNumbering?" La numeración interna de la rama empieza en su átomo de unión y tiene un ámbito independiente.":""}` } : {}),
           bondIds:[...graph.bonds.filter(([a,b])=>region.includes(a)&&region.includes(b)).map(([a,b]):[number,number]=>[a,b]),...attachments]});
       if(unsaturated && p.positions.length===1) {
         const written=systematicPropenyl ? /1-en/.exec(p.text) : /(vinil|ethenyl|enil|enyl|en-[1-9]-(?:yl|il))$/.exec(p.text);
@@ -211,10 +211,10 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
     const prefixText = aromaticInput?.prefixText ?? esterInput!.prefixText;
     const language = aromaticInput?.language ?? esterInput!.language;
     const prefixStart = aromaticInput || language === "es" ? 0 : esterEnglish![1].length + 1;
-    const ps = prefixes(prefixText,prefixStart,6,false,language); if(!ps || ps.some(p=>p.positions.includes(1)))return null;
+    const ps = prefixes(prefixText,prefixStart,6,false,language,false,true); if(!ps || ps.some(p=>p.positions.includes(1)))return null;
     if(suffix==="phenol" && ps.some(p=>p.term.kind==="alcohol"))return null; // Polyols need a multi-suffix parent grammar.
     // Alcohol outranks amine; polyamines need their own multi-suffix grammar.
-    if(suffix==="aniline" && ps.some(p=>p.term.kind && p.term.kind!=="ether"))return null;
+    if(suffix==="aniline" && ps.some(p=>p.term.kind && !["ether","halogen"].includes(p.term.kind)))return null;
     const positions = ps.flatMap(p=>p.positions).sort((a,b)=>a-b), reversed = positions.map(p=>8-p).sort((a,b)=>a-b);
     const comparison=positions.findIndex((p,i)=>p!==reversed[i]);
     if(comparison>=0 && positions[comparison]>reversed[comparison])return null;
