@@ -1,0 +1,11 @@
+✔ pyridine diacids use the graph-derived suffix locants in Spanish and English (6288.7358ms)
+✔ pyridine diacid locants survive Kekulé form, graph reordering, and drawing changes (17.6499ms)
+✔ pyridine carboxyl recognition excludes other functions, rings, and added substituents (24.6216ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6998.6256

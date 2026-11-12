@@ -1,0 +1,245 @@
+{
+  "inventory": 1743,
+  "records": [
+    {
+      "cid": 10758,
+      "novel": false,
+      "name": "2-hydroxy-2-phenylacetonitrile"
+    },
+    {
+      "cid": 12180,
+      "novel": false,
+      "name": "methyl butanoate"
+    },
+    {
+      "cid": 10243,
+      "novel": true,
+      "name": "quinoline-4-carboxylic acid"
+    },
+    {
+      "cid": 10241,
+      "novel": true,
+      "name": "fluoren-9-one"
+    },
+    {
+      "cid": 11849,
+      "novel": false,
+      "name": "1,3,5-trimethyl-2,4-dinitrobenzene"
+    },
+    {
+      "cid": 13156,
+      "novel": false,
+      "name": "1-bromobutan-2-one"
+    },
+    {
+      "cid": 65577,
+      "novel": true,
+      "name": "1-dioctylphosphoryloctane"
+    },
+    {
+      "cid": 31249,
+      "novel": false,
+      "name": "diethyl butanedioate"
+    },
+    {
+      "cid": 31266,
+      "novel": false,
+      "name": "prop-2-enyl hexanoate"
+    },
+    {
+      "cid": 7678,
+      "novel": true,
+      "name": "1-phenylpropan-2-one"
+    },
+    {
+      "cid": 7420,
+      "novel": false,
+      "name": "3-hydroxybenzoic acid"
+    },
+    {
+      "cid": 7498,
+      "novel": false,
+      "name": "bromomethylbenzene"
+    },
+    {
+      "cid": 8465,
+      "novel": false,
+      "name": "1-(3,4-dihydroxyphenyl)-2-(propan-2-ylamino)ethanone"
+    },
+    {
+      "cid": 11310,
+      "novel": true,
+      "name": "(4-acetyloxy-3-methylnaphthalen-1-yl) acetate"
+    },
+    {
+      "cid": 11074,
+      "novel": true,
+      "name": "2-methylisoindole-1,3-dione"
+    },
+    {
+      "cid": 11487,
+      "novel": true,
+      "name": "N-phenylaniline"
+    },
+    {
+      "cid": 11612,
+      "novel": false,
+      "name": "hept-3-ene"
+    },
+    {
+      "cid": 12137,
+      "novel": true,
+      "name": "N-methyl-4-phenyldiazenylaniline"
+    },
+    {
+      "cid": 18635,
+      "novel": true,
+      "name": "3-methylsulfanylpropanal"
+    },
+    {
+      "cid": 23427,
+      "novel": true,
+      "name": "benzeneseleninic acid"
+    },
+    {
+      "cid": 638011,
+      "novel": true,
+      "name": "(2E)-3,7-dimethylocta-2,6-dienal"
+    },
+    {
+      "cid": 637511,
+      "novel": true,
+      "name": "(E)-3-phenylprop-2-enal"
+    },
+    {
+      "cid": 637563,
+      "novel": false,
+      "name": "1-methoxy-4-[(E)-prop-1-enyl]benzene"
+    },
+    {
+      "cid": 10366,
+      "novel": true,
+      "name": "pyridine-3,5-dicarboxylic acid"
+    },
+    {
+      "cid": 10865,
+      "novel": true,
+      "name": "2-(2-phenylethylamino)guanidine"
+    },
+    {
+      "cid": 11142,
+      "novel": false,
+      "name": "3-methylidene-6-propan-2-ylcyclohexene"
+    },
+    {
+      "cid": 11230,
+      "novel": false,
+      "name": "4-methyl-1-propan-2-ylcyclohex-3-en-1-ol"
+    },
+    {
+      "cid": 6552009,
+      "novel": false,
+      "name": "(1R,2S,4R)-1,7,7-trimethylbicyclo[2.2.1]heptan-2-ol"
+    },
+    {
+      "cid": 557975,
+      "novel": false,
+      "name": "3-ethyl-3,5,5-trimethylcyclohexan-1-one"
+    },
+    {
+      "cid": 6993418,
+      "novel": true,
+      "name": "(2R)-2-ethylcyclohexan-1-one"
+    },
+    {
+      "cid": 20474,
+      "novel": true,
+      "name": "2-ethylcyclohexan-1-one"
+    },
+    {
+      "cid": 522591,
+      "novel": false,
+      "name": "2-ethyl-3-methylcyclohexan-1-one"
+    },
+    {
+      "cid": 79506,
+      "novel": false,
+      "name": "4-ethylcyclohexan-1-one"
+    },
+    {
+      "cid": 117869,
+      "novel": false,
+      "name": "N-ethyl-4-methylbenzamide"
+    },
+    {
+      "cid": 14517,
+      "novel": false,
+      "name": "4-fluorobenzonitrile"
+    },
+    {
+      "cid": 7020622,
+      "novel": false,
+      "name": "4-ethylbenzamide"
+    },
+    {
+      "cid": 67855,
+      "novel": true,
+      "name": "2-fluorobenzonitrile"
+    },
+    {
+      "cid": 587203,
+      "novel": false,
+      "name": "3,4-difluorobenzonitrile"
+    },
+    {
+      "cid": 11959,
+      "novel": true,
+      "name": "N-ethylbenzamide"
+    },
+    {
+      "cid": 67880,
+      "novel": true,
+      "name": "3-fluorobenzonitrile"
+    },
+    {
+      "cid": 24834,
+      "novel": false,
+      "name": "4-ethoxybenzaldehyde"
+    },
+    {
+      "cid": 11950,
+      "novel": false,
+      "name": "2-ethoxybenzaldehyde"
+    },
+    {
+      "cid": 11560,
+      "novel": false,
+      "name": "1-bromo-3-methylbenzene"
+    },
+    {
+      "cid": 23094808,
+      "novel": false,
+      "name": "3,5-dichloro-2-ethoxybenzaldehyde"
+    },
+    {
+      "cid": 12084,
+      "novel": true,
+      "name": "4-chlorobenzamide"
+    },
+    {
+      "cid": 16896,
+      "novel": true,
+      "name": "4-bromo-2-methylphenol"
+    },
+    {
+      "cid": 89908,
+      "novel": true,
+      "name": "3-ethoxybenzaldehyde"
+    },
+    {
+      "cid": 14265,
+      "novel": true,
+      "name": "2-methylcyclopentan-1-one"
+    }
+  ]
+}

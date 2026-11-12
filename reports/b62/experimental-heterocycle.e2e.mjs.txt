@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {fileURLToPath} from 'node:url';
+import {createServer} from 'vite';
+import {chromium} from 'playwright';
+
+test('heterocyclic dicarboxylic acid has no incomplete local name in ES or EN',async()=>{
+  const server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0}});
+  let browser;
+  try{
+    await server.listen();const origin=`http://127.0.0.1:${server.httpServer.address().port}`;
+    browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1440,height:1000}});
+    await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
+    await page.route('**/*',route=>{
+      const url=new URL(route.request().url());if(url.origin===origin&&!url.pathname.startsWith('/api/'))return route.continue();
+      if(url.hostname==='www.googletagmanager.com')return route.fulfill({status:200,contentType:'application/javascript',body:''});
+      if(url.hostname==='fonts.gstatic.com')return route.fulfill({status:204,body:''});
+      return route.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:'{}'});
+    });
+    await page.goto(`${origin}/OrgoRush/es/`,{waitUntil:'domcontentloaded'});
+    await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    await page.locator('#smiles-text-input').fill('C1=C(C=NC=C1C(=O)O)C(=O)O');
+    await page.locator('#smiles-interop-panel button[type="submit"]').click();
+    await page.getByText('Nombre IUPAC local no disponible para esta estructura',{exact:false}).first().waitFor({state:'visible',timeout:20000});
+    assert.equal(await page.getByText('3,5-bis(1-metiletil)piridina',{exact:true}).count(),0);
+    await page.getByRole('button',{name:'English',exact:true}).click();
+    await page.getByText('Local IUPAC name unavailable for this structure',{exact:false}).first().waitFor({state:'visible'});
+    assert.equal(await page.getByText('3,5-bis(1-methylethyl)pyridine',{exact:true}).count(),0);
+    assert.ok(await page.locator('.molecule-stage [data-atom-id]').count()>0);
+  }finally{await browser?.close();await server.close()}
+},{timeout:90000});

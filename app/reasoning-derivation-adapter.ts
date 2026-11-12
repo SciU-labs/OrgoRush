@@ -143,6 +143,20 @@ function makeStep(input: {
   // Literal internal locants select branch atoms only. Never merge these into
   // parent numbering or the canvas's global map.
   for(const component of components) if(component.internalNumbering) {
+    const systematic = /^prop-([1-9])-en-([1-9])-(?:il|yl)$/.exec(component.text);
+    if (systematic) {
+      for (const [token, relative] of [[systematic[1],5],[systematic[2],10]] as const) {
+        const locant=Number(token), atomId=component.internalNumbering.find(([,n])=>n===locant)?.[0];
+        if(atomId===undefined)continue;
+        const item: ReasoningNameFragment={text:token,start:component.start+relative,kind:"numbering",language,
+          numberingScope:component.id,locant,atomIds:[atomId],semanticId:`branch-locant:${component.id}:${relative}`,
+          label:language==="en"?`Branch locant ${locant}`:`Localizador interno de rama ${locant}`};
+        locantFragments.push(item);
+        const fragmentId=reasoningFragmentId(number,item);
+        fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[[atomId,locant]]};
+      }
+      continue;
+    }
     const written=/^([1-9](?:,[1-9])*)-/.exec(component.text);
     if(!written)continue;
     let relative=0;

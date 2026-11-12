@@ -12,7 +12,7 @@ const { records } = JSON.parse(readFileSync(new URL('./fixtures/b50-pubchem-ring
 const cases = [
   { cid: 1254, es: '5-metil-2-(1-metiletil)ciclohexanol', en: '5-methyl-2-(1-methylethyl)cyclohexanol', function: 'alcohol', subs: [2, 5], unsaturation: [] },
   { cid: 326, es: '4-(1-metiletil)benzaldehído', en: '4-(1-methylethyl)benzaldehyde', function: 'aldehyde', subs: [4], unsaturation: [] },
-  { cid: 7439, es: '2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona', en: '2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one', function: 'ketone', subs: [2, 5], unsaturation: [2] },
+  { cid: 7439, es: '2-metil-5-(prop-1-en-2-il)ciclohex-2-en-1-ona', en: '2-methyl-5-(prop-1-en-2-yl)cyclohex-2-en-1-one', function: 'ketone', subs: [2, 5], unsaturation: [2] },
 ];
 let chemistry;
 before(async () => { chemistry = await loadExerciseChemistry(); });

@@ -94,6 +94,6 @@ export function proveMonocycleNumbering(size: number, positions: readonly (reado
     selected, reflected, comparison };
 }
 
-export function blueBookRule(id: string, chapter: "P5" | "P6" | "P6a") {
+export function blueBookRule(id: string, chapter: "P3" | "P5" | "P6" | "P6a") {
   return { id, source: `https://iupac.qmul.ac.uk/BlueBook/${chapter}.html#${id.replace(/[-.]/g, "")}` };
 }

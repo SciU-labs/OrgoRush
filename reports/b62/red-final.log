@@ -1,0 +1,26 @@
+✖ heterocyclic carboxylic acids cannot lose their oxygen groups in local names (22306.7144ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23482.6424
+
+✖ failing tests:
+
+test at tests\b62-heterocycle-red-check.mjs:9:1
+✖ heterocyclic carboxylic acids cannot lose their oxygen groups in local names (22306.7144ms)
+  AssertionError [ERR_ASSERTION]: es: the admitted name must represent the carboxyl function
+      at TestContext.<anonymous> (file:///C:/Dev/Hydrocarbon-Lab/tests/b62-heterocycle-red-check.mjs:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

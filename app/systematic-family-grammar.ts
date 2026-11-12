@@ -21,7 +21,10 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
     const written = m[2] ?? m[3], positions = m[1].split(",").map(Number);
     const multiplied = /^(di|tri)(.+)$/.exec(written);
     const termName = multiplied ? multiplied[2] : written;
-    const term = alkenyl && ["1-metilvinil", "1-methylethenyl"].includes(termName)
+    const systematicPropenyl = alkenyl && ["prop-1-en-2-il", "prop-1-en-2-yl"].includes(termName);
+    const term = systematicPropenyl
+      ? {es:"prop-1-en-2-il",en:"prop-1-en-2-yl",elements:["C","C","C"],bonds:[[0,1,2],[0,2,1]] as [number,number,number][]}
+      : alkenyl && ["1-metilvinil", "1-methylethenyl"].includes(termName)
       ? {es:"1-metilvinil",en:"1-methylethenyl",elements:["C","C","C"],bonds:[[0,1,2],[0,2,1]] as [number,number,number][]}
       : legacyPrefixTerm(termName);
     if (!term || term[language] !== termName || term.charges
@@ -126,7 +129,8 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
       const region: number[] = [], attachments: [number,number][] = [];
       const rootDegree = p.term.bonds.filter(([a,b]) => a === 0 || b === 0).length;
       const unsaturated=p.term.bonds.some(([, ,order])=>order===2);
-      const spanishSkeleton = rootDegree > 1 && p.term.elements.length > 2
+      const spanishSkeleton = p.text === "prop-1-en-2-il" ? "cadena de tres carbonos"
+        : rootDegree > 1 && p.term.elements.length > 2
         ? `esqueleto ramificado de ${p.term.elements.length} carbonos`
         : `fragmento de ${p.term.elements.length} átomo${p.term.elements.length === 1 ? "" : "s"}`;
       for(const position of p.positions) {
@@ -138,7 +142,10 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
       // retains its own longest rooted path; tied terminal atoms are chemically
       // equivalent and never become parent-ring locants.
       let internalNumbering: [number,number][] | undefined;
-      if(p.positions.length===1 && /^\d/.test(p.text) && p.term.bonds.length===p.term.elements.length-1) {
+      const systematicPropenyl = p.text === (language === "es" ? "prop-1-en-2-il" : "prop-1-en-2-yl");
+      if (p.positions.length===1 && systematicPropenyl) {
+        internalNumbering=[[region[1],1],[region[0],2],[region[2],3]];
+      } else if(p.positions.length===1 && /^\d/.test(p.text) && p.term.bonds.length===p.term.elements.length-1) {
         const paths=(id:number,from:number):number[][]=>{
           const next=p.term.bonds.flatMap(([a,b])=>a===id&&b!==from?[b]:b===id&&a!==from?[a]:[]);
           return next.length?next.flatMap(child=>paths(child,id).map(path=>[id,...path])):[[id]];
@@ -147,15 +154,15 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
         internalNumbering=backbone.map((index,i)=>[region[index],i+1]);
       }
       add(`prefix-${i}`,"prefix",p.text,p.start,region,
-        language === "en" ? `${p.text} specifies the connected ${p.term.kind ?? (unsaturated?"alkenyl":"alkyl")} substituent at ${p.positions.join(",")}; these locants belong to ${parentId}.${internalNumbering?" Internal branch numbering starts at its attachment atom, in a separate scope.":""}`
+        language === "en" ? `${p.text} specifies the connected ${p.term.kind ?? (unsaturated?"alkenyl":"alkyl")} substituent at ${p.positions.join(",")}; these locants belong to ${parentId}.${systematicPropenyl?" Its separate chain numbering puts the double bond at C1=C2 and the attachment at C2.":internalNumbering?" Internal branch numbering starts at its attachment atom, in a separate scope.":""}`
           : `El sustituyente «${p.text}» forma un ${spanishSkeleton} y se une al anillo en el localizador ${p.positions.join(",")}; ese localizador pertenece al padre.`,
         {parentId,locant:p.positions.length===1?p.positions[0]:undefined,
           numbering:[...new Map(p.positions.map(p=>[skeleton[p-1],p]))],
           ...(internalNumbering?{internalNumbering}:{}),
-          ...(language === "es" ? { explanationEs: `El sustituyente «${p.text}» forma un ${spanishSkeleton} y se une al anillo en el localizador ${p.positions.join(",")}; ese localizador pertenece al padre. La numeración interna de la rama empieza en su átomo de unión y tiene un ámbito independiente.` } : {}),
+          ...(language === "es" ? { explanationEs: `El sustituyente «${p.text}» forma un ${spanishSkeleton} y se une al anillo en el localizador ${p.positions.join(",")}; ese localizador pertenece al padre. ${systematicPropenyl?"En la numeración independiente de la rama el doble enlace es C1=C2 y la unión está en C2.":"La numeración interna de la rama empieza en su átomo de unión y tiene un ámbito independiente."}` } : {}),
           bondIds:[...graph.bonds.filter(([a,b])=>region.includes(a)&&region.includes(b)).map(([a,b]):[number,number]=>[a,b]),...attachments]});
       if(unsaturated && p.positions.length===1) {
-        const written=/(vinil|ethenyl|enil|enyl|en-[1-9]-(?:yl|il))$/.exec(p.text);
+        const written=systematicPropenyl ? /1-en/.exec(p.text) : /(vinil|ethenyl|enil|enyl|en-[1-9]-(?:yl|il))$/.exec(p.text);
         if(written)for(const [index,[a,b,order]] of p.term.bonds.entries())if(order===2) {
           add(`branch-unsaturation-${i}-${index}`,"unsaturation",written[0],p.start+written.index,[region[a],region[b]],
             language==="en"?"This double bond belongs to the substituent; its internal locants are independent of the parent ring."
@@ -292,7 +299,7 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
         {parentId:"parent",locant,numbering:[]});
     }
     evidence={source:"active-name",language,construction:"functional-monocycle",parentSelection:"sole-suffix-bearing-cycle",
-      rules:[blueBookRule("P-59.2.1.4","P5"),blueBookRule("P-59.2.3","P5"),blueBookRule("P-59.2.5","P5"),
+      rules:[...(ps.some(p=>p.text==="prop-1-en-2-il"||p.text==="prop-1-en-2-yl")?[blueBookRule("P-32.1.1","P3")]:[]),blueBookRule("P-59.2.1.4","P5"),blueBookRule("P-59.2.3","P5"),blueBookRule("P-59.2.5","P5"),
         blueBookRule(group==="alcohol"?"P-63.1.2":"P-64.2","P6"),blueBookRule("P-59.2.1.8","P5")],
       numbering,stereo:"unspecified-only"};
     allowEquivalentNumbering=true;

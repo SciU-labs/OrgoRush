@@ -4,12 +4,14 @@ import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {createServer} from 'vite';
 import {chromium} from 'playwright';
+import {moleculeFromSmiles} from '../../app/openchemlib-adapter.ts';
+import {reconcileSystematicName} from '../../app/validated-name-derivation.ts';
 
 const {records}=JSON.parse(await readFile(new URL('../fixtures/b50-pubchem-rings.json',import.meta.url),'utf8'));
 const cases=[
   {cid:1254,es:'5-metil-2-(1-metiletil)ciclohexanol',en:'5-methyl-2-(1-methylethyl)cyclohexanol',full:true,parentAtoms:6},
   {cid:326,es:'4-(1-metiletil)benzaldehído',en:'4-(1-methylethyl)benzaldehyde',full:true,parentAtoms:7},
-  {cid:7439,es:'2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona',en:'2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one',full:true,parentAtoms:6},
+  {cid:7439,es:'2-metil-5-(prop-1-en-2-il)ciclohex-2-en-1-ona',en:'2-methyl-5-(prop-1-en-2-yl)cyclohex-2-en-1-one',full:true,parentAtoms:6},
   {cid:7455,es:'4-metilbenzoato de metilo',en:'methyl 4-methylbenzoate',full:true,parentAtoms:7},
   {cid:69274,es:'4-metilbenzamida',en:'4-methylbenzamide',full:true,parentAtoms:7},
   {cid:7724,es:'4-metilbenzonitrilo',en:'4-methylbenzonitrile',full:true,parentAtoms:7},
@@ -42,7 +44,7 @@ for(const fixture of cases)test(`B5.2 real UI reasoning controls and canvas CID 
   const server=await createServer({configFile:fileURLToPath(new URL('../../vite.pages.config.ts',import.meta.url)),server:{host:'127.0.0.1',port:0}});
   let browser,page;const errors=[],network=[];
   try{
-    await server.listen();browser=await chromium.launch({headless:true});page=await browser.newPage({viewport:{width:1440,height:1000}});
+    await server.listen();browser=await chromium.launch({headless:true,...(process.env.ORGORUSH_CHROMIUM_EXECUTABLE?{executablePath:process.env.ORGORUSH_CHROMIUM_EXECUTABLE}:{})});page=await browser.newPage({viewport:{width:1440,height:1000}});
     page.on('pageerror',error=>errors.push(error.message));
     page.on('console',message=>{if(message.type()==='error')errors.push(message.text())});
     page.on('requestfailed',request=>network.push(request.failure()?.errorText));
@@ -82,6 +84,34 @@ for(const fixture of cases)test(`B5.2 real UI reasoning controls and canvas CID 
         if(kind==='numbering')assert.equal(result.atoms.length,1,'locant control highlights one numbered parent atom');
       }
     }
+    if(fixture.cid===7439) {
+      const parsed=moleculeFromSmiles(records.find(record=>record.cid===fixture.cid).smiles);
+      assert.ok(parsed.ok); const proof=reconcileSystematicName(parsed.molecule,fixture.es); assert.equal(proof?.status,'FULL');
+      const parent=proof.components.find(c=>c.id==='parent'), branch=proof.components.find(c=>c.id==='prefix-1');
+      const internal=new Map(branch.internalNumbering.map(([id,n])=>[n,id]));
+      const cases=[
+        ['parent',parent], ['suffix',proof.components.find(c=>c.id==='suffix')],
+        ['prefix-0',proof.components.find(c=>c.id==='prefix-0')], ['prefix-1',branch],
+        ['unsaturation-2',proof.components.find(c=>c.id==='unsaturation-2')],
+        ['branch-unsaturation-1-0',proof.components.find(c=>c.id==='branch-unsaturation-1-0')],
+      ];
+      const keys=bonds=>bonds.map(pair=>pair.map(Number).sort((a,b)=>a-b).join(':')).sort();
+      for(const [id,component] of cases) {
+        const button=panel.locator(`button[data-name-fragment="${id}"]`).first();
+        assert.ok(await button.count(),`missing ${id}`);
+        const selected=await activate(page,button);
+        assert.deepEqual([...selected.atoms].sort((a,b)=>a-b),[...component.atomIds].sort((a,b)=>a-b),`${id} atoms`);
+        assert.deepEqual(keys(selected.bonds.map(x=>x.split(':'))),keys(component.bondIds),`${id} bonds`);
+      }
+      for(const [relative,locant] of [[5,1],[10,2]]) {
+        const button=panel.locator(`button[data-name-fragment="branch-locant:prefix-1:${relative}"]`).first();
+        const selected=await activate(page,button);
+        assert.deepEqual(selected.atoms,[internal.get(locant)]); assert.deepEqual(selected.bonds,[]);
+      }
+      const ring5=parent.numbering.find(([,n])=>n===5)[0];
+      const ringControl=panel.locator(`button[data-name-fragment="locant:parent:${ring5}:5"]`).first();
+      assert.deepEqual((await activate(page,ringControl)).atoms,[ring5]);
+    }
     await page.getByRole('button',{name:'English',exact:true}).click();
     await page.getByText(fixture.en,{exact:true}).first().waitFor({state:'visible',timeout:20000});
     await page.waitForFunction(()=>{
@@ -116,4 +146,4 @@ for(const fixture of cases)test(`B5.2 real UI reasoning controls and canvas CID 
     }
     assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
   }finally{await page?.close();await browser?.close();await server.close()}
-},{timeout:120000});
+},{timeout:240000});

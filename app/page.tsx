@@ -1972,6 +1972,19 @@ function nameSubstituent(
     name: "sustituyente cíclico no compatible", sortName: "", complex: true,
     atomIds: component, unsupported: true,
   };
+  // P-32.1.1: for the three-carbon acyclic alkenyl whose point of
+  // attachment lies inside the chain, use the chain through that point.
+  // Match connectivity and bond orders, never a previously rendered name.
+  if (parent !== null && attachmentOrder === 1 && bondOrders && component.length === 3) {
+    const ends = (adjacency.get(root) ?? []).filter(id => componentSet.has(id));
+    const terminal = ends.length === 2 && ends.every(id => (adjacency.get(id) ?? []).filter(n => componentSet.has(n)).length === 1);
+    const doubleEnd = ends.find(id => bondOrders.get(bondKey(root, id)) === 2);
+    const singleEnd = ends.find(id => (bondOrders.get(bondKey(root, id)) ?? 1) === 1);
+    if (terminal && doubleEnd !== undefined && singleEnd !== undefined) {
+      return { name: "prop-1-en-2-il", sortName: stripForAlphabetizing("prop-1-en-2-il"), complex: true,
+        atomIds: component, unsaturatedBonds: [{locant: 1, order: 2, atomIds: [doubleEnd, root]}] };
+    }
+  }
   const rootPaths: number[][] = [];
 
   const walk = (current: number, previous: number | null, path: number[]) => {
@@ -2042,10 +2055,16 @@ function nameSubstituent(
       : unsaturatedPrefixName ?? alkylNames[chosen.path.length] ?? `alquilo de ${chosen.path.length} carbonos`;
   const branchParts = formatSubstituentGroups(chosen.branches);
   const name = branchParts.length ? `${branchParts.join("-")}${parentName}` : parentName;
+  // A multiple bond omitted by the rooted path must be represented by a
+  // recursively named branch. Never silently turn an unsaturated group into
+  // a saturated one when that branch representation cannot express it.
+  const pathSet = new Set(chosen.path);
+  const omittedMultipleBond = chosen.path.some(id => (adjacency.get(id) ?? []).some(other =>
+    componentSet.has(other) && !pathSet.has(other) && (bondOrders?.get(bondKey(id, other)) ?? 1) > 1));
 
   return {
     name,
-    ...(chosen.branches.some(branch => branch.unsupported) ? { unsupported: true } : {}),
+    ...(omittedMultipleBond || chosen.branches.some(branch => branch.unsupported) ? { unsupported: true } : {}),
     sortName: stripForAlphabetizing(name),
     complex: branchParts.length > 0 || Boolean(unsaturatedPrefixName),
     atomIds: component,

@@ -21,7 +21,7 @@ const cases=[
   [7724,'4-metilbenzonitrilo','4-methylbenzonitrile'],
   [1254,'5-metil-2-(1-metiletil)ciclohexanol','5-methyl-2-(1-methylethyl)cyclohexanol'],
   [11419,'2-metilciclohexanona','2-methylcyclohexanone'],
-  [7439,'2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona','2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one'],
+  [7439,'2-metil-5-(prop-1-en-2-il)ciclohex-2-en-1-ona','2-methyl-5-(prop-1-en-2-yl)cyclohex-2-en-1-one'],
   [7731,'1-metil-4-metoxibenceno','1-methoxy-4-methylbenzene'],
   [7473,'1-metil-4-nitrobenceno','1-methyl-4-nitrobenzene'],
   [9603,'1-fluoro-4-metilbenceno','1-fluoro-4-methylbenzene'],

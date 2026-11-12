@@ -1,0 +1,366 @@
+{
+  "frozenAt": "2026-11-11T04:00:48.428Z",
+  "selectionBeforeGenerator": true,
+  "records": [
+    {
+      "id": "B62-I01",
+      "cid": 10243,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10243",
+      "retrievedAt": "2026-11-11T00:46:40.452Z",
+      "receiptSha256": "2685cda4074511318023c8a9a11337b30126c65d92efe16a8df3969f30f7226d",
+      "smiles": "C1=CC=C2C(=C1)C(=CC=N2)C(=O)O",
+      "formula": "C10H7NO2",
+      "referenceName": "quinoline-4-carboxylic acid",
+      "inchiKey": "VQMSRUREDGBWKT-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dk^D@IALbfbbTQF]Mh@@@@@"
+    },
+    {
+      "id": "B62-I02",
+      "cid": 10241,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10241",
+      "retrievedAt": "2026-11-11T00:46:40.452Z",
+      "receiptSha256": "2685cda4074511318023c8a9a11337b30126c65d92efe16a8df3969f30f7226d",
+      "smiles": "C1=CC=C2C(=C1)C3=CC=CC=C3C2=O",
+      "formula": "C13H8O",
+      "referenceName": "fluoren-9-one",
+      "inchiKey": "YLQWCDOCJODRMT-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "fgAA@@@ILsJkdYHvkM@@@D@@@"
+    },
+    {
+      "id": "B62-I03",
+      "cid": 7678,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/7678",
+      "retrievedAt": "2026-11-11T00:46:51.157Z",
+      "receiptSha256": "3016eab5164005f2d5ee3857d003714ec8a2b22b693a88df7f8864f03d05cd16",
+      "smiles": "CC(=O)CC1=CC=CC=C1",
+      "formula": "C9H10O",
+      "referenceName": "1-phenylpropan-2-one",
+      "inchiKey": "QCCDLTOVEPVEJK-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "deTH@@RYyTYZ`@@@"
+    },
+    {
+      "id": "B62-I04",
+      "cid": 11310,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11310",
+      "retrievedAt": "2026-11-11T00:46:51.831Z",
+      "receiptSha256": "231e8b988840b4aa8c8b50da0ed22d347cd72edb458754f6530e8e6c8601c8ce",
+      "smiles": "CC1=C(C2=CC=CC=C2C(=C1)OC(=O)C)OC(=O)C",
+      "formula": "C15H14O4",
+      "referenceName": "(4-acetyloxy-3-methylnaphthalen-1-yl) acetate",
+      "inchiKey": "RYWSYCQQUDFMAU-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "fle@P@@H]GHhmEEEDUmIZmyj@B@bX@@@"
+    },
+    {
+      "id": "B62-I05",
+      "cid": 11074,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11074",
+      "retrievedAt": "2026-11-11T00:46:51.831Z",
+      "receiptSha256": "231e8b988840b4aa8c8b50da0ed22d347cd72edb458754f6530e8e6c8601c8ce",
+      "smiles": "CN1C(=O)C2=CC=CC=C2C1=O",
+      "formula": "C9H7NO2",
+      "referenceName": "2-methylisoindole-1,3-dione",
+      "inchiKey": "ZXLYYQUMYFHCLQ-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dcnD@D@TfYg\\fWVjA@`@@"
+    },
+    {
+      "id": "B62-I06",
+      "cid": 11487,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11487",
+      "retrievedAt": "2026-11-11T00:46:51.831Z",
+      "receiptSha256": "231e8b988840b4aa8c8b50da0ed22d347cd72edb458754f6530e8e6c8601c8ce",
+      "smiles": "C1=CC=C(C=C1)NC2=CC=CC=C2",
+      "formula": "C12H11N",
+      "referenceName": "N-phenylaniline",
+      "inchiKey": "DMBHHRLKUKUOEG-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dk^@@@RfYU\\]Tz@@@@@@"
+    },
+    {
+      "id": "B62-I07",
+      "cid": 12137,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12137",
+      "retrievedAt": "2026-11-11T00:46:52.513Z",
+      "receiptSha256": "7f008efd20fe5b365cc6763fe313d6b33bdaa0c15b6287a14dcc1bdf76ce06c2",
+      "smiles": "CNC1=CC=C(C=C1)N=NC2=CC=CC=C2",
+      "formula": "C13H13N3",
+      "referenceName": "N-methyl-4-phenyldiazenylaniline",
+      "inchiKey": "DKOXITJAUZNAPK-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "f`qp@@@P\\eKLjo|cZlt@@@T@@@"
+    },
+    {
+      "id": "B62-I08",
+      "cid": 18635,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/18635",
+      "retrievedAt": "2026-11-11T00:46:52.513Z",
+      "receiptSha256": "7f008efd20fe5b365cc6763fe313d6b33bdaa0c15b6287a14dcc1bdf76ce06c2",
+      "smiles": "CSCCC=O",
+      "formula": "C4H8OS",
+      "referenceName": "3-methylsulfanylpropanal",
+      "inchiKey": "CLUWOWRTHNNBBU-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "gGQHJ@aJ]jd@"
+    },
+    {
+      "id": "B62-I09",
+      "cid": 638011,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/638011",
+      "retrievedAt": "2026-11-11T00:46:53.316Z",
+      "receiptSha256": "8d24925404bb58f3ecd26e96acaa70b050d462cb1f6905e596fb392b93c1200a",
+      "smiles": "CC(=CCC/C(=C/C=O)/C)C",
+      "formula": "C10H16O",
+      "referenceName": "(2E)-3,7-dimethylocta-2,6-dienal",
+      "inchiKey": "WTEVQBCEXWBHNA-JXMROGBWSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 1,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dmTH@@RUgVYjf`@"
+    },
+    {
+      "id": "B62-I10",
+      "cid": 637511,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/637511",
+      "retrievedAt": "2026-11-11T00:46:53.316Z",
+      "receiptSha256": "8d24925404bb58f3ecd26e96acaa70b050d462cb1f6905e596fb392b93c1200a",
+      "smiles": "C1=CC=C(C=C1)/C=C/C=O",
+      "formula": "C9H8O",
+      "referenceName": "(E)-3-phenylprop-2-enal",
+      "inchiKey": "KJPRLNWUNMBNBZ-QPJJXVBHSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 1,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "deTH@@RUYTYY`@@@"
+    },
+    {
+      "id": "B62-I11",
+      "cid": 10366,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10366",
+      "retrievedAt": "2026-11-11T00:46:53.316Z",
+      "receiptSha256": "8d24925404bb58f3ecd26e96acaa70b050d462cb1f6905e596fb392b93c1200a",
+      "smiles": "C1=C(C=NC=C1C(=O)O)C(=O)O",
+      "formula": "C7H5NO4",
+      "referenceName": "pyridine-3,5-dicarboxylic acid",
+      "inchiKey": "MPFLRYZEEAQMLQ-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dcNB@FAEuInU^xV`@f@@"
+    },
+    {
+      "id": "B62-I12",
+      "cid": 10865,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/10865",
+      "retrievedAt": "2026-11-11T00:46:54.022Z",
+      "receiptSha256": "40323534ea0038c5b95f393364862d26cc7f9fb113dfee6f37b9dad7c053ad6d",
+      "smiles": "C1=CC=C(C=C1)CCNN=C(N)N",
+      "formula": "C9H14N4",
+      "referenceName": "2-(2-phenylethylamino)guanidine",
+      "inchiKey": "NMLWFEJUWANVHA-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dkl`@@`jrQJHjIKSfj`@@@"
+    },
+    {
+      "id": "B62-I13",
+      "cid": 20474,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/20474",
+      "retrievedAt": "2026-11-11T00:50:08.468Z",
+      "receiptSha256": "4f62b184e6134e9d8b8f5b04d024cda1095c9c4b72f361d391067451b7911bc2",
+      "smiles": "CCC1CCCCC1=O",
+      "formula": "C8H14O",
+      "referenceName": "2-ethylcyclohexan-1-one",
+      "inchiKey": "WKYYYUWKFPFVEY-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "didH@@RYeVyjjh@@"
+    },
+    {
+      "id": "B62-I14",
+      "cid": 67855,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/67855",
+      "retrievedAt": "2026-11-11T00:50:09.917Z",
+      "receiptSha256": "f5136016e2dc341a8df4932db5e99a3ec3edbb45b30c1c5fdf03ea8ec9ed1fb2",
+      "smiles": "C1=CC=C(C(=C1)C#N)F",
+      "formula": "C7H4FN",
+      "referenceName": "2-fluorobenzonitrile",
+      "inchiKey": "GDHXJNRAJRCGMX-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dif@`NBPRYeVFBC@@@"
+    },
+    {
+      "id": "B62-I15",
+      "cid": 11959,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/11959",
+      "retrievedAt": "2026-11-11T00:50:09.917Z",
+      "receiptSha256": "f5136016e2dc341a8df4932db5e99a3ec3edbb45b30c1c5fdf03ea8ec9ed1fb2",
+      "smiles": "CCNC(=O)C1=CC=CC=C1",
+      "formula": "C9H11NO",
+      "referenceName": "N-ethylbenzamide",
+      "inchiKey": "SDIDYFBTIZOPLA-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dmvH@DAIee^UZ``@@@"
+    },
+    {
+      "id": "B62-I16",
+      "cid": 67880,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/67880",
+      "retrievedAt": "2026-11-11T00:50:09.917Z",
+      "receiptSha256": "f5136016e2dc341a8df4932db5e99a3ec3edbb45b30c1c5fdf03ea8ec9ed1fb2",
+      "smiles": "C1=CC(=CC(=C1)F)C#N",
+      "formula": "C7H4FN",
+      "referenceName": "3-fluorobenzonitrile",
+      "inchiKey": "JZTPKAROPNTQQV-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dif@`ABPRYVzz@Hp@@"
+    },
+    {
+      "id": "B62-I17",
+      "cid": 12084,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/12084",
+      "retrievedAt": "2026-11-11T04:00:48.424Z",
+      "receiptSha256": "126dc6dd5d786f451dd3a70e037390bcab7481cdaf583cc9acea117a95327663",
+      "smiles": "C1=CC(=CC=C1C(=O)N)Cl",
+      "formula": "C7H6ClNO",
+      "referenceName": "4-chlorobenzamide",
+      "inchiKey": "BLNVISNJTIRAHF-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "deVH`IDHaIe]jZ@BX@@"
+    },
+    {
+      "id": "B62-I18",
+      "cid": 16896,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/16896",
+      "retrievedAt": "2026-11-11T04:00:48.427Z",
+      "receiptSha256": "126dc6dd5d786f451dd3a70e037390bcab7481cdaf583cc9acea117a95327663",
+      "smiles": "CC1=C(C=CC(=C1)Br)O",
+      "formula": "C7H7BrO",
+      "referenceName": "4-bromo-2-methylphenol",
+      "inchiKey": "IWJGMJHAIUBWKT-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "didH`ACDRYVzZ@B`@@"
+    },
+    {
+      "id": "B62-I19",
+      "cid": 89908,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/89908",
+      "retrievedAt": "2026-11-11T04:00:48.428Z",
+      "receiptSha256": "126dc6dd5d786f451dd3a70e037390bcab7481cdaf583cc9acea117a95327663",
+      "smiles": "CCOC1=CC=CC(=C1)C=O",
+      "formula": "C9H10O2",
+      "referenceName": "3-ethoxybenzaldehyde",
+      "inchiKey": "QZMGMXBYJZVAJN-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "dmtD@@yIYV}aX@b`@@"
+    },
+    {
+      "id": "B62-I20",
+      "cid": 14265,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/14265",
+      "retrievedAt": "2026-11-11T04:00:48.428Z",
+      "receiptSha256": "126dc6dd5d786f451dd3a70e037390bcab7481cdaf583cc9acea117a95327663",
+      "smiles": "CC1CCCC1=O",
+      "formula": "C6H10O",
+      "referenceName": "2-methylcyclopentan-1-one",
+      "inchiKey": "ZIXLDMFVRPABBX-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 1,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "gOq@@dsI[UT@@"
+    }
+  ]
+}

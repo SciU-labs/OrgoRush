@@ -1,0 +1,25 @@
+{
+  "frozenAt": "2026-11-11T04:15:08.673Z",
+  "selectionBeforeGenerator": true,
+  "note": "Supplement chosen after the initial run revealed an overlap; it is an independently frozen additional case, not part of the original blind cohort.",
+  "records": [
+    {
+      "id": "B62-S01",
+      "cid": 65577,
+      "source": "https://pubchem.ncbi.nlm.nih.gov/compound/65577",
+      "retrievedAt": "2026-11-11T00:46:50.378Z",
+      "receiptSha256": "ec4bb568183c7a6043f8f7950beb1fe3eb0a41f52d811535b9f665267e0c0768",
+      "smiles": "CCCCCCCCP(=O)(CCCCCCCC)CCCCCCCC",
+      "formula": "C24H51OP",
+      "referenceName": "1-dioctylphosphoryloctane",
+      "inchiKey": "ZMBHCYHQLYEYDV-UHFFFAOYSA-N",
+      "stereo": {
+        "definedAtoms": 0,
+        "undefinedAtoms": 0,
+        "definedBonds": 0,
+        "undefinedBonds": 0
+      },
+      "constitutionKey": "fesAB@H@|DjmUUUUUUVjjjjjjjh@@"
+    }
+  ]
+}

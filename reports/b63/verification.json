@@ -1,0 +1,42 @@
+{
+  "audit": "B6.3",
+  "date": "2026-11-11",
+  "commit": "81b26bd1f7aa51a8a3880b49f18c622230e48a23",
+  "checks": [
+    {
+      "command": "node scripts/b63-spanish-terminology-audit.mjs",
+      "exitCode": 0,
+      "rows": 84,
+      "availableSpanishProfiles": 69,
+      "uniqueSpanishNames": 66,
+      "note": "Renders manual terminology decisions; not an independent Spanish parser."
+    },
+    {
+      "command": "node --test --test-concurrency=1 tests/b61-safety-regression.test.mjs tests/b621-pyridinedicarboxylic-acids.test.mjs tests/visual-numbering.test.mjs tests/selected-atom-context.test.mjs tests/b53-full-partial-support.test.mjs",
+      "exitCode": 0,
+      "tests": 24,
+      "pass": 24,
+      "fail": 0,
+      "durationMs": 63677.4333
+    },
+    { "command": "npm run typecheck", "exitCode": 0 },
+    { "command": "git diff --check", "exitCode": 0, "output": "" },
+    {
+      "check": "SHA-256 comparison of every protectedFiles entry in audit.json",
+      "matched": 8,
+      "changed": 0
+    },
+    {
+      "command": "git diff --name-only 7d0396964935a687bb2d448303a0251c3129d964 HEAD -- app",
+      "exitCode": 0,
+      "output": "",
+      "meaning": "Production app files at current HEAD match the B6.2.2 measured commit."
+    }
+  ],
+  "productionChanges": false,
+  "namesChanged": false,
+  "productSupportChanges": false,
+  "newOpsinInvocations": 0,
+  "playwright": "Not run: no presentation or interaction changed.",
+  "fullSuite": "Not run: report-only review; focused checks passed."
+}

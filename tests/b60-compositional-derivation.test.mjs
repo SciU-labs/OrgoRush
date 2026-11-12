@@ -16,7 +16,7 @@ export const acceptance = [
   [7724,'4-metilbenzonitrilo','4-methylbenzonitrile','nitrile'],
   [1254,'5-metil-2-(1-metiletil)ciclohexanol','5-methyl-2-(1-methylethyl)cyclohexanol','alcohol'],
   [11419,'2-metilciclohexanona','2-methylcyclohexanone','ketone'],
-  [7439,'2-metil-5-(1-metilvinil)ciclohex-2-en-1-ona','2-methyl-5-(1-methylethenyl)cyclohex-2-en-1-one','ketone'],
+  [7439,'2-metil-5-(prop-1-en-2-il)ciclohex-2-en-1-ona','2-methyl-5-(prop-1-en-2-yl)cyclohex-2-en-1-one','ketone'],
 ];
 const graphFor = cid => {
   const result = moleculeFromSmiles(records.find(r => r.cid === cid).smiles);
@@ -70,7 +70,7 @@ for (const [cid,es,en,group] of acceptance) test(`B6 compositional acceptance ${
       assert.equal(new Set(unsaturations.flatMap(c=>c.bondIds.map(edgeKey))).size,2);
       assert.equal(proof.evidence.reconstructedGraph.bonds.filter(([, ,o])=>o===2).length,3);
       const alphabetic=model.steps.find(step=>step.alphabeticalOrder)?.alphabeticalOrder;
-      assert.equal(alphabetic.fragment,language==='en'?'methyl → 1-methylethenyl':'metil → 1-metilvinil',
+      assert.equal(alphabetic.fragment,language==='en'?'methyl → prop-1-en-2-yl':'metil → prop-1-en-2-il',
         'alphabetic reasoning uses the exact active name, not a historical synonym from the generator');
     }
     assert.equal(JSON.stringify(graph),snapshot,'language and reasoning never mutate the input graph');

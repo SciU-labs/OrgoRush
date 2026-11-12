@@ -1,0 +1,20 @@
+{
+  "rows": 1,
+  "priorCases": 0,
+  "opsin": {
+    "NOT-RUN-NO-NAME": [
+      {
+        "id": "B62-S01",
+        "cid": 65577,
+        "import": {
+          "ok": false,
+          "error": "La estructura contiene P. Por ahora el laboratorio admite C, O, N, S y halógenos."
+        },
+        "profiles": {},
+        "opsin": {
+          "status": "NOT-RUN-NO-NAME"
+        }
+      }
+    ]
+  }
+}
