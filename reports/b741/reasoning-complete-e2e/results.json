@@ -1,0 +1,1225 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "id": "nitro",
+      "smiles": "Cc1ccccc1[N+](=O)[O-]",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nitro-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nitro-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nitro-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nitro-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "n-ethyl",
+      "smiles": "CCNC(=O)c1c(Br)cc(C)cc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 9,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/n-ethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/n-ethyl-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 9,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/n-ethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/n-ethyl-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "nn-diethyl",
+      "smiles": "CCN(CC)C(=O)c1cc(F)cc(F)c1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nn-diethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nn-diethyl-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nn-diethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/nn-diethyl-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "ester",
+      "smiles": "COC(=O)c1cc(Br)c(OC)cc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ester-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ester-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ester-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ester-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "branched",
+      "smiles": "CC(C)CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/branched-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alkene",
+      "smiles": "CC=CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alkene-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "ketone",
+      "smiles": "O=C1CCC(C)CC1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ketone-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ketone-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ketone-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": null,
+            "7": "5",
+            "8": "6"
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/ketone-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alcohol",
+      "smiles": "CCCO",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/alcohol-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "aldehyde",
+      "smiles": "CCC=O",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 4,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 4,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/reasoning-complete-e2e/aldehyde-es-condensed.png"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

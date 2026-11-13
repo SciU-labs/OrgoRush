@@ -1,0 +1,1769 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "id": "nitro",
+      "smiles": "Cc1ccccc1[N+](=O)[O-]",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitro-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitro-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitro-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": "6",
+            "4": "5",
+            "5": "4",
+            "6": "3",
+            "7": "2",
+            "8": null,
+            "9": null,
+            "10": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitro-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "n-ethyl",
+      "smiles": "CCNC(=O)c1c(Br)cc(C)cc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 9,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-ethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-ethyl-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 9,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-ethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": "1",
+            "7": "2",
+            "8": null,
+            "9": "3",
+            "10": "4",
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-ethyl-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "nn-diethyl",
+      "smiles": "CCN(CC)C(=O)c1cc(F)cc(F)c1",
+      "status": "FAIL",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nn-diethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nn-diethyl-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nn-diethyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": "1",
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nn-diethyl-es-skeletal.png"
+        }
+      ],
+      "errors": [],
+      "error": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.reasoning-visual-overlay').locator('[data-reasoning-locant=\"4\"] text')\u001b[22m\n"
+    },
+    {
+      "id": "ester",
+      "smiles": "COC(=O)c1cc(Br)c(OC)cc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ester-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ester-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 8,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ester-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": "1",
+            "6": "2",
+            "7": "3",
+            "8": null,
+            "9": "4",
+            "10": null,
+            "11": null,
+            "12": "5",
+            "13": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ester-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "branched",
+      "smiles": "CC(C)CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/branched-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alkene",
+      "smiles": "CC=CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 1,
+          "activated": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alkene-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "ketone",
+      "smiles": "O=C1CCC(C)CC1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ketone-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ketone-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ketone-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": "1",
+            "3": null,
+            "4": null,
+            "5": "4",
+            "6": null,
+            "7": null,
+            "8": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/ketone-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alcohol",
+      "smiles": "CCCO",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/alcohol-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "aldehyde",
+      "smiles": "CCC=O",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 4,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-condensed.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 4,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aldehyde-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "nitrile",
+      "smiles": "N#Cc1ccc(F)c(F)c1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitrile-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitrile-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitrile-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/nitrile-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "n-benzyl",
+      "smiles": "O=C(NCc1ccccc1)c1ccccc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-benzyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-benzyl-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 5,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-benzyl-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": "1",
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/n-benzyl-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "aromatic-aldehyde",
+      "smiles": "CCOc1c(Cl)cc(Cl)cc1C=O",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 7,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aromatic-aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aromatic-aldehyde-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 7,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aromatic-aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": "2",
+            "5": "3",
+            "6": null,
+            "7": "4",
+            "8": "5",
+            "9": null,
+            "10": "6",
+            "11": "1",
+            "12": null,
+            "13": null
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/aromatic-aldehyde-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "pyridine",
+      "smiles": "n1ccccc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/pyridine-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/pyridine-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          }
+        },
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "proof": false,
+          "controls": 0,
+          "activated": false
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/pyridine-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6"
+          },
+          "screenshot": "reports/b741/stage-e-browser-isolated/pyridine-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

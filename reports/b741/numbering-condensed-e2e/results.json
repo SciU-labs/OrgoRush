@@ -1,0 +1,466 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "id": "branched",
+      "smiles": "CC(C)CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-condensed.png"
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": null,
+            "4": "3",
+            "5": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/branched-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alkene",
+      "smiles": "CC=CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-condensed.png"
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4"
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alkene-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "alcohol",
+      "smiles": "CCCO",
+      "status": "PASS",
+      "observations": [
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-condensed.png"
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": false,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/alcohol-es-condensed.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "aldehyde",
+      "smiles": "CCC=O",
+      "status": "PASS",
+      "observations": [
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-condensed.png"
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "en",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-skeletal.png"
+        },
+        {
+          "language": "es",
+          "view": "condensed",
+          "proof": true,
+          "numbering": {
+            "1": "3",
+            "2": "2",
+            "3": "1",
+            "4": null
+          },
+          "screenshot": "reports/b741/numbering-condensed-e2e/aldehyde-es-condensed.png"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

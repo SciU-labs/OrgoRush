@@ -1,9 +1,11 @@
 import type { KeyboardEvent, MouseEvent } from "react";
 import type { CondensedRenderModel, CondensedToken } from "./condensed-layout";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets";
+import { structuralBondKey, type StructuralColorCategory } from "./structural-color-classification";
 
 type CondensedRendererProps = {
   model: CondensedRenderModel;
+  structuralColoring?: { atoms: ReadonlyMap<number, StructuralColorCategory>; bonds: ReadonlyMap<string, StructuralColorCategory> } | null;
   reasoningTarget?: ReasoningVisualTarget | null;
   selectedAtomId: number | null;
   showNumbering: boolean;
@@ -41,6 +43,7 @@ function activateBond(
 
 export function CondensedMoleculeSvg({
   model,
+  structuralColoring,
   reasoningTarget,
   selectedAtomId,
   showNumbering,
@@ -55,11 +58,12 @@ export function CondensedMoleculeSvg({
       {model.tokens.map((token, index) => {
         if (token.type === "atom") {
           const isSelected = token.atomId === selectedAtomId;
+          const category = structuralColoring?.atoms.get(token.atomId);
           const roleProps = advancedScreenReaderEnabled ? { role: "button" as const, tabIndex: 0 } : {};
           return (
             <g
               key={`atom-${token.atomId}`}
-              className={`condensed-token condensed-atom ${token.branchDepth ? "condensed-branch-token" : "condensed-main-token"}${isSelected ? " selected" : ""}`}
+              className={`condensed-token condensed-atom ${token.branchDepth ? "condensed-branch-token" : "condensed-main-token"}${category ? ` structural-${category}` : ""}${isSelected ? " selected" : ""}`}
               transform={`translate(${token.x + token.width / 2} ${token.y})`}
               data-atom-id={token.atomId}
               {...roleProps}
@@ -79,7 +83,7 @@ export function CondensedMoleculeSvg({
               {reasoningTarget?.atomIds.includes(token.atomId) && <g className="reasoning-visual-overlay" data-editor-only="true" aria-hidden="true" pointerEvents="none">
                 <rect className="reasoning-visual-atom" data-reasoning-atom={token.atomId}
                   x={-token.width / 2 - 3} y={-23} width={token.width + 6} height={46} rx={9} />
-                {!showNumbering && reasoningTarget.locants.some(([id]) => id === token.atomId) &&
+                {reasoningTarget.locants.some(([id, locant]) => id === token.atomId && !(showNumbering && String(token.locant) === String(locant))) &&
                   <g className="reasoning-visual-locant" data-reasoning-locant={token.atomId} transform="translate(0 -34)">
                     <circle r="11" /><text textAnchor="middle" dominantBaseline="central">{reasoningTarget.locants.find(([id]) => id === token.atomId)![1]}</text>
                   </g>}
@@ -116,10 +120,11 @@ export function CondensedMoleculeSvg({
         }
         if (token.type === "bond") {
           const roleProps = advancedScreenReaderEnabled ? { role: "button" as const, tabIndex: 0 } : {};
+          const category = structuralColoring?.bonds.get(structuralBondKey(...token.atomIds));
           return (
             <g
               key={`bond-${token.bondId}`}
-              className={`condensed-token condensed-bond ${token.branchDepth ? "condensed-branch-token" : "condensed-main-token"} condensed-bond-order-${token.order}`}
+              className={`condensed-token condensed-bond ${token.branchDepth ? "condensed-branch-token" : "condensed-main-token"} condensed-bond-order-${token.order}${category ? ` structural-${category}` : ""}`}
               transform={`translate(${token.x + token.width / 2} ${token.y})`}
               data-bond-a={token.atomIds[0]}
               data-bond-b={token.atomIds[1]}

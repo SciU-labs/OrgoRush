@@ -1,0 +1,131 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "id": "nitrile",
+      "smiles": "N#Cc1ccc(F)c(F)c1",
+      "status": "PASS",
+      "observations": [
+        {
+          "kind": "reasoning",
+          "language": "es",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/reasoning-nitrile-e2e/nitrile-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/reasoning-nitrile-e2e/nitrile-es-skeletal.png"
+        },
+        {
+          "kind": "reasoning",
+          "language": "en",
+          "checks": 6,
+          "proof": true
+        },
+        {
+          "language": "en",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          }
+        },
+        {
+          "language": "en",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          }
+        },
+        {
+          "language": "es",
+          "view": "semi",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/reasoning-nitrile-e2e/nitrile-es-semi.png"
+        },
+        {
+          "language": "es",
+          "view": "skeletal",
+          "proof": true,
+          "numbering": {
+            "1": null,
+            "2": null,
+            "3": "1",
+            "4": "6",
+            "5": "5",
+            "6": "4",
+            "7": null,
+            "8": "3",
+            "9": null,
+            "10": "2"
+          },
+          "screenshot": "reports/b741/reasoning-nitrile-e2e/nitrile-es-skeletal.png"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

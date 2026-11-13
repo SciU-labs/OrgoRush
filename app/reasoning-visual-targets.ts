@@ -197,6 +197,21 @@ export function buildReasoningVisualReferences(input: VisualInput): {
   const steps = resolveVisualTargets(input);
   const fragments: Record<string, ReasoningVisualTarget> = {};
   if (!input.enabled) return { steps, fragments };
+  // A local, unvalidated name need not contain a written locant. When its
+  // selected parent is a simple monocycle with exactly one heteroatom at the
+  // local origin, the atom itself is still safe structural evidence. Do not
+  // manufacture a literal name fragment or certify the local numbering.
+  const parent = new Set(input.analysis.mainChain);
+  const ringEdges = input.molecule.bonds.filter(([a,b]) => parent.has(a) && parent.has(b));
+  const hetero = input.molecule.atoms.filter(atom => parent.has(atom.id) && (atom.element ?? "C") !== "C");
+  const singleHeteroCycle = parent.size >= 3 && ringEdges.length === parent.size && hetero.length === 1
+    && [...parent].every(id => ringEdges.filter(([a,b]) => a === id || b === id).length === 2)
+    && input.analysis.numberedAtoms.get(hetero[0].id) === 1;
+  if (singleHeteroCycle) for (const step of input.steps) {
+    if (step.nameRole === "numbering" && !input.fragments[step.number] && !steps[step.number]) {
+      steps[step.number] = {stepNumber:step.number,atomIds:[hetero[0].id],bondIds:[],locants:[]};
+    }
+  }
   const allEvidence = Object.values(input.fragments).flatMap(part => [part, ...(part.additionalFragments ?? [])]);
   for (const step of input.steps) {
     const evidence = input.fragments[step.number];

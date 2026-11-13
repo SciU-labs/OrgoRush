@@ -41,11 +41,11 @@ import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
-import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment } from "./validated-name-derivation";
+import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
-import { buildValidatedVisualNumbering } from "./visual-numbering";
+import { buildBranchCountingGuides, buildValidatedVisualNumbering } from "./visual-numbering";
 import { selectedAromaticCarboxylCarbonContext } from "./selected-atom-context";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
 import {
@@ -743,6 +743,7 @@ export function ReasoningNameFragmentView({
   selectedFragmentId,
   onActivateTarget,
   language = "es",
+  activeName,
 }: {
   fragment: ReasoningNameFragment;
   onSelectContribution?: (contribution: ReasoningNameFragment) => void;
@@ -752,23 +753,32 @@ export function ReasoningNameFragmentView({
   selectedFragmentId?: string | null;
   onActivateTarget?: (target: ReasoningVisualTarget) => void;
   language?: AppLanguage;
+  activeName?: string;
 }) {
   return (
     <>
       {[fragment, ...(fragment.additionalFragments ?? [])].map((part, index) => {
         const fragmentId = stepNumber ? reasoningFragmentId(stepNumber, part) : undefined;
         const target = fragmentId ? visualTargets?.[fragmentId] : undefined;
+        const literal = activeName === undefined || (part.start !== undefined
+          ? activeName.slice(part.start,part.start+part.text.length) === part.text
+          : part.kind !== "numbering" && activeName.indexOf(part.text) >= 0
+            && activeName.indexOf(part.text) === activeName.lastIndexOf(part.text));
         const selectable = visualTargets ? target && onActivateTarget : part.semanticId && onSelectContribution;
         const selected = visualTargets ? fragmentId === selectedFragmentId : Boolean(part.semanticId && part.semanticId === selectedSemanticId);
+        const displayLabel = target && part.kind === "unsaturation" && target.locants.length && !target.bondIds.length
+          ? language === "en" ? "Multiple-bond locants" : "Localizadores de enlaces múltiples"
+          : part.label;
         return (
           <div key={part.semanticId ? `${part.semanticId}:${part.start ?? index}:${part.text}` : index} className={`reasoning-name-fragment reasoning-name-fragment--${part.kind}`}>
             {selectable
               ? <button type="button" className={`reasoning-name-fragment-control ${selected ? "is-selected" : ""}`}
                   data-name-fragment={part.semanticId}
+                  data-reasoning-region={literal ? undefined : "structural-reference"}
                   aria-label={visualTargets
-                    ? language === "en" ? `${part.text}: ${part.label}. Highlight in the molecule for two seconds`
-                      : `${part.text}: ${part.label}. Resaltar en la molécula durante dos segundos`
-                    : part.label} aria-pressed={selected}
+                    ? language === "en" ? `${literal ? "" : "Structural reference. "}${part.text}: ${displayLabel}. Highlight in the molecule for two seconds`
+                      : `${literal ? "" : "Referencia estructural. "}${part.text}: ${displayLabel}. Resaltar en la molécula durante dos segundos`
+                    : displayLabel} aria-pressed={selected}
                   onClick={(event) => {
                     event?.stopPropagation();
                     if (target && onActivateTarget) onActivateTarget(target);
@@ -777,7 +787,8 @@ export function ReasoningNameFragmentView({
                   <span className="reasoning-name-fragment-text">{part.text}</span>
                 </button>
               : <span className="reasoning-name-fragment-text">{part.text}</span>}
-            <small className="reasoning-name-fragment-label">{part.label}</small>
+            <small className="reasoning-name-fragment-label">{literal ? displayLabel
+              : `${language === "en" ? "Structural reference" : "Referencia estructural"}: ${displayLabel}`}</small>
             {part.explanation && <p className="reasoning-name-fragment-explanation"><ChemicalNotationText value={part.explanation} /></p>}
           </div>
         );
@@ -7536,15 +7547,25 @@ function applyExportColorPalette(svg: SVGSVGElement, palette: ExportColorPalette
     });
   };
 
-  paint(".main-bond:not(.functional-bond)", "stroke", palette.main);
-  paint(".branch-bond:not(.functional-bond)", "stroke", palette.substituent);
+  paint(".main-bond:not(.functional-bond):not(.unclassified-bond)", "stroke", palette.main);
+  paint(".branch-bond:not(.functional-bond):not(.unclassified-bond)", "stroke", palette.substituent);
   paint(".functional-bond", "stroke", palette.functional);
   paint(".carbon-node.on-main-chain .atom-circle", "stroke", palette.main);
-  paint(".carbon-node.on-branch:not(.hetero-node) .atom-circle", "stroke", palette.substituent);
+  paint(".carbon-node.on-branch:not(.hetero-node):not(.structural-unclassified) .atom-circle", "stroke", palette.substituent);
   paint(".skeletal-node.on-main-chain .skeletal-anchor", "fill", palette.main);
-  paint(".skeletal-node.on-branch .skeletal-anchor", "fill", palette.substituent);
-  paint(".hetero-node .atom-circle, .skeletal-hetero-badge", "stroke", palette.functional);
-  paint(".hetero-node .atom-label", "fill", palette.functional);
+  paint(".skeletal-node.on-branch:not(.structural-unclassified) .skeletal-anchor", "fill", palette.substituent);
+  paint(".hetero-node:not(.structural-unclassified) .atom-circle, .carbon-node:not(.structural-unclassified) .skeletal-hetero-badge", "stroke", palette.functional);
+  paint(".hetero-node:not(.structural-unclassified) .atom-label", "fill", palette.functional);
+  paint(".structural-functional .atom-circle, .structural-functional .skeletal-hetero-badge", "stroke", palette.functional);
+  paint(".structural-functional .skeletal-anchor", "fill", palette.functional);
+  paint(".structural-functional .semi-developed-label", "fill", palette.functional);
+  paint(".structural-parent .semi-developed-label", "fill", palette.main);
+  paint(".structural-substituent .semi-developed-label", "fill", palette.substituent);
+  paint(".structural-substituent.hetero-node .atom-circle, .structural-substituent .skeletal-hetero-badge", "stroke", palette.substituent);
+  paint(".structural-substituent.hetero-node .atom-label", "fill", palette.substituent);
+  paint(".condensed-atom.structural-parent .condensed-atom-text, .condensed-atom.structural-parent .condensed-atom-text tspan, .condensed-bond.structural-parent > text", "fill", palette.main);
+  paint(".condensed-atom.structural-functional .condensed-atom-text, .condensed-atom.structural-functional .condensed-atom-text tspan, .condensed-bond.structural-functional > text", "fill", palette.functional);
+  paint(".condensed-atom.structural-substituent .condensed-atom-text, .condensed-atom.structural-substituent .condensed-atom-text tspan, .condensed-bond.structural-substituent > text", "fill", palette.substituent);
   paint(".methane-marker circle", "stroke", palette.main);
   paint(".number-circle", "fill", palette.main);
 }
@@ -8523,8 +8544,15 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const verifiedSystematicModel = (pubChemIupacName
     ? reconcileSystematicName(molecule, pubChemIupacName) : null)
     ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
-  const verifiedSystematicPresentation = verifiedSystematicModel
+  let verifiedSystematicPresentation = verifiedSystematicModel
     ? presentValidatedSystematicName(verifiedSystematicModel, language) : null;
+  if (verifiedSystematicModel && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
+    && language === "es" && !localSuggestedNameUnavailable && !externalNameIsPrimary
+    && sourceNameOverride === null && !stereochemistryAvailable) {
+    const localName = applyNomenclatureConvention(localizedIupac(stripStereochemicalDescriptors(
+      suggestedIupacNameWithOmittedLocants(calculatedAnalysis))), "current", language);
+    verifiedSystematicPresentation = selectVerifiedLocalizedPresentation(verifiedSystematicModel, molecule, language, localName);
+  }
   const suggestedName = verifiedSystematicPresentation?.name ?? (externalNameIsPrimary
       ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
         ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
@@ -8853,6 +8881,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
     ? buildValidatedVisualNumbering(molecule, validatedDerivation)
     : activeAnalysis.retainedFused?.status === "SUPPORTED" ? activeAnalysis.retainedFused.locants : activeAnalysis.numberedAtoms;
+  const branchCountingGuides = buildBranchCountingGuides(molecule, validatedDerivation);
   const selectedCarboxylContext = selectedAromaticCarboxylCarbonContext({
     molecule, derivation: validatedDerivation, selectedAtomId: selectedId, language, visualNumbering,
   });
@@ -8897,9 +8926,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualTargets = reasoningVisualReferences.steps;
   const fullPriorityReasoning = useMemo(() => validatedDerivation ? buildValidatedPriorityReasoning({
-    derivation: validatedDerivation, graph: molecule, language,
+    derivation: validatedDerivation, graph: molecule, language, activeName: displayedIupacName,
     alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
-  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps]);
+  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps, displayedIupacName]);
   const structuralPriorityReasoning = useMemo(() => shouldShowStructuralPriorityReasoning({
     hasValidatedDerivation: !!validatedDerivation,
     reasoningUnsupported: reasoningUnsupported || unreconciledPyridineAcid,
@@ -11552,7 +11581,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     : [];
   const condensedRenderModel = viewMode === "condensed"
     ? buildCondensedRenderModel(molecule, (atomId) => getImplicitHydrogens(atomId, molecule), {
-        numbering: effectiveShowNumbering && !contextualDerivationNumbering ? activeAnalysis.numberedAtoms : undefined,
+        numbering: effectiveShowNumbering && !contextualDerivationNumbering ? visualNumbering : undefined,
         stereoBonds: condensedStereoBonds,
         includeTetrahedralParity: stereochemistryEnabled,
       })
@@ -13050,6 +13079,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     className={`bond-control bond-order-${order} ${lockedBond ? "locked-bond" : ""} ${stereoInteractionEnabled ? "stereo-bond-control" : ""} ${ringFusionDropTarget?.a === a && ringFusionDropTarget.b === b ? ringFusionDropTarget.error ? "fusion-drop-invalid" : "fusion-drop-valid" : ""}`}
                     data-bond-a={a}
                     data-bond-b={b}
+                    data-structural-category={structuralBondCategory}
                     data-bond-order={order}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "bond-controls" && guidedTourEditableBondKey === `${a}-${b}` ? "bond-controls" : undefined}
                     data-guided-tour-target={showGuidedTour && guidedTourTarget === "bond-controls" && guidedTourEditableBondKey === `${a}-${b}` ? "active" : undefined}
@@ -13134,7 +13164,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     {!tetrahedralStereoBond && visibleBondSegments.map((segment, index) => (
                       <line
                         key={index}
-                        className={`${isMainBond ? "bond main-bond" : "bond branch-bond"} ${isFunctionalBond && (!structuralBondCategory || structuralBondCategory === "unclassified") ? "functional-bond" : ""} ${viewMode === "skeletal" ? "skeletal-bond" : ""} ${reasoningHighlighted ? "reasoning-bond-highlight" : ""} ${segment.role ? `skeletal-ring-double-bond ring-double-bond-${segment.role}` : ""} ${doubleBondPatternEnabled && order === 2 ? `double-bond-pattern-line double-bond-pattern-${index}` : ""}`}
+                        className={`${isMainBond ? "bond main-bond" : "bond branch-bond"} ${structuralBondCategory === "functional" || isFunctionalBond && !structuralBondCategory ? "functional-bond" : ""} ${structuralBondCategory === "unclassified" ? "unclassified-bond" : ""} ${viewMode === "skeletal" ? "skeletal-bond" : ""} ${reasoningHighlighted ? "reasoning-bond-highlight" : ""} ${segment.role ? `skeletal-ring-double-bond ring-double-bond-${segment.role}` : ""} ${doubleBondPatternEnabled && order === 2 ? `double-bond-pattern-line double-bond-pattern-${index}` : ""}`}
                         data-reasoning-highlight={reasoningHighlighted ? "true" : undefined}
                         x1={segment.x}
                         y1={segment.y}
@@ -13310,7 +13340,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     data-atom-id={atom.id}
                     data-atom-element={element}
                     data-atom-configuration={atom.tetrahedralParity}
-                    className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${isStructuralParentAtom ? "on-main-chain" : "on-branch"}`}
+                    data-structural-category={structuralAtomCategory}
+                    className={`carbon-node ${carbonAtom ? "carbon-element" : `hetero-node element-${element.toLowerCase()}`} ${viewMode === "skeletal" ? (carbonAtom ? "skeletal-node" : "skeletal-hetero-node") : viewMode === "semi-developed" ? "semi-developed-node" : "condensed-node-hidden"} ${isSelected ? "selected" : ""} ${isStructuralParentAtom ? "on-main-chain" : "on-branch"} ${structuralAtomCategory ? `structural-${structuralAtomCategory}` : ""}`}
                     transform={`translate(${position.x} ${position.y})`}
                     data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "carbon" : undefined}
                     data-guided-tour-target={showGuidedTour && guidedTourTarget === "carbon" && atom.id === guidedTourCarbonAtomId ? "active" : undefined}
@@ -13505,6 +13536,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               {viewMode === "condensed" && condensedRenderModel?.available && (
                 <CondensedMoleculeSvg
                   model={condensedRenderModel}
+                  structuralColoring={structuralColoring}
                   reasoningTarget={reasoningVisualTarget}
                   selectedAtomId={selectedId}
                   showNumbering={effectiveShowNumbering && !contextualDerivationNumbering}
@@ -13524,7 +13556,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     setSelectedId(atomId);
                     if (isCarbonAtom(atom)) dispatchGuidedTour({ type: "carbon-selected" });
                     const selectedElementName = elementNames[getElement(atom)] ?? "Átomo";
-                    setNotice(`${selectedElementName} ${activeAnalysis.numberedAtoms.get(atomId) ?? "del grupo funcional"} seleccionado.`);
+                    setNotice(`${selectedElementName} ${visualNumbering.get(atomId) ?? "del grupo funcional"} seleccionado.`);
                   }}
                   onActivateBond={(left, right, toggleStereo = false) => {
                     if (placementTool) return;
@@ -13601,7 +13633,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               {highlightSubstituents && (!reasoningUnsupported || validatedDerivation) ? (
                 <>
                   <span><i className="main-key" /> {validatedDerivation?.parentSystem==="purine" ? language==="en"?"Purine system":"Sistema purínico" : validatedDerivation?.parentSystem==="carbohydrate" ? language==="en"?"Carbohydrate skeleton":"Esqueleto del carbohidrato" : isRingStructure ? t("Anillo principal") : t("Cadena principal")}</span>
+                  {structuralColoring && [...structuralColoring.atoms.values()].includes("functional") && <span><i className="functional-key" /> {language === "en" ? "Principal function (may share parent atoms)" : "Función principal (puede compartir átomos con el progenitor)"}</span>}
                   <span><i className="branch-key" /> {t("Sustituyente")}</span>
+                  {structuralColoring && [...structuralColoring.atoms.values(), ...structuralColoring.bonds.values()].includes("unclassified") && <span><i className="unclassified-key" /> {language === "en" ? "Unclassified" : "Sin clasificar"}</span>}
                 </>
               ) : (
                 <span><i className="main-key" /> {t("Estructura uniforme")}</span>
@@ -15523,6 +15557,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     : "La derivación FULL disponible verifica otro nombre o perfil de nomenclatura; no se utiliza para justificar el nombre activo."}
                 </p>}
                 {validatedDerivation && <p className="reasoning-validated-name"><strong>{displayedIupacName}</strong></p>}
+                {!validatedDerivation && effectiveShowNumbering && <p role="note">{language === "en"
+                  ? "The displayed numbering comes from the local analysis and has no complete name reconciliation; equivalent orientations may exist."
+                  : "La numeración mostrada procede del análisis local y no tiene una reconciliación completa del nombre; pueden existir orientaciones equivalentes."}</p>}
+                {validatedDerivation?.evidence?.numbering.comparison === 0
+                  && ["retained-aromatic", "aromatic-ester"].includes(validatedDerivation.evidence.construction)
+                  && <p role="note">{language === "en"
+                    ? "Equivalent ring orientations are possible; interchangeable positions are not assigned to individual atoms."
+                    : "Hay orientaciones equivalentes del anillo; las posiciones intercambiables no se asignan a átomos individuales."}</p>}
                 {language === "es" && activeNomenclatureConvention === "current"
                   && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
                   && displayedIupacName === verifiedSystematicPresentation.name
@@ -15551,9 +15593,20 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                           ? <ReasoningAlphabeticalContent presentation={step.alphabeticalOrder} />
                           : <p><ChemicalNotationText value={step.explanation} /></p>}
                         {step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
-                          language={language} visualTargets={step.fragmentTargets}
+                          language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
                           selectedFragmentId={reasoningVisualTarget?.fragmentId}
                           onActivateTarget={activateReasoningCanvasReference} />}
+                        {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
+                          || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {
+                          const fragmentId = `branch-count:${guide.componentId}`;
+                          return <button type="button" key={guide.componentId} data-branch-count={guide.componentId}
+                            aria-pressed={reasoningVisualTarget?.fragmentId === fragmentId}
+                            onClick={() => activateReasoningCanvasReference({stepNumber:step.number,fragmentId,
+                              atomIds:guide.atomIds,bondIds:guide.bondIds,locants:guide.locants})}>
+                            {language === "en" ? `Branch ${index + 1}: counting guide (not name locants)`
+                              : `Rama ${index + 1}: guía de conteo (no son localizadores del nombre)`}
+                          </button>;
+                        })}
                         {validatedDerivation?.symmetry && step.source === "FULL" && step.componentIds.includes("parent")
                           && <div data-derivation-symmetry="equivalent">
                             <button type="button" data-symmetry-choice={symmetryChoiceIndex}

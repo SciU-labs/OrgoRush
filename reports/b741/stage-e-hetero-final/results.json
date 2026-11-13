@@ -1,0 +1,115 @@
+{
+  "browser": "157.0.4341.46",
+  "scope": "Graph membership and applicable typed bond checks only; not FULL",
+  "cases": [
+    {
+      "family": "heterocycle",
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "piridina",
+          "controls": 2,
+          "checks": [
+            {
+              "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "name": "pyridine",
+          "controls": 2,
+          "checks": [
+            {
+              "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            }
+          ]
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

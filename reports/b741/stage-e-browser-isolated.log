@@ -1,0 +1,38 @@
+✔ B7.4.1 numbering: nitro (104557.6253ms)
+✔ B7.4.1 numbering: n-ethyl (105990.8716ms)
+B741 nn-diethyl: TimeoutError: locator.textContent: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.reasoning-visual-overlay').locator('[data-reasoning-locant="4"] text')[22m
+
+✖ B7.4.1 numbering: nn-diethyl (159387.6519ms)
+9:26:03 p. m. [vite] (client) hmr update /@fs/C:/Dev/Hydrocarbon-Lab/app/globals.css
+✔ B7.4.1 numbering: ester (95982.1328ms)
+✔ B7.4.1 numbering: branched (45316.2707ms)
+✔ B7.4.1 numbering: alkene (63676.1313ms)
+✔ B7.4.1 numbering: ketone (75874.5262ms)
+✔ B7.4.1 numbering: alcohol (41321.7919ms)
+✔ B7.4.1 numbering: aldehyde (51615.4091ms)
+✔ B7.4.1 numbering: nitrile (65269.5492ms)
+✔ B7.4.1 numbering: n-benzyl (77450.6471ms)
+✔ B7.4.1 numbering: aromatic-aldehyde (70760.853ms)
+✔ B7.4.1 numbering: pyridine (47183.262ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1006574.9029
+
+✖ failing tests:
+
+test at tests\e2e\b741-reasoning.e2e.mjs:47:38
+✖ B7.4.1 numbering: nn-diethyl (159387.6519ms)
+  locator.textContent: Timeout 30000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.reasoning-visual-overlay').locator('[data-reasoning-locant="4"] text')[22m
+
+      at test.timeout (C:\Dev\Hydrocarbon-Lab\tests\e2e\b741-reasoning.e2e.mjs:100:180) {
+    name: 'TimeoutError'
+  }

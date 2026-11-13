@@ -448,7 +448,9 @@ function deriveExistingReasoningNameFragments({
       const root = /^[a-z]+/i.exec(parent)?.[0];
       if (root && analysis.doubleBondLocants.length + analysis.tripleBondLocants.length) {
         addRole("parent", root, ringLabel, "parent", parentStart);
-        addRole("numbering", parent.slice(root.length + 1), uiText(language, "Enlaces múltiples, localizadores y multiplicidad"), "unsaturation", parentStart + root.length + 1);
+        addRole("numbering", parent.slice(root.length + 1), analysis.doubleBondLocants.length + analysis.tripleBondLocants.length === 1
+          ? language === "en" ? "Multiple-bond locant" : "Localizador del enlace múltiple"
+          : uiText(language, "Enlaces múltiples, localizadores y multiplicidad"), "unsaturation", parentStart + root.length + 1);
       } else if (explicitRing) {
         addRole("parent", parent, ringLabel, "parent", parentStart);
       }
@@ -523,7 +525,9 @@ function deriveExistingReasoningNameFragments({
     if (!root || !unsaturation) return fragments;
 
     add("02", root, chainLabel, "parent", parentStart);
-    add("03", unsaturation, uiText(language, "Enlaces múltiples, localizadores y multiplicidad"), "unsaturation", parentStart + root.length + 1);
+    add("03", unsaturation, analysis.doubleBondLocants.length + analysis.tripleBondLocants.length === 1
+      ? language === "en" ? "Multiple-bond locant" : "Localizador del enlace múltiple"
+      : uiText(language, "Enlaces múltiples, localizadores y multiplicidad"), "unsaturation", parentStart + root.length + 1);
 
     const stereoPrefix = /^\((?:\d+[EZRS](?:,\d+[EZRS])*)\)-/.exec(name)?.[0] ?? "";
     const substituentStart = stereoPrefix.length;
@@ -589,8 +593,8 @@ function deriveExistingReasoningNameFragments({
     if (name.slice(stem.length) === `-${locant}-${suffix}`) {
       add("02", name.slice(0, stem.length), chainLabel, "parent");
       add("03", name.slice(stem.length + 1), language === "en"
-        ? `${isTriple ? "Triple" : "Double"} bond and locant`
-        : `Enlace ${isTriple ? "triple" : "doble"} y localizador`, "unsaturation");
+        ? `${isTriple ? "Triple" : "Double"} bond locant`
+        : `Localizador del enlace ${isTriple ? "triple" : "doble"}`, "unsaturation");
     } else if (name === `${stem}${suffix}` && analysis.mainChain.length === 3 && locant === 1) {
       add("02", stem, chainLabel, "parent");
       add("03", suffix, language === "en"

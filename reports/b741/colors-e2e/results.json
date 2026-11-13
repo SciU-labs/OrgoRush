@@ -1,0 +1,137 @@
+{
+  "browser": "157.0.4341.46",
+  "cases": [
+    {
+      "id": "alcohol",
+      "smiles": "Oc1ccccc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/alcohol-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/alcohol-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/alcohol-english-skeletal.png"
+        }
+      ]
+    },
+    {
+      "id": "cyclic-ketone",
+      "smiles": "O=C1CCC(C)CC1",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/cyclic-ketone-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/cyclic-ketone-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/cyclic-ketone-english-skeletal.png"
+        }
+      ]
+    },
+    {
+      "id": "acid",
+      "smiles": "O=C(O)c1ccccc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/acid-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/acid-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/acid-english-skeletal.png"
+        }
+      ]
+    },
+    {
+      "id": "ester",
+      "smiles": "COC(=O)c1cc(Br)c(OC)cc1",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/ester-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/ester-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/ester-english-skeletal.png"
+        }
+      ]
+    },
+    {
+      "id": "amide",
+      "smiles": "CCN(CC)C(=O)c1cc(F)cc(F)c1",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/amide-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/amide-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": true,
+          "screenshot": "reports/b741/colors-e2e/amide-english-skeletal.png"
+        }
+      ]
+    },
+    {
+      "id": "branched-alkane",
+      "smiles": "CC(C)CC",
+      "status": "PASS",
+      "observations": [
+        {
+          "view": "Vista semidesarrollada",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/branched-alkane-semi.png"
+        },
+        {
+          "view": "Vista esquelética o de líneas",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/branched-alkane-skeletal.png"
+        },
+        {
+          "view": "English skeletal",
+          "proof": false,
+          "screenshot": "reports/b741/colors-e2e/branched-alkane-english-skeletal.png"
+        }
+      ]
+    }
+  ]
+}

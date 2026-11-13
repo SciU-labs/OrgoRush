@@ -1,0 +1,7158 @@
+{
+  "createdAt": "2026-11-13T00:08:50.337Z",
+  "source": "transversal-baseline.json",
+  "opsin": {
+    "version": "2.9.0",
+    "jarSha256": "c2e29326c281f87b59a05d934d8589adac6e9d17b95b984931b3e739111b360f",
+    "comparison": "OpenChemLib structuralIdentity; shared dependency with OrgoRush; not PIN"
+  },
+  "counts": {
+    "es": {
+      "PARTIAL": 17,
+      "FULL": 12,
+      "UNSUPPORTED": 2
+    },
+    "en": {
+      "PARTIAL": 15,
+      "FULL": 14,
+      "UNSUPPORTED": 2
+    }
+  },
+  "opsinCounts": {
+    "EQUIVALENT": 29,
+    "NO-NAME": 2
+  },
+  "rows": [
+    {
+      "family": "alkane",
+      "smiles": "CCCC",
+      "analysis": {
+        "name": "butano",
+        "formula": "C₄H₁₀",
+        "family": "acyclic",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "chainName": "butano",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "butano",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "butane",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CCCC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "branched alkane",
+      "smiles": "CC(C)CC",
+      "analysis": {
+        "name": "2-metilbutano",
+        "formula": "C₅H₁₂",
+        "family": "acyclic",
+        "mainChain": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "chainName": "butano",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              3
+            ],
+            "unsaturatedBonds": [],
+            "locant": 2
+          }
+        ],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            4
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "2-metilbutano",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "2-methylbutane",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC(C)CC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "alkene",
+      "smiles": "CC=CC",
+      "analysis": {
+        "name": "but-2-eno",
+        "formula": "C₄H₈",
+        "family": "acyclic",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "chainName": "but-2-eno",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "doubleBondLocants": [
+          2
+        ],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "but-2-eno",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "but-2-ene",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC=CC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "alkyne",
+      "smiles": "CC#CC",
+      "analysis": {
+        "name": "but-2-ino",
+        "formula": "C₄H₆",
+        "family": "acyclic",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "chainName": "but-2-ino",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [
+          2
+        ],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "but-2-ino",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "but-2-yne",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC#CC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "alcohol",
+      "smiles": "CCCO",
+      "analysis": {
+        "name": "propan-1-ol",
+        "formula": "C₃H₈O",
+        "family": "acyclic",
+        "mainChain": [
+          3,
+          2,
+          1
+        ],
+        "chainName": "propan-1-ol",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "alcohol-4",
+            "kind": "alcohol",
+            "label": "Alcohol",
+            "atomIds": [
+              3,
+              4
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4
+          }
+        ],
+        "primaryFunctionalGroup": "alcohol",
+        "primaryFunctionalLabel": "Alcohol"
+      },
+      "languages": {
+        "es": {
+          "name": "propan-1-ol",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "propan-1-ol",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(CC)O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "ether",
+      "smiles": "CCOCC",
+      "analysis": {
+        "name": "etoxietano",
+        "formula": "C₄H₁₀O",
+        "family": "acyclic",
+        "mainChain": [
+          2,
+          1
+        ],
+        "chainName": "etano",
+        "substituents": [
+          {
+            "locant": 1,
+            "name": "etoxi",
+            "sortName": "etoxi",
+            "complex": false,
+            "atomIds": [
+              3,
+              2,
+              4
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "ether-3",
+            "kind": "ether",
+            "label": "Éter",
+            "atomIds": [
+              3,
+              2,
+              4
+            ],
+            "carbonIds": [
+              2,
+              4
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3,
+            "alkylCarbonId": 4
+          }
+        ]
+      },
+      "languages": {
+        "es": {
+          "name": "etoxietano",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "ethoxyethane",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)OCC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "aldehyde",
+      "smiles": "CCC=O",
+      "analysis": {
+        "name": "propanal",
+        "formula": "C₃H₆O",
+        "family": "acyclic",
+        "mainChain": [
+          3,
+          2,
+          1
+        ],
+        "chainName": "propanal",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "aldehyde-3",
+            "kind": "aldehyde",
+            "label": "Aldehído",
+            "atomIds": [
+              3,
+              4
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4
+          }
+        ],
+        "primaryFunctionalGroup": "aldehyde",
+        "primaryFunctionalLabel": "Aldehído"
+      },
+      "languages": {
+        "es": {
+          "name": "propanal",
+          "status": "FULL",
+          "principalGroup": "aldehyde",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "propanal",
+              "start": 0,
+              "end": 8,
+              "atomIds": [
+                3,
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ]
+              ],
+              "explanation": "The 3-carbon parent contains the principal aldehyde carbon as C1; longer rooted carbon paths are excluded by validation."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "al",
+              "start": 6,
+              "end": 8,
+              "atomIds": [
+                3,
+                4
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The aldehyde group supplies the suffix; hydroxyl, amino and alkoxy groups remain prefixes."
+            }
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "reasoningSteps": 3,
+          "issues": []
+        },
+        "en": {
+          "name": "propanal",
+          "status": "FULL",
+          "principalGroup": "aldehyde",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "propanal",
+              "start": 0,
+              "end": 8,
+              "atomIds": [
+                3,
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ]
+              ],
+              "explanation": "The 3-carbon parent contains the principal aldehyde carbon as C1; longer rooted carbon paths are excluded by validation."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "al",
+              "start": 6,
+              "end": 8,
+              "atomIds": [
+                3,
+                4
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The aldehyde group supplies the suffix; hydroxyl, amino and alkoxy groups remain prefixes."
+            }
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "reasoningSteps": 3,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(CC)=O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "ketone",
+      "smiles": "CC(=O)CC",
+      "analysis": {
+        "name": "butan-2-ona",
+        "formula": "C₄H₈O",
+        "family": "acyclic",
+        "mainChain": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "chainName": "butan-2-ona",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            4
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "ketone-2",
+            "kind": "ketone",
+            "label": "Cetona",
+            "atomIds": [
+              2,
+              3
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3
+          }
+        ],
+        "primaryFunctionalGroup": "ketone",
+        "primaryFunctionalLabel": "Cetona"
+      },
+      "languages": {
+        "es": {
+          "name": "butan-2-ona",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "butan-2-one",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC(CC)=O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "acid",
+      "smiles": "CCC(=O)O",
+      "analysis": {
+        "name": "ácido propanoico",
+        "formula": "C₃H₆O₂",
+        "family": "acyclic",
+        "mainChain": [
+          3,
+          2,
+          1
+        ],
+        "chainName": "ácido propanoico",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "carboxylicAcid-3",
+            "kind": "carboxylicAcid",
+            "label": "Ácido carboxílico",
+            "atomIds": [
+              3,
+              4,
+              5
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4
+          }
+        ],
+        "primaryFunctionalGroup": "carboxylicAcid",
+        "primaryFunctionalLabel": "Ácido carboxílico"
+      },
+      "languages": {
+        "es": {
+          "name": "ácido propanoico",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "propanoic acid",
+          "status": "FULL",
+          "principalGroup": "carboxylicAcid",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "propanoic acid",
+              "start": 0,
+              "end": 14,
+              "atomIds": [
+                3,
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  1
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  1,
+                  3
+                ]
+              ],
+              "explanation": "The 3-carbon parent contains the principal carboxylicAcid carbon as C1; longer rooted carbon paths are excluded by validation."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "oic acid",
+              "start": 6,
+              "end": 14,
+              "atomIds": [
+                3,
+                4,
+                5
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  5
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The carboxylicAcid group supplies the suffix; hydroxyl, amino and alkoxy groups remain prefixes."
+            }
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "reasoningSteps": 3,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(CC)(=O)O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "ester",
+      "smiles": "CC(=O)OC",
+      "analysis": {
+        "name": "etanoato de metilo",
+        "formula": "C₃H₆O₂",
+        "family": "acyclic",
+        "mainChain": [
+          2,
+          1
+        ],
+        "chainName": "etanoato de metilo",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "ester-2",
+            "kind": "ester",
+            "label": "Éster",
+            "atomIds": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3,
+            "alkylCarbonId": 5
+          }
+        ],
+        "primaryFunctionalGroup": "ester",
+        "primaryFunctionalLabel": "Éster"
+      },
+      "languages": {
+        "es": {
+          "name": "etanoato de metilo",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "methyl ethanoate",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)(=O)OC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "amine",
+      "smiles": "CCN",
+      "analysis": {
+        "name": "etanamina",
+        "formula": "C₂H₇N",
+        "family": "acyclic",
+        "mainChain": [
+          2,
+          1
+        ],
+        "chainName": "etanamina",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amine-3",
+            "kind": "amine",
+            "label": "Amina",
+            "atomIds": [
+              3,
+              2
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3
+          }
+        ],
+        "primaryFunctionalGroup": "amine",
+        "primaryFunctionalLabel": "Amina"
+      },
+      "languages": {
+        "es": {
+          "name": "etanamina",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "ethanamine",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)N",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "amide",
+      "smiles": "CC(=O)N",
+      "analysis": {
+        "name": "etanamida",
+        "formula": "C₂H₅NO",
+        "family": "acyclic",
+        "mainChain": [
+          2,
+          1
+        ],
+        "chainName": "etanamida",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-2",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              2,
+              3,
+              4
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 4
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "etanamida",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "ethanamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "ethanamide",
+              "start": 0,
+              "end": 10,
+              "atomIds": [
+                2,
+                1,
+                4
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  1,
+                  2
+                ]
+              ],
+              "explanation": "The 2-carbon parent contains the principal amide carbon as C1; longer rooted carbon paths are excluded by validation."
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "amide",
+              "start": 5,
+              "end": 10,
+              "atomIds": [
+                2,
+                3,
+                4
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the suffix; hydroxyl, amino and alkoxy groups remain prefixes."
+            }
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "reasoningSteps": 3,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)(=O)N",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "nitrile",
+      "smiles": "CCC#N",
+      "analysis": {
+        "name": "propanonitrilo",
+        "formula": "C₃H₅N",
+        "family": "acyclic",
+        "mainChain": [
+          3,
+          2,
+          1
+        ],
+        "chainName": "propanonitrilo",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "nitrile-4",
+            "kind": "nitrile",
+            "label": "Nitrilo",
+            "atomIds": [
+              3,
+              4
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4
+          }
+        ],
+        "primaryFunctionalGroup": "nitrile",
+        "primaryFunctionalLabel": "Nitrilo"
+      },
+      "languages": {
+        "es": {
+          "name": "propanonitrilo",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "propanenitrile",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(CC)#N",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "halide",
+      "smiles": "CCCCl",
+      "analysis": {
+        "name": "1-cloropropano",
+        "formula": "C₃H₇Cl",
+        "family": "acyclic",
+        "mainChain": [
+          3,
+          2,
+          1
+        ],
+        "chainName": "propano",
+        "substituents": [
+          {
+            "locant": 1,
+            "name": "cloro",
+            "sortName": "cloro",
+            "complex": false,
+            "atomIds": [
+              3,
+              4
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "halogen-4",
+            "kind": "halogen",
+            "label": "Cloro",
+            "atomIds": [
+              3,
+              4
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4
+          }
+        ]
+      },
+      "languages": {
+        "es": {
+          "name": "1-cloropropano",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "1-chloropropane",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "ClCCC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "nitro",
+      "smiles": "Cc1ccccc1[N+](=O)[O-]",
+      "analysis": {
+        "name": "1-metil-2-nitrobenceno",
+        "formula": "C₇H₇NO₂",
+        "family": "aromatic",
+        "mainChain": [
+          2,
+          7,
+          6,
+          5,
+          4,
+          3
+        ],
+        "chainName": "benceno",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              1
+            ],
+            "unsaturatedBonds": [],
+            "locant": 1
+          },
+          {
+            "locant": 2,
+            "name": "nitro",
+            "sortName": "nitro",
+            "complex": false,
+            "atomIds": [
+              7,
+              8,
+              9,
+              10
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            3,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "nitro-8",
+            "kind": "nitro",
+            "label": "Nitro",
+            "atomIds": [
+              7,
+              8,
+              9,
+              10
+            ],
+            "carbonIds": [
+              7
+            ],
+            "carbonId": 7,
+            "heteroAtomId": 8
+          }
+        ]
+      },
+      "languages": {
+        "es": {
+          "name": "1-metil-2-nitrobenceno",
+          "status": "FULL",
+          "principalGroup": "none",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                2,
+                7,
+                6,
+                5,
+                4,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  7,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-metil",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "metil identifica el sustituyente unido al C1 del anillo de benceno.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "2-nitro",
+              "start": 8,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 2,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  2
+                ]
+              ],
+              "explanation": "nitro identifies the nitro substituent attached at benzene ring position 2.",
+              "explanationEs": "nitro identifica el sustituyente unido al C2 del anillo de benceno.",
+              "language": "es",
+              "numberingScope": "parent"
+            }
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        },
+        "en": {
+          "name": "1-methyl-2-nitrobenzene",
+          "status": "FULL",
+          "principalGroup": "none",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 16,
+              "end": 23,
+              "atomIds": [
+                2,
+                7,
+                6,
+                5,
+                4,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  7
+                ],
+                [
+                  7,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  7,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor.",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-methyl",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 1.",
+              "explanationEs": "methyl identifica el sustituyente unido al C1 del anillo de benceno.",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "2-nitro",
+              "start": 9,
+              "end": 16,
+              "parentId": "parent",
+              "locant": 2,
+              "atomIds": [
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  2
+                ]
+              ],
+              "explanation": "nitro identifies the nitro substituent attached at benzene ring position 2.",
+              "explanationEs": "nitro identifica el sustituyente unido al C2 del anillo de benceno.",
+              "language": "en",
+              "numberingScope": "parent"
+            }
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              3,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC1=C(C=CC=C1)[N+](=O)[O-]",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "cycloalkane",
+      "smiles": "C1CCCCC1",
+      "analysis": {
+        "name": "ciclohexano",
+        "formula": "C₆H₁₂",
+        "family": "cycloalkane",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "chainName": "ciclohexano",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "ciclohexano",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "cyclohexane",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C1CCCCC1",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "cycloalkene",
+      "smiles": "C1=CCCCC1",
+      "analysis": {
+        "name": "ciclohex-1-eno",
+        "formula": "C₆H₁₀",
+        "family": "cycloalkane",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "chainName": "ciclohex-1-eno",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "doubleBondLocants": [
+          1
+        ],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "ciclohex-1-eno",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "cyclohex-1-ene",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C1=CCCCC1",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "aromatic prefixes",
+      "smiles": "Cc1ccc(Cl)cc1",
+      "analysis": {
+        "name": "1-cloro-4-metilbenceno",
+        "formula": "C₇H₇Cl",
+        "family": "aromatic",
+        "mainChain": [
+          5,
+          7,
+          8,
+          2,
+          3,
+          4
+        ],
+        "chainName": "benceno",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              1
+            ],
+            "unsaturatedBonds": [],
+            "locant": 4
+          },
+          {
+            "locant": 1,
+            "name": "cloro",
+            "sortName": "cloro",
+            "complex": false,
+            "atomIds": [
+              5,
+              6
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            8,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "halogen-6",
+            "kind": "halogen",
+            "label": "Cloro",
+            "atomIds": [
+              5,
+              6
+            ],
+            "carbonIds": [
+              5
+            ],
+            "carbonId": 5,
+            "heteroAtomId": 6
+          }
+        ]
+      },
+      "languages": {
+        "es": {
+          "name": "1-cloro-4-metilbenceno",
+          "status": "FULL",
+          "principalGroup": "none",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benceno",
+              "start": 15,
+              "end": 22,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                8,
+                7
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-cloro",
+              "start": 0,
+              "end": 7,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "cloro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "cloro identifica el sustituyente unido al C1 del anillo de benceno.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-metil",
+              "start": 8,
+              "end": 15,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "metil identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "metil identifica el sustituyente unido al C4 del anillo de benceno.",
+              "language": "es",
+              "numberingScope": "parent"
+            }
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              8,
+              5
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        },
+        "en": {
+          "name": "1-chloro-4-methylbenzene",
+          "status": "FULL",
+          "principalGroup": "none",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzene",
+              "start": 17,
+              "end": 24,
+              "atomIds": [
+                5,
+                4,
+                3,
+                2,
+                8,
+                7
+              ],
+              "bondIds": [
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  8
+                ],
+                [
+                  8,
+                  7
+                ],
+                [
+                  7,
+                  5
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  3,
+                  3
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  7,
+                  6
+                ]
+              ],
+              "explanation": "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
+              "explanationEs": "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor.",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "1-chloro",
+              "start": 0,
+              "end": 8,
+              "parentId": "parent",
+              "locant": 1,
+              "atomIds": [
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ]
+              ],
+              "explanation": "chloro identifies the halogen substituent attached at benzene ring position 1.",
+              "explanationEs": "chloro identifica el sustituyente unido al C1 del anillo de benceno.",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "4-methyl",
+              "start": 9,
+              "end": 17,
+              "parentId": "parent",
+              "locant": 4,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "explanation": "methyl identifies the alkyl substituent attached at benzene ring position 4.",
+              "explanationEs": "methyl identifica el sustituyente unido al C4 del anillo de benceno.",
+              "language": "en",
+              "numberingScope": "parent"
+            }
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              8,
+              5
+            ],
+            [
+              7,
+              6
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "ClC1=CC=C(C=C1)C",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "benzamide",
+      "smiles": "NC(=O)c1ccccc1",
+      "analysis": {
+        "name": "benzamida",
+        "formula": "C₇H₇NO",
+        "family": "aromatic",
+        "mainChain": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "chainName": "benzamida",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            9,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-2",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              2,
+              3,
+              1
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 1
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "benzamida",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamida",
+              "start": 0,
+              "end": 9,
+              "atomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                2
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ]
+              ],
+              "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son ninguno.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamida",
+              "start": 0,
+              "end": 9,
+              "atomIds": [
+                2,
+                3,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              4,
+              1
+            ]
+          ],
+          "reasoningSteps": 4,
+          "issues": []
+        },
+        "en": {
+          "name": "benzamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamide",
+              "start": 0,
+              "end": 9,
+              "atomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                2
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  4,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  1
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  9,
+                  6
+                ]
+              ],
+              "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is unsubstituted.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamide",
+              "start": 0,
+              "end": 9,
+              "atomIds": [
+                2,
+                3,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              4,
+              1
+            ]
+          ],
+          "reasoningSteps": 4,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C1=CC=CC=C1)(=O)N",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "N-alkyl benzamide",
+      "smiles": "CCNC(=O)c1c(Br)cc(C)cc1",
+      "analysis": {
+        "name": "2-bromo-N-etil-4-metilbenzamida",
+        "formula": "C₁₀H₁₂BrNO",
+        "family": "aromatic",
+        "mainChain": [
+          6,
+          7,
+          9,
+          10,
+          12,
+          13
+        ],
+        "chainName": "benzamida",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              11
+            ],
+            "unsaturatedBonds": [],
+            "locant": 4
+          },
+          {
+            "locant": 2,
+            "name": "bromo",
+            "sortName": "bromo",
+            "complex": false,
+            "atomIds": [
+              7,
+              8
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            13,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-4",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              4,
+              5,
+              3
+            ],
+            "carbonIds": [
+              4
+            ],
+            "carbonId": 4,
+            "heteroAtomId": 3
+          },
+          {
+            "id": "halogen-8",
+            "kind": "halogen",
+            "label": "Bromo",
+            "atomIds": [
+              7,
+              8
+            ],
+            "carbonIds": [
+              7
+            ],
+            "carbonId": 7,
+            "heteroAtomId": 8
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "2-bromo-N-etil-4-metilbenzamida",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "bromo",
+              "start": 2,
+              "end": 7,
+              "atomIds": [
+                8,
+                7
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  2
+                ]
+              ],
+              "explanation": "El sustituyente «bromo» forma un fragmento de 1 átomo y se une al anillo en el localizador 2; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 2,
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «bromo» forma un fragmento de 1 átomo y se une al anillo en el localizador 2; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "metil",
+              "start": 17,
+              "end": 22,
+              "atomIds": [
+                11,
+                10
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [
+                [
+                  10,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 4,
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "n-alkyl",
+              "role": "substituent",
+              "text": "etil",
+              "start": 10,
+              "end": 14,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                8
+              ],
+              "language": "es",
+              "numberingScope": "n-alkyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamida",
+              "start": 22,
+              "end": 31,
+              "atomIds": [
+                6,
+                7,
+                9,
+                10,
+                12,
+                13,
+                4
+              ],
+              "bondIds": [
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  6
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  6,
+                  1
+                ],
+                [
+                  7,
+                  2
+                ],
+                [
+                  9,
+                  3
+                ],
+                [
+                  10,
+                  4
+                ],
+                [
+                  12,
+                  5
+                ],
+                [
+                  13,
+                  6
+                ]
+              ],
+              "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son 2,4.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 2,
+                  "atomId": 7
+                },
+                {
+                  "start": 15,
+                  "end": 16,
+                  "locant": 4,
+                  "atomId": 10
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamida",
+              "start": 22,
+              "end": 31,
+              "atomIds": [
+                4,
+                5,
+                3
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              10,
+              4
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        },
+        "en": {
+          "name": "2-bromo-N-ethyl-4-methylbenzamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "bromo",
+              "start": 2,
+              "end": 7,
+              "atomIds": [
+                8,
+                7
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  2
+                ]
+              ],
+              "explanation": "bromo specifies the connected halogen substituent at 2; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 2,
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "methyl",
+              "start": 18,
+              "end": 24,
+              "atomIds": [
+                11,
+                10
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ]
+              ],
+              "numbering": [
+                [
+                  10,
+                  4
+                ]
+              ],
+              "explanation": "methyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 4,
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "n-alkyl",
+              "role": "substituent",
+              "text": "ethyl",
+              "start": 10,
+              "end": 15,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                8
+              ],
+              "language": "en",
+              "numberingScope": "n-alkyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamide",
+              "start": 24,
+              "end": 33,
+              "atomIds": [
+                6,
+                7,
+                9,
+                10,
+                12,
+                13,
+                4
+              ],
+              "bondIds": [
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  6
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  6,
+                  1
+                ],
+                [
+                  7,
+                  2
+                ],
+                [
+                  9,
+                  3
+                ],
+                [
+                  10,
+                  4
+                ],
+                [
+                  12,
+                  5
+                ],
+                [
+                  13,
+                  6
+                ]
+              ],
+              "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 2,4.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 2,
+                  "atomId": 7
+                },
+                {
+                  "start": 16,
+                  "end": 17,
+                  "locant": 4,
+                  "atomId": 10
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamide",
+              "start": 24,
+              "end": 33,
+              "atomIds": [
+                4,
+                5,
+                3
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              10,
+              4
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "BrC1=C(C(=O)NCC)C=CC(=C1)C",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "N,N-dialkyl benzamide",
+      "smiles": "CCN(CC)C(=O)c1cc(F)cc(F)c1",
+      "analysis": {
+        "name": "N,N-dietil-3,5-difluorobenzamida",
+        "formula": "C₁₁H₁₃F₂NO",
+        "family": "aromatic",
+        "mainChain": [
+          8,
+          9,
+          10,
+          12,
+          13,
+          15
+        ],
+        "chainName": "benzamida",
+        "substituents": [
+          {
+            "locant": 3,
+            "name": "fluoro",
+            "sortName": "fluoro",
+            "complex": false,
+            "atomIds": [
+              10,
+              11
+            ]
+          },
+          {
+            "locant": 5,
+            "name": "fluoro",
+            "sortName": "fluoro",
+            "complex": false,
+            "atomIds": [
+              13,
+              14
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            15,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-6",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              6,
+              7,
+              3
+            ],
+            "carbonIds": [
+              6
+            ],
+            "carbonId": 6,
+            "heteroAtomId": 3
+          },
+          {
+            "id": "halogen-11",
+            "kind": "halogen",
+            "label": "Fluoro",
+            "atomIds": [
+              10,
+              11
+            ],
+            "carbonIds": [
+              10
+            ],
+            "carbonId": 10,
+            "heteroAtomId": 11
+          },
+          {
+            "id": "halogen-14",
+            "kind": "halogen",
+            "label": "Fluoro",
+            "atomIds": [
+              13,
+              14
+            ],
+            "carbonIds": [
+              13
+            ],
+            "carbonId": 13,
+            "heteroAtomId": 14
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "N,N-dietil-3,5-difluorobenzamida",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "difluoro",
+              "start": 15,
+              "end": 23,
+              "atomIds": [
+                11,
+                14,
+                10,
+                13
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  13,
+                  14
+                ]
+              ],
+              "numbering": [
+                [
+                  10,
+                  3
+                ],
+                [
+                  13,
+                  5
+                ]
+              ],
+              "explanation": "El sustituyente «difluoro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,5; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «difluoro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,5; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "n-alkyl-0-0",
+              "role": "substituent",
+              "text": "dietil",
+              "start": 4,
+              "end": 10,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "equivalenceGroup": "n-equivalent-0",
+              "language": "es",
+              "numberingScope": "n-alkyl-0-0"
+            },
+            {
+              "id": "n-alkyl-0-1",
+              "role": "substituent",
+              "text": "dietil",
+              "start": 4,
+              "end": 10,
+              "atomIds": [
+                4,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                2
+              ],
+              "equivalenceGroup": "n-equivalent-0",
+              "language": "es",
+              "numberingScope": "n-alkyl-0-1"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamida",
+              "start": 23,
+              "end": 32,
+              "atomIds": [
+                8,
+                9,
+                10,
+                12,
+                13,
+                15,
+                6
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  15
+                ],
+                [
+                  15,
+                  8
+                ],
+                [
+                  8,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  9,
+                  2
+                ],
+                [
+                  10,
+                  3
+                ],
+                [
+                  12,
+                  4
+                ],
+                [
+                  13,
+                  5
+                ],
+                [
+                  15,
+                  6
+                ]
+              ],
+              "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son 3,5.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 11,
+                  "end": 12,
+                  "locant": 3,
+                  "atomId": 10
+                },
+                {
+                  "start": 13,
+                  "end": 14,
+                  "locant": 5,
+                  "atomId": 13
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamida",
+              "start": 23,
+              "end": 32,
+              "atomIds": [
+                6,
+                7,
+                3
+              ],
+              "bondIds": [
+                [
+                  6,
+                  7
+                ],
+                [
+                  6,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              8,
+              1
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        },
+        "en": {
+          "name": "N,N-diethyl-3,5-difluorobenzamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "difluoro",
+              "start": 16,
+              "end": 24,
+              "atomIds": [
+                11,
+                14,
+                10,
+                13
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  13,
+                  14
+                ]
+              ],
+              "numbering": [
+                [
+                  10,
+                  3
+                ],
+                [
+                  13,
+                  5
+                ]
+              ],
+              "explanation": "difluoro specifies the connected halogen substituent at 3,5; these locants belong to parent.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "n-alkyl-0-0",
+              "role": "substituent",
+              "text": "diethyl",
+              "start": 4,
+              "end": 11,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "equivalenceGroup": "n-equivalent-0",
+              "language": "en",
+              "numberingScope": "n-alkyl-0-0"
+            },
+            {
+              "id": "n-alkyl-0-1",
+              "role": "substituent",
+              "text": "diethyl",
+              "start": 4,
+              "end": 11,
+              "atomIds": [
+                4,
+                5
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                2
+              ],
+              "equivalenceGroup": "n-equivalent-0",
+              "language": "en",
+              "numberingScope": "n-alkyl-0-1"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamide",
+              "start": 24,
+              "end": 33,
+              "atomIds": [
+                8,
+                9,
+                10,
+                12,
+                13,
+                15,
+                6
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  15
+                ],
+                [
+                  15,
+                  8
+                ],
+                [
+                  8,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  8,
+                  1
+                ],
+                [
+                  9,
+                  2
+                ],
+                [
+                  10,
+                  3
+                ],
+                [
+                  12,
+                  4
+                ],
+                [
+                  13,
+                  5
+                ],
+                [
+                  15,
+                  6
+                ]
+              ],
+              "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 3,5.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 12,
+                  "end": 13,
+                  "locant": 3,
+                  "atomId": 10
+                },
+                {
+                  "start": 14,
+                  "end": 15,
+                  "locant": 5,
+                  "atomId": 13
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamide",
+              "start": 24,
+              "end": 33,
+              "atomIds": [
+                6,
+                7,
+                3
+              ],
+              "bondIds": [
+                [
+                  6,
+                  7
+                ],
+                [
+                  6,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              8,
+              1
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C)N(C(C1=CC(=CC(=C1)F)F)=O)CC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "N-benzyl benzamide",
+      "smiles": "O=C(NCc1ccccc1)c1ccccc1",
+      "analysis": {
+        "name": "N-bencilbenzamida",
+        "formula": "C₁₄H₁₃NO",
+        "family": "aromatic",
+        "mainChain": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "chainName": "benzamida",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            11,
+            1
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            15,
+            5
+          ],
+          [
+            16,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-2",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              2,
+              1,
+              3
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "N-bencilbenzamida",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "n-benzyl",
+              "role": "substituent",
+              "text": "bencil",
+              "start": 2,
+              "end": 8,
+              "atomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  5
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N une el bencilo por CH2 al nitrógeno amídico; su anillo fenilo es distinto del anillo progenitor unido al carbonilo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "language": "es",
+              "numberingScope": "n-benzyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamida",
+              "start": 8,
+              "end": 17,
+              "atomIds": [
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                2
+              ],
+              "bondIds": [
+                [
+                  11,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  14
+                ],
+                [
+                  14,
+                  15
+                ],
+                [
+                  15,
+                  16
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  11,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  11,
+                  1
+                ],
+                [
+                  12,
+                  2
+                ],
+                [
+                  13,
+                  3
+                ],
+                [
+                  14,
+                  4
+                ],
+                [
+                  15,
+                  5
+                ],
+                [
+                  16,
+                  6
+                ]
+              ],
+              "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son ninguno.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamida",
+              "start": 8,
+              "end": 17,
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              11,
+              1
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        },
+        "en": {
+          "name": "N-benzylbenzamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "n-benzyl",
+              "role": "substituent",
+              "text": "benzyl",
+              "start": 2,
+              "end": 8,
+              "atomIds": [
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ],
+              "bondIds": [
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  10
+                ],
+                [
+                  10,
+                  5
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  "N"
+                ]
+              ],
+              "explanation": "N links benzyl through CH2 to the amide nitrogen; its phenyl ring is distinct from the carbonyl-bearing parent.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "language": "en",
+              "numberingScope": "n-benzyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamide",
+              "start": 8,
+              "end": 17,
+              "atomIds": [
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                2
+              ],
+              "bondIds": [
+                [
+                  11,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  14
+                ],
+                [
+                  14,
+                  15
+                ],
+                [
+                  15,
+                  16
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  11,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  11,
+                  1
+                ],
+                [
+                  12,
+                  2
+                ],
+                [
+                  13,
+                  3
+                ],
+                [
+                  14,
+                  4
+                ],
+                [
+                  15,
+                  5
+                ],
+                [
+                  16,
+                  6
+                ]
+              ],
+              "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is unsubstituted.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamide",
+              "start": 8,
+              "end": 17,
+              "atomIds": [
+                2,
+                1,
+                3
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              11,
+              1
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C1=CC=CC=C1)NC(C1=CC=CC=C1)=O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "N-alkyl N-benzyl benzamide",
+      "smiles": "CN(Cc1ccccc1)C(=O)c1ccccc1",
+      "analysis": {
+        "name": "N-bencil-N-metilbenzamida",
+        "formula": "C₁₅H₁₅NO",
+        "family": "aromatic",
+        "mainChain": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "chainName": "benzamida",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            14,
+            3
+          ],
+          [
+            15,
+            4
+          ],
+          [
+            16,
+            5
+          ],
+          [
+            17,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-10",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              10,
+              11,
+              2
+            ],
+            "carbonIds": [
+              10
+            ],
+            "carbonId": 10,
+            "heteroAtomId": 2
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": "N-bencil-N-metilbenzamida",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "n-alkyl-0-0",
+              "role": "substituent",
+              "text": "bencil",
+              "start": 2,
+              "end": 8,
+              "atomIds": [
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  2,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  "N"
+                ]
+              ],
+              "explanation": "N une el bencilo por CH2 al nitrógeno amídico; su anillo fenilo es distinto del anillo progenitor unido al carbonilo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "language": "es",
+              "numberingScope": "n-alkyl-0-0"
+            },
+            {
+              "id": "n-alkyl-1-0",
+              "role": "substituent",
+              "text": "metil",
+              "start": 11,
+              "end": 16,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  "N"
+                ]
+              ],
+              "explanation": "N indica que el alquilo se une al nitrógeno amídico, no a un carbono del anillo.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                9
+              ],
+              "language": "es",
+              "numberingScope": "n-alkyl-1-0"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamida",
+              "start": 16,
+              "end": 25,
+              "atomIds": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                10
+              ],
+              "bondIds": [
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  14
+                ],
+                [
+                  14,
+                  15
+                ],
+                [
+                  15,
+                  16
+                ],
+                [
+                  16,
+                  17
+                ],
+                [
+                  17,
+                  12
+                ],
+                [
+                  12,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  13,
+                  2
+                ],
+                [
+                  14,
+                  3
+                ],
+                [
+                  15,
+                  4
+                ],
+                [
+                  16,
+                  5
+                ],
+                [
+                  17,
+                  6
+                ]
+              ],
+              "explanation": "benzamida establece el padre aromático con función amida. El grupo característico ocupa la posición 1 del anillo; los localizadores son ninguno.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamida",
+              "start": 16,
+              "end": 25,
+              "atomIds": [
+                10,
+                11,
+                2
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  10,
+                  2
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo amida queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              12,
+              1
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        },
+        "en": {
+          "name": "N-benzyl-N-methylbenzamide",
+          "status": "FULL",
+          "principalGroup": "amide",
+          "components": [
+            {
+              "id": "n-alkyl-0-0",
+              "role": "substituent",
+              "text": "benzyl",
+              "start": 2,
+              "end": 8,
+              "atomIds": [
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  9
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  2,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  "N"
+                ]
+              ],
+              "explanation": "N links benzyl through CH2 to the amide nitrogen; its phenyl ring is distinct from the carbonyl-bearing parent.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                0
+              ],
+              "language": "en",
+              "numberingScope": "n-alkyl-0-0"
+            },
+            {
+              "id": "n-alkyl-1-0",
+              "role": "substituent",
+              "text": "methyl",
+              "start": 11,
+              "end": 17,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  "N"
+                ]
+              ],
+              "explanation": "N locates the alkyl substituent on the amide nitrogen, independently of the aromatic ring.",
+              "parentId": "parent",
+              "locant": "N",
+              "attachmentScope": "amide-nitrogen",
+              "nLocantStarts": [
+                9
+              ],
+              "language": "en",
+              "numberingScope": "n-alkyl-1-0"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzamide",
+              "start": 17,
+              "end": 26,
+              "atomIds": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                10
+              ],
+              "bondIds": [
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  14
+                ],
+                [
+                  14,
+                  15
+                ],
+                [
+                  15,
+                  16
+                ],
+                [
+                  16,
+                  17
+                ],
+                [
+                  17,
+                  12
+                ],
+                [
+                  12,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  12,
+                  1
+                ],
+                [
+                  13,
+                  2
+                ],
+                [
+                  14,
+                  3
+                ],
+                [
+                  15,
+                  4
+                ],
+                [
+                  16,
+                  5
+                ],
+                [
+                  17,
+                  6
+                ]
+              ],
+              "explanation": "benzamide establishes the amide parent. Ring position 1 bears the characteristic group; the accepted locant sequence is unsubstituted.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": []
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzamide",
+              "start": 17,
+              "end": 26,
+              "atomIds": [
+                10,
+                11,
+                2
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  10,
+                  2
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The amide group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              12,
+              1
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "C(C1=CC=CC=C1)N(C(C1=CC=CC=C1)=O)C",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "aromatic ester",
+      "smiles": "COC(=O)c1cc(Br)c(OC)cc1",
+      "analysis": {
+        "name": "3-bromo-4-metoxibenzoato de metilo",
+        "formula": "C₉H₉BrO₃",
+        "family": "aromatic",
+        "mainChain": [
+          5,
+          6,
+          7,
+          9,
+          12,
+          13
+        ],
+        "chainName": "benzoato de metilo",
+        "substituents": [
+          {
+            "locant": 4,
+            "name": "metoxi",
+            "sortName": "metoxi",
+            "complex": false,
+            "atomIds": [
+              10,
+              9,
+              11
+            ]
+          },
+          {
+            "locant": 3,
+            "name": "bromo",
+            "sortName": "bromo",
+            "complex": false,
+            "atomIds": [
+              7,
+              8
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            13,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "ester-3",
+            "kind": "ester",
+            "label": "Éster",
+            "atomIds": [
+              3,
+              4,
+              2,
+              1
+            ],
+            "carbonIds": [
+              3
+            ],
+            "carbonId": 3,
+            "heteroAtomId": 4,
+            "alkylCarbonId": 1
+          },
+          {
+            "id": "ether-10",
+            "kind": "ether",
+            "label": "Éter",
+            "atomIds": [
+              10,
+              9,
+              11
+            ],
+            "carbonIds": [
+              9,
+              11
+            ],
+            "carbonId": 9,
+            "heteroAtomId": 10,
+            "alkylCarbonId": 11
+          },
+          {
+            "id": "halogen-8",
+            "kind": "halogen",
+            "label": "Bromo",
+            "atomIds": [
+              7,
+              8
+            ],
+            "carbonIds": [
+              7
+            ],
+            "carbonId": 7,
+            "heteroAtomId": 8
+          }
+        ],
+        "primaryFunctionalGroup": "ester",
+        "primaryFunctionalLabel": "Éster"
+      },
+      "languages": {
+        "es": {
+          "name": "3-bromo-4-metoxibenzoato de metilo",
+          "status": "FULL",
+          "principalGroup": "ester",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "bromo",
+              "start": 2,
+              "end": 7,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  3
+                ]
+              ],
+              "explanation": "El sustituyente «bromo» forma un fragmento de 1 átomo y se une al anillo en el localizador 3; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 3,
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «bromo» forma un fragmento de 1 átomo y se une al anillo en el localizador 3; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "metoxi",
+              "start": 10,
+              "end": 16,
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  9,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  9,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «metoxi» forma un fragmento de 2 átomos y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 4,
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «metoxi» forma un fragmento de 2 átomos y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "ester-alkyl",
+              "role": "substituent",
+              "text": "metilo",
+              "start": 28,
+              "end": 34,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo alquilo procedente del alcohol se une al oxígeno del éster, no directamente al anillo aromático.",
+              "parentId": "suffix",
+              "language": "es",
+              "numberingScope": "ester-alkyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzoato",
+              "start": 16,
+              "end": 24,
+              "atomIds": [
+                5,
+                6,
+                7,
+                9,
+                12,
+                13,
+                3
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  9
+                ],
+                [
+                  9,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  5
+                ],
+                [
+                  5,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  12,
+                  5
+                ],
+                [
+                  13,
+                  6
+                ]
+              ],
+              "explanation": "benzoato establece el padre aromático con función éster. El grupo característico ocupa la posición 1 del anillo; los localizadores son 3,4.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 3,
+                  "atomId": 7
+                },
+                {
+                  "start": 8,
+                  "end": 9,
+                  "locant": 4,
+                  "atomId": 9
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzoato",
+              "start": 16,
+              "end": 24,
+              "atomIds": [
+                3,
+                4,
+                2
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo éster queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "reasoningSteps": 7,
+          "issues": []
+        },
+        "en": {
+          "name": "methyl 3-bromo-4-methoxybenzoate",
+          "status": "FULL",
+          "principalGroup": "ester",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "bromo",
+              "start": 9,
+              "end": 14,
+              "atomIds": [
+                8
+              ],
+              "bondIds": [
+                [
+                  7,
+                  8
+                ]
+              ],
+              "numbering": [
+                [
+                  7,
+                  3
+                ]
+              ],
+              "explanation": "bromo specifies the connected halogen substituent at 3; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 3,
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "methoxy",
+              "start": 17,
+              "end": 24,
+              "atomIds": [
+                10,
+                11
+              ],
+              "bondIds": [
+                [
+                  10,
+                  11
+                ],
+                [
+                  9,
+                  10
+                ]
+              ],
+              "numbering": [
+                [
+                  9,
+                  4
+                ]
+              ],
+              "explanation": "methoxy specifies the connected ether substituent at 4; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 4,
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "ester-alkyl",
+              "role": "substituent",
+              "text": "methyl",
+              "start": 0,
+              "end": 6,
+              "atomIds": [
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The alcohol-derived alkyl group is bonded to the ester oxygen, not to the aromatic ring.",
+              "parentId": "suffix",
+              "language": "en",
+              "numberingScope": "ester-alkyl"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzoate",
+              "start": 24,
+              "end": 32,
+              "atomIds": [
+                5,
+                6,
+                7,
+                9,
+                12,
+                13,
+                3
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ],
+                [
+                  6,
+                  7
+                ],
+                [
+                  7,
+                  9
+                ],
+                [
+                  9,
+                  12
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  5
+                ],
+                [
+                  5,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  1
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  3
+                ],
+                [
+                  9,
+                  4
+                ],
+                [
+                  12,
+                  5
+                ],
+                [
+                  13,
+                  6
+                ]
+              ],
+              "explanation": "benzoate establishes the ester parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 3,4.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 7,
+                  "end": 8,
+                  "locant": 3,
+                  "atomId": 7
+                },
+                {
+                  "start": 15,
+                  "end": 16,
+                  "locant": 4,
+                  "atomId": 9
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzoate",
+              "start": 24,
+              "end": 32,
+              "atomIds": [
+                3,
+                4,
+                2
+              ],
+              "bondIds": [
+                [
+                  3,
+                  4
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The ester group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              5,
+              1
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "BrC=1C=C(C(=O)OC)C=CC1OC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "aromatic nitrile",
+      "smiles": "N#Cc1ccc(F)c(F)c1",
+      "analysis": {
+        "name": "3,4-difluorobenzonitrilo",
+        "formula": "C₇H₃F₂N",
+        "family": "aromatic",
+        "mainChain": [
+          3,
+          10,
+          8,
+          6,
+          5,
+          4
+        ],
+        "chainName": "benzonitrilo",
+        "substituents": [
+          {
+            "locant": 4,
+            "name": "fluoro",
+            "sortName": "fluoro",
+            "complex": false,
+            "atomIds": [
+              6,
+              7
+            ]
+          },
+          {
+            "locant": 3,
+            "name": "fluoro",
+            "sortName": "fluoro",
+            "complex": false,
+            "atomIds": [
+              8,
+              9
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            3,
+            1
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            8,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "nitrile-1",
+            "kind": "nitrile",
+            "label": "Nitrilo",
+            "atomIds": [
+              2,
+              1
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 1
+          },
+          {
+            "id": "halogen-7",
+            "kind": "halogen",
+            "label": "Fluoro",
+            "atomIds": [
+              6,
+              7
+            ],
+            "carbonIds": [
+              6
+            ],
+            "carbonId": 6,
+            "heteroAtomId": 7
+          },
+          {
+            "id": "halogen-9",
+            "kind": "halogen",
+            "label": "Fluoro",
+            "atomIds": [
+              8,
+              9
+            ],
+            "carbonIds": [
+              8
+            ],
+            "carbonId": 8,
+            "heteroAtomId": 9
+          }
+        ],
+        "primaryFunctionalGroup": "nitrile",
+        "primaryFunctionalLabel": "Nitrilo"
+      },
+      "languages": {
+        "es": {
+          "name": "3,4-difluorobenzonitrilo",
+          "status": "FULL",
+          "principalGroup": "nitrile",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "difluoro",
+              "start": 4,
+              "end": 12,
+              "atomIds": [
+                9,
+                7
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "numbering": [
+                [
+                  8,
+                  3
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «difluoro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,4; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «difluoro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,4; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzonitrilo",
+              "start": 12,
+              "end": 24,
+              "atomIds": [
+                3,
+                10,
+                8,
+                6,
+                5,
+                4,
+                2
+              ],
+              "bondIds": [
+                [
+                  3,
+                  10
+                ],
+                [
+                  10,
+                  8
+                ],
+                [
+                  8,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  1
+                ],
+                [
+                  10,
+                  2
+                ],
+                [
+                  8,
+                  3
+                ],
+                [
+                  6,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "explanation": "benzonitrilo establece el padre aromático con función nitrilo. El grupo característico ocupa la posición 1 del anillo; los localizadores son 3,4.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 3,
+                  "atomId": 8
+                },
+                {
+                  "start": 2,
+                  "end": 3,
+                  "locant": 4,
+                  "atomId": 6
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzonitrilo",
+              "start": 12,
+              "end": 24,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo nitrilo queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              4,
+              6
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        },
+        "en": {
+          "name": "3,4-difluorobenzonitrile",
+          "status": "FULL",
+          "principalGroup": "nitrile",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "difluoro",
+              "start": 4,
+              "end": 12,
+              "atomIds": [
+                9,
+                7
+              ],
+              "bondIds": [
+                [
+                  8,
+                  9
+                ],
+                [
+                  6,
+                  7
+                ]
+              ],
+              "numbering": [
+                [
+                  8,
+                  3
+                ],
+                [
+                  6,
+                  4
+                ]
+              ],
+              "explanation": "difluoro specifies the connected halogen substituent at 3,4; these locants belong to parent.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzonitrile",
+              "start": 12,
+              "end": 24,
+              "atomIds": [
+                3,
+                10,
+                8,
+                6,
+                5,
+                4,
+                2
+              ],
+              "bondIds": [
+                [
+                  3,
+                  10
+                ],
+                [
+                  10,
+                  8
+                ],
+                [
+                  8,
+                  6
+                ],
+                [
+                  6,
+                  5
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  3,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  3,
+                  1
+                ],
+                [
+                  10,
+                  2
+                ],
+                [
+                  8,
+                  3
+                ],
+                [
+                  6,
+                  4
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ],
+              "explanation": "benzonitrile establishes the nitrile parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 3,4.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 3,
+                  "atomId": 8
+                },
+                {
+                  "start": 2,
+                  "end": 3,
+                  "locant": 4,
+                  "atomId": 6
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzonitrile",
+              "start": 12,
+              "end": 24,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The nitrile group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              3,
+              1
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              4,
+              6
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "FC=1C=C(C#N)C=CC1F",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "aromatic aldehyde",
+      "smiles": "CCOc1c(Cl)cc(Cl)cc1C=O",
+      "analysis": {
+        "name": "3,5-dicloro-2-etoxibenzaldehído",
+        "formula": "C₉H₈Cl₂O₂",
+        "family": "aromatic",
+        "mainChain": [
+          11,
+          4,
+          5,
+          7,
+          8,
+          10
+        ],
+        "chainName": "benzaldehído",
+        "substituents": [
+          {
+            "locant": 2,
+            "name": "etoxi",
+            "sortName": "etoxi",
+            "complex": false,
+            "atomIds": [
+              3,
+              2,
+              4
+            ]
+          },
+          {
+            "locant": 3,
+            "name": "cloro",
+            "sortName": "cloro",
+            "complex": false,
+            "atomIds": [
+              5,
+              6
+            ]
+          },
+          {
+            "locant": 5,
+            "name": "cloro",
+            "sortName": "cloro",
+            "complex": false,
+            "atomIds": [
+              8,
+              9
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            11,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            10,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "aldehyde-12",
+            "kind": "aldehyde",
+            "label": "Aldehído",
+            "atomIds": [
+              12,
+              13
+            ],
+            "carbonIds": [
+              12
+            ],
+            "carbonId": 12,
+            "heteroAtomId": 13
+          },
+          {
+            "id": "ether-3",
+            "kind": "ether",
+            "label": "Éter",
+            "atomIds": [
+              3,
+              2,
+              4
+            ],
+            "carbonIds": [
+              2,
+              4
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 3,
+            "alkylCarbonId": 4
+          },
+          {
+            "id": "halogen-6",
+            "kind": "halogen",
+            "label": "Cloro",
+            "atomIds": [
+              5,
+              6
+            ],
+            "carbonIds": [
+              5
+            ],
+            "carbonId": 5,
+            "heteroAtomId": 6
+          },
+          {
+            "id": "halogen-9",
+            "kind": "halogen",
+            "label": "Cloro",
+            "atomIds": [
+              8,
+              9
+            ],
+            "carbonIds": [
+              8
+            ],
+            "carbonId": 8,
+            "heteroAtomId": 9
+          }
+        ],
+        "primaryFunctionalGroup": "aldehyde",
+        "primaryFunctionalLabel": "Aldehído"
+      },
+      "languages": {
+        "es": {
+          "name": "3,5-dicloro-2-etoxibenzaldehído",
+          "status": "FULL",
+          "principalGroup": "aldehyde",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "dicloro",
+              "start": 4,
+              "end": 11,
+              "atomIds": [
+                6,
+                9
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  9
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  3
+                ],
+                [
+                  8,
+                  5
+                ]
+              ],
+              "explanation": "El sustituyente «dicloro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,5; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «dicloro» forma un fragmento de 1 átomo y se une al anillo en el localizador 3,5; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "etoxi",
+              "start": 14,
+              "end": 19,
+              "atomIds": [
+                3,
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  2
+                ]
+              ],
+              "explanation": "El sustituyente «etoxi» forma un fragmento de 3 átomos y se une al anillo en el localizador 2; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 2,
+              "attachmentScope": "ring",
+              "explanationEs": "El sustituyente «etoxi» forma un fragmento de 3 átomos y se une al anillo en el localizador 2; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzaldehído",
+              "start": 19,
+              "end": 31,
+              "atomIds": [
+                11,
+                4,
+                5,
+                7,
+                8,
+                10,
+                12
+              ],
+              "bondIds": [
+                [
+                  11,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  10,
+                  11
+                ],
+                [
+                  11,
+                  12
+                ]
+              ],
+              "numbering": [
+                [
+                  11,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  5,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  10,
+                  6
+                ]
+              ],
+              "explanation": "benzaldehído establece el padre aromático con función aldehído. El grupo característico ocupa la posición 1 del anillo; los localizadores son 2,3,5.",
+              "language": "es",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 3,
+                  "atomId": 5
+                },
+                {
+                  "start": 2,
+                  "end": 3,
+                  "locant": 5,
+                  "atomId": 8
+                },
+                {
+                  "start": 12,
+                  "end": 13,
+                  "locant": 2,
+                  "atomId": 4
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzaldehído",
+              "start": 19,
+              "end": 31,
+              "atomIds": [
+                12,
+                13
+              ],
+              "bondIds": [
+                [
+                  12,
+                  13
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El grupo aldehído queda representado por sus átomos y enlaces característicos.",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              11,
+              1
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              8,
+              5
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              10,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        },
+        "en": {
+          "name": "3,5-dichloro-2-ethoxybenzaldehyde",
+          "status": "FULL",
+          "principalGroup": "aldehyde",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "dichloro",
+              "start": 4,
+              "end": 12,
+              "atomIds": [
+                6,
+                9
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ],
+                [
+                  8,
+                  9
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  3
+                ],
+                [
+                  8,
+                  5
+                ]
+              ],
+              "explanation": "dichloro specifies the connected halogen substituent at 3,5; these locants belong to parent.",
+              "parentId": "parent",
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "prefix-1",
+              "role": "prefix",
+              "text": "ethoxy",
+              "start": 15,
+              "end": 21,
+              "atomIds": [
+                3,
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  3,
+                  2
+                ],
+                [
+                  2,
+                  1
+                ],
+                [
+                  4,
+                  3
+                ]
+              ],
+              "numbering": [
+                [
+                  4,
+                  2
+                ]
+              ],
+              "explanation": "ethoxy specifies the connected ether substituent at 2; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 2,
+              "attachmentScope": "ring",
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "benzaldehyde",
+              "start": 21,
+              "end": 33,
+              "atomIds": [
+                11,
+                4,
+                5,
+                7,
+                8,
+                10,
+                12
+              ],
+              "bondIds": [
+                [
+                  11,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  10
+                ],
+                [
+                  10,
+                  11
+                ],
+                [
+                  11,
+                  12
+                ]
+              ],
+              "numbering": [
+                [
+                  11,
+                  1
+                ],
+                [
+                  4,
+                  2
+                ],
+                [
+                  5,
+                  3
+                ],
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  5
+                ],
+                [
+                  10,
+                  6
+                ]
+              ],
+              "explanation": "benzaldehyde establishes the aldehyde parent. Ring position 1 bears the characteristic group; the accepted locant sequence is 2,3,5.",
+              "language": "en",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 3,
+                  "atomId": 5
+                },
+                {
+                  "start": 2,
+                  "end": 3,
+                  "locant": 5,
+                  "atomId": 8
+                },
+                {
+                  "start": 13,
+                  "end": 14,
+                  "locant": 2,
+                  "atomId": 4
+                }
+              ]
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "benzaldehyde",
+              "start": 21,
+              "end": 33,
+              "atomIds": [
+                12,
+                13
+              ],
+              "bondIds": [
+                [
+                  12,
+                  13
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The aldehyde group supplies the characteristic suffix. Secondary functions are expressed as prefixes.",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              11,
+              1
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              8,
+              5
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              10,
+              6
+            ]
+          ],
+          "reasoningSteps": 6,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "ClC=1C(=C(C=O)C=C(C1)Cl)OCC",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "cyclic ketone",
+      "smiles": "O=C1CCC(C)CC1",
+      "analysis": {
+        "name": "4-metilciclohexanona",
+        "formula": "C₇H₁₂O",
+        "family": "cycloalkane",
+        "mainChain": [
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ],
+        "chainName": "ciclohexanona",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              6
+            ],
+            "unsaturatedBonds": [],
+            "locant": 4
+          }
+        ],
+        "numberedAtoms": [
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            8,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "ketone-2",
+            "kind": "ketone",
+            "label": "Cetona",
+            "atomIds": [
+              2,
+              1
+            ],
+            "carbonIds": [
+              2
+            ],
+            "carbonId": 2,
+            "heteroAtomId": 1
+          }
+        ],
+        "primaryFunctionalGroup": "ketone",
+        "primaryFunctionalLabel": "Cetona"
+      },
+      "languages": {
+        "es": {
+          "name": "4-metilciclohexanona",
+          "status": "FULL",
+          "principalGroup": "ketone",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "metil",
+              "start": 2,
+              "end": 7,
+              "atomIds": [
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "parentId": "parent",
+              "locant": 4,
+              "explanationEs": "El sustituyente «metil» forma un fragmento de 1 átomo y se une al anillo en el localizador 4; ese localizador pertenece al padre.",
+              "language": "es",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "ciclohexanona",
+              "start": 7,
+              "end": 20,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                7,
+                8
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  8,
+                  6
+                ]
+              ],
+              "explanation": "El único ciclo portador de la función principal es el padre de 6 carbonos (P-59.2.1.4). La función cetona fija C1; se comparan primero las insaturaciones, después el conjunto de localizadores de prefijos y sus desempates (P-59.2.3, P-59.2.5).",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 4,
+                  "atomId": 5
+                }
+              ],
+              "language": "es"
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "ona",
+              "start": 17,
+              "end": 20,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "El carbono C1 del anillo se une al oxígeno mediante un enlace doble (C=O).",
+              "language": "es",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              5,
+              4
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        },
+        "en": {
+          "name": "4-methylcyclohexanone",
+          "status": "FULL",
+          "principalGroup": "ketone",
+          "components": [
+            {
+              "id": "prefix-0",
+              "role": "prefix",
+              "text": "methyl",
+              "start": 2,
+              "end": 8,
+              "atomIds": [
+                6
+              ],
+              "bondIds": [
+                [
+                  5,
+                  6
+                ]
+              ],
+              "numbering": [
+                [
+                  5,
+                  4
+                ]
+              ],
+              "explanation": "methyl specifies the connected alkyl substituent at 4; these locants belong to parent.",
+              "parentId": "parent",
+              "locant": 4,
+              "language": "en",
+              "numberingScope": "parent"
+            },
+            {
+              "id": "parent",
+              "role": "parent",
+              "text": "cyclohexanone",
+              "start": 8,
+              "end": 21,
+              "atomIds": [
+                2,
+                3,
+                4,
+                5,
+                7,
+                8
+              ],
+              "bondIds": [
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  7
+                ],
+                [
+                  7,
+                  8
+                ],
+                [
+                  8,
+                  2
+                ]
+              ],
+              "numbering": [
+                [
+                  2,
+                  1
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  4
+                ],
+                [
+                  7,
+                  5
+                ],
+                [
+                  8,
+                  6
+                ]
+              ],
+              "explanation": "The only suffix-bearing cycle is the 6-carbon parent (P-59.2.1.4). The ketone is at C1; numbering compares unsaturation before the complete prefix locant set and citation-order ties (P-59.2.3, P-59.2.5).",
+              "numberingScope": "parent",
+              "writtenLocants": [
+                {
+                  "start": 0,
+                  "end": 1,
+                  "locant": 4,
+                  "atomId": 5
+                }
+              ],
+              "language": "en"
+            },
+            {
+              "id": "suffix",
+              "role": "suffix",
+              "text": "one",
+              "start": 18,
+              "end": 21,
+              "atomIds": [
+                2,
+                1
+              ],
+              "bondIds": [
+                [
+                  2,
+                  1
+                ]
+              ],
+              "numbering": [],
+              "explanation": "The ring carbon at C1 is bonded to oxygen by a double bond (C=O).",
+              "language": "en",
+              "numberingScope": "suffix"
+            }
+          ],
+          "numbering": [
+            [
+              2,
+              1
+            ],
+            [
+              5,
+              4
+            ]
+          ],
+          "reasoningSteps": 5,
+          "issues": []
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC1CCC(CC1)=O",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "heterocycle",
+      "smiles": "n1ccccc1",
+      "analysis": {
+        "name": "piridina",
+        "formula": "C₅H₅N",
+        "family": "aromatic",
+        "mainChain": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "chainName": "piridina",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "doubleBondLocants": [
+          1,
+          3,
+          5
+        ],
+        "tripleBondLocants": [],
+        "functionalGroups": []
+      },
+      "languages": {
+        "es": {
+          "name": "piridina",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "pyridine",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "N1=CC=CC=C1",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    },
+    {
+      "family": "N-aryl boundary",
+      "smiles": "CCN(c1ccccc1)C(=O)c1ccccc1",
+      "analysis": {
+        "name": "N-etilbenceno--carboxamida",
+        "formula": "C₁₅H₁₅NO",
+        "family": "polycyclic",
+        "mainChain": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "chainName": "benceno--carboxamida",
+        "substituents": [],
+        "numberedAtoms": [
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            9,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "amide-10",
+            "kind": "amide",
+            "label": "Amida",
+            "atomIds": [
+              10,
+              11,
+              3
+            ],
+            "carbonIds": [
+              10
+            ],
+            "carbonId": 10,
+            "heteroAtomId": 3
+          }
+        ],
+        "primaryFunctionalGroup": "amide",
+        "primaryFunctionalLabel": "Amida"
+      },
+      "languages": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "issues": [],
+          "limitation": "No safe local name emitted"
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "issues": [],
+          "limitation": "No safe local name emitted"
+        }
+      },
+      "opsin": {
+        "status": "NO-NAME"
+      }
+    },
+    {
+      "family": "N,N-dibenzyl boundary",
+      "smiles": "O=C(N(Cc1ccccc1)Cc1ccccc1)c1ccccc1",
+      "analysis": {
+        "name": "Nombre no disponible para estructuras complejas",
+        "chainName": "",
+        "family": "polycyclic",
+        "formula": "C₂₁H₁₉NO",
+        "mainChain": [],
+        "numberedAtoms": [],
+        "substituents": [],
+        "functionalGroups": [],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "cyclicUnsupported": "ring-assembly-grammar-not-implemented"
+      },
+      "languages": {
+        "es": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "issues": [],
+          "limitation": "No safe local name emitted"
+        },
+        "en": {
+          "name": null,
+          "status": "UNSUPPORTED",
+          "issues": [],
+          "limitation": "No safe local name emitted"
+        }
+      },
+      "opsin": {
+        "status": "NO-NAME"
+      }
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "smiles": "Cc1cc(C)c([N+](=O)[O-])c(C)c1[N+](=O)[O-]",
+      "analysis": {
+        "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+        "formula": "C₉H₁₀N₂O₄",
+        "family": "aromatic",
+        "mainChain": [
+          4,
+          6,
+          10,
+          12,
+          2,
+          3
+        ],
+        "chainName": "benceno",
+        "substituents": [
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              5
+            ],
+            "unsaturatedBonds": [],
+            "locant": 1
+          },
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              11
+            ],
+            "unsaturatedBonds": [],
+            "locant": 3
+          },
+          {
+            "name": "metil",
+            "sortName": "metil",
+            "complex": false,
+            "atomIds": [
+              1
+            ],
+            "unsaturatedBonds": [],
+            "locant": 5
+          },
+          {
+            "locant": 2,
+            "name": "nitro",
+            "sortName": "nitro",
+            "complex": false,
+            "atomIds": [
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "locant": 4,
+            "name": "nitro",
+            "sortName": "nitro",
+            "complex": false,
+            "atomIds": [
+              12,
+              13,
+              14,
+              15
+            ]
+          }
+        ],
+        "numberedAtoms": [
+          [
+            4,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            10,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            6
+          ]
+        ],
+        "doubleBondLocants": [],
+        "tripleBondLocants": [],
+        "functionalGroups": [
+          {
+            "id": "nitro-7",
+            "kind": "nitro",
+            "label": "Nitro",
+            "atomIds": [
+              6,
+              7,
+              8,
+              9
+            ],
+            "carbonIds": [
+              6
+            ],
+            "carbonId": 6,
+            "heteroAtomId": 7
+          },
+          {
+            "id": "nitro-13",
+            "kind": "nitro",
+            "label": "Nitro",
+            "atomIds": [
+              12,
+              13,
+              14,
+              15
+            ],
+            "carbonIds": [
+              12
+            ],
+            "carbonId": 12,
+            "heteroAtomId": 13
+          }
+        ]
+      },
+      "languages": {
+        "es": {
+          "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        },
+        "en": {
+          "name": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "status": "PARTIAL",
+          "issues": [],
+          "limitation": "No complete independent reconciliation"
+        }
+      },
+      "opsin": {
+        "status": "EQUIVALENT",
+        "smiles": "CC1=C(C(=C(C(=C1)C)[N+](=O)[O-])C)[N+](=O)[O-]",
+        "exitCode": 0,
+        "stderr": "Run the jar using the -h flag for help. Enter a chemical name to begin:",
+        "error": null
+      }
+    }
+  ]
+}

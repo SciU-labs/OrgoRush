@@ -910,6 +910,21 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 
 .functional-key { background: var(--structure-functional, #8a6ca0); }
 
+/* A verified principal function may share atoms with the parent skeleton. */
+.molecule-stage:not(.uniform-colors) .structural-functional .atom-circle,
+.molecule-stage:not(.uniform-colors) .structural-functional .skeletal-hetero-badge,
+.molecule-stage:not(.uniform-colors) .structural-functional .skeletal-selection-ring {
+  stroke: var(--structure-functional);
+}
+.molecule-stage:not(.uniform-colors) .structural-functional .skeletal-anchor {
+  fill: var(--structure-functional);
+  opacity: 1;
+}
+.molecule-stage:not(.uniform-colors) .structural-functional .atom-label { fill: var(--structure-functional); }
+.molecule-stage:not(.uniform-colors) .structural-substituent.hetero-node .atom-circle,
+.molecule-stage:not(.uniform-colors) .structural-substituent .skeletal-hetero-badge { stroke: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .structural-substituent.hetero-node .atom-label { fill: var(--structure-branch); }
+
 .png-export-actions {
   display: flex;
   justify-content: flex-end;
@@ -2609,6 +2624,10 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
 
 .condensed-main-token { color: var(--structure-main); }
 .condensed-branch-token { color: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .condensed-token.structural-parent { color: var(--structure-main); }
+.molecule-stage:not(.uniform-colors) .condensed-token.structural-functional { color: var(--structure-functional); }
+.molecule-stage:not(.uniform-colors) .condensed-token.structural-substituent { color: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .condensed-token.structural-unclassified { color: var(--muted); }
 .condensed-token text,
 .condensed-token { fill: currentColor; }
 .condensed-atom { cursor: pointer; outline: none; }
@@ -12395,3 +12414,19 @@ html[data-theme="dark"] .molecule-workspace.is-expanded .direction-pad button,
 html[data-theme="dark"] .molecule-workspace.is-expanded .structure-actions :is(.alkyl-button, .ring-button, .functional-button, .remove-button) {
   color: var(--ink);
 }
+
+.molecule-stage:not(.uniform-colors) .structural-parent .semi-developed-label { fill: var(--structure-main); }
+.molecule-stage:not(.uniform-colors) .structural-functional .semi-developed-label { fill: var(--structure-functional); }
+.molecule-stage:not(.uniform-colors) .structural-substituent .semi-developed-label { fill: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .structural-functional .atom-circle,
+.molecule-stage:not(.uniform-colors) .structural-functional .skeletal-hetero-badge { stroke: var(--structure-functional); }
+.molecule-stage:not(.uniform-colors) .structural-functional .atom-label { fill: var(--structure-functional); }
+.molecule-stage:not(.uniform-colors) .structural-substituent.hetero-node .atom-circle,
+.molecule-stage:not(.uniform-colors) .structural-substituent .skeletal-hetero-badge { stroke: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .structural-substituent.hetero-node .atom-label { fill: var(--structure-branch); }
+.molecule-stage:not(.uniform-colors) .unclassified-bond { stroke: var(--muted); }
+.molecule-stage:not(.uniform-colors) .structural-unclassified .atom-circle,
+.molecule-stage:not(.uniform-colors) .structural-unclassified .skeletal-hetero-badge { stroke: var(--muted); }
+.molecule-stage:not(.uniform-colors) .structural-unclassified .atom-label,
+.molecule-stage:not(.uniform-colors) .structural-unclassified .skeletal-anchor { fill: var(--muted); }
+.unclassified-key { background: var(--muted); }

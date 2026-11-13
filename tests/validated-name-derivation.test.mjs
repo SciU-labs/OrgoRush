@@ -232,12 +232,14 @@ test("FULL structural colors include suffix heteroatoms and nested substituents,
     const substituentAtoms = new Set(substituentComponents.flatMap(component => component.atomIds));
     const parentBonds = new Set(parentComponents.flatMap(component => component.bondIds.map(([a, b]) => structuralBondKey(a, b))));
     const substituentBonds = new Set(substituentComponents.flatMap(component => component.bondIds.map(([a, b]) => structuralBondKey(a, b))));
+    const functionalAtoms = new Set(model.components.filter(component => component.role === "suffix").flatMap(component => component.atomIds));
+    const functionalBonds = new Set(model.components.filter(component => component.role === "suffix").flatMap(component => component.bondIds.map(([a,b]) => structuralBondKey(a,b))));
     for (const atom of molecule.atoms) {
-      assert.equal(colors.atoms.get(atom.id), parentAtoms.has(atom.id) ? "parent" : substituentAtoms.has(atom.id) ? "substituent" : "unclassified");
+      assert.equal(colors.atoms.get(atom.id), functionalAtoms.has(atom.id) ? "functional" : parentAtoms.has(atom.id) ? "parent" : substituentAtoms.has(atom.id) ? "substituent" : "unclassified");
     }
     for (const [a, b] of molecule.bonds) {
       const key = structuralBondKey(a, b);
-      assert.equal(colors.bonds.get(key), parentBonds.has(key) ? "parent" : substituentBonds.has(key) ? "substituent" : "unclassified");
+      assert.equal(colors.bonds.get(key), functionalBonds.has(key) ? "functional" : parentBonds.has(key) ? "parent" : substituentBonds.has(key) ? "substituent" : "unclassified");
     }
     if (f === fixtures[1]) {
       const aryl = model.components.find(component => component.id === "aryl");
@@ -249,15 +251,15 @@ test("FULL structural colors include suffix heteroatoms and nested substituents,
       assert.equal(colors.atoms.get(hydroxy.atomIds[0]), "substituent");
       assert.ok(hydroxy.bondIds.some(([a, b]) => colors.bonds.get(structuralBondKey(a, b)) === "substituent"));
       const amideNitrogen = model.components.find(component => component.id === "parent").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "N");
-      assert.equal(colors.atoms.get(amideNitrogen), "parent");
+      assert.equal(colors.atoms.get(amideNitrogen), "functional");
       const carbonylO = model.components.find(component => component.id === "suffix").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "O");
-      assert.equal(colors.atoms.get(carbonylO), "parent");
+      assert.equal(colors.atoms.get(carbonylO), "functional");
       for (const [a, b] of model.components.find(component => component.id === "suffix").bondIds) {
-        assert.equal(colors.bonds.get(structuralBondKey(a, b)), "parent", "amide carbonyl/N bonds retain parent colour");
+        assert.equal(colors.bonds.get(structuralBondKey(a, b)), "functional", "amide carbonyl/N bonds receive function colour");
       }
     } else {
       const carbonylO = model.components.find(component => component.id === "suffix").atomIds.find(id => molecule.atoms.find(atom => atom.id === id)?.element === "O");
-      assert.equal(colors.atoms.get(carbonylO), "parent");
+      assert.equal(colors.atoms.get(carbonylO), "functional");
       const alkyl = model.components.find(component => component.id === "aryl-prefix");
       assert.ok(alkyl.atomIds.every(id => colors.atoms.get(id) === "substituent"));
     }

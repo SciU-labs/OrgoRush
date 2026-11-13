@@ -1,0 +1,16 @@
+{
+  "method": "Static local runtime import/export from clauses; excludes type-only imports; not a dynamic-import audit",
+  "changed": [
+    "page.tsx",
+    "condensed-layout.ts",
+    "condensed-renderer.tsx",
+    "structural-color-classification.ts",
+    "visual-numbering.ts",
+    "validated-name-derivation.ts",
+    "reasoning-derivation-adapter.ts",
+    "reasoning-parent-selection.ts",
+    "reasoning-name-fragments.ts",
+    "reasoning-visual-targets.ts"
+  ],
+  "cycles": []
+}

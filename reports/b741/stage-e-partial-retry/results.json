@@ -1,0 +1,587 @@
+{
+  "browser": "157.0.4341.46",
+  "scope": "Graph membership and applicable typed bond checks only; not FULL",
+  "cases": [
+    {
+      "family": "alkene",
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "but-2-eno",
+          "controls": 6,
+          "checks": [
+            {
+              "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            },
+            {
+              "label": "but: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            },
+            {
+              "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            },
+            {
+              "label": "2-eno: Localizador del enlace doble. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            },
+            {
+              "label": "Paso 7: Insaturaciones del nombre. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2,
+                3
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "2-eno: Enlace doble en la posición 2. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2,
+                3
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "name": "but-2-ene",
+          "controls": 6,
+          "checks": [
+            {
+              "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            },
+            {
+              "label": "but: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            },
+            {
+              "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            },
+            {
+              "label": "2-ene: Double bond locant. Highlight in the molecule for two seconds",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            },
+            {
+              "label": "Step 7: Name unsaturations. Highlight in the molecule for two seconds",
+              "atoms": [
+                2,
+                3
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "2-ene: Double bond at position 2. Highlight in the molecule for two seconds",
+              "atoms": [
+                2,
+                3
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "family": "amine",
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "etanamina",
+          "controls": 5,
+          "checks": [
+            {
+              "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                3,
+                2
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "amina: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                3,
+                2
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2,
+                1
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "etan: Cadena principal · 2 carbonos. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2,
+                1
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "name": "ethanamine",
+          "controls": 5,
+          "checks": [
+            {
+              "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+              "atoms": [
+                3,
+                2
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "amine: Principal functional group suffix. Highlight in the molecule for two seconds",
+              "atoms": [
+                3,
+                2
+              ],
+              "bonds": [
+                [
+                  2,
+                  3
+                ]
+              ]
+            },
+            {
+              "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+              "atoms": [
+                2,
+                1
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "ethan: Parent chain · 2 carbons. Highlight in the molecule for two seconds",
+              "atoms": [
+                2,
+                1
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+              "atoms": [
+                2
+              ],
+              "bonds": []
+            }
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "family": "cycloalkene",
+      "status": "PASS",
+      "languages": [
+        {
+          "language": "es",
+          "name": "ciclohex-1-eno",
+          "controls": 6,
+          "checks": [
+            {
+              "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "ciclohex: Anillo principal · 6 carbonos. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            },
+            {
+              "label": "1-eno: Enlaces múltiples, localizadores y multiplicidad. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            },
+            {
+              "label": "Paso 7: Insaturaciones del nombre. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "1-eno: Enlace doble en la posición 1. Resaltar en la molécula durante dos segundos",
+              "atoms": [
+                1,
+                2
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "language": "en",
+          "name": "cyclohex-1-ene",
+          "controls": 6,
+          "checks": [
+            {
+              "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "cyclohex: Parent ring · 6 carbons. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  4,
+                  5
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  1,
+                  6
+                ]
+              ]
+            },
+            {
+              "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            },
+            {
+              "label": "1-ene: Multiple bonds, locants, and multiplicity. Highlight in the molecule for two seconds",
+              "atoms": [
+                1
+              ],
+              "bonds": []
+            },
+            {
+              "label": "Step 7: Name unsaturations. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            {
+              "label": "1-ene: Double bond at position 1. Highlight in the molecule for two seconds",
+              "atoms": [
+                1,
+                2
+              ],
+              "bonds": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

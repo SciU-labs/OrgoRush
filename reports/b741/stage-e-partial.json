@@ -1,0 +1,4518 @@
+{
+  "scope": "Current local model, not browser; checks are diagnostics, not FULL proof",
+  "rows": [
+    {
+      "family": "alkane",
+      "smiles": "CCCC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "butano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "butano",
+            "chainName": "butano",
+            "family": "acyclic",
+            "formula": "C₄H₁₀",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "butano",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "butano",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 4 carbonos y su esqueleto es butano; por eso el nombre base resultante es butano. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              }
+            ],
+            "fragmentCount": 1,
+            "linkedSegments": 1
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "butane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "butano",
+            "chainName": "butano",
+            "family": "acyclic",
+            "formula": "C₄H₁₀",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "butane",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "butane",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 4 carbons. The parent name is butane; the complete IUPAC name is butane."
+              }
+            ],
+            "fragmentCount": 1,
+            "linkedSegments": 1
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "branched alkane",
+      "smiles": "CC(C)CC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "2-metilbutano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "2-metilbutano",
+            "chainName": "butano",
+            "family": "acyclic",
+            "formula": "C₅H₁₂",
+            "parentAtomIds": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": [
+              {
+                "name": "metil",
+                "locant": 2,
+                "atomIds": [
+                  3
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "butano",
+                "start": 7,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "2",
+                "stepNumber": "03",
+                "kind": "numbering"
+              },
+              {
+                "text": "2-metil",
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "2-metil",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  3
+                ]
+              },
+              {
+                "text": "butano",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 4 carbonos y su esqueleto es butano; por eso el nombre base resultante es butano. Al recorrer también las ramificaciones aparece esta ruta más larga: una ruta de 3 carbonos (propano) se descarta si existe una ruta continua de 4 (butano). Ese cambio de cadena principal modifica todos los localizadores."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. Finalmente, los sustituyentes deciden: el conjunto 2 es menor que 3 desde el extremo contrario."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Con la orientación ya evaluada, se ubica un metilo en C2. Al no existir una función principal ni enlaces múltiples, este conjunto define el sentido de numeración."
+              },
+              {
+                "number": "05",
+                "explanation": "Solo hay un tipo de sustituyente, «metil»; no es necesario comparar nombres diferentes."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "2-methylbutane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "2-metilbutano",
+            "chainName": "butano",
+            "family": "acyclic",
+            "formula": "C₅H₁₂",
+            "parentAtomIds": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": [
+              {
+                "name": "metil",
+                "locant": 2,
+                "atomIds": [
+                  3
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "butane",
+                "start": 8,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "2",
+                "stepNumber": "03",
+                "kind": "numbering"
+              },
+              {
+                "text": "2-methyl",
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "2-methyl",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  3
+                ]
+              },
+              {
+                "text": "butane",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 4 carbons. The parent name is butane; the complete IUPAC name is 2-methylbutane."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Substituent names and locants are assigned from the numbered parent skeleton: 2-methyl. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once."
+              },
+              {
+                "number": "05",
+                "explanation": "There is only one substituent type, “methyl”; no comparison between different names is needed."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "alkene",
+      "smiles": "CC=CC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "but-2-eno",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "but-2-eno",
+            "chainName": "but-2-eno",
+            "family": "acyclic",
+            "formula": "C₄H₈",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [
+              2
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "but",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "2-eno",
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "2-eno",
+                "start": 4,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "double",
+                "locant": 2,
+                "semanticId": "unsaturation:double:2"
+              }
+            ],
+            "links": [
+              {
+                "text": "but",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-eno",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "double",
+                "locant": 2,
+                "semanticId": "unsaturation:double:2"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 4 carbonos y su esqueleto es butano; por eso el nombre base resultante es but-2-eno. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. Los enlaces múltiples también empatan: C=C en C2 desde cualquiera de los extremos."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "La cadena principal contiene un enlace doble en C2=C3."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "but-2-ene",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "but-2-eno",
+            "chainName": "but-2-eno",
+            "family": "acyclic",
+            "formula": "C₄H₈",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [
+              2
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "but",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "2-ene",
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "2-ene",
+                "start": 4,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "double",
+                "locant": 2,
+                "semanticId": "unsaturation:double:2"
+              }
+            ],
+            "links": [
+              {
+                "text": "but",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-ene",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "double",
+                "locant": 2,
+                "semanticId": "unsaturation:double:2"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 4 carbons. The parent name is but-2-ene; the complete IUPAC name is but-2-ene."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents. Multiple bonds are located at C2=C3."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "The parent chain contains one double bond at C2=C3."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "alkyne",
+      "smiles": "CC#CC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "but-2-ino",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "but-2-ino",
+            "chainName": "but-2-ino",
+            "family": "acyclic",
+            "formula": "C₄H₆",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [
+              2
+            ],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "but",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "2-ino",
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "2-ino",
+                "start": 4,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "triple",
+                "locant": 2,
+                "semanticId": "unsaturation:triple:2"
+              }
+            ],
+            "links": [
+              {
+                "text": "but",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-ino",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "triple",
+                "locant": 2,
+                "semanticId": "unsaturation:triple:2"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 4 carbonos y su esqueleto es butano; por eso el nombre base resultante es but-2-ino. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. Los enlaces múltiples también empatan: C≡C en C2 desde cualquiera de los extremos."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "La cadena principal contiene un enlace triple en C2≡C3."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "but-2-yne",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "but-2-ino",
+            "chainName": "but-2-ino",
+            "family": "acyclic",
+            "formula": "C₄H₆",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [
+              2
+            ],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "but",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "2-yne",
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "2-yne",
+                "start": 4,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "triple",
+                "locant": 2,
+                "semanticId": "unsaturation:triple:2"
+              }
+            ],
+            "links": [
+              {
+                "text": "but",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-yne",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "bondType": "triple",
+                "locant": 2,
+                "semanticId": "unsaturation:triple:2"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 4 carbons. The parent name is but-2-yne; the complete IUPAC name is but-2-yne."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents. Multiple bonds are located at C2≡C3."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "The parent chain contains one triple bond at C2≡C3."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "alcohol",
+      "smiles": "CCCO",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "propan-1-ol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "propan-1-ol",
+            "chainName": "propan-1-ol",
+            "family": "acyclic",
+            "formula": "C₃H₈O",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "1-ol",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "propan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "1",
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "propan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "1-ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": [
+                  "03"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica alcohol como el grupo de mayor prioridad. Aporta el sufijo del nombre. Esta función no obliga automáticamente a usar C1. El carbono que la porta debe recibir el menor localizador que permita la cadena principal; aquí recibe el localizador 1. En esta estructura, el grupo hidroxilo –OH aporta el sufijo «1-ol»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 3 carbonos y su esqueleto es propano; por eso el nombre base resultante es propan-1-ol. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C3. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "propan-1-ol",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "propan-1-ol",
+            "chainName": "propan-1-ol",
+            "family": "acyclic",
+            "formula": "C₃H₈O",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "alcohol",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "alcohol",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "1-ol",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "propan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "1",
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "propan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "1-ol",
+                "stepNumber": "01",
+                "relatedStepNumbers": [
+                  "03"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Alcohol has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the hydroxyl group –OH contributes the suffix “1-ol”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 3 carbons. The parent name is propan-1-ol; the complete IUPAC name is propan-1-ol."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Alcohol) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C3. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "ether",
+      "smiles": "CCOCC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "etoxietano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etoxietano",
+            "chainName": "etano",
+            "family": "acyclic",
+            "formula": "C₄H₁₀O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ether",
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ],
+                "carbonIds": [
+                  2,
+                  4
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1,
+                  null
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "etoxi",
+                "locant": 1,
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "etano",
+                "start": 5,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "etoxi",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "etoxi",
+                "stepNumber": "04",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ]
+              },
+              {
+                "text": "etano",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etano. Al recorrer también las ramificaciones aparece esta ruta más larga: una ruta de 1 carbonos (metano) se descarta si existe una ruta continua de 2 (etano). Ese cambio de cadena principal modifica todos los localizadores."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. Finalmente, los sustituyentes deciden: el conjunto 1 es menor que 2 desde el extremo contrario."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Con la orientación ya evaluada, se ubica un etoxi en C1. Al no existir una función principal ni enlaces múltiples, este conjunto define el sentido de numeración. En esta estructura, el enlace éter –O–R aporta el prefijo «etoxi»."
+              },
+              {
+                "number": "05",
+                "explanation": "Solo hay un tipo de sustituyente, «etoxi»; no es necesario comparar nombres diferentes."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "ethoxyethane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etoxietano",
+            "chainName": "etano",
+            "family": "acyclic",
+            "formula": "C₄H₁₀O",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ether",
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ],
+                "carbonIds": [
+                  2,
+                  4
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1,
+                  null
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "etoxi",
+                "locant": 1,
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ethane",
+                "start": 6,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "ethoxy",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ]
+              }
+            ],
+            "links": [
+              {
+                "text": "ethoxy",
+                "stepNumber": "04",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  4
+                ]
+              },
+              {
+                "text": "ethane",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 2 carbons. The parent name is ethane; the complete IUPAC name is ethoxyethane."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Substituent names and locants are assigned from the numbered parent skeleton: 1-ethoxy. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once. In this structure, the ether linkage –O–R contributes the prefix “ethoxy”."
+              },
+              {
+                "number": "05",
+                "explanation": "There is only one substituent type, “ethoxy”; no comparison between different names is needed."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "ketone",
+      "smiles": "CC(=O)CC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "butan-2-ona",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "butan-2-ona",
+            "chainName": "butan-2-ona",
+            "family": "acyclic",
+            "formula": "C₄H₈O",
+            "parentAtomIds": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": "ketone",
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ketone",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  2
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "2-ona",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "butan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "2",
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "butan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-ona",
+                "stepNumber": "01",
+                "relatedStepNumbers": [
+                  "03"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica cetona como el grupo de mayor prioridad. Aporta el sufijo del nombre. El carbonilo es interno: no puede convertirse mecánicamente en C1 sin cortar una de las continuaciones de la cadena. Debe recibir el menor localizador posible; aquí queda en C2. En esta estructura, el carbonilo de cetona >C=O aporta el sufijo «2-ona»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 4 carbonos y su esqueleto es butano; por eso el nombre base resultante es butan-2-ona. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C2, mientras que desde el extremo contrario quedaría en C3. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "butan-2-one",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "butan-2-ona",
+            "chainName": "butan-2-ona",
+            "family": "acyclic",
+            "formula": "C₄H₈O",
+            "parentAtomIds": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "parentAtomCount": 4,
+            "parentCarbonCount": 4,
+            "primaryFunctionalGroup": "ketone",
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                4
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ketone",
+                "atomIds": [
+                  2,
+                  3
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  2
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "2-one",
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "butan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "2",
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "butan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  1,
+                  2,
+                  4,
+                  5
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2-one",
+                "stepNumber": "01",
+                "relatedStepNumbers": [
+                  "03"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Ketone has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the ketone carbonyl >C=O contributes the suffix “2-one”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 4 carbons. The parent name is butan-2-one; the complete IUPAC name is butan-2-one."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Ketone) resolves the numbering direction: the selected locants are C2, whereas numbering from the opposite end would give C3. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "acid",
+      "smiles": "CCC(=O)O",
+      "status": {
+        "es": "PARTIAL",
+        "en": "FULL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "ácido propanoico",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ácido propanoico",
+            "chainName": "ácido propanoico",
+            "family": "acyclic",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "carboxylicAcid",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "carboxylicAcid",
+                "atomIds": [
+                  3,
+                  4,
+                  5
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propan",
+                "start": 6,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "ácido",
+                "start": 0,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "oico",
+                "start": 12,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "ácido",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": " "
+              },
+              {
+                "text": "propan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "oico",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica ácido carboxílico como el grupo de mayor prioridad. Aporta el sufijo del nombre. El carbono propio de esta función forma parte del esqueleto principal y se fija como C1. En esta estructura, el grupo carboxilo –COOH aporta el sufijo «oico»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 3 carbonos y su esqueleto es propano; por eso el nombre base resultante es ácido propanoico. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C3. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 3
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "propanoic acid",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ácido propanoico",
+            "chainName": "ácido propanoico",
+            "family": "acyclic",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "carboxylicAcid",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "carboxylicAcid",
+                "atomIds": [
+                  3,
+                  4,
+                  5
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "acid",
+                "start": 10,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "oic",
+                "start": 6,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "propan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "oic",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": " "
+              },
+              {
+                "text": "acid",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Carboxylic acid has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the carboxyl group –COOH contributes the suffix “oic”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 3 carbons. The parent name is propanoic acid; the complete IUPAC name is propanoic acid."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Carboxylic acid) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C3. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 3
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "ester",
+      "smiles": "CC(=O)OC",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "etanoato de metilo",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanoato de metilo",
+            "chainName": "etanoato de metilo",
+            "family": "acyclic",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "ester",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ester",
+                "atomIds": [
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "etan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "de metilo",
+                "start": 9,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "oato",
+                "start": 4,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "etan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "oato",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": " "
+              },
+              {
+                "text": "de metilo",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica éster como el grupo de mayor prioridad. Aporta el sufijo del nombre. El carbono propio de esta función forma parte del esqueleto principal y se fija como C1. La porción alquilo enlazada a través del oxígeno del éster aporta «de metilo»; es distinta de la porción derivada del ácido. En esta estructura, el grupo éster –COOR aporta el sufijo «oato»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etanoato de metilo. Al recorrer también las ramificaciones aparece esta ruta más larga: una ruta de 1 carbonos (metano) se descarta si existe una ruta continua de 2 (etano). Ese cambio de cadena principal modifica todos los localizadores."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C2. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 3
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "methyl ethanoate",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanoato de metilo",
+            "chainName": "etanoato de metilo",
+            "family": "acyclic",
+            "formula": "C₃H₆O₂",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "ester",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "ester",
+                "atomIds": [
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ethan",
+                "start": 7,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "methyl",
+                "start": 0,
+                "stepNumber": "01",
+                "kind": "function"
+              },
+              {
+                "text": "oate",
+                "start": 12,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "methyl",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": " "
+              },
+              {
+                "text": "ethan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "oate",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Ester has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. The alkyl portion bonded through the ester oxygen contributes “methyl”; it is separate from the acid-derived portion. In this structure, the ester group –COOR contributes the suffix “oate”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 2 carbons. The parent name is methyl ethanoate; the complete IUPAC name is methyl ethanoate."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Ester) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C2. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 3
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "amine",
+      "smiles": "CCN",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "etanamina",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanamina",
+            "chainName": "etanamina",
+            "family": "acyclic",
+            "formula": "C₂H₇N",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "amine",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "amine",
+                "atomIds": [
+                  3,
+                  2
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "etan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amina",
+                "start": 4,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "etan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amina",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica amina como el grupo de mayor prioridad. Aporta el sufijo del nombre. Esta función no obliga automáticamente a usar C1. El carbono que la porta debe recibir el menor localizador que permita la cadena principal; aquí recibe el localizador 1. En esta estructura, el grupo amino unido al padre aporta el sufijo «amina»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etanamina. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C2. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "ethanamine",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanamina",
+            "chainName": "etanamina",
+            "family": "acyclic",
+            "formula": "C₂H₇N",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "amine",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "amine",
+                "atomIds": [
+                  3,
+                  2
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ethan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amine",
+                "start": 5,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "ethan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amine",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Amine has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the amino group attached to the parent contributes the suffix “amine”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 2 carbons. The parent name is ethanamine; the complete IUPAC name is ethanamine."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Amine) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C2. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "amide",
+      "smiles": "CC(=O)N",
+      "status": {
+        "es": "PARTIAL",
+        "en": "FULL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "etanamida",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanamida",
+            "chainName": "etanamida",
+            "family": "acyclic",
+            "formula": "C₂H₅NO",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "amide",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "amide",
+                "atomIds": [
+                  2,
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "etan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amida",
+                "start": 4,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "etan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amida",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica amida como el grupo de mayor prioridad. Aporta el sufijo del nombre. El carbono propio de esta función forma parte del esqueleto principal y se fija como C1. En esta estructura, el grupo amida –C(=O)N aporta el sufijo «amida»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 2 carbonos y su esqueleto es etano; por eso el nombre base resultante es etanamida. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C2. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "ethanamide",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "etanamida",
+            "chainName": "etanamida",
+            "family": "acyclic",
+            "formula": "C₂H₅NO",
+            "parentAtomIds": [
+              2,
+              1
+            ],
+            "parentAtomCount": 2,
+            "parentCarbonCount": 2,
+            "primaryFunctionalGroup": "amide",
+            "numberedAtoms": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "amide",
+                "atomIds": [
+                  2,
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  2
+                ],
+                "carbonId": 2,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ethan",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amide",
+                "start": 5,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "ethan",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "amide",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Amide has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the amide group –C(=O)N contributes the suffix “amide”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 2 carbons. The parent name is ethanamide; the complete IUPAC name is ethanamide."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Amide) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C2. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "nitrile",
+      "smiles": "CCC#N",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "propanonitrilo",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "propanonitrilo",
+            "chainName": "propanonitrilo",
+            "family": "acyclic",
+            "formula": "C₃H₅N",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "nitrile",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "nitrile",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propano",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "nitrilo",
+                "start": 7,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "propano",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "nitrilo",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Se identifica nitrilo como el grupo de mayor prioridad. Aporta el sufijo del nombre. El carbono propio de esta función forma parte del esqueleto principal y se fija como C1. En esta estructura, el grupo nitrilo –C≡N aporta el sufijo «nitrilo»."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 3 carbonos y su esqueleto es propano; por eso el nombre base resultante es propanonitrilo. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. La función principal resuelve la orientación: queda en C1, mientras que desde el extremo contrario quedaría en C3. Se conserva el conjunto menor; los enlaces múltiples y sustituyentes no pueden invertir esta decisión."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "propanenitrile",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "propanonitrilo",
+            "chainName": "propanonitrilo",
+            "family": "acyclic",
+            "formula": "C₃H₅N",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": "nitrile",
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "nitrile",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propane",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "nitrile",
+                "start": 7,
+                "stepNumber": "01",
+                "kind": "function"
+              }
+            ],
+            "links": [
+              {
+                "text": "propane",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "nitrile",
+                "stepNumber": "01",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "nameRole": "function",
+                "explanation": "Nitrile has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant. In this structure, the nitrile group –C≡N contributes the suffix “nitrile”."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 3 carbons. The parent name is propanenitrile; the complete IUPAC name is propanenitrile."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "The principal group (Nitrile) resolves the numbering direction: the selected locants are C1, whereas numbering from the opposite end would give C3. The lower locant set determines the orientation."
+              }
+            ],
+            "fragmentCount": 2,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "halide",
+      "smiles": "CCCCl",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1-cloropropano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1-cloropropano",
+            "chainName": "propano",
+            "family": "acyclic",
+            "formula": "C₃H₇Cl",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "halogen",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "cloro",
+                "locant": 1,
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propano",
+                "start": 7,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "1-cloro",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "1",
+                "start": 0,
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "1-cloro",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "propano",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige la cadena continua más larga que contiene la función prioritaria cuando existe. La ruta seleccionada tiene 3 carbonos y su esqueleto es propano; por eso el nombre base resultante es propano. La cadena principal no se decide por la línea que parece más evidente en el dibujo: el motor compara todas las rutas continuas."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. Finalmente, los sustituyentes deciden: el conjunto 1 es menor que 3 desde el extremo contrario."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Con la orientación ya evaluada, se ubica un cloro en C1. Al no existir una función principal ni enlaces múltiples, este conjunto define el sentido de numeración. En esta estructura, el halógeno unido al padre aporta el prefijo «1-cloro»."
+              },
+              {
+                "number": "05",
+                "explanation": "Solo hay un tipo de sustituyente, «cloro»; no es necesario comparar nombres diferentes."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1-chloropropane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1-cloropropano",
+            "chainName": "propano",
+            "family": "acyclic",
+            "formula": "C₃H₇Cl",
+            "parentAtomIds": [
+              3,
+              2,
+              1
+            ],
+            "parentAtomCount": 3,
+            "parentCarbonCount": 3,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                3
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "halogen",
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "carbonIds": [
+                  3
+                ],
+                "carbonId": 3,
+                "locants": [
+                  1
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "cloro",
+                "locant": 1,
+                "atomIds": [
+                  3,
+                  4
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "propane",
+                "start": 8,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              },
+              {
+                "text": "1-chloro",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "1",
+                "start": 0,
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "1-chloro",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  3,
+                  4
+                ]
+              },
+              {
+                "text": "propane",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  3,
+                  2,
+                  1
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The continuous carbon chain chosen as the parent contains 3 carbons. The parent name is propane; the complete IUPAC name is 1-chloropropane."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Substituent names and locants are assigned from the numbered parent skeleton: 1-chloro. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once. In this structure, the halogen attached to the parent contributes the prefix “1-chloro”."
+              },
+              {
+                "number": "05",
+                "explanation": "There is only one substituent type, “chloro”; no comparison between different names is needed."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "cycloalkane",
+      "smiles": "C1CCCCC1",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "ciclohexano",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ciclohexano",
+            "chainName": "ciclohexano",
+            "family": "cycloalkane",
+            "formula": "C₆H₁₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ciclohexano",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent"
+              }
+            ],
+            "links": [
+              {
+                "text": "ciclohexano",
+                "stepNumber": "02",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige el anillo de 6 carbonos. El esqueleto cíclico aporta «ciclohex»; los enlaces múltiples y el sufijo funcional se explican por separado."
+              }
+            ],
+            "fragmentCount": 1,
+            "linkedSegments": 1
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "cyclohexane",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ciclohexano",
+            "chainName": "ciclohexano",
+            "family": "cycloalkane",
+            "formula": "C₆H₁₂",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "cyclohexane",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent"
+              }
+            ],
+            "links": [
+              {
+                "text": "cyclohexane",
+                "stepNumber": "02",
+                "relatedStepNumbers": []
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent is a ring of 6 carbons. Its cyclic scaffold contributes “cyclohex”; multiple bonds and the functional suffix are explained separately."
+              }
+            ],
+            "fragmentCount": 1,
+            "linkedSegments": 1
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "cycloalkene",
+      "smiles": "C1=CCCCC1",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "ciclohex-1-eno",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ciclohex-1-eno",
+            "chainName": "ciclohex-1-eno",
+            "family": "cycloalkane",
+            "formula": "C₆H₁₀",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              1
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "ciclohex",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent"
+              },
+              {
+                "text": "1-eno",
+                "start": 9,
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "1-eno",
+                "start": 9,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  1,
+                  2
+                ],
+                "bondType": "double",
+                "locant": 1,
+                "semanticId": "unsaturation:double:1"
+              }
+            ],
+            "links": [
+              {
+                "text": "ciclohex",
+                "stepNumber": "02",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "1-eno",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  1,
+                  2
+                ],
+                "bondType": "double",
+                "locant": 1,
+                "semanticId": "unsaturation:double:1"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se elige el anillo de 6 carbonos. El esqueleto cíclico aporta «ciclohex»; los enlaces múltiples y el sufijo funcional se explican por separado."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Se comparan ambos extremos en este orden: primero la función principal, después los enlaces múltiples y, solo si continúa el empate, los sustituyentes. En el anillo se eligen el punto de inicio y el sentido que respetan esa jerarquía."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "El anillo contiene un enlace doble en C1=C2."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "cyclohex-1-ene",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "ciclohex-1-eno",
+            "chainName": "ciclohex-1-eno",
+            "family": "cycloalkane",
+            "formula": "C₆H₁₀",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              1
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "cyclohex",
+                "start": 0,
+                "stepNumber": "02",
+                "kind": "parent"
+              },
+              {
+                "text": "1-ene",
+                "start": 9,
+                "stepNumber": "03",
+                "kind": "unsaturation"
+              },
+              {
+                "text": "1-ene",
+                "start": 9,
+                "stepNumber": "07",
+                "kind": "unsaturation",
+                "atomIds": [
+                  1,
+                  2
+                ],
+                "bondType": "double",
+                "locant": 1,
+                "semanticId": "unsaturation:double:1"
+              }
+            ],
+            "links": [
+              {
+                "text": "cyclohex",
+                "stepNumber": "02",
+                "relatedStepNumbers": []
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "1-ene",
+                "stepNumber": "07",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  1,
+                  2
+                ],
+                "bondType": "double",
+                "locant": 1,
+                "semanticId": "unsaturation:double:1"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The parent is a ring of 6 carbons. Its cyclic scaffold contributes “cyclohex”; multiple bonds and the functional suffix are explained separately."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Numbering is chosen from the end that gives the lowest locant at the first point of difference. Multiple bonds are considered before substituents. Multiple bonds are located at C1=C2."
+              },
+              {
+                "number": "07",
+                "nameRole": "unsaturation",
+                "explanation": "The ring contains one double bond at C1=C2."
+              }
+            ],
+            "fragmentCount": 3,
+            "linkedSegments": 2
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "heterocycle",
+      "smiles": "n1ccccc1",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "piridina",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              1,
+              3,
+              5
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "piridina"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se selecciona como padre el anillo aromático de 6 átomos, de ellos 5 carbonos (piridina). No se incluye aquí un sustituyente carbonado unido para comparar con el padre."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. El anillo aromático progenitor tiene 6 posiciones: 1 nitrógeno en la posición 1 y 5 carbonos. Su sistema π está deslocalizado, por lo que esta explicación no asigna localizadores a enlaces dobles individuales."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "pyridine",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "piridina",
+            "chainName": "piridina",
+            "family": "aromatic",
+            "formula": "C₅H₅N",
+            "parentAtomIds": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 5,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                6,
+                6
+              ]
+            ],
+            "doubleBondLocants": [
+              1,
+              3,
+              5
+            ],
+            "tripleBondLocants": [],
+            "functionalGroups": [],
+            "substituents": []
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [],
+            "links": [
+              {
+                "text": "pyridine"
+              }
+            ],
+            "steps": [
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The selected aromatic parent ring contains 6 atoms, including 5 carbons (pyridine). No attached carbon substituent is included in this parent comparison."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The aromatic parent ring has 6 positions: 1 nitrogen atom at position 1 and 5 carbons. Its π system is delocalized, so this explanation assigns no individual double-bond positions."
+              }
+            ],
+            "fragmentCount": 0,
+            "linkedSegments": 0
+          }
+        }
+      },
+      "signals": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "smiles": "Cc1cc(C)c([N+](=O)[O-])c(C)c1[N+](=O)[O-]",
+      "status": {
+        "es": "PARTIAL",
+        "en": "PARTIAL"
+      },
+      "profiles": {
+        "2013-es": {
+          "status": "NAMED",
+          "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+            "chainName": "benceno",
+            "family": "aromatic",
+            "formula": "C₉H₁₀N₂O₄",
+            "parentAtomIds": [
+              4,
+              6,
+              10,
+              12,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                10,
+                3
+              ],
+              [
+                12,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "nitro",
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "carbonIds": [
+                  6
+                ],
+                "carbonId": 6,
+                "locants": [
+                  2
+                ]
+              },
+              {
+                "kind": "nitro",
+                "atomIds": [
+                  12,
+                  13,
+                  14,
+                  15
+                ],
+                "carbonIds": [
+                  12
+                ],
+                "carbonId": 12,
+                "locants": [
+                  4
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "metil",
+                "locant": 1,
+                "atomIds": [
+                  5
+                ],
+                "complex": false
+              },
+              {
+                "name": "metil",
+                "locant": 3,
+                "atomIds": [
+                  11
+                ],
+                "complex": false
+              },
+              {
+                "name": "metil",
+                "locant": 5,
+                "atomIds": [
+                  1
+                ],
+                "complex": false
+              },
+              {
+                "name": "nitro",
+                "locant": 2,
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "complex": false
+              },
+              {
+                "name": "nitro",
+                "locant": 4,
+                "atomIds": [
+                  12,
+                  13,
+                  14,
+                  15
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "benceno",
+                "start": 26,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  4,
+                  6,
+                  10,
+                  12,
+                  2,
+                  3
+                ]
+              },
+              {
+                "text": "1,3,5-trimetil-2,4-dinitro",
+                "stepNumber": "04",
+                "kind": "substituent"
+              },
+              {
+                "text": "1,3,5-trimetil",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  5,
+                  11,
+                  1
+                ]
+              },
+              {
+                "text": "2,4-dinitro",
+                "start": 15,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              },
+              {
+                "text": "1,3,5",
+                "start": 0,
+                "stepNumber": "03",
+                "kind": "numbering"
+              },
+              {
+                "text": "2,4",
+                "start": 15,
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "1,3,5-trimetil",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  5,
+                  11,
+                  1
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2,4-dinitro",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              },
+              {
+                "text": "benceno",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  4,
+                  6,
+                  10,
+                  12,
+                  2,
+                  3
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "explanation": "Se detecta el grupo nitro, pero en esta estructura se expresa como prefijo nitro-. No aporta un sufijo y no se clasifica como grupo funcional principal."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "Se selecciona como padre el anillo aromático de 6 carbonos (benceno). El fragmento carbonado unido se cita como sustituyente.  Blue Book P-44.1.2.2 y P-52.2.8 tratan la selección del padre y la condición de nombre IUPAC preferido; este análisis estructural confirma el padre mostrado, pero no demuestra que sea el PIN ni compara todos los padres admisibles."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "En el anillo aromático se comparan las numeraciones admisibles según los localizadores de los grupos citados como prefijos. La numeración asignada sitúa metil en C1, 3 y 5; nitro en C2 y 4."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Con la orientación ya evaluada, se ubican tres grupos metilo en C1, C3 y C5 (trimetil) y dos grupos nitro en C2 y C4 (dinitro). Al no haber una función de sufijo, los grupos citados como prefijos guían la numeración del anillo. En esta estructura, el grupo nitro –NO₂ aporta el prefijo «2,4-dinitro»."
+              },
+              {
+                "number": "05",
+                "explanation": "Los sustituyentes se ordenan alfabéticamente por su nombre base, sin considerar prefijos multiplicativos externos ni sus localizadores. Aquí, «metil» (m) precede a «nitro» (n); se cita «trimetil» antes de «dinitro»."
+              }
+            ],
+            "fragmentCount": 6,
+            "linkedSegments": 3
+          }
+        },
+        "2013-en": {
+          "status": "NAMED",
+          "name": "1,3,5-trimethyl-2,4-dinitrobenzene",
+          "evidenceLevel": "GENERATED",
+          "exact": "UNVERIFIED",
+          "analysis": {
+            "name": "1,3,5-trimetil-2,4-dinitrobenceno",
+            "chainName": "benceno",
+            "family": "aromatic",
+            "formula": "C₉H₁₀N₂O₄",
+            "parentAtomIds": [
+              4,
+              6,
+              10,
+              12,
+              2,
+              3
+            ],
+            "parentAtomCount": 6,
+            "parentCarbonCount": 6,
+            "primaryFunctionalGroup": null,
+            "numberedAtoms": [
+              [
+                4,
+                1
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                10,
+                3
+              ],
+              [
+                12,
+                4
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                3,
+                6
+              ]
+            ],
+            "doubleBondLocants": [],
+            "tripleBondLocants": [],
+            "functionalGroups": [
+              {
+                "kind": "nitro",
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "carbonIds": [
+                  6
+                ],
+                "carbonId": 6,
+                "locants": [
+                  2
+                ]
+              },
+              {
+                "kind": "nitro",
+                "atomIds": [
+                  12,
+                  13,
+                  14,
+                  15
+                ],
+                "carbonIds": [
+                  12
+                ],
+                "carbonId": 12,
+                "locants": [
+                  4
+                ]
+              }
+            ],
+            "substituents": [
+              {
+                "name": "metil",
+                "locant": 1,
+                "atomIds": [
+                  5
+                ],
+                "complex": false
+              },
+              {
+                "name": "metil",
+                "locant": 3,
+                "atomIds": [
+                  11
+                ],
+                "complex": false
+              },
+              {
+                "name": "metil",
+                "locant": 5,
+                "atomIds": [
+                  1
+                ],
+                "complex": false
+              },
+              {
+                "name": "nitro",
+                "locant": 2,
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "complex": false
+              },
+              {
+                "name": "nitro",
+                "locant": 4,
+                "atomIds": [
+                  12,
+                  13,
+                  14,
+                  15
+                ],
+                "complex": false
+              }
+            ]
+          },
+          "structuralNameInterpretation": {
+            "status": "UNVERIFIED"
+          },
+          "reasoning": {
+            "problems": [],
+            "fragments": [
+              {
+                "text": "benzene",
+                "start": 27,
+                "stepNumber": "02",
+                "kind": "parent",
+                "atomIds": [
+                  4,
+                  6,
+                  10,
+                  12,
+                  2,
+                  3
+                ]
+              },
+              {
+                "text": "1,3,5-trimethyl-2,4-dinitro",
+                "stepNumber": "04",
+                "kind": "substituent"
+              },
+              {
+                "text": "1,3,5-trimethyl",
+                "start": 0,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  5,
+                  11,
+                  1
+                ]
+              },
+              {
+                "text": "2,4-dinitro",
+                "start": 16,
+                "stepNumber": "04",
+                "kind": "substituent",
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              },
+              {
+                "text": "1,3,5",
+                "start": 0,
+                "stepNumber": "03",
+                "kind": "numbering"
+              },
+              {
+                "text": "2,4",
+                "start": 16,
+                "stepNumber": "03",
+                "kind": "numbering"
+              }
+            ],
+            "links": [
+              {
+                "text": "1,3,5-trimethyl",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  5,
+                  11,
+                  1
+                ]
+              },
+              {
+                "text": "-"
+              },
+              {
+                "text": "2,4-dinitro",
+                "stepNumber": "04",
+                "relatedStepNumbers": [
+                  "03"
+                ],
+                "atomIds": [
+                  6,
+                  7,
+                  8,
+                  9,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              },
+              {
+                "text": "benzene",
+                "stepNumber": "02",
+                "relatedStepNumbers": [],
+                "atomIds": [
+                  4,
+                  6,
+                  10,
+                  12,
+                  2,
+                  3
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "number": "01",
+                "explanation": "The nitro group is detected, but here it is cited with the prefix nitro-. It does not provide a suffix and is not classified as the principal functional group."
+              },
+              {
+                "number": "02",
+                "nameRole": "parent",
+                "explanation": "The selected aromatic parent ring contains 6 carbons (benzene). The attached carbon fragment is cited as a substituent.  Blue Book P-44.1.2.2 and P-52.2.8 address parent selection and preferred IUPAC name status; this structural analysis confirms the displayed parent but does not establish that it is the PIN or compare every admissible parent."
+              },
+              {
+                "number": "03",
+                "nameRole": "numbering",
+                "explanation": "Admissible aromatic-ring numberings are compared using the locants of the groups cited as prefixes. The assigned numbering places methyl at C1, 3, and 5; nitro at C2, and 4."
+              },
+              {
+                "number": "04",
+                "nameRole": "substituent",
+                "explanation": "Substituent names and locants are assigned from the numbered parent skeleton: 1-methyl, 3-methyl, 5-methyl, 2-nitro, 4-nitro. Multiplicative prefixes such as di-, tri-, and tetra- are used when the same substituent occurs more than once. In this structure, the nitro group –NO₂ contributes the prefix “2,4-dinitro”."
+              },
+              {
+                "number": "05",
+                "explanation": "Substituents are cited in alphabetical order using their base names, without considering external multiplicative prefixes or numerical locants. In this molecule, “methyl” (m) precedes “nitro” (n); cite “trimethyl” before “dinitro”."
+              }
+            ],
+            "fragmentCount": 6,
+            "linkedSegments": 3
+          }
+        }
+      },
+      "signals": []
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+✔ PARTIAL controls: alkane (28496.8097ms)
+✔ PARTIAL controls: branched alkane (45974.4428ms)
+✖ PARTIAL controls: alkene (41802.6133ms)
+✔ PARTIAL controls: alkyne (41777.555ms)
+✔ PARTIAL controls: alcohol (32824.1502ms)
+✔ PARTIAL controls: ether (35513.2374ms)
+✔ PARTIAL controls: ketone (32258.9416ms)
+✔ PARTIAL controls: acid (26043.3324ms)
+✔ PARTIAL controls: ester (37452.5903ms)
+✖ PARTIAL controls: amine (23409.8625ms)
+✔ PARTIAL controls: amide (23387.8309ms)
+✔ PARTIAL controls: nitrile (37299.0297ms)
+✔ PARTIAL controls: halide (37038.7696ms)
+✔ PARTIAL controls: cycloalkane (24291.4446ms)
+✔ PARTIAL controls: cycloalkene (32480.7508ms)
+✔ PARTIAL controls: heterocycle (16121.9767ms)
+✔ PARTIAL controls: aromatic multi-prefix (38942.4177ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 15
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 556832.3526
+
+✖ failing tests:
+
+test at tests\e2e\b741-partial-audit.e2e.mjs:14:24
+✖ PARTIAL controls: alkene (41802.6133ms)
+  AssertionError [ERR_ASSERTION]: alkene en but: Parent chain · 4 carbons. Highlight in the molecule for two seconds: empty selection
+      at test.timeout (file:///C:/Dev/Hydrocarbon-Lab/tests/e2e/b741-partial-audit.e2e.mjs:29:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\e2e\b741-partial-audit.e2e.mjs:14:24
+✖ PARTIAL controls: amine (23409.8625ms)
+  AssertionError [ERR_ASSERTION]: amine en Step 1: Principal functional group. Highlight in the molecule for two seconds: empty selection
+      at test.timeout (file:///C:/Dev/Hydrocarbon-Lab/tests/e2e/b741-partial-audit.e2e.mjs:29:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

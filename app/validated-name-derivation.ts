@@ -27,6 +27,16 @@ export type ValidatedNameDerivation = {
 
 export type ValidatedNamePresentation = { name: string; language: "en" | "es"; localized: boolean };
 
+/** Prefer a locally generated Spanish name only after independently proving
+ * that exact spelling against the current molecular graph. */
+export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivation, molecule: GeneratedMolecule,
+  language: "en" | "es", localSpanishName: string | null): ValidatedNamePresentation {
+  const original = presentValidatedSystematicName(model, language);
+  if (language !== "es" || original.localized || !localSpanishName) return original;
+  return reconcileSystematicName(molecule, localSpanishName)
+    ? {name: localSpanishName, language: "es", localized: true} : original;
+}
+
 /** Localizes supported FULL constructions.
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */

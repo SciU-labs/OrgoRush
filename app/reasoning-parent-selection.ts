@@ -92,10 +92,17 @@ export function parentStructureSelectionReasoning(
     if (!selectedAromaticRing) return;
     const sameHeteroatomClass = molecule.atoms.every((atom) => parent.has(atom.id) || atom.element === "C");
     const ringAndChainAreSameClass = Boolean(attachedCarbonFragment && sameHeteroatomClass);
-    const ringCarbonCount = `${selectedAromaticRing.atomIds.length} ${selectedAromaticRing.atomIds.length === 1 ? "carbon" : "carbons"}`;
+    const carbonCount = selectedAromaticRing.atomIds.filter(id => (molecule.atoms.find(atom => atom.id === id)?.element ?? "C") === "C").length;
+    const size = selectedAromaticRing.atomIds.length;
+    const ringDescriptionEn = carbonCount === size
+      ? `${size} ${size === 1 ? "carbon" : "carbons"}`
+      : `${size} atoms, including ${carbonCount} ${carbonCount === 1 ? "carbon" : "carbons"}`;
+    const ringDescriptionEs = carbonCount === size
+      ? `${size} ${size === 1 ? "carbono" : "carbonos"}`
+      : `${size} átomos, de ellos ${carbonCount} ${carbonCount === 1 ? "carbono" : "carbonos"}`;
     return language === "en"
-      ? `The selected aromatic parent ring contains ${ringCarbonCount} (${localizedParentName}).${attachedCarbonFragment ? ` The attached carbon fragment is cited as a substituent. ${ringAndChainAreSameClass ? "The ring and chain candidates have the same heteroatom class and neither bears a principal characteristic group." : ""} Blue Book P-44.1.2.2 and P-52.2.8 address parent selection and preferred IUPAC name status; this structural analysis confirms the displayed parent but does not establish that it is the PIN or compare every admissible parent.` : " No attached carbon substituent is included in this parent comparison."}`
-      : `Se selecciona como padre el anillo aromático de ${selectedAromaticRing.atomIds.length} ${selectedAromaticRing.atomIds.length === 1 ? "carbono" : "carbonos"} (${localizedParentName}).${attachedCarbonFragment ? ` El fragmento carbonado unido se cita como sustituyente. ${ringAndChainAreSameClass ? "Los candidatos de anillo y cadena pertenecen a la misma clase de heteroátomos y ninguno contiene un grupo característico principal." : ""} Blue Book P-44.1.2.2 y P-52.2.8 tratan la selección del padre y la condición de nombre IUPAC preferido; este análisis estructural confirma el padre mostrado, pero no demuestra que sea el PIN ni compara todos los padres admisibles.` : " No se incluye aquí un sustituyente carbonado unido para comparar con el padre."}`;
+      ? `The selected aromatic parent ring contains ${ringDescriptionEn} (${localizedParentName}).${attachedCarbonFragment ? ` The attached carbon fragment is cited as a substituent. ${ringAndChainAreSameClass ? "The ring and chain candidates have the same heteroatom class and neither bears a principal characteristic group." : ""} Blue Book P-44.1.2.2 and P-52.2.8 address parent selection and preferred IUPAC name status; this structural analysis confirms the displayed parent but does not establish that it is the PIN or compare every admissible parent.` : " No attached carbon substituent is included in this parent comparison."}`
+      : `Se selecciona como padre el anillo aromático de ${ringDescriptionEs} (${localizedParentName}).${attachedCarbonFragment ? ` El fragmento carbonado unido se cita como sustituyente. ${ringAndChainAreSameClass ? "Los candidatos de anillo y cadena pertenecen a la misma clase de heteroátomos y ninguno contiene un grupo característico principal." : ""} Blue Book P-44.1.2.2 y P-52.2.8 tratan la selección del padre y la condición de nombre IUPAC preferido; este análisis estructural confirma el padre mostrado, pero no demuestra que sea el PIN ni compara todos los padres admisibles.` : " No se incluye aquí un sustituyente carbonado unido para comparar con el padre."}`;
   }
 
   return;

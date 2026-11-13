@@ -1,0 +1,3871 @@
+{
+  "scope": "Exact atom and bond sets compared with graph and local analysis evidence; not an independent nomenclature proof",
+  "counts": {
+    "EXACT": 163
+  },
+  "rows": [
+    {
+      "family": "alkane",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkane",
+      "language": "es",
+      "label": "butano: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkane",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkane",
+      "language": "en",
+      "label": "butane: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "butano: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "Referencia estructural. 2: Localizador del sustituyente. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "Paso 4: Sustituyentes y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "es",
+      "label": "2-metil: Sustituyente y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "butane: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "Structural reference. 2: Substituent locant. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "Step 4: Substituents and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "branched alkane",
+      "language": "en",
+      "label": "2-methyl: Substituent and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "but: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "2-eno: Localizadores de enlaces múltiples. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "Paso 7: Insaturaciones del nombre. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "es",
+      "label": "2-eno: Enlace doble en la posición 2. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "but: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "2-ene: Multiple-bond locants. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "Step 7: Name unsaturations. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkene",
+      "language": "en",
+      "label": "2-ene: Double bond at position 2. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "but: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "2-ino: Localizadores de enlaces múltiples. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "Paso 7: Insaturaciones del nombre. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "es",
+      "label": "2-ino: Enlace triple en la posición 2. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "but: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "2-yne: Multiple-bond locants. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "Step 7: Name unsaturations. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alkyne",
+      "language": "en",
+      "label": "2-yne: Triple bond at position 2. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "1-ol: Posición y sufijo del alcohol. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "propan: Cadena principal · 3 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alcohol",
+      "language": "es",
+      "label": "Referencia estructural. 1: Localizador del alcohol. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "1-ol: Alcohol locant and suffix. Highlight in the molecule for two seconds",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "propan: Parent chain · 3 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "alcohol",
+      "language": "en",
+      "label": "Structural reference. 1: Alcohol locant. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ether",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "es",
+      "label": "etano: Cadena principal · 2 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "es",
+      "label": "Paso 4: Sustituyentes y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "es",
+      "label": "etoxi: Prefijo funcional y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "en",
+      "label": "ethane: Parent chain · 2 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "en",
+      "label": "Step 4: Substituents and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "ether",
+      "language": "en",
+      "label": "ethoxy: Functional prefix and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "3:4"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "2-ona: Posición y sufijo de la cetona. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "butan: Cadena principal · 4 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ketone",
+      "language": "es",
+      "label": "Referencia estructural. 2: Localizador del carbonilo. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "2-one: Ketone locant and suffix. Highlight in the molecule for two seconds",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "butan: Parent chain · 4 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ketone",
+      "language": "en",
+      "label": "Structural reference. 2: Ketone locant. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "3:4",
+        "3:5"
+      ],
+      "actualAtoms": [
+        3,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "3:4",
+        "3:5"
+      ]
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "ácido: Ácido carboxílico. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "3:4",
+        "3:5"
+      ],
+      "actualAtoms": [
+        3,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "3:4",
+        "3:5"
+      ]
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "oico: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "3:4",
+        "3:5"
+      ],
+      "actualAtoms": [
+        3,
+        4,
+        5
+      ],
+      "actualBonds": [
+        "3:4",
+        "3:5"
+      ]
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "propan: Cadena principal · 3 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "acid",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        4,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "de metilo: Porción alquilo unida al oxígeno. Resaltar en la molécula durante dos segundos",
+      "type": "ester-alcohol",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        4
+      ],
+      "actualBonds": [
+        "4:5"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "oato: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4"
+      ],
+      "actualAtoms": [
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "etan: Cadena principal · 2 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4",
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        4,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4",
+        "4:5"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "methyl: O-bound alkyl portion. Highlight in the molecule for two seconds",
+      "type": "ester-alcohol",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        5
+      ],
+      "expectedBonds": [
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        4
+      ],
+      "actualBonds": [
+        "4:5"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "oate: Principal functional group suffix. Highlight in the molecule for two seconds",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4"
+      ],
+      "actualAtoms": [
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "ethan: Parent chain · 2 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "ester",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "amine",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "es",
+      "label": "amina: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "es",
+      "label": "etan: Cadena principal · 2 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "amine",
+      "language": "en",
+      "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "en",
+      "label": "amine: Principal functional group suffix. Highlight in the molecule for two seconds",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2
+      ],
+      "expectedBonds": [
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2
+      ],
+      "actualBonds": [
+        "2:3"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "en",
+      "label": "ethan: Parent chain · 2 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amine",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "amide",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4"
+      ],
+      "actualAtoms": [
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4"
+      ]
+    },
+    {
+      "family": "amide",
+      "language": "es",
+      "label": "amida: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "2:3",
+        "2:4"
+      ],
+      "actualAtoms": [
+        2,
+        3,
+        4
+      ],
+      "actualBonds": [
+        "2:3",
+        "2:4"
+      ]
+    },
+    {
+      "family": "amide",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amide",
+      "language": "es",
+      "label": "etan: Cadena principal · 2 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "amide",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "nitrile",
+      "language": "es",
+      "label": "Paso 1: Grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "es",
+      "label": "nitrilo: Sufijo del grupo funcional principal. Resaltar en la molécula durante dos segundos",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "es",
+      "label": "propano: Cadena principal · 3 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "nitrile",
+      "language": "en",
+      "label": "Step 1: Principal functional group. Highlight in the molecule for two seconds",
+      "type": "principal-group",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "en",
+      "label": "nitrile: Principal functional group suffix. Highlight in the molecule for two seconds",
+      "type": "functional-suffix",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "en",
+      "label": "propane: Parent chain · 3 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "nitrile",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "Paso 2: Cadena principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "propano: Cadena principal · 3 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "1: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "Paso 4: Sustituyentes y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "es",
+      "label": "1-cloro: Prefijo funcional y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "Step 2: Parent chain. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "propane: Parent chain · 3 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        2,
+        1
+      ],
+      "expectedBonds": [
+        "1:2",
+        "2:3"
+      ],
+      "actualAtoms": [
+        3,
+        2,
+        1
+      ],
+      "actualBonds": [
+        "1:2",
+        "2:3"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "1: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        3
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "Step 4: Substituents and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "halide",
+      "language": "en",
+      "label": "1-chloro: Functional prefix and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        3,
+        4
+      ],
+      "expectedBonds": [
+        "3:4"
+      ],
+      "actualAtoms": [
+        3,
+        4
+      ],
+      "actualBonds": [
+        "3:4"
+      ]
+    },
+    {
+      "family": "cycloalkane",
+      "language": "es",
+      "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkane",
+      "language": "es",
+      "label": "ciclohexano: Anillo principal · 6 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkane",
+      "language": "en",
+      "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkane",
+      "language": "en",
+      "label": "cyclohexane: Parent ring · 6 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "ciclohex: Anillo principal · 6 carbonos. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "1-eno: Localizadores de enlaces múltiples. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "Paso 7: Insaturaciones del nombre. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        1,
+        2
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "es",
+      "label": "1-eno: Enlace doble en la posición 1. Resaltar en la molécula durante dos segundos",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        1,
+        2
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "cyclohex: Parent ring · 6 carbons. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "1-ene: Multiple-bond locants. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "Step 7: Name unsaturations. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        1,
+        2
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "cycloalkene",
+      "language": "en",
+      "label": "1-ene: Double bond at position 1. Highlight in the molecule for two seconds",
+      "type": "single-unsaturation",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "1:2"
+      ],
+      "actualAtoms": [
+        1,
+        2
+      ],
+      "actualBonds": [
+        "1:2"
+      ]
+    },
+    {
+      "family": "heterocycle",
+      "language": "es",
+      "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "heterocycle",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "heterocycle",
+      "language": "en",
+      "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "expectedBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ],
+      "actualAtoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "actualBonds": [
+        "1:2",
+        "1:6",
+        "2:3",
+        "3:4",
+        "4:5",
+        "5:6"
+      ]
+    },
+    {
+      "family": "heterocycle",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        1
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        1
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "Paso 2: Anillo principal. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ],
+      "actualAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "benceno: Anillo principal de benceno. Resaltar en la molécula durante dos segundos",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ],
+      "actualAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "Paso 3: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        4,
+        10,
+        2,
+        6,
+        12
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "1,3,5: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        10,
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        4,
+        10,
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "2,4: Numeración razonada. Resaltar en la molécula durante dos segundos",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        6,
+        12
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        6,
+        12
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "Paso 4: Sustituyentes y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "expectedBonds": [
+        "10:11",
+        "12:13",
+        "13:14",
+        "13:15",
+        "1:2",
+        "4:5",
+        "6:7",
+        "7:8",
+        "7:9"
+      ],
+      "actualAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "actualBonds": [
+        "10:11",
+        "12:13",
+        "13:14",
+        "13:15",
+        "1:2",
+        "4:5",
+        "6:7",
+        "7:8",
+        "7:9"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "1,3,5-trimetil: Sustituyentes y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "10:11",
+        "1:2",
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        11,
+        1,
+        4,
+        10,
+        2
+      ],
+      "actualBonds": [
+        "10:11",
+        "1:2",
+        "4:5"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "es",
+      "label": "2,4-dinitro: Prefijo funcional y localizadores. Resaltar en la molécula durante dos segundos",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "expectedBonds": [
+        "12:13",
+        "13:14",
+        "13:15",
+        "6:7",
+        "7:8",
+        "7:9"
+      ],
+      "actualAtoms": [
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "actualBonds": [
+        "12:13",
+        "13:14",
+        "13:15",
+        "6:7",
+        "7:8",
+        "7:9"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "Step 2: Parent ring. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ],
+      "actualAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "benzene: Parent benzene ring. Highlight in the molecule for two seconds",
+      "type": "parent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "expectedBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ],
+      "actualAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2,
+        3
+      ],
+      "actualBonds": [
+        "10:12",
+        "2:12",
+        "2:3",
+        "3:4",
+        "4:6",
+        "6:10"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "Step 3: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        6,
+        10,
+        12,
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        4,
+        10,
+        2,
+        6,
+        12
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "1,3,5: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        4,
+        10,
+        2
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        4,
+        10,
+        2
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "2,4: Numbering. Highlight in the molecule for two seconds",
+      "type": "numbering",
+      "status": "EXACT",
+      "expectedAtoms": [
+        6,
+        12
+      ],
+      "expectedBonds": [],
+      "actualAtoms": [
+        6,
+        12
+      ],
+      "actualBonds": []
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "Step 4: Substituents and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "expectedBonds": [
+        "10:11",
+        "12:13",
+        "13:14",
+        "13:15",
+        "1:2",
+        "4:5",
+        "6:7",
+        "7:8",
+        "7:9"
+      ],
+      "actualAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "actualBonds": [
+        "10:11",
+        "12:13",
+        "13:14",
+        "13:15",
+        "1:2",
+        "4:5",
+        "6:7",
+        "7:8",
+        "7:9"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "1,3,5-trimethyl: Substituents and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        5,
+        4,
+        11,
+        10,
+        1,
+        2
+      ],
+      "expectedBonds": [
+        "10:11",
+        "1:2",
+        "4:5"
+      ],
+      "actualAtoms": [
+        5,
+        11,
+        1,
+        4,
+        10,
+        2
+      ],
+      "actualBonds": [
+        "10:11",
+        "1:2",
+        "4:5"
+      ]
+    },
+    {
+      "family": "aromatic multi-prefix",
+      "language": "en",
+      "label": "2,4-dinitro: Functional prefix and locants. Highlight in the molecule for two seconds",
+      "type": "substituent",
+      "status": "EXACT",
+      "expectedAtoms": [
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "expectedBonds": [
+        "12:13",
+        "13:14",
+        "13:15",
+        "6:7",
+        "7:8",
+        "7:9"
+      ],
+      "actualAtoms": [
+        6,
+        7,
+        8,
+        9,
+        12,
+        13,
+        14,
+        15
+      ],
+      "actualBonds": [
+        "12:13",
+        "13:14",
+        "13:15",
+        "6:7",
+        "7:8",
+        "7:9"
+      ]
+    }
+  ]
+}

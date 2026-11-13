@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "browser": "157.0.4341.46",
+  "theme": "dark",
+  "legend": "rgb(189, 145, 208)",
+  "rendered": [
+    {
+      "atom": "1",
+      "classes": "condensed-token condensed-atom condensed-main-token structural-parent selected",
+      "fill": "rgb(143, 168, 255)"
+    },
+    {
+      "a": "1",
+      "b": "2",
+      "classes": "condensed-token condensed-bond condensed-main-token condensed-bond-order-1 structural-parent",
+      "fill": "rgb(143, 168, 255)"
+    },
+    {
+      "atom": "2",
+      "classes": "condensed-token condensed-atom condensed-main-token structural-parent",
+      "fill": "rgb(143, 168, 255)"
+    },
+    {
+      "a": "2",
+      "b": "3",
+      "classes": "condensed-token condensed-bond condensed-main-token condensed-bond-order-1 structural-parent",
+      "fill": "rgb(143, 168, 255)"
+    },
+    {
+      "atom": "3",
+      "classes": "condensed-token condensed-atom condensed-main-token structural-functional",
+      "fill": "rgb(189, 145, 208)"
+    },
+    {
+      "a": "3",
+      "b": "4",
+      "classes": "condensed-token condensed-bond condensed-branch-token condensed-bond-order-2 structural-functional",
+      "fill": "rgb(189, 145, 208)"
+    },
+    {
+      "atom": "4",
+      "classes": "condensed-token condensed-atom condensed-branch-token structural-functional",
+      "fill": "rgb(189, 145, 208)"
+    }
+  ],
+  "pixels": {
+    "width": 1578,
+    "height": 394,
+    "blue": 23362,
+    "pink": 10890
+  },
+  "partial": {
+    "atoms": [
+      2,
+      3
+    ],
+    "bonds": [
+      [
+        2,
+        3
+      ]
+    ]
+  },
+  "stereoKind": "tetrahedral-hash branch-bond-stroke",
+  "errors": []
+}

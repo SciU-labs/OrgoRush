@@ -1,0 +1,5 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const {rows}=JSON.parse(readFileSync('reports/b741/transversal-baseline.json','utf8'));
+const clean=value=>String(value??'—').replaceAll('|','\\|');
+const table=rows.map(r=>`| ${clean(r.family)} | \`${clean(r.smiles)}\` | ${clean(r.languages?.es?.name)} | ${clean(r.languages?.en?.name)} | ${clean(r.languages?.es?.status)} |`).join('\n');
+writeFileSync('reports/b741/family-matrix.md',`# B7.4.1 — muestra transversal inicial\n\n${rows.length} grafos, medidos por el motor local antes del cambio de presentación. FULL significa reconciliación para el nombre exacto; PARTIAL significa que esta medición no obtuvo una prueba completa; UNSUPPORTED indica ausencia de nombre local. Estas observaciones no verifican la interfaz ni certifican PIN. Grafos, análisis, regiones, fragmentos y numeración calculados están en [transversal-baseline.json](transversal-baseline.json).\n\n| Familia | SMILES | Español | Inglés | Estado ES |\n|---|---|---|---|---|\n${table}\n`);

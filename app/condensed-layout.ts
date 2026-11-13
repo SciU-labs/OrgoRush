@@ -25,7 +25,7 @@ export type CondensedToken =
       y: number;
       width: number;
       branchDepth: number;
-      locant?: number;
+      locant?: number | string;
       tetrahedralParity?: "R" | "S";
     }
   | {
@@ -262,7 +262,7 @@ export function buildCondensedRenderModel(
   graph: CondensedGraph,
   getImplicitHydrogens: (atomId: number) => number,
   options: {
-    numbering?: ReadonlyMap<number, number>;
+    numbering?: ReadonlyMap<number, number | string>;
     stereoBonds?: readonly CondensedStereoBond[];
     includeTetrahedralParity?: boolean;
   } = {},

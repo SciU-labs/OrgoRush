@@ -1,0 +1,12 @@
+✔ PARTIAL controls: alkene (55983.9635ms)
+✔ PARTIAL controls: amine (27064.5626ms)
+✔ PARTIAL controls: cycloalkene (29026.0136ms)
+✔ PARTIAL controls: heterocycle (14665.9846ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128788.0676
