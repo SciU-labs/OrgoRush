@@ -130,7 +130,7 @@ import {
   SEMI_DEVELOPED_LABEL_SCALE_OPTIONS,
   SEMI_DEVELOPED_LABEL_SCALE_STEP,
 } from "./semi-developed-label-geometry";
-import { calculateMolecule2DLayout } from "./molecule-2d-layout";
+import { calculateMolecule2DLayout, preserveIncrementalLayout, preserveDirectionalCarbonAddition, preserveIncrementalAttachment, reflectIncrementalLayout, type IncrementalLayout } from "./molecule-2d-layout";
 import {
   decodeViewModeV1,
   decodeViewModeV2,
@@ -149,6 +149,7 @@ import {
   layoutTetrahedralBadgePositions,
   getTetrahedralStereoBonds,
   getTetrahedralStereoCenters,
+  preserveTetrahedralArrangementOnAddition,
   sanitizeTetrahedralStereochemistry,
   setTetrahedralConfiguration,
   TETRAHEDRAL_BADGE_HIT_RADIUS,
@@ -163,7 +164,7 @@ import {
   type MoleculeVisualExtent,
 } from "./molecule-visual-bounds";
 import { findOrderedSimpleMonocycle } from "./simple-cycle";
-import { getAutoPlacedCarbonPosition, placeAttachmentTemplate } from "./manual-layout";
+import { getAutoPlacedCarbonPosition, getRegularAromaticRadial, placeAttachmentTemplate } from "./manual-layout";
 import {
   canonicalManualDisplayDirection,
   hasManualDisplayDirection,
@@ -448,6 +449,8 @@ type Molecule = {
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** UI-only orientation for display-only skeletal coordinates. */
   isMirrored?: boolean;
+  stableSkeletalOrientation?: boolean;
+  incrementalLayout?: IncrementalLayout;
 };
 
 type PubChemStructureIdentity = {
@@ -1709,6 +1712,13 @@ function cloneMolecule(molecule: Molecule): Molecule {
       ? { manualDisplayDirections: molecule.manualDisplayDirections.map((placement) => ({ ...placement })) }
       : {}),
     ...(molecule.isMirrored ? { isMirrored: true } : {}),
+    ...(molecule.stableSkeletalOrientation ? { stableSkeletalOrientation: true } : {}),
+    ...(molecule.incrementalLayout ? { incrementalLayout: {
+      signature: molecule.incrementalLayout.signature,
+      skeletal: molecule.incrementalLayout.skeletal.map((point) => ({...point})),
+      semiDeveloped: molecule.incrementalLayout.semiDeveloped.map((point) => ({...point})),
+      adjustments: molecule.incrementalLayout.adjustments.map((adjustment) => ({...adjustment})),
+    }} : {}),
   };
 }
 
@@ -8518,6 +8528,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       || getTetrahedralStereoCenters(molecule).length > 0,
     [analysis.mainChain, molecule],
   );
+  // An unassigned but stereogenic double bond must be editable without
+  // assigning E/Z merely by enabling the display switch.
+  const stereochemistryControlsAvailable = stereochemistryAvailable || molecule.bonds.some(
+    ([a,b,order = 1]) => order === 2 && isDoubleBondEZToggleAvailable(molecule, a, b),
+  );
   const stereochemicalName = useMemo(
     () => !stereochemistryAvailable || localSuggestedNameUnavailable || externalNameIsPrimary
       ? pinName
@@ -9968,18 +9983,25 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       setNotice("En los ciclos de esta etapa, los sustituyentes se conectan al anillo con enlaces simples.");
       return;
     }
-    const manualDirection = manualDisplayDirectionFromVector(dx, dy);
-    if (viewMode === "semi-developed" && manualDirection
-      && hasManualDisplayDirection(molecule, selectedAtom.id, manualDirection)) {
-      setNotice("Ese espacio ya está ocupado. Prueba otra dirección.");
-      return;
-    }
     const violation = getAtomValenceViolation(molecule, selectedAtom.id, newBondOrder);
     if (violation) {
       showValenceError(formatBondValenceError(newBondOrder, violation));
       return;
     }
     const target = getAutoPlacedCarbonPosition(molecule, selectedAtom.id, { x: dx, y: dy });
+    let manualDirection = manualDisplayDirectionFromVector(dx, dy);
+    const radial = typeof getRegularAromaticRadial === "function" ? getRegularAromaticRadial(molecule, selectedAtom.id) : null;
+    const deltaX = target.x - selectedAtom.x, deltaY = target.y - selectedAtom.y;
+    const deltaLength = Math.hypot(deltaX, deltaY);
+    if (radial && deltaLength > 1e-8 && (deltaX * radial.x + deltaY * radial.y) / deltaLength > 0.999) {
+      const horizontal = Math.abs(deltaX) > Math.abs(deltaY);
+      manualDirection = manualDisplayDirectionFromVector(horizontal ? Math.sign(deltaX) : 0, horizontal ? 0 : Math.sign(deltaY));
+    }
+    if (viewMode === "semi-developed" && manualDirection
+      && hasManualDisplayDirection(molecule, selectedAtom.id, manualDirection)) {
+      setNotice("Ese espacio ya está ocupado. Prueba otra dirección.");
+      return;
+    }
     const targetX = target.x;
     const targetY = target.y;
     if (molecule.atoms.some((atom) => atom.x === targetX && atom.y === targetY)) {
@@ -9989,6 +10011,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     const nextId = Math.max(...molecule.atoms.map((atom) => atom.id)) + 1;
     const next: Molecule = {
       ...molecule,
+      stableSkeletalOrientation: true,
       atoms: [...molecule.atoms, { id: nextId, x: targetX, y: targetY, element: "C" }],
       bonds: [...molecule.bonds, [selectedAtom.id, nextId, newBondOrder] as Bond],
       ...(viewMode === "semi-developed" && manualDirection
@@ -10006,9 +10029,26 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     };
     const completesTourAddition = isTourCarbonPair(next, 1)
       && molecule.atoms.length === 1 && isCarbonAtom(molecule.atoms[0]);
+    const stereoPreserved = typeof preserveTetrahedralArrangementOnAddition === "function" ? preserveTetrahedralArrangementOnAddition(molecule, next) : next;
+    const doubleBondEndpoint = molecule.bonds.some(([a,b,order = 1]) => order === 2 && (a === selectedAtom.id || b === selectedAtom.id));
+    const rawAlternatives = doubleBondEndpoint && !molecule.rings?.length
+      ? [{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}]
+        .map((vector) => getAutoPlacedCarbonPosition(molecule,selectedAtom.id,vector)) : [];
+    const positioned = typeof preserveDirectionalCarbonAddition === "function" && typeof activeAnalysis !== "undefined"
+      ? preserveDirectionalCarbonAddition(molecule, stereoPreserved, activeAnalysis.mainChain, selectedAtom.id, nextId, {x:dx,y:dy},rawAlternatives)
+      : typeof preserveIncrementalLayout === "function" && typeof activeAnalysis !== "undefined"
+      ? preserveIncrementalLayout(molecule, stereoPreserved, activeAnalysis.mainChain, selectedAtom.id, nextId, {x:dx,y:dy})
+      : stereoPreserved;
+    if (!positioned) {
+      setNotice(language === "en"
+        ? "No safe position is available in that direction. Choose another direction."
+        : "No hay una posición segura en esa dirección. Elige otra dirección.");
+      return;
+    }
+    const localAdjustment = positioned.incrementalLayout?.adjustments.some((item) => item.relocatedAtomId !== undefined);
     const committed = commit(
-      next,
-      `Carbono añadido al ${elementNames[getElement(selectedAtom)]} con enlace ${getBondOrderLabel(newBondOrder)}. El nombre se recalculó automáticamente.`,
+      positioned,
+      `Carbono añadido al ${elementNames[getElement(selectedAtom)]} con enlace ${getBondOrderLabel(newBondOrder)}. El nombre se recalculó automáticamente.${localAdjustment ? " Se ajustó un átomo terminal en la vista semidesarrollada para evitar una colisión." : ""}`,
     );
     if (!committed) return;
     playSound("atom");
@@ -10224,7 +10264,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       bonds: [...molecule.bonds, ...addedBonds],
     };
 
-    if (!commit(next, `${template.label} añadido. La cadena principal y el nombre se recalcularon.`)) return;
+    const stereoPreserved = typeof preserveTetrahedralArrangementOnAddition === "function" ? preserveTetrahedralArrangementOnAddition(molecule, next) : next;
+    const positioned = typeof preserveIncrementalAttachment === "function" && typeof activeAnalysis !== "undefined"
+      ? preserveIncrementalAttachment(molecule, stereoPreserved, activeAnalysis.mainChain) : stereoPreserved;
+    if (!positioned) {
+      setNotice(language === "en" ? "No safe position is available for this group." : "No hay una posición segura para ese grupo.");
+      return;
+    }
+    if (!commit(positioned, `${template.label} añadido. La cadena principal y el nombre se recalcularon.`)) return;
     playSound("atom");
     setPlacementTool(null);
     previousSelectedId.current = selectedAtom.id;
@@ -10316,8 +10363,15 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       atoms: [...molecule.atoms, ...addedAtoms],
       bonds: [...molecule.bonds, ...addedBonds],
     };
+    const stereoPreserved = typeof preserveTetrahedralArrangementOnAddition === "function" ? preserveTetrahedralArrangementOnAddition(molecule, next) : next;
+    const positioned = typeof preserveIncrementalAttachment === "function" && typeof activeAnalysis !== "undefined"
+      ? preserveIncrementalAttachment(molecule, stereoPreserved, activeAnalysis.mainChain) : stereoPreserved;
+    if (!positioned) {
+      setNotice(language === "en" ? "No safe position is available for this group." : "No hay una posición segura para ese grupo.");
+      return;
+    }
     if (!commit(
-      next,
+      positioned,
       `${template.label} añadido (${template.shortFormula}). Fórmula, grupo principal y nombre recalculados.`,
     )) return;
     playSound("atom");
@@ -11285,7 +11339,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       }
       const ringCount = (attached.molecule.rings?.length ?? 0);
       const committed = commit(
-        attached.molecule,
+        typeof preserveTetrahedralArrangementOnAddition === "function" ? preserveTetrahedralArrangementOnAddition(molecule, attached.molecule) : attached.molecule,
         `${template.label} unido mediante un enlace simple. La estructura ahora contiene ${ringCount} anillos.`,
       );
       if (!committed) return;
@@ -11353,7 +11407,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
   const redrawMolecule = () => {
     commit(
-      flipCoordinates(molecule),
+      typeof reflectIncrementalLayout === "function"
+        ? reflectIncrementalLayout(molecule, flipCoordinates(molecule))
+        : flipCoordinates(molecule),
       "Estructura redibujada en espejo sin cambiar su conectividad, nombre ni configuración E/Z.",
       true,
     );
@@ -15278,12 +15334,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               <span className="valid-badge">{t("Estructura válida")}</span>
               {!simplifiedModeEnabled && (
                 <button
-                  className={`stereochemistry-toggle ${showStereochemistry && stereochemistryAvailable ? "is-active" : ""}`}
+                  className={`stereochemistry-toggle ${showStereochemistry && stereochemistryControlsAvailable ? "is-active" : ""}`}
                   type="button"
                   role="switch"
-                  aria-checked={showStereochemistry && stereochemistryAvailable}
-                  disabled={!stereochemistryAvailable}
-                  title={stereochemistryAvailable
+                  aria-checked={showStereochemistry && stereochemistryControlsAvailable}
+                  disabled={!stereochemistryControlsAvailable}
+                  title={stereochemistryControlsAvailable
                     ? t("Mostrar descriptores E/Z")
                     : t("No hay centros E/Z o R/S definidos en esta estructura")}
                   onClick={() => setShowStereochemistry((visible) => !visible)}

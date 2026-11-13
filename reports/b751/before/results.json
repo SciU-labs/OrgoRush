@@ -1,0 +1,59 @@
+{
+  "mode": "before",
+  "results": [
+    {
+      "id": "benzene",
+      "links": [],
+      "smiles": "c1ccccc1"
+    },
+    {
+      "id": "fenol",
+      "links": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 1
+        }
+      ],
+      "smiles": "Oc1ccccc1"
+    },
+    {
+      "id": "c1",
+      "links": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 0.816125420425879
+        }
+      ],
+      "smiles": "Cc1ccccc1"
+    },
+    {
+      "id": "c4",
+      "links": [
+        {
+          "id": 4,
+          "child": 7,
+          "cosine": 0.816125420425879
+        }
+      ],
+      "smiles": "Cc1ccccc1"
+    },
+    {
+      "id": "para",
+      "links": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 0.816125420425879
+        },
+        {
+          "id": 4,
+          "child": 8,
+          "cosine": 0.816125420425879
+        }
+      ],
+      "smiles": "Cc1ccc(C)cc1"
+    }
+  ]
+}

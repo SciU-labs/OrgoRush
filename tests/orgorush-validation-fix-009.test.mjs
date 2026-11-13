@@ -97,7 +97,9 @@ test("FIX-009 strict-backed excludes no confirmed defect and never promotes unsu
 });
 
 test("FIX-009 independent 008 names and external evidence retain their original byte hashes", () => {
-  const sha = file => createHash("sha256").update(readFileSync(new URL(`../${file}`, import.meta.url))).digest("hex");
+  // Compare canonical Git text bytes; Windows core.autocrlf may expand LF in
+  // the historical .mjs fixture without changing the committed artifact.
+  const sha = file => createHash("sha256").update(readFileSync(new URL(`../${file}`, import.meta.url)).toString("utf8").replace(/\r\n/g,"\n")).digest("hex");
   assert.equal(sha("tests/fixtures/orgorush-validation-008.mjs"), baseline.referenceValidation.fixtureSha256);
   assert.equal(sha("tests/fixtures/orgorush-validation-008.opsin.json"), baseline.referenceValidation.opsinSha256);
   assert.equal(failures.length, 8);

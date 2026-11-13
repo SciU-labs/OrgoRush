@@ -1,0 +1,87 @@
+{
+  "mode": "after",
+  "results": [
+    {
+      "id": "c1",
+      "links": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 1
+        }
+      ],
+      "semiLinks": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 1
+        }
+      ],
+      "smiles": "Cc1ccccc1"
+    },
+    {
+      "id": "c2",
+      "links": [
+        {
+          "id": 2,
+          "child": 7,
+          "cosine": 1.0000000000000002
+        }
+      ],
+      "semiLinks": [
+        {
+          "id": 2,
+          "child": 7,
+          "cosine": 0.8660254037844387
+        }
+      ],
+      "smiles": "Cc1ccccc1"
+    },
+    {
+      "id": "c5",
+      "links": [
+        {
+          "id": 5,
+          "child": 7,
+          "cosine": 1
+        }
+      ],
+      "semiLinks": [
+        {
+          "id": 5,
+          "child": 7,
+          "cosine": 0.8660254037844385
+        }
+      ],
+      "smiles": "Cc1ccccc1"
+    },
+    {
+      "id": "para",
+      "links": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 1
+        },
+        {
+          "id": 4,
+          "child": 8,
+          "cosine": 1
+        }
+      ],
+      "semiLinks": [
+        {
+          "id": 1,
+          "child": 7,
+          "cosine": 1
+        },
+        {
+          "id": 4,
+          "child": 8,
+          "cosine": 1
+        }
+      ],
+      "smiles": "Cc1ccc(C)cc1"
+    }
+  ]
+}

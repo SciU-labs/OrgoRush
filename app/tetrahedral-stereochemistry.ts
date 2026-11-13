@@ -198,6 +198,55 @@ export function sanitizeTetrahedralStereochemistry<T extends GeneratedMolecule>(
   return changed ? { ...source, atoms } : source;
 }
 
+/** Preserve the local tetrahedral arrangement when an automatic addition
+ * changes CIP priorities elsewhere in a ligand. This bounded case requires
+ * unchanged old atom/bond order. A direct addition is accepted only when it
+ * replaces the sole implicit H of a neutral carbon with one new single bond.
+ * Explicit stereo edits, replacement/import and ambiguous changes are untouched. */
+export function preserveTetrahedralArrangementOnAddition<T extends GeneratedMolecule>(before: T, after: T): T {
+  const centers = before.atoms.filter(atom => atom.tetrahedralParity);
+  if (!centers.length || after.atoms.length <= before.atoms.length || after.bonds.length <= before.bonds.length) return after;
+  if (after.atoms.some((atom, index) => index < before.atoms.length && (
+    atom.id !== before.atoms[index].id || atom.element !== before.atoms[index].element
+    || atom.charge !== before.atoms[index].charge || atom.tetrahedralParity !== before.atoms[index].tetrahedralParity
+    || atom.tetrahedralBondTo !== before.atoms[index].tetrahedralBondTo
+  ))) return after;
+  if (after.bonds.slice(0, before.bonds.length).some((bond, index) => {
+    const old = before.bonds[index];
+    return bond[0] !== old[0] || bond[1] !== old[1] || (bond[2] ?? 1) !== (old[2] ?? 1) || bond[3] !== old[3];
+  })) return after;
+  if (after.atoms.slice(before.atoms.length).some(atom => atom.tetrahedralParity)) return after;
+  const newIds = new Set(after.atoms.slice(before.atoms.length).map(atom => atom.id));
+  for (const center of centers) {
+    const added = after.bonds.slice(before.bonds.length).filter(([a,b]) => a === center.id || b === center.id);
+    if (!added.length) continue;
+    const oldBonds = before.bonds.filter(([a,b]) => a === center.id || b === center.id);
+    if ((center.element ?? 'C') !== 'C' || (center.charge ?? 0) !== 0 || oldBonds.length !== 3
+      || oldBonds.some(([, ,order]) => (order ?? 1) !== 1) || added.length !== 1
+      || (added[0][2] ?? 1) !== 1 || !newIds.has(added[0][0] === center.id ? added[0][1] : added[0][0])) return after;
+  }
+  const oldGraph = buildOpenChemLibStereoGraph(before), newGraph = buildOpenChemLibStereoGraph(after);
+  const oldParities = new Map<number, number>(), flip = new Set<number>();
+  for (const center of centers) {
+    const oldIndex = oldGraph.atomIdToIndex.get(center.id), newIndex = newGraph.atomIdToIndex.get(center.id);
+    if (oldIndex === undefined || newIndex === undefined) return after;
+    const oldParity = oldGraph.molecule.getAtomParity(oldIndex), newParity = newGraph.molecule.getAtomParity(newIndex);
+    if (![OCLMolecule.cAtomParity1, OCLMolecule.cAtomParity2].includes(oldParity)
+      || ![OCLMolecule.cAtomParity1, OCLMolecule.cAtomParity2].includes(newParity)) return after;
+    oldParities.set(center.id, oldParity);
+    if (oldParity !== newParity) flip.add(center.id);
+  }
+  if (!flip.size) return after;
+  const adjusted = {...after, atoms: after.atoms.map(atom => flip.has(atom.id)
+    ? {...atom, tetrahedralParity: atom.tetrahedralParity === 'R' ? 'S' as const : 'R' as const} : atom)};
+  const check = buildOpenChemLibStereoGraph(adjusted);
+  for (const [id, parity] of oldParities) {
+    const index = check.atomIdToIndex.get(id);
+    if (index === undefined || check.molecule.getAtomParity(index) !== parity) return after;
+  }
+  return adjusted;
+}
+
 export function setTetrahedralConfiguration<T extends GeneratedMolecule>(
   source: T,
   atomId: number,

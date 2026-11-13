@@ -8,7 +8,7 @@ export type ManualLayoutAtom = {
 export type ManualLayoutMolecule = {
   atoms: readonly ManualLayoutAtom[];
   bonds: readonly (readonly [number, number, ...unknown[]])[];
-  rings?: readonly { atomIds: readonly number[] }[];
+  rings?: readonly { atomIds: readonly number[]; kind?: string }[];
 };
 
 type Point = { x: number; y: number };
@@ -174,6 +174,32 @@ function carbonNeighbors(molecule: ManualLayoutMolecule, atomId: number) {
   });
 }
 
+/** Radial exit only for an isolated, approximately regular aromatic hexagon.
+ * Existing vertices are never moved. Irregular/fused rings keep their prior
+ * placement policy, as do candidates obstructed by an existing atom or bond. */
+export function getRegularAromaticRadial(molecule: ManualLayoutMolecule, selectedId: number): Point | null {
+  const component = getRingComponent(molecule, selectedId);
+  if (component.rings.size !== 1) return null;
+  const ring = [...component.rings][0];
+  if (ring.kind !== 'aromatic' || ring.atomIds.length !== 6 || new Set(ring.atomIds).size !== 6) return null;
+  const byId = new Map(molecule.atoms.map(atom => [atom.id, atom]));
+  const vertices = ring.atomIds.map(id => byId.get(id));
+  if (vertices.some(vertex => !vertex)) return null;
+  const points = vertices as ManualLayoutAtom[];
+  if (ring.atomIds.some((id,index) => !molecule.bonds.some(([a,b]) =>
+    a === id && b === ring.atomIds[(index+1)%6] || b === id && a === ring.atomIds[(index+1)%6]))) return null;
+  const center = points.reduce((sum,p) => ({x:sum.x+p.x/6,y:sum.y+p.y/6}),{x:0,y:0});
+  const radii = points.map(p => Math.hypot(p.x-center.x,p.y-center.y));
+  const edges = points.map((p,i) => Math.hypot(p.x-points[(i+1)%6].x,p.y-points[(i+1)%6].y));
+  const nearUniform = (values: number[]) => {
+    const mean = values.reduce((sum,value)=>sum+value,0)/values.length;
+    return mean > 1e-8 && values.every(value => Math.abs(value-mean)/mean < 0.18);
+  };
+  if (!nearUniform(radii) || !nearUniform(edges)) return null;
+  const selected = byId.get(selectedId)!;
+  return normalized({x:selected.x-center.x,y:selected.y-center.y});
+}
+
 /**
  * Chooses a conventional zigzag around the global axis requested by the
  * arrow. Keeping both candidates on opposite sides of that axis prevents a
@@ -187,6 +213,12 @@ export function getAutoPlacedCarbonPosition(
   const selected = molecule.atoms.find((atom) => atom.id === selectedId);
   if (!selected) return requestedDirection;
   if (molecule.rings?.some((ring) => ring.atomIds.includes(selectedId))) {
+    const radial = getRegularAromaticRadial(molecule, selectedId);
+    if (radial) {
+      const length = Math.hypot(requestedDirection.x, requestedDirection.y) || 1;
+      const candidate = {x:selected.x+radial.x*length,y:selected.y+radial.y*length};
+      if (placementScore(molecule, selectedId, [candidate], [[-1,0,1]], radial, true) !== null) return candidate;
+    }
     const firstZigzagStep = ringZigzagDirection(molecule, selectedId, requestedDirection);
     return { x: selected.x + firstZigzagStep.x, y: selected.y + firstZigzagStep.y };
   }
@@ -220,9 +252,8 @@ export function getAutoPlacedCarbonPosition(
 
 function attachmentDirections(preferred: Point, isRingAttachment: boolean) {
   const baseAngle = Math.atan2(preferred.y, preferred.x);
-  const offsets = isRingAttachment
-    ? [0, Math.PI / 6, -Math.PI / 6, Math.PI / 3, -Math.PI / 3, Math.PI / 2, -Math.PI / 2, Math.PI]
-    : [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+  const offsets = [0, Math.PI / 6, -Math.PI / 6, Math.PI / 3, -Math.PI / 3,
+    Math.PI / 2, -Math.PI / 2, 2 * Math.PI / 3, -2 * Math.PI / 3, Math.PI];
   return offsets.map((offset) => ({
     x: Math.cos(baseAngle + offset),
     y: Math.sin(baseAngle + offset),
@@ -260,6 +291,37 @@ function placementScore(
   const firstDirection = normalized({ x: first.x - selected.x, y: first.y - selected.y });
   const outwardProgress = dot(firstDirection, preferred);
   if (requireExterior && outwardProgress <= 0.05) return null;
+  for (const ring of molecule.rings ?? []) {
+    const polygon = ring.atomIds.map(id => existingById.get(id));
+    if (polygon.length < 3 || polygon.some(point => !point)) continue;
+    for (const point of positions) {
+      let inside = false;
+      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const a = polygon[i]!, b = polygon[j]!;
+        if ((a.y > point.y) !== (b.y > point.y)
+          && point.x < (b.x - a.x) * (point.y - a.y) / (b.y - a.y) + a.x) inside = !inside;
+      }
+      if (inside) return null;
+    }
+  }
+
+  // Compare the new bond with every existing bond at the attachment atom.
+  // A triple bond implies a linear depiction; other common environments use
+  // a 120 degree drawing angle. These are drawing preferences, not 3D angles.
+  const neighbors = molecule.bonds.flatMap(([a, b, order]) => {
+    const id = a === selectedId ? b : b === selectedId ? a : undefined;
+    const atom = id === undefined ? undefined : existingById.get(id);
+    return atom ? [{ atom, order: typeof order === "number" ? order : 1 }] : [];
+  });
+  const attachmentOrder = firstAttachment?.[2] ?? 1;
+  const targetCos = attachmentOrder === 3 || neighbors.some(n => n.order === 3) ? -1 : -0.5;
+  let angularPenalty = 0;
+  for (const neighbor of neighbors) {
+    const direction = normalized({x: neighbor.atom.x - selected.x, y: neighbor.atom.y - selected.y});
+    const cosine = dot(direction, firstDirection);
+    if (cosine > 0.88) return null;
+    angularPenalty += Math.abs(cosine - targetCos);
+  }
 
   let clearance = Infinity;
   for (let index = 0; index < positions.length; index++) {
@@ -288,9 +350,20 @@ function placementScore(
       const existingStart = existingById.get(existingLeft);
       const existingEnd = existingById.get(existingRight);
       if (existingStart && existingEnd && segmentsCross(start, end, existingStart, existingEnd)) return null;
+      if (existingStart && existingEnd) {
+        const dx = existingEnd.x - existingStart.x, dy = existingEnd.y - existingStart.y;
+        const length2 = dx * dx + dy * dy || 1;
+        for (const point of [start, end]) {
+          if (point === selected) continue;
+          const t = Math.max(0, Math.min(1, ((point.x - existingStart.x) * dx + (point.y - existingStart.y) * dy) / length2));
+          const separation = Math.hypot(point.x - existingStart.x - t * dx, point.y - existingStart.y - t * dy);
+          if (separation < 0.2) return null;
+          clearance = Math.min(clearance, separation);
+        }
+      }
     }
   }
-  return outwardProgress * 4 + Math.min(clearance, 3);
+  return outwardProgress * (requireExterior ? 2 : 0.4) + Math.min(clearance, 2) - angularPenalty * 2;
 }
 
 function placeLinearTemplate(
@@ -304,7 +377,7 @@ function placeLinearTemplate(
     const temporary: ManualLayoutMolecule = {
       atoms: molecule.atoms.map((atom) => ({ ...atom })),
       bonds: molecule.bonds.map((bond) => [...bond]),
-      rings: molecule.rings?.map((ring) => ({ atomIds: [...ring.atomIds] })),
+      rings: molecule.rings?.map((ring) => ({ ...ring, atomIds: [...ring.atomIds] })),
     };
     const positions: Point[] = [];
     let currentId = selectedId;
@@ -324,57 +397,6 @@ function placeLinearTemplate(
   return candidates[0]?.positions ?? null;
 }
 
-function placeLegacyTemplate(
-  molecule: ManualLayoutMolecule,
-  selectedId: number,
-  atoms: readonly AttachmentTemplateAtom[],
-  bonds: readonly AttachmentTemplateBond[],
-  preferred: Point,
-  ringAttachment: boolean,
-) {
-  const selected = molecule.atoms.find((atom) => atom.id === selectedId)!;
-  const carbonylAttachment = bonds.some(([left, right, order = 1]) => (
-    (left === -1 || right === -1) && order === 2
-  ));
-  const cardinal = [
-    { x: 1, y: 0 },
-    { x: 0, y: 1 },
-    { x: -1, y: 0 },
-    { x: 0, y: -1 },
-  ];
-  if (ringAttachment) cardinal.sort((left, right) => dot(right, preferred) - dot(left, preferred));
-  const directions = ringAttachment && carbonylAttachment ? [preferred] : cardinal;
-  const attachment = bonds.find(([left, right]) => left === -1 || right === -1);
-  const firstIndex = attachment ? (attachment[0] === -1 ? attachment[1] : attachment[0]) : 0;
-  const sourceDirection = normalized(atoms[firstIndex] ?? { x: 1, y: 0 });
-  const sourcePerpendicular = { x: -sourceDirection.y, y: sourceDirection.x };
-  for (const direction of directions) {
-    const perpendicular = { x: -direction.y, y: direction.x };
-    for (const mirror of [1, -1]) {
-      const positions = atoms.map((atom) => {
-        if (!carbonylAttachment || !ringAttachment) {
-          return {
-            x: selected.x + atom.x * direction.x - atom.y * direction.y * mirror,
-            y: selected.y + atom.x * direction.y + atom.y * direction.x * mirror,
-          };
-        }
-        const longitudinal = dot(atom, sourceDirection);
-        const lateral = dot(atom, sourcePerpendicular) * mirror;
-        return {
-          x: selected.x + direction.x * longitudinal + perpendicular.x * lateral,
-          y: selected.y + direction.y * longitudinal + perpendicular.y * lateral,
-        };
-      });
-      const distinct = positions.every((point, index) => (
-        molecule.atoms.every((atom) => Math.hypot(point.x - atom.x, point.y - atom.y) > 1e-8)
-        && positions.slice(index + 1).every((other) => Math.hypot(point.x - other.x, point.y - other.y) > 1e-8)
-      ));
-      if (distinct) return positions;
-    }
-  }
-  return null;
-}
-
 /**
  * Places an attached template without changing its graph. Linear carbon
  * templates start a true zigzag; other groups retain their internal geometry.
@@ -392,10 +414,6 @@ export function placeAttachmentTemplate(
   const systemIds = component.atomIds;
   const ringAttachment = systemIds.size > 0;
   const preferred = getPreferredAttachmentDirection(molecule, selectedId);
-  const fusedAttachment = component.rings.size > 1;
-  if (!fusedAttachment) {
-    return placeLegacyTemplate(molecule, selectedId, atoms, bonds, preferred, ringAttachment);
-  }
   if (options.zigzagLinear && isLinearCarbonTemplate(atoms, bonds)) {
     return placeLinearTemplate(molecule, selectedId, atoms.length, bonds, preferred);
   }
@@ -429,7 +447,6 @@ export function placeAttachmentTemplate(
       if (score !== null) candidates.push({ positions, score, order: directionIndex * 2 + (mirror < 0 ? 1 : 0) });
     }
   });
-  if (!ringAttachment) return candidates.sort((left, right) => left.order - right.order)[0]?.positions ?? null;
   candidates.sort((left, right) => right.score - left.score || left.order - right.order);
   return candidates[0]?.positions ?? null;
 }

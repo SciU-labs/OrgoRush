@@ -11,6 +11,7 @@ type LayoutAtom = ReadonlyStereoMolecule["atoms"][number];
 type LayoutMolecule = ReadonlyStereoMolecule & {
   /** UI-only state: mirror the generated display coordinates horizontally. */
   isMirrored?: boolean;
+  stableSkeletalOrientation?: boolean;
 };
 
 const SKELETAL_BOND_LENGTH = 130;
@@ -166,6 +167,18 @@ function buildOpenChainPositions(
   const positions = new Map<number, SkeletalPoint>();
   const atomIds = new Set(molecule.atoms.map((atom) => atom.id));
   const backbone = mainChain.filter((atomId) => atomIds.has(atomId));
+  // Chemical numbering can reverse after a substitution. It must not, by
+  // itself, reverse the visual zigzag. Use the editor geometry to orient the
+  // same path, independently of locants and atom identifiers.
+  if (molecule.stableSkeletalOrientation && backbone.length > 1) {
+    const atomById = new Map(molecule.atoms.map((atom) => [atom.id, atom]));
+    const first = atomById.get(backbone[0]);
+    const last = atomById.get(backbone[backbone.length - 1]);
+    if (first && last && ((molecule.isMirrored ? first.x < last.x : first.x > last.x)
+      || (first.x === last.x && first.y > last.y))) {
+      backbone.reverse();
+    }
+  }
   const adjacency = new Map<number, number[]>(molecule.atoms.map((atom) => [atom.id, []]));
   molecule.bonds.forEach(([left, right]) => {
     adjacency.get(left)?.push(right);
@@ -184,10 +197,16 @@ function buildOpenChainPositions(
   if (!backbone.length) return positions;
 
   positions.set(backbone[0], { x: 0, y: 0 });
+  let previousAngle = MAIN_CHAIN_ANGLE;
+  const orders = new Map(molecule.bonds.map(([a, b, order = 1]) => [`${Math.min(a,b)}:${Math.max(a,b)}`, order]));
+  const bondOrder = (a: number, b: number) => orders.get(`${Math.min(a,b)}:${Math.max(a,b)}`) ?? 1;
   for (let index = 1; index < backbone.length; index += 1) {
     const previous = positions.get(backbone[index - 1])!;
-    const angle = (index - 1) % 2 === 0 ? MAIN_CHAIN_ANGLE : -MAIN_CHAIN_ANGLE;
+    const linearVertex = index > 1 && (bondOrder(backbone[index - 2], backbone[index - 1]) === 3
+      || bondOrder(backbone[index - 1], backbone[index]) === 3);
+    const angle = linearVertex ? previousAngle : (index - 1) % 2 === 0 ? MAIN_CHAIN_ANGLE : -MAIN_CHAIN_ANGLE;
     positions.set(backbone[index], pointFromAngle(previous, angle));
+    previousAngle = angle;
   }
 
   const visited = new Set(positions.keys());

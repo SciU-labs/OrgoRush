@@ -1,4 +1,4 @@
-import { Molecule as OCLMolecule, SmilesParser } from "openchemlib";
+import { CanonizerUtil, Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 import { ringHasBond } from "./fused-ring.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 import { editableValencesValid } from "./editable-valence.ts";
@@ -192,8 +192,29 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
 
   oclMolecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
 
-  try { oclMolecule.validate(); } catch {
-    return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."};
+  try { oclMolecule.validate(); } catch (error) {
+    // OCL's coordinate inventor can put both pairs of bonds at a tetrahedral
+    // carbon on parallel lines. Retry only this geometric ambiguity; the full
+    // validation and stereo-aware graph identity must both still pass.
+    if (!String(error).includes('Ambiguous configuration at stereo center because of 2 parallel bonds')) {
+      return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."};
+    }
+    try {
+      const identity = CanonizerUtil.getIDCode(oclMolecule, CanonizerUtil.NORMAL);
+      const lengths = Array.from({length:oclMolecule.getAllBonds()}, (_, index) => {
+        const a=oclMolecule.getBondAtom(0,index), b=oclMolecule.getBondAtom(1,index);
+        return Math.hypot(oclMolecule.getAtomX(a)-oclMolecule.getAtomX(b),oclMolecule.getAtomY(a)-oclMolecule.getAtomY(b));
+      }).filter(length=>length>1e-6);
+      if (!lengths.length) return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."};
+      const shift=0.08*lengths.reduce((sum,length)=>sum+length,0)/lengths.length;
+      for(let index=0;index<oclMolecule.getAllAtoms();index++) {
+        oclMolecule.setAtomX(index,oclMolecule.getAtomX(index)+shift*Math.sin(index*2.399));
+        oclMolecule.setAtomY(index,oclMolecule.getAtomY(index)+shift*Math.cos(index*2.399));
+      }
+      oclMolecule.validate();
+      if (CanonizerUtil.getIDCode(oclMolecule, CanonizerUtil.NORMAL)!==identity)
+        return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."};
+    } catch { return {ok:false,error:"La estructura contiene valencias o enlaces inválidos."}; }
   }
   const bondedNeighbors = (atomIndex: number) => {
     const neighbors: Array<{ atomIndex: number; order: number }> = [];

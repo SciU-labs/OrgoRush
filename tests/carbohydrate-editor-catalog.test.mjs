@@ -27,6 +27,15 @@ test('phase 8 preserves every catalog button, category, label and menu layout by
   ]);
   assert.ok(!catalog.some(t=>/hemi|pyran|furan|sugar|carbohydrate/i.test(t.id)));
 });
-test('editor atoms, bonds, valences, ring construction and existing CIP module remain unchanged',()=>{
-  for(const [file,sha256] of Object.entries(baseline.files))assert.equal(hash(read(file)),sha256,file);
+test('editor chemistry modules remain unchanged apart from the bounded B7.5 CIP addition reconciler',()=>{
+  for(const [file,sha256] of Object.entries(baseline.files)){
+    if(file==='app/tetrahedral-stereochemistry.ts')continue;
+    assert.equal(hash(read(file)),sha256,file);
+  }
+  const file='app/tetrahedral-stereochemistry.ts',source=read(file);
+  const startMarker='/** Preserve the local tetrahedral arrangement when an automatic addition';
+  const endMarker='export function setTetrahedralConfiguration';
+  const start=source.indexOf(startMarker),end=source.indexOf(endMarker,start);
+  assert.ok(start>=0&&end>start,'B7.5 addition reconciler must remain a single bounded insertion');
+  assert.equal(hash(source.slice(0,start)+source.slice(end)),baseline.files[file],file);
 });
