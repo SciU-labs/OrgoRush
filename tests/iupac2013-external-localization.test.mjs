@@ -40,6 +40,9 @@ function displayedVariants(language, identity, legacy = { spanishResolution: { n
     molecule,reasoningSourceName:null,reconcileSystematicName,presentValidatedSystematicName,
     verifiedPubChemSystematicDisplayName, localizeChemicalNameForDisplay, applyNomenclatureConvention,
     selectableNomenclatureConventions, nomenclatureConventionLabel, legacyProfileDisplayName, legacyResolution: legacy,
+    currentNameDisplay: language === "es"
+      ? verifiedPubChemSystematicDisplayName(identity, language) ?? external(identity.iupacName)
+      : identity.iupacName,
     localizedIupac() { throw new Error("external display must not re-enter the local/Legacy translator"); },
   };
   runInNewContext(variantCode, context);
@@ -48,6 +51,11 @@ function displayedVariants(language, identity, legacy = { spanishResolution: { n
 
 test("LOCALIZATION-012 translates the complete supplied external name", () => {
   assert.equal(external(english), spanish);
+});
+
+test("LOCALIZATION-013 leaves unknown external morphology intact for a verified status", () => {
+  assert.equal(external("5-ethyl-4-methyldodecane"), "5-ethyl-4-methyldodecane");
+  assert.equal(localizeChemicalNameForDisplay("5-ethyl-4-methyldodecane", "en"), "5-ethyl-4-methyldodecane");
 });
 
 test("LOCALIZATION-012 preserves all six stereodescriptors, locants, [a] and punctuation", () => {

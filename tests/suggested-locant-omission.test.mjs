@@ -141,7 +141,7 @@ test("Suggested names are recomputed from each structure and remain source indep
   assert.equal(namesFor("C=CC").suggestedEs, propene.suggestedEs);
   assert.equal(suggestedIupacNameWithOmittedLocants(propene.analysis), "propeno");
   const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(page, /sourceNameOverride === null\s*\? stripStereochemicalDescriptors\(suggestedIupacNameWithOmittedLocants\(analysis\)\)/);
+  assert.match(page, /localSuggestedNameUnavailable\s*\? externalCandidateLocalDisplayName\(molecule, calculatedAnalysis, language\)\s*:\s*stripStereochemicalDescriptors\(suggestedIupacNameWithOmittedLocants\(analysis\)\)/);
   assert.match(page, /copyVisibleName\(displayedIupacName\)/);
   assert.match(page, /const displayedIupacName = nomenclatureVariants\.find/);
 });

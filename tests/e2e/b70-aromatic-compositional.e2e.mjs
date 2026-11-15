@@ -68,7 +68,10 @@ for(const [cid,es,en] of cases)test(`B7 Chromium integrated ES/EN controls CID $
   reports.push(report);
   try {
     page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-    page.on('requestfailed',r=>failed.push({url:r.url(),error:r.failure()?.errorText}));
+    page.on('requestfailed',r=>{
+      const error=r.failure()?.errorText;
+      if(error!=='net::ERR_ABORTED')failed.push({url:r.url(),error});
+    });
     await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
     await page.route('**/*',async route=>{
       const url=new URL(route.request().url());

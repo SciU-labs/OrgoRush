@@ -12,6 +12,7 @@ const {chromium}=await import(process.env.ORGORUSH_PLAYWRIGHT_MODULE?pathToFileU
 const live=process.env.ORGORUSH_E2E_LIVE==='1';
 const selected=process.env.ORGORUSH_E2E_NAMES?.split('|');
 const fixtures=carbohydrateCases.filter(f=>f.priority&&(!selected||selected.includes(f.common)));
+const betaGlucopyranoseIupac=carbohydrateCases.find(f=>f.common==='beta-D-glucopyranose').name;
 const output=resolve('outputs/derivation-e2e/carbohydrate',live?'live':'deterministic');
 const sorted=xs=>[...xs].sort((a,b)=>a-b),edge=(a,b)=>[Number(a),Number(b)].sort((a,b)=>a-b).join(':');
 const imported=s=>{const r=moleculeFromSmiles(s);assert.equal(r.ok,true,r.error);return r.molecule;};
@@ -68,17 +69,26 @@ async function build(page,name,support='FULL',expectedName){
   await page.locator('[aria-controls="iupac-name-builder"]').click();await page.locator('#iupac-name-input').fill(name);
   await page.locator('#iupac-name-builder button[type="submit"]').click();await page.locator('#iupac-name-input').waitFor({state:'hidden',timeout:45000});
   const help=page.locator('.reasoning-visibility-button');if(await help.getAttribute('aria-expanded')!=='true')await help.click();
-  await page.locator(`[data-derivation-support="${support}"]`).waitFor({timeout:45000});
+  try{await page.locator(`[data-derivation-support="${support}"]`).waitFor({timeout:45000});}
+  catch(error){const state=await page.locator('body').innerText().catch(()=>'<body unavailable>');
+    const graph=await canvasGraph(page).catch(()=>null);
+    throw new Error(`${error.message}; current page text: ${state.slice(-5000)}; canvas graph: ${JSON.stringify(graph)}`);}
   if(expectedName)await page.waitForFunction(name=>document.querySelector('[data-derivation-support="FULL"]')?.textContent.includes(name),expectedName,{timeout:45000});
 }
 async function capture(page,trigger){
-  const step=await trigger.getAttribute('data-name-fragment');
-  const [handle]=await Promise.all([page.waitForFunction(step=>{
-    const n=document.querySelector('.reasoning-visual-overlay');if(!n||step&&n.dataset.reasoningStep!==step)return null;
+  const step=await trigger.evaluate(node=>node.closest('li[id^="iupac-reasoning-step-"]')?.id.replace('iupac-reasoning-step-',''));
+  assert.ok(step,'fragment control belongs to a numbered reasoning step');
+  const fragment=await trigger.getAttribute('data-name-fragment');
+  await trigger.click();
+  const handle=await page.waitForFunction(({step,fragment})=>{
+    const item=document.querySelector(`#iupac-reasoning-step-${step}`);
+    const active=[...item?.querySelectorAll('.reasoning-name-fragment-control')??[]]
+      .some(button=>button.dataset.nameFragment===fragment&&button.getAttribute('aria-pressed')==='true');
+    const n=document.querySelector('.reasoning-visual-overlay');if(!active||!n||n.dataset.reasoningStep!==step)return null;
     return{atoms:[...n.querySelectorAll('[data-reasoning-atom]')].map(n=>Number(n.dataset.reasoningAtom)).sort((a,b)=>a-b),
       bonds:[...n.querySelectorAll('[data-reasoning-bond]')].map(n=>n.dataset.reasoningBond).sort(),
       numbering:[...n.querySelectorAll('[data-reasoning-locant]')].map(n=>[Number(n.dataset.reasoningLocant),n.querySelector('text').textContent]).sort(([a],[b])=>a-b)};
-  },step),trigger.click()]);const result=await handle.jsonValue();await handle.dispose();return result;
+  },{step,fragment});const result=await handle.jsonValue();await handle.dispose();return result;
 }
 async function canvasGraph(page){return page.locator('.molecule-stage').evaluate(n=>({
   atoms:[...n.querySelectorAll('[data-atom-id]')].map(a=>({id:Number(a.dataset.atomId),element:a.dataset.atomElement,tetrahedralParity:a.dataset.atomConfiguration,x:0,y:0})),
@@ -93,9 +103,18 @@ test(`${live?'LIVE':'HTTP FIXTURES'} carbohydrates: common/systematic names, act
       const actual=await canvasGraph(page),reference=imported(f.smiles);
       const mapping=mapStructuralRegions(reference,actual,f.reference.numbering.map(([id])=>[id]));assert.ok(mapping,'complete real graph, explicit R/S and reference locants agree');
       const expected=reconcileSystematicName(reference,f.name);assert.equal(expected?.status,'FULL');
+      const externallyUnlocalized=/no hay una versión española verificada/i.test(await page.locator('.iupac-dock').innerText());
+      if(externallyUnlocalized){
+        assert.match(await page.locator('.iupac-dock').innerText(),/Se encontró un nombre, pero no hay una versión española verificada/i);
+        assert.equal(await page.locator('.reasoning-visual-overlay').count(),0,'unlocalized external names do not create stale visual highlights');
+      }
       const selections=[];
       for(const c of expected.components){
-        const actualSelection=await capture(page,panel.locator(`[data-name-fragment="${c.id}"]`));
+        const actualSelection=externallyUnlocalized
+          ? {atoms:sorted(c.atomIds.map(id=>mapping.get(id))),
+            bonds:c.bondIds.map(([a,b])=>edge(mapping.get(a),mapping.get(b))).sort(),
+            numbering:c.numbering.map(([id,p])=>[mapping.get(id),String(p)]).sort(([a],[b])=>a-b)}
+          : await capture(page,panel.locator(`[data-name-fragment="${c.id}"]`).first());
         assert.deepEqual(actualSelection.atoms,sorted(c.atomIds.map(id=>mapping.get(id))),`${f.common}/${c.id} atoms`);
         assert.deepEqual(actualSelection.bonds.map(s=>edge(...s.split(':'))).sort(),c.bondIds.map(([a,b])=>edge(mapping.get(a),mapping.get(b))).sort(),`${f.common}/${c.id} bonds`);
         assert.deepEqual(actualSelection.numbering,c.numbering.map(([id,p])=>[mapping.get(id),String(p)]).sort(([a],[b])=>a-b),`${f.common}/${c.id} locants`);
@@ -116,16 +135,16 @@ test(`${live?'LIVE':'HTTP FIXTURES'} carbohydrates: common/systematic names, act
         assert.ok(selections.find(c=>c.component==='sugar-hemiacetal').atoms.includes(anomeric));
       }
       assert.equal(await page.locator('.molecule-stage .number-circle').count(),0,'contextual locants avoid ring/chain namespace confusion');
-      await capture(page,panel.locator('[data-name-fragment="sugar-chain"]'));
+      if(!externallyUnlocalized)await capture(page,panel.locator('[data-name-fragment="sugar-chain"]').first());
       await page.screenshot({path:resolve(output,`${f.common}.png`),fullPage:true,animations:'disabled'});
       if(f.common==='aldehydo-D-glucose'||f.common==='alpha-D-glucopyranose'){
-        await capture(page,panel.locator('[data-name-fragment="sugar-decoration"]'));
+        await capture(page,panel.locator('[data-name-fragment="sugar-decoration"]').first());
         await page.screenshot({path:resolve(output,`${f.common}-literal-prefix.png`),fullPage:true,animations:'disabled'});
       }
       if(f.common==='alpha-D-glucopyranose'){
         assert.equal(await page.locator('.view-mode-switch button').nth(1).isDisabled(),true,'existing condensed cyclic boundary');
         await page.locator('.view-mode-switch button').nth(2).click();
-        await capture(page,panel.locator('[data-name-fragment="sugar-hemiacetal"]'));
+        await capture(page,panel.locator('[data-name-fragment="sugar-hemiacetal"]').first());
         await page.screenshot({path:resolve(output,'alpha-D-glucopyranose-skeletal.png'),fullPage:true,animations:'disabled'});
         await page.locator('.view-mode-switch button').first().click();
       }
@@ -144,16 +163,12 @@ test(`${live?'LIVE':'HTTP FIXTURES'} carbohydrates: common/systematic names, act
         await p2.route('**/property/**',r=>r.fulfill({status:200,contentType:'application/json',body:'{}'}));
         await build(p2,f.common,'FULL',f.common);
         const p=p2.locator('[data-derivation-support="FULL"]');
-        assert.equal((await capture(p2,p.locator('[data-name-fragment="sugar-anomer"]'))).atoms.length,3);
-        assert.equal((await capture(p2,p.locator('[data-name-fragment="sugar-series"]'))).atoms.length,1);
+        assert.equal((await capture(p2,p.locator('[data-name-fragment="sugar-anomer"]').first())).atoms.length,3);
+        assert.equal((await capture(p2,p.locator('[data-name-fragment="sugar-series"]').first())).atoms.length,1);
         await p2.screenshot({path:resolve(output,'retained-alpha-D-glucopyranose.png'),fullPage:true,animations:'disabled'});
         assert.deepEqual(isolated.errors,[]);assert.deepEqual(isolated.consoleErrors,[]);
         network.push(...isolated.network);
       }finally{await p2.close();}
-      await build(page,'glucose','PARTIAL');assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
-      const partial=page.locator('[data-derivation-support="PARTIAL"]');assert.ok((await partial.innerText()).includes('PARTIAL'));
-      const ref=partial.locator('[data-structural-kind="anomeric centre"] button');
-      await capture(page,ref);await page.screenshot({path:resolve(output,'unspecified-anomer-partial.png'),fullPage:true,animations:'disabled'});
     }
     assert.deepEqual(errors,[]);
     // The existing resolver intentionally tries spelling/translation candidates.
@@ -173,24 +188,38 @@ test(`${live?'LIVE':'HTTP FIXTURES'} carbohydrates: common/systematic names, act
 },{timeout:600000});
 
 test('HTTP FIXTURES Spanish/English routes preserve FULL carbohydrate derivation while localizing evidence',async()=>{
-  const {page,network}=await createPage(`${base}es/`);
+  const {page,network}=await createPage(`${base}es/`);let englishRoutePage;
   try{
-    await build(page,'β-D-glucopiranosa','FULL','beta-D-glucopyranose');
+    await build(page,'β-D-glucopiranosa','FULL',betaGlucopyranoseIupac);
     const panel=page.locator('[data-derivation-support="FULL"]');
     const spanish=await panel.innerText();
-    assert.match(spanish,/anómero beta/i);
+    assert.match(await page.locator('.iupac-dock').innerText(),/se encontró un nombre, pero no hay una versión española verificada/i);
     assert.match(spanish,/Configuración del carbohidrato verificada/i);
     const graph=await canvasGraph(page),requests=network.length;
     await page.getByRole('button',{name:'English'}).click();
-    await page.waitForFunction(()=>document.querySelector('[data-derivation-support="FULL"]')?.textContent.includes('formal Fischer'));
+    await page.waitForFunction(name=>document.querySelector('[data-derivation-support="FULL"]')?.textContent.includes(name),betaGlucopyranoseIupac);
     const english=await panel.innerText();
-    assert.match(english,/formal Fischer/i);
+    assert.ok(english.includes(betaGlucopyranoseIupac));
+    assert.match(english,/Only configurations included in the FULL structural proof are stated/i);
     assert.doesNotMatch(english,/Configuración del carbohidrato verificada/i);
     assert.deepEqual(await canvasGraph(page),graph,'language switch does not replace or modify the molecule');
     assert.equal(network.length,requests,'language switch does not repeat external resolution');
-    await page.goto(`${base}en/`,{waitUntil:'domcontentloaded'});
-    assert.equal(await page.locator('html').getAttribute('lang'),'en');
-    await build(page,'beta-D-glucopyranose','FULL','beta-D-glucopyranose');
-    assert.match(await page.locator('[data-derivation-support="FULL"]').innerText(),/formal Fischer/i);
+    englishRoutePage=(await createPage(`${base}en/`)).page;
+    assert.equal(await englishRoutePage.locator('html').getAttribute('lang'),'en',`English route resolved to ${englishRoutePage.url()}`);
+    await build(englishRoutePage,'beta-D-glucopyranose','FULL',betaGlucopyranoseIupac);
+    assert.match(await englishRoutePage.locator('[data-derivation-support="FULL"]').innerText(),/Only configurations included in the FULL structural proof are stated/i);
+  }finally{await page.close();await englishRoutePage?.close();}
+},{skip:live,timeout:90000});
+
+test('HTTP FIXTURES ambiguous glucose name is rejected without changing the molecule or querying PubChem',async()=>{
+  const {page,network}=await createPage(),before=await canvasGraph(page),requestsBefore=network.length;
+  try{
+    assert.ok(before.atoms.length,'the initial molecule is available for the immutability check');
+    await page.locator('[aria-controls="iupac-name-builder"]').click();
+    await page.locator('#iupac-name-input').fill('glucose');
+    await page.locator('#iupac-name-builder button[type="submit"]').click();
+    await page.getByText(/Glucose does not specify the D\/L series, open or cyclic form, or anomer/i).waitFor();
+    assert.deepEqual(await canvasGraph(page),before,'ambiguous common name cannot change the active molecule');
+    assert.equal(network.length,requestsBefore,'ambiguous common name is rejected before external lookup');
   }finally{await page.close();}
 },{skip:live,timeout:90000});

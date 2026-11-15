@@ -34,7 +34,17 @@ for(const row of cases)test(`PARTIAL controls: ${row.family}`,async()=>{
       if(atoms.length){observer.disconnect();clearTimeout(timer);finish({atoms,bonds});}};
      observer=new MutationObserver(check);observer.observe(document.body,{subtree:true,childList:true,attributes:true});timer=setTimeout(()=>{observer.disconnect();finish({atoms:[],bonds:[]})},30000);
     },i);await button.click({timeout:15000});const target=await page.evaluate(()=>window.__partialTarget);
-    assert.ok(target.atoms.length>0,`${row.family} ${language} ${label}: empty selection`);
+    if(!target.atoms.length){
+     const stageState=await page.locator('.molecule-stage').evaluate(stage=>({
+      overlays:stage.querySelectorAll('.reasoning-visual-overlay').length,
+      pressed:[...document.querySelectorAll('#iupac-reasoning-content button[aria-pressed="true"]')].map(button=>button.getAttribute('aria-label')),
+      selectedName:document.querySelector('#iupac-reasoning-content')?.innerText.slice(0,1200),
+     }));
+     const diagnostic=`${row.family}-${language}-empty-selection.png`;
+     await page.screenshot({path:`${out}/${diagnostic}`,fullPage:true});
+     result.failureDiagnostic={label,stageState,screenshot:diagnostic};
+    }
+    assert.ok(target.atoms.length>0,`${row.family} ${language} ${label}: empty selection; ${JSON.stringify(result.failureDiagnostic)}`);
     for(const id of target.atoms)assert.ok(graph.atoms.some(a=>a.id===id));
     for(const [a,b] of target.bonds)assert.ok(graph.bonds.some(([x,y])=>a===x&&b===y||a===y&&b===x));
     if(row.family==='heterocycle'&&/Paso 3:|Step 3:/i.test(label)){

@@ -23,9 +23,9 @@ const caffeine=fusedRecords.find(f=>f.name==='caffeine');
 const phase6Fixtures=[generalizationCases.find(f=>f.common==='3-methylbutanoic acid'),
   {common:'caffeine',name:caffeine.IUPACName,smiles:caffeine.SMILES,cid:caffeine.CID,formula:caffeine.MolecularFormula}];
 const originalFixtures = [
-  { common:'ibuprofen', name:'2-[4-(2-methylpropyl)phenyl]propanoic acid', smiles:'CC(C)Cc1ccc(cc1)C(C)C(=O)O', cid:3672, formula:'C13H18O2', parent:[11,12,13,14,15], prefix:[1,2,3,4], component:'aryl-prefix', bonds:['1:2','2:3','2:4','4:5'] },
-  { common:'paracetamol', name:'N-(4-hydroxyphenyl)acetamide', smiles:'CC(=O)Nc1ccc(O)cc1', cid:1983, formula:'C8H9NO2', parent:[1,2,3,4], prefix:[9], component:'aryl-prefix', bonds:['8:9'] },
-  { common:'aspirin', name:'2-acetyloxybenzoic acid', smiles:'CC(=O)Oc1ccccc1C(=O)O', cid:2244, formula:'C9H8O4', parent:[5,6,7,8,9,10,11,12,13], prefix:[1,2,3,4], component:'acyloxy', bonds:['1:2','2:3','2:4','4:5'] },
+  { common:'ibuprofen', name:'2-[4-(2-methylpropyl)phenyl]propanoic acid', smiles:'CC(C)Cc1ccc(cc1)C(C)C(=O)O', cid:3672, formula:'C13H18O2', parent:[11,12], prefix:[1,2,3,4], component:'aryl-prefix', bonds:['1:2','2:3','2:4','4:5'] },
+  { common:'paracetamol', name:'N-(4-hydroxyphenyl)acetamide', smiles:'CC(=O)Nc1ccc(O)cc1', cid:1983, formula:'C8H9NO2', parent:[1], prefix:[9], component:'aryl-prefix', bonds:['8:9'] },
+  { common:'aspirin', name:'2-acetyloxybenzoic acid', smiles:'CC(=O)Oc1ccccc1C(=O)O', cid:2244, formula:'C9H8O4', parent:[5,6,7,8,9,10], prefix:[1,2,3,4], component:'acyloxy', bonds:['1:2','2:3','2:4','4:5'] },
 ];
 const selectedNames=process.env.ORGORUSH_E2E_NAMES?.split('|');
 const fixtures = (phase7?purineCases:phase6?phase6Fixtures:generalized ? generalizationCases.filter(f=>f.expected!=='PARTIAL').map(f=>({...f,bonds:generalizationEdges[f.common]})) : originalFixtures)

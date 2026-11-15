@@ -142,7 +142,7 @@ for(const [cid,es,en] of cases)test(`B7.3 Chromium integrated ES/EN controls CID
   finally{await page.close()}
 },{timeout:180000});
 
-test('B7.3 N-benzyl-N-methyl boundary remains outside FULL in the actual UI',async()=>{
+test('B7.4 N-benzyl-N-methyl upgrade from B7.3 remains FULL in the actual UI',async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
   const report={cid:527038,status:'RUNNING',errors};reports.push(report);
   try {
@@ -158,13 +158,19 @@ test('B7.3 N-benzyl-N-methyl boundary remains outside FULL in the actual UI',asy
     await page.locator('[aria-controls="smiles-interop-panel"]').click();
     await page.locator('#smiles-text-input').fill(records.find(r=>r.cid===527038).smiles);
     await page.locator('#smiles-interop-panel button[type="submit"]').click();
-    await page.getByText(/Nombre IUPAC local no disponible para esta estructura/).first().waitFor({timeout:30000});
-    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
+    await page.getByText('N-bencil-N-metilbenzamida',{exact:true}).first().waitFor({timeout:30000});
+    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),1);
     const geometry=await page.locator('.molecule-stage .carbon-node').evaluateAll(nodes=>nodes.map(n=>[n.dataset.atomId,n.getAttribute('transform')]));
     await page.getByRole('button',{name:'English',exact:true}).click();
-    await page.getByText(/Local IUPAC name unavailable for this structure/).first().waitFor({timeout:30000});
-    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),0);
+    await page.getByText('N-benzyl-N-methylbenzamide',{exact:true}).first().waitFor({timeout:30000});
+    assert.equal(await page.locator('[data-derivation-support="FULL"]').count(),1);
     assert.deepEqual(await page.locator('.molecule-stage .carbon-node').evaluateAll(nodes=>nodes.map(n=>[n.dataset.atomId,n.getAttribute('transform')])),geometry);
-    assert.deepEqual(errors,[]);report.status='PASS';report.support='UNSUPPORTED';
-  }catch(error){report.status='FAIL';report.error=String(error);throw error}finally{await page.close()}
+    assert.deepEqual(errors,[]);report.status='PASS';report.support='FULL';
+  }catch(error){
+    report.status='FAIL';report.error=String(error);
+    report.visibleDockName=await page.locator('.iupac-dock-name').innerText().catch(()=>'<missing>');
+    await writeFile('reports/b73/e2e/527038-failure.json',JSON.stringify(report,null,2));
+    await page.screenshot({path:'reports/b73/e2e/527038-failure.png',fullPage:true}).catch(()=>{});
+    throw error;
+  }finally{await page.close()}
 },{timeout:180000});

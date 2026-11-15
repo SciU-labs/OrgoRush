@@ -8,6 +8,7 @@ import { moleculeFromSmiles } from '../../app/openchemlib-adapter.ts';
 import { reconcileSystematicName } from '../../app/validated-name-derivation.ts';
 import { buildValidatedPriorityReasoning } from '../../app/reasoning-derivation-adapter.ts';
 import { reasoningFragmentId } from '../../app/reasoning-visual-targets.ts';
+import { buildValidatedVisualNumbering } from '../../app/visual-numbering.ts';
 
 const {records}=JSON.parse(await readFile(new URL('../fixtures/b50-pubchem-rings.json',import.meta.url),'utf8'));
 const independent=JSON.parse(await readFile(new URL('../fixtures/b61-independent-reference.json',import.meta.url),'utf8')).records;
@@ -79,7 +80,12 @@ for(const [cid,es,en] of cases)test(`B6.1 Chromium integrated ES/EN controls CID
   reports.push(report);
   try {
     page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
-    page.on('requestfailed',r=>failed.push({url:r.url(),error:r.failure()?.errorText}));
+    page.on('requestfailed',r=>{
+      const error=r.failure()?.errorText;
+      // A language switch intentionally aborts the superseded Wikipedia fetch.
+      // It is an expected cancellation; real transport failures remain reported.
+      if(error!=='net::ERR_ABORTED')failed.push({url:r.url(),error});
+    });
     await page.addInitScript(()=>{localStorage.setItem('hydrocarbonLab.guidedTour.v1','skipped');localStorage.setItem('hydrocarbon-lab-language','es')});
     await page.route('**/*',async route=>{
       const url=new URL(route.request().url());
@@ -138,10 +144,13 @@ for(const [cid,es,en] of cases)test(`B6.1 Chromium integrated ES/EN controls CID
       }
       if(iteration<2)for(const kind of ['parent','substituent','numbering',...(proof.principalGroup==='none'?[]:['function'])])
         assert.ok(kinds.has(kind),`interactive ${kind} in ${language}`);
-      for(const [id,n] of proof.components.find(c=>c.id==='parent').numbering) {
-        const label=page.locator(`.molecule-stage [data-atom-id="${id}"] .number-label`);
-        assert.equal(await label.textContent(),String(n),'canvas uses the same active parent locant map');
-      }
+      const parentIds=new Set(proof.components.find(c=>c.id==='parent').atomIds);
+      const expectedNumbering=[...buildValidatedVisualNumbering(graph,proof)]
+        .filter(([id])=>parentIds.has(id)).map(([id,n])=>[String(id),String(n)]).sort(([a],[b])=>Number(a)-Number(b));
+      const actualNumbering=await page.locator('.molecule-stage [data-atom-id]').evaluateAll(nodes=>nodes
+        .flatMap(node=>{const label=node.querySelector('.number-label');return label?[[node.dataset.atomId,label.textContent]]:[]}))
+        .then(rows=>rows.filter(([id])=>parentIds.has(Number(id))).map(([id,n])=>[id,String(n)]).sort(([a],[b])=>Number(a)-Number(b)));
+      assert.deepEqual(actualNumbering,expectedNumbering,'canvas renders exactly the unambiguous parent locants supported by the active proof');
       assert.deepEqual(await geometry(),originalGeometry);assert.deepEqual(await bonds(),originalBonds);
       report.languages.push({language,name,support:'FULL',controls:count});report.controls+=count;
     }

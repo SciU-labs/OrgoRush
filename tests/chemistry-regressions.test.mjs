@@ -9,9 +9,11 @@ import {
   getOpsinNameCandidates,
   localizeChemicalNameForDisplay,
   normalizeChemicalNameForParser,
+  translateSpanishIupacForDisplay,
   translateSpanishIupacToOpsin,
 } from "../app/iupac-name-normalization.ts";
 import { buildHydrocarbonFromIupacName } from "../app/name-to-molecule.ts";
+import { reconcileSystematicName } from "../app/validated-name-derivation.ts";
 import {
   classifyPolycyclicTopology,
   moleculeFromSmiles,
@@ -381,6 +383,78 @@ test("keeps representative working name-builder cases stable", () => {
   const enyne = moleculeFromSmiles("C=CC=CC#C");
   assert.equal(enyne.ok, true, enyne.ok ? undefined : enyne.error);
   assert.equal(analyzeMolecule(enyne.molecule).name, "hexa-1,3-dien-5-ino");
+});
+
+test("generates Spanish names compositionally from supported molecular graphs", () => {
+  const cases = [
+    ["CCCCC", "pentano", "C₅H₁₂"],
+    ["CCC(C)C", "2-metilbutano", "C₅H₁₂"],
+    ["CC(C)C(C)C", "2,3-dimetilbutano", "C₆H₁₄"],
+    ["C=CC(C)C", "3-metilbut-1-eno", "C₅H₁₀"],
+    ["CC#CC", "but-2-ino", "C₄H₆"],
+    ["CC(O)CC", "butan-2-ol", "C₄H₁₀O"],
+    ["CCC=O", "propanal", "C₃H₆O"],
+    ["CC(=O)CC", "butan-2-ona", "C₄H₈O"],
+    ["CC(=O)O", "ácido etanoico", "C₂H₄O₂"],
+    ["CCOC(=O)C", "etanoato de etilo", "C₄H₈O₂", "ester"],
+    ["C1=CCCCC1", "ciclohex-1-eno", "C₆H₁₀"],
+    ["CC(C)CC(O)=O", "ácido 3-metilbutanoico", "C₅H₁₀O₂"],
+    ["CC(O)CC(=O)O", "ácido 3-hidroxibutanoico", "C₄H₈O₃", "alcohol"],
+  ];
+  for (const [smiles, expected, formula, functionalGroup] of cases) {
+    const parsed = moleculeFromSmiles(smiles);
+    assert.equal(parsed.ok, true, smiles);
+    const before = moleculeToSmiles(parsed.molecule);
+    assert.equal(before.ok, true, smiles);
+    const analysis = analyzeMolecule(parsed.molecule);
+    assert.equal(analysis.name, expected, smiles);
+    assert.equal(analysis.formula, formula, smiles);
+    if (functionalGroup) assert.ok(analysis.functionalGroups.some(group => group.kind === functionalGroup), smiles);
+    assert.equal(externalCandidateNeedsNeutralLocalName(parsed.molecule, analysis), false, smiles);
+    const after = moleculeToSmiles(parsed.molecule);
+    assert.equal(after.ok, true, smiles);
+    assert.equal(after.smiles, before.smiles, `naming preserves the molecular graph: ${smiles}`);
+
+    // Reparse every name supported by the local name builder and compare its
+    // resulting molecular identity, rather than checking Spanish-looking text.
+    const rebuilt = buildHydrocarbonFromIupacName(expected);
+    if (rebuilt.ok) {
+      const rebuiltSmiles = moleculeToSmiles(rebuilt.molecule);
+      assert.equal(rebuiltSmiles.ok, true, expected);
+      assert.equal(rebuiltSmiles.smiles, before.smiles, `name round-trip identity: ${expected}`);
+    } else if (analysis.primaryFunctionalGroup === "ester") {
+      // The local input builder does not parse ester names. Check the emitted
+      // ester wording against the actual carbonyl, linking oxygen and organyl
+      // chain evidence instead of counting this as a visual-only name pass.
+      const ester = analysis.functionalGroups.find(group => group.kind === "ester");
+      assert.ok(ester, expected);
+      assert.ok(analysis.mainChain.includes(ester.carbonId), expected);
+      const alkylRoot = parsed.molecule.atoms.find(atom => atom.id === ester.alkylCarbonId);
+      assert.equal(alkylRoot?.element ?? "C", "C", expected);
+      const alkylCarbonCount = new Set([ester.alkylCarbonId]);
+      const pending = [ester.alkylCarbonId];
+      while (pending.length) {
+        const current = pending.pop();
+        for (const [a,b] of parsed.molecule.bonds) {
+          const next = a === current ? b : b === current ? a : null;
+          if (next === null || next === ester.heteroAtomId || next === ester.carbonId) continue;
+          if ((parsed.molecule.atoms.find(atom => atom.id === next)?.element ?? "C") === "C" && !alkylCarbonCount.has(next)) {
+            alkylCarbonCount.add(next); pending.push(next);
+          }
+        }
+      }
+      assert.equal(alkylCarbonCount.size, 2, "etilo identifies the two-carbon organyl side");
+      const linkingOxygen = parsed.molecule.atoms.find(atom => (atom.element ?? "C") === "O"
+        && parsed.molecule.bonds.some(([a,b]) => a === atom.id && b === ester.alkylCarbonId
+          || b === atom.id && a === ester.alkylCarbonId)
+        && parsed.molecule.bonds.some(([a,b]) => a === atom.id && b === ester.carbonId
+          || b === atom.id && a === ester.carbonId));
+      assert.ok(linkingOxygen, "the ethyl group is attached to the ester carbonyl carbon through oxygen");
+    } else {
+      const englishReference = translateSpanishIupacForDisplay(expected);
+      assert.equal(reconcileSystematicName(parsed.molecule, englishReference)?.status, "FULL", expected);
+    }
+  }
 });
 
 test("keeps representative functional and heterocyclic graph analyses stable", () => {

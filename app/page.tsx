@@ -53,6 +53,7 @@ import {
   translateSpanishIupacForDisplay,
   translateSpanishIupacToOpsin,
 } from "./iupac-name-normalization";
+import { resolveIupacNameState } from "./iupac-name-state";
 import {
   getSubstituentAlias,
   localizeCommonSubstituentAlias,
@@ -7811,6 +7812,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const isolatedBuild = Boolean(buildEditor);
   // Match the server's first render; restore the route/preference after hydration.
   const [labLanguage, setLanguage] = useState<AppLanguage>(initialLanguage);
+  const [languageReady, setLanguageReady] = useState(isolatedBuild);
   const language = buildEditor?.language ?? labLanguage;
   const [practiceOpen, setPracticeOpen] = useState(false);
   const [docxExportOpen, setDocxExportOpen] = useState(false);
@@ -7819,7 +7821,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   useEffect(() => {
     if (isolatedBuild) return;
     const initialLanguage = detectInitialLanguage();
-    const restore = window.setTimeout(() => setLanguage(initialLanguage), 0);
+    const restore = window.setTimeout(() => {
+      setLanguage(initialLanguage);
+      setLanguageReady(true);
+    }, 0);
     return () => window.clearTimeout(restore);
   }, [isolatedBuild]);
   const t = (spanish: string) => uiText(language, spanish);
@@ -8498,17 +8503,20 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     && externalCandidateNeedsNeutralLocalName(molecule, calculatedAnalysis));
   const externalNameIsPrimary = externalCandidateNameUnavailable && Boolean(pubChemIupacName);
   const heterocycleHydroxylNameUnavailable = heterocycleHasUnrepresentedHydroxylGroups(molecule);
+  const localNameRequiresExternal = externalCandidateNeedsNeutralLocalName(molecule, calculatedAnalysis)
+    || heterocycleHydroxylNameUnavailable;
+  const sourceNameOverrideRequiresExternal = Boolean(sourceNameOverride && localNameRequiresExternal);
   const localSuggestedNameUnavailable = (sourceNameOverride === null
     && externalCandidateNeedsNeutralLocalName(molecule, calculatedAnalysis))
     || externalCandidateNameUnavailable
     || heterocycleHydroxylNameUnavailable;
   const analysis = useMemo(
-    () => sourceNameOverride
-      ? { ...calculatedAnalysis, name: sourceNameOverride }
+    () => sourceNameOverrideRequiresExternal
+      ? { ...calculatedAnalysis, name: sourceNameOverride! }
       : localSuggestedNameUnavailable || externalNameIsPrimary
         ? calculatedAnalysis
         : resolveLocalizedCurrentAnalysis(molecule, calculatedAnalysis, language, commonAlkylNameSelections),
-    [calculatedAnalysis, sourceNameOverride, localSuggestedNameUnavailable, externalNameIsPrimary,
+    [calculatedAnalysis, sourceNameOverride, sourceNameOverrideRequiresExternal, localSuggestedNameUnavailable, externalNameIsPrimary,
       molecule, language, commonAlkylNameSelections],
   );
   const hasActiveSelection = selectedId !== null;
@@ -8516,12 +8524,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const pinName = useMemo(
     () => externalNameIsPrimary
       ? pubChemIupacName!
+      : sourceNameOverrideRequiresExternal
+        ? language === "es"
+          ? localizeChemicalNameForDisplay(sourceNameOverride!, "es", { source: "external" })
+          : localizedIupac(sourceNameOverride!)
       : localSuggestedNameUnavailable
         ? externalCandidateLocalDisplayName(molecule, calculatedAnalysis, language)
-        : sourceNameOverride === null
-          ? stripStereochemicalDescriptors(suggestedIupacNameWithOmittedLocants(analysis))
-          : stripStereochemicalDescriptors(analysis.name),
-    [analysis, calculatedAnalysis, externalCandidateNameUnavailable, externalNameIsPrimary, language, localSuggestedNameUnavailable, molecule, pubChemIupacName, sourceNameOverride],
+        : stripStereochemicalDescriptors(suggestedIupacNameWithOmittedLocants(analysis)),
+    [analysis, calculatedAnalysis, externalCandidateNameUnavailable, externalNameIsPrimary, language, localSuggestedNameUnavailable, localizedIupac, molecule, pubChemIupacName, sourceNameOverride, sourceNameOverrideRequiresExternal],
   );
   const stereochemistryAvailable = useMemo(
     () => getMainChainStereoDescriptors(molecule, analysis.mainChain, true).length > 0
@@ -8563,7 +8573,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? presentValidatedSystematicName(verifiedSystematicModel, language) : null;
   if (verifiedSystematicModel && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
     && language === "es" && !localSuggestedNameUnavailable && !externalNameIsPrimary
-    && sourceNameOverride === null && !stereochemistryAvailable) {
+    && !sourceNameOverrideRequiresExternal && !stereochemistryAvailable) {
     const localName = applyNomenclatureConvention(localizedIupac(stripStereochemicalDescriptors(
       suggestedIupacNameWithOmittedLocants(calculatedAnalysis))), "current", language);
     verifiedSystematicPresentation = selectVerifiedLocalizedPresentation(verifiedSystematicModel, molecule, language, localName);
@@ -8572,6 +8582,44 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
         ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
       : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language));
+  const externalNameSource = externalNameIsPrimary ? pubChemIupacName
+    : sourceNameOverrideRequiresExternal ? sourceNameOverride : undefined;
+  const unlocalizedVerifiedSystematicName = language === "es" && verifiedSystematicPresentation
+    && !verifiedSystematicPresentation.localized ? verifiedSystematicPresentation.name : undefined;
+  const externalNameHasSpanishDisplay = language === "en" ? true
+    : verifiedSystematicPresentation ? verifiedSystematicPresentation.localized
+    : !externalNameSource
+      || Boolean(externalNameIsPrimary && verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language))
+      || localizeChemicalNameForDisplay(externalNameSource, "es", { source: "external" }) !== externalNameSource
+      || translateSpanishIupacToOpsin(externalNameSource) !== externalNameSource;
+  const externalNameLookupStatus = externalNameSource
+    ? externalNameHasSpanishDisplay ? "success" as const : "unlocalized" as const
+    : unlocalizedVerifiedSystematicName ? "unlocalized" as const
+    : currentCompoundContext
+    ? currentCompoundContext.pubchemStatus === "retrieval-error"
+      ? "error" as const
+      : currentCompoundContext.pubchem?.iupacName
+        ? "success" as const
+        : "unsupported" as const
+    : !isolatedBuild && showIupacName && Boolean(compoundContextKey) && localSuggestedNameUnavailable
+      ? "loading" as const
+      : "idle" as const;
+  const currentIupacNameState = resolveIupacNameState({
+    localStatus: localSuggestedNameUnavailable || sourceNameOverrideRequiresExternal || unlocalizedVerifiedSystematicName
+      ? "unsupported" : "success",
+    localName: suggestedName,
+    externalStatus: externalNameLookupStatus,
+    externalName: externalNameSource || unlocalizedVerifiedSystematicName ? suggestedName : undefined,
+  });
+  const currentNameDisplay = currentIupacNameState.status === "loading"
+    ? language === "en" ? "Calculating IUPAC name…" : "Calculando nombre IUPAC…"
+    : currentIupacNameState.status === "error"
+      ? language === "en" ? "Could not calculate IUPAC name" : "No se pudo calcular el nombre IUPAC"
+      : currentIupacNameState.status === "external-error"
+        ? language === "en" ? "Could not verify external naming; local support is unknown" : "No se pudo consultar PubChem; el soporte local sigue sin confirmarse"
+      : currentIupacNameState.status === "external-unlocalized"
+        ? language === "en" ? "A name was found, but no verified Spanish version is available" : "Se encontró un nombre, pero no hay una versión española verificada"
+      : suggestedName;
   const legacyDisplay = legacyProfileDisplayName({
     language,
     suggestedName,
@@ -8581,19 +8629,22 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const nomenclatureVariants = selectableNomenclatureConventions(language).map((convention) => ({
     convention,
     label: nomenclatureConventionLabel(convention, language),
-    name: convention === "current" ? suggestedName : legacyDisplay.name,
+    name: convention === "current" ? currentNameDisplay : legacyDisplay.name,
     available: convention === "current" || legacyDisplay.available,
   }));
   const activeNomenclatureConvention = !simplifiedModeEnabled
     ? migrateNomenclatureConvention(nomenclatureConvention, language)
     : "current";
   const activeLocalNameUnavailable = activeNomenclatureConvention === "current"
-    ? localSuggestedNameUnavailable : legacyNameUnavailable;
+    ? currentIupacNameState.status === "unsupported" : legacyNameUnavailable;
   const displayedIupacName = nomenclatureVariants.find(
     (variant) => variant.convention === activeNomenclatureConvention,
   )?.name ?? localizedIupac(nameWithSelectedStereochemistry);
+  // The current-profile label can be a loading/unlocalized status message.
+  // Reconcile chemistry against its underlying candidate name, never that UI text.
+  const activeChemicalName = activeNomenclatureConvention === "current" ? suggestedName : displayedIupacName;
   const displayedNameCopyable = (activeNomenclatureConvention === "current"
-      ? !localSuggestedNameUnavailable || externalNameIsPrimary : !legacyNameUnavailable)
+      ? currentIupacNameState.status === "success" && externalNameHasSpanishDisplay : !legacyNameUnavailable)
     && Boolean(nomenclatureVariants.find((variant) => variant.convention === activeNomenclatureConvention)?.available)
     && displayedIupacName !== "-";
   const verifiedLocalCommonName = curatedCommonNameForSmiles(
@@ -8872,13 +8923,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     convention: activeNomenclatureConvention,
     language,
     canHighlight: showIupacName && displayedNameCopyable
-      && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary) && sourceNameOverride === null
+      && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary) && !sourceNameOverrideRequiresExternal
       && !verifiedSystematicPresentation?.localized
       && (!isPristineInitialMolecule || showPristineMethaneName),
   });
   const derivationConsistency = resolveDerivationConsistency({
     molecule,
-    activeName: displayedIupacName,
+    activeName: activeChemicalName,
     activeProfile: activeNomenclatureConvention === "current" ? "current" : "legacy",
     language,
     currentSourceName: verifiedSystematicModel?.name,
@@ -8888,7 +8939,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const symmetryChoiceIndex=symmetryChoice?.model===reconciledDerivation?symmetryChoice.index:0;
   const validatedDerivation=useMemo(() => reconciledDerivation
     ? selectEquivalentAssignment(reconciledDerivation,symmetryChoiceIndex) : null, [reconciledDerivation,symmetryChoiceIndex]);
-  const automaticNumberingAvailable = sourceNameOverride === null || derivationConsistency.status === "verified";
+  const automaticNumberingAvailable = !sourceNameOverrideRequiresExternal || derivationConsistency.status === "verified";
   const effectiveShowNumbering = showNumbering && automaticNumberingAvailable;
   const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
   const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain), [molecule, activeAnalysis.mainChain]);
@@ -8904,11 +8955,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? `${selectedCarboxylContext.heading} ${selectedCarboxylContext.explanation}`
     : baseNotice;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
-  // An external name or source override has no verified correspondence to the
-  // local naming analysis. Do not present its parent colours as authoritative.
+  // An external name without a verified local presentation has no validated
+  // correspondence to the local analysis. Do not present its parent colors as authoritative.
   const reasoningUnsupported = activeLocalNameUnavailable
+    || (activeNomenclatureConvention === "current" && currentIupacNameState.status !== "success")
+    || (activeNomenclatureConvention === "current" && !externalNameHasSpanishDisplay)
     || (activeNomenclatureConvention === "current" && externalNameIsPrimary)
-    || sourceNameOverride !== null
+    || sourceNameOverrideRequiresExternal
     || (!!structuralEvidence.carbohydrate && !validatedDerivation);
   // These conservative pyridine-acid names remain unreconciled (PARTIAL), but
   // their graph-backed ring and carboxyl evidence can still be shown without
@@ -8936,14 +8989,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const reasoningHelpVisible = showReasoningHelp || reasoningPeekOpen;
   const reasoningVisualsEnabled = !practiceOpen && !isolatedBuild && reasoningHelpVisible && showIupacName
     && displayedNameCopyable && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary)
-    && sourceNameOverride === null && (!isPristineInitialMolecule || showPristineMethaneName);
+    && !sourceNameOverrideRequiresExternal && (!isPristineInitialMolecule || showPristineMethaneName);
   const reasoningVisualReferences = buildReasoningVisualReferences({ molecule, analysis: activeAnalysis,
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualTargets = reasoningVisualReferences.steps;
   const fullPriorityReasoning = useMemo(() => validatedDerivation ? buildValidatedPriorityReasoning({
-    derivation: validatedDerivation, graph: molecule, language, activeName: displayedIupacName,
+    derivation: validatedDerivation, graph: molecule, language, activeName: activeChemicalName,
     alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
-  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps, displayedIupacName]);
+  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps, activeChemicalName]);
   const structuralPriorityReasoning = useMemo(() => shouldShowStructuralPriorityReasoning({
     hasValidatedDerivation: !!validatedDerivation,
     reasoningUnsupported: reasoningUnsupported || unreconciledPyridineAcid,
@@ -9056,7 +9109,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     : filteredSavedEntries;
 
   useEffect(() => {
-    if (isolatedBuild) return;
+    if (isolatedBuild || !languageReady) return;
     try {
       window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     } catch {
@@ -9072,7 +9125,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     if (nextPath !== window.location.pathname) {
       window.history.replaceState(window.history.state, "", `${nextPath}${window.location.search}${window.location.hash}`);
     }
-  }, [isolatedBuild, language]);
+  }, [isolatedBuild, language, languageReady]);
 
   useEffect(() => {
     if (isolatedBuild) return;
@@ -9655,10 +9708,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       const hasGraphRenderableAlias = generatedAnalysis.substituents.some((substituent) =>
         Boolean(getSubstituentAlias(substituent.name)),
       );
-      const preserveTrustedSourceName = preserveSourceName
+      const preserveTrustedSourceName = (preserveSourceName
         || moleculeContainsHeterocycle(next)
-        || (advancedNameResolved
-        && localNamerCannotSafelyName(next, generatedAnalysis));
+        || advancedNameResolved)
+        && externalCandidateNeedsNeutralLocalName(next, generatedAnalysis);
       const preserveGraphSourceName = preserveTrustedSourceName && !hasGraphRenderableAlias;
       // Keep a PubChem common-name input as the recorded reasoning source,
       // while any preserved graph override must be a systematic name from the
@@ -15612,7 +15665,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     ? "The available FULL derivation verifies a different name or nomenclature profile; it is not used to justify the active name."
                     : "La derivación FULL disponible verifica otro nombre o perfil de nomenclatura; no se utiliza para justificar el nombre activo."}
                 </p>}
-                {validatedDerivation && <p className="reasoning-validated-name"><strong>{displayedIupacName}</strong></p>}
+                {validatedDerivation && <p className="reasoning-validated-name"><strong>{activeChemicalName}</strong></p>}
                 {!validatedDerivation && effectiveShowNumbering && <p role="note">{language === "en"
                   ? "The displayed numbering comes from the local analysis and has no complete name reconciliation; equivalent orientations may exist."
                   : "La numeración mostrada procede del análisis local y no tiene una reconciliación completa del nombre; pueden existir orientaciones equivalentes."}</p>}
