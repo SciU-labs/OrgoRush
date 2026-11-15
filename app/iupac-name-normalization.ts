@@ -438,7 +438,9 @@ function translateCore(value: string) {
     .replace(/tiol$/g, "thiol")
     .replace(/oato$/g, "oate")
     .replace(/oico$/g, "oic")
-    .replace(/ano(?=-\d)/g, "ane")
+    // Do not read the terminal "ano" in the Spanish prefix "ciano" as a
+    // hydrocarbon parent ending (e.g. 3-ciano-4-metilbenzoic acid).
+    .replace(/(?<!cy)ano(?=-\d)/g, "ane")
     .replace(/eno(?=-\d)/g, "ene")
     .replace(/ino(?=-\d)/g, "yne")
     // Before a principal-group suffix Spanish elides the terminal "o" from

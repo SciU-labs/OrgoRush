@@ -9,6 +9,7 @@ import { legacyProfileDisplayName, selectedNomenclatureExportName } from "../app
 import { verifiedPubChemSystematicDisplayName } from "../app/verified-common-name-equivalences.ts";
 import { presentValidatedSystematicName, reconcileSystematicName } from "../app/validated-name-derivation.ts";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { localizeCompositionalExternalName } from "../app/compositional-external-localization.ts";
 
 // Expected terminology checked independently before fixing the expected text:
 // IUPAC/RSEQ Spanish Brief Guide, tables 1–3 and sections 5.3/7/9;
@@ -26,7 +27,7 @@ function findNode(predicate, node = page) {
 }
 const variants = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === "nomenclatureVariants");
 assert.ok(variants?.initializer);
-const initializationNames = ["verifiedSystematicModel", "verifiedSystematicPresentation", "suggestedName", "legacyDisplay", "nomenclatureVariants"];
+const initializationNames = ["compositionalExternalSpanishName", "verifiedSystematicModel", "verifiedSystematicPresentation", "suggestedName", "legacyDisplay", "nomenclatureVariants"];
 const initializations = initializationNames.map(name => {
   const declaration = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === name);
   assert.ok(declaration?.initializer, `production initialization ${name} exists`);
@@ -37,11 +38,14 @@ const variantCode = ts.transpileModule(`result = (() => { ${initializations.join
 }).outputText;
 function displayedVariants(language, identity, legacy = { spanishResolution: { name: "-" }, englishName: "-" }, molecule = {atoms:[],bonds:[]}) {
   const context = { language, externalNameIsPrimary: true, namingPubChemIdentity: identity, pubChemIupacName: identity.iupacName,
+    currentMoleculeSmiles: { ok: false, smiles: "" },
+    localizeCompositionalExternalName,
     molecule,reasoningSourceName:null,reconcileSystematicName,presentValidatedSystematicName,
     verifiedPubChemSystematicDisplayName, localizeChemicalNameForDisplay, applyNomenclatureConvention,
     selectableNomenclatureConventions, nomenclatureConventionLabel, legacyProfileDisplayName, legacyResolution: legacy,
     currentNameDisplay: language === "es"
-      ? verifiedPubChemSystematicDisplayName(identity, language) ?? external(identity.iupacName)
+      ? localizeCompositionalExternalName(molecule, identity.iupacName)
+        ?? verifiedPubChemSystematicDisplayName(identity, language) ?? external(identity.iupacName)
       : identity.iupacName,
     localizedIupac() { throw new Error("external display must not re-enter the local/Legacy translator"); },
   };
@@ -123,6 +127,19 @@ test("LOCALIZATION-012 verified identity overrides and canonical export metadata
   const canonical = findNode(node => ts.isVariableDeclaration(node) && node.name.getText(page) === "canonicalIupacName");
   assert.equal(canonical.initializer.getText(page), "nameWithSelectedStereochemistry");
   assert.match(pageText, /compoundLookupNamesRef\.current = \[canonicalIupacName\]/);
+});
+
+test("the production Current profile accepts the compositional name only for the active graph", () => {
+  const iupacName = "3-(1-aminoethyl)-2-methylphenol";
+  const sourceGraph = moleculeFromSmiles("Oc1c(C)c(C(N)C)ccc1");
+  const wrongGraph = moleculeFromSmiles("Oc1c(C)cc(C(N)C)cc1");
+  assert.equal(sourceGraph.ok, true);
+  assert.equal(wrongGraph.ok, true);
+  const identity = Object.freeze({ iupacName });
+  const localized = displayedVariants("es", identity, undefined, sourceGraph.molecule);
+  const mismatched = displayedVariants("es", identity, undefined, wrongGraph.molecule);
+  assert.equal(localized[0].name, "3-(1-aminoetil)-2-metilfenol");
+  assert.equal(mismatched[0].name, iupacName);
 });
 
 test("LOCALIZATION-012 a fully reconciled purine name remains literal without enabling Legacy",()=>{

@@ -42,6 +42,7 @@ import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
+import { localizeCompositionalExternalName } from "./compositional-external-localization";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
@@ -8499,6 +8500,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     [activePubChemIdentity, currentCompoundContext, currentMoleculeSmiles, isPristineInitialMolecule],
   );
   const pubChemIupacName = namingPubChemIdentity?.iupacName;
+  // PubChem identity confirmation is separate from translation: this local
+  // grammar can localize only a name whose provider SMILES is bound to the
+  // current graph. It does not establish that PubChem's name is the preferred PIN.
+  const compositionalExternalSpanishName = pubChemIupacName
+    ? localizeCompositionalExternalName(molecule, pubChemIupacName, {
+      verifiedExternalSmiles: currentMoleculeSmiles.ok && namingPubChemIdentity?.smiles === currentMoleculeSmiles.smiles
+        ? namingPubChemIdentity.smiles : undefined,
+    }) : null;
   const externalCandidateNameUnavailable = Boolean(namingPubChemIdentity
     && externalCandidateNeedsNeutralLocalName(molecule, calculatedAnalysis));
   const externalNameIsPrimary = externalCandidateNameUnavailable && Boolean(pubChemIupacName);
@@ -8578,20 +8587,27 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       suggestedIupacNameWithOmittedLocants(calculatedAnalysis))), "current", language);
     verifiedSystematicPresentation = selectVerifiedLocalizedPresentation(verifiedSystematicModel, molecule, language, localName);
   }
-  const suggestedName = verifiedSystematicPresentation?.name ?? (externalNameIsPrimary
-      ? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
+  const suggestedName = language === "en" && compositionalExternalSpanishName
+    ? pubChemIupacName!
+    : verifiedSystematicPresentation?.localized
+    ? verifiedSystematicPresentation.name
+    : compositionalExternalSpanishName
+      ?? (externalNameIsPrimary
+      ? verifiedSystematicPresentation?.name
+        ?? verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language)
         ?? localizeChemicalNameForDisplay(pubChemIupacName!, language, { source: "external" })
-      : applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language));
+      : verifiedSystematicPresentation?.name
+        ?? applyNomenclatureConvention(localizedIupac(nameWithSelectedStereochemistry), "current", language));
   const externalNameSource = externalNameIsPrimary ? pubChemIupacName
     : sourceNameOverrideRequiresExternal ? sourceNameOverride : undefined;
   const unlocalizedVerifiedSystematicName = language === "es" && verifiedSystematicPresentation
-    && !verifiedSystematicPresentation.localized ? verifiedSystematicPresentation.name : undefined;
+    && !verifiedSystematicPresentation.localized && !compositionalExternalSpanishName ? verifiedSystematicPresentation.name : undefined;
   const externalNameHasSpanishDisplay = language === "en" ? true
-    : verifiedSystematicPresentation ? verifiedSystematicPresentation.localized
-    : !externalNameSource
-      || Boolean(externalNameIsPrimary && verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language))
-      || localizeChemicalNameForDisplay(externalNameSource, "es", { source: "external" }) !== externalNameSource
-      || translateSpanishIupacToOpsin(externalNameSource) !== externalNameSource;
+    : Boolean(compositionalExternalSpanishName || verifiedSystematicPresentation?.localized
+      || (!verifiedSystematicPresentation && (!externalNameSource
+        || Boolean(externalNameIsPrimary && verifiedPubChemSystematicDisplayName(namingPubChemIdentity!, language))
+        || localizeChemicalNameForDisplay(externalNameSource, "es", { source: "external" }) !== externalNameSource
+        || translateSpanishIupacToOpsin(externalNameSource) !== externalNameSource)));
   const externalNameLookupStatus = externalNameSource
     ? externalNameHasSpanishDisplay ? "success" as const : "unlocalized" as const
     : unlocalizedVerifiedSystematicName ? "unlocalized" as const
@@ -8640,6 +8656,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const displayedIupacName = nomenclatureVariants.find(
     (variant) => variant.convention === activeNomenclatureConvention,
   )?.name ?? localizedIupac(nameWithSelectedStereochemistry);
+  const displayedCompositionalExternalName = activeNomenclatureConvention === "current"
+    && Boolean(compositionalExternalSpanishName)
+    && displayedIupacName === (language === "es" ? compositionalExternalSpanishName : pubChemIupacName);
   // The current-profile label can be a loading/unlocalized status message.
   // Reconcile chemistry against its underlying candidate name, never that UI text.
   const activeChemicalName = activeNomenclatureConvention === "current" ? suggestedName : displayedIupacName;
@@ -15830,6 +15849,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                       namingPubChemIdentity.cid ? `CID ${namingPubChemIdentity.cid}` : "",
                       namingPubChemIdentity.molecularFormula ?? "",
                     ].filter(Boolean).join(" · ")}</strong>
+                  </p>
+                )}
+                {displayedCompositionalExternalName && (
+                  <p className="iupac-dock-origin">
+                    <span>{language === "en" ? "Compositional localization" : "Localización composicional"}</span>
+                    <strong>{language === "en"
+                      ? "PubChem name and structure match confirmed; preferred PIN status not verified."
+                      : "Nombre y estructura de PubChem coinciden; la condición de PIN preferido no está verificada."}</strong>
                   </p>
                 )}
                 {namingPubChemIdentity?.iupacName && (!externalNameIsPrimary || activeNomenclatureConvention === "current") && namingPubChemIdentity.iupacName !== displayedIupacName && (
