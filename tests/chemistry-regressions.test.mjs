@@ -276,8 +276,8 @@ test("CID 5793 remains protected before local profiles are selected", () => {
     "FULL reconciliation receives the untouched PubChem name used as the structural proof key");
   assert.match(pageSource, /presentValidatedSystematicName\(verifiedSystematicModel,\s*language\)/,
     "localized display is derived from the reconciled FULL model and selected UI language");
-  assert.match(pageSource, /verifiedSystematicPresentation\?\.name\s*\?\?\s*\(externalNameIsPrimary/,
-    "a verified presentation takes precedence while unsupported names retain the external fallback");
+  assert.match(pageSource, /verifiedSystematicPresentation\?\.localized\s*\?\s*verifiedSystematicPresentation\.name[\s\S]*?compositionalExternalSpanishName[\s\S]*?externalNameIsPrimary/,
+    "validated presentations and compositional localization take precedence before unsupported names retain the external fallback");
   assert.match(pageSource, /\|\| heterocycleHydroxylNameUnavailable/,
     "the heterocycle coverage guard also applies when a source name override exists");
   assert.match(pageSource, /chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule\(molecule\)/,
