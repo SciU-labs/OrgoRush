@@ -575,8 +575,21 @@ export function calculateSemiDevelopedLayout(
   const positions = new Map<number, SemiDevelopedPoint>();
   if (!graph.atoms.length) return positions;
   const declaredRings = graph.rings ?? [];
+  const graphAtomIds = new Set(graph.atoms.map(({ id }) => id));
+  const ringMetadataMatchesGraph = declaredRings.every(ring => ring.atomIds.every(id => graphAtomIds.has(id)))
+    && declaredRings.every((ring, index) => declaredRings.slice(index + 1).every(other => {
+      const shared = ring.atomIds.filter(id => other.atomIds.includes(id));
+      return shared.length === 0 || (shared.length === 2 && graph.bonds.some(([left, right]) =>
+        left === shared[0] && right === shared[1] || left === shared[1] && right === shared[0]));
+    }));
+  const ringsAreIndependent = new Set(declaredRings.flatMap(r => r.atomIds)).size
+    === declaredRings.reduce((n, r) => n + r.atomIds.length, 0);
+  const fusedHeterocycle = !ringsAreIndependent && declaredRings.some(ring => ring.atomIds.some(id => {
+    const atom = graph.atoms.find(({ id: atomId }) => atomId === id);
+    return atom?.element === "N" || atom?.element === "O";
+  }));
   if (declaredRings.length > 1 && !stereoBonds.length && !graph.manualDisplayDirections?.length
-    && new Set(declaredRings.flatMap(r => r.atomIds)).size === declaredRings.reduce((n, r) => n + r.atomIds.length, 0)
+    && ringMetadataMatchesGraph && (ringsAreIndependent || fusedHeterocycle)
     && graph.atoms.every(a=>Number.isFinite(a.x)&&Number.isFinite(a.y))) {
     // Imported non-fused ring systems already have a coherent 2D arrangement.
     // Preserve those coordinates when separate rings are linked by a chain.
