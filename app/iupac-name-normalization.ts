@@ -137,6 +137,15 @@ const heterocycleTranslations: Record<string, string> = {
   "1,3-dioxolano": "1,3-dioxolane",
   "1,4-dioxano": "1,4-dioxane",
   morfolina: "morpholine",
+  // Retained heterocycle components used by external-name compositions.
+  indol: "indole",
+  imidazol: "imidazole",
+  pirazol: "pyrazole",
+  pirazina: "pyrazine",
+  purina: "purine",
+  oxazol: "oxazole",
+  oxano: "oxane",
+  cromen: "chromen",
 };
 
 /**
@@ -318,6 +327,7 @@ export function normalizeHalogenatedNameForOpsin(value: string) {
 
 function translateCore(value: string) {
   const aliasesAndAcylGroups = translateSubstituentAliasesForOpsin(value)
+    .replace(/-ilmetil(?=[)\]])/g, "-ylmethyl")
     // Preserve acetiloxi as the complete acetyloxy substituent before the
     // generic ethyl/alkyl morpheme pass sees the embedded "etil" sequence.
     .replace(/(^|[-,(])acetiloxi(?=[a-z),.-]|$)/g, "$1acetyloxy")
@@ -397,6 +407,7 @@ function translateCore(value: string) {
     .replace(/trifenileno/g, "triphenylene")
     .replace(/naftol/g, "naphthol")
     .replace(/dihidro(?=naphthalene)/g, "dihydro")
+    .replace(/dihidro(?=-)/g, "dihydro")
     .replace(/naftalen(?=-|$)/g, "naphthalen")
     .replace(/espiro(?=\[)/g, "spiro")
     .replace(/triciclo(?=\[)/g, "tricyclo")
@@ -462,13 +473,14 @@ function translateCore(value: string) {
     // Heterocyclic radical stems such as piperidin-4-yl and
     // pyrrolidin-1-yl contain "in" before a locant; that is part of the
     // parent stem, not the Spanish alkyne ending -ino.
-    .replace(/(?<!piperid)(?<!pyrrolid)(?<!morphol)(?<!pyridin)in(?=-\d)/g, "yn")
+    .replace(/(?<!piperid)(?<!pyrrolid)(?<!morphol)(?<!pyridin)(?<!diox)in(?=-\d)/g, "yn")
     .replace(/-en$/g, "-ene")
     .replace(/-in$/g, "-yne")
     .replace(/ano$/g, "ane")
     .replace(/eno$/g, "ene")
     .replace(/ino$/g, "yne")
     .replace(/-il$/g, "-yl")
+    .replace(/-ilmetil(?=[)\]])/g, "-ylmethyl")
     // A radical can terminate at a nested bracket or parenthesis rather than
     // at the end of the complete name (for example piperidin-4-il]).
     .replace(/-il(?=[)\]])/g, "-yl")

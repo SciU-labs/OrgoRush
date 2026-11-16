@@ -365,8 +365,9 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     sharedAtomCounts,
   });
   // Keep the retained and all-carbon envelopes, and admit neutral C/N/O
-  // heterocycles fused along complete shared edges. All paths above preserve
-  // editable valence and per-atom hydrogens; other topologies stay guarded.
+  // heterocycles fused along complete shared edges when the ring system has a
+  // ring heteroatom. All paths above preserve editable valence and per-atom
+  // hydrogens; other topologies stay guarded.
   const verifiedRetainedFusion = (topology === "fused" || topology === "bridged")
     && nameRetainedFused1979({ atoms, bonds }).status === "SUPPORTED";
   const editableFusion = topology === "fused"
@@ -381,7 +382,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
   const neutralHeterocyclicFusion = topology === "fused"
     && rings.every(r=>[5,6].includes(r.atomIds.length)
       && r.atomIds.every(id=>["C","N","O"].includes(atoms[id-1].element??"C") && !(atoms[id-1].charge??0)))
-    && rings.some(r=>r.atomIds.some(id=>atoms[id-1].element==="N"))
+    && rings.some(r=>r.atomIds.some(id=>["N","O"].includes(atoms[id-1].element??"C")))
     && rings.every((r,i)=>rings.slice(i+1).every(other=>{
       const shared=r.atomIds.filter(id=>other.atomIds.includes(id));
       return shared.length===0 || shared.length===2 && ringHasBond(r,shared[0],shared[1]) && ringHasBond(other,shared[0],shared[1]);

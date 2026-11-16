@@ -575,12 +575,19 @@ export function calculateSemiDevelopedLayout(
   const positions = new Map<number, SemiDevelopedPoint>();
   if (!graph.atoms.length) return positions;
   const declaredRings = graph.rings ?? [];
+  const graphAtomIds = new Set(graph.atoms.map(({ id }) => id));
+  const ringMetadataMatchesGraph = declaredRings.every((ring) => ring.atomIds.every((id) => graphAtomIds.has(id)))
+    && declaredRings.every((ring, index) => declaredRings.slice(index + 1).every((other) => {
+      const shared = ring.atomIds.filter((id) => other.atomIds.includes(id));
+      return shared.length === 0 || (shared.length === 2 && graph.bonds.some(([left, right]) =>
+        left === shared[0] && right === shared[1] || left === shared[1] && right === shared[0]));
+    }));
   if (declaredRings.length > 1 && !stereoBonds.length && !graph.manualDisplayDirections?.length
-    && new Set(declaredRings.flatMap(r=>r.atomIds)).size === declaredRings.reduce((n,r)=>n+r.atomIds.length,0)
+    && ringMetadataMatchesGraph
     && graph.atoms.every(a=>Number.isFinite(a.x)&&Number.isFinite(a.y))) {
-    // The ring placer below joins fused polygons. Imported non-fused ring
-    // systems already have a coherent 2D arrangement; a distant ring must not
-    // fall through to the final unplaced-atom rows and become a flattened chain.
+    // Imported ring systems, including valid shared-edge fusions, already have
+    // a coherent 2D arrangement. Preserve those coordinates when separate ring
+    // systems are linked by a chain instead of treating all cycles as one.
     const atoms = new Map(graph.atoms.map(a=>[a.id,a]));
     const lengths = graph.bonds.map(([a,b])=>Math.hypot(atoms.get(a)!.x-atoms.get(b)!.x,atoms.get(a)!.y-atoms.get(b)!.y))
       .filter(length=>length>0).sort((a,b)=>a-b);

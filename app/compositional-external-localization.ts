@@ -1,10 +1,10 @@
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
-import { CanonizerUtil, Molecule as OCLMolecule } from "openchemlib";
+import { CanonizerUtil, Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 import { moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 import { translateSpanishIupacToOpsin } from "./iupac-name-normalization.ts";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule.ts";
-import { buildOpenChemLibStereoGraph, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
+import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectDoubleBondStereochemistry } from "./double-bond-stereochemistry.ts";
 
 /** A deliberately finite grammar for external names whose localization can be
@@ -369,14 +369,16 @@ function identity(molecule: GeneratedMolecule) {
   return result.ok ? result.smiles : null;
 }
 
-// OpenChemLib's canonical IDCode normalizes equivalent Kekulé spellings of
-// aromatic rings while retaining connectivity and stereo. Use it for external
-// identity receipts; keep the serialized key for exact builder round-trips.
+// Canonicalize the exported isomeric SMILES directly in OpenChemLib. Converting
+// a generated graph to an intermediate IDCode can assign parity differently
+// when equivalent input SMILES enumerate a stereocenter from another atom.
 function structuralIdentity(molecule: GeneratedMolecule) {
+  const result = moleculeToSmiles(molecule);
+  if (!result.ok) return null;
   try {
-    const { molecule: openChemLibMolecule } = buildOpenChemLibStereoGraph(molecule);
-    openChemLibMolecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
-    return CanonizerUtil.getIDCode(openChemLibMolecule, CanonizerUtil.NORMAL);
+    const parsed = new SmilesParser().parseMolecule(result.smiles);
+    parsed.ensureHelperArrays(OCLMolecule.cHelperCIP);
+    return CanonizerUtil.getIDCode(parsed, CanonizerUtil.NORMAL);
   } catch { return null; }
 }
 
@@ -660,7 +662,124 @@ function canonicalizeExternalEnglishAlias(source: string) {
   };
   return (retainedParents[source] ?? source)
     .replace(/^(chloro|bromo|fluoro|iodo|nitro|methoxy)-(?=benzene|phenol)/, "$1")
-    .replace(/(\d+)-\((meth|eth|prop|but|pent|hex|hept|oct|non|dec)-(\d+)-(en|yn)yl\)/g, "$1-$2-$3-$4yl");
+    .replace(/(\d+)-\((meth|eth|prop|but|pent|hex|hept|oct|non|dec)-(\d+)-(en|yn)yl\)/g, "$1-$2-$3-$4yl")
+    .replace(/indol(?=-\d+-(?:ol|yl))/g, "indole")
+    .replace(/imidazol(?=-\d+-yl)/g, "imidazole")
+    .replace(/oxazol(?=-\d+-yl)/g, "oxazole")
+    .replace(/1H-/g, "1h-");
+}
+
+/**
+ * Compose the currently representable P2 heterocycle names from recognized
+ * IUPAC components. These rules localize substituents, heterocycle stems and
+ * parent suffixes independently; the resulting name is still required to
+ * normalize back to the complete provider name and match its verified graph.
+ */
+function localizeRepresentableP2HeterocycleName(source: string): string | null {
+  const convertSubstituent = (value: string) => value
+    .replace(/hydroxymethyl/g, "hidroximetil")
+    .replace(/aminoethyl/g, "aminoetil")
+    .replace(/ethyl/g, "etil")
+    .replace(/methyl/g, "metil")
+    .replace(/hydroxy/g, "hidroxi")
+    .replace(/dihydro/g, "dihidro")
+    .replace(/imidazole/g, "imidazol")
+    .replace(/indole/g, "indol")
+    .replace(/piperidine/g, "piperidina")
+    .replace(/pyrazole/g, "pirazol")
+    .replace(/pyrazine/g, "pirazina")
+    .replace(/purine/g, "purina")
+    .replace(/oxazole/g, "oxazol")
+    .replace(/oxane/g, "oxano")
+    .replace(/ylmethyl/g, "ilmetil")
+    .replace(/-yl\b/g, "-il");
+
+  // 1H-pyrazole, with tautomeric N locant retained.
+  if (/^1[Hh]-pyrazole$/.test(source)) return convertSubstituent(source).replace(/^1h-/, "1H-");
+
+  // Heteroaryl substituents attached to ethanamine, including both imidazole
+  // and indole parents, keep their independent ring and attachment locants.
+  const heteroarylEthanamine = /^(?<locant>\d+)-\((?<ring>1[Hh]-(?:imidazol|imidazole|indol|indole)-\d+)-yl\)ethanamine$/.exec(source);
+  if (heteroarylEthanamine?.groups) {
+    const ring = convertSubstituent(heteroarylEthanamine.groups.ring!).replace(/^1h-/, "1H-");
+    return `${heteroarylEthanamine.groups.locant}-(${ring}-il)etanamina`;
+  }
+
+  // Indole alcohol with a functionalized ethyl substituent.
+  const indoleAlcohol = /^(?<locant>\d+)-\((?<aminoLocant>\d+)-aminoethyl\)-1[Hh]-indol(?:e)?-(?<olLocant>\d+)-ol$/.exec(source);
+  if (indoleAlcohol?.groups) {
+    const substituent = convertSubstituent(`${indoleAlcohol.groups.aminoLocant}-aminoethyl`);
+    return `${indoleAlcohol.groups.locant}-(${substituent})-1H-indol-${indoleAlcohol.groups.olLocant}-ol`;
+  }
+
+  // Purine diones use the retained heterocycle parent and compositional
+  // methyl/dione modifiers.
+  const purineDione = /^(?<methylLocants>\d+(?:,\d+)*-tri)methylpurine-(?<oxoLocants>\d+(?:,\d+)*-dione)$/.exec(source);
+  if (purineDione) return `${purineDione[1]}metilpurina-${purineDione[2]!.replace("dione", "diona")}`;
+
+  const pyrazineAcid = /^pyrazine-(?<locant>\d+)-carboxylic acid$/.exec(source);
+  if (pyrazineAcid?.groups) return `ácido pirazina-${pyrazineAcid.groups.locant}-carboxílico`;
+
+  // Oxane polyol with explicit absolute configurations and an alkyl alcohol
+  // substituent. All stereocenters must survive the normal stereo verifier.
+  const oxanePolyol = /^(?<stereo>\((?:\d+[RS],?)+\)-)(?<subLocant>\d+)-\(hydroxymethyl\)oxane-(?<ohLocants>\d+(?:,\d+)*-tetrol)$/.exec(source);
+  if (oxanePolyol?.groups) {
+    return `${oxanePolyol.groups.stereo}${oxanePolyol.groups.subLocant}-(hidroximetil)oxano-${oxanePolyol.groups.ohLocants}`;
+  }
+
+  // Oxazole-containing acetic acid: preserve both the heterocycle locants and
+  // the acetic-acid parent locants through the Spanish acid-head convention.
+  const oxazoleAcid = /^(?<prefix>\d+-amino-\d+)-\((?<oxoLocant>\d+-oxo-\d+,\d+-oxazol(?:e)?-\d+)-yl\)acetic acid$/.exec(source);
+  if (oxazoleAcid?.groups) {
+    const ring = convertSubstituent(oxazoleAcid.groups.oxoLocant!);
+    return `ácido ${oxazoleAcid.groups.prefix}-(${ring}-il)acético`;
+  }
+
+  // A benzodioxinylmethyl substituent on a saturated N heterocycle. The
+  // benzene fusion, heteroatom locants and attachment locant are retained.
+  const benzodioxinPiperidine = /^(?<nLocant>\d+)-\((?<hydroLocants>\d+,\d+)-dihydro-(?<heteroLocants>\d+,\d+)-benzodioxin-(?<attachLocant>\d+)-ylmethyl\)piperidine$/.exec(source);
+  if (benzodioxinPiperidine?.groups) {
+    const g = benzodioxinPiperidine.groups;
+    return `${g.nLocant}-(${g.hydroLocants}-dihidro-${g.heteroLocants}-benzodioxin-${g.attachLocant}-ilmetil)piperidina`;
+  }
+
+  // Phenolic chromen-4-one parents (including flavonol/flavone examples) are
+  // composed from the same hydroxy and hydroxyphenyl substituent components.
+  const chromenone = /^(?<prefix>.*)chromen-(?<ketoneLocant>\d+)-one$/.exec(source);
+  if (chromenone?.groups) {
+    const rawPrefix = chromenone.groups.prefix!;
+    let prefix = rawPrefix;
+    let arylCount = 0;
+    prefix = prefix.replace(/(?<locant>\d+)-\((?<ringLocants>\d+(?:,\d+)*-)?(?<multiplier>di|tri)?hydroxyphenyl\)/g,
+      (_match, _locant: string, _ringLocants: string | undefined, _multiplier: string | undefined) => {
+        arylCount += 1;
+        const ringLocants = _ringLocants ?? "";
+        const multiplier = _multiplier ?? "";
+        return `${_locant}-(${ringLocants}${multiplier}hidroxifenil)`;
+      });
+    let hydroxyCount = 0;
+    prefix = prefix.replace(/(\d+(?:,\d+)*-)(di|tri)?hydroxy/g, (_match, locants: string, multiplier: string | undefined) => {
+      hydroxyCount += 1;
+      return `${locants}${multiplier ?? ""}hidroxi`;
+    });
+    const prefixRemainder = prefix
+      .replace(/\d+-\(\d+(?:,\d+)*-(?:di|tri)?hidroxifenil\)/g, "")
+      .replace(/\d+(?:,\d+)*-(?:di|tri)?hidroxi/g, "")
+      .replace(/[\d,().\-]/g, "");
+    const parentPrefix = rawPrefix.replace(/\([^)]*\)/g, "");
+    const parentLocants = [...parentPrefix.matchAll(/(?:^|[-(])(\d+(?:,\d+)*)-/g)].flatMap(match => match[1]!.split(",").map(Number));
+    const arylLocants = [...rawPrefix.matchAll(/\((\d+(?:,\d+)*-)(?:di|tri)?hydroxyphenyl\)/g)]
+      .flatMap(match => match[1]!.slice(0, -1).split(",").map(Number));
+    const uniqueParentLocants = new Set(parentLocants).size === parentLocants.length;
+    const uniqueArylLocants = new Set(arylLocants).size === arylLocants.length;
+    if (/[a-z]/i.test(prefixRemainder) || !hydroxyCount && !arylCount
+      || parentLocants.some(locant => locant < 1 || locant > 10) || !uniqueParentLocants
+      || arylLocants.some(locant => locant < 1 || locant > 6) || !uniqueArylLocants
+      || Number(chromenone.groups.ketoneLocant) !== 4) return null;
+    return `${prefix}cromen-4-ona`;
+  }
+
+  return null;
 }
 
 /**
@@ -679,7 +798,12 @@ function localizeFunctionalParentExternalName(actual: GeneratedMolecule, sourceN
   let localized: string | null = null;
   let family: "acid" | "ester" | "amide" | "nitrile" | "amine" | "aniline" | "hydrocarbon" | "alcohol" | "aldehyde" | "ketone" | null = null;
 
-  if (sourceName === "acetonitrile") {
+  const p2Name = localizeRepresentableP2HeterocycleName(name)
+    ?? localizeRepresentableP2HeterocycleName(`${stereo}${name}`);
+  if (p2Name) {
+    family = name.endsWith(" acid") ? "acid" : "hydrocarbon";
+    localized = stereo && p2Name.startsWith(stereo) ? p2Name : `${stereo}${p2Name}`;
+  } else if (sourceName === "acetonitrile") {
     family = "nitrile";
     localized = "acetonitrilo";
   }

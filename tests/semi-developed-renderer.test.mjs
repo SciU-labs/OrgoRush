@@ -2,8 +2,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { calculateSemiDevelopedLayout } from "../app/semi-developed-layout.ts";
 import { buildSemiDevelopedRenderModel } from "../app/semi-developed-renderer.ts";
+import { structuralIdentity } from "./helpers/reference-corpus.mjs";
+
+const pubchemCorpus = JSON.parse(await readFile(new URL("./fixtures/orgorush-pubchem-corpus-120.json", import.meta.url), "utf8"));
 
 const chain = (length, bonds = []) => ({
   atoms: Array.from({ length }, (_, index) => ({ id: index + 1, x: index, y: 0, element: "C" })),
@@ -61,6 +65,27 @@ test("ring layout keeps the cycle closed and supplies its own bounds", async () 
   const rendererSource = await readFile(new URL("../app/semi-developed-layout.ts", import.meta.url), "utf8");
   assert.match(rendererSource, /getSemiDevelopedBounds/);
   assert.doesNotMatch(rendererSource, /skeletal-layout|buildOpenChainSkeletalPositions/);
+});
+
+test("fused oxygen heterocycles with a separate aromatic substituent keep complete semi-developed layouts", () => {
+  for (const title of ["Quercetin", "Genistein"]) {
+    const reference = pubchemCorpus.compounds.find((row) => row.title === title);
+    assert.ok(reference, `${title} exists in the independent corpus`);
+    const imported = moleculeFromSmiles(reference.isomeric_smiles_pubchem);
+    assert.equal(imported.ok, true, `${title} imports from its reference SMILES`);
+    const molecule = imported.molecule;
+    const before = structuredClone(molecule);
+    const positions = calculateSemiDevelopedLayout(molecule, molecule.atoms.map(({ id }) => id));
+    assert.equal(positions.size, molecule.atoms.length, `${title} has a display position for every atom`);
+    for (const [left, right] of molecule.bonds) {
+      assert.ok(positions.has(left) && positions.has(right), `${title} bond endpoints are laid out`);
+      assert.ok(Number.isFinite(positions.get(left).x) && Number.isFinite(positions.get(right).y));
+    }
+    assert.deepEqual(molecule, before, `${title} display layout does not mutate its molecular graph`);
+    const exported = moleculeToSmiles(molecule);
+    assert.equal(exported.ok, true, `${title} remains exportable after layout`);
+    assert.equal(structuralIdentity(exported.smiles), structuralIdentity(reference.isomeric_smiles_pubchem), `${title} retains molecular identity`);
+  }
 });
 
 test("ring substituents leave the ring through the local exterior sector", () => {

@@ -5,6 +5,7 @@ import { localizeCompositionalExternalName, parseCompositionalExternalName } fro
 import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter.ts";
 import { localizeChemicalNameForDisplay } from "../app/iupac-name-normalization.ts";
 import { translateSpanishIupacToOpsin } from "../app/iupac-name-normalization.ts";
+import { structuralIdentity } from "./helpers/reference-corpus.mjs";
 import { resolveNameWithOpsin } from "../app/opsin-name-resolver.ts";
 import { VALIDATION_CASES } from "./fixtures/orgorush-validation-014.mjs";
 
@@ -148,7 +149,7 @@ test("functional parents and stereodescriptors localize against the independent 
       assert.equal(candidate, null, `${row.id} remains outside the verified grammar`);
     }
   }
-  assert.deepEqual({ localized, supported, evaluated: corpus.length, adapterLimits }, { localized: 56, supported: 56, evaluated: 69, adapterLimits: 9 });
+  assert.deepEqual({ localized, supported, evaluated: corpus.length, adapterLimits }, { localized: 56, supported: 56, evaluated: 69, adapterLimits: 8 });
 });
 
 test("external functional-family localization rejects a mismatched structure receipt and unverified stereo", () => {
@@ -206,8 +207,52 @@ test("the focused PubChem corpus reports separate structure and grammar coverage
   assert.deepEqual(counts, {
     P0: { representable: 33, localized: 33 },
     P1: { representable: 76, localized: 76 },
-    P2: { representable: 9, localized: 0 },
+    P2: { representable: 11, localized: 11 },
   });
+});
+
+test("all eleven P2 heterocycle families localize compositionally and preserve their PubChem graph", () => {
+  const expectedByTitle = new Map([
+    ["Serotonin", "3-(2-aminoetil)-1H-indol-5-ol"],
+    ["Histamine", "2-(1H-imidazol-5-il)etanamina"],
+    ["Tryptamine", "2-(1H-indol-3-il)etanamina"],
+    ["Caffeine", "1,3,7-trimetilpurina-2,6-diona"],
+    ["D-Glucose", "(3R,4S,5S,6R)-6-(hidroximetil)oxano-2,3,4,5-tetrol"],
+    ["Pyrazole", "1H-pirazol"],
+    ["2-Pyrazinecarboxylic acid", "ácido pirazina-2-carboxílico"],
+    ["Ibotenic Acid", "ácido 2-amino-2-(3-oxo-1,2-oxazol-5-il)acético"],
+    ["Piperoxan", "1-(2,3-dihidro-1,4-benzodioxin-3-ilmetil)piperidina"],
+    ["Quercetin", "2-(3,4-dihidroxifenil)-3,5,7-trihidroxicromen-4-ona"],
+    ["Genistein", "5,7-dihidroxi-3-(4-hidroxifenil)cromen-4-ona"],
+  ]);
+  const expectedInverseByTitle = new Map([
+    ["Serotonin", "3-(2-aminoethyl)-1h-indole-5-ol"],
+    ["Histamine", "2-(1h-imidazole-5-yl)ethanamine"],
+    ["Tryptamine", "2-(1h-indole-3-yl)ethanamine"],
+    ["Caffeine", "1,3,7-trimethylpurine-2,6-dione"],
+    ["D-Glucose", "(3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol"],
+    ["Pyrazole", "1h-pyrazole"],
+    ["2-Pyrazinecarboxylic acid", "pyrazine-2-carboxylic acid"],
+    ["Ibotenic Acid", "2-amino-2-(3-oxo-1,2-oxazole-5-yl)acetic acid"],
+    ["Piperoxan", "1-(2,3-dihydro-1,4-benzodioxin-3-ylmethyl)piperidine"],
+    ["Quercetin", "2-(3,4-dihydroxyphenyl)-3,5,7-trihydroxychromen-4-one"],
+    ["Genistein", "5,7-dihydroxy-3-(4-hydroxyphenyl)chromen-4-one"],
+  ]);
+  for (const [title, expectedSpanish] of expectedByTitle) {
+    const row = pubchemCorpus.compounds.find(value => value.title === title);
+    assert.ok(row, `PubChem corpus contains ${title}`);
+    const imported = moleculeFromSmiles(row.isomeric_smiles_pubchem);
+    assert.equal(imported.ok, true, `${title} PubChem structure imports`);
+    if (!imported.ok) continue;
+    const exported = moleculeToSmiles(imported.molecule);
+    assert.equal(exported.ok, true, `${title} exports to SMILES`);
+    if (exported.ok) assert.equal(structuralIdentity(exported.smiles), structuralIdentity(row.isomeric_smiles_pubchem), `${title} SMILES retains identity`);
+    const localized = localizeCompositionalExternalName(imported.molecule, row.iupac_en_pubchem, {
+      verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+    });
+    assert.equal(localized, expectedSpanish, title);
+    assert.equal(translateSpanishIupacToOpsin(localized), expectedInverseByTitle.get(title), `${title} component grammar reverses`);
+  }
 });
 
 test("the completed P0 corpus keeps locants, retained parents, N-substitution and embedded stereodescriptors", () => {

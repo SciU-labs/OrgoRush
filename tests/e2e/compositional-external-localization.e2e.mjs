@@ -10,6 +10,8 @@ import { buildOpenChemLibStereoGraph } from "../../app/tetrahedral-stereochemist
 import { mapStructuralRegions } from "../../app/structural-derivation.ts";
 import { getTetrahedralStereoCenters } from "../../app/tetrahedral-stereochemistry.ts";
 import { inspectDoubleBondStereochemistry } from "../../app/double-bond-stereochemistry.ts";
+import { localizeCompositionalExternalName } from "../../app/compositional-external-localization.ts";
+import { structuralIdentity } from "../helpers/reference-corpus.mjs";
 import { VALIDATION_CASES } from "../fixtures/orgorush-validation-014.mjs";
 
 const smiles = "Oc1c(C)c(C(N)C)ccc1";
@@ -165,6 +167,118 @@ test("PubChem dopamine and fentanyl names appear compositionally localized in Sp
       await page.getByRole("button", { name: "Español", exact: true }).click();
       await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
         row.spanish, { timeout: 5_000 });
+    }
+  } finally {
+    await page.close();
+  }
+});
+
+test("all representable P2 PubChem structures retain bilingual names and molecular identity in Chromium", async () => {
+  const fixture = JSON.parse(await readFile(new URL("../fixtures/orgorush-pubchem-corpus-120.json", import.meta.url), "utf8"));
+  const spanishByTitle = new Map([
+    ["Serotonin", "3-(2-aminoetil)-1H-indol-5-ol"],
+    ["Histamine", "2-(1H-imidazol-5-il)etanamina"],
+    ["Tryptamine", "2-(1H-indol-3-il)etanamina"],
+    ["Caffeine", "1,3,7-trimetilpurina-2,6-diona"],
+    ["D-Glucose", "(3R,4S,5S,6R)-6-(hidroximetil)oxano-2,3,4,5-tetrol"],
+    ["Pyrazole", "1H-pirazol"],
+    ["2-Pyrazinecarboxylic acid", "ácido pirazina-2-carboxílico"],
+    ["Ibotenic Acid", "ácido 2-amino-2-(3-oxo-1,2-oxazol-5-il)acético"],
+    ["Piperoxan", "1-(2,3-dihidro-1,4-benzodioxin-3-ilmetil)piperidina"],
+    ["Quercetin", "2-(3,4-dihidroxifenil)-3,5,7-trihidroxicromen-4-ona"],
+    ["Genistein", "5,7-dihidroxi-3-(4-hidroxifenil)cromen-4-ona"],
+  ]);
+  const cases = fixture.compounds.filter(row => row.priority === "P2"
+    && (!process.env.ORGORUSH_P2_E2E_TITLE || row.title === process.env.ORGORUSH_P2_E2E_TITLE)).map(row => ({
+    ...row,
+    spanish: spanishByTitle.get(row.title),
+    cid: 778000 + row.cid,
+  }));
+  assert.equal(cases.length, process.env.ORGORUSH_P2_E2E_TITLE ? 1 : 11);
+  assert.ok(cases.every(row => row.spanish), "every P2 corpus row has a reviewed Spanish composition");
+  let active = cases[0];
+  let latestLookupSmiles = active.isomeric_smiles_pubchem;
+  const served = [];
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.addInitScript(() => {
+    localStorage.setItem("hydrocarbonLab.guidedTour.v1", "skipped");
+    localStorage.setItem("hydrocarbon-lab-language", "es");
+  });
+  await page.route("**/*", async route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.hostname === "pubchem.ncbi.nlm.nih.gov") {
+      if (url.pathname.includes("/smiles/") && url.pathname.includes("/cids/")) {
+        latestLookupSmiles = decodeURIComponent(url.pathname.split("/smiles/")[1].split("/cids/")[0]);
+        const matches = structuralIdentity(active.isomeric_smiles_pubchem) === structuralIdentity(latestLookupSmiles);
+        served.push({ title: active.title, kind: "cid", matches, url: url.href });
+        return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify({ IdentifierList: { CID: matches ? [active.cid] : [] } }) });
+      }
+      if (url.pathname.includes("/property/")) {
+        served.push({ title: active.title, kind: "property", url: url.href });
+        return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify({ PropertyTable: { Properties: [{ CID: active.cid, IUPACName: active.iupac_en_pubchem,
+            IsomericSMILES: active.isomeric_smiles_pubchem, CanonicalSMILES: active.isomeric_smiles_pubchem,
+            MolecularFormula: active.molecular_formula }] } }) });
+      }
+      return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    }
+    if (url.hostname === "www.ebi.ac.uk" && url.pathname.startsWith("/opsin/ws/")) {
+      return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ status: "SUCCESS", smiles: active.isomeric_smiles_pubchem }) });
+    }
+    return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+  });
+  try {
+    await page.goto(`${origin}/OrgoRush/es/`, { waitUntil: "domcontentloaded", timeout: 90_000 });
+    await page.getByRole("button", { name: "Español", exact: true }).click();
+    await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    const name = page.locator(".iupac-dock-name");
+    const exportSmiles = async () => {
+      if (!(await page.locator("#smiles-interop-panel").isVisible())) await page.locator('[aria-controls="smiles-interop-panel"]').click();
+      const pending = page.waitForEvent("download");
+      await page.getByRole("button", { name: "Exportar SMILES (.smi)" }).click();
+      const download = await pending;
+      return (await readFile(await download.path(), "utf8")).trim().split(/\s+/)[0];
+    };
+    for (const row of cases) {
+      active = row;
+      await page.locator("#smiles-text-input").fill(row.isomeric_smiles_pubchem);
+      await page.locator("#smiles-interop-panel button[type=submit]").click();
+      try {
+        await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+          row.spanish, { timeout: 20_000 });
+      } catch (error) {
+        const diagnosticSmiles = await exportSmiles().catch(() => "<export failed>");
+        const diagnosticGraph = moleculeFromSmiles(diagnosticSmiles);
+        const stereoCount = diagnosticGraph.ok ? getTetrahedralStereoCenters(diagnosticGraph.molecule).length : null;
+        const directLocalizer = diagnosticGraph.ok ? localizeCompositionalExternalName(diagnosticGraph.molecule, row.iupac_en_pubchem,
+          { verifiedExternalSmiles: row.isomeric_smiles_pubchem }) : null;
+        throw new Error(`${row.title}: expected ${row.spanish}; shown=${(await name.innerText().catch(() => "<none>")).trim()}; `
+          + `export=${diagnosticSmiles}; stereo=${stereoCount}; direct=${directLocalizer}; served=${JSON.stringify(served)}; ${error.message}`);
+      }
+      assert.equal((await name.innerText()).trim(), row.spanish, `${row.title} Spanish composition`);
+      await page.getByRole("button", { name: "English", exact: true }).click();
+      await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+        row.iupac_en_pubchem, { timeout: 5_000 });
+      await page.getByRole("button", { name: "Español", exact: true }).click();
+      await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+        row.spanish, { timeout: 5_000 });
+
+      const importedSmiles = await exportSmiles();
+      const importedGraph = inspectSmilesStructure(importedSmiles);
+      assert.equal(importedGraph.ok, true, `${row.title} exports valid SMILES`);
+      assert.equal(structuralIdentity(importedSmiles), structuralIdentity(row.isomeric_smiles_pubchem), `${row.title} import/export graph identity`);
+
+      await page.locator('[aria-controls="iupac-name-builder"]').click();
+      await page.locator("#iupac-name-input").fill(row.spanish);
+      await page.locator("#iupac-name-builder button[type=submit]").click();
+      await page.locator("#iupac-name-input").waitFor({ state: "hidden", timeout: 20_000 });
+      const constructedSmiles = await exportSmiles();
+      const constructedGraph = inspectSmilesStructure(constructedSmiles);
+      assert.equal(constructedGraph.ok, true, `${row.title} Spanish construction exports`);
+      assert.equal(structuralIdentity(constructedSmiles), structuralIdentity(row.isomeric_smiles_pubchem), `${row.title} construction preserves identity`);
     }
   } finally {
     await page.close();
