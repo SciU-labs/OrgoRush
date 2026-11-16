@@ -60,6 +60,41 @@ test("mandatory EN/ES alphabetization changes actual parent atoms, not rendered 
   assert.equal(historicalPrefixKey("tert-butyl"),"butyl");
 });
 
+test("1979 C-202.1 composes multi-hydroxy benzene suffixes with locants before the parent",()=>{
+  const cases=[
+    ["Oc1ccccc1O","1,2-benzenediol","1,2-bencenodiol"],
+    ["Oc1cccc(O)c1","1,3-benzenediol","1,3-bencenodiol"],
+    ["Oc1ccc(O)cc1","1,4-benzenediol","1,4-bencenodiol"],
+  ];
+  for(const [smiles,english,spanish] of cases){
+    const graph=moleculeFromSmiles(smiles).molecule,result=observe(graph);
+    assert.equal(result.englishName,english,smiles);
+    assert.equal(result.spanishResolution.name,spanish,smiles);
+    assert.equal(result.spanishResolution.status,"TRANSLATED_FROM_LEGACY_EN",smiles);
+    assert(verifyLegacyAromaticModel(graph,result.spanishResolution.model),smiles);
+    assert.deepEqual([...result.spanishAnalysis.numberedAtoms],[...result.spanishResolution.numberedAtoms]);
+  }
+});
+
+test("1979 A-3.1/A-3.2 retain exact ethylene and acetylene names bilingually",()=>{
+  for(const [smiles,english,spanish] of [["C=C","ethylene","etileno"],["C#C","acetylene","acetileno"]]){
+    const imported=moleculeFromSmiles(smiles);assert(imported.ok,smiles);
+    const graph=imported.molecule,snapshot=structuredClone(graph),result=observe(graph);
+    assert.equal(result.englishName,english,smiles);
+    assert.equal(result.spanishResolution.name,spanish,smiles);
+    assert.equal(result.spanishResolution.status,"TRANSLATED_FROM_LEGACY_EN",smiles);
+    assert.deepEqual(graph,snapshot,smiles);
+  }
+  for(const smiles of ["CC=C","C=CCl","C/C=C/C"]){
+    const imported=moleculeFromSmiles(smiles);assert(imported.ok,smiles);
+    const result=observe(imported.molecule);
+    assert.notEqual(result.englishName,"ethylene",smiles);
+    assert.notEqual(result.englishName,"acetylene",smiles);
+    assert.notEqual(result.spanishResolution.name,"etileno",smiles);
+    assert.notEqual(result.spanishResolution.name,"acetileno",smiles);
+  }
+});
+
 test("semantic translator rejects incomplete, ambiguous, unknown and structurally false models",()=>{
   const graph=aromaticGraph(reference("iodo-methyl-ortho")),original=observe(graph).englishModel;
   const mutations=[

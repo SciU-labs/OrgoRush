@@ -325,7 +325,10 @@ function functionalParent(model: LegacyEnglishNameModel, principal: LegacyFuncti
 
   if (aromatic) {
     if (principal === "alcohol" && count === 1) return "phenol";
-    if (principal === "alcohol" && count > 1) return `benzene-${locantText}-${multiple}ol`;
+    // IUPAC 1979 C-202.1 places hydroxy locants before the benzene parent and
+    // adds -diol/-triol/etc. to that name (the 2013 `benzene-1,2-diol` order
+    // is handled by the separate current profile).
+    if (principal === "alcohol" && count > 1) return `${locantText}-benzene${multiple}ol`;
     if (principal === "amine" && count === 1) return "aniline";
     if (principal === "amine" && count > 1) return `benzene-${locantText}-${multiple}amine`;
     if (principal === "carboxylicAcid") return count === 1 ? "benzoic acid" : `benzene-${locantText}-${multiple}carboxylic acid`;
@@ -404,6 +407,11 @@ export function formatName(model: LegacyEnglishNameModel) {
 
 function formatPreparedName(model:LegacyEnglishNameModel) {
   if (model.unavailableReason) return "-";
+  if(model.parent.kind==="chain"&&model.parent.carbonCount===2&&model.parent.atomIds.length===2
+    &&!model.functionalGroups.length&&!model.substituents.length&&!model.nitrogenSubstituents?.length&&!model.stereochemicalPrefix) {
+    if(model.doubleBondLocants.length===1&&model.doubleBondLocants[0]===1&&!model.tripleBondLocants.length)return "ethylene";
+    if(model.tripleBondLocants.length===1&&model.tripleBondLocants[0]===1&&!model.doubleBondLocants.length)return "acetylene";
+  }
   const hierarchy = resolveFunctionalHierarchy(model.functionalGroups);
   if(model.parent.kind==="aromatic"&&hierarchy.principalKind
     && (!["alcohol","amine","carboxylicAcid","aldehyde","nitrile","amide","ester"].includes(hierarchy.principalKind)

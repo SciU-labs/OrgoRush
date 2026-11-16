@@ -5,7 +5,7 @@ import {
   compoundIdentityKey,
   createCompoundContextResolver,
 } from "../app/compound-context.ts";
-import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "../app/verified-common-name-equivalences.ts";
+import { verifiedPubChemAlternativeSynonyms, verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "../app/verified-common-name-equivalences.ts";
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -24,6 +24,9 @@ function missingWikipediaPage() {
 
 function knownPubChemResponse(url) {
   if (url.includes("/cids/JSON")) return json({ IdentifierList: { CID: [702] } });
+  if (url.includes("/synonyms/JSON")) return json({ InformationList: { Information: [{
+    Synonym: ["ethanol", "ethyl alcohol", "64-17-5", "CID 702", "InChIKey LFQSCWFLJHTTHZ", "C2H6O"],
+  }] } });
   if (url.includes("/description/JSON")) {
     return json({
       InformationList: {
@@ -99,8 +102,13 @@ const ethanolIdentity = {
 test("returns compact PubChem and Spanish Wikipedia context from mocked APIs", async () => {
   const { calls, fetchImpl } = createKnownFetch();
   const resolver = createCompoundContextResolver({ fetchImpl });
+  let publishSynonyms;
+  const enriched = new Promise((resolve) => { publishSynonyms = resolve; });
 
-  const context = await resolver.resolve(ethanolIdentity, "es");
+  const context = await resolver.resolve(ethanolIdentity, "es", undefined, (progress) => {
+    if (progress.pubchem?.synonyms) publishSynonyms(progress);
+  });
+  const withSynonyms = await enriched;
 
   assert.equal(context.pubchem?.cid, 702);
   assert.equal(context.pubchem?.title, "ethanol");
@@ -108,6 +116,7 @@ test("returns compact PubChem and Spanish Wikipedia context from mocked APIs", a
   assert.equal(context.pubchem?.smiles, "CCO");
   assert.equal(context.pubchem?.hBondDonorCount, 1);
   assert.equal(context.pubchem?.rotatableBondCount, 0);
+  assert.deepEqual(withSynonyms.pubchem?.synonyms, ["ethanol", "ethyl alcohol"]);
   assert.match(context.pubchem?.usage ?? "", /used as a solvent/i);
   assert.equal(context.pubchem?.url, "https://pubchem.ncbi.nlm.nih.gov/compound/702");
   assert.equal(context.wikipedia?.language, "es");
@@ -128,6 +137,9 @@ test("keeps a PubChem CID 5793 systematic name and record title as distinct sour
       IsomericSMILES: "O[C@H]1[C@@H](O)[C@H](O)[C@@H](O)C(O)O1",
       MolecularFormula: "C6H12O6",
     }] } });
+    if (url.includes("/synonyms/JSON")) return json({ InformationList: { Information: [{
+      Synonym: ["D-glucose", "dextrose", "50-99-7", "CID 5793", "InChIKey WQZGKKKJIJFFOK", "C6H12O6"],
+    }] } });
     if (url.includes("/description/")) return json({ InformationList: { Information: [{
       Title: "D-Glucose",
       Description: "D-Glucose is a monosaccharide.",
@@ -141,15 +153,46 @@ test("keeps a PubChem CID 5793 systematic name and record title as distinct sour
     inchiKey: "WQZGKKKJIJFFOK-GASJEMHNSA-N",
     canonicalSmiles: "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O",
   };
-  const context = await resolver.resolve(identity, "en");
+  let publishSynonyms;
+  const enriched = new Promise((resolve) => { publishSynonyms = resolve; });
+  const context = await resolver.resolve(identity, "en", undefined, (progress) => {
+    if (progress.pubchem?.synonyms) publishSynonyms(progress);
+  });
+  const withSynonyms = await enriched;
   const spanishContext = await resolver.resolve(identity, "es");
   assert.equal(context.pubchem?.iupacName, "(3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol");
   assert.equal(context.pubchem?.recordTitle, "D-Glucose");
   assert.equal(context.pubchem?.molecularFormula, "C6H12O6");
   assert.equal(context.pubchem?.inchiKey, "WQZGKKKJIJFFOK-GASJEMHNSA-N");
   assert.equal(spanishContext.pubchem?.iupacName, context.pubchem?.iupacName);
+  assert.deepEqual(withSynonyms.pubchem?.synonyms, ["D-glucose", "dextrose"]);
   assert.equal(calls.filter((url) => url.includes("/property/")).length, 1, "language changes reuse the cached PubChem record");
-  assert.ok(calls.every((url) => !url.includes("synonym")), "no broad synonym request is made");
+  assert.equal(calls.filter((url) => url.includes("/synonyms/JSON")).length, 1, "synonyms are fetched for the verified CID and reused across languages");
+});
+
+test("a slow optional synonyms response does not delay the verified PubChem context", async () => {
+  let releaseSynonyms;
+  const synonymsGate = new Promise((resolve) => { releaseSynonyms = resolve; });
+  const { fetchImpl } = createKnownFetch();
+  const resolver = createCompoundContextResolver({
+    fetchImpl: async (input, init) => {
+      if (String(input).includes("/synonyms/JSON")) {
+        await synonymsGate;
+        return knownPubChemResponse(String(input));
+      }
+      return fetchImpl(input, init);
+    },
+  });
+  let publishSynonyms;
+  const enriched = new Promise((resolve) => { publishSynonyms = resolve; });
+  const context = await resolver.resolve(ethanolIdentity, "en", undefined, (progress) => {
+    if (progress.pubchem?.synonyms) publishSynonyms(progress);
+  });
+
+  assert.equal(context.pubchem?.cid, 702);
+  assert.equal(context.pubchem?.synonyms, undefined);
+  releaseSynonyms();
+  assert.deepEqual((await enriched).pubchem?.synonyms, ["ethanol", "ethyl alcohol"]);
 });
 
 test("the D-glucose bilingual name is pinned to the exact PubChem identity, not C6H12O6", () => {
@@ -162,6 +205,42 @@ test("the D-glucose bilingual name is pinned to the exact PubChem identity, not 
   assert.equal(verifiedPubChemRecordTitleEquivalent(glucoseIdentity, "D-Glucose", "D-glucosa"), true);
   assert.equal(verifiedPubChemRecordTitleEquivalent({ ...glucoseIdentity, inchiKey: "OTHER" }, "D-Glucose", "D-glucosa"), false);
   assert.equal(verifiedPubChemRecordTitleEquivalent(glucoseIdentity, "Another title", "D-glucosa"), false);
+  assert.deepEqual(verifiedPubChemAlternativeSynonyms(glucoseIdentity, ["D-glucose", "dextrose", "Tylenol", "50-99-7", "CID 5793"]), ["D-glucose", "Dextrose"]);
+  assert.deepEqual(verifiedPubChemAlternativeSynonyms({ ...glucoseIdentity, inchiKey: "OTHER-STEREO-KEY" }, ["Dextrose"]), []);
+  assert.deepEqual(verifiedPubChemAlternativeSynonyms({ ...glucoseIdentity, cid: 100 }, ["Dextrose"]), []);
+});
+
+test("priority bilingual common names are accepted only for their exact PubChem structure identity", () => {
+  const records = [
+    [681, "VYFYYTLLBUKUHU-UHFFFAOYSA-N", "Dopamina", "Dopamine"],
+    [3345, "PJMPHNIQZUBGLI-UHFFFAOYSA-N", "Fentanilo", "Fentanyl"],
+    [5816, "UCTWMZQNUQWSLP-VIFPVBQESA-N", "Adrenalina", "Epinephrine"],
+    [439260, "SFLSHLFXELFNJZ-QMMMGPOBSA-N", "Noradrenalina", "Norepinephrine"],
+    [5202, "QZAYGJVTTNCVMB-UHFFFAOYSA-N", "Serotonina", "Serotonin"],
+    [1983, "RZVAJINKPMORJF-UHFFFAOYSA-N", "Paracetamol", "Acetaminophen"],
+    [2244, "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", "Aspirina", "Aspirin"],
+    [3672, "HEFNNWSXXWATRW-UHFFFAOYSA-N", "Ibuprofeno", "Ibuprofen"],
+    [180, "CSCPPACGZOOCGX-UHFFFAOYSA-N", "Acetona", "Acetone"],
+    [2519, "RYYVLZVUVIJVGH-UHFFFAOYSA-N", "Cafeína", "Caffeine"],
+    [3676, "NNJVILVZKWQKPM-UHFFFAOYSA-N", "Lidocaína", "Lidocaine"],
+    [1183, "MWOOGOJBHIARFG-UHFFFAOYSA-N", "Vainillina", "Vanillin"],
+    [753, "PEDCQBHIVMGVHV-UHFFFAOYSA-N", "Glicerina", "Glycerol"],
+    [5280343, "REFJWTPEDVJJIY-UHFFFAOYSA-N", "Quercetina", "Quercetin"],
+    [5280961, "TZBJGXHYKVUXJN-UHFFFAOYSA-N", "Genisteína", "Genistein"],
+    [750, "DHMQDGOQFOQNFH-UHFFFAOYSA-N", "Glicina", "Glycine"],
+    [5950, "QNAYBMKLOCPYGJ-REOHCLBHSA-N", "L-alanina", "L-Alanine"],
+    [6057, "OUYCCCASQSFEME-QMMMGPOBSA-N", "L-tirosina", "L-Tyrosine"],
+    [6106, "ROHFNLRQFUQHCH-YFKPBYRVSA-N", "L-leucina", "L-Leucine"],
+    [564, "SLXKOJJOQWFEFD-UHFFFAOYSA-N", "Ácido aminocaproico", "Aminocaproic acid"],
+  ];
+  for (const [cid, inchiKey, spanish, english] of records) {
+    const identity = { cid, inchiKey };
+    assert.equal(verifiedPubChemCommonName(identity, "es"), spanish, `${cid} Spanish common name`);
+    assert.equal(verifiedPubChemCommonName(identity, "en"), english, `${cid} English common name`);
+    assert.equal(verifiedPubChemCommonName({ cid, inchiKey: "WRONG-STEREO-IDENTITY" }, "es"), null,
+      `${cid} does not leak a common name to a different stereochemical structure`);
+  }
+  assert.equal(records.length, 20);
 });
 
 test("TNT aliases and localized systematic text require exact CID and InChIKey", () => {

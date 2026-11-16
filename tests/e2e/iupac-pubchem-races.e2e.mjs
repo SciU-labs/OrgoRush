@@ -68,6 +68,10 @@ test('PubChem responses remain identity- and language-safe through races, errors
         return route.fulfill({ status: 200, contentType: 'application/json',
           headers: { 'access-control-allow-origin': '*' }, body: '{}' });
       }
+      if (url.pathname.includes('/synonyms/')) {
+        return route.fulfill({ status: 200, contentType: 'application/json',
+          headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ InformationList: { Information: [{ Synonym: [] }] } }) });
+      }
       const entry = { url: url.href, released: false };
       entry.release = async (body) => {
         if (entry.released) return;

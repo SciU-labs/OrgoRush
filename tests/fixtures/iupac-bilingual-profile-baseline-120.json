@@ -1,0 +1,4815 @@
+{
+  "schema_version": 1,
+  "description": "Pre-consolidation generated-name availability snapshot. 2013 English uses the identity-matched PubChem IUPACName field; identity match does not establish PIN. 1979 outputs are local engine results and have not yet been independently re-audited for normative correctness.",
+  "baseline_commit": "1823041c718129a77704c40b24c4dbff76801969",
+  "recorded_on": "2026-11-16",
+  "total_combinations": 480,
+  "coverage": {
+    "2013-es": 120,
+    "2013-en": 120,
+    "1979-es": 70,
+    "1979-en": 92
+  },
+  "compounds": [
+    {
+      "cid": 297,
+      "title": "Methane",
+      "priority": "P1",
+      "smiles": "C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "metano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6324,
+      "title": "Ethane",
+      "priority": "P1",
+      "smiles": "CC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6334,
+      "title": "Propane",
+      "priority": "P1",
+      "smiles": "CCC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "propane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "propano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "propane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "propano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7843,
+      "title": "Butane",
+      "priority": "P1",
+      "smiles": "CCCC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "butane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "butano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "butane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "butano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6360,
+      "title": "Isobutane",
+      "priority": "P1",
+      "smiles": "CC(C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-methylpropane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-metilpropano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-methylpropane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-metilpropano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6325,
+      "title": "Ethylene",
+      "priority": "P1",
+      "smiles": "C=C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-ethene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "eteno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6326,
+      "title": "Acetylene",
+      "priority": "P1",
+      "smiles": "C#C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-ethyne",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "acetylene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etino",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8078,
+      "title": "Cyclohexane",
+      "priority": "P1",
+      "smiles": "C1CCCCC1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "cyclohexane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ciclohexano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "cyclohexane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ciclohexano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 241,
+      "title": "Benzene",
+      "priority": "P1",
+      "smiles": "C1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1140,
+      "title": "Toluene",
+      "priority": "P1",
+      "smiles": "CC1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methylbenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "metilbenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "toluene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metilbenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 702,
+      "title": "Ethanol",
+      "priority": "P1",
+      "smiles": "CCO",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethanol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etanol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3776,
+      "title": "Isopropanol",
+      "priority": "P1",
+      "smiles": "CC(C)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-propanol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-propanol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "propan-2-ol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "propan-2-ol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 174,
+      "title": "Ethylene Glycol",
+      "priority": "P1",
+      "smiles": "C(CO)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,2-ethanediol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "1,2-etanodiol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethane-1,2-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etano-1,2-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 753,
+      "title": "Glycerol",
+      "priority": "P1",
+      "smiles": "C(C(CO)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,2,3-propanetriol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "1,2,3-propanotriol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "propane-1,2,3-triol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "propano-1,2,3-triol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 996,
+      "title": "Phenol",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "phenol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "fenol",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "phenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "fenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 289,
+      "title": "Catechol",
+      "priority": "P0",
+      "smiles": "C1=CC=C(C(=C1)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzene-1,2-diol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "semantic-model-does-not-prove-complete-graph"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzene-1,2-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benceno-1,2-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5054,
+      "title": "Resorcinol",
+      "priority": "P0",
+      "smiles": "C1=CC(=CC(=C1)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzene-1,3-diol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "semantic-model-does-not-prove-complete-graph"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzene-1,3-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benceno-1,3-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 785,
+      "title": "Hydroquinone",
+      "priority": "P0",
+      "smiles": "C1=CC(=CC=C1O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzene-1,4-diol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "semantic-model-does-not-prove-complete-graph"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzene-1,4-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benceno-1,4-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 244,
+      "title": "Benzyl Alcohol",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)CO",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-phenylmethanol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "fenilmetanol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "phenylmethanol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "fenilmetanol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7966,
+      "title": "Cyclohexanol",
+      "priority": "P1",
+      "smiles": "C1CCC(CC1)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "cyclohexanol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ciclohexanol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "cyclohexanol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ciclohexanol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7519,
+      "title": "Anisole",
+      "priority": "P1",
+      "smiles": "COC1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methoxybenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "metoxibenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "anisole",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metoxibenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3314,
+      "title": "Eugenol",
+      "priority": "P1",
+      "smiles": "COC1=C(C=CC(=C1)CC=C)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-methoxy-4-(2-propenyl)phenol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-metoxi-4-(2-propenil)fenol",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-methoxy-4-prop-2-enylphenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-metoxi-4-(prop-2-enil)fenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 460,
+      "title": "Guaiacol",
+      "priority": "P1",
+      "smiles": "COC1=CC=CC=C1O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-methoxyphenol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-metoxifenol",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-methoxyphenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-metoxifenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8254,
+      "title": "Dimethyl Ether",
+      "priority": "P1",
+      "smiles": "COC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-methoxymethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methoxymethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metoximetano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3283,
+      "title": "Diethyl Ether",
+      "priority": "P1",
+      "smiles": "CCOCC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-ethoxyethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethoxyethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etoxietano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 712,
+      "title": "Formaldehyde",
+      "priority": "P1",
+      "smiles": "C=O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methanal",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "metanal",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "formaldehyde",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metanal",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 177,
+      "title": "Acetaldehyde",
+      "priority": "P1",
+      "smiles": "CC=O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanal",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanal",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "acetaldehyde",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etanal",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 240,
+      "title": "Benzaldehyde",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)C=O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzaldehyde",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benzaldehído",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzaldehyde",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benzaldehído",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 637511,
+      "title": "Cinnamaldehyde",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)/C=C/C=O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "(2E)-3-phenyl-2-propenal",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(E)-3-phenylprop-2-enal",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "(E)-3-fenilprop-2-enal",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1183,
+      "title": "Vanillin",
+      "priority": "P0",
+      "smiles": "COC1=C(C=CC(=C1)C=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "4-hydroxy-3-methoxybenzaldehyde",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "4-hidroxi-3-metoxibenzaldehído",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-hydroxy-3-methoxybenzaldehyde",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-hidroxi-3-metoxibenzaldehído",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 180,
+      "title": "Acetone",
+      "priority": "P1",
+      "smiles": "CC(=O)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "propanone",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "propanona",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "propan-2-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "propan-2-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6569,
+      "title": "Methyl Ethyl Ketone",
+      "priority": "P1",
+      "smiles": "CCC(=O)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-butanone",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-butanona",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "butan-2-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "butan-2-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7967,
+      "title": "Cyclohexanone",
+      "priority": "P1",
+      "smiles": "C1CCC(=O)CC1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "cyclohexanone",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ciclohexanona",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "cyclohexanone",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ciclohexanona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7410,
+      "title": "Acetophenone",
+      "priority": "P1",
+      "smiles": "CC(=O)C1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-phenyl-1-ethanone",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "1-fenil-1-etanona",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "1-phenylethanone",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "1-feniletanona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3102,
+      "title": "Benzophenone",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)C(=O)C2=CC=CC=C2",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "diphenylmethanone",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "difenilmetanona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 176,
+      "title": "Acetic Acid",
+      "priority": "P1",
+      "smiles": "CC(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido etanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "acetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido acético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 243,
+      "title": "Benzoic Acid",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido benzoico",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido benzoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 612,
+      "title": "Lactic Acid",
+      "priority": "P1",
+      "smiles": "CC(C(=O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-hydroxypropanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-hidroxipropanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-hydroxypropanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-hidroxipropanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 338,
+      "title": "Salicylic Acid",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C(=C1)C(=O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-hydroxybenzoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-hidroxibenzoico",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-hydroxybenzoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-hidroxibenzoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 525,
+      "title": "Malic Acid",
+      "priority": "P1",
+      "smiles": "C(C(C(=O)O)O)C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-hydroxybutanedioic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-hydroxybutanedioic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-hidroxibutanodioico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 311,
+      "title": "Citric Acid",
+      "priority": "P1",
+      "smiles": "C(C(=O)O)C(CC(=O)O)(C(=O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-hydroxypropane-1,2,3-tricarboxylic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-hidroxipropano-1,2,3-tricarboxílico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 2244,
+      "title": "Aspirin",
+      "priority": "P0",
+      "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-acetyloxybenzoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-acetiloxibenzoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3672,
+      "title": "Ibuprofen, (+-)-",
+      "priority": "P0",
+      "smiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-[4-(2-methylpropyl)phenyl]propanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-[4-(2-metilpropil)fenil]propanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5281,
+      "title": "Stearic Acid",
+      "priority": "P1",
+      "smiles": "CCCCCCCCCCCCCCCCCC(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "octadecanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido octadecanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "octadecanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido octadecanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8468,
+      "title": "Vanillic Acid",
+      "priority": "P1",
+      "smiles": "COC1=C(C=CC(=C1)C(=O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "4-hydroxy-3-methoxybenzoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 4-hidroxi-3-metoxibenzoico",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-hydroxy-3-methoxybenzoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 4-hidroxi-3-metoxibenzoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 300,
+      "title": "Chloroacetic Acid",
+      "priority": "P1",
+      "smiles": "C(C(=O)O)Cl",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-chloroethanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-cloroetanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-chloroacetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-cloroacético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1486,
+      "title": "(2,4-Dichlorophenoxy)Acetic Acid",
+      "priority": "P1",
+      "smiles": "C1=CC(=C(C=C1Cl)Cl)OCC(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(2,4-dichlorophenoxy)acetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-(2,4-diclorofenoxi)acético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5280934,
+      "title": "Linolenic Acid",
+      "priority": "P1",
+      "smiles": "CC/C=C\\C/C=C\\C/C=C\\CCCCCCCC(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "(9Z,12Z,15Z)-9,12,15-octadecatrienoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(9Z,12Z,15Z)-octadeca-9,12,15-trienoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido (9Z,12Z,15Z)-octadeca-9,12,15-trienoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8857,
+      "title": "Ethyl Acetate",
+      "priority": "P1",
+      "smiles": "CCOC(=O)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethyl ethanoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanoato de etilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethyl acetate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "acetato de etilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 4133,
+      "title": "Methyl Salicylate",
+      "priority": "P0",
+      "smiles": "COC(=O)C1=CC=CC=C1O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methyl 2-hydroxybenzoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-hidroxibenzoato de metilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methyl 2-hydroxybenzoate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-hidroxibenzoato de metilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7150,
+      "title": "Methyl Benzoate",
+      "priority": "P1",
+      "smiles": "COC(=O)C1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methyl benzoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benzoato de metilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methyl benzoate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benzoato de metilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 31276,
+      "title": "Isoamyl Acetate",
+      "priority": "P1",
+      "smiles": "CC(C)CCOC(=O)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "3-methylbutyl ethanoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "3-methylbutyl acetate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "acetato de 3-metilbutilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6584,
+      "title": "Methyl Acetate",
+      "priority": "P0",
+      "smiles": "CC(=O)OC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methyl ethanoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanoato de metilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methyl acetate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "acetato de metilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 11124,
+      "title": "Methyl propionate",
+      "priority": "P1",
+      "smiles": "CCC(=O)OC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methyl propanoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "propanoato de metilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methyl propanoate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "propanoato de metilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7165,
+      "title": "Ethyl benzoate",
+      "priority": "P1",
+      "smiles": "CCOC(=O)C1=CC=CC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethyl benzoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benzoato de etilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethyl benzoate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benzoato de etilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7764,
+      "title": "Ethyl cyanoacetate",
+      "priority": "P0",
+      "smiles": "CCOC(=O)CC#N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethyl 3-cyanopropanoate",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethyl 2-cyanoacetate",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-cianoacetato de etilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6115,
+      "title": "Aniline",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "aniline",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "anilina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "aniline",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "anilina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6329,
+      "title": "Methylamine",
+      "priority": "P1",
+      "smiles": "CN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "methanamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "metanamina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "methanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "metanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6341,
+      "title": "Ethylamine",
+      "priority": "P1",
+      "smiles": "CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanamina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "ethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "etanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1001,
+      "title": "Phenethylamine",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-phenylethanamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-amine-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-phenylethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-feniletanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5610,
+      "title": "Tyramine",
+      "priority": "P0",
+      "smiles": "C1=CC(=CC=C1CCN)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-(2-aminoethyl)phenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-(2-aminoetil)fenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1045,
+      "title": "Putrescine",
+      "priority": "P1",
+      "smiles": "C(CCN)CN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,4-butanediamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "1,4-butanodiamina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "butane-1,4-diamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "butano-1,4-diamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 681,
+      "title": "Dopamine",
+      "priority": "P0",
+      "smiles": "C1=CC(=C(C=C1CCN)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-(2-aminoethyl)benzene-1,2-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-(2-aminoetil)benceno-1,2-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 439260,
+      "title": "Norepinephrine",
+      "priority": "P0",
+      "smiles": "C1=CC(=C(C=C1[C@H](CN)O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-[(1R)-2-amino-1-hydroxyethyl]benzene-1,2-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-[(1R)-2-amino-1-hidroxietil]benceno-1,2-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5816,
+      "title": "Epinephrine",
+      "priority": "P0",
+      "smiles": "CNC[C@@H](C1=CC(=C(C=C1)O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-[(1R)-1-hydroxy-2-(methylamino)ethyl]benzene-1,2-diol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-[(1R)-1-hidroxi-2-(metilamino)etil]benceno-1,2-diol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 674,
+      "title": "Dimethylamine",
+      "priority": "P0",
+      "smiles": "CNC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "N-methylmethanamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-amine-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N-methylmethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N-metilmetanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1146,
+      "title": "Trimethylamine",
+      "priority": "P0",
+      "smiles": "CN(C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "N,N-dimethylmethanamine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-amine-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N,N-dimethylmethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N,N-dimetilmetanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 178,
+      "title": "Acetamide",
+      "priority": "P1",
+      "smiles": "CC(=O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanamide",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanamida",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "acetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "acetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 2331,
+      "title": "Benzamide",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)C(=O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzenecarboxamide",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benzamida",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benzamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1983,
+      "title": "Acetaminophen",
+      "priority": "P0",
+      "smiles": "CC(=O)NC1=CC=C(C=C1)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N-(4-hydroxyphenyl)acetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N-(4-hidroxifenil)acetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3676,
+      "title": "Lidocaine",
+      "priority": "P0",
+      "smiles": "CCN(CC)CC(=O)NC1=C(C=CC=C1C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(diethylamino)-N-(2,6-dimethylphenyl)acetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-(dietilamino)-N-(2,6-dimetilfenil)acetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3345,
+      "title": "Fentanyl",
+      "priority": "P0",
+      "smiles": "CCC(=O)N(C1CCN(CC1)CCC2=CC=CC=C2)C3=CC=CC=C3",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "ring-assembly-grammar-not-implemented"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N-phenyl-N-[1-(2-phenylethyl)piperidin-4-yl]propanamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N-fenil-N-[1-(2-feniletil)piperidin-4-il]propanamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5959,
+      "title": "Chloramphenicol",
+      "priority": "P0",
+      "smiles": "C1=CC(=CC=C1[C@H]([C@@H](CO)NC(=O)C(Cl)Cl)O)[N+](=O)[O-]",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2,2-dichloro-N-[(1R,2R)-1,3-dihydroxy-1-(4-nitrophenyl)propan-2-yl]acetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2,2-dicloro-N-[(1R,2R)-1,3-dihidroxi-1-(4-nitrofenil)propan-2-il]acetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6582,
+      "title": "N-Methylacetamide",
+      "priority": "P0",
+      "smiles": "CC(=O)NC",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "N-methylethanamide",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N-methylacetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N-metilacetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 31374,
+      "title": "Dimethylacetamide",
+      "priority": "P0",
+      "smiles": "CC(=O)N(C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "N,N-dimethylethanamide",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N,N-dimethylacetamide",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N,N-dimetilacetamida",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6342,
+      "title": "Acetonitrile",
+      "priority": "P1",
+      "smiles": "CC#N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "ethanenitrile",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "etanonitrilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "acetonitrile",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "acetonitrilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7505,
+      "title": "Benzonitrile",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)C#N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "benzonitrile",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "benzonitrilo",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "benzonitrile",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "benzonitrilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7855,
+      "title": "Acrylonitrile",
+      "priority": "P1",
+      "smiles": "C=CC#N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-propenenitrile",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "prop-2-enenitrile",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "prop-2-enenitrilo",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 9740,
+      "title": "Cyanoacetic acid",
+      "priority": "P0",
+      "smiles": "C(C#N)C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "3-cyanopropanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 3-cianopropanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-cyanoacetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-cianoacético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7416,
+      "title": "Nitrobenzene",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)[N+](=O)[O-]",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "nitrobenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "nitrobenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "nitrobenzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "nitrobenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6375,
+      "title": "Nitromethane",
+      "priority": "P1",
+      "smiles": "C[N+](=O)[O-]",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-nitromethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "nitromethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "nitrometano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 980,
+      "title": "4-Nitrophenol",
+      "priority": "P1",
+      "smiles": "C1=CC(=CC=C1[N+](=O)[O-])O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "4-nitrophenol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "4-nitrofenol",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-nitrophenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-nitrofenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6947,
+      "title": "2-Nitrophenol",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C(=C1)[N+](=O)[O-])O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-nitrophenol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-nitrofenol",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-nitrophenol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-nitrofenol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7423,
+      "title": "3-Nitroaniline",
+      "priority": "P1",
+      "smiles": "C1=CC(=CC(=C1)[N+](=O)[O-])N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "3-nitroaniline",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "3-nitroanilina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "3-nitroaniline",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "3-nitroanilina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6946,
+      "title": "2-Nitroaniline",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C(=C1)N)[N+](=O)[O-]",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-nitroaniline",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-nitroanilina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-nitroaniline",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-nitroanilina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7475,
+      "title": "4-Nitroaniline",
+      "priority": "P1",
+      "smiles": "C1=CC(=CC=C1N)[N+](=O)[O-]",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "4-nitroaniline",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "4-nitroanilina",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-nitroaniline",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-nitroanilina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7964,
+      "title": "Chlorobenzene",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)Cl",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "chlorobenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "clorobenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "chlorobenzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "clorobenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 7961,
+      "title": "Bromobenzene",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)Br",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "bromobenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "bromobenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "bromobenzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "bromobenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 10008,
+      "title": "Fluorobenzene",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)F",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "fluorobenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "fluorobenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "fluorobenzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "fluorobenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 11575,
+      "title": "Iodobenzene",
+      "priority": "P1",
+      "smiles": "C1=CC=C(C=C1)I",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "iodobenzene",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "yodobenceno",
+            "category": "systematic-1979",
+            "source": "verified-legacy-translation",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "iodobenzene",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "yodobenceno",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6212,
+      "title": "Chloroform",
+      "priority": "P1",
+      "smiles": "C(Cl)(Cl)Cl",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,1,1-trichloromethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "chloroform",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "triclorometano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6344,
+      "title": "Dichloromethane",
+      "priority": "P1",
+      "smiles": "C(Cl)Cl",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,1-dichloromethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "dichloromethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "diclorometano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5943,
+      "title": "Carbon Tetrachloride",
+      "priority": "P1",
+      "smiles": "C(Cl)(Cl)(Cl)Cl",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1,1,1,1-tetrachloromethane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "aliphatic-functional-model-does-not-prove-complete-graph-and-numbering"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "tetrachloromethane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "tetraclorometano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6358,
+      "title": "2-Bromopropane",
+      "priority": "P1",
+      "smiles": "CC(C)Br",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-bromopropane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-bromopropano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-bromopropane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-bromopropano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 9998,
+      "title": "Propane, 1-fluoro-",
+      "priority": "P1",
+      "smiles": "CCCF",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "1-fluoropropane",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "1-fluoropropano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "1-fluoropropane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "1-fluoropropano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 34,
+      "title": "2-Chloroethanol",
+      "priority": "P1",
+      "smiles": "C(CCl)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-chloroethanol",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "2-cloroetanol",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-chloroethanol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-cloroetanol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 750,
+      "title": "Glycine",
+      "priority": "P0",
+      "smiles": "C(C(=O)O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-aminoethanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-aminoetanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-aminoacetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-aminoacético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5950,
+      "title": "L-Alanine",
+      "priority": "P0",
+      "smiles": "C[C@@H](C(=O)O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-aminopropanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-aminopropanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(2S)-2-aminopropanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido (2S)-2-aminopropanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 564,
+      "title": "6-Aminohexanoic Acid",
+      "priority": "P1",
+      "smiles": "C(CCC(=O)O)CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "6-aminohexanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 6-aminohexanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "6-aminohexanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 6-aminohexanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6057,
+      "title": "L-Tyrosine",
+      "priority": "P0",
+      "smiles": "C1=CC(=CC=C1C[C@@H](C(=O)O)N)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(2S)-2-amino-3-(4-hydroxyphenyl)propanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido (2S)-2-amino-3-(4-hidroxifenil)propanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6106,
+      "title": "L-Leucine",
+      "priority": "P1",
+      "smiles": "CC(C)C[C@@H](C(=O)O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "2-amino-4-methylpentanoic acid",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "ácido 2-amino-4-metilpentanoico",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(2S)-2-amino-4-methylpentanoic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido (2S)-2-amino-4-metilpentanoico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5202,
+      "title": "Serotonin",
+      "priority": "P2",
+      "smiles": "C1=CC2=C(C=C1O)C(=CN2)CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "heterocyclic-parent"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "3-(2-aminoethyl)-1H-indol-5-ol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "3-(2-aminoetil)-1H-indol-5-ol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 774,
+      "title": "Histamine",
+      "priority": "P2",
+      "smiles": "C1=C(NC=N1)CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(1H-imidazol-5-yl)ethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-(1H-imidazol-5-il)etanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1150,
+      "title": "Tryptamine",
+      "priority": "P2",
+      "smiles": "C1=CC=C2C(=C1)C(=CN2)CCN",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "heterocyclic-parent"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(1H-indol-3-yl)ethanamine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-(1H-indol-3-il)etanamina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 2519,
+      "title": "Caffeine",
+      "priority": "P2",
+      "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "heterocyclic-parent"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "1,3,7-trimethylpurine-2,6-dione",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "1,3,7-trimetilpurina-2,6-diona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5793,
+      "title": "D-Glucose",
+      "priority": "P2",
+      "smiles": "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "(3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "(3R,4S,5S,6R)-6-(hidroximetil)oxano-2,3,4,5-tetrol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1049,
+      "title": "Pyridine",
+      "priority": "P0",
+      "smiles": "C1=CC=NC=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "pyridine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "piridina",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "pyridine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "piridina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1048,
+      "title": "Pyrazole",
+      "priority": "P2",
+      "smiles": "C1=CNN=C1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "1H-pyrazole",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "1H-pirazol",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1047,
+      "title": "2-Pyrazinecarboxylic acid",
+      "priority": "P2",
+      "smiles": "C1=CN=C(C=N1)C(=O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "pyrazine-2-carboxylic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido pirazina-2-carboxílico",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5280343,
+      "title": "Quercetin",
+      "priority": "P2",
+      "smiles": "C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "ring-assembly-grammar-not-implemented"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(3,4-dihydroxyphenyl)-3,5,7-trihydroxychromen-4-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-(3,4-dihidroxifenil)-3,5,7-trihidroxicromen-4-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 5280961,
+      "title": "Genistein",
+      "priority": "P2",
+      "smiles": "C1=CC(=CC=C1C2=COC3=CC(=CC(=C3C2=O)O)O)O",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "ring-assembly-grammar-not-implemented"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "5,7-dihydroxy-3-(4-hydroxyphenyl)chromen-4-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "5,7-dihidroxi-3-(4-hidroxifenil)cromen-4-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3559,
+      "title": "Haloperidol",
+      "priority": "P0",
+      "smiles": "C1CN(CCC1(C2=CC=C(C=C2)Cl)O)CCCC(=O)C3=CC=C(C=C3)F",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "ring-assembly-grammar-not-implemented"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "4-[4-(4-chlorophenyl)-4-hydroxypiperidin-1-yl]-1-(4-fluorophenyl)butan-1-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "4-[4-(4-clorofenil)-4-hidroxipiperidin-1-il]-1-(4-fluorofenil)butan-1-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 3386,
+      "title": "Fluoxetine",
+      "priority": "P0",
+      "smiles": "CNCCC(C1=CC=CC=C1)OC2=CC=C(C=C2)C(F)(F)F",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "N-methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "N-metil-3-fenil-3-[4-(trifluorometil)fenoxi]propan-1-amina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 444,
+      "title": "Bupropion",
+      "priority": "P0",
+      "smiles": "CC(C(=O)C1=CC(=CC=C1)Cl)NC(C)(C)C",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "The local naming grammar cannot represent the requested structure safely."
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-(tert-butylamino)-1-(3-chlorophenyl)propan-1-one",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "2-(terc-butilamino)-1-(3-clorofenil)propan-1-ona",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 1233,
+      "title": "Ibotenic Acid",
+      "priority": "P2",
+      "smiles": "C1=C(ONC1=O)C(C(=O)O)N",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "legacy-profile-not-supported"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "2-amino-2-(3-oxo-1,2-oxazol-5-yl)acetic acid",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "ácido 2-amino-2-(3-oxo-1,2-oxazol-5-il)acético",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 6040,
+      "title": "Piperoxan",
+      "priority": "P2",
+      "smiles": "C1CCN(CC1)CC2COC3=CC=CC=C3O2",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "unsupported",
+            "reason": "ring-assembly-grammar-not-implemented"
+          },
+          "es": {
+            "text": null,
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "unsupported",
+            "reason": "chemical-safety-gate"
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "1-(2,3-dihydro-1,4-benzodioxin-3-ylmethyl)piperidine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "1-(2,3-dihidro-1,4-benzodioxin-3-ilmetil)piperidina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8082,
+      "title": "Piperidine",
+      "priority": "P0",
+      "smiles": "C1CCNCC1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "piperidine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "piperidina",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "piperidine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "piperidina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 31268,
+      "title": "Pyrrolidine",
+      "priority": "P0",
+      "smiles": "C1CCNC1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "pyrrolidine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "pirrolidina",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "pyrrolidine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "pirrolidina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8083,
+      "title": "Morpholine",
+      "priority": "P0",
+      "smiles": "C1COCCN1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "morpholine",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "morfolina",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "morpholine",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "morfolina",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    },
+    {
+      "cid": 8028,
+      "title": "Tetrahydrofuran",
+      "priority": "P0",
+      "smiles": "C1CCOC1",
+      "profiles": {
+        "1979": {
+          "en": {
+            "text": "tetrahydrofuran",
+            "category": "systematic-1979",
+            "source": "local-legacy-engine",
+            "status": "generated",
+            "reason": null
+          },
+          "es": {
+            "text": "tetrahidrofurano",
+            "category": "systematic-1979",
+            "source": "local-spanish-legacy",
+            "status": "generated",
+            "reason": null
+          }
+        },
+        "2013": {
+          "en": {
+            "text": "oxolane",
+            "category": "systematic-2013",
+            "source": "PubChem IUPACName",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          },
+          "es": {
+            "text": "oxolano",
+            "category": "systematic-2013",
+            "source": "compositional-localizer",
+            "identityVerified": true,
+            "pinStatus": "not-verified"
+          }
+        }
+      }
+    }
+  ]
+}

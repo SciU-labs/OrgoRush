@@ -205,7 +205,7 @@ import {
   toSerializedPortableStructureV2,
 } from "./chemistry-document-validation";
 import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry";
-import { verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
+import { verifiedPubChemAlternativeSynonyms, verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
 import { resolveLegacySpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
@@ -241,6 +241,7 @@ import {
   createCompoundContextResolver,
   type CompoundContext,
 } from "./compound-context";
+import { chemicalNameRecord, isVerifiedRetainedName, pubChemAlternativeSynonymRecords } from "./chemical-name-records";
 import { externalInfoUnavailableReason, preferredExternalInfoSource, shouldShowExternalInfo } from "./external-info-state";
 import {
   type FormulaIsomer,
@@ -304,6 +305,28 @@ const DEFAULT_STRUCTURE_COLORS = {
 const MIN_EXPORT_PIXELS = 200;
 const MAX_EXPORT_PIXELS = 8000;
 const compoundContextResolver = createCompoundContextResolver();
+
+function mergeCompoundContext(previous: CompoundContext | null, incoming: CompoundContext): CompoundContext {
+  if (!previous
+    || previous.identityKey !== incoming.identityKey
+    || previous.language !== incoming.language) return incoming;
+  const previousPubchem = previous.pubchem;
+  const incomingPubchem = incoming.pubchem;
+  if (!previousPubchem || !incomingPubchem || previousPubchem.cid !== incomingPubchem.cid) {
+    return { ...previous, ...incoming };
+  }
+  return {
+    ...previous,
+    ...incoming,
+    pubchem: {
+      ...previousPubchem,
+      ...incomingPubchem,
+      ...(previousPubchem.synonyms?.length && !incomingPubchem.synonyms?.length
+        ? { synonyms: previousPubchem.synonyms }
+        : {}),
+    },
+  };
+}
 const PANEL_STORAGE_KEY = "hydrocarbonLab.panelPositions.v1";
 const PANEL_DRAG_ENABLED_STORAGE_KEY = "hydrocarbonLab.panelDragEnabled.v2";
 const SKELETAL_HINT_DISMISSED_STORAGE_KEY = "hydrocarbonLab.skeletalHintDismissed.v1";
@@ -8678,11 +8701,55 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? verifiedPubChemCommonName(namingPubChemIdentity, language)
     : null;
   const commonNameToPresent = verifiedExternalCommonName ?? verifiedLocalCommonName;
+  const commonNameRecord = commonNameToPresent ? chemicalNameRecord({
+    name: commonNameToPresent,
+    category: "common",
+    language,
+    profile: null,
+    source: verifiedExternalCommonName ? "PubChem identity-pinned equivalence" : "OrgoRush graph-linked alias",
+    verification: verifiedExternalCommonName ? "exact-identity" : "local-graph-generation",
+    pinStatus: "not-applicable",
+  }) : null;
+  const currentSystematicNameRecord = chemicalNameRecord({
+    name: externalNameSource ?? suggestedName,
+    category: isVerifiedRetainedName(externalNameSource ?? suggestedName, language, "IUPAC 2013") ? "retained" : "systematic-iupac-2013",
+    language: language === "es" && !externalNameHasSpanishDisplay && externalNameSource ? "en" : language,
+    profile: "IUPAC 2013",
+    source: isVerifiedRetainedName(externalNameSource ?? suggestedName, language, "IUPAC 2013")
+      ? "IUPAC Blue Book retained-name example + OrgoRush graph"
+      : displayedCompositionalExternalName
+      ? "PubChem IUPACName + OrgoRush compositional localization"
+      : externalNameIsPrimary ? "PubChem IUPACName" : "OrgoRush local structure engine",
+    verification: displayedCompositionalExternalName ? "structure-roundtrip"
+      : externalNameIsPrimary ? "exact-identity" : "local-graph-generation",
+    pinStatus: "not-verified",
+  });
+  const legacySystematicNameRecord = legacyDisplay.available ? chemicalNameRecord({
+    name: legacyDisplay.name,
+    category: isVerifiedRetainedName(legacyDisplay.name, language, "IUPAC 1979") ? "retained" : "systematic-iupac-1979",
+    language,
+    profile: "IUPAC 1979",
+    source: isVerifiedRetainedName(legacyDisplay.name, language, "IUPAC 1979")
+      ? legacyDisplay.name === (language === "en" ? "ethylene" : "etileno")
+        ? "IUPAC 1979 Rule A-3.1 retained name"
+        : "IUPAC 1979 Rule A-3.2 retained name"
+      : "OrgoRush IUPAC 1979 legacy engine",
+    verification: isVerifiedRetainedName(legacyDisplay.name, language, "IUPAC 1979") ? "structure-roundtrip" : "local-graph-generation",
+    pinStatus: isVerifiedRetainedName(legacyDisplay.name, language, "IUPAC 1979") ? "not-applicable" : "not-verified",
+  }) : null;
+  const alternativeSynonymRecords = currentCompoundContext?.pubchem
+    ? pubChemAlternativeSynonymRecords(verifiedPubChemAlternativeSynonyms(
+      { cid: currentCompoundContext.pubchem.cid, inchiKey: currentCompoundContext.pubchem.inchiKey },
+      currentCompoundContext.pubchem.synonyms ?? [],
+    ), currentCompoundContext.pubchem.cid)
+    : [];
   const visibleCommonName = commonNameToPresent
     && normalizeNomenclatureDisplayName(displayedIupacName) !== normalizeNomenclatureDisplayName(commonNameToPresent)
     ? commonNameToPresent
     : null;
-  const commonNameLabel = language === "en" ? "Also known as:" : "También conocido como:";
+  const commonNameLabel = commonNameRecord?.verification === "exact-identity"
+    ? language === "en" ? "Common name · PubChem identity verified:" : "Nombre común · identidad verificada en PubChem:"
+    : language === "en" ? "Common name · linked to the active graph:" : "Nombre común · asociado al grafo activo:";
   const pubChemRecordTitle = currentCompoundContext?.pubchem?.recordTitle;
   const titleIdentity = namingPubChemIdentity ?? (currentCompoundContext?.pubchem
     ? { cid: currentCompoundContext.pubchem.cid, inchiKey: currentCompoundContext.pubchem.inchiKey }
@@ -8779,10 +8846,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         ...compoundIdentity,
         names: compoundLookupNamesRef.current,
       }, language, controller.signal, (context) => {
-        if (!controller.signal.aborted) setCompoundContext(context);
+        if (!controller.signal.aborted) {
+          setCompoundContext((current) => mergeCompoundContext(current, context));
+        }
       })
         .then((context) => {
-          if (!controller.signal.aborted) setCompoundContext(context);
+          if (!controller.signal.aborted) {
+            setCompoundContext((current) => mergeCompoundContext(current, context));
+          }
         })
         .catch(() => {
           if (!controller.signal.aborted) {
@@ -15851,12 +15922,24 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                     ].filter(Boolean).join(" · ")}</strong>
                   </p>
                 )}
-                {displayedCompositionalExternalName && (
+                {activeNomenclatureConvention === "current" && currentSystematicNameRecord && (
                   <p className="iupac-dock-origin">
-                    <span>{language === "en" ? "Compositional localization" : "Localización composicional"}</span>
-                    <strong>{language === "en"
-                      ? "PubChem name and structure match confirmed; preferred PIN status not verified."
-                      : "Nombre y estructura de PubChem coinciden; la condición de PIN preferido no está verificada."}</strong>
+                    <span>{currentSystematicNameRecord.category === "retained"
+                      ? language === "en" ? "Retained IUPAC name · Blue Book 2013+" : "Nombre retenido por IUPAC · Libro Azul 2013+"
+                      : language === "en" ? "Systematic IUPAC name · Blue Book 2013+" : "Nombre IUPAC sistemático · Libro Azul 2013+"}</span>
+                    <strong>{currentSystematicNameRecord.source} · {currentSystematicNameRecord.verification === "structure-roundtrip"
+                      ? language === "en" ? "molecular graph round-trip verified" : "equivalencia del grafo molecular verificada"
+                      : currentSystematicNameRecord.verification === "exact-identity"
+                        ? language === "en" ? "PubChem structure identity confirmed" : "identidad estructural de PubChem confirmada"
+                        : language === "en" ? "generated from the active molecular graph" : "generado desde el grafo molecular activo"}. {language === "en" ? "PIN status not verified." : "Condición de PIN no verificada."}</strong>
+                  </p>
+                )}
+                {activeNomenclatureConvention !== "current" && legacySystematicNameRecord && (
+                  <p className="iupac-dock-origin">
+                    <span>{legacySystematicNameRecord.category === "retained"
+                      ? language === "en" ? "Retained IUPAC name · 1979 Recommendations" : "Nombre retenido por IUPAC · Recomendaciones de 1979"
+                      : language === "en" ? "Systematic IUPAC name · 1979 Recommendations" : "Nombre IUPAC sistemático · Recomendaciones de 1979"}</span>
+                    <strong>{legacySystematicNameRecord.source} · {language === "en" ? "generated from the active molecular graph" : "generado desde el grafo molecular activo"}</strong>
                   </p>
                 )}
                 {namingPubChemIdentity?.iupacName && (!externalNameIsPrimary || activeNomenclatureConvention === "current") && namingPubChemIdentity.iupacName !== displayedIupacName && (
@@ -15864,6 +15947,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 )}
                 {showPubChemRecordTitle && pubChemRecordTitle && (
                   <p className="iupac-dock-origin"><span>{language === "en" ? "PubChem record title" : "Título del registro PubChem"}</span><strong><ChemicalNameText name={pubChemRecordTitle} /></strong></p>
+                )}
+                {alternativeSynonymRecords.length > 0 && (
+                  <p className="iupac-dock-origin iupac-dock-synonyms">
+                    <span>{language === "en" ? "Alternative synonyms · PubChem (source language unclassified)" : "Sinónimos alternativos · PubChem (idioma de origen no clasificado)"}</span>
+                    <strong>{alternativeSynonymRecords.map(record => record.name).join(" · ")}</strong>
+                  </p>
                 )}
                 {activeLocalNameUnavailable && (activeNomenclatureConvention !== "current" || !externalNameIsPrimary) && (
                   <p>{language === "en" ? "Local IUPAC name unavailable for this structure." : "Nombre IUPAC local no disponible para esta estructura."}</p>
@@ -15901,8 +15990,22 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             ))}
           </select>
           <div className="iupac-dock-name-stack">
+            {showIupacName && !isPristineInitialMolecule && visibleCommonName && commonNameRecord && (
+              <span className="iupac-dock-common-name iupac-dock-common-title" data-name-category={commonNameRecord.category}>
+                <span>{commonNameLabel}</span> {commonNameRecord.name}
+              </span>
+            )}
+            <span className="iupac-dock-systematic-label" data-name-category={activeNomenclatureConvention === "current" ? currentSystematicNameRecord?.category : legacySystematicNameRecord?.category}>
+              {activeNomenclatureConvention === "current"
+                ? currentSystematicNameRecord?.category === "retained"
+                  ? language === "en" ? "Retained IUPAC name · 2013+ profile" : "Nombre retenido por IUPAC · perfil 2013+"
+                  : language === "en" ? "Systematic IUPAC name · 2013+ profile" : "Nombre IUPAC sistemático · perfil 2013+"
+                : legacySystematicNameRecord?.category === "retained"
+                  ? language === "en" ? "Retained IUPAC name · 1979 profile" : "Nombre retenido por IUPAC · perfil de 1979"
+                  : language === "en" ? "Systematic IUPAC name · 1979 profile" : "Nombre IUPAC sistemático · perfil de 1979"}
+            </span>
             <strong
-              className="iupac-dock-name"
+              className="iupac-dock-name iupac-dock-systematic-name"
               data-guided-tour-anchor={showGuidedTour && guidedTourTarget === "name" ? "name" : undefined}
               data-guided-tour-target={showGuidedTour && guidedTourTarget === "name" ? "active" : undefined}
             >
@@ -15947,9 +16050,6 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   : <ChemicalNotationText key={`${index}-${part.text}`} value={part.text} />)}</span>
                 : <ChemicalNameText name={isPristineInitialMolecule && !showPristineMethaneName ? "—" : showIupacName ? displayedIupacName : t("Respuesta oculta")} />}
             </strong>
-            {showIupacName && !isPristineInitialMolecule && visibleCommonName && (
-              <span className="iupac-dock-common-name"><span>{commonNameLabel}</span> {visibleCommonName}</span>
-            )}
           </div>
           <button type="button" className="iupac-dock-expand" disabled={isPristineInitialMolecule} onClick={() => setIupacDockExpanded((expanded) => !expanded)} aria-expanded={iupacDockExpanded} aria-controls="iupac-dock-detail" title={t("Mostrar nombre completo")}>
             {iupacDockExpanded ? "⌄" : "⌃"}

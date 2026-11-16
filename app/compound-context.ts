@@ -36,6 +36,8 @@ export type PubChemCompoundContext = {
   hBondDonorCount?: number;
   hBondAcceptorCount?: number;
   rotatableBondCount?: number;
+  /** Raw names returned for this exact PubChem CID; they are not translations or common-name claims. */
+  synonyms?: string[];
   names: string[];
 };
 
@@ -77,6 +79,10 @@ type PubChemDescriptionPayload = {
   InformationList?: {
     Information?: Array<{ Title?: string; Description?: string }>;
   };
+};
+
+type PubChemSynonymsPayload = {
+  InformationList?: { Information?: Array<{ Synonym?: string[] }> };
 };
 
 type PubChemCidPayload = {
@@ -134,6 +140,14 @@ function uniqueNames(values: readonly (string | undefined)[]) {
       seen.add(key);
       return true;
     });
+}
+
+function verifiedCidSynonyms(values: readonly string[] | undefined) {
+  return uniqueNames(values ?? []).filter((value) =>
+    !/^\d{2,7}-\d{2}-\d$/.test(value)
+    && !/^(?:CID\s*\d+|InChI(?:Key)?\b|SMILES\b)/i.test(value)
+    && !/^(?:[A-Z][a-z]?\d*)+$/.test(value),
+  ).slice(0, 40);
 }
 
 function shortSentences(value: string | undefined, maximumSentences: number) {
@@ -481,7 +495,7 @@ async function resolvePubChem(
     const description = shortSentences(descriptionInformation?.Description, 2);
     const iupacName = cleanText(properties?.IUPACName);
     const recordTitle = cleanText(descriptionInformation?.Title);
-    const compound = {
+    const compound: PubChemCompoundContext = {
       cid,
       url: `https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`,
       title: iupacName || recordTitle || identity.names?.[0] || `CID ${cid}`,
@@ -497,7 +511,7 @@ async function resolvePubChem(
       ...(Number.isFinite(properties?.HBondAcceptorCount) ? { hBondAcceptorCount: properties?.HBondAcceptorCount } : {}),
       ...(Number.isFinite(properties?.RotatableBondCount) ? { rotatableBondCount: properties?.RotatableBondCount } : {}),
       names: uniqueNames([descriptionInformation?.Title, properties?.IUPACName, ...(identity.names ?? [])]),
-    } satisfies PubChemCompoundContext;
+    };
     return { status: "verified" as const, compound };
   }
   return { status: identityMismatch ? "identity-mismatch" as const : "no-match" as const };
@@ -512,7 +526,22 @@ export function createCompoundContextResolver(options: { fetchImpl?: FetchLike }
   const fetchImpl = options.fetchImpl ?? ((input, init) => fetch(input, init));
   const wikidataResolver = createWikidataArticleResolver({ fetchImpl });
   const pubchemCache = new Map<string, Awaited<ReturnType<typeof resolvePubChem>>>();
+  const synonymCache = new Map<number, Promise<string[]>>();
   const wikipediaCache = new Map<string, WikipediaCompoundContext>();
+
+  function loadSynonyms(cid: number) {
+    let request = synonymCache.get(cid);
+    if (!request) {
+      request = fetchJson<PubChemSynonymsPayload>(
+        fetchImpl,
+        `${PUBCHEM_BASE_URL}/cid/${cid}/synonyms/JSON`,
+      )
+        .then((payload) => verifiedCidSynonyms(payload?.InformationList?.Information?.[0]?.Synonym))
+        .catch(() => []);
+      synonymCache.set(cid, request);
+    }
+    return request;
+  }
 
   return {
     async resolve(identity, language, signal, onProgress) {
@@ -538,7 +567,22 @@ export function createCompoundContextResolver(options: { fetchImpl?: FetchLike }
       // Wikidata/Wikipedia lookup. A slow or cancelled article request must
       // never delay or discard the independent PubChem result.
       throwIfAborted(signal);
-      if (pubchem) onProgress?.({ identityKey, language, pubchemStatus: "verified", pubchem });
+      if (pubchem) {
+        onProgress?.({ identityKey, language, pubchemStatus: "verified", pubchem });
+        if (!pubchem.synonyms) {
+          void loadSynonyms(pubchem.cid).then((synonyms) => {
+            const cachedResult = pubchemCache.get(identityKey);
+            if (signal?.aborted
+              || cachedResult?.status !== "verified"
+              || cachedResult.compound.cid !== pubchem.cid) return;
+            const enriched = { ...cachedResult.compound, ...(synonyms.length ? { synonyms } : {}) };
+            cachedResult.compound = enriched;
+            if (!signal?.aborted) {
+              onProgress?.({ identityKey, language, pubchemStatus: "verified", pubchem: enriched });
+            }
+          });
+        }
+      }
 
       const wikipediaKey = `${identityKey}:wikipedia:${language}`;
       let wikipedia = wikipediaCache.get(wikipediaKey);
@@ -574,6 +618,7 @@ export function createCompoundContextResolver(options: { fetchImpl?: FetchLike }
     },
     clearCache() {
       pubchemCache.clear();
+      synonymCache.clear();
       wikipediaCache.clear();
       wikidataResolver.clearCache();
     },

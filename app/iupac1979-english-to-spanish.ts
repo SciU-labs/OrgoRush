@@ -27,7 +27,9 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
     const validLocant=(n:number)=>Number.isInteger(n)&&n>=1&&n<=6;
     if (!model.substituents.every(s=>validLocant(s.locant)) || !model.functionalGroups.every(g=>validLocant(g.locant))) return false;
     const hierarchy=resolveFunctionalHierarchy(model.functionalGroups);
-    if (hierarchy.principalGroups.length>1) return false;
+    if (hierarchy.principalGroups.length>1
+      && (new Set(hierarchy.principalGroups.map(group=>group.kind)).size!==1
+        || hierarchy.principalGroups[0]?.kind!=="alcohol")) return false;
     const expected = { atoms: Array.from({length:6},(_,id)=>({id,element:"C",charge:undefined as number|undefined})),
       bonds: Array.from({length:6},(_,i):[number,number,number]=>[i,(i+1)%6,i%2===0?2:1]) };
     for (const group of hierarchy.principalGroups) {
@@ -52,6 +54,27 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
 const suffixes:Record<string,string> = { alcohol:"fenol",amine:"anilina",carboxylicAcid:"ácido benzoico",
   aldehyde:"benzaldehído",nitrile:"benzonitrilo",amide:"benzamida" };
 const multipliers=["","","di","tri","tetra","penta","hexa"];
+
+function retainedC2UnsaturatedName(graph:StereoGraph,model:LegacyEnglishNameModel,englishName:string):LegacySpanishResolution|undefined {
+  const order=model.doubleBondLocants.length===1&&model.doubleBondLocants[0]===1&&!model.tripleBondLocants.length?2
+    :model.tripleBondLocants.length===1&&model.tripleBondLocants[0]===1&&!model.doubleBondLocants.length?3:0;
+  if(!order)return;
+  const ids=model.parent.atomIds;
+  if(model.parent.kind!=="chain"||model.parent.carbonCount!==2||ids.length!==2||new Set(ids).size!==2
+    ||model.unavailableReason||model.functionalGroups.length||model.substituents.length||model.nitrogenSubstituents?.length
+    ||model.stereochemicalPrefix||graph.atoms.length!==2||graph.bonds.length!==1
+    ||graph.atoms.some(atom=>(atom.element??"C")!=="C"||atom.charge
+      ||(atom as typeof atom & {isotope?:number}).isotope!==undefined
+      ||atom.tetrahedralParity!==undefined||atom.tetrahedralBondTo!==undefined))return;
+  const bond=graph.bonds[0];
+  if(!ids.includes(bond[0])||!ids.includes(bond[1])||bond[2]!==order||bond[3])return;
+  const name=order===2?"ethylene":"acetylene";
+  if(englishName!==name)return unsupportedRetained();
+  return {status:"TRANSLATED_FROM_LEGACY_EN",name:order===2?"etileno":"acetileno",model,
+    numberedAtoms:new Map([[ids[0],1],[ids[1],2]]),rule:order===2?"A-3.1 (retained ethylene)":"A-3.2 (retained acetylene)"};
+}
+
+function unsupportedRetained():LegacySpanishResolution { return {status:"UNSUPPORTED",name:"-",reason:"retained-name-does-not-match-graph"}; }
 
 /** Native acyclic polyenes must represent the entire neutral carbon graph.
  * Parent selection/numbering comes from the existing 1979 analyzer; forced
@@ -91,6 +114,8 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
   const unsupported=(reason:string):LegacySpanishResolution=>({status:"UNSUPPORTED",name:"-",reason});
   try {
     if(input.model.profile!=="iupac-1979-legacy-en")return unsupported("non-legacy-profile");
+    const retained=retainedC2UnsaturatedName(input.graph,input.model,input.englishName);
+    if(retained)return retained;
     if (!input.englishName || input.englishName==="-" || generateLegacyEnglishName(input.model).name!==input.englishName)
       return unsupported("incomplete-or-inconsistent-english-name");
     if(input.model.parent.retained) {
@@ -128,8 +153,16 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
     const model=numberLegacyBenzene(input.model,name=>legacyPrefixTerm(name)?.es ?? name);
     if (!verifyLegacyAromaticModel(input.graph,model)) return unsupported("renumbered-parent-does-not-match-graph");
     const hierarchy=resolveFunctionalHierarchy(model.functionalGroups);
-    const parent=hierarchy.principalKind==="ester"?legacyBenzoateFragment(hierarchy.principalGroups[0]?.attachedAlkylName)?.es
+    let parent=hierarchy.principalKind==="ester"?legacyBenzoateFragment(hierarchy.principalGroups[0]?.attachedAlkylName)?.es
       :hierarchy.principalKind?suffixes[hierarchy.principalKind]:"benceno";
+    if(hierarchy.principalKind==="alcohol"&&hierarchy.principalGroups.length>1) {
+      // Blue Book 1979 C-202.1 forms benzene polyols by attaching -diol,
+      // -triol, etc. to benzene; their locants precede that parent name.
+      const locants=hierarchy.principalGroups.map(group=>group.locant).sort((a,b)=>a-b);
+      const multiplier=["","","di","tri","tetra","penta","hexa","hepta","octa","nona","deca"][locants.length];
+      if(!multiplier)return unsupported("unrepresented-historical-polyol-multiplier");
+      parent=`${locants.join(",")}-benceno${multiplier}ol`;
+    }
     if (!parent) return unsupported("unknown-historical-suffix");
     const grouped=new Map<string,{name:string;complex:boolean;locants:number[]}>();
     for (const s of model.substituents) {
@@ -144,7 +177,8 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
       });
     if (!hierarchy.principalKind && model.substituents.length===1) prefix[0]=prefix[0].replace(/^1-/,"");
     const attached=prefix.join("-");
-    const name=parent.startsWith("ácido ")?`ácido ${attached}${parent.slice(6)}`:`${attached}${parent}`;
+    const name=parent.startsWith("ácido ")?`ácido ${attached}${parent.slice(6)}`
+      :`${attached}${attached&&/^\d/.test(parent)?"-":""}${parent}`;
     return {status:"TRANSLATED_FROM_LEGACY_EN",name,model,numberedAtoms:new Map(model.parent.atomIds.map((id,i)=>[id,i+1])),
       rule:"A-12.2–3; A-2.3–4; C-15.11; C-16.31–34; complete graph identity"};
   } catch { return unsupported("unrecognized-semantic-model"); }

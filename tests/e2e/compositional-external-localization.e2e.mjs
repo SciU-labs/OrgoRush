@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { createServer } from "vite";
 import { chromium } from "playwright";
 import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "../../app/openchemlib-adapter.ts";
@@ -104,8 +105,8 @@ test("PubChem English name localizes only for the matching live phenol graph in 
 
 test("PubChem dopamine and fentanyl names appear compositionally localized in Spanish", async () => {
   const cases = [
-    { title: "Dopamine", smiles: "C1=CC(=C(C=C1CCN)O)O", english: "4-(2-aminoethyl)benzene-1,2-diol", spanish: "4-(2-aminoetil)benceno-1,2-diol", cid: 777101 },
-    { title: "Fentanyl", smiles: "CCC(=O)N(C1CCN(CC1)CCC2=CC=CC=C2)C3=CC=CC=C3", english: "N-phenyl-N-[1-(2-phenylethyl)piperidin-4-yl]propanamide", spanish: "N-fenil-N-[1-(2-feniletil)piperidin-4-il]propanamida", cid: 777102 },
+    { title: "Dopamine", smiles: "C1=CC(=C(C=C1CCN)O)O", english: "4-(2-aminoethyl)benzene-1,2-diol", spanish: "4-(2-aminoetil)benceno-1,2-diol", cid: 681, inchiKey: "VYFYYTLLBUKUHU-UHFFFAOYSA-N" },
+    { title: "Fentanyl", smiles: "CCC(=O)N(C1CCN(CC1)CCC2=CC=CC=C2)C3=CC=CC=C3", english: "N-phenyl-N-[1-(2-phenylethyl)piperidin-4-yl]propanamide", spanish: "N-fenil-N-[1-(2-feniletil)piperidin-4-il]propanamida", cid: 3345, inchiKey: "PJMPHNIQZUBGLI-UHFFFAOYSA-N" },
   ];
   let active = cases[0];
   let latestLookupSmiles = active.smiles;
@@ -138,7 +139,8 @@ test("PubChem dopamine and fentanyl names appear compositionally localized in Sp
         served.push({ kind: "property", title: active.title, smiles: latestLookupSmiles, url: url.href });
         return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
           body: JSON.stringify({ PropertyTable: { Properties: [{ CID: active.cid, IUPACName: active.english,
-            IsomericSMILES: latestLookupSmiles, CanonicalSMILES: latestLookupSmiles, MolecularFormula: active.title === "Dopamine" ? "C8H11NO2" : "C22H28N2O" }] } }) });
+            IsomericSMILES: latestLookupSmiles, CanonicalSMILES: latestLookupSmiles, InChIKey: active.inchiKey,
+            MolecularFormula: active.title === "Dopamine" ? "C8H11NO2" : "C22H28N2O" }] } }) });
       }
       if (url.pathname.includes("/description/")) return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
     }
@@ -161,9 +163,24 @@ test("PubChem dopamine and fentanyl names appear compositionally localized in Sp
         throw new Error(`${row.title}: name was ${(await name.innerText().catch(() => "<none>")).trim()}; served=${JSON.stringify(served)}; ${error.message}`);
       }
       assert.equal((await name.innerText()).trim(), row.spanish, `${row.title} has the localized Spanish name`);
+      if (row.title === "Dopamine") {
+        const common = page.locator(".iupac-dock-common-title");
+        await common.waitFor({ state: "visible", timeout: 15_000 });
+        assert.match(await common.innerText(), /Dopamina/);
+        const hierarchy = await page.locator(".iupac-dock-name-stack").innerText();
+        assert.match(hierarchy, /Dopamina[\s\S]*4-\(2-aminoetil\)benceno-1,2-diol/);
+        const captureDirectory = resolve(process.cwd(), "reports", "iupac-name-hierarchy-2026-11-16");
+        await mkdir(captureDirectory, { recursive: true });
+        await page.screenshot({ path: resolve(captureDirectory, "dopamine-spanish.png"), fullPage: true });
+      }
       await page.getByRole("button", { name: "English", exact: true }).click();
       await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
         row.english, { timeout: 5_000 });
+      if (row.title === "Dopamine") {
+        assert.match(await page.locator(".iupac-dock-common-title").innerText(), /Dopamine/);
+        assert.match(await page.locator(".iupac-dock-name-stack").innerText(), /Dopamine[\s\S]*4-\(2-aminoethyl\)benzene-1,2-diol/);
+        await page.screenshot({ path: resolve(process.cwd(), "reports", "iupac-name-hierarchy-2026-11-16", "dopamine-english.png"), fullPage: true });
+      }
       await page.getByRole("button", { name: "Español", exact: true }).click();
       await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
         row.spanish, { timeout: 5_000 });
@@ -399,7 +416,7 @@ test("functional parents and R/S and E/Z names round-trip in Chromium through Pu
       assert.equal((await name.innerText()).trim(), row.spanish, `${row.id} Spanish display`);
       if (row.id === cases[0].id) {
         await page.locator(".iupac-dock-expand").click();
-        await page.getByText("Localización composicional", { exact: true }).waitFor({ state: "visible", timeout: 5_000 });
+        await page.getByText("Nombre IUPAC sistemático · Libro Azul 2013+", { exact: true }).waitFor({ state: "visible", timeout: 5_000 });
         await page.locator(".iupac-dock-expand").click();
       }
 

@@ -59,7 +59,6 @@ export const AROMATIC_004_REFERENCES=[
   ref("furan","D","o1cccc1","furano","furan","B-2.11(5)"),
 ];
 export const AROMATIC_004_LIMITS=[
-  {id:"benzene-diol",smiles:"Oc1ccccc1O",reason:"multiple-principal-functions-outside-translation-subset"},
   {id:"benzene-diamine",smiles:"Nc1ccccc1N",reason:"multiple-principal-functions-outside-translation-subset"},
   {id:"benzene-diacid",smiles:"OC(=O)c1ccccc1C(=O)O",reason:"multiple-principal-functions-outside-translation-subset"},
   {id:"benzenesulfonic-acid",smiles:"O=S(=O)(O)c1ccccc1",reason:"unrepresented-sulfur-function"},
