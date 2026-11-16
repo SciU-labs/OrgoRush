@@ -671,6 +671,12 @@ export function getOpsinNameCandidates(value: string) {
   const originalNormalized = normalizePunctuation(value);
   const normalized = normalizeHalogenatedNameForOpsin(value);
   const translated = normalizeChemicalNameForParser(value, "es");
+  // OPSIN accepts the retained parent spelling "indol" directly. Keep it as
+  // the first parser candidate while still offering the normalized form as a
+  // compatibility fallback for structures built from longer Spanish names.
+  if (originalNormalized.toLocaleLowerCase("en") === "indol") {
+    return [...new Set([originalNormalized, translated, normalized, compactHalogenatedName(translated), compactHalogenatedName(normalized)].filter(Boolean))];
+  }
   // Try the normalized spelling first, then retain compact variants as a
   // compatibility fallback for older OPSIN spellings.
   return [...new Set([
