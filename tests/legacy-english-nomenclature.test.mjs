@@ -458,7 +458,7 @@ test("preserves a distinct aromatic parent abstraction", () => {
 
   const metaXylene = fromSmiles("Cc1cccc(C)c1");
   assert.equal(legacyName(metaXylene).name, "1,3-dimethylbenzene");
-  assert.equal(legacyName(fromSmiles("Oc1cccc(O)c1")).name, "benzene-1,3-diol");
+  assert.equal(legacyName(fromSmiles("Oc1cccc(O)c1")).name, "1,3-benzenediol");
 });
 
 test("keeps complex substituents structural, parenthesized and independently aliasable", () => {

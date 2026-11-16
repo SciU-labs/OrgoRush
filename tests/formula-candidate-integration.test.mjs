@@ -94,14 +94,14 @@ test("dock renders exactly the two locale profiles and keeps common names below 
   assert.equal(legacyEnglishVariantIsAvailable("pent-2-ene", "2-pentene"), true);
   assert.match(page, /migrateNomenclatureConvention\(nomenclatureConvention, language\)/);
   assert.match(page, /\{nomenclatureVariants\.map\(\(variant\) => \(\s*<option value=\{variant\.convention\}/);
-  assert.match(page, /className="iupac-dock-name-stack"[\s\S]*className="iupac-dock-common-name"/);
+  assert.match(page, /className="iupac-dock-name-stack"[\s\S]*className="iupac-dock-common-name iupac-dock-common-title"/);
   assert.match(page, /onChange=\{\(event\) => setNomenclatureConvention\(event\.target\.value as NomenclatureConvention\)\}/);
   assert.match(page, /copyVisibleName\(displayedIupacName\)/);
   assert.match(page, /const visibleCommonName = commonNameToPresent\s*&& normalizeNomenclatureDisplayName\(displayedIupacName\)/);
   assert.match(page, /const showPubChemRecordTitle = Boolean\(pubChemRecordTitle && !recordTitleHasVerifiedAlias && !\[/);
   assert.match(page, /verifiedPubChemCommonName\(namingPubChemIdentity, language\)/);
   assert.match(page, /verifiedPubChemRecordTitleEquivalent\([\s\S]*commonNameToPresent/);
-  assert.match(page, /const commonNameLabel = language === "en" \? "Also known as:" : "También conocido como:"/);
+  assert.match(page, /const commonNameLabel = commonNameRecord\?\.verification === "exact-identity"/);
 });
 
 test("candidate cards retain PubChem attribution and use a neutral label if the record has no name", () => {
