@@ -318,6 +318,9 @@ export function normalizeHalogenatedNameForOpsin(value: string) {
 
 function translateCore(value: string) {
   const aliasesAndAcylGroups = translateSubstituentAliasesForOpsin(value)
+    // Preserve acetiloxi as the complete acetyloxy substituent before the
+    // generic ethyl/alkyl morpheme pass sees the embedded "etil" sequence.
+    .replace(/(^|[-,(])acetiloxi(?=[a-z),.-]|$)/g, "$1acetyloxy")
     // A locanted alkyl prefix may be joined to the vinyl radical. Translate
     // the whole unit before the generic alkyl pass removes its boundary.
     .replace(new RegExp(`(^|[-,(])(\\d+(?:,\\d+)*-)(${alkylRootPattern})ilvinil(?=[a-z),.-]|$)`, "g"),
@@ -326,7 +329,11 @@ function translateCore(value: string) {
     // pass so the embedded "etil" in "acetil" is never treated as ethyl.
     .replace(/(^|[-(])acetil(?=[a-z-]|$)/g, "$1acetyl")
     .replace(/(^|[-(])propionil(?=[a-z-]|$)/g, "$1propionyl")
-    .replace(/(^|[-(])butiril(?=[a-z-]|$)/g, "$1butyryl");
+    .replace(/(^|[-(])butiril(?=[a-z-]|$)/g, "$1butyryl")
+    // Functionalized chain radicals can end inside a bracketed substituent.
+    // Translate both function and terminal Spanish alkyl root as one unit.
+    .replace(/(^|[-,(])(amino|hidroxi|metoxi|etoxi)(met|et|prop|but|pent|hex|hept|oct|non|dec)il(?=[)\]])/g,
+      (_match, boundary: string, functional: string, root: string) => `${boundary}${({ amino: "amino", hidroxi: "hydroxy", metoxi: "methoxy", etoxi: "ethoxy" } as Record<string, string>)[functional]}${englishIupacRoot(root)}yl`);
   const bridgedAlkoxy = aliasesAndAcylGroups.replace(
     spanishLocantedBranchedAlkoxy,
     (_match, boundary: string, locants: string, branchRoot: string, alkoxyRoot: string) => {
@@ -336,6 +343,13 @@ function translateCore(value: string) {
     },
   );
   let translated = translateSpanishAlkylMorphemes(bridgedAlkoxy)
+    .replace(/-(\d+)-enil(?=[)\]])/g, "-$1-enyl")
+    .replace(/-(\d+)-inil(?=[)\]])/g, "-$1-ynyl")
+    .replace(/terc-butylamino/g, "tert-butylamino")
+    .replace(/etil(?=[)\]])/g, "ethyl")
+    .replace(/(^|[-,(])acetato(?=[a-z),.-]|$)/g, "$1acetate")
+    .replace(/acetato$/g, "acetate")
+    .replace(/acetico$/g, "acetic acid")
     // Retained and systematic nitrogen parent names need to be translated
     // before the generic suffix rules. This also covers substituted parents
     // such as 4-nitroanilina and N-metilanilina.
@@ -445,14 +459,23 @@ function translateCore(value: string) {
     .replace(/ino(?=-\d)/g, "yne")
     // Before a principal-group suffix Spanish elides the terminal "o" from
     // -ino (for example dec-3-in-2-ona); English correspondingly uses -yn-.
-    .replace(/in(?=-\d)/g, "yn")
+    // Heterocyclic radical stems such as piperidin-4-yl and
+    // pyrrolidin-1-yl contain "in" before a locant; that is part of the
+    // parent stem, not the Spanish alkyne ending -ino.
+    .replace(/(?<!piperid)(?<!pyrrolid)(?<!morphol)(?<!pyridin)in(?=-\d)/g, "yn")
     .replace(/-en$/g, "-ene")
     .replace(/-in$/g, "-yne")
     .replace(/ano$/g, "ane")
     .replace(/eno$/g, "ene")
     .replace(/ino$/g, "yne")
     .replace(/-il$/g, "-yl")
+    // A radical can terminate at a nested bracket or parenthesis rather than
+    // at the end of the complete name (for example piperidin-4-il]).
+    .replace(/-il(?=[)\]])/g, "-yl")
     .replace(/ilo$/g, "yl")
+    // Acetiloxi is a single oxygen-linked acyl substituent. Normalize the
+    // complete component so the acetil prefix cannot be detached from -oxi.
+    .replace(/(^|[-,(])acetiloxi(?=[a-z),.-]|$)/g, "$1acetyloxy")
     .replace(/__amino_prefix__/g, "amino");
 
   // English cyclic parent hydrides retain their final "e" before the
@@ -481,7 +504,7 @@ export function translateSpanishIupacToOpsin(value: string) {
 
   const heterocycleName = translateHeterocycles(normalized);
 
-  const ester = heterocycleName.match(/^(.+?(?:oato|carboxilato))\s+de\s+(.+?(?:ilo|il))$/);
+  const ester = heterocycleName.match(/^(.+?(?:oato|ato|carboxilato))\s+de\s+(.+?(?:ilo|il))$/);
   if (ester) {
     const acidPart = translateCore(ester[1]);
     const alkylPart = translateCore(ester[2]);

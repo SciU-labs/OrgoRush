@@ -10,6 +10,7 @@ import { VALIDATION_CASES } from "./fixtures/orgorush-validation-014.mjs";
 
 const opsinReference = JSON.parse(readFileSync(new URL("./fixtures/orgorush-validation-014.opsin.json", import.meta.url), "utf8"));
 const opsinByName = new Map(opsinReference.responses.map(row => [row.name, row]));
+const pubchemCorpus = JSON.parse(readFileSync(new URL("./fixtures/orgorush-pubchem-corpus-120.json", import.meta.url), "utf8"));
 
 function graph(smiles) {
   const result = moleculeFromSmiles(smiles);
@@ -164,6 +165,94 @@ test("external functional-family localization rejects a mismatched structure rec
   const wrongGeometricReceipt = alkene.smiles.replace("/C=C/C", "/C=C\\C");
   assert.equal(localizeCompositionalExternalName(alkeneActual, alkene.referenceEnglish,
     { verifiedExternalSmiles: wrongGeometricReceipt }), null, "an E/Z-incompatible external structure is rejected");
+});
+
+test("PubChem dopamine and fentanyl names localize through bounded compositional rules", () => {
+  const cases = [
+    ["Dopamine", "4-(2-aminoetil)benceno-1,2-diol"],
+    ["Fentanyl", "N-fenil-N-[1-(2-feniletil)piperidin-4-il]propanamida"],
+  ];
+  for (const [title, expectedSpanish] of cases) {
+    const row = pubchemCorpus.compounds.find(value => value.title === title);
+    assert.ok(row, `PubChem corpus contains ${title}`);
+    const actual = graph(row.isomeric_smiles_pubchem);
+    const localized = localizeCompositionalExternalName(actual, row.iupac_en_pubchem, {
+      verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+    });
+    assert.equal(localized, expectedSpanish, title);
+    assert.equal(translateSpanishIupacToOpsin(localized), row.iupac_en_pubchem, `${title} components invert exactly`);
+    assert.equal(localizeCompositionalExternalName(actual, row.iupac_en_pubchem), null,
+      `${title} requires the provider structure receipt for non-constructor family validation`);
+    assert.equal(localizeCompositionalExternalName(actual, row.iupac_en_pubchem, { verifiedExternalSmiles: "C" }), null,
+      `${title} rejects a mismatched structure receipt`);
+    if (title === "Dopamine") {
+      const kekulizedCanvasGraph = graph("NCCc(cc1)cc(O)c1O");
+      assert.equal(localizeCompositionalExternalName(kekulizedCanvasGraph, row.iupac_en_pubchem, {
+        verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+      }), expectedSpanish, "equivalent aromatic Kekulé spellings share structural identity");
+    }
+  }
+});
+
+test("the focused PubChem corpus reports separate structure and grammar coverage", () => {
+  const counts = { P0: { representable: 0, localized: 0 }, P1: { representable: 0, localized: 0 }, P2: { representable: 0, localized: 0 } };
+  for (const row of pubchemCorpus.compounds) {
+    const imported = moleculeFromSmiles(row.isomeric_smiles_pubchem);
+    if (imported.ok) counts[row.priority].representable += 1;
+    if (imported.ok && localizeCompositionalExternalName(imported.molecule, row.iupac_en_pubchem, {
+      verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+    })) counts[row.priority].localized += 1;
+  }
+  assert.deepEqual(counts, {
+    P0: { representable: 33, localized: 33 },
+    P1: { representable: 76, localized: 76 },
+    P2: { representable: 9, localized: 0 },
+  });
+});
+
+test("the completed P0 corpus keeps locants, retained parents, N-substitution and embedded stereodescriptors", () => {
+  const expectedByTitle = new Map([
+    ["Vanillin", "4-hidroxi-3-metoxibenzaldehído"],
+    ["Aspirin", "ácido 2-acetiloxibenzoico"],
+    ["Lidocaine", "2-(dietilamino)-N-(2,6-dimetilfenil)acetamida"],
+    ["Norepinephrine", "4-[(1R)-2-amino-1-hidroxietil]benceno-1,2-diol"],
+    ["Epinephrine", "4-[(1R)-1-hidroxi-2-(metilamino)etil]benceno-1,2-diol"],
+    ["Chloramphenicol", "2,2-dicloro-N-[(1R,2R)-1,3-dihidroxi-1-(4-nitrofenil)propan-2-il]acetamida"],
+    ["Bupropion", "2-(terc-butilamino)-1-(3-clorofenil)propan-1-ona"],
+  ]);
+  for (const [title, expectedSpanish] of expectedByTitle) {
+    const row = pubchemCorpus.compounds.find(value => value.title === title);
+    assert.ok(row, `PubChem corpus contains ${title}`);
+    const actual = graph(row.isomeric_smiles_pubchem);
+    const localized = localizeCompositionalExternalName(actual, row.iupac_en_pubchem, {
+      verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+    });
+    assert.equal(localized, expectedSpanish, title);
+    assert.equal(translateSpanishIupacToOpsin(localized), row.iupac_en_pubchem, `${title} composition reverses to the source`);
+  }
+});
+
+test("P1 compositional grammar retains complex unsaturation, ester radicals and polyfunctional acid locants", () => {
+  const expectedByEnglish = new Map([
+    ["2-methoxy-4-prop-2-enylphenol", "2-metoxi-4-(prop-2-enil)fenol"],
+    ["(E)-3-phenylprop-2-enal", "(E)-3-fenilprop-2-enal"],
+    ["3-methylbutyl acetate", "acetato de 3-metilbutilo"],
+    ["2-hydroxypropane-1,2,3-tricarboxylic acid", "ácido 2-hidroxipropano-1,2,3-tricarboxílico"],
+    ["(9Z,12Z,15Z)-octadeca-9,12,15-trienoic acid", "ácido (9Z,12Z,15Z)-octadeca-9,12,15-trienoico"],
+  ]);
+  for (const [english, spanish] of expectedByEnglish) {
+    const row = pubchemCorpus.compounds.find(value => value.iupac_en_pubchem === english);
+    assert.ok(row, `PubChem corpus contains ${english}`);
+    const actual = graph(row.isomeric_smiles_pubchem);
+    const localized = localizeCompositionalExternalName(actual, english, {
+      verifiedExternalSmiles: row.isomeric_smiles_pubchem,
+    });
+    assert.equal(localized, spanish, english);
+    const inverse = translateSpanishIupacToOpsin(localized);
+    const expectedInverse = english === "2-methoxy-4-prop-2-enylphenol"
+      ? "2-methoxy-4-(prop-2-enyl)phenol" : english;
+    assert.equal(inverse, expectedInverse, `${english} component mapping reverses to its normalized name`);
+  }
 });
 
 test("functional-parent grammar rejects out-of-range parent and substituent locants", () => {

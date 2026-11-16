@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
 import { chromium } from "playwright";
 import { inspectSmilesStructure, moleculeFromSmiles, moleculeToSmiles } from "../../app/openchemlib-adapter.ts";
+import { CanonizerUtil, Molecule as OCLMolecule } from "openchemlib";
+import { buildOpenChemLibStereoGraph } from "../../app/tetrahedral-stereochemistry.ts";
 import { mapStructuralRegions } from "../../app/structural-derivation.ts";
 import { getTetrahedralStereoCenters } from "../../app/tetrahedral-stereochemistry.ts";
 import { inspectDoubleBondStereochemistry } from "../../app/double-bond-stereochemistry.ts";
@@ -93,6 +95,77 @@ test("PubChem English name localizes only for the matching live phenol graph in 
     assert.equal((await name.innerText()).trim(), spanish,
       "the Spanish input remains a Spanish display after successful construction");
     assert.deepEqual(errors, []);
+  } finally {
+    await page.close();
+  }
+});
+
+test("PubChem dopamine and fentanyl names appear compositionally localized in Spanish", async () => {
+  const cases = [
+    { title: "Dopamine", smiles: "C1=CC(=C(C=C1CCN)O)O", english: "4-(2-aminoethyl)benzene-1,2-diol", spanish: "4-(2-aminoetil)benceno-1,2-diol", cid: 777101 },
+    { title: "Fentanyl", smiles: "CCC(=O)N(C1CCN(CC1)CCC2=CC=CC=C2)C3=CC=CC=C3", english: "N-phenyl-N-[1-(2-phenylethyl)piperidin-4-yl]propanamide", spanish: "N-fenil-N-[1-(2-feniletil)piperidin-4-il]propanamida", cid: 777102 },
+  ];
+  let active = cases[0];
+  let latestLookupSmiles = active.smiles;
+  const served = [];
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.addInitScript(() => {
+    localStorage.setItem("hydrocarbonLab.guidedTour.v1", "skipped");
+    localStorage.setItem("hydrocarbon-lab-language", "es");
+  });
+  await page.route("**/*", async route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.hostname === "pubchem.ncbi.nlm.nih.gov") {
+      if (url.pathname.includes("/smiles/") && url.pathname.includes("/cids/")) {
+        latestLookupSmiles = decodeURIComponent(url.pathname.split("/smiles/")[1].split("/cids/")[0]);
+        served.push({ kind: "cid", title: active.title, url: url.href });
+        const activeGraph = moleculeFromSmiles(active.smiles);
+        const lookupGraph = moleculeFromSmiles(latestLookupSmiles);
+        const identity = parsed => {
+          if (!parsed.ok) return null;
+          const { molecule } = buildOpenChemLibStereoGraph(parsed.molecule);
+          molecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
+          return CanonizerUtil.getIDCode(molecule, CanonizerUtil.NORMAL);
+        };
+        const activeIdentity = identity(activeGraph), lookupIdentity = identity(lookupGraph);
+        return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify({ IdentifierList: { CID: activeIdentity && activeIdentity === lookupIdentity ? [active.cid] : [] } }) });
+      }
+      if (url.pathname.includes("/property/")) {
+        served.push({ kind: "property", title: active.title, smiles: latestLookupSmiles, url: url.href });
+        return route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" },
+          body: JSON.stringify({ PropertyTable: { Properties: [{ CID: active.cid, IUPACName: active.english,
+            IsomericSMILES: latestLookupSmiles, CanonicalSMILES: latestLookupSmiles, MolecularFormula: active.title === "Dopamine" ? "C8H11NO2" : "C22H28N2O" }] } }) });
+      }
+      if (url.pathname.includes("/description/")) return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    }
+    if (url.hostname === "www.ebi.ac.uk") return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+  });
+  try {
+    await page.goto(`${origin}/OrgoRush/es/`, { waitUntil: "domcontentloaded", timeout: 90_000 });
+    await page.getByRole("button", { name: "Español", exact: true }).click();
+    await page.locator('[aria-controls="smiles-interop-panel"]').click();
+    const name = page.locator(".iupac-dock-name");
+    for (const row of cases) {
+      active = row;
+      await page.locator("#smiles-text-input").fill(row.smiles);
+      await page.locator("#smiles-interop-panel button[type=submit]").click();
+      try {
+        await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+          row.spanish, { timeout: 20_000 });
+      } catch (error) {
+        throw new Error(`${row.title}: name was ${(await name.innerText().catch(() => "<none>")).trim()}; served=${JSON.stringify(served)}; ${error.message}`);
+      }
+      assert.equal((await name.innerText()).trim(), row.spanish, `${row.title} has the localized Spanish name`);
+      await page.getByRole("button", { name: "English", exact: true }).click();
+      await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+        row.english, { timeout: 5_000 });
+      await page.getByRole("button", { name: "Español", exact: true }).click();
+      await page.waitForFunction(expected => document.querySelector(".iupac-dock-name")?.textContent?.trim() === expected,
+        row.spanish, { timeout: 5_000 });
+    }
   } finally {
     await page.close();
   }

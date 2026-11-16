@@ -143,7 +143,9 @@ test('PubChem responses remain identity- and language-safe through races, errors
 
     // This amide/N-substituent combination is explicitly outside the local
     // grammar. A structurally matching PubChem record exercises the distinct
-    // external-name-without-verified-Spanish path.
+    // External name with a compositional Spanish equivalent. This case used
+    // to exercise the unlocalized fallback; it now verifies the expanded
+    // N-substituted acetamide grammar without weakening the race assertions.
     const externalOnlySmiles = 'CC(=O)NCC(C)C';
     const beforeExternalOnly = held.length;
     await importSmiles(page, externalOnlySmiles);
@@ -164,10 +166,10 @@ test('PubChem responses remain identity- and language-safe through races, errors
     await page.waitForFunction(() => !/Calculando nombre IUPAC|Calculating IUPAC name/.test(
       document.querySelector('.iupac-dock-name')?.textContent?.trim() ?? ''), null, { timeout: 15_000 });
     const externalDisplay = (await name.innerText()).trim();
-    assert.match(externalDisplay, /Se encontró un nombre, pero no hay una versión española verificada/,
-      `unlocalized PubChem status is explicit, got: ${externalDisplay}`);
-    assert.doesNotMatch(externalDisplay, /N-\(2-methylpropyl\)acetamide/i,
-      'unlocalized external English nomenclature is never presented as Spanish');
+    assert.equal(externalDisplay, 'N-(2-metilpropil)acetamida',
+      `the newly covered name is localized compositionally, got: ${externalDisplay}`);
+    assert.doesNotMatch(externalDisplay, /methylpropyl|acetamide/i,
+      'the external English name is never presented as Spanish');
 
     assert.deepEqual(errors, [], 'browser execution has no uncaught exceptions');
   } finally {

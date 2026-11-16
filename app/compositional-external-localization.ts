@@ -1,9 +1,10 @@
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
+import { CanonizerUtil, Molecule as OCLMolecule } from "openchemlib";
 import { moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 import { translateSpanishIupacToOpsin } from "./iupac-name-normalization.ts";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule.ts";
-import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
+import { buildOpenChemLibStereoGraph, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectDoubleBondStereochemistry } from "./double-bond-stereochemistry.ts";
 
 /** A deliberately finite grammar for external names whose localization can be
@@ -363,7 +364,21 @@ export function buildCompositionalExternalGraph(parsed: Parsed): GeneratedMolecu
   return { atoms, bonds };
 }
 
-function identity(molecule: GeneratedMolecule) { const result = moleculeToSmiles(molecule); return result.ok ? result.smiles : null; }
+function identity(molecule: GeneratedMolecule) {
+  const result = moleculeToSmiles(molecule);
+  return result.ok ? result.smiles : null;
+}
+
+// OpenChemLib's canonical IDCode normalizes equivalent Kekulé spellings of
+// aromatic rings while retaining connectivity and stereo. Use it for external
+// identity receipts; keep the serialized key for exact builder round-trips.
+function structuralIdentity(molecule: GeneratedMolecule) {
+  try {
+    const { molecule: openChemLibMolecule } = buildOpenChemLibStereoGraph(molecule);
+    openChemLibMolecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
+    return CanonizerUtil.getIDCode(openChemLibMolecule, CanonizerUtil.NORMAL);
+  } catch { return null; }
+}
 
 const chainStems = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"] as const;
 const chainStemEs: Record<string, string> = { meth: "met", eth: "et", prop: "prop", but: "but", pent: "pent", hex: "hex", hept: "hept", oct: "oct", non: "non", dec: "dec" };
@@ -371,6 +386,7 @@ const simplePrefixEs: Record<string, string> = {
   methyl: "metil", ethyl: "etil", propyl: "propil", butyl: "butil", pentyl: "pentil", hexyl: "hexil",
   heptyl: "heptil", octyl: "octil", nonyl: "nonil", decyl: "decil", amino: "amino", hydroxy: "hidroxi",
   fluoro: "fluoro", chloro: "cloro", bromo: "bromo", iodo: "yodo", methoxy: "metoxi", ethoxy: "etoxi", propoxy: "propoxi",
+  acetyloxy: "acetiloxi", phenyl: "fenil", nitro: "nitro", cyano: "ciano",
 };
 
 /**
@@ -434,13 +450,46 @@ const spanishPrefixTerms: Record<string, string> = {
   butyl: "butil", pentyl: "pentil", hexyl: "hexil", heptyl: "heptil", octyl: "octil", nonyl: "nonil",
   decyl: "decil", fluoro: "fluoro", chloro: "cloro", bromo: "bromo", iodo: "yodo", methoxy: "metoxi",
   ethoxy: "etoxi", propoxy: "propoxi", cyano: "ciano", nitro: "nitro", phenyl: "fenil", methylidene: "metilideno",
+  acetyloxy: "acetiloxi",
 };
 const spanishPrefixTermsByLength = Object.keys(spanishPrefixTerms).sort((left, right) => right.length - left.length);
 
 function localizeFunctionalPrefixRun(source: string, maximumLocant?: number): string | null {
   let remaining = source;
   const localized: string[] = [];
+  if (!/^\d/.test(remaining) && !/^N(?:,N)*-/.test(remaining)) {
+    const simple = /^(?<multiplier>di|tri|tetra|penta|hexa)?(?<term>fluoro|chloro|bromo|iodo|nitro|amino|hydroxy|methoxy|ethoxy|propoxy|phenyl|methyl|ethyl|propyl|butyl|acetyloxy)$/.exec(remaining);
+    if (simple?.groups) {
+      const multiplier = simple.groups.multiplier ?? "";
+      const translated = simplePrefixEs[simple.groups.term];
+      return translated ? `${multiplier}${translated}` : null;
+    }
+  }
   while (remaining) {
+    const unsaturatedRadical = /^(?<locants>\d+(?:,\d+)*-)(?<root>meth|eth|prop|but|pent|hex|hept|oct|non|dec)-(?<bondLocant>\d+)-(?<bond>en|yn)yl(?:-|$)/.exec(remaining);
+    if (unsaturatedRadical?.groups) {
+      const stem = chainStemEs[unsaturatedRadical.groups.root!] ?? unsaturatedRadical.groups.root!;
+      const locants = unsaturatedRadical.groups.locants!.slice(0, -1);
+      if (maximumLocant !== undefined && locants.split(",").some(value => Number(value) < 1 || Number(value) > maximumLocant)) return null;
+      const component = `${stem}-${unsaturatedRadical.groups.bondLocant}-${unsaturatedRadical.groups.bond === "yn" ? "in" : "en"}il`;
+      localized.push(`${locants}-(${component})`);
+      remaining = remaining.slice(unsaturatedRadical[0].length);
+      if (remaining.startsWith("-")) remaining = remaining.slice(1);
+      continue;
+    }
+    const nested = /^(?<locants>\d+(?:,\d+)*)(?<separator>-)(?<opening>[([])/.exec(remaining);
+    if (nested?.groups) {
+      const parsed = readBalanced(remaining, nested.groups.locants!.length + 1);
+      if (!parsed) return null;
+      const locants = nested.groups.locants!.split(",");
+      if (maximumLocant !== undefined && locants.some(value => Number(value) < 1 || Number(value) > maximumLocant)) return null;
+      const component = localizeNestedExternalComponents(parsed.text);
+      if (component === null) return null;
+      localized.push(`${locants.join(",")}-${nested.groups.opening}${component}${parsed.closing}`);
+      remaining = remaining.slice(parsed.end);
+      if (remaining.startsWith("-")) remaining = remaining.slice(1);
+      continue;
+    }
     const termPattern = spanishPrefixTermsByLength.join("|");
     const match = new RegExp(`^(?<locants>N(?:,N)*|\\d+(?:,\\d+)*)-(?<multiplier>di|tri|tetra|penta|hexa)?(?<term>${termPattern})(?:-|$)`).exec(remaining);
     if (!match?.groups) return null;
@@ -458,16 +507,73 @@ function localizeFunctionalPrefixRun(source: string, maximumLocant?: number): st
   return localized.join("-");
 }
 
+// Localize nested external substituent components by complete, recognized
+// morphemes. Parentheses and brackets are retained; unknown words reject.
+function localizeNestedExternalComponents(source: string): string | null {
+  const mappings: Array<[RegExp, string]> = [
+    [/(meth|eth|prop|but|pent|hex|hept|oct|non|dec)an-(\d+)-yl/g, "$1an-$2-il"],
+    [/piperidin-(\d+)-yl/g, "piperidin-$1-il"],
+    [/pyrrolidin-(\d+)-yl/g, "pirrolidin-$1-il"],
+    [/morpholin-(\d+)-yl/g, "morfolin-$1-il"],
+    [/phenoxy/g, "fenoxi"], [/phenyl/g, "fenil"], [/nitro/g, "nitro"],
+    [/tert-butylamino/g, "terc-butilamino"],
+    [/acetyloxy/g, "acetiloxi"],
+    [/trifluoromethyl/g, "trifluorometil"], [/methyl/g, "metil"], [/ethyl/g, "etil"],
+    [/propyl/g, "propil"], [/butyl/g, "butil"], [/pentyl/g, "pentil"], [/hexyl/g, "hexil"],
+    [/heptyl/g, "heptil"], [/octyl/g, "octil"], [/nonyl/g, "nonil"], [/decyl/g, "decil"],
+    [/hydroxy/g, "hidroxi"], [/amino/g, "amino"], [/methoxy/g, "metoxi"], [/ethoxy/g, "etoxi"],
+    [/chloro/g, "cloro"], [/fluoro/g, "fluoro"], [/bromo/g, "bromo"], [/iodo/g, "yodo"],
+  ];
+  let localized = source;
+  for (const [pattern, replacement] of mappings) localized = localized.replace(pattern, replacement);
+  // Remaining ASCII letters must belong to the finite heterocycle/root
+  // vocabulary admitted here. This keeps the helper from becoming a
+  // best-effort word replacer.
+  const withoutStereo = localized.replace(/\(\d+[RS](?:,\d+[RS])*\)/g, "");
+  const remainder = withoutStereo.replace(/piperidin|pirrolidin|morfolin|prop|met|et|but|pent|hex|hept|oct|non|dec|an|amino|hidroxi|metoxi|etoxi|cloro|fluoro|bromo|yodo|fenil|fenoxi|nitro|terc|di|tri|tetra|penta|hexa|il|N/gi, "");
+  if (/[a-z]/i.test(remainder)) return null;
+  return localized;
+}
+
+function topLevelLocantsExceed(source: string, maximum: number) {
+  let depth = 0;
+  let token = "";
+  for (const char of source) {
+    if (char === "(" || char === "[") { depth += 1; token += " "; continue; }
+    if (char === ")" || char === "]") { depth = Math.max(0, depth - 1); token += " "; continue; }
+    token += depth === 0 ? char : " ";
+  }
+  return [...token.matchAll(/(?:^|-)(\d+(?:,\d+)*)-/g)]
+    .some(match => match[1]!.split(",").some(value => Number(value) < 1 || Number(value) > maximum));
+}
+
 function localizePrincipalParent(source: string, family: "acid" | "ester" | "amide" | "nitrile" | "amine" | "aniline" | "hydrocarbon" | "alcohol" | "aldehyde" | "ketone") {
   const aromatic: Record<string, string> = {
-    acid: "benzoic acid", ester: "benzoate", amide: "benzamide", nitrile: "benzonitrile", aniline: "aniline",
+    acid: "benzoic acid", ester: "benzoate", amide: "benzamide", nitrile: "benzonitrile", aniline: "aniline", aldehyde: "benzaldehyde",
   };
   if (aromatic[family] && source.endsWith(aromatic[family]!)) {
     const prefixSource = source.slice(0, -aromatic[family]!.length).replace(/-$/, "");
     const prefix = localizeFunctionalPrefixRun(prefixSource, 6);
     if (prefix === null) return null;
-    const base = ({ acid: "benzoico", ester: "benzoato", amide: "benzamida", nitrile: "benzonitrilo", aniline: "anilina" } as Record<string, string>)[family]!;
+    const base = ({ acid: "benzoico", ester: "benzoato", amide: "benzamida", nitrile: "benzonitrilo", aniline: "anilina", aldehyde: "benzaldehído" } as Record<string, string>)[family]!;
     return { prefix, parent: base };
+  }
+
+  // Retained acetic-acid family names are treated as complete parent
+  // components (acetic acid / acetate / acetamide), not translated by
+  // substring replacement. Prefixes remain compositional and locanted.
+  const retained: Partial<Record<typeof family, [RegExp, string, string]>> = {
+    acid: [/^(?<prefix>.*?)(?:acetic acid)$/, "acetic acid", "acético"],
+    ester: [/^(?<prefix>.*?)(?:acetate)$/, "acetate", "acetato"],
+    amide: [/^(?<prefix>.*?)(?:acetamide)$/, "acetamide", "acetamida"],
+  };
+  const retainedRule = retained[family];
+  if (retainedRule) {
+    const match = retainedRule[0].exec(source);
+    if (match?.groups) {
+      const prefix = localizeFunctionalPrefixRun(match.groups.prefix!.replace(/-$/, ""), 2);
+      if (prefix !== null) return { prefix, parent: retainedRule[2] };
+    }
   }
 
   for (const root of chainRootNames) {
@@ -475,6 +581,8 @@ function localizePrincipalParent(source: string, family: "acid" | "ester" | "ami
       acid: [
         [/^anedioic acid$/, "anodioico"], [/^-(\d+)-ynoic acid$/, "-$1-inoico"],
         [/^-(\d+)-enoic acid$/, "-$1-enoico"], [/^anoic acid$/, "anoico"], [/^enoic acid$/, "enoico"], [/^ynoic acid$/, "inoico"],
+        [/^a-(\d+(?:,\d+)+)-trienoic acid$/, "a-$1-trienoico"],
+        [/^ane-(\d+(?:,\d+)+)-tricarboxylic acid$/, "ano-$1-tricarboxílico"],
       ],
       ester: [
         [/^-(\d+)-ynoate$/, "-$1-inoato"], [/^-(\d+)-enoate$/, "-$1-enoato"],
@@ -485,6 +593,7 @@ function localizePrincipalParent(source: string, family: "acid" | "ester" | "ami
       ],
       nitrile: [
         [/^anedinitrile$/, "anodinitrilo"], [/^anenitrile$/, "anenitrilo"],
+        [/^-(\d+)-enenitrile$/, "-$1-enenitrilo"],
         [/^enenitrile$/, "enenitrilo"], [/^ynenitrile$/, "inenitrilo"],
       ],
       amine: [
@@ -497,8 +606,10 @@ function localizePrincipalParent(source: string, family: "acid" | "ester" | "ami
         [/^-([0-9]+)-ene$/, "-$1-eno"], [/^-([0-9]+)-yne$/, "-$1-ino"],
         [/^ane$/, "ano"], [/^ene$/, "eno"], [/^yne$/, "ino"],
       ],
-      alcohol: [[/^-(\d+)-en-(\d+)-ol$/, "-$1-en-$2-ol"], [/^-(\d+)-yn-(\d+)-ol$/, "-$1-in-$2-ol"], [/^an-(\d+)-ol$/, "an-$1-ol"]],
-      aldehyde: [[/^anal$/, "anal"]],
+      alcohol: [[/^-(\d+)-en-(\d+)-ol$/, "-$1-en-$2-ol"], [/^-(\d+)-yn-(\d+)-ol$/, "-$1-in-$2-ol"],
+        [/^an-(\d+)-ol$/, "an-$1-ol"], [/^anol$/, "anol"],
+        [/^ane-(\d+(?:,\d+)+)-diol$/, "ano-$1-diol"], [/^ane-(\d+(?:,\d+)+)-triol$/, "ano-$1-triol"]],
+      aldehyde: [[/^anal$/, "anal"], [/^-(\d+)-enal$/, "-$1-enal"]],
       ketone: [
         [/^-([0-9]+)-en-([0-9]+)-one$/, "-$1-en-$2-ona"],
         [/^an-([0-9]+)-one$/, "an-$1-ona"], [/^anone$/, "anona"],
@@ -519,14 +630,37 @@ function localizePrincipalParent(source: string, family: "acid" | "ester" | "ami
       if (prefix === null) return null;
       const tail = pattern.exec(parentMatch.groups.tail!);
       if (!tail) continue;
-      const unsaturatedParent = /(?:-\d+-(?:en|yn)|(?:en|yn)(?:oic acid|oate|amide|nitrile))/.test(parentMatch.groups.tail!);
+      const unsaturatedParent = /(?:-\d+-(?:en|yn)|(?:en|yn)(?:oic acid|oate|amide|nitrile)|a-\d+(?:,\d+)*-trien)/.test(parentMatch.groups.tail!);
       const tailLocants = tail.slice(1).filter(Boolean).flatMap(value => value.split(",").map(Number));
       if (carbonCount !== undefined && tailLocants.some(value => value < 1 || value > carbonCount || unsaturatedParent && value >= carbonCount)) return null;
       const translatedTail = parentMatch.groups.tail!.replace(pattern, spanishTail);
-      return { prefix, parent: `${cyclic ? "ciclo" : ""}${root}${translatedTail}` };
+      const localizedRoot = chainStemEs[root] ?? root;
+      return { prefix, parent: `${cyclic ? "ciclo" : ""}${localizedRoot}${translatedTail}` };
     }
   }
   return null;
+}
+
+function localizeAromaticDiol(source: string): { prefix: string; parent: string } | null {
+  const match = /^(?<prefix>.*?)(?<parent>benzene-(?<locants>[1-6](?:,[1-6])*)-diol)$/.exec(source);
+  if (!match?.groups) return null;
+  const locants = match.groups.locants!.split(",").map(Number);
+  if (locants.length < 2 || new Set(locants).size !== locants.length) return null;
+  const rawPrefix = match.groups.prefix!.replace(/-$/, "");
+  const prefix = localizeFunctionalPrefixRun(rawPrefix, 6);
+  if (prefix === null) return null;
+  return { prefix, parent: `benceno-${match.groups.locants}-diol` };
+}
+
+function canonicalizeExternalEnglishAlias(source: string) {
+  const retainedParents: Record<string, string> = {
+    toluene: "methylbenzene", anisole: "methoxybenzene", acetylene: "ethyne",
+    formaldehyde: "methanal", acetaldehyde: "ethanal", chloroform: "trichloromethane",
+    acetonitrile: "ethanenitrile",
+  };
+  return (retainedParents[source] ?? source)
+    .replace(/^(chloro|bromo|fluoro|iodo|nitro|methoxy)-(?=benzene|phenol)/, "$1")
+    .replace(/(\d+)-\((meth|eth|prop|but|pent|hex|hept|oct|non|dec)-(\d+)-(en|yn)yl\)/g, "$1-$2-$3-$4yl");
 }
 
 /**
@@ -537,14 +671,22 @@ function localizePrincipalParent(source: string, family: "acid" | "ester" | "ami
  * preference, which this display-only localizer does not claim.
  */
 function localizeFunctionalParentExternalName(actual: GeneratedMolecule, sourceName: string, verifiedExternalSmiles?: string): string | null {
-  const stereoMatch = /^(?<stereo>\((?:\d+[RSEZ])(?:,\d+[RSEZ])*\)-)?(?<name>.*)$/.exec(sourceName);
+  const stereoMatch = /^(?<stereo>\((?:\d+[RSEZ]|[EZ])(?:,\d+[RSEZ])*\)-)?(?<name>.*)$/.exec(sourceName);
   if (!stereoMatch?.groups) return null;
   const stereo = stereoMatch.groups.stereo ?? "";
   let name = stereoMatch.groups.name!;
+  name = canonicalizeExternalEnglishAlias(name);
   let localized: string | null = null;
   let family: "acid" | "ester" | "amide" | "nitrile" | "amine" | "aniline" | "hydrocarbon" | "alcohol" | "aldehyde" | "ketone" | null = null;
 
-  if (name.endsWith(" acid")) {
+  if (sourceName === "acetonitrile") {
+    family = "nitrile";
+    localized = "acetonitrilo";
+  }
+
+  if (localized) {
+    // Retained name alias with a standard Spanish equivalent.
+  } else if (name.endsWith(" acid")) {
     family = "acid";
     const parts = localizePrincipalParent(name, family);
     if (parts) localized = `ácido ${stereo}${parts.prefix ? `${parts.prefix}${parts.parent}` : parts.parent}`;
@@ -556,27 +698,86 @@ function localizeFunctionalParentExternalName(actual: GeneratedMolecule, sourceN
     if (split && !organyl) {
       const radical = /^(?<root>meth|eth|prop|but|pent|hex|hept|oct|non|dec)an-(?<locant>\d+)-yl$/.exec(split[1]!);
       if (radical?.groups) organyl = `${radical.groups.root}an-${radical.groups.locant}-ilo`;
+      const branched = parseAdvancedSubstituent(split[1]!, "en");
+      if (!organyl && branched?.kind === "alkyl") organyl = `${renderAdvancedSubstituent(branched, "es")}o`;
     }
     const parts = split ? localizePrincipalParent(split[2]!, family) : null;
     if (parts && organyl) localized = `${parts.prefix ? `${parts.prefix}${parts.parent}` : parts.parent} de ${organyl}`;
   } else {
+    const aromatic = /^(?<prefix>.*?)(?<parent>benzene|phenol)$/.exec(name);
+    if (aromatic?.groups && aromatic.groups.prefix) {
+      const prefix = localizeFunctionalPrefixRun(aromatic.groups.prefix.replace(/-$/, ""), 6);
+      if (prefix) {
+        family = "hydrocarbon";
+        localized = `${prefix}${aromatic.groups.parent === "benzene" ? "benceno" : "fenol"}`;
+      }
+    }
+    const ether = /^(?<alkoxy>methoxy|ethoxy|propoxy)(?<root>meth|eth|prop|but|pent|hex|hept|oct|non|dec)ane$/.exec(name);
+    if (!localized && ether?.groups) {
+      const prefix = simplePrefixEs[ether.groups.alkoxy!]!;
+      const root = chainStemEs[ether.groups.root!]!;
+      family = "hydrocarbon";
+      localized = `${prefix}${root}ano`;
+    }
+    const heterocycleParents: Record<string, string> = {
+      pyridine: "piridina", piperidine: "piperidina", pyrrolidine: "pirrolidina", morpholine: "morfolina", oxolane: "oxolano",
+    };
+    if (heterocycleParents[name]) {
+      family = "hydrocarbon";
+      localized = `${stereo}${heterocycleParents[name]}`;
+    }
+    const diol = localizeAromaticDiol(name);
+    if (!localized && diol) {
+      family = "hydrocarbon";
+      localized = `${stereo}${diol.prefix ? `${diol.prefix}${diol.parent}` : diol.parent}`;
+    }
+    // N-substituted amides can contain recursively bracketed radicals and
+    // heterocyclic stems. Translate only recognized complete components.
+    if (!localized && /amide$/.test(name)) {
+      const retainedAmide = /^(?<prefix>.*?)(?<parent>acetamide)$/.exec(name);
+      if (retainedAmide?.groups) {
+        const prefix = localizeNestedExternalComponents(retainedAmide.groups.prefix!.replace(/-$/, ""));
+        if (prefix !== null) {
+          localized = `${stereo}${prefix}acetamida`;
+          family = "amide";
+        }
+      }
+      const amide = /^(?<prefix>.*?)(?<root>meth|eth|prop|but|pent|hex|hept|oct|non|dec)an(?<suffix>amide)$/.exec(name);
+      if (!localized && amide?.groups) {
+        const rawPrefix = amide.groups.prefix!.replace(/-$/, "");
+        const rootIndex = IUPAC_ROOTS.findIndex(value => englishIupacRoot(value) === amide.groups!.root);
+        const prefix = rootIndex < 0 || topLevelLocantsExceed(rawPrefix, rootIndex)
+          ? null : localizeNestedExternalComponents(rawPrefix);
+        if (prefix !== null) {
+          const stem = ({ meth: "met", eth: "et", prop: "prop", but: "but", pent: "pent", hex: "hex", hept: "hept", oct: "oct", non: "non", dec: "dec" } as Record<string, string>)[amide.groups.root!]!;
+          localized = `${stereo}${prefix}${stem}anamida`;
+          family = "amide";
+        }
+      }
+    }
     const familyCandidates: Array<["amide" | "nitrile" | "aniline" | "amine" | "alcohol" | "aldehyde" | "ketone" | "hydrocarbon", RegExp]> = [
       ["amide", /(?:amide|benzamide)$/], ["nitrile", /(?:nitrile|benzonitrile)$/],
-      ["aniline", /aniline$/], ["amine", /amine$/], ["alcohol", /(?:an-\d+-ol|-\d+-en-\d+-ol|-\d+-yn-\d+-ol)$/],
-      ["aldehyde", /anal$/], ["ketone", /(?:anone|an-\d+-one|-en-\d+-one)$/],
+      ["aniline", /aniline$/], ["amine", /amine$/], ["alcohol", /(?:an-\d+-ol|an-ol|ane-\d+(?:,\d+)+-(?:diol|triol)|-\d+-en-\d+-ol|-\d+-yn-\d+-ol|anol)$/],
+      ["aldehyde", /(?:anal|benzaldehyde|-\d+-enal)$/], ["ketone", /(?:anone|an-\d+-one|-en-\d+-one)$/],
       ["hydrocarbon", /(?:ane|ene|yne)$/],
     ];
     const found = familyCandidates.find(([, pattern]) => pattern.test(name));
-    if (found) {
+    if (!localized && found) {
       family = found[0];
       const parts = localizePrincipalParent(name, family);
       if (parts) localized = `${stereo}${parts.prefix ? `${parts.prefix}${parts.parent}` : parts.parent}`;
     }
   }
-  if (!family || !localized || translateSpanishIupacToOpsin(localized) !== sourceName) return null;
+  if (!family || !localized || canonicalizeExternalEnglishAlias(translateSpanishIupacToOpsin(localized))
+    !== canonicalizeExternalEnglishAlias(sourceName)) return null;
 
-  const tetraDescriptors = [...stereo.matchAll(/\d+([RS])/g)].map(match => match[1]);
-  const doubleDescriptors = [...stereo.matchAll(/\d+([EZ])/g)].map(match => match[1]);
+  // Stereo descriptors can sit inside a complex substituent (for example
+  // [(1R)-...] or [(1R,2R)-...]); count and preserve them across the full
+  // source name rather than only a leading parent descriptor.
+  const tetraDescriptors = [...sourceName.matchAll(/\d+([RS])/g)].map(match => match[1]);
+  const doubleDescriptors = [...sourceName.matchAll(/\d+([EZ])/g)].map(match => match[1]);
+  const singleDoubleDescriptor = /^\(([EZ])\)-/.exec(sourceName);
+  if (singleDoubleDescriptor) doubleDescriptors.push(singleDoubleDescriptor[1]);
   const tetraCenters = getTetrahedralStereoCenters(actual);
   const doubleCenters = actual.bonds.filter(([left, right, order = 1, stereoFlag]) => order === 2 && stereoFlag === true
     && inspectDoubleBondStereochemistry(actual, left, right).stereogenic
@@ -593,7 +794,8 @@ function localizeFunctionalParentExternalName(actual: GeneratedMolecule, sourceN
   // verified isomeric SMILES as the active canvas graph; the exact inverse
   // grammar above preserves parent, locants, N-attachment and stereo labels.
   const externalGraph = verifiedExternalSmiles ? moleculeFromSmiles(verifiedExternalSmiles) : null;
-  const externallyVerified = Boolean(expected && externalGraph?.ok && identity(externalGraph.molecule) === expected);
+  const externallyVerified = Boolean(expected && externalGraph?.ok
+    && structuralIdentity(externalGraph.molecule) === structuralIdentity(actual));
   return externallyVerified ? localized : null;
 }
 
@@ -612,9 +814,10 @@ export function localizeCompositionalExternalName(
   if (!spanish) return null;
   const sourceGraph = buildCompositionalExternalGraph(source), spanishGraph = buildCompositionalExternalGraph(spanish);
   const expectedIdentity = identity(actual);
-  if (!sourceGraph || !spanishGraph || !expectedIdentity || identity(sourceGraph) !== expectedIdentity
-    || identity(spanishGraph) !== expectedIdentity) return null;
-  return spanishName;
+  if (sourceGraph && spanishGraph && expectedIdentity && identity(sourceGraph) === expectedIdentity
+    && identity(spanishGraph) === expectedIdentity) return spanishName;
+  return localizeBuilderSupportedChain(actual, englishName)
+    ?? localizeFunctionalParentExternalName(actual, englishName, options.verifiedExternalSmiles);
 }
 
 /** Exposed for corpus accounting and parser tests; unsupported means no claim. */
