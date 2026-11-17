@@ -1,5 +1,6 @@
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
+import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 
 export const IUPAC_1979_LEGACY_ENGLISH_PROFILE = "iupac-1979-legacy-en" as const;
 export type NomenclatureProfile =
@@ -54,6 +55,7 @@ export type LegacySubstituent = {
   locant: number;
   systematicName: string;
   complex: boolean;
+  atomIds?:number[];
 };
 
 export type LegacyEnglishNameModel = {
@@ -76,6 +78,8 @@ export type LegacyEnglishNameModel = {
     nitrogenAtomId: number;
   }>;
   stereochemicalPrefix?: string;
+  /** Use the proven semantic component grammar instead of the analyzer's lexical Spanish draft. */
+  requiresCompositionalTranslation?: boolean;
   unavailableReason?: string;
 };
 
@@ -198,6 +202,12 @@ const fixedPrefixTranslations: Readonly<Record<string, string>> = {
 
 /** Converts the structural Spanish morphemes emitted by graph analysis, not arbitrary prose. */
 export function englishStructuralSubstituentName(name: string) {
+  const component = legacyPrefixTerm(name);
+  if (component && component.en !== name) return component.en;
+  if (/^\d+-(?:amino|hidroxi|hydroxy)(?:met|et|prop|but|pent|hex|hept|oct|non|dec)/.test(name)) {
+    const term=legacyPrefixTerm(name);
+    if(term)return term.en;
+  }
   const exact = fixedPrefixTranslations[name];
   if (exact) return exact;
   const numberedUnsaturated = name.match(/^([a-z]+)-(\d+)-(en|in)-(\d+)-il$/i);
@@ -256,13 +266,15 @@ export function nameSubstituents(substituents: readonly (Omit<LegacySubstituent,
       || a.name.localeCompare(b.name, "en"))
     .map((group) => {
       const locants = [...group.locants].sort((a, b) => a === "N" ? b === "N" ? 0 : -1 : b === "N" ? 1 : a - b).join(",");
-      if (group.locants.length === 1) return group.complex ? `${locants}-(${group.name})` : `${locants}-${group.name}`;
+      const component=group.complex?group.name.replace(/\[([^\[\]]+)\]/g,"($1)"):group.name;
+      const opening=component.includes("(")?"[":"(",closing=opening==="["?"]":")";
+      if (group.locants.length === 1) return group.complex ? `${locants}-${opening}${component}${closing}` : `${locants}-${component}`;
       const multiplier = group.complex
         ? COMPLEX_MULTIPLIERS[group.locants.length] ?? `${group.locants.length}x`
         : SIMPLE_MULTIPLIERS[group.locants.length] ?? `${group.locants.length}x`;
       return group.complex
-        ? `${locants}-${multiplier}(${group.name})`
-        : `${locants}-${multiplier}${group.name}`;
+        ? `${locants}-${multiplier}${opening}${component}${closing}`
+        : `${locants}-${multiplier}${component}`;
     });
 }
 
@@ -354,7 +366,11 @@ function functionalParent(model: LegacyEnglishNameModel, principal: LegacyFuncti
 
   const stem = unsaturatedStem(model.parent.carbonCount, model.doubleBondLocants, model.tripleBondLocants) ?? `${root}an`;
   const saturated = !model.doubleBondLocants.length && !model.tripleBondLocants.length;
-  if (principal === "carboxylicAcid") return count === 1 ? `${stem}oic acid` : `${stem}edioic acid`;
+  if (principal === "carboxylicAcid") {
+    if (count > 2 && !included && parentKind === "chain")
+      return `${root}ane-${locantText}-${multiple}carboxylic acid`;
+    return count === 1 ? `${stem}oic acid` : `${stem}edioic acid`;
+  }
   if (principal === "ester") {
     const alkylNames = groups
       .map((group) => group.attachedAlkylName ? englishStructuralSubstituentName(group.attachedAlkylName) : "alkyl")
@@ -375,6 +391,7 @@ function functionalParent(model: LegacyEnglishNameModel, principal: LegacyFuncti
     return saturated ? `${locantText}-${root}ane${multiple}ol` : `${stem}-${locantText}-${multiple}ol`;
   }
   if (principal === "ketone") {
+    if (saturated && model.parent.carbonCount === 1 && count === 1 && locants[0] === 1) return "methanone";
     if (count === 1 && saturated && model.parent.carbonCount === 3 && locants[0] === 2) return "propanone";
     if (count === 1 && saturated) return `${locants[0]}-${stem}one`;
     return saturated ? `${locantText}-${root}ane${multiple}one` : `${stem}-${locantText}-${multiple}one`;
@@ -422,10 +439,13 @@ function formatPreparedName(model:LegacyEnglishNameModel) {
       && groups.every((group) => group.carbonIncludedInParent)
       && groups.some((group) => group.locant === 1)
       && groups.some((group) => group.locant === model.parent.carbonCount);
+    const polycarboxylicChain = model.parent.kind === "chain" && groups.length > 2
+      && groups.every((group) => !group.carbonIncludedInParent);
     // C-401.1 applies to two terminal carboxyl carbons in the parent chain.
     // The existing benzene-carboxylic grammar represents exocyclic groups;
     // other multiple-acid layouts must not fall through to a monoacid suffix.
-    if (!terminalDiacid && !(model.parent.kind === "aromatic" && model.parent.carbonCount === 6)) return "-";
+    if (!terminalDiacid && !polycarboxylicChain
+      && !(model.parent.kind === "aromatic" && model.parent.carbonCount === 6)) return "-";
   }
   const parentName = hierarchy.principalKind
     ? functionalParent(model, hierarchy.principalKind, hierarchy.principalGroups)
@@ -434,6 +454,13 @@ function formatPreparedName(model:LegacyEnglishNameModel) {
     ...model.substituents,
     ...(model.nitrogenSubstituents ?? []).map((item) => ({ ...item, locant: "N" as const })),
   ]);
+  if(model.functionalGroups.length===1&&model.functionalGroups[0].kind==="ether"&&model.parent.kind==="chain"&&model.parent.carbonCount<=2
+    &&model.substituents.length===1&&model.substituents[0].locant===1)
+    prefixParts=prefixParts.map(part=>part.replace(/^1-/,""));
+  if(model.parent.kind==="chain"&&model.parent.carbonCount===1&&model.substituents.length
+    &&model.functionalGroups.length===model.substituents.length
+    &&model.functionalGroups.every(group=>group.kind==="halogen"||group.kind==="nitro"))
+    prefixParts=prefixParts.map(part=>part.replace(/(^|-)1(?:,1)*-/g,"$1"));
   if (
     !hierarchy.principalKind
     && (model.parent.kind === "ring" || model.parent.kind === "aromatic")
@@ -444,6 +471,9 @@ function formatPreparedName(model:LegacyEnglishNameModel) {
   ) {
     prefixParts = [prefixParts[0].replace(/^1-/, "")];
   }
+  if(hierarchy.principalKind==="ketone"&&model.parent.kind==="chain"&&model.parent.carbonCount===1
+    &&model.functionalGroups.every(group=>group.locant===1)&&model.substituents.every(sub=>sub.locant===1))
+    prefixParts=prefixParts.map(part=>part.replace(/^1(?:,1)*-/,""));
   let prefixed = parentName;
   if (prefixParts.length) {
     const prefix = prefixParts.join("-");

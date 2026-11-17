@@ -80,15 +80,8 @@ export function verifyLegacyAliphaticAmineModel(graph:AmineGraph, model:LegacyEn
       const ids:number[]=[],pending=[start],seen=new Set(blocked);
       while(pending.length){const id=pending.pop()!;if(seen.has(id))continue;seen.add(id);ids.push(id);
         pending.push(...neighbors.get(id)!.filter(carbon));}return ids;};
-    // C-814.1 requires the radical-based di-/tri- form for fully symmetrical
-    // secondary/tertiary amines. The current EN formatter only supplies the
-    // N-substitution form, so do not claim a proven historical translation.
-    if(nitrogen.length===1&&neighbors.get(nitrogen[0].id)!.length>1){
-      const roots=neighbors.get(nitrogen[0].id)!;
-      const radicals=roots.map(root=>{const ids=component(root,new Set([nitrogen[0].id]));
-        return {atoms:ids.map(id=>atoms.get(id)!),bonds:graph.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b))};});
-      if(radicals.slice(1).every((radical,i)=>legacyGraphsIdentical(radicals[0],radical,new Map([[roots[0],roots[i+1]]]))))return false;
-    }
+    // C-814.1's symmetrical radical form is handled by the formatter below;
+    // constitutional verification remains the same full-graph proof.
     const radicalNames=(count:number)=>[`${iupacRootForCarbonCount(count)}il`,
       ...["1-metiletil","2-metilpropil","1-metilpropil","1,1-dimetiletil"].filter(name=>legacyPrefixTerm(name)!.elements.length===count)];
     // C-15/A-2 apply the alphabet of the actually cited prefix. An admitted
@@ -132,6 +125,42 @@ export function verifyLegacyAliphaticAmineModel(graph:AmineGraph, model:LegacyEn
     for(const atom of graph.atoms)if(carbon(atom.id)&&validParent)visit([atom.id]);
     return validParent;
   }catch{return false;}
+}
+
+/** C-814.1: identify fully symmetrical, saturated aliphatic amines from the
+ * graph, and return the 1979 radical-based EN/ES names. The caller must first
+ * pass verifyLegacyAliphaticAmineModel; this helper only recognizes bounded
+ * alkyl radicals whose entire graph is represented by the shared fragment
+ * grammar. */
+export function legacySymmetricAliphaticAmineNames(graph:AmineGraph,model:LegacyEnglishNameModel):{english:string;spanish:string}|undefined {
+  try {
+    const m=model;
+    if(m.parent.kind!=="chain"||m.functionalGroups.length!==1||m.functionalGroups[0].kind!=="amine"
+      ||m.substituents.length||!m.nitrogenSubstituents?.length||!verifyLegacyAliphaticAmineModel(graph,m))return;
+    const nitrogen=graph.atoms.filter(a=>a.element==="N");
+    if(nitrogen.length!==1)return;
+    const n=nitrogen[0].id,atoms=new Map(graph.atoms.map(a=>[a.id,a]));
+    const neighbors=new Map(graph.atoms.map(a=>[a.id,[] as number[]]));
+    for(const [a,b,order=1] of graph.bonds){if(order!==1)return;neighbors.get(a)?.push(b);neighbors.get(b)?.push(a);}
+    const roots=neighbors.get(n)??[];
+    if(roots.length<2||roots.length>3)return;
+    if(m.nitrogenSubstituents.length!==roots.length-1)return;
+    const radical=(root:number)=>{
+      const ids:number[]=[],pending=[root],seen=new Set([n]);
+      while(pending.length){const id=pending.pop()!;if(seen.has(id))continue;seen.add(id);ids.push(id);
+        pending.push(...(neighbors.get(id)??[]).filter(next=>(atoms.get(next)?.element??"C")==="C"));}
+      const fragment={atoms:ids.map(id=>atoms.get(id)!),bonds:graph.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b))};
+      const candidates=Array.from({length:20},(_,i)=>`${iupacRootForCarbonCount(i+1)}il`);
+      return candidates.map(name=>legacyPrefixTerm(name)).find(term=>term
+        &&term.elements.length===ids.length&&term.bonds.length===ids.length-1
+        &&legacyGraphsIdentical({atoms:term.elements.map((element,id)=>({id,element})),bonds:term.bonds},fragment,new Map([[0,root]])));
+    };
+    const terms=roots.map(radical);
+    if(terms.some(term=>!term)||terms.slice(1).some(term=>term!.es!==terms[0]!.es))return;
+    const multiplier=roots.length===2?"di":"tri",englishRoot=terms[0]!.en,spanishRoot=terms[0]!.es;
+    if(!englishRoot||!spanishRoot)return;
+    return {english:`${multiplier}${englishRoot}amine`,spanish:`${multiplier}${spanishRoot}amina`};
+  } catch { return; }
 }
 
 /** Renders proven semantic components, never a replacement on an EN name. */

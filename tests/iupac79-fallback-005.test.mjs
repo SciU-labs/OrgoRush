@@ -4,7 +4,7 @@ import {Molecule,SmilesParser} from 'openchemlib';
 import {loadExerciseChemistry} from './helpers/exercise-chemistry.mjs';
 import {moleculeFromSmiles} from '../app/openchemlib-adapter.ts';
 import {legacyGraphsIdentical} from '../app/iupac1979-name-structure.ts';
-import {verifyLegacyAliphaticAmineModel} from '../app/iupac1979-aliphatic-amines.ts';
+import {verifyLegacyAliphaticAmineModel,legacySymmetricAliphaticAmineNames} from '../app/iupac1979-aliphatic-amines.ts';
 import {translateLegacyEnglishToSpanish,resolveLegacySpanish} from '../app/iupac1979-english-to-spanish.ts';
 import {generateLegacyEnglishName} from '../app/legacy-english-nomenclature.ts';
 import {formatIupac1979SpanishName} from '../app/nomenclature-conventions.ts';
@@ -165,8 +165,20 @@ test('zero-valued atom IDs preserve the amino anchor and historical numbering',(
  assert.equal(r.spanishAnalysis.numberedAtoms.get(0),3);
 });
 
-test('unrepresented unsaturation, stereo, mixed functions, cyclic and substituted polyamines remain outside the new route',()=>{
- for(const smiles of ['C=CCN','C#CCN','C[C@H](N)CC','CNCCN','NCCO','CC(=O)N','N1CCCCC1','CNC','CCNCC','CN(C)C','CCN(CC)CC']){
+test('C-814.1 symmetrical secondary and tertiary amines use the radical-based historical form',()=>{
+ for(const [smiles,en,es] of [['CNC','dimethylamine','dimetilamina'],['CCNCC','diethylamine','dietilamina'],
+   ['CN(C)C','trimethylamine','trimetilamina'],['CCN(CC)CC','triethylamine','trietilamina']]){
+  const g=graph(smiles),r=observe(g),names=legacySymmetricAliphaticAmineNames(g,r.englishModel);
+  assert.deepEqual(names,{english:en,spanish:es},smiles);
+  assert.equal(r.englishName,en,smiles);assert.equal(r.spanishResolution.name,es,smiles);
+  assert.equal(translateLegacyEnglishToSpanish({graph:g,model:r.englishModel,englishName:en}).name,es,smiles);
+ }
+ const wrong=graph('CNC'),m=structuredClone(observe(wrong).englishModel);m.nitrogenSubstituents[0].systematicName='etil';
+ assert.equal(legacySymmetricAliphaticAmineNames(wrong,m),undefined);
+});
+
+test('unrepresented unsaturation, stereo, mixed functions, cyclic and polyamines remain outside the new route',()=>{
+ for(const smiles of ['C=CCN','C#CCN','C[C@H](N)CC','CNCCN','NCCO','CC(=O)N','N1CCCCC1']){
   const g=graph(smiles),r=observe(g);
   const m=e.buildLegacyEnglishNameModel(g,e.analyzeMolecule(g,[],'iupac-1979-legacy'),undefined,{stereochemistry:true});
   assert.equal(verifyLegacyAliphaticAmineModel(g,m),false,smiles);

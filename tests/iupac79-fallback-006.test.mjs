@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {Molecule,SmilesParser} from 'openchemlib';
 import {loadExerciseChemistry} from './helpers/exercise-chemistry.mjs';
 import {moleculeFromSmiles} from '../app/openchemlib-adapter.ts';
-import {verifyLegacyAliphaticFunctionalModel} from '../app/iupac1979-aliphatic-functions.ts';
+import {verifyLegacyAliphaticFunctionalModel,verifyLegacySimpleEtherModel,verifyLegacyAcyclicPrefixModel} from '../app/iupac1979-aliphatic-functions.ts';
 import {translateLegacyEnglishToSpanish,resolveLegacySpanish} from '../app/iupac1979-english-to-spanish.ts';
 import {generateLegacyEnglishName} from '../app/legacy-english-nomenclature.ts';
 import {legacyGraphsIdentical} from '../app/iupac1979-name-structure.ts';
@@ -93,15 +93,78 @@ test('independently drawn functional graphs include the carbonyl/nitrile carbon 
  }
 });
 
+test('C-211.1 simple alkoxyalkanes preserve parent and radical identity in both profiles',()=>{
+ for(const [smiles,en,es] of [['COC','methoxymethane','metoximetano'],['CCOCC','ethoxyethane','etoxietano'],
+  ['CCOC','methoxyethane','metoxietano']]){
+  const g=graph(smiles),r=observe(g);
+  assert.equal(r.englishName,en,smiles);
+  assert.equal(r.spanishResolution.name,es,smiles);
+  assert.equal(verifyLegacySimpleEtherModel(g,r.englishModel),true,smiles);
+  const wrong=structuredClone(g);wrong.atoms[0].element='O';
+  assert.equal(verifyLegacySimpleEtherModel(wrong,r.englishModel),false,`${smiles}: element mismatch`);
+ }
+ const larger=graph('CCOCCC'),largerModel=observe(larger).englishModel;
+ assert.equal(verifyLegacySimpleEtherModel(larger,largerModel),false,'longer competing ether parents remain outside this bounded rule');
+});
+
+test('C-822 N-substituted alkanamides preserve the amide nitrogen and each attached alkyl fragment',()=>{
+ for(const [smiles,en,es] of [['CC(=O)NC','N-methylethanamide','N-metiletanamida'],
+  ['CC(=O)N(C)C','N,N-dimethylethanamide','N,N-dimetiletanamida'],
+  ['CNC(=O)CC','N-methylpropanamide','N-metilpropanamida'],
+  ['CN(C)C(=O)CC','N,N-dimethylpropanamide','N,N-dimetilpropanamida']]){
+  const g=graph(smiles),r=observe(g),m=r.englishModel;
+  assert.equal(r.englishName,en,smiles);
+  assert.equal(verifyLegacyAliphaticFunctionalModel(g,m),true,smiles);
+  assert.equal(translate(g,m).name,es,smiles);
+  assert.equal(r.spanishResolution.name,es,smiles);
+  for(const mutate of [copy=>copy.nitrogenSubstituents[0].nitrogenAtomId=m.parent.atomIds[0],
+   copy=>copy.nitrogenSubstituents[0].atomIds.pop(),copy=>copy.nitrogenSubstituents[0].systematicName='etil']){
+   const corrupted=structuredClone(m);mutate(corrupted);
+   assert.equal(translate(g,corrupted).status,'UNSUPPORTED',`${smiles}/${mutate}`);
+  }
+ }
+});
+
+test('C-102.1 halogen and nitro prefixes preserve repeated locants on methane',()=>{
+ for(const [smiles,en,es] of [['C[N+](=O)[O-]','nitromethane','nitrometano'],['CCl','chloromethane','clorometano'],
+  ['C(Cl)Cl','dichloromethane','diclorometano'],['C(Cl)(Cl)Cl','trichloromethane','triclorometano'],
+  ['C(Cl)(Cl)(Cl)Cl','tetrachloromethane','tetraclorometano'],
+  ['C(Cl)([N+](=O)[O-])','chloro-nitromethane','cloro-nitrometano']]){
+  const g=graph(smiles),r=observe(g);
+  assert.equal(r.englishName,en,smiles);assert.equal(r.spanishResolution.name,es,smiles);
+  assert.equal(verifyLegacyAcyclicPrefixModel(g,r.englishModel),true,smiles);
+ }
+ const g=graph('C(Cl)Cl'),m=structuredClone(observe(g).englishModel);m.substituents[0].locant=2;
+ assert.equal(verifyLegacyAcyclicPrefixModel(g,m),false,'a nonexistent carbon locant is rejected');
+});
+
 test('unsupported historical grammars fail closed across atom orders; existing native routes remain unchanged',()=>{
- for(const smiles of ['C=CCO','C#CCO','C=CC(=O)C','C=CC=O','C=CC(=O)O','C=CC(N)=O','C=CC#N','C=CC(=O)OC',
-  'CNC(=O)CC','CN(C)C(=O)CC','COC(=O)CCC(=O)OCC','CC(=O)OC(C)C',
-  'CC(O)CC(=O)C','CC(O)C(=O)O','NCCO','CCOC','OC1CCCCC1','c1ccccc1C(N)=O',
+ for(const smiles of ['C=CCO','C#CCO','C=CC(=O)C','C=CC(N)=O','C=CC(=O)OC',
+  'COC(=O)CCC(=O)OCC','CC(=O)OC(C)C',
+  'OC1CCCCC1','c1ccccc1C(N)=O',
   'OCC(O)C(O)CO','CC(=O)C(=O)C(=O)C(=O)C','O=CC(C=O)CC=O','C[C@H](O)CC']){
   for(const [variant,g] of cyclicVariants(graph(smiles))){const r=observe(g),m=r.englishModel;
    assert.equal(verifyLegacyAliphaticFunctionalModel(g,m),false,`${smiles}/${variant}`);
    if(m.parent.kind==='chain')assert.equal(translate(g,m).status,'UNSUPPORTED',`${smiles}/${variant}`);
    if(r.nativeSpanishName!=='-')assert.equal(r.spanishResolution.status,'NATIVE_ES');
+  }
+ }
+});
+
+test('new unsaturated aldehyde, acid and nitrile suffixes are compositional and graph-verified',()=>{
+ for(const [smiles,expected] of [['C=CC=O','2-propenal'],['C=CC(=O)O','ácido 2-propenoico'],['C=CC#N','2-propenonitrilo']]){
+  for(const [variant,g] of cyclicVariants(graph(smiles))){const r=observe(g);
+   assert.equal(r.spanishResolution.name,expected,`${smiles}/${variant}`);
+   assert.equal(r.spanishResolution.status,'TRANSLATED_FROM_LEGACY_EN',`${smiles}/${variant}`);
+  }
+ }
+});
+
+test('mixed subordinate groups keep the senior suffix and correct locants',()=>{
+ for(const [smiles,expected,english] of [['CC(O)CC(=O)C','4-hidroxi-2-pentanona','4-hydroxy-2-pentanone'],['CC(O)C(=O)O','ácido 2-hidroxipropanoico','2-hydroxypropanoic acid'],['NCCO','2-aminoetanol','2-aminoethanol']]){
+  for(const [variant,g] of cyclicVariants(graph(smiles))){const r=observe(g);
+   assert.equal(r.nativeSpanishName,expected,`${smiles}/${variant}`);
+   assert.equal(r.englishName,english,`${smiles}/${variant}`);
   }
  }
 });

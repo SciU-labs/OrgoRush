@@ -101,6 +101,9 @@ import {
   type TraditionalGroupType,
 } from "./traditional-nomenclature";
 import { nameRetainedFused1979, type RetainedFusedResult } from "./iupac1979-retained-fused.ts";
+import { nameLegacyFusedIndole } from "./iupac1979-fused-indole.ts";
+import { nameLegacyPiperidineComposition, type LegacyPiperidineComposition } from "./iupac1979-piperidine-compositions.ts";
+import { nameLegacyMonocyclicNitrogenHeterocycle } from "./iupac1979-monocyclic-heterocycles.ts";
 import { perceiveNamingRings } from "./naming-ring-perception.ts";
 import { nameBareCyclicParent1979, cyclicParentProof, isCyclicParent1979Spelling, type CyclicParent1979 } from "./iupac1979-cyclic-parents.ts";
 import { nameSaturatedFused1979, isSpanish1979SaturatedPolycyclicSpelling,
@@ -208,9 +211,10 @@ import { HETEROCYCLE_DEFINITIONS } from "./heterocycle-registry";
 import { verifiedPubChemAlternativeSynonyms, verifiedPubChemCommonName, verifiedPubChemRecordTitleEquivalent, verifiedPubChemSystematicDisplayName } from "./verified-common-name-equivalences";
 import { curatedCommonNameForSmiles } from "./curated-common-name-display";
 import { legacyProfileDisplayName, selectedNomenclatureExportName } from "./legacy-profile-display";
-import { resolveLegacySpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
+import { resolveLegacySpanish, translateLegacyEnglishToSpanish, verifyLegacyAcyclicPolyeneModel } from "./iupac1979-english-to-spanish.ts";
+import { legacySymmetricAliphaticAmineNames } from "./iupac1979-aliphatic-amines.ts";
 import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
-import { legacyGraphsIdentical, legacyPrefixTerm } from "./iupac1979-name-structure.ts";
+import { legacyFragmentAtomOrder, legacyGraphsIdentical, legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
@@ -647,6 +651,7 @@ type Analysis = {
   fusedTetracyclic?: FusedTetracyclicSystem;
   steroidSystem?: SteroidLikeRingSystem;
   ringSystem?: string;
+  legacyPiperidine1979?: LegacyPiperidineComposition;
 };
 
 export type IupacReasoningStep = {
@@ -2954,6 +2959,9 @@ export function heterocycleHasUnrepresentedHydroxylGroups(molecule: Molecule) {
 
 /** Admit registered bare parents; substituted heterocycle grammar remains bounded. */
 export function legacyEnglishProfileIsSupportedForMolecule(molecule: Molecule) {
+  if (nameLegacyPiperidineComposition(molecule)) return true;
+  if (nameLegacyMonocyclicNitrogenHeterocycle(molecule)) return true;
+  if (nameLegacyFusedIndole(molecule)) return true;
   const perceived = perceiveNamingRings(molecule).molecule;
   const ring = heterocycleRing(perceived);
   return !ring || (ring.atomIds.length === molecule.atoms.length
@@ -3499,6 +3507,208 @@ function selectChainAgainstMonocycle(
   return { skeleton: chosen.subgraph, externalSubstituents };
 }
 
+/** Name a six-carbon aryl radical from its attachment atom and complete side branches. */
+function legacySubstitutedPhenylComponentName(molecule:Molecule,ring:NonNullable<Molecule["rings"]>[number],anchor:number):string|undefined {
+  if(ring.kind!=="aromatic"||ring.atomIds.length!==6||!ring.atomIds.includes(anchor))return;
+  const ringIds=new Set(ring.atomIds),skeleton=carbonSkeleton(molecule),adjacency=buildAdjacency(skeleton),fullAdjacency=buildAdjacency(molecule);
+  const orders=new Map(molecule.bonds.map(bond=>[bondKey(bond[0],bond[1]),getBondOrder(bond)]));
+  const paths=[1,-1].map(direction=>Array.from({length:6},(_,step)=>ring.atomIds[(ring.atomIds.indexOf(anchor)+direction*step+600)%6]));
+  const candidates=paths.map(path=>{
+    const pieces:{locant:number;name:string;complex:boolean}[]=[];
+    for(const [index,ringAtom] of path.entries())for(const neighbor of atomNeighbors(ringAtom,molecule)){
+      if(ringIds.has(neighbor.atomId)||ringAtom===anchor)continue;
+      const element=getElement(getAtom(neighbor.atomId,molecule)!);
+      if(["Cl","F","Br","I"].includes(element)){
+        const name=element==="Cl"?"cloro":element==="F"?"fluoro":element==="Br"?"bromo":"yodo";
+        pieces.push({locant:index+1,name,complex:false});continue;
+      }
+      if(element!=="C")return {valid:false as const,pieces:[]};
+      const component=collectSubtree(neighbor.atomId,ringIds,fullAdjacency),set=new Set(component);
+      const componentElements=component.map(id=>getElement(getAtom(id,molecule)!));
+      if(componentElements.filter(element=>element==="C").length===1&&componentElements.filter(element=>element==="F").length===3
+        &&component.length===4&&molecule.bonds.filter(([a,b])=>set.has(a)&&set.has(b)).length===3
+        &&molecule.bonds.every(([a,b,order=1])=>!set.has(a)||!set.has(b)||order===1)){
+        pieces.push({locant:index+1,name:"trifluorometil",complex:false});continue;
+      }
+      if(!component.length||component.some(id=>getElement(getAtom(id,molecule)!)!=="C")
+        ||molecule.bonds.filter(([a,b])=>set.has(a)&&set.has(b)).length!==component.length-1
+        ||molecule.bonds.some(([a,b,order=1])=>set.has(a)&&set.has(b)&&order!==1))return {valid:false as const,pieces:[]};
+      const named=nameSubstituent(neighbor.atomId,ringAtom,adjacency,orders,true);
+      if(named.unsupported)return {valid:false as const,pieces:[]};
+      pieces.push({locant:index+1,name:named.name,complex:named.complex});
+    }
+    return {valid:true as const,pieces};
+  });
+  const valid=candidates.filter(candidate=>candidate.valid);if(!valid.length)return;
+  const key=(pieces:typeof valid[number]["pieces"])=>pieces.map(piece=>piece.locant).sort((a,b)=>a-b).join(",");
+  valid.sort((a,b)=>key(a.pieces).localeCompare(key(b.pieces),"en",{numeric:true}));
+  const selected=valid[0]!.pieces;if(!selected.length)return "fenil";
+  const grouped=new Map<string,{name:string;complex:boolean;locants:number[]}>();
+  for(const piece of selected){const key=`${piece.complex}:${piece.name}`,group=grouped.get(key)??{name:piece.name,complex:piece.complex,locants:[]};group.locants.push(piece.locant);grouped.set(key,group);}
+  const prefix=[...grouped.values()].sort((a,b)=>a.locants[0]!-b.locants[0]!).map(group=>{
+    const locants=group.locants.sort((a,b)=>a-b),multipliers=["","","di","tri","tetra","penta","hexa"];
+    return `${locants.join(",")}-${group.complex?`[${group.name}]`:locants.length===1?group.name:`${multipliers[locants.length]}${group.name}`}`;
+  }).join("-");
+  return `${prefix}fenil`;
+}
+
+/** C-402.1: for an unbranched carbon chain bearing three carboxyl groups,
+ * choose the chain attached to all three groups and name their carbonyl
+ * carbons outside the parent. The complete model is later graph-reconstructed. */
+function legacyTricarboxylicAcidModel(molecule:Molecule,analysis:Analysis):LegacyEnglishNameModel|undefined {
+  const acids=analysis.functionalGroups.filter(group=>group.kind==="carboxylicAcid");
+  const alcohols=analysis.functionalGroups.filter(group=>group.kind==="alcohol");
+  if(acids.length!==3||alcohols.length>1||analysis.functionalGroups.some(group=>
+    group.kind!=="carboxylicAcid"&&group.kind!=="alcohol")
+    ||molecule.rings?.length||molecule.atoms.some(atom=>(atom.charge??0)!==0
+      ||(atom as typeof atom&{isotope?:number}).isotope!==undefined)
+    ||molecule.bonds.some(bond=>bond[3]))return;
+  const acidCarbonIds=new Set(acids.map(group=>group.carbonId));
+  const parentIds=molecule.atoms.filter(atom=>isCarbonAtom(atom)&&!acidCarbonIds.has(atom.id)).map(atom=>atom.id);
+  if(parentIds.length<2)return;
+  const parentSet=new Set(parentIds),adjacency=buildAdjacency(carbonSkeleton(molecule));
+  if(molecule.bonds.some(([a,b,order=1])=>parentSet.has(a)&&parentSet.has(b)&&order!==1))return;
+  const edges=parentIds.flatMap(id=>(adjacency.get(id)??[]).filter(next=>parentSet.has(next)&&id<next).map(next=>[id,next] as const));
+  if(edges.length!==parentIds.length-1||parentIds.some(id=>(adjacency.get(id)??[]).filter(next=>parentSet.has(next)).length>2))return;
+  const ends=parentIds.filter(id=>(adjacency.get(id)??[]).filter(next=>parentSet.has(next)).length===1);
+  if(ends.length!==2)return;
+  const paths=ends.map(end=>{
+    const path=[end];let previous=-1,current=end;
+    while(true){const next=(adjacency.get(current)??[]).find(id=>parentSet.has(id)&&id!==previous);
+      if(next===undefined)break;if(path.includes(next))return undefined;path.push(next);previous=current;current=next;}
+    return path.length===parentIds.length?path:undefined;
+  }).filter((path):path is number[]=>Boolean(path));
+  if(paths.length!==2)return;
+  const acidAnchors=acids.map(group=>{
+    const carbonNeighbors=atomNeighbors(group.carbonId,molecule).filter(item=>getElement(getAtom(item.atomId,molecule)!)==="C");
+    return carbonNeighbors.length===1&&parentSet.has(carbonNeighbors[0]!.atomId)?carbonNeighbors[0]!.atomId:undefined;
+  });
+  if(acidAnchors.some(id=>id===undefined)||new Set(acidAnchors).size!==3)return;
+  const locantsFor=(path:number[])=>acidAnchors.map(id=>path.indexOf(id!)+1).sort((a,b)=>a-b);
+  paths.sort((a,b)=>{
+    const x=locantsFor(a),y=locantsFor(b);
+    for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];
+    return a.join(",").localeCompare(b.join(","));
+  });
+  const path=paths[0]!,used=new Set<number>(path),functionalGroups:LegacyEnglishNameModel["functionalGroups"]=[];
+  for(let i=0;i<acids.length;i++){
+    const group=acids[i]!,locant=path.indexOf(acidAnchors[i]!)+1;
+    if(locant<1||group.atomIds.some(id=>used.has(id)))return;
+    group.atomIds.forEach(id=>used.add(id));
+    functionalGroups.push({kind:"carboxylicAcid",locant,carbonIncludedInParent:false});
+  }
+  const substituents:LegacyEnglishNameModel["substituents"]=[];
+  for(const group of alcohols){
+    const locant=path.indexOf(group.carbonId)+1,oxygen=getAtom(group.heteroAtomId,molecule);
+    if(locant<1||!oxygen||getElement(oxygen)!=="O"||used.has(group.heteroAtomId)
+      ||atomNeighbors(group.heteroAtomId,molecule).length!==1
+      ||!atomNeighbors(group.heteroAtomId,molecule).some(item=>item.atomId===group.carbonId&&item.order===1))return;
+    used.add(group.heteroAtomId);
+    functionalGroups.push({kind:"alcohol",locant,carbonIncludedInParent:true});
+    substituents.push({locant,systematicName:"hidroxi",complex:false});
+  }
+  if(used.size!==molecule.atoms.length||molecule.atoms.some(atom=>!used.has(atom.id)))return;
+  return {profile:IUPAC_1979_LEGACY_ENGLISH_PROFILE,requiresCompositionalTranslation:true,
+    parent:{kind:"chain",carbonCount:path.length,atomIds:path},doubleBondLocants:[],tripleBondLocants:[],
+    functionalGroups,substituents};
+}
+
+/** Select an aliphatic secondary-amine parent between two separate aromatic
+ * rings using C-814.4 and the ordered acyclic-chain criteria in C-13.11:
+ * principal-group attachments, unsaturation, then chain length and prefix
+ * locants. Equal candidates fail closed when later seniority cannot be proven.
+ * Each independent aryl/aryloxy ring is reconstructed as a substituent. */
+function independentArylSecondaryAmineModel(molecule:Molecule):LegacyEnglishNameModel|undefined {
+  const rings=molecule.rings??[];
+  if(rings.length!==2||rings.some(ring=>ring.kind!=="aromatic"||ring.atomIds.length!==6)
+    ||rings[0]!.atomIds.some(id=>rings[1]!.atomIds.includes(id))
+    ||molecule.atoms.some(atom=>(atom.charge??0)!==0)
+    ||getTetrahedralStereoCenters(molecule).length||molecule.bonds.some(bond=>bond[3]))return;
+  const ringIds=new Set(rings.flatMap(ring=>ring.atomIds)),skeleton=carbonSkeleton(molecule),adjacency=buildAdjacency(skeleton);
+  const nitrogens=molecule.atoms.filter(atom=>getElement(atom)==="N");if(nitrogens.length!==1)return;
+  const nitrogen=nitrogens[0]!,nLinks=atomNeighbors(nitrogen.id,molecule);
+  if(nLinks.length!==2||nLinks.some(link=>link.order!==1||getElement(getAtom(link.atomId,molecule)!)!=="C"))return;
+  const components=(start:number)=>{
+    const ids:number[]=[],pending=[start],seen=new Set<number>();
+    while(pending.length){const id=pending.pop()!;if(seen.has(id)||ringIds.has(id))continue;seen.add(id);ids.push(id);
+      pending.push(...(adjacency.get(id)??[]).filter(next=>!ringIds.has(next)));}
+    return ids;
+  };
+  const rootedPaths=nLinks.map(link=>{
+    const ids=components(link.atomId),set=new Set(ids),edges=molecule.bonds.filter(([a,b])=>set.has(a)&&set.has(b));
+    if(!ids.length||edges.length!==ids.length-1||ids.some(id=>(adjacency.get(id)??[]).filter(next=>set.has(next)).length>2)
+      ||(adjacency.get(link.atomId)??[]).filter(next=>set.has(next)).length>1)return;
+    const path=[link.atomId];let previous=-1,current=link.atomId;
+    while(true){const next=(adjacency.get(current)??[]).find(id=>set.has(id)&&id!==previous);if(next===undefined)break;
+      if(path.includes(next))return;path.push(next);previous=current;current=next;}
+    return path.length===ids.length?{link:link.atomId,ids,path}:undefined;
+  });
+  const candidates=rootedPaths.filter((value):value is NonNullable<typeof value>=>Boolean(value));
+  if(candidates.length!==2)return;
+  const amineRadicalCriteria=(candidate:NonNullable<typeof candidates[number]>):ParentCandidateCriteria=>{
+    const pathSet=new Set(candidate.path),bondOrder=(a:number,b:number)=>molecule.bonds.find(([x,y])=>x===a&&y===b||x===b&&y===a)?.[2]??1;
+    const multipleBonds=candidate.path.slice(0,-1).flatMap((id,index)=>bondOrder(id,candidate.path[index+1]!)>1?[index+1]:[]);
+    const externalAttachments=[...new Set(candidate.path.flatMap(id=>atomNeighbors(id,molecule)
+      .filter(link=>link.atomId!==nitrogen.id&&!pathSet.has(link.atomId)).map(link=>link.atomId)))];
+    const prefixLocants=externalAttachments.map(id=>candidate.path.findIndex(parentId=>atomNeighbors(parentId,molecule).some(link=>link.atomId===id))+1)
+      .filter(locant=>locant>0).sort((a,b)=>a-b);
+    return {principalGroupCount:1,multipleBondCount:multipleBonds.length,carbonCount:candidate.path.length,
+      doubleBondCount:multipleBonds.filter(locant=>bondOrder(candidate.path[locant-1]!,candidate.path[locant]!)===2).length,
+      principalGroupLocants:[1],multipleBondLocants:multipleBonds,doubleBondLocants:[],prefixCount:prefixLocants.length,
+      prefixLocants,alphabeticalTieBreak:""};
+  };
+  candidates.sort((a,b)=>compareParentCandidates(amineRadicalCriteria(a),amineRadicalCriteria(b)));
+  if(compareParentCandidates(amineRadicalCriteria(candidates[0]!),amineRadicalCriteria(candidates[1]!))===0)return;
+  const parent=candidates[0]!,nSub=candidates[1]!,nTerm=nameSubstituent(nSub.link,nitrogen.id,adjacency);
+  const nFragment=legacyPrefixTerm(nTerm.name);
+  if(nTerm.unsupported||!nFragment||nFragment.kind||nFragment.elements.some(element=>element!=="C")
+    ||nFragment.elements.length!==nSub.ids.length||nSub.ids.some(id=>getElement(getAtom(id,molecule)!)!=="C"))return;
+  const orderMap=new Map(molecule.bonds.map(([a,b,order=1])=>[bondKey(a,b),getBondOrder([a,b,order]) as BondOrder]));
+  const substituents:LegacyEnglishNameModel["substituents"]=[];
+  const accounted=new Set<number>([...parent.path,nitrogen.id,...nSub.ids]);
+  const fullAdjacency=buildAdjacency(molecule);
+  for(const ring of rings){
+    const ringSet=new Set(ring.atomIds);
+    const direct=molecule.bonds.filter(([a,b,order=1])=>order===1&&(parent.path.includes(a)&&ringSet.has(b)||parent.path.includes(b)&&ringSet.has(a)));
+    let anchor:number|undefined,fragmentRoot:number|undefined,locant:number|undefined,termName:string|undefined,complex=false;
+    if(direct.length===1){const [a,b]=direct[0]!;const chainAtom=parent.path.includes(a)?a:b;anchor=chainAtom===a?b:a;
+      locant=parent.path.indexOf(chainAtom)+1;fragmentRoot=anchor;
+      termName=legacySubstitutedPhenylComponentName(molecule,ring,anchor);}
+    else{
+      const ethers=molecule.atoms.filter(atom=>getElement(atom)==="O").flatMap(oxygen=>{
+        const neighbors=atomNeighbors(oxygen.id,molecule),chain=neighbors.filter(item=>parent.path.includes(item.atomId)),aryl=neighbors.filter(item=>ringSet.has(item.atomId));
+        return chain.length===1&&aryl.length===1&&neighbors.length===2&&chain[0]!.order===1&&aryl[0]!.order===1
+          ?[{oxygen:oxygen.id,chain:chain[0]!.atomId,aryl:aryl[0]!.atomId}]:[];
+      });
+      if(ethers.length!==1)return;const ether=ethers[0]!;anchor=ether.aryl;fragmentRoot=ether.oxygen;locant=parent.path.indexOf(ether.chain)+1;
+      const phenyl=legacySubstitutedPhenylComponentName(molecule,ring,anchor);if(!phenyl)return;
+      if(phenyl==="fenil")termName="fenoxi";
+      else{
+        const trifluoro=phenyl.match(/^(\d+)-(?:trifluorometil|\[trifluorometil\])fenil$/);
+        termName=trifluoro?`${trifluoro[1]}-(trifluorometil)fenoxi`:undefined;
+      }
+      complex=true;
+    }
+    if(anchor===undefined||fragmentRoot===undefined||locant===undefined||locant<1||!termName)return;
+    const term=legacyPrefixTerm(termName);if(!term)return;
+    const blocked=new Set([...parent.path,nitrogen.id,...nSub.ids]);
+    const ids:number[]=[],pending=[fragmentRoot];
+    while(pending.length){const id=pending.pop()!;if(blocked.has(id)||ids.includes(id))continue;ids.push(id);
+      pending.push(...(fullAdjacency.get(id)??[]).filter(next=>!blocked.has(next)));}
+    if(ids.some(id=>accounted.has(id)))return;
+    const ordered=legacyFragmentAtomOrder(term,{atoms:molecule.atoms.filter(atom=>ids.includes(atom.id)),
+      bonds:molecule.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b))},fragmentRoot);
+    if(!ordered||ordered.length!==term.elements.length)return;
+    ordered.forEach(id=>accounted.add(id));
+    substituents.push({locant,systematicName:term.es,complex,atomIds:ordered});
+  }
+  if(accounted.size!==molecule.atoms.length||molecule.atoms.some(atom=>!accounted.has(atom.id)))return;
+  return {profile:IUPAC_1979_LEGACY_ENGLISH_PROFILE,requiresCompositionalTranslation:true,
+    parent:{kind:"chain",carbonCount:parent.path.length,atomIds:parent.path},doubleBondLocants:[],tripleBondLocants:[],
+    functionalGroups:[{kind:"amine",locant:1,carbonIncludedInParent:true}],substituents,
+    nitrogenSubstituents:[{systematicName:nTerm.name,complex:false,atomIds:nSub.ids,nitrogenAtomId:nitrogen.id}]};
+}
+
 /** Adapts graph analysis to the profile-neutral semantic input of the English formatter. */
 export function buildLegacyEnglishNameModel(
   molecule: Molecule,
@@ -3507,6 +3717,46 @@ export function buildLegacyEnglishNameModel(
   options: { stereochemistry?: boolean } = {},
 ): LegacyEnglishNameModel {
   molecule = perceiveNamingRings(molecule).molecule;
+  const piperidineComposition = nameLegacyPiperidineComposition(molecule);
+  if (piperidineComposition) return {
+    profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+    parent: { kind: "polycyclic", carbonCount: piperidineComposition.parentAtomIds.filter(id => isCarbonAtom(getAtom(id, molecule)!)).length,
+      atomIds: [...piperidineComposition.parentAtomIds], fallbackName: piperidineComposition.english,
+      retained: { id: "piperidine-composition", locants: [...piperidineComposition.locants.values()] } },
+    doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
+    requiresCompositionalTranslation: true,
+  };
+  const historicalHeterocycle = nameLegacyMonocyclicNitrogenHeterocycle(molecule);
+  if (historicalHeterocycle) return {
+    profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+    parent: { kind: "heterocycle", carbonCount: molecule.atoms.filter(atom => historicalHeterocycle.atomLocants.has(atom.id) && isCarbonAtom(atom)).length,
+      atomIds: [...historicalHeterocycle.atomLocants.keys()], fallbackName: historicalHeterocycle.english },
+    doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
+    requiresCompositionalTranslation: true,
+  };
+  const tricarboxylicAcid=legacyTricarboxylicAcidModel(molecule,analysis);
+  if(tricarboxylicAcid)return tricarboxylicAcid;
+  const independentArylAmine=independentArylSecondaryAmineModel(molecule);
+  if(independentArylAmine)return independentArylAmine;
+  const diarylCarbonyl=analysis.functionalGroups.find(group=>group.kind==="ketone");
+  if(diarylCarbonyl&&molecule.rings?.length===2&&molecule.rings.every(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6)
+    &&molecule.atoms.length===14&&getTetrahedralStereoCenters(molecule).length===0){
+    const ringIds=new Set(molecule.rings.flatMap(ring=>ring.atomIds)),carbonylId=diarylCarbonyl.carbonId;
+    const carbonylAtom=getAtom(carbonylId,molecule),oxygenId=diarylCarbonyl.heteroAtomId;
+    const ringsAttached=molecule.rings.map(ring=>{
+      const links=molecule.bonds.filter(([a,b])=>a===carbonylId&&ring.atomIds.includes(b)||b===carbonylId&&ring.atomIds.includes(a));
+      return links.length===1&&links[0][2]===1?links[0][0]===carbonylId?links[0][1]:links[0][0]:undefined;
+    });
+    const accounted=new Set([...ringIds,carbonylId,oxygenId]);
+    if(carbonylAtom&&isCarbonAtom(carbonylAtom)&&ringsAttached.every(id=>id!==undefined)
+      &&accounted.size===molecule.atoms.length&&molecule.atoms.every(atom=>accounted.has(atom.id))
+      &&atomNeighbors(carbonylId,molecule).filter(n=>n.atomId===oxygenId&&n.order===2).length===1){
+      return {profile:IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+        parent:{kind:"chain",carbonCount:1,atomIds:[carbonylId]},doubleBondLocants:[],tripleBondLocants:[],
+        functionalGroups:[{kind:"ketone",locant:1,carbonIncludedInParent:true}],
+        substituents:ringsAttached.map(()=>({locant:1,systematicName:"fenil",complex:false}))};
+    }
+  }
   if (analysis.cyclicParent1979 || analysis.cyclicUnsupported) return {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
     parent: {kind: analysis.cyclicParent1979?.family === "heterocycle" ? "heterocycle" : "polycyclic",
@@ -3530,6 +3780,7 @@ export function buildLegacyEnglishNameModel(
         atomIds: retained.status==="SUPPORTED"?[...englishLocants.keys()]:[...analysis.mainChain], fallbackName: retained.status === "SUPPORTED" ? retained.nameEn : undefined,
         retained:retained.status==="SUPPORTED"?{id:retained.parentId,locants:[...englishLocants.values()]}:undefined },
       doubleBondLocants: [], tripleBondLocants: [], functionalGroups: [], substituents: [],
+      requiresCompositionalTranslation: retained.status === "SUPPORTED" && retained.parentId === "indole",
       unavailableReason: retained.status === "UNSUPPORTED" ? retained.reason : undefined,
     };
   }
@@ -3574,13 +3825,39 @@ export function buildLegacyEnglishNameModel(
     ?? /^(?:ácido )?\((?:\d+[EZRS])(?:,\d+[EZRS])*\)-/.test(displayedSourceName);
   const unrepresentedTetrahedralCenter = stereochemistryRequested
     && getTetrahedralStereoCenters(molecule).some((center) => !analysis.mainChain.includes(center.atomId));
+  const chainArylNames=new Map<number,string>();
+  const chainAminoNames=new Map<number,string>();
+  if(parentKind==="chain")for(const substituent of analysis.substituents){
+    const ring=rings.find(candidate=>candidate.kind==="aromatic"&&candidate.atomIds.length===6
+      &&candidate.atomIds.every(id=>substituent.atomIds.includes(id)));
+    const anchor=parentAtomIds[substituent.locant-1],name=ring&&anchor!==undefined?legacySubstitutedPhenylComponentName(molecule,ring,ring.atomIds.find(id=>
+      molecule.bonds.some(([a,b])=>a===anchor&&b===id||b===anchor&&a===id))??-1):undefined;
+    if(name&&legacyPrefixTerm(name))chainArylNames.set(substituent.locant,name);
+  }
+  if(parentKind==="chain")for(const substituent of analysis.substituents.filter(item=>item.name==="amino")){
+    const parentId=parentAtomIds[substituent.locant-1],group=analysis.functionalGroups.find(item=>item.kind==="amine"&&item.heteroAtomId===substituent.atomIds.find(id=>getElement(getAtom(id,molecule)!)==="N"));
+    const nitrogen=group?.heteroAtomId;
+    if(parentId===undefined||nitrogen===undefined||!atomNeighbors(nitrogen,molecule).some(item=>item.atomId===parentId))continue;
+    const carbonRoots=atomNeighbors(nitrogen,molecule).filter(item=>item.atomId!==parentId&&getElement(getAtom(item.atomId,molecule)!)==="C");
+    if(carbonRoots.length<1||carbonRoots.length>3)continue;
+    const radicals=carbonRoots.map(root=>nameSubstituent(root.atomId,nitrogen,buildAdjacency(carbonSkeleton(molecule))));
+    if(radicals.some(radical=>radical.unsupported)||new Set(radicals.map(radical=>radical.name)).size!==1)continue;
+    const multiplier=radicals.length===1?"":radicals.length===2?"di":"tri";
+    const component=`${multiplier}${radicals[0]!.name}amino`;
+    if(legacyPrefixTerm(component)?.kind==="amine")chainAminoNames.set(substituent.locant,component);
+  }
+  const attachedArylRings=parentKind==="chain"?rings.filter(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6
+    &&ring.atomIds.some(id=>molecule.bonds.some(([a,b])=>a===id&&parentAtomIds.includes(b)||b===id&&parentAtomIds.includes(a)))):[];
+  const hasUnrepresentedChainAryl=attachedArylRings.some(ring=>!analysis.substituents.some(sub=>
+    ring.atomIds.every(id=>sub.atomIds.includes(id))&&Boolean(chainArylNames.get(sub.locant))));
   let unrepresentedAromaticRadical=false;
   const model: LegacyEnglishNameModel = {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
+    requiresCompositionalTranslation:chainArylNames.size>0||chainAminoNames.size>0,
     unavailableReason: nitrogenSubstituentsForParent(molecule, analysis).some((item) => !item.supported)
-      || hasUnrepresentedArylSubstitution(molecule, analysis)
+      || (hasUnrepresentedArylSubstitution(molecule, analysis)&&!attachedArylRings.length)
       // The 2013 methylphenyl spelling does not adjudicate a historical output.
-      || analysis.substituents.some((item) => Boolean(item.aryl))
+      || hasUnrepresentedChainAryl
       || unrepresentedTetrahedralCenter
       ? "The local naming grammar cannot represent the requested structure safely."
       : undefined,
@@ -3608,7 +3885,9 @@ export function buildLegacyEnglishNameModel(
         : undefined,
     })),
     substituents: (unsupportedHeterocycleLocalName ? [] : analysis.substituents).map((substituent) => {
-      if(parentKind!=="aromatic")return {locant:substituent.locant,systematicName:substituent.name,complex:substituent.complex};
+      if(parentKind!=="aromatic")return {locant:substituent.locant,systematicName:chainArylNames.get(substituent.locant)
+        ??chainAminoNames.get(substituent.locant)??substituent.name,
+        complex:chainArylNames.has(substituent.locant)||chainAminoNames.has(substituent.locant)||substituent.complex};
       // The legacy aromatic path used to drop internal unsaturation of a
       // three-carbon radical and emit propylbenzene for a propenyl graph.
       // Reuse the existing radical namer with the actual bond orders.
@@ -3630,6 +3909,195 @@ export function buildLegacyEnglishNameModel(
       : legacyEnglishStereochemicalPrefix(molecule, analysis, stereochemistryRequested),
   };
   if(unrepresentedAromaticRadical)model.unavailableReason??="Unsaturated aromatic side-chain grammar is not completely represented.";
+  if(chainArylNames.size){
+    const arylAtoms=new Set(rings.filter(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6).flatMap(ring=>ring.atomIds));
+    const aromaticHalogenGroups=new Set(analysis.functionalGroups.filter(group=>group.kind==="halogen"&&arylAtoms.has(group.carbonId)));
+    model.functionalGroups=model.functionalGroups.filter((_,index)=>!aromaticHalogenGroups.has(analysis.functionalGroups[index]!));
+  }
+  // Amide N-aryl groups are a separate fragment. Its substituents and atom
+  // coverage are recovered from the ring graph, not inferred from the analyzer's
+  // parent-chain substituent list.
+  if(model.parent.kind==="chain"&&model.functionalGroups.some(g=>g.kind==="amide")
+    &&molecule.rings?.length===1&&molecule.rings[0].kind==="aromatic"&&molecule.rings[0].atomIds.length===6){
+    const amide=analysis.functionalGroups.find(group=>group.kind==="amide"),ring=molecule.rings[0],ringIds=new Set(ring.atomIds);
+    const alcohols=analysis.functionalGroups.filter(group=>group.kind==="alcohol"&&ringIds.has(group.carbonId));
+    const nId=amide?.heteroAtomId,ringLinks=nId===undefined?[]:atomNeighbors(nId,molecule).filter(n=>ringIds.has(n.atomId)&&n.order===1);
+    if(amide&&nId!==undefined&&alcohols.length<=1&&ringLinks.length===1&&model.parent.atomIds.includes(amide.carbonId)
+      &&!analysis.substituents.some(item=>item.aryl)&&getTetrahedralStereoCenters(molecule).length===0){
+      const anchor=ringLinks[0].atomId,systematicName=alcohols.length===1
+        ?`${([1,-1].map(direction=>Array.from({length:6},(_,step)=>ring.atomIds[(ring.atomIds.indexOf(anchor)+direction*step+600)%6]))
+          .filter(path=>path[0]===anchor).sort((a,b)=>a.indexOf(alcohols[0]!.carbonId)-b.indexOf(alcohols[0]!.carbonId))[0]??[]).indexOf(alcohols[0]!.carbonId)+1}-hidroxifenil`
+        :legacySubstitutedPhenylComponentName(molecule,ring,anchor);
+      const term=systematicName?legacyPrefixTerm(systematicName):undefined,fragmentIds=new Set<number>(),pending=[anchor];
+      while(pending.length){const id=pending.pop()!;if(id===nId||fragmentIds.has(id))continue;fragmentIds.add(id);
+        pending.push(...atomNeighbors(id,molecule).map(item=>item.atomId).filter(next=>next!==nId&&!fragmentIds.has(next)));}
+      const expectedElements=term?.elements.slice().sort().join(","),actualElements=[...fragmentIds].map(id=>getElement(getAtom(id,molecule)!)).sort().join(",");
+      const atomOrder=term?legacyFragmentAtomOrder(term,{atoms:molecule.atoms.filter(atom=>fragmentIds.has(atom.id)),
+        bonds:molecule.bonds.filter(([a,b])=>fragmentIds.has(a)&&fragmentIds.has(b))},anchor):undefined;
+      if(term&&systematicName&&fragmentIds.size===term.elements.length&&actualElements===expectedElements&&atomOrder){
+        model.nitrogenSubstituents=[{systematicName:term.es,complex:true,atomIds:atomOrder,nitrogenAtomId:nId}];
+        const arylFunctions=new Set(analysis.functionalGroups.filter(group=>ringIds.has(group.carbonId)
+          &&(group.kind==="alcohol"||group.kind==="halogen")));
+        model.functionalGroups=model.functionalGroups.filter((_,index)=>!arylFunctions.has(analysis.functionalGroups[index]!));
+        model.requiresCompositionalTranslation=true;
+        model.unavailableReason=undefined;
+      }
+    }
+  }
+  // Preserve a functionalized alkyl branch on an aromatic 1979 parent as one
+  // compositional substituent (for example 2-aminoethyl). The current-profile
+  // analyzer claims branch atoms consumed by a functional-group record and
+  // therefore loses that side chain when the parent is the phenol ring.
+  if(model.parent.kind==="aromatic"&&model.parent.atomIds.length===6&&molecule.rings?.length===1){
+    const ringIds=new Set(model.parent.atomIds),skeleton=carbonSkeleton(molecule),adjacency=buildAdjacency(skeleton);
+    const atomById=new Map(molecule.atoms.map(atom=>[atom.id,atom]));
+    for(const ringAtom of model.parent.atomIds){
+      for(const root of adjacency.get(ringAtom)??[]){
+        if(ringIds.has(root))continue;
+        const branch=collectSubtree(root,ringIds,adjacency),branchSet=new Set(branch);
+        const branchEdges=skeleton.bonds.filter(([a,b])=>branchSet.has(a)&&branchSet.has(b));
+        if(!branch.length||branchEdges.length!==branch.length-1)continue;
+        if((adjacency.get(root)??[]).filter(id=>branchSet.has(id)).length!==1
+          ||branch.some(id=>(adjacency.get(id)??[]).filter(other=>branchSet.has(other)).length>2))continue;
+        const path=[root];let previous=-1,current=root;
+        while(true){
+          const next=(adjacency.get(current)??[]).find(id=>branchSet.has(id)&&id!==previous);
+          if(next===undefined)break;
+          if(path.includes(next)){path.length=0;break;}
+          path.push(next);previous=current;current=next;
+        }
+        if(path.length!==branch.length)continue;
+        const linkedGroups=analysis.functionalGroups.filter(group=>group.kind==="alcohol"
+          ?branchSet.has(group.carbonId)
+          :group.kind==="amine"&&path.some(id=>atomNeighbors(id,molecule).some(neighbor=>neighbor.atomId===group.heteroAtomId)));
+        if(linkedGroups.length<1||linkedGroups.length>3||linkedGroups.some(group=>!(["amine","alcohol"] as string[]).includes(group.kind)))continue;
+        if(molecule.bonds.some(([a,b,order=1])=>branchSet.has(a)&&branchSet.has(b)&&order!==1))continue;
+        const components:{locant:number;prefix:string}[]=[];let componentValid=true;
+        for(const group of linkedGroups){
+          const sideCarbon=group.kind==="amine"
+            ?path.find(id=>atomNeighbors(id,molecule).some(neighbor=>neighbor.atomId===group.heteroAtomId))
+            :group.carbonId;
+          const sideLocant=path.indexOf(sideCarbon!)+1;
+          if(sideLocant<1||!atomById.has(group.heteroAtomId)
+            ||atomNeighbors(group.carbonId,molecule).filter(n=>n.atomId===group.heteroAtomId&&n.order===1).length!==1){componentValid=false;break;}
+          if(group.kind==="alcohol"){components.push({locant:sideLocant,prefix:"hidroxi"});continue;}
+          const nitrogen=group.heteroAtomId,nitrogenNeighbors=atomNeighbors(nitrogen,molecule).filter(n=>n.atomId!==sideCarbon);
+          if(nitrogenNeighbors.some(n=>getElement(getAtom(n.atomId,molecule)!)!=="C")||nitrogenNeighbors.length>1){componentValid=false;break;}
+          if(!nitrogenNeighbors.length)components.push({locant:sideLocant,prefix:"amino"});
+          else{
+            const neighbor=nitrogenNeighbors[0]!,radical=nameSubstituent(neighbor.atomId,nitrogen,adjacency);
+            if(radical.unsupported||!legacyPrefixTerm(radical.name+"amino")){componentValid=false;break;}
+            components.push({locant:sideLocant,prefix:`(${radical.name}amino)`});
+          }
+        }
+        if(!componentValid)continue;
+        const rootName=IUPAC_ROOTS[path.length];if(!rootName)continue;
+        const allCenters=getTetrahedralStereoCenters(molecule),branchCenters=allCenters.filter(center=>branchSet.has(center.atomId));
+        if(allCenters.some(center=>!ringIds.has(center.atomId)&&!branchSet.has(center.atomId)))continue;
+        const stereo=branchCenters.map(center=>({locant:path.indexOf(center.atomId)+1,configuration:center.configuration}));
+        if(stereo.some(center=>center.locant<1))continue;
+        const stereoPrefix=stereo.length?`(${stereo.sort((a,b)=>a.locant-b.locant).map(center=>`${center.locant}${center.configuration}`).join(",")})-`:"";
+        const componentName=`${stereoPrefix}${components.sort((a,b)=>a.prefix.localeCompare(b.prefix,"es")||a.locant-b.locant)
+          .map(item=>`${item.locant}-${item.prefix}`).join("-")}${rootName}il`;
+        const term=legacyPrefixTerm(componentName);if(!term)continue;
+        const fragmentIds=new Set<number>(),pending=[root];
+        while(pending.length){const id=pending.pop()!;if(ringIds.has(id)||fragmentIds.has(id))continue;fragmentIds.add(id);
+          pending.push(...atomNeighbors(id,molecule).map(item=>item.atomId).filter(next=>!ringIds.has(next)&&!fragmentIds.has(next)));}
+        const expectedElements=term.elements.slice().sort().join(","),actualElements=[...fragmentIds].map(id=>getElement(getAtom(id,molecule)!)).sort().join(",");
+        if(fragmentIds.size!==term.elements.length||actualElements!==expectedElements)continue;
+        const ringLocant=model.parent.atomIds.indexOf(ringAtom)+1;
+        const modelGroupIndices=new Set(linkedGroups.map(group=>analysis.functionalGroups.indexOf(group)));
+        if(ringLocant<1||modelGroupIndices.has(-1))continue;
+        model.functionalGroups=model.functionalGroups.filter((_,index)=>!modelGroupIndices.has(index));
+        model.substituents.push({locant:ringLocant,systematicName:term.es,complex:true,atomIds:[...path,...[...fragmentIds].filter(id=>!branchSet.has(id))]});
+        model.requiresCompositionalTranslation=true;model.unavailableReason=undefined;
+      }
+    }
+  }
+  // An aromatic carboxylic acid bearing an O-acetyl substituent is represented
+  // as a benzoic-acid parent plus an acetoxy component. All positions and atoms
+  // are derived from the active graph before the existing aromatic proof runs.
+  if(model.parent.kind==="aromatic"&&model.parent.atomIds.length===6&&molecule.rings?.length===1){
+    const ring=molecule.rings[0],ringIds=new Set(ring.atomIds),acid=analysis.functionalGroups.find(group=>group.kind==="carboxylicAcid");
+    const acidLinks=acid?atomNeighbors(acid.carbonId,molecule).filter(item=>ringIds.has(item.atomId)&&item.order===1):[];
+    const acetoxyCandidates=ring.atomIds.flatMap(ringAtom=>atomNeighbors(ringAtom,molecule).flatMap(oxygen=>{
+      if(getElement(getAtom(oxygen.atomId,molecule)!)!=="O"||oxygen.order!==1)return [];
+      const carbonylLinks=atomNeighbors(oxygen.atomId,molecule).filter(item=>item.atomId!==ringAtom&&isCarbonAtom(getAtom(item.atomId,molecule)!)&&item.order===1);
+      return carbonylLinks.flatMap(carbonyl=>{
+        const neighbors=atomNeighbors(carbonyl.atomId,molecule),doubleO=neighbors.filter(item=>getElement(getAtom(item.atomId,molecule)!)==="O"&&item.order===2);
+        const methyl=neighbors.filter(item=>item.atomId!==oxygen.atomId&&item.order===1&&isCarbonAtom(getAtom(item.atomId,molecule)!)
+          &&atomNeighbors(item.atomId,molecule).filter(next=>next.atomId!==carbonyl.atomId).length===0);
+        return doubleO.length===1&&methyl.length===1?[[ringAtom,oxygen.atomId,carbonyl.atomId,doubleO[0].atomId,methyl[0].atomId]]:[];
+      });
+    }));
+    const acetoxy=acetoxyCandidates[0],term=legacyPrefixTerm("acetoxi");
+    if(acid&&acidLinks.length===1&&acetoxyCandidates.length===1&&term&&analysis.functionalGroups.every(group=>group.kind==="carboxylicAcid"||group.kind==="ester")
+      &&!getTetrahedralStereoCenters(molecule).length){
+      const acidLocant=model.parent.atomIds.indexOf(acidLinks[0].atomId)+1,subLocant=model.parent.atomIds.indexOf(acetoxy[0])+1;
+      const accounted=new Set([...ring.atomIds,...acid.atomIds,...acetoxy.slice(1)]);
+      if(acidLocant===1&&subLocant>1&&accounted.size===molecule.atoms.length&&molecule.atoms.every(atom=>accounted.has(atom.id))){
+        model.functionalGroups=[{kind:"carboxylicAcid",locant:acidLocant,carbonIncludedInParent:false}];
+        model.substituents=[{locant:subLocant,systematicName:term.es,complex:false}];
+        model.requiresCompositionalTranslation=true;
+        model.unavailableReason=undefined;
+      }
+    }
+  }
+  // Compose a halo-phenoxy sidechain from its graph instead of treating the
+  // aryl ether as a methoxy group and dropping the ring substituents. This
+  // applies to the general acyclic carboxylic-acid / phenoxy pattern.
+  if(model.parent.kind==="chain"&&analysis.functionalGroups.some(group=>group.kind==="carboxylicAcid")
+    &&molecule.rings?.filter(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6).length===1){
+    const ring=molecule.rings.find(item=>item.kind==="aromatic"&&item.atomIds.length===6)!,ringIds=new Set(ring.atomIds);
+    const ether=analysis.functionalGroups.find(group=>group.kind==="ether"),hetero=ether?.heteroAtomId;
+    const links=hetero===undefined?[]:atomNeighbors(hetero,molecule).filter(item=>item.order===1);
+    const ringLink=links.filter(item=>ringIds.has(item.atomId)),parentLink=links.filter(item=>model.parent.atomIds.includes(item.atomId));
+    const halogens=analysis.functionalGroups.filter(group=>group.kind==="halogen"&&ringIds.has(group.carbonId));
+    const onlyExpectedGroups=analysis.functionalGroups.every(group=>["carboxylicAcid","ether","halogen"].includes(group.kind));
+    if(ether&&hetero!==undefined&&links.length===2&&ringLink.length===1&&parentLink.length===1&&onlyExpectedGroups
+      &&halogens.length>0&&halogens.length<=3){
+      const anchor=ringLink[0].atomId,order=ring.atomIds;
+      const orientations=[1,-1].map(direction=>Array.from({length:6},(_,step)=>order[(order.indexOf(anchor)+direction*step+600)%6]));
+      const locantsFor=(path:number[])=>halogens.map(group=>path.indexOf(group.carbonId)+1).sort((a,b)=>a-b);
+      const paths=orientations.filter(path=>path[0]===anchor&&path.every((id,index)=>molecule.bonds.some(([a,b])=>a===id&&b===path[(index+1)%6]||b===id&&a===path[(index+1)%6])));
+      paths.sort((a,b)=>{const x=locantsFor(a),y=locantsFor(b);for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];return 0;});
+      const locants=paths[0]?locantsFor(paths[0]):[],termName=locants.length?`${locants.join(",")}-${locants.length===1?"":locants.length===2?"di":"tri"}clorofenoxi`:undefined;
+      const term=termName?legacyPrefixTerm(termName):undefined,anchorLocant=model.parent.atomIds.indexOf(parentLink[0].atomId)+1;
+      const accounted=new Set([...model.parent.atomIds,...analysis.functionalGroups.find(group=>group.kind==="carboxylicAcid")!.atomIds,
+        ...ring.atomIds,hetero,...halogens.map(group=>group.heteroAtomId)]);
+      if(term&&anchorLocant>0&&accounted.size===molecule.atoms.length&&molecule.atoms.every(atom=>accounted.has(atom.id))){
+        model.substituents=[{locant:anchorLocant,systematicName:term.es,complex:true}];
+        model.functionalGroups=model.functionalGroups.filter(group=>group.kind==="carboxylicAcid");
+        model.requiresCompositionalTranslation=true;
+        model.unavailableReason=undefined;
+      }
+    }
+  }
+  // C-832.5: when a senior group (for example an ester) is the principal
+  // group, terminal -CN is a cyano prefix. Its carbon must leave the parent
+  // chain; otherwise the model counts that atom both in the chain and in cyano.
+  if(model.parent.kind==="chain"&&model.parent.atomIds.length>=2){
+    const nitrile=analysis.functionalGroups.find(group=>group.kind==="nitrile");
+    const parentIds=model.parent.atomIds,terminal=parentIds.at(-1),previous=parentIds.at(-2);
+    const principal=model.functionalGroups.map(group=>group.kind)
+      .sort((a,b)=>(FUNCTIONAL_GROUP_FORMS[b]?.priority??0)-(FUNCTIONAL_GROUP_FORMS[a]?.priority??0))[0];
+    const terminalNeighbors=molecule.bonds.flatMap(([a,b,order=1])=>a===terminal?[[b,order] as const]:b===terminal?[[a,order] as const]:[]);
+    const terminalNitrile=Boolean(nitrile&&terminal===nitrile.carbonId&&previous!==undefined
+      &&FUNCTIONAL_GROUP_FORMS[principal!]?.priority>FUNCTIONAL_GROUP_FORMS.nitrile.priority
+      &&terminalNeighbors.length===2&&terminalNeighbors.some(([id,order])=>id===nitrile.heteroAtomId&&order===3)
+      &&terminalNeighbors.some(([id,order])=>id===previous&&order===1));
+    if(terminalNitrile){
+      const oldLocant=parentIds.length;
+      const duplicate=model.substituents.filter(item=>item.systematicName==="ciano"&&item.locant===oldLocant);
+      if(duplicate.length===1){
+        model.parent={...model.parent,carbonCount:model.parent.carbonCount-1,atomIds:parentIds.slice(0,-1)};
+        model.functionalGroups=model.functionalGroups.map(group=>group.kind==="nitrile"
+          ?{...group,locant:oldLocant-1,carbonIncludedInParent:false}:group);
+        model.substituents=[...model.substituents.filter(item=>item!==duplicate[0]),
+          {...duplicate[0],locant:oldLocant-1}];
+      }else model.unavailableReason??="Terminal nitrile prefix cannot be mapped uniquely to its parent carbon.";
+    }
+  }
   return numberLegacyBenzene(model, englishStructuralSubstituentName);
 }
 
@@ -4399,6 +4867,25 @@ export function analyzeMolecule(
     return unavailable("charged-cyclic-parent-not-implemented");
   }
   if (convention === "iupac-1979-legacy") {
+    const composition = nameLegacyPiperidineComposition(perceived);
+    if (composition) {
+      const numberedAtoms = new Map<number, number>(composition.parentAtomIds.map((id, index) => [id, index + 1]));
+      for (const [id, locant] of composition.locants) {
+        const value = Number(locant);
+        if (Number.isInteger(value)) numberedAtoms.set(id, value);
+      }
+      const functionalGroups = detectFunctionalGroups(perceived);
+      const primaryFunctionalGroup = selectPrimaryFunctionalGroup(functionalGroups);
+      return {
+        name: composition.spanish, chainName: composition.parentSpanish, family: "polycyclic", formula: molecularFormula(perceived),
+        mainChain: [...composition.parentAtomIds], numberedAtoms,
+        substituents: [], functionalGroups, primaryFunctionalGroup,
+        primaryFunctionalLabel: primaryFunctionalGroup ? functionalGroupLabels[primaryFunctionalGroup] : undefined,
+        doubleBondLocants: [], tripleBondLocants: [], legacyPiperidine1979: composition,
+      };
+    }
+  }
+  if (convention === "iupac-1979-legacy") {
     let proof = nameBareCyclicParent1979(perceived, topology, perceived.rings ?? []);
     // Preserve the established FUSED-001 graph proof and numeric contracts.
     if (proof?.family === "bicyclic" && isSpanish1979SaturatedFusedParentName(proof.nameEs)) proof = undefined;
@@ -4420,7 +4907,8 @@ export function analyzeMolecule(
   }
   // More complex assemblies need A-54 / component numbering. Do not recurse
   // into a cyclic substituent as though it were an acyclic branch.
-  if (topology.kind === "linked" && (perceived.rings?.length ?? 0) > 2) return unavailable("ring-assembly-grammar-not-implemented");
+  if (topology.kind === "linked" && (perceived.rings?.length ?? 0) > 2)
+    return unavailable("ring-assembly-grammar-not-implemented");
   return analyzePerceivedMolecule(perceived, enabledAliases, convention);
 }
 
@@ -4431,8 +4919,11 @@ function analyzePerceivedMolecule(
 ): Analysis {
   // A connected graph needs E >= V + 1 to be polycyclic. Keep the new
   // recognizer out of the frequently repeated acyclic/monocyclic exercise path.
-  const retainedFused = molecule.bonds.length >= molecule.atoms.length + 1
-    || (molecule.rings?.length ?? 0) > 1 ? nameRetainedFused1979(molecule) : undefined;
+  const indole1979 = convention === "iupac-1979-legacy"
+    && (molecule.bonds.length >= molecule.atoms.length + 1 || (molecule.rings?.length ?? 0) > 1)
+    ? nameLegacyFusedIndole(molecule) : undefined;
+  const retainedFused = indole1979 ?? (molecule.bonds.length >= molecule.atoms.length + 1
+    || (molecule.rings?.length ?? 0) > 1 ? nameRetainedFused1979(molecule) : undefined);
   if (retainedFused && ((retainedFused.topology.kind === "invalid"
     && (hasSharedRingAtoms(molecule) || molecule.bonds.length >= molecule.atoms.length))
     || (retainedFused.status === "UNSUPPORTED" && retainedFused.requiresRetainedRoute))) {
@@ -4723,8 +5214,11 @@ function retainedFusedReasoning(result: RetainedFusedResult, language: AppLangua
   ];
   const hydroxyls=groups.filter(group=>group.kind==="alcohol");
   if(hydroxyls.length)steps.push({number:"03",title:en?"Hydroxy function":"Función hidroxilo",nameRole:"function",
-    explanation:en?`The OH group at C${result.locants.get(hydroxyls[0].carbonId)} gives the retained naphthol suffix under C-202.`
-      :`El grupo OH en C${result.locants.get(hydroxyls[0].carbonId)} da el sufijo retenido naftol según C-202.`});
+    explanation:result.parentId === "indole"
+      ? en ? `The OH group at indole position ${result.locants.get(hydroxyls[0].carbonId)} takes the suffix -ol: C-II ranks alcohols and phenols above amines, and C-201.1 gives the principal hydroxy group the suffix.`
+        : `El grupo OH en la posición ${result.locants.get(hydroxyls[0].carbonId)} del indol lleva el sufijo -ol: C-II da prioridad a alcoholes y fenoles sobre aminas, y C-201.1 asigna el sufijo al grupo hidroxilo principal.`
+      : en?`The OH group at C${result.locants.get(hydroxyls[0].carbonId)} gives the retained naphthol suffix under C-202.`
+        :`El grupo OH en C${result.locants.get(hydroxyls[0].carbonId)} da el sufijo retenido naftol según C-202.`});
   steps.push({ number: hydroxyls.length?"04":"03", title: en ? "Constitutional name" : "Nombre constitucional",
       explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
         : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` });
@@ -6865,31 +7359,46 @@ export function externalCandidateNeedsNeutralLocalName(molecule: Molecule, analy
 
 /** Legacy availability must be evaluated with its own parent selection. */
 export function legacyLocalNameIsUnavailable(molecule: Molecule, analysis: Analysis) {
-  return externalCandidateNeedsNeutralLocalName(molecule, analysis)
-    || analysis.name === COMPLEX_NAME_UNAVAILABLE_MESSAGE;
+  if(analysis.name===COMPLEX_NAME_UNAVAILABLE_MESSAGE)return true;
+  if(!externalCandidateNeedsNeutralLocalName(molecule,analysis))return false;
+  // The current-profile namer can reject a graph that the bounded 1979 path
+  // names and proves. Only that complete graph-checked translation may lift
+  // the local availability gate; an English-looking candidate is insufficient.
+  const model=buildLegacyEnglishNameModel(molecule,analysis,analysis.name);
+  const englishName=generateLegacyEnglishName(model).name;
+  if(!model.unavailableReason&&englishName!=="-"){
+    return translateLegacyEnglishToSpanish({graph:molecule,model,englishName}).status!=="TRANSLATED_FROM_LEGACY_EN";
+  }
+  return true;
 }
 
 /** One resolution feeds display, clipboard/export availability and pedagogy.
  * ES lexical availability, EN availability and chemical safety are distinct. */
 export function resolveLegacyNomenclature(molecule: Molecule, analysis: Analysis,
   sourceName=analysis.name, options: {stereochemistry?:boolean}={}) {
-  const chemicallyAvailable=!legacyLocalNameIsUnavailable(molecule,analysis);
+  const historicalHeterocycle = nameLegacyMonocyclicNitrogenHeterocycle(molecule);
+  const chemicallyAvailable=Boolean(historicalHeterocycle)||!legacyLocalNameIsUnavailable(molecule,analysis);
   const englishModel=buildLegacyEnglishNameModel(molecule,analysis,sourceName,options);
+  const symmetricAmine=chemicallyAvailable?legacySymmetricAliphaticAmineNames(molecule,englishModel):undefined;
   const englishName=chemicallyAvailable&&legacyEnglishProfileIsSupportedForMolecule(molecule)
-    ?generateLegacyEnglishName(englishModel).name:"-";
+    ?symmetricAmine?.english??generateLegacyEnglishName(englishModel).name:"-";
   const sourceBase = stripStereochemicalDescriptors(sourceName);
   const nativePolyene = analysis.family === "acyclic" && !analysis.primaryFunctionalGroup
     && analysis.doubleBondLocants.length >= 2 && !analysis.tripleBondLocants.length
     // The new spelling itself also claims polyene coverage, even if a caller
     // supplies it alongside an unrelated analyzed family.
     || !/ciclo/i.test(sourceBase) && /a-\d+(?:,\d+)+-(?:di|tri|tetra|penta|hexa|hepta|octa)eno$/i.test(sourceBase);
-  const nativeSpanishName=chemicallyAvailable && (!nativePolyene
+  const nativeSpanishName=chemicallyAvailable && !englishModel.requiresCompositionalTranslation && (!nativePolyene
     || sourceBase === stripStereochemicalDescriptors(analysis.name)
       && sourceName.slice(0, sourceName.length - sourceBase.length) === (englishModel.stereochemicalPrefix ?? "")
       && verifyLegacyAcyclicPolyeneModel(molecule, englishModel))
     ?applyNomenclatureConvention(legacySpanishFormatterInput(analysis,sourceName),"iupac-1979-es","es"):"-";
   const spanishResolution=resolveLegacySpanish({graph:molecule,model:englishModel,englishName,nativeSpanishName,chemicallyAvailable});
   const project=(model:LegacyEnglishNameModel,name:string,translated=false):Analysis=>{
+    if (translated && model.parent.kind === "heterocycle" && model.parent.atomIds.length === historicalHeterocycle?.atomLocants.size) {
+      return { ...analysis, name, mainChain: [...model.parent.atomIds],
+        numberedAtoms: new Map(model.parent.atomIds.map((id, i) => [id, i + 1])), substituents: [] };
+    }
     if((model.parent.kind!=="aromatic"&&!(translated&&model.parent.kind==="chain"))||model.parent.atomIds.length!==analysis.mainChain.length)return analysis;
     return {...analysis,name,mainChain:[...model.parent.atomIds],numberedAtoms:new Map(model.parent.atomIds.map((id,i)=>[id,i+1])),
       substituents:analysis.substituents.map((s,i)=>({...s,locant:model.substituents[i]?.locant??s.locant,

@@ -56,6 +56,16 @@ const VERIFIED_PUBCHEM_COMMON_NAMES = [
     names: { es: "Fentanilo", en: "Fentanyl" },
   },
   {
+    cid: 3559,
+    inchiKey: "LNEPOXFFQSENCJ-UHFFFAOYSA-N",
+    names: { es: "Haloperidol", en: "Haloperidol" },
+  },
+  {
+    cid: 6040,
+    inchiKey: "LYKMMUBOEFYJQG-UHFFFAOYSA-N",
+    names: { es: "Piperoxano", en: "Piperoxan" },
+  },
+  {
     cid: 5816,
     inchiKey: "UCTWMZQNUQWSLP-VIFPVBQESA-N",
     names: { es: "Adrenalina", en: "Epinephrine" },
@@ -69,6 +79,11 @@ const VERIFIED_PUBCHEM_COMMON_NAMES = [
     cid: 5202,
     inchiKey: "QZAYGJVTTNCVMB-UHFFFAOYSA-N",
     names: { es: "Serotonina", en: "Serotonin" },
+  },
+  {
+    cid: 1150,
+    inchiKey: "APJYDQYYACXCRM-UHFFFAOYSA-N",
+    names: { es: "Triptamina", en: "Tryptamine" },
   },
   {
     cid: 1983,

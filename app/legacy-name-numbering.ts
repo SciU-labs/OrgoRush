@@ -4,7 +4,7 @@ import type { LegacyEnglishNameModel } from "./legacy-english-nomenclature.ts";
  * Internal multipliers of a complex radical therefore remain in its key. */
 export function historicalPrefixKey(component: string) {
   return component.toLowerCase().replace(/^(?:sec|tert)-?/, "")
-    .replace(/[\d,()\-]/g, "");
+    .replace(/[\d,()\[\]\-]/g, "");
 }
 export function compareHistoricalLocants(a: readonly number[], b: readonly number[]) {
   for (let i = 0; i < Math.max(a.length, b.length); i++) {

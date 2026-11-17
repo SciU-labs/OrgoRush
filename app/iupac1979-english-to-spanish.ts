@@ -3,8 +3,12 @@ import { attachLegacyFragment, legacyBenzoateFragment, legacyFunctionalFragment,
 import { historicalPrefixKey, numberLegacyBenzene } from "./legacy-name-numbering.ts";
 import type { RingGraph } from "./fused-topology.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
-import { verifyLegacyAliphaticAmineModel, formatLegacyAliphaticAmineSpanish } from "./iupac1979-aliphatic-amines.ts";
-import { verifyLegacyAliphaticFunctionalModel, formatLegacyAliphaticFunctionalSpanish, legacyAliphaticFunctionalRules } from "./iupac1979-aliphatic-functions.ts";
+import { nameLegacyMonocyclicNitrogenHeterocycle } from "./iupac1979-monocyclic-heterocycles.ts";
+import { nameLegacyFusedIndole } from "./iupac1979-fused-indole.ts";
+import { nameLegacyPiperidineComposition } from "./iupac1979-piperidine-compositions.ts";
+import { verifyLegacyAliphaticAmineModel, formatLegacyAliphaticAmineSpanish, legacySymmetricAliphaticAmineNames } from "./iupac1979-aliphatic-amines.ts";
+import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
+import { verifyLegacyAliphaticFunctionalModel, formatLegacyAliphaticFunctionalSpanish, verifyLegacySimpleEtherModel, formatLegacySimpleEtherSpanish, verifyLegacyAcyclicPrefixModel, formatLegacyAcyclicPrefixSpanish, verifyLegacyExtendedAliphaticFunctionalModel, formatLegacyExtendedAliphaticFunctionalSpanish, legacyAliphaticFunctionalRules } from "./iupac1979-aliphatic-functions.ts";
 
 type StereoGraph = Omit<RingGraph,"atoms"> & { atoms: readonly (RingGraph["atoms"][number] & {tetrahedralParity?:string;tetrahedralBondTo?:number})[] };
 export type LegacySpanishResolution =
@@ -22,7 +26,7 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
       || new Set(model.parent.atomIds).size!==6 || model.parent.fallbackName
       || model.doubleBondLocants.length || model.tripleBondLocants.length
       || model.nitrogenSubstituents?.length || model.stereochemicalPrefix
-      || graph.atoms.some(a=>a.tetrahedralParity!==undefined||a.tetrahedralBondTo!==undefined)
+      || graph.atoms.some(a=>a.tetrahedralBondTo!==undefined)
       || graph.bonds.some(b=>b[3])) return false;
     const validLocant=(n:number)=>Number.isInteger(n)&&n>=1&&n<=6;
     if (!model.substituents.every(s=>validLocant(s.locant)) || !model.functionalGroups.every(g=>validLocant(g.locant))) return false;
@@ -44,8 +48,16 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
     // Functional metadata is checked in both directions; a fabricated or
     // omitted subordinate group cannot be laundered through the prefix list.
     const metadata=hierarchy.subordinateGroups.map(g=>`${g.locant}:${g.kind}`).sort();
-    const prefixes=terms.filter(t=>t.term!.kind).map(({s,term})=>`${s.locant}:${term!.kind}`).sort();
+    const prefixes=terms.filter(t=>t.term!.kind&&!t.s.complex).map(({s,term})=>`${s.locant}:${term!.kind}`).sort();
     if (JSON.stringify(metadata)!==JSON.stringify(prefixes)) return false;
+    const declaredStereo=terms.flatMap(({s,term})=>(term!.stereochemistry??[]).map(center=>{
+      const atomId=s.atomIds?.[center.atomIndex];
+      return atomId===undefined?null:{atomId,configuration:center.configuration};
+    }));
+    if(declaredStereo.some(center=>center===null))return false;
+    const actualStereo=getTetrahedralStereoCenters(graph as never);
+    if(actualStereo.length!==declaredStereo.length||actualStereo.some(center=>
+      !declaredStereo.some(expected=>expected!==null&&expected.atomId===center.atomId&&expected.configuration===center.configuration)))return false;
     const forced=new Map(model.parent.atomIds.map((id,i)=>[i,id]));
     return legacyGraphsIdentical(expected,graph,forced);
   } catch { return false; }
@@ -114,8 +126,56 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
   const unsupported=(reason:string):LegacySpanishResolution=>({status:"UNSUPPORTED",name:"-",reason});
   try {
     if(input.model.profile!=="iupac-1979-legacy-en")return unsupported("non-legacy-profile");
+    if (input.model.parent.retained?.id === "piperidine-composition") {
+      const proof = nameLegacyPiperidineComposition(input.graph);
+      const model = input.model;
+      if (!proof || proof.english !== input.englishName || model.parent.fallbackName !== proof.english
+        || model.parent.atomIds.length !== proof.parentAtomIds.length
+        || model.parent.atomIds.some((id, index) => id !== proof.parentAtomIds[index])
+        || model.parent.retained!.locants.length !== proof.locants.size
+        || [...proof.locants.values()].some((locant, index) => model.parent.retained!.locants[index] !== locant)
+        || model.substituents.length || model.functionalGroups.length || model.doubleBondLocants.length
+        || model.tripleBondLocants.length || model.nitrogenSubstituents?.length || model.stereochemicalPrefix
+        || model.unavailableReason || generateLegacyEnglishName(model).name !== input.englishName)
+        return unsupported("piperidine-composition-does-not-match-complete-graph-and-numbering");
+      return { status: "TRANSLATED_FROM_LEGACY_EN", name: proof.spanish, model,
+        fixedLocants: proof.locants,
+        numberedAtoms: new Map([...proof.locants].flatMap(([id, locant]) => {
+          const value = Number(locant); return Number.isInteger(value) ? [[id, value] as const] : [];
+        })), rule: proof.rule };
+    }
+    if (input.model.parent.kind === "heterocycle") {
+      const proof = nameLegacyMonocyclicNitrogenHeterocycle(input.graph);
+      if (!proof || proof.english !== input.englishName || input.model.parent.fallbackName !== proof.english
+        || input.model.parent.atomIds.length !== proof.atomLocants.size
+        || input.model.parent.atomIds.some((id, index) => id !== [...proof.atomLocants.keys()][index]))
+        return unsupported("heterocycle-retained-name-does-not-match-complete-graph");
+      return { status: "TRANSLATED_FROM_LEGACY_EN", name: proof.spanish, model: input.model,
+        numberedAtoms: proof.atomLocants, rule: proof.rule };
+    }
+    if (input.model.parent.retained?.id === "indole") {
+      const proof = nameLegacyFusedIndole(input.graph);
+      const model = input.model;
+      if (!proof || proof.status !== "SUPPORTED" || proof.nameEn !== input.englishName || proof.nameEs === "-"
+        || model.parent.kind !== "polycyclic" || model.parent.fallbackName !== proof.nameEn
+        || model.parent.carbonCount !== proof.atomIds.length
+        || model.parent.atomIds.length !== proof.atomIds.length
+        || model.parent.atomIds.some((id, index) => id !== proof.atomIds[index]
+          || model.parent.retained?.locants[index] !== proof.englishLocants?.get(id))
+        || model.substituents.length || model.functionalGroups.length || model.doubleBondLocants.length
+        || model.tripleBondLocants.length || model.nitrogenSubstituents?.length || model.stereochemicalPrefix
+        || model.unavailableReason || generateLegacyEnglishName(model).name !== input.englishName)
+        return unsupported("indole-name-does-not-match-complete-graph-and-numbering");
+      return { status: "TRANSLATED_FROM_LEGACY_EN", name: proof.nameEs, model,
+        fixedLocants: proof.locants,
+        numberedAtoms: new Map([...proof.locants].filter(([, locant]) => /^\d+$/.test(locant))
+          .map(([id, locant]) => [id, Number(locant)])), rule: proof.rule };
+    }
     const retained=retainedC2UnsaturatedName(input.graph,input.model,input.englishName);
     if(retained)return retained;
+    const symmetricAmine=legacySymmetricAliphaticAmineNames(input.graph,input.model);
+    if(symmetricAmine?.english===input.englishName)return {status:"TRANSLATED_FROM_LEGACY_EN",name:symmetricAmine.spanish,
+      model:input.model,numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),rule:"C-814.1; complete graph identity"};
     if (!input.englishName || input.englishName==="-" || generateLegacyEnglishName(input.model).name!==input.englishName)
       return unsupported("incomplete-or-inconsistent-english-name");
     if(input.model.parent.retained) {
@@ -132,6 +192,51 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
         numberedAtoms:new Map([...proof.locants].filter(([,l])=>/^\d+$/.test(l)).map(([id,l])=>[id,Number(l)])),rule:proof.rule};
     }
     if(input.model.parent.kind==="chain") {
+      const principalKind=resolveFunctionalHierarchy(input.model.functionalGroups).principalKind;
+      const supportedUnsaturatedPrincipal=["aldehyde","carboxylicAcid","nitrile"].includes(principalKind??"");
+      const prefixOnly=input.model.functionalGroups.length>0
+        &&input.model.functionalGroups.every(group=>group.kind==="halogen"||group.kind==="nitro");
+      const hasBranchedEsterRadical=input.model.functionalGroups.some(group=>{
+        if(!group.attachedAlkylName)return false;
+        const term=legacyPrefixTerm(group.attachedAlkylName);if(!term)return false;
+        return term.elements.some((_,atom)=>term.bonds.filter(([a,b])=>a===atom||b===atom).length>2);
+      });
+      const extendedComposition=Boolean((input.model.doubleBondLocants.length||input.model.tripleBondLocants.length)&&supportedUnsaturatedPrincipal
+        ||input.model.stereochemicalPrefix||!prefixOnly&&new Set(input.model.functionalGroups.map(group=>group.kind)).size>1
+        ||principalKind==="carboxylicAcid"&&input.model.functionalGroups.filter(group=>group.kind==="carboxylicAcid").length>2
+          &&input.model.functionalGroups.filter(group=>group.kind==="carboxylicAcid").every(group=>!group.carbonIncludedInParent)
+        ||hasBranchedEsterRadical
+        ||input.model.substituents.some(substituent=>{
+          const fragment=legacyPrefixTerm(substituent.systematicName);
+          return fragment?.es==="fenil"||Boolean(fragment&&fragment.elements.length>6);
+        }));
+      if(extendedComposition){
+        if(!verifyLegacyExtendedAliphaticFunctionalModel(input.graph,input.model))
+          return unsupported("extended-functional-model-does-not-prove-complete-graph-numbering-and-stereochemistry");
+        const name=formatLegacyExtendedAliphaticFunctionalSpanish(input.model);
+        if(!name)return unsupported("unrepresented-extended-functional-morpheme-order");
+        const principal=resolveFunctionalHierarchy(input.model.functionalGroups).principalKind!;
+        const rule=principal==="carboxylicAcid"&&resolveFunctionalHierarchy(input.model.functionalGroups).principalGroups.length>2
+          ?"C-402.1":legacyAliphaticFunctionalRules[principal];
+        return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
+          numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),
+          rule:`${rule}; ${resolveFunctionalHierarchy(input.model.functionalGroups).subordinateGroups.some(group=>group.kind==="nitrile")?"C-832.5; ":""}${input.model.parent.carbonCount===1&&input.model.substituents.filter(s=>legacyPrefixTerm(s.systematicName)?.es==="fenil").length===2?"C-313.1; ":""}C-15; C-16; complete graph and CIP identity`};
+      }
+      if(input.model.functionalGroups.length&&input.model.functionalGroups.every(g=>g.kind==="halogen"||g.kind==="nitro")) {
+        if(!verifyLegacyAcyclicPrefixModel(input.graph,input.model))return unsupported("acyclic-prefix-model-does-not-prove-complete-graph-and-numbering");
+        const name=formatLegacyAcyclicPrefixSpanish(input.model);
+        if(!name)return unsupported("unrepresented-historical-prefix-grammar");
+        const prefixRules=[...new Set(input.model.functionalGroups.map(group=>group.kind==="halogen"?"C-102.1":"C-852.1"))].join("/");
+        return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
+          numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),rule:`C-15.11; ${prefixRules}; C-13/C-16; complete graph identity`};
+      }
+      if(input.model.functionalGroups[0]?.kind==="ether") {
+        if(!verifyLegacySimpleEtherModel(input.graph,input.model))return unsupported("simple-ether-model-does-not-prove-complete-graph-and-numbering");
+        const name=formatLegacySimpleEtherSpanish(input.model);
+        if(!name)return unsupported("unrepresented-historical-ether-grammar");
+        return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
+          numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),rule:"C-211.1/C-211.2; C-13/C-15; complete graph identity"};
+      }
       if(input.model.functionalGroups[0]?.kind!=="amine") {
         if(!verifyLegacyAliphaticFunctionalModel(input.graph,input.model))
           return unsupported("aliphatic-functional-model-does-not-prove-complete-graph-and-numbering");
@@ -139,7 +244,7 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
         if(!name)return unsupported("unrepresented-historical-functional-grammar");
         return {status:"TRANSLATED_FROM_LEGACY_EN",name,model:input.model,
           numberedAtoms:new Map(input.model.parent.atomIds.map((id,i)=>[id,i+1])),
-          rule:`${legacyAliphaticFunctionalRules[input.model.functionalGroups[0].kind]}; C-13.11/C-15; complete graph identity`};
+          rule:`${legacyAliphaticFunctionalRules[input.model.functionalGroups[0].kind]}; ${input.model.nitrogenSubstituents?.some(s=>legacyPrefixTerm(s.systematicName)?.kind==="alcohol")?"C-202.1; ":""}C-13.11/C-15; complete graph identity`};
       }
       if(!verifyLegacyAliphaticAmineModel(input.graph,input.model))
         return unsupported("aliphatic-amine-model-does-not-prove-complete-graph-and-numbering");
@@ -171,16 +276,20 @@ export function translateLegacyEnglishToSpanish(input:{graph:StereoGraph;model:L
       const group=grouped.get(key)??{name,complex:s.complex,locants:[]};group.locants.push(s.locant);grouped.set(key,group);
     }
     const prefix=[...grouped.values()].sort((a,b)=>historicalPrefixKey(a.name).localeCompare(historicalPrefixKey(b.name),"es"))
-      .map(g=>{const locants=g.locants.sort((a,b)=>a-b).join(","), count=g.locants.length;
-        const multiplier=count>1?(g.complex?["","","bis","tris","tetrakis","pentakis","hexakis"][count]:multipliers[count]):"";
-        return `${locants}-${multiplier}${g.complex?`(${g.name})`:g.name}`;
+      .map(g=>{const locants=g.locants.sort((a,b)=>a-b).join(","), count=g.locants.length,complex=g.complex&&g.name!=="fenil";
+        const multiplier=count>1?(complex?["","","bis","tris","tetrakis","pentakis","hexakis"][count]:multipliers[count]):"";
+        const opening=g.name.startsWith("(")?"[":"(",closing=opening==="["?"]":")";
+        return `${locants}-${multiplier}${complex?`${opening}${g.name}${closing}`:g.name}`;
       });
     if (!hierarchy.principalKind && model.substituents.length===1) prefix[0]=prefix[0].replace(/^1-/,"");
     const attached=prefix.join("-");
     const name=parent.startsWith("ácido ")?`ácido ${attached}${parent.slice(6)}`
       :`${attached}${attached&&/^\d/.test(parent)?"-":""}${parent}`;
+    const componentRules=[...(hierarchy.principalKind==="alcohol"? ["C-202.1"]:[]),
+      ...(model.functionalGroups.some(group=>group.kind==="amine")
+        ||model.substituents.some(substituent=>legacyPrefixTerm(substituent.systematicName)?.kind==="amine")?["C-812.1"]:[])];
     return {status:"TRANSLATED_FROM_LEGACY_EN",name,model,numberedAtoms:new Map(model.parent.atomIds.map((id,i)=>[id,i+1])),
-      rule:"A-12.2–3; A-2.3–4; C-15.11; C-16.31–34; complete graph identity"};
+      rule:[...componentRules,"A-12.2–3","A-2.3–4","C-15.11","C-16.31–34","complete graph identity"].join("; ")};
   } catch { return unsupported("unrecognized-semantic-model"); }
 }
 
