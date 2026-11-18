@@ -185,7 +185,9 @@ export function createPracticeReviewer<A extends PracticeNamingAnalysis>(engine:
     }
     const analysis = engine.analyzeMolecule(question.molecule);
     const legacy = engine.buildLegacyEnglishNameModel(question.molecule, analysis);
-    if (analysis.name !== question.reference.names.es || generateLegacyEnglishName(legacy).name !== question.reference.names.en) {
+    if (analysis.name !== question.reference.names.es || generateLegacyEnglishName(legacy, {
+      preserveHistoricalEtherLocants: question.question.generatorVersion <= 3,
+    }).name !== question.reference.names.en) {
       throw new Error("Review reference analysis mismatch.");
     }
     const steps = buildPracticeReviewSteps(question.molecule, analysis, legacy, question.reference.names);

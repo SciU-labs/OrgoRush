@@ -68,7 +68,9 @@ export function createDeterministicDistractorEngine(engine: DistractorNamingEngi
     try {
       if (exerciseStructuralIdentity(generatedMolecule.molecule) !== generatedMolecule.reference.structuralIdentity) return [];
       analysis = engine.analyzeMolecule(generatedMolecule.molecule);
-      const english = generateLegacyEnglishName(engine.buildLegacyEnglishNameModel(generatedMolecule.molecule, analysis)).name;
+      const english = generateLegacyEnglishName(engine.buildLegacyEnglishNameModel(generatedMolecule.molecule, analysis), {
+        preserveHistoricalEtherLocants: generatedMolecule.question.generatorVersion <= 3,
+      }).name;
       names = { es: analysis.name, en: english };
       if (!sameReference(names, generatedMolecule.reference.names)
         || (generatedMolecule.reference.name !== names.es && generatedMolecule.reference.name !== names.en)) return [];
@@ -145,7 +147,7 @@ export function createDeterministicDistractorEngine(engine: DistractorNamingEngi
       const advanced = source.question.generatorVersion >= 4 && source.generation.domainVersion === 3;
       if (!(advanced ? validateHardFoundationExercise(source.molecule, source.category, oracles)
         : validateExerciseDomain(source.molecule, source.category, oracles, exerciseDomainPolicy(source.question))).valid) return [];
-      const reference = oracles.reference(source.molecule);
+      const reference = oracles.reference(source.molecule, source.question.generatorVersion);
       if (exerciseStructuralIdentity(source.molecule) !== source.reference.structuralIdentity
         || !reference.namingSupported || !sameReference(reference.names, source.reference.names)) return [];
       const candidates = dedupeDistractorCandidates([...ez, ...generateGraphDistractors(input, engine, oracles)])

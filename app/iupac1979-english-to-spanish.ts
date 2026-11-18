@@ -26,7 +26,10 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
       || new Set(model.parent.atomIds).size!==6 || model.parent.fallbackName
       || model.doubleBondLocants.length || model.tripleBondLocants.length
       || model.nitrogenSubstituents?.length || model.stereochemicalPrefix
-      || graph.atoms.some(a=>a.tetrahedralBondTo!==undefined)
+      // This verifier currently admits only achiral aromatic parents. Reject
+      // raw atom stereo metadata too, even when the tagged atom is not a
+      // chemically stereogenic centre and CIP therefore ignores the tag.
+      || graph.atoms.some(a=>a.tetrahedralParity!==undefined||a.tetrahedralBondTo!==undefined)
       || graph.bonds.some(b=>b[3])) return false;
     const validLocant=(n:number)=>Number.isInteger(n)&&n>=1&&n<=6;
     if (!model.substituents.every(s=>validLocant(s.locant)) || !model.functionalGroups.every(g=>validLocant(g.locant))) return false;

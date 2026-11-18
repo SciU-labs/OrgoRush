@@ -202,14 +202,19 @@ const fixedPrefixTranslations: Readonly<Record<string, string>> = {
 
 /** Converts the structural Spanish morphemes emitted by graph analysis, not arbitrary prose. */
 export function englishStructuralSubstituentName(name: string) {
-  const component = legacyPrefixTerm(name);
-  if (component && component.en !== name) return component.en;
+  // Keep the established 1979 spellings for ordinary prefixes (notably the
+  // historical -oxi junction) and use the semantic fragment grammar only for
+  // locanted/nested components added by the compositional profile.
+  const exact = fixedPrefixTranslations[name];
+  if (exact) return exact;
+  if (/[0-9()[\],]/.test(name)) {
+    const component = legacyPrefixTerm(name);
+    if (component && component.en !== name) return component.en;
+  }
   if (/^\d+-(?:amino|hidroxi|hydroxy)(?:met|et|prop|but|pent|hex|hept|oct|non|dec)/.test(name)) {
     const term=legacyPrefixTerm(name);
     if(term)return term.en;
   }
-  const exact = fixedPrefixTranslations[name];
-  if (exact) return exact;
   const numberedUnsaturated = name.match(/^([a-z]+)-(\d+)-(en|in)-(\d+)-il$/i);
   if (numberedUnsaturated) {
     const root = Array.from({ length: 101 }, (_, count) => iupacRootForCarbonCount(count))
@@ -422,7 +427,9 @@ export function formatName(model: LegacyEnglishNameModel) {
   return model.unavailableReason?"-":formatPreparedName(numberLegacyBenzene(model,englishStructuralSubstituentName));
 }
 
-function formatPreparedName(model:LegacyEnglishNameModel) {
+export type LegacyEnglishNameFormatOptions={preserveHistoricalEtherLocants?:boolean};
+
+function formatPreparedName(model:LegacyEnglishNameModel,options:LegacyEnglishNameFormatOptions={}) {
   if (model.unavailableReason) return "-";
   if(model.parent.kind==="chain"&&model.parent.carbonCount===2&&model.parent.atomIds.length===2
     &&!model.functionalGroups.length&&!model.substituents.length&&!model.nitrogenSubstituents?.length&&!model.stereochemicalPrefix) {
@@ -454,7 +461,8 @@ function formatPreparedName(model:LegacyEnglishNameModel) {
     ...model.substituents,
     ...(model.nitrogenSubstituents ?? []).map((item) => ({ ...item, locant: "N" as const })),
   ]);
-  if(model.functionalGroups.length===1&&model.functionalGroups[0].kind==="ether"&&model.parent.kind==="chain"&&model.parent.carbonCount<=2
+  if(!options.preserveHistoricalEtherLocants&&model.functionalGroups.length===1
+    &&model.functionalGroups[0].kind==="ether"&&model.parent.kind==="chain"&&model.parent.carbonCount<=2
     &&model.substituents.length===1&&model.substituents[0].locant===1)
     prefixParts=prefixParts.map(part=>part.replace(/^1-/,""));
   if(model.parent.kind==="chain"&&model.parent.carbonCount===1&&model.substituents.length
@@ -488,10 +496,10 @@ function formatPreparedName(model:LegacyEnglishNameModel) {
   return model.stereochemicalPrefix ? `${model.stereochemicalPrefix}${clean}` : clean;
 }
 
-export function generateLegacyEnglishName(model: LegacyEnglishNameModel) {
+export function generateLegacyEnglishName(model: LegacyEnglishNameModel,options:LegacyEnglishNameFormatOptions={}) {
   model = numberLegacyBenzene(model, englishStructuralSubstituentName);
   const hierarchy = resolveFunctionalHierarchy(model.functionalGroups);
-  const finalName = formatPreparedName(model);
+  const finalName = formatPreparedName(model,options);
   const principalLocants = hierarchy.principalGroups.map((group) => group.locant).sort((a, b) => a - b);
   const reasoning: LegacyEnglishReasoning = {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,

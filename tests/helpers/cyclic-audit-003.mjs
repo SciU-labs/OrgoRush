@@ -2,8 +2,6 @@ import assert from "node:assert/strict";
 import { Molecule, SmilesParser, CanonizerUtil } from "openchemlib";
 import { moleculeToSmiles } from "../../app/openchemlib-adapter.ts";
 import { recognizeRingTopology } from "../../app/fused-topology.ts";
-import { applyNomenclatureConvention } from "../../app/nomenclature-conventions.ts";
-import { generateLegacyEnglishName } from "../../app/legacy-english-nomenclature.ts";
 import { CYCLIC_REFERENCES, GENERATED_CYCLIC_REFERENCES, graphFromCyclicReference } from "../fixtures/iupac79-cyclic-audit-003.mjs";
 
 export function validatedCyclicCases() {
@@ -64,15 +62,12 @@ atoms: graph.atoms.map(a => ({ ...a, id: reindex.get(a.id), x: -a.x + 73, y: a.y
 export function observeCyclicCase(engine, graph) {
   try {
     const analysis = engine.analyzeMolecule(graph, [], "iupac-1979-legacy");
-    const rawEs = applyNomenclatureConvention(engine.legacySpanishFormatterInput(analysis, analysis.name), "iupac-1979-es", "es");
-    const rawEn = generateLegacyEnglishName(engine.buildLegacyEnglishNameModel(graph, analysis)).name;
-    const unavailable = engine.legacyLocalNameIsUnavailable
-      ? engine.legacyLocalNameIsUnavailable(graph, analysis)
-      : engine.externalCandidateNeedsNeutralLocalName(graph, engine.analyzeMolecule(graph));
-    return {      
-analysis: analysis.name, rawEs, rawEn, es: unavailable ? "-" : rawEs,
-      en: unavailable || !engine.legacyEnglishProfileIsSupportedForMolecule(graph) ? "-" : rawEn    
-};
+    const resolution = engine.resolveLegacyNomenclature(graph, analysis);
+    const rawEs = resolution.spanishResolution.name;
+    const rawEn = resolution.englishName;
+    return { analysis: analysis.name, rawEs, rawEn,
+      es: resolution.chemicallyAvailable ? rawEs : "-",
+      en: resolution.chemicallyAvailable && engine.legacyEnglishProfileIsSupportedForMolecule(graph) ? rawEn : "-" };
   } catch (error) { return { es: "ERROR", en: "ERROR", error: String(error) }; }
 }
 

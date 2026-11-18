@@ -24,7 +24,7 @@ export type ExerciseReference = AnalysisSource & {
 export type ExerciseChemistryOracles = {
   findMoleculeValenceViolation(molecule: GeneratedMolecule): unknown | null;
   detectFunctionalGroups(molecule: GeneratedMolecule): ExerciseFunctionalGroup[];
-  reference(molecule: GeneratedMolecule): ExerciseReference;
+  reference(molecule: GeneratedMolecule, generatorVersion?:number): ExerciseReference;
 };
 
 /**
@@ -43,10 +43,10 @@ export function createExerciseChemistryOracles<A extends AnalysisSource>(engine:
   return {
     findMoleculeValenceViolation: (molecule) => engine.findMoleculeValenceViolation(molecule),
     detectFunctionalGroups: (molecule) => engine.detectFunctionalGroups(molecule),
-    reference(molecule) {
+    reference(molecule,generatorVersion) {
       const analysis = engine.analyzeMolecule(molecule);
       const model = engine.buildLegacyEnglishNameModel(molecule, analysis);
-      const english = generateLegacyEnglishName(model);
+      const english = generateLegacyEnglishName(model,{preserveHistoricalEtherLocants:generatorVersion!==undefined&&generatorVersion<=3});
       return {
         name: analysis.name,
         formula: analysis.formula,

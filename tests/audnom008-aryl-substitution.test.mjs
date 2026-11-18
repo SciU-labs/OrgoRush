@@ -10,6 +10,7 @@ import { generateLegacyEnglishName } from "../app/legacy-english-nomenclature.ts
 import { legacyProfileDisplayName } from "../app/legacy-profile-display.ts";
 import { interpretName } from "../scripts/naming-audit/evidence.mjs";
 import { methylPhenylCases, arylReceiptDocument, arylReceipts, assertValidatedArylProfiles } from "./helpers/audnom008-aryl.mjs";
+import { AUDNOM008_HYDROXYETHYLPHENOL_REFERENCE } from "./fixtures/audnom008-hydroxyethylphenol-reference.mjs";
 
 let chemistry;
 before(async () => { chemistry = await loadExerciseChemistry(); });
@@ -161,7 +162,7 @@ test("AUD-NOM-008 keeps the safety gate for incomplete proofs and out-of-scope a
     assert.equal(chemistry.engine.externalCandidateNeedsNeutralLocalName(molecule, analysis), true);
   }
   for (const smiles of ["c1(CO)c(C)cccc1", "c1(CCCO)c(C)cccc1", "c1(CCN)c(C)cccc1",
-    "c1(CCO)c(CC)cccc1", "c1(CCO)c(C)cc(C)cc1", "c1(CCO)c(O)cccc1", "CC(O)c1c(C)cccc1"]) {
+    "c1(CCO)c(CC)cccc1", "c1(CCO)c(C)cc(C)cc1", "CC(O)c1c(C)cccc1"]) {
     const graph = imported(smiles), snapshot = structuredClone(graph);
     const analyses = analyzeBoth(graph, chemistry.engine);
     assert.ok(Object.values(displayedProfiles(graph, analyses, chemistry.engine)).every((profile) => profile.name === null), smiles);
@@ -170,6 +171,22 @@ test("AUD-NOM-008 keeps the safety gate for incomplete proofs and out-of-scope a
     assert.equal(structuralIdentity(exported.smiles), structuralIdentity(smiles));
     assert.deepEqual(graph, snapshot);
   }
+});
+
+test("AUD-NOM-008 adjudication: full hydroxyethylphenol graph is a verified naming expansion", () => {
+  const reference=AUDNOM008_HYDROXYETHYLPHENOL_REFERENCE;
+  const graph=imported(reference.smiles),identity=structuralIdentity(reference.smiles);
+  assert.equal(identity,structuralIdentity("C1=CC=C(C(=C1)CCO)O"));
+  const analyses=analyzeBoth(graph,chemistry.engine),profiles=displayedProfiles(graph,analyses,chemistry.engine);
+  assert.equal(profiles["1979-es"].name,reference.nameEs);
+  assert.equal(profiles["1979-en"].name,reference.nameEn);
+  assert.equal(profiles["2013-es"].name,null);
+  assert.equal(profiles["2013-en"].name,null);
+  const model=chemistry.engine.buildLegacyEnglishNameModel(graph,analyses.legacy,analyses.legacy.name);
+  assert.equal(model.unavailableReason,undefined);
+  const exported=moleculeToSmiles(graph);
+  assert.equal(exported.ok,true,exported.error);
+  assert.equal(structuralIdentity(exported.smiles),identity,"localization preserves the externally witnessed molecular graph");
 });
 
 test("AUD-NOM-008 neighboring benzene, phenol, alkylbenzene and acyclic alcohol names remain supported", () => {

@@ -7,6 +7,7 @@ import { loadExerciseChemistry } from "./helpers/exercise-chemistry.mjs";
 import { auditProfile, loadOpsin, runValidation, verifyReferences, checkWitness } from "../scripts/validation-008-audit.mjs";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { analyzeBoth, displayedProfiles } from "../scripts/naming-audit/evaluate.mjs";
+import { VALIDATION_008_HOTFIX_ADJUDICATIONS } from "./fixtures/validation-008-hotfix-adjudications.mjs";
 
 let chemistry, live;
 before(async () => { chemistry = await loadExerciseChemistry(); live = await runValidation(chemistry.engine); });
@@ -16,7 +17,7 @@ const unsupported = {
   "2013-es": [23, 24, 71, 72], "1979-en": [71, 72],
   // POLYENES-011 independently verifies A-3.1/A-3.4 coverage for 12, 13, 69.
   // The original expected-name fixture and archived matrices stay immutable.
-  "1979-es": [35, 43, 47, 49, 50, 51, 59, 65, 71, 72],
+  "1979-es": [47, 49, 50, 51, 71, 72],
 };
 function expectedVerdict(index, profile) {
   if (unsupported[profile].includes(index)) return "UNSUPPORTED";
@@ -40,6 +41,20 @@ test("VALIDATION-008 independent path oracle distinguishes 2013 and 1979 before 
   assert.equal(referenceParentCandidates(graph, "1979-en")[0].length, 6);
   const priority = referenceGraph(VALIDATION_CASES.find(row => row.id === "V008-071").smiles);
   assert.equal(referenceParentCandidates(priority, "2013-es")[0].length, 5, "two OH groups outrank the eight-carbon route");
+});
+
+test("hotfix additions retain independent English structure witnesses and documented 1979/Spanish rules", () => {
+  const opsin = loadOpsin();
+  for (const item of VALIDATION_008_HOTFIX_ADJUDICATIONS) {
+    const row = VALIDATION_CASES.find(candidate => candidate.id === item.id);
+    assert.ok(row, item.id);
+    assert.equal(row.smiles, item.smiles);
+    assert.equal(row.expected["1979-es"], item.expectedSpanish1979);
+    assert.equal(row.expected["1979-en"], item.expectedEnglish1979);
+    assert.ok(item.ruleEvidence.length >= 3);
+    assert.match(item.independentStructureEvidence, /OPSIN constitution witness/);
+    assert.equal(checkWitness(item.expectedEnglish1979, item.smiles, opsin).status, "PASS", item.id);
+  }
 });
 
 // FIX-009 turns the eight confirmed defects into positive regressions against
@@ -108,12 +123,24 @@ test("VALIDATION-008 reproducibility ledger does not erase defects or pending hi
   for (const row of live.records) for (const profile of PROFILES) {
     const recorded = matrix.records.find(item => item.id === row.id).variants[0].profiles[profile];
     const current = row.variants[0].profiles[profile];
+    // These explicit adjudications expand the archived unsupported list only
+    // after separate rule, language and structure checks; the archived matrix
+    // and original expected names remain unchanged.
+    const hotfixExpansion = profile === "1979-es"
+      && VALIDATION_008_HOTFIX_ADJUDICATIONS.some(item => item.id === row.id);
+    if (hotfixExpansion) {
+      assert.equal(recorded.classification, "UNSUPPORTED");
+      assert.equal(recorded.observed, null);
+      assert.equal(current.classification, "PASS");
+      const adjudication = VALIDATION_008_HOTFIX_ADJUDICATIONS.find(item => item.id === row.id);
+      assert.equal(current.observed, adjudication.expectedSpanish1979);
+      assert.equal(row.expected[profile], adjudication.expectedSpanish1979);
+      assert.deepEqual(current.issues, []);
+      assert.equal(current.formula.status, "PASS");
+    } else if (profile === "1979-es" && ["V008-012", "V008-013", "V008-069"].includes(row.id)) {
     // POLYENES-011 expands exactly these three reference-backed ES cases.
     // Preserve the archived UNSUPPORTED verdicts and every original name;
     // current coverage must prove the already verified historical structure.
-    const verifiedPolyeneExtension = profile === "1979-es"
-      && ["V008-012", "V008-013", "V008-069"].includes(row.id);
-    if (verifiedPolyeneExtension) {
       assert.equal(recorded.classification, "UNSUPPORTED");
       assert.equal(recorded.observed, null);
       assert.equal(current.classification, "PASS");

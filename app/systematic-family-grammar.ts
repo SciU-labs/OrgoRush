@@ -22,6 +22,21 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
     const nCount=onAmideN ? m[1].split(",").length : 0;
     const multiplied = /^(di|tri)(.+)$/.exec(written);
     const termName = multiplied ? multiplied[2] : written;
+    // The general legacy fragment table is broader than the current-profile
+    // derivation grammar. Functionalized alkyl radicals need their own
+    // independently adjudicated parent/locant proof before they can produce
+    // FULL name evidence here.
+    if (!/^(?:hydroxy|hidroxi|amino|oxo)$/.test(termName)
+      && /(?:hydroxy|hidroxi|amino|oxo)/.test(termName)) return null;
+    // Do not accept a branch descriptor that merely extends the numbered
+    // substituent chain at its terminal carbon (e.g. 2-methylethyl). The
+    // longest rooted chain is the parent radical in that case.
+    const terminalChainExtension = termName.match(/^(\d+(?:,\d+)*-)?(?:di|tri)?meth(?:yl|il)(eth|prop|but|pent|hex|hept|oct|non|dec)(?:yl|il)$/i);
+    if (terminalChainExtension) {
+      const chainLength = ({eth:2,prop:3,but:4,pent:5,hex:6,hept:7,oct:8,non:9,dec:10} as const)[terminalChainExtension[2]!.toLowerCase() as "eth"|"prop"|"but"|"pent"|"hex"|"hept"|"oct"|"non"|"dec"];
+      const locants = terminalChainExtension[1]?.slice(0,-1).split(",").map(Number) ?? [];
+      if (chainLength > 1 && locants.includes(chainLength)) return null;
+    }
     const systematicPropenyl = alkenyl && ["prop-1-en-2-il", "prop-1-en-2-yl"].includes(termName);
     const benzyl = onAmideN && (language === "en" ? termName === "benzyl" : termName === "bencil");
     const term = benzyl

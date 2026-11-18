@@ -147,7 +147,7 @@ export function createRestrictedChemicalGenerator(oracles: ExerciseChemistryOrac
         const domain = validateTarget(molecule, category, oracles);
         if (!domain.valid) { rejections.push({ attempt, stage, reason: domain.reason }); continue; }
         stage = "oracle";
-        const reference = oracles.reference(molecule);
+        const reference = oracles.reference(molecule,canonical.generatorVersion);
         if (!reference.namingSupported || !usableName(reference.names.es) || !usableName(reference.names.en)) {
           rejections.push({ attempt, stage, reason: "naming-unavailable" }); continue;
         }
@@ -182,7 +182,7 @@ export function createRestrictedChemicalGenerator(oracles: ExerciseChemistryOrac
           rejections.push({ attempt, stage, reason: "round-trip-domain-loss" }); continue;
         }
         const identity = exerciseStructuralIdentity(molecule);
-        const restoredReference = oracles.reference(restored.molecule);
+        const restoredReference = oracles.reference(restored.molecule,canonical.generatorVersion);
         if (intermediate && !validateIntermediateParent(restored.molecule, category, restoredReference).valid) {
           rejections.push({ attempt, stage, reason: "intermediate-round-trip-parent-loss" }); continue;
         }

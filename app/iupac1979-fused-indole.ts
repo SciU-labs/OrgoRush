@@ -116,7 +116,8 @@ function makeName(components: Component[], language: "es" | "en") {
   }
   const base = suffixOH
     ? `1H-indol-${getRingLocant(suffixOH)}-ol`
-    : language === "es" ? "1H-indol" : "1H-indole";
+    : components.length ? language === "es" ? "1H-indol" : "1H-indole"
+      : language === "es" ? "indol" : "indole";
   return `${prefixes.length ? `${prefixes.join("-")}-` : ""}${base}`;
 }
 

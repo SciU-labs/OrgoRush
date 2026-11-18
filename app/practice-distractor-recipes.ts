@@ -52,11 +52,13 @@ export function generateGraphDistractors(input: DistractorEngineInput, engine: D
         !== JSON.stringify([...next.parent.atomIds].sort((a, b) => a - b))) return;
       const transformation = transform(next, nextAnalysis);
       if (!transformation) return;
-      const reference = oracles.reference(alternative);
+      const generatorVersion = source.question.generatorVersion;
+      const historicalEtherLocants = generatorVersion <= 3;
+      const reference = oracles.reference(alternative, generatorVersion);
       const identity = exerciseStructuralIdentity(alternative);
       if (!reference.namingSupported || identity === source.reference.structuralIdentity
         || reference.names.es !== nextAnalysis.name
-        || reference.names.en !== generateLegacyEnglishName(next).name
+        || reference.names.en !== generateLegacyEnglishName(next, { preserveHistoricalEtherLocants: historicalEtherLocants }).name
         || (["es", "en"] as const).some((locale) => matchesHydrocarbonReferenceName(reference.names[locale], source.reference.names[locale], locale))) return;
       result.push({ id: deriveSeed(input.questionSeed, `mcq:distractor:${code}:${JSON.stringify(transformation)}`),
         kind: "distractor", correct: false, name: reference.names,
