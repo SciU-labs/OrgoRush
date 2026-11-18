@@ -43,10 +43,10 @@ export function createExerciseChemistryOracles<A extends AnalysisSource>(engine:
   return {
     findMoleculeValenceViolation: (molecule) => engine.findMoleculeValenceViolation(molecule),
     detectFunctionalGroups: (molecule) => engine.detectFunctionalGroups(molecule),
-    reference(molecule,generatorVersion) {
+    reference(molecule,_generatorVersion) {
       const analysis = engine.analyzeMolecule(molecule);
       const model = engine.buildLegacyEnglishNameModel(molecule, analysis);
-      const english = generateLegacyEnglishName(model,{preserveHistoricalEtherLocants:generatorVersion!==undefined&&generatorVersion<=3});
+      const english = generateLegacyEnglishName(model,{preserveHistoricalEtherLocants:true});
       return {
         name: analysis.name,
         formula: analysis.formula,

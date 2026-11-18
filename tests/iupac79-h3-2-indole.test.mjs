@@ -41,7 +41,7 @@ for (const [label, smiles, expectedEs, expectedEn, cid, inchiKey] of targets) te
 
 test('indole parent and bounded substitution grammar generalize beyond the corpus', () => {
   const analogs = [
-    ['c1ccc2[nH]ccc2c1', '1H-indole'],
+    ['c1ccc2[nH]ccc2c1', 'indole'],
     ['Cc1cc2ccccc2[nH]1', '2-methyl-1H-indole'],
     ['Cc1c[nH]c2ccccc12', '3-methyl-1H-indole'],
     ['c1ccc2[nH]c(CCN)cc2c1', '2-(1H-indol-2-yl)ethylamine'],

@@ -194,7 +194,7 @@ export function legacyEnglishVariantIsAvailable(
 }
 
 const fixedPrefixTranslations: Readonly<Record<string, string>> = {
-  amino: "amino", bromo: "bromo", ciano: "cyano", cloro: "chloro", fluoro: "fluoro", vinil: "ethenyl",
+  acetoxi: "acetoxy", amino: "amino", bromo: "bromo", ciano: "cyano", cloro: "chloro", fluoro: "fluoro", vinil: "ethenyl",
   formil: "formyl", hidroxi: "hydroxy", isobutil: "isobutyl", isopropil: "isopropyl",
   nitro: "nitro", oxo: "oxo", fenil: "phenyl", secbutil: "sec-butyl",
   "sec-butil": "sec-butyl", tertbutil: "tert-butyl", "tert-butil": "tert-butyl", yodo: "iodo",

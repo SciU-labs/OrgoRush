@@ -3850,13 +3850,6 @@ export function buildLegacyEnglishNameModel(
     &&ring.atomIds.some(id=>molecule.bonds.some(([a,b])=>a===id&&parentAtomIds.includes(b)||b===id&&parentAtomIds.includes(a)))):[];
   const hasUnrepresentedChainAryl=attachedArylRings.some(ring=>!analysis.substituents.some(sub=>
     ring.atomIds.every(id=>sub.atomIds.includes(id))&&Boolean(chainArylNames.get(sub.locant))));
-  const unadjudicatedFunctionalizedArylChain=parentKind==="chain"
-    &&[...chainArylNames.values()].some(name=>name!=="fenil");
-  const unrepresentedDecoratedArylChain=parentKind==="chain"&&rings.some(ring=>ring.kind==="aromatic"
-    &&ring.atomIds.some(ringAtom=>atomNeighbors(ringAtom,molecule).some(({atomId})=>
-      !ring.atomIds.includes(atomId)&&!parentAtomIds.includes(atomId)))
-    &&chainArylNames.size===0);
-  const unadjudicatedPhenolicAlcoholSideChain=hasUnadjudicatedPhenolicAlcoholSideChain(molecule);
   let unrepresentedAromaticRadical=false;
   const model: LegacyEnglishNameModel = {
     profile: IUPAC_1979_LEGACY_ENGLISH_PROFILE,
@@ -3865,9 +3858,6 @@ export function buildLegacyEnglishNameModel(
       || (hasUnrepresentedArylSubstitution(molecule, analysis)&&!attachedArylRings.length)
       // The 2013 methylphenyl spelling does not adjudicate a historical output.
       || hasUnrepresentedChainAryl
-      || unadjudicatedFunctionalizedArylChain
-      || unrepresentedDecoratedArylChain
-      || unadjudicatedPhenolicAlcoholSideChain
       || unrepresentedTetrahedralCenter
       ? "The local naming grammar cannot represent the requested structure safely."
       : undefined,
@@ -7208,24 +7198,6 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
   return false;
 }
 
-function hasUnadjudicatedPhenolicAlcoholSideChain(molecule:Molecule) {
-  return (molecule.rings??[]).some(ring=>{
-    if(ring.kind!=="aromatic"||!ring.atomIds.some(ringAtom=>atomNeighbors(ringAtom,molecule).some(({atomId})=>
-      getElement(getAtom(atomId,molecule)!)==="O"&&!ring.atomIds.includes(atomId))))return false;
-    const ringIds=new Set(ring.atomIds),seen=new Set<number>(ring.atomIds);
-    const pending=ring.atomIds.flatMap(ringAtom=>atomNeighbors(ringAtom,molecule)
-      .filter(({atomId})=>!ringIds.has(atomId)&&getElement(getAtom(atomId,molecule)!)==="C").map(({atomId})=>atomId));
-    while(pending.length){const atomId=pending.pop()!;if(seen.has(atomId))continue;seen.add(atomId);
-      if(getElement(getAtom(atomId,molecule)!)==="O"){
-        const oxygenNeighbors=atomNeighbors(atomId,molecule);
-        if(oxygenNeighbors.length===1&&oxygenNeighbors[0]!.order===1)return true;
-      }
-      for(const neighbor of atomNeighbors(atomId,molecule))if(!seen.has(neighbor.atomId))pending.push(neighbor.atomId);
-    }
-    return false;
-  });
-}
-
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
   if (analysis.substituents.some(item => item.unsupported)) return true;
   if (analysis.cyclicUnsupported) return true;
@@ -7235,7 +7207,6 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
   if(molecule.bonds.some(([a,b,order=1,stereo])=>order>1 && stereo!==undefined
     && getElement(getAtom(a,molecule)!)==="C" && getElement(getAtom(b,molecule)!)==="C"
     && !(numberedParent.has(a)&&numberedParent.has(b))))return true;
-  if(hasUnadjudicatedPhenolicAlcoholSideChain(molecule))return true;
   if (analysis.cyclicParent1979) return false;
   molecule = perceiveNamingRings(molecule).molecule;
   if (analysis.saturatedFused1979?.status === "SUPPORTED") return false;

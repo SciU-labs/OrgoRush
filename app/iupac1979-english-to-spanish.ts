@@ -26,10 +26,6 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
       || new Set(model.parent.atomIds).size!==6 || model.parent.fallbackName
       || model.doubleBondLocants.length || model.tripleBondLocants.length
       || model.nitrogenSubstituents?.length || model.stereochemicalPrefix
-      // This verifier currently admits only achiral aromatic parents. Reject
-      // raw atom stereo metadata too, even when the tagged atom is not a
-      // chemically stereogenic centre and CIP therefore ignores the tag.
-      || graph.atoms.some(a=>a.tetrahedralParity!==undefined||a.tetrahedralBondTo!==undefined)
       || graph.bonds.some(b=>b[3])) return false;
     const validLocant=(n:number)=>Number.isInteger(n)&&n>=1&&n<=6;
     if (!model.substituents.every(s=>validLocant(s.locant)) || !model.functionalGroups.every(g=>validLocant(g.locant))) return false;
@@ -59,6 +55,12 @@ export function verifyLegacyAromaticModel(graph: StereoGraph, model: LegacyEngli
     }));
     if(declaredStereo.some(center=>center===null))return false;
     const actualStereo=getTetrahedralStereoCenters(graph as never);
+    const taggedStereoAtoms=graph.atoms.filter(atom=>atom.tetrahedralParity!==undefined||atom.tetrahedralBondTo!==undefined);
+    // Preserve valid tetrahedral descriptors carried by a fully represented
+    // substituent, while rejecting metadata that does not identify a real
+    // stereogenic centre (the adapter may retain such invalid annotations).
+    if(taggedStereoAtoms.length!==actualStereo.length
+      ||taggedStereoAtoms.some(atom=>!actualStereo.some(center=>center.atomId===atom.id)))return false;
     if(actualStereo.length!==declaredStereo.length||actualStereo.some(center=>
       !declaredStereo.some(expected=>expected!==null&&expected.atomId===center.atomId&&expected.configuration===center.configuration)))return false;
     const forced=new Map(model.parent.atomIds.map((id,i)=>[i,id]));

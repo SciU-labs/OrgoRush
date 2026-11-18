@@ -67,10 +67,11 @@ test("legacy ether profile retains its independently selected Spanish numbering"
   });
 });
 
-test("frozen v1-v3 exercise names retain historical ether locants without changing current output", () => {
+test("exercise references retain historical ether locants without changing current profile output", () => {
   const molecule = moleculeFromSmiles("CCOC").molecule;
-  assert.equal(chemistry.oracles.reference(molecule).names.en, "methoxyethane");
+  assert.equal(chemistry.oracles.reference(molecule).names.en, "1-methoxyethane");
   assert.equal(chemistry.oracles.reference(molecule, 3).names.en, "1-methoxyethane");
+  assert.equal(chemistry.oracles.reference(molecule, 4).names.en, "1-methoxyethane");
 });
 
 test("parent root translation is independent of the glued prefix and suffix", () => {
