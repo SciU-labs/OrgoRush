@@ -3858,6 +3858,7 @@ export function buildLegacyEnglishNameModel(
       || (hasUnrepresentedArylSubstitution(molecule, analysis)&&!attachedArylRings.length)
       // The 2013 methylphenyl spelling does not adjudicate a historical output.
       || hasUnrepresentedChainAryl
+      || hasUnadjudicatedAlkylDecoratedArylSideChain(molecule,parentAtomIds,analysis.primaryFunctionalGroup)
       || unrepresentedTetrahedralCenter
       ? "The local naming grammar cannot represent the requested structure safely."
       : undefined,
@@ -7198,6 +7199,17 @@ function hasUnrepresentedArylSubstitution(molecule: Molecule, analysis: Analysis
   return false;
 }
 
+function hasUnadjudicatedAlkylDecoratedArylSideChain(
+  molecule:Molecule,parentAtomIds:readonly number[],principalGroup:FunctionalGroupKind|undefined,
+) {
+  if(principalGroup!=="alcohol"&&principalGroup!=="amine")return false;
+  const parentIds=new Set(parentAtomIds);
+  return (molecule.rings??[]).some(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6
+    &&ring.atomIds.some(ringAtom=>atomNeighbors(ringAtom,molecule).some(({atomId})=>parentIds.has(atomId)))
+    &&ring.atomIds.some(ringAtom=>atomNeighbors(ringAtom,molecule).some(({atomId})=>
+      !ring.atomIds.includes(atomId)&&!parentIds.has(atomId)&&getElement(getAtom(atomId,molecule)!)==="C")));
+}
+
 export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysis) {
   if (analysis.substituents.some(item => item.unsupported)) return true;
   if (analysis.cyclicUnsupported) return true;
@@ -7361,11 +7373,12 @@ export function externalCandidateNeedsNeutralLocalName(molecule: Molecule, analy
 /** Legacy availability must be evaluated with its own parent selection. */
 export function legacyLocalNameIsUnavailable(molecule: Molecule, analysis: Analysis) {
   if(analysis.name===COMPLEX_NAME_UNAVAILABLE_MESSAGE)return true;
+  const model=buildLegacyEnglishNameModel(molecule,analysis,analysis.name);
+  if(model.unavailableReason)return true;
   if(!externalCandidateNeedsNeutralLocalName(molecule,analysis))return false;
   // The current-profile namer can reject a graph that the bounded 1979 path
   // names and proves. Only that complete graph-checked translation may lift
   // the local availability gate; an English-looking candidate is insufficient.
-  const model=buildLegacyEnglishNameModel(molecule,analysis,analysis.name);
   const englishName=generateLegacyEnglishName(model).name;
   if(!model.unavailableReason&&englishName!=="-"){
     return translateLegacyEnglishToSpanish({graph:molecule,model,englishName}).status!=="TRANSLATED_FROM_LEGACY_EN";
