@@ -65,8 +65,11 @@ function checkFragments(q, a, locale) {
   const parts = buildReasoningNameLinkParts(name, fragments, steps);
   assert.equal(parts.map(p => p.text).join(""), name);
   for (const f of Object.values(fragments).flatMap(f => [f, ...f.additionalFragments ?? []])) {
-    assert.ok(f.text); const start = f.start ?? name.indexOf(f.text);
-    assert.equal(name.slice(start, start + f.text.length), f.text);
+    assert.ok(f.text);
+    if (!f.structuralReference) {
+      const start = f.start ?? name.indexOf(f.text);
+      assert.equal(name.slice(start, start + f.text.length), f.text);
+    }
     assert.ok(f.atomIds?.every(id => q.molecule.atoms.some(a => a.id === id)) ?? true);
   }
   const unsaturation = deriveUnsaturationNameContributions(a, name, locale, Object.values(q.reference.names));

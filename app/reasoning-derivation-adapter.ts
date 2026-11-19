@@ -143,10 +143,14 @@ function makeStep(input: {
   const { number, title, explanation, components, derivation, language, graph, alphabeticalOrder } = input;
   const targets = safeValidatedTargets(graph,derivation);
   const fragments = components.map(component => componentFragment(component, language, derivation));
-  // Substituent evidence is summarized in the step itself below. Keeping the
-  // same prose under every button would repeat the explanation verbatim.
   if (title === (language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores"))
-    fragments.forEach(fragment => { delete fragment.explanation; });
+    fragments.forEach((fragment, index) => {
+      const component = components[index], parentAtoms = new Set(derivation.parentAtomIds);
+      const positions = component.numbering.filter(([id, locant]) => parentAtoms.has(id) && typeof locant === "number");
+      const attachments = component.bondIds.filter(([a, b]) => parentAtoms.has(a) !== parentAtoms.has(b)).length;
+      const repeatedPrefix = component.role === "prefix" && positions.length > 1 && attachments === positions.length;
+      if (!component.equivalenceGroup && !repeatedPrefix) delete fragment.explanation;
+    });
   const combined: ReasoningNameFragment | undefined = fragments.length
     ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
   const fragmentTargets: Record<string, ReasoningVisualTarget> = {};
@@ -261,10 +265,24 @@ export function buildValidatedPriorityReasoning(input: {
     if(!component.equivalenceGroup){displayedComponents.push(component);continue;}
     if(displayedComponents.some(c=>c.equivalenceGroup===component.equivalenceGroup))continue;
     const siblings=derivation.components.filter(c=>c.equivalenceGroup===component.equivalenceGroup);
+    const amideBranchExplanationEn=siblings.length===2
+      ?"The 2 separate branches attach to the same amide nitrogen; di- counts both, not one longer chain."
+      :`${siblings.length} separate branches attach to the same amide nitrogen.`;
+    const amideBranchExplanationEs=siblings.length===2
+      ?"Las 2 ramas separadas se unen al mismo nitrógeno amídico; di- cuenta ambas, no una cadena más larga."
+      :`${siblings.length} ramas separadas se unen al mismo nitrógeno amídico.`;
+    const groupExplanationEn=siblings.length===2
+      ?"This substituent represents 2 separate groups at the parent positions."
+      :`This substituent represents ${siblings.length} separate groups at the parent positions.`;
+    const groupExplanationEs=siblings.length===2
+      ?"Este sustituyente representa 2 grupos separados en las posiciones del padre."
+      :`Este sustituyente representa ${siblings.length} grupos separados en las posiciones del padre.`;
+    const isAmideBranch=siblings.some(sibling=>sibling.attachmentScope==="amide-nitrogen");
     displayedComponents.push({...component,id:component.equivalenceGroup,atomIds:siblings.flatMap(c=>c.atomIds),
       bondIds:siblings.flatMap(c=>c.bondIds),nLocantStarts:siblings.flatMap(c=>c.nLocantStarts??[]),
-      explanation:language==="en"?"Two equivalent substituents attach separately to the same amide nitrogen.":"Dos sustituyentes equivalentes se unen por separado al mismo nitrógeno amídico.",
-      explanationEs:"Dos sustituyentes equivalentes se unen por separado al mismo nitrógeno amídico."});
+      explanation:language==="en"?(isAmideBranch?amideBranchExplanationEn:groupExplanationEn)
+        :(isAmideBranch?amideBranchExplanationEs:groupExplanationEs),
+      explanationEs:isAmideBranch?amideBranchExplanationEs:groupExplanationEs});
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
@@ -292,7 +310,7 @@ export function buildValidatedPriorityReasoning(input: {
       explanation: (language === "en" ? `${groupNames.en[derivation.principalGroup]} is the principal functional group and is expressed by the validated suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante el sufijo validado.`)+detail
         +priorityDetail
-        +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol.") : ""), components: [suffix] });
+        +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix] });
   }
   if (derivation.principalGroup === "none") {
     const nitro = derivation.components.filter(component => component.role === "prefix" && /nitro$/.test(component.text)

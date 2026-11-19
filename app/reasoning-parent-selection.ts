@@ -804,14 +804,16 @@ export function parentStructureSelectionReasoning(
         return outside !== undefined && molecule.atoms.find((atom) => atom.id === outside)?.element === "C" ? [outside] : [];
       });
       if (attachedCarbonIds.length) {
+        const ringCarbonCount = selectedRing.atomIds.filter(id =>
+          (molecule.atoms.find(atom => atom.id === id)?.element ?? "C") === "C").length;
         const groupLabel = analysis.primaryFunctionalGroup === "alcohol"
           ? language === "en" ? "alcohol" : "alcohol"
           : analysis.primaryFunctionalGroup === "amine"
             ? language === "en" ? "amine" : "amina"
             : language === "en" ? "principal characteristic" : "característico principal";
         return language === "en"
-          ? `The principal ${groupLabel} function is attached to the selected cyclic parent; the adjacent carbon fragment contains no occurrence of that principal function. Under Blue Book P-59.2.1.4, when the principal group occurs only in the cyclic system, the cyclic system is selected as parent. The attached chain is shown as structural context, not as an evaluated parent candidate.`
-          : `La función principal (${groupLabel}) está unida al padre cíclico seleccionado; el fragmento carbonado adyacente no contiene esa función principal. Según Blue Book P-59.2.1.4, cuando el grupo principal aparece solo en el sistema cíclico, se selecciona el sistema cíclico como padre. La cadena unida se muestra como contexto estructural, no como candidata a padre evaluada.`;
+          ? `The ring forming the selected cyclic parent contains ${ringCarbonCount} carbon${ringCarbonCount === 1 ? "" : "s"}. The principal ${groupLabel} function is attached to it; the adjacent carbon fragment contains no occurrence of that principal function. Under Blue Book P-59.2.1.4, when the principal group occurs only in the cyclic system, the cyclic system is selected as parent. The attached chain is shown as structural context, not as an evaluated parent candidate.`
+          : `El anillo que forma el padre cíclico seleccionado contiene ${ringCarbonCount} ${ringCarbonCount === 1 ? "carbono" : "carbonos"}. La función principal (${groupLabel}) está unida a él; el fragmento carbonado adyacente no contiene esa función principal. Según Blue Book P-59.2.1.4, cuando el grupo principal aparece solo en el sistema cíclico, se selecciona el sistema cíclico como padre. La cadena unida se muestra como contexto estructural, no como candidata a padre evaluada.`;
       }
     }
   }

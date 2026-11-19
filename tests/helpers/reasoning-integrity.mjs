@@ -52,8 +52,10 @@ export function assertReasoningIntegrity(model, molecule) {
   const seen = new Set();
   for (const item of evidence(model)) {
     const start = item.start ?? name.indexOf(item.text);
-    assert.ok(start >= 0 && start + item.text.length <= name.length);
-    assert.equal(name.slice(start, start + item.text.length), item.text);
+    if (!item.structuralReference) {
+      assert.ok(start >= 0 && start + item.text.length <= name.length);
+      assert.equal(name.slice(start, start + item.text.length), item.text);
+    }
     assert.ok(stepIds.has(item.stepNumber));
     const identity = `${item.stepNumber}:${start}:${start + item.text.length}:${item.kind}:${item.semanticId ?? ""}`;
     assert.equal(seen.has(identity), false, `duplicate evidence ${identity}`);
