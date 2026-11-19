@@ -22,6 +22,8 @@ export type ReasoningNameEvidence = {
     locants: readonly (readonly [number, number | string])[] };
   structuralContext?: { functionKind: string; numberingScope: "parent" | "substituent";
     attachment: readonly [number, number]; locant?: number };
+  /** Graph-derived structural reference that is not a literal span in the name. */
+  structuralReference?: "detected-nitro-groups";
   explanation?: string;
   contributions?: FunctionalContribution[];
 };
@@ -997,6 +999,25 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
       fragment.bondIds = unique[0].bondIds;
     }
     if (!fragment.additionalFragments.length) delete fragment.additionalFragments;
+  }
+  // Detection is kept separate from name role: nitro can be a detected
+  // functional group while being cited only as a prefix (or alongside a
+  // different suffix function). The graph projector validates each motif.
+  const nitroGroups = analysis.functionalGroups.filter(group => group.kind === "nitro" && group.atomIds?.length);
+  const nitroStep = steps.find(step => step.number === "01");
+  if (canHighlight && nitroStep && nitroGroups.length) {
+    const item: ReasoningNameEvidence = {
+      text: language === "en" ? `Nitro groups (×${nitroGroups.length})` : `Grupos nitro (×${nitroGroups.length})`,
+      label: language === "en" ? "Detected functional groups; cited as prefixes" : "Grupos funcionales detectados; se citan como prefijos",
+      kind: "function", semanticId: "detected:nitro-groups", structuralReference: "detected-nitro-groups",
+      atomIds: [...new Set(nitroGroups.flatMap(group => group.atomIds ?? []))],
+    };
+    const previous = fragments[nitroStep.number];
+    if (!previous) fragments[nitroStep.number] = item;
+    else if (![previous, ...(previous.additionalFragments ?? [])].some(part => part.semanticId === item.semanticId)) {
+      previous.additionalFragments ??= [];
+      previous.additionalFragments.push(item);
+    }
   }
   return fragments;
 }

@@ -2,7 +2,7 @@ import type { FunctionalReasoningAnalysis } from "./reasoning-functional-groups"
 import type { ReasoningNameEvidence, ReasoningNameFragment } from "./reasoning-name-fragments";
 
 export type ReasoningVisualGraph = {
-  atoms: readonly { id: number; element?: string }[];
+  atoms: readonly { id: number; element?: string; charge?: number }[];
   bonds: readonly (readonly [number, number, ...unknown[]])[];
 };
 export type ReasoningVisualTarget = {
@@ -213,9 +213,52 @@ export function buildReasoningVisualReferences(input: VisualInput): {
     }
   }
   const allEvidence = Object.values(input.fragments).flatMap(part => [part, ...(part.additionalFragments ?? [])]);
+  const elements = new Map(input.molecule.atoms.map(atom => [atom.id, atom.element ?? "C"]));
+  const graphBonds = input.molecule.bonds;
+  const detectedNitroTarget = (stepNumber: string, part: ReasoningNameEvidence): ReasoningVisualTarget | undefined => {
+    if (part.structuralReference !== "detected-nitro-groups") return;
+    const candidates = input.analysis.functionalGroups.filter(group => group.kind === "nitro" && group.atomIds?.length);
+    if (!candidates.length) return;
+    const atoms = new Set<number>(), selectedBonds = new Map<string, readonly [number, number]>();
+    for (const group of candidates) {
+      const groupIds = new Set(group.atomIds!);
+      const nitrogens = [...groupIds].filter(id => elements.get(id) === "N");
+      if (nitrogens.length !== 1) return;
+      const nitrogen = nitrogens[0], nAtom = input.molecule.atoms.find(atom => atom.id === nitrogen);
+      if (nAtom?.charge !== 1) return;
+      const nBonds = graphBonds.filter(([a,b]) => a === nitrogen || b === nitrogen);
+      const oxygenBonds = nBonds.filter(([a,b]) => elements.get(a === nitrogen ? b : a) === "O");
+      const carbonAttachments = nBonds.filter(([a,b,order]) => order === 1 && elements.get(a === nitrogen ? b : a) === "C");
+      if (oxygenBonds.length !== 2 || carbonAttachments.length !== 1) return;
+      const oxygenData = oxygenBonds.map(([a,b,order]) => ({
+        id: a === nitrogen ? b : a, order,
+        charge: input.molecule.atoms.find(atom => atom.id === (a === nitrogen ? b : a))?.charge ?? 0,
+        edge: [a,b] as const,
+      }));
+      if (oxygenData.some(oxygen => !groupIds.has(oxygen.id))
+        || oxygenData.filter(oxygen => oxygen.order === 2 && oxygen.charge === 0).length !== 1
+        || oxygenData.filter(oxygen => oxygen.order === 1 && oxygen.charge === -1).length !== 1
+        || oxygenData.some(oxygen => !((oxygen.order === 2 && oxygen.charge === 0) || (oxygen.order === 1 && oxygen.charge === -1)))) return;
+      atoms.add(nitrogen);
+      for (const oxygen of oxygenData) {
+        atoms.add(oxygen.id);
+        selectedBonds.set(bondKey(...oxygen.edge), oxygen.edge);
+      }
+    }
+    if (atoms.size !== candidates.length * 3 || [...atoms].some(id => !part.atomIds?.includes(id))) return;
+    return { stepNumber, atomIds: [...atoms], bondIds: [...selectedBonds.values()], locants: [] };
+  };
   for (const step of input.steps) {
     const evidence = input.fragments[step.number];
-    if (!step.nameRole || !evidence) continue;
+    if (!evidence) continue;
+    for (const part of [evidence, ...(evidence.additionalFragments ?? [])]) {
+      const target = detectedNitroTarget(step.number, part);
+      if (target) {
+        const fragmentId = reasoningFragmentId(step.number, part);
+        fragments[fragmentId] = { ...target, fragmentId };
+      }
+    }
+    if (!step.nameRole) continue;
     const numberedFragments: ReasoningVisualTarget[] = [];
     for (const part of [evidence, ...(evidence.additionalFragments ?? [])]) {
       if (!isWrittenFragment(part, input.displayedName)) continue;

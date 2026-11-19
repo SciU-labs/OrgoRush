@@ -7,6 +7,7 @@ import react from "@vitejs/plugin-react";
 import { createServer } from "vite";
 
 import { deriveReasoningNameFragments } from "../app/reasoning-name-fragments.ts";
+import { buildReasoningVisualReferences, reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
 import { buildReasoningNameLinkParts } from "../app/reasoning-name-links.ts";
 import { applyNomenclatureConvention } from "../app/nomenclature-conventions.ts";
 import { translateSpanishIupacToOpsin } from "../app/iupac-name-normalization.ts";
@@ -64,7 +65,10 @@ function derive({ molecule, analysis }, displayedName, language = "es", canHighl
   const fragments = deriveReasoningNameFragments({ analysis, displayedName, language, steps, canHighlight });
   assert.deepEqual(steps.map((step) => step.explanation), explanationBefore, "the presentation layer leaves every explanation intact");
   for (const fragment of Object.values(fragments)) {
-    assert.ok(displayedName.includes(fragment.text), `${fragment.text} must be literal text in ${displayedName}`);
+    for (const item of [fragment, ...(fragment.additionalFragments ?? [])]) {
+      if (item.structuralReference) continue;
+      assert.ok(displayedName.includes(item.text), `${item.text} must be literal text in ${displayedName}`);
+    }
   }
   return { steps, fragments };
 }
@@ -403,7 +407,8 @@ test("aromatic fragments retain benzene, visible prefixes, and TNT pedagogy", ()
   assert.equal(tntEs.fragments["04"]?.text, "2-metil-1,3,5-trinitro");
   assert.equal(tntEn.fragments["02"]?.text, "benzene");
   assert.equal(tntEn.fragments["04"]?.text, "2-methyl-1,3,5-trinitro");
-  assert.equal(tntEs.fragments["01"], undefined, "nitro must not be presented as a suffix");
+  assert.equal(tntEs.fragments["01"]?.structuralReference, "detected-nitro-groups",
+    "detected nitro is presented as a structural reference rather than a suffix name fragment");
   assert.match(tntEs.steps.find((step) => step.number === "01").explanation, /prefijo nitro-/i);
   assert.match(tntEs.steps.find((step) => step.number === "03").explanation, /nitro en C1, 3 y 5/i);
   assert.match(tntEs.steps.find((step) => step.number === "05").alphabeticalOrder.fragment, /metil → nitro/i);
@@ -413,8 +418,42 @@ test("aromatic fragments retain benzene, visible prefixes, and TNT pedagogy", ()
 
   const nitrobenzene = analyzed("O=[N+]([O-])c1ccccc1");
   const nitroFragments = derive(nitrobenzene, nitrobenzene.analysis.name).fragments;
-  assert.deepEqual([nitroFragments["02"]?.text, nitroFragments["04"]?.text, nitroFragments["01"]],
-    ["benceno", "nitro", undefined]);
+  assert.deepEqual([nitroFragments["02"]?.text, nitroFragments["04"]?.text,
+    nitroFragments["01"]?.structuralReference], ["benceno", "nitro", "detected-nitro-groups"]);
+});
+
+test("detected nitro groups are selectable from step 01 by exact graph provenance in ES and EN", () => {
+  const cases = [
+    ["TNT", "CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-]", 3],
+    ["nitrobenzene", "O=[N+]([O-])c1ccccc1", 1],
+    ["nitro ketone", "CC(=O)C[N+](=O)[O-]", 1],
+  ];
+  for (const [label, smiles, count] of cases) {
+    const compound = analyzed(smiles);
+    const baselineName = compound.analysis.name;
+    for (const language of ["es", "en"]) {
+      const result = derive(compound, language === "en" ? translateSpanishIupacToOpsin(baselineName) : baselineName, language);
+      const step = result.steps.find(item => item.number === "01");
+      const fragment = [result.fragments["01"], ...(result.fragments["01"]?.additionalFragments ?? [])]
+        .find(item => item.structuralReference === "detected-nitro-groups");
+      assert.ok(fragment, `${label} exposes detected nitro evidence in step 01`);
+      assert.equal(fragment.text, language === "en" ? `Nitro groups (×${count})` : `Grupos nitro (×${count})`);
+      const displayedName = language === "en" ? translateSpanishIupacToOpsin(baselineName) : baselineName;
+      const refs = buildReasoningVisualReferences({ molecule: compound.molecule, analysis: compound.analysis,
+        steps: result.steps, fragments: result.fragments, displayedName, enabled: true });
+      const target = refs.fragments[reasoningFragmentId("01", fragment)];
+      assert.ok(target, `${label} has a selectable exact graph target`);
+      const nitrogens = compound.analysis.functionalGroups.filter(group => group.kind === "nitro");
+      const expectedAtoms = nitrogens.flatMap(group => group.atomIds.filter(id => ["N", "O"].includes(
+        compound.molecule.atoms.find(atom => atom.id === id)?.element)));
+      assert.deepEqual(new Set(target.atomIds), new Set(expectedAtoms));
+      const actualNitroEdges = compound.molecule.bonds.filter(([a,b]) => target.atomIds.includes(a) && target.atomIds.includes(b));
+      assert.deepEqual(new Set(target.bondIds.map(edge => edge.slice().sort((a,b)=>a-b).join(":"))),
+        new Set(actualNitroEdges.map(edge => edge.slice(0,2).sort((a,b)=>a-b).join(":"))));
+      assert.equal(compound.analysis.name, baselineName, "the interaction does not alter the name");
+      if (label === "nitro ketone") assert.match(step.explanation, /prefijo|prefix/i);
+    }
+  }
 });
 
 test("unavailable names and unsupported patterns keep the explanation without borrowed fragments", () => {

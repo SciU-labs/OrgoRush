@@ -218,7 +218,7 @@ import { legacyFragmentAtomOrder, legacyGraphsIdentical, legacyPrefixTerm } from
 import { deriveLegacyParentNamePresentation, deriveReasoningNameFragments, deriveUnsaturationNameContributions, deriveCyclicKetoneMultiplicityEvidence, type ReasoningNameFragment, type UnsaturationNameContribution } from "./reasoning-name-fragments";
 import { functionalContributionReasoning, retainedFunctionalParentReasoning } from "./reasoning-functional-groups";
 import { aromaticFunctionalChainReasoning } from "./reasoning-aromatic-substituents";
-import { parentStructureSelectionReasoning } from "./reasoning-parent-selection";
+import { parentStructureSelectionEvidence, parentStructureSelectionReasoning, type ParentSelectionEvidence } from "./reasoning-parent-selection";
 import { describeMonomethylPhenyl, monomethylPhenylNameEs, type MonomethylPhenyl } from "./monomethyl-phenyl";
 import { buildReasoningNameLinkParts } from "./reasoning-name-links";
 import { describeAlphabeticalOrder, type AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order";
@@ -266,7 +266,6 @@ import {
   nameSubstituents,
   IUPAC_1979_LEGACY_ENGLISH_PROFILE,
   numberParent,
-  selectParent,
   type LegacyEnglishNameModel,
   type NumberingCriteria,
   type ParentCandidateCriteria,
@@ -641,6 +640,12 @@ type Analysis = {
   functionalGroups: FunctionalGroup[];
   primaryFunctionalGroup?: FunctionalGroupKind;
   primaryFunctionalLabel?: string;
+  parentSelectionTrace?: {
+    profile: "blue-book-2013" | "iupac-1979-legacy";
+    evaluatedCandidateCount: number;
+    candidates: { atomIds: number[]; bondIds: [number, number][]; selected: boolean;
+      decisiveCriterion?: string; ruleReference?: string }[];
+  };
   fusedBicyclic?: FusedBicyclicSystem;
   spanish1979SaturatedFusedParent?: string;
   retainedFused?: RetainedFusedResult;
@@ -668,6 +673,7 @@ export type IupacReasoningStep = {
   };
   unsaturationContributions?: UnsaturationNameContribution[];
   stereoDescriptors?: ReturnType<typeof getMainChainStereoDescriptors>;
+  parentSelectionEvidence?: ParentSelectionEvidence;
 };
 
 type ReasoningNomenclatureProfile = "blue-book-2013" | "iupac-1979-legacy";
@@ -1842,11 +1848,49 @@ function parentCriteria(candidate: AuditableChainCandidate): ParentCandidateCrit
   };
 }
 
+function firstParentComparisonCriterion(left: ParentCandidateCriteria, right: ParentCandidateCriteria,
+  convention: ParentSelectionConvention) {
+  const descending = (a: number, b: number) => b - a;
+  const comparisons: [string, number, string?][] = convention === "iupac-1979-legacy" ? [
+    ["principal characteristic groups", descending(left.principalGroupCount, right.principalGroupCount)],
+    ["multiple bonds", descending(left.multipleBondCount, right.multipleBondCount)],
+    ["skeletal atom count", descending(left.carbonCount, right.carbonCount)],
+    ["double-bond count", descending(left.doubleBondCount, right.doubleBondCount)],
+    ["principal-group locants", compareNumberLists(left.principalGroupLocants, right.principalGroupLocants)],
+    ["multiple-bond locants", compareNumberLists(left.multipleBondLocants, right.multipleBondLocants)],
+    ["double-bond locants", compareNumberLists(left.doubleBondLocants, right.doubleBondLocants)],
+    ["prefix count", descending(left.prefixCount, right.prefixCount)],
+    ["prefix locants", compareNumberLists(left.prefixLocants, right.prefixLocants)],
+    ["alphabetical tie-break", left.alphabeticalTieBreak.localeCompare(right.alphabeticalTieBreak, "en", { sensitivity: "base" })],
+  ] : [
+    ["principal characteristic groups", descending(left.principalGroupCount, right.principalGroupCount)],
+    ["skeletal atom count", descending(left.carbonCount, right.carbonCount), "P-44.3.2"],
+    ["multiple bonds", descending(left.multipleBondCount, right.multipleBondCount), "P-44.3.2"],
+    ["double-bond count", descending(left.doubleBondCount, right.doubleBondCount), "P-44.3.2"],
+    ["principal-group locants", compareNumberLists(left.principalGroupLocants, right.principalGroupLocants), "P-44.4"],
+    ["multiple-bond locants", compareNumberLists(left.multipleBondLocants, right.multipleBondLocants), "P-44.4"],
+    ["double-bond locants", compareNumberLists(left.doubleBondLocants, right.doubleBondLocants), "P-44.4"],
+    ["prefix count", descending(left.prefixCount, right.prefixCount), "P-45"],
+    ["prefix locants", compareNumberLists(left.prefixLocants, right.prefixLocants), "P-45"],
+    ["alphabetical tie-break", left.alphabeticalTieBreak.localeCompare(right.alphabeticalTieBreak, "en", { sensitivity: "base" }), "P-45"],
+  ];
+  const decisive = comparisons.find(([, result]) => result !== 0);
+  return decisive ? { criterion: decisive[0], comparison: decisive[1] as -1 | 1, ruleReference: decisive[2] } : undefined;
+}
+
+function compareParentCandidateFrameworks(left: AuditableChainCandidate, right: AuditableChainCandidate,
+  convention: ParentSelectionConvention) {
+  const a = parentCriteria(left), b = parentCriteria(right);
+  return firstParentComparisonCriterion(a, b, convention)?.comparison ?? 0;
+}
+
 /** Selects numbering for each framework first, then compares parent frameworks. */
-function selectParentCandidate<T extends AuditableChainCandidate>(
+function selectParentCandidateWithTrace<T extends AuditableChainCandidate>(
   candidates: T[],
   convention: ParentSelectionConvention,
-) {
+): { chosen: T; trace: { profile: "blue-book-2013" | "iupac-1979-legacy"; evaluatedCandidateCount: number;
+  candidates: { atomIds: number[]; bondIds: [number, number][]; selected: boolean;
+    decisiveCriterion?: string; ruleReference?: string }[] } } {
   const frameworks = new Map<string, T[]>();
   candidates.forEach((candidate) => {
     const forward = candidate.path.join(",");
@@ -1859,24 +1903,22 @@ function selectParentCandidate<T extends AuditableChainCandidate>(
   const numbered = [...frameworks.values()].map((variants) =>
     numberParent(variants, numberingCriteria),
   );
-  if (convention === "iupac-1979-legacy") return selectParent(numbered, parentCriteria);
-  const descending = (left: number, right: number) => right - left;
-  return [...numbered].sort((left, right) => {
-    const a = parentCriteria(left);
-    const b = parentCriteria(right);
-    return descending(a.principalGroupCount, b.principalGroupCount)
-      // Blue Book 2013 P-44.3.2 puts skeletal atom count ahead of unsaturation.
-      || descending(a.carbonCount, b.carbonCount)
-      || descending(a.multipleBondCount, b.multipleBondCount)
-      || descending(a.doubleBondCount, b.doubleBondCount)
-      // The remaining comparison criteria follow P-44.4, then P-45.
-      || compareNumberLists(a.principalGroupLocants, b.principalGroupLocants)
-      || compareNumberLists(a.multipleBondLocants, b.multipleBondLocants)
-      || compareNumberLists(a.doubleBondLocants, b.doubleBondLocants)
-      || descending(a.prefixCount, b.prefixCount)
-      || compareNumberLists(a.prefixLocants, b.prefixLocants)
-      || a.alphabeticalTieBreak.localeCompare(b.alphabeticalTieBreak, "en", { sensitivity: "base" });
-  })[0];
+  const ranked = [...numbered].sort((left, right) => compareParentCandidateFrameworks(left, right, convention));
+  const chosen = ranked[0];
+  const traceCandidates = ranked.slice(0, 4).map((candidate, index) => {
+    const comparison = index === 0 ? undefined : firstParentComparisonCriterion(parentCriteria(chosen), parentCriteria(candidate), convention);
+    const bondIds = candidate.path.slice(0, -1).flatMap((a, index) => {
+      const b = candidate.path[index + 1];
+      return [[a, b] as [number, number]];
+    });
+    return { atomIds: [...candidate.path], bondIds, selected: index === 0,
+      ...(comparison ? { decisiveCriterion: comparison.criterion, ...(comparison.ruleReference ? { ruleReference: comparison.ruleReference } : {}) } : {}) };
+  });
+  return { chosen, trace: { profile: convention, evaluatedCandidateCount: numbered.length, candidates: traceCandidates } };
+}
+
+function selectParentCandidate<T extends AuditableChainCandidate>(candidates: T[], convention: ParentSelectionConvention) {
+  return selectParentCandidateWithTrace(candidates, convention).chosen;
 }
 
 function stripForAlphabetizing(name: string) {
@@ -4473,7 +4515,8 @@ function analyzeFunctionalAcyclic(
     };
   });
 
-  const chosen = selectParentCandidate(candidates, convention);
+  const parentSelection = selectParentCandidateWithTrace(candidates, convention);
+  const chosen = parentSelection.chosen;
   const baseHydrocarbonName = makeChainName(
     chosen.path.length,
     chosen.doubleBondLocants,
@@ -4536,6 +4579,7 @@ function analyzeFunctionalAcyclic(
     functionalGroups: groups,
     primaryFunctionalGroup: primaryKind,
     primaryFunctionalLabel: primaryKind ? functionalGroupLabels[primaryKind] : undefined,
+    parentSelectionTrace: parentSelection.trace,
   };
 }
 
@@ -6171,11 +6215,10 @@ export function buildIupacReasoningSteps(
   );
   const primaryKind = analysis.primaryFunctionalGroup;
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "es", displayedName);
-  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "es");
+  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "es", analysis.chainName,
+    isLegacyExplanation ? "iupac-1979-legacy" : "blue-book-2013");
   const arylChainReasoning = aromaticFunctionalChainReasoning(molecule, analysis, "es");
-  const aromaticNitroGroups = analysis.family === "aromatic"
-    ? analysis.functionalGroups.filter((group) => group.kind === "nitro")
-    : [];
+  const detectedNitroGroups = analysis.functionalGroups.filter((group) => group.kind === "nitro");
   const exocyclicRingFunction = exocyclicRingCarbonFunction(molecule, analysis);
   const primaryGroups = primaryKind
     ? analysis.functionalGroups.filter((group) => group.kind === primaryKind)
@@ -6215,10 +6258,10 @@ export function buildIupacReasoningSteps(
     steps.push({
       number: "01",
       title: "Grupo funcional principal",
-      explanation: retainedReasoning?.function ?? `${priorityLead} Aporta el sufijo del nombre. ${positionRule}${aromaticNitroGroups.length ? " Los grupos nitro se expresan con el prefijo nitro- y no desplazan esta función de sufijo." : ""} ${functionalContributionReasoning(analysis, "function", "es", isLegacyExplanation ? displayedName : undefined)} ${arylChainReasoning?.function ?? ""}`.trim(),
+      explanation: retainedReasoning?.function ?? `${priorityLead} Aporta el sufijo del nombre. ${positionRule}${detectedNitroGroups.length ? " Los grupos nitro se expresan con el prefijo nitro- y no desplazan esta función de sufijo." : ""} ${functionalContributionReasoning(analysis, "function", "es", isLegacyExplanation ? displayedName : undefined)} ${arylChainReasoning?.function ?? ""}`.trim(),
       nameRole: "function",
     });
-  } else if (aromaticNitroGroups.length) {
+  } else if (detectedNitroGroups.length) {
     steps.push({
       number: "01",
       title: "Grupo funcional principal",
@@ -6469,7 +6512,10 @@ export function buildIupacReasoningSteps(
     });
   }
 
-  return steps;
+  return steps.map(step => step.number === "02"
+    ? { ...step, parentSelectionEvidence: parentStructureSelectionEvidence(molecule, analysis, "es", analysis.chainName,
+      isLegacyExplanation ? "iupac-1979-legacy" : "blue-book-2013") }
+    : step);
 }
 
 export function buildEnglishReasoningSteps(
@@ -6489,7 +6535,8 @@ export function buildEnglishReasoningSteps(
   const retainedReasoning = retainedFunctionalParentReasoning(analysis, "en", englishName);
   const isLegacyExplanation = presentation.profile === "iupac-1979-legacy";
   const parentName = translateSpanishIupacToOpsin(analysis.chainName) || analysis.chainName;
-  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "en", parentName);
+  const structuralParentReasoning = parentStructureSelectionReasoning(molecule, analysis, "en", parentName,
+    isLegacyExplanation ? "iupac-1979-legacy" : "blue-book-2013");
   if (analysis.steroidSystem?.constitutionNameEs) {
     const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
     const stereoExplanation = tetrahedralDescriptors.length
@@ -6693,9 +6740,7 @@ export function buildEnglishReasoningSteps(
   const primaryLabel = analysis.primaryFunctionalLabel
     ? uiText("en", analysis.primaryFunctionalLabel)
     : undefined;
-  const aromaticNitroGroups = analysis.family === "aromatic"
-    ? analysis.functionalGroups.filter((group) => group.kind === "nitro")
-    : [];
+  const detectedNitroGroups = analysis.functionalGroups.filter((group) => group.kind === "nitro");
   const substituentList = analysis.substituents
     .map((item) => {
       const name = translateSpanishIupacToOpsin(item.name) || item.name;
@@ -6734,8 +6779,8 @@ export function buildEnglishReasoningSteps(
         ? exocyclicRingFunction
           ? primaryLabel + " has the highest naming priority and determines the suffix. Its functional carbon is outside the ring and is attached at C"
             + exocyclicRingFunction.attachmentLocant + "."
-          : `${primaryLabel} has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant.${aromaticNitroGroups.length ? " Nitro groups are cited with the nitro- prefix and do not displace this suffix function." : ""}`
-        : aromaticNitroGroups.length
+          : `${primaryLabel} has the highest naming priority among the suffix functional groups. It determines the suffix, and the parent skeleton is numbered to give this function the lowest permitted locant.${detectedNitroGroups.length ? " Nitro groups are cited with the nitro- prefix and do not displace this suffix function." : ""}`
+        : detectedNitroGroups.length
           ? "The nitro group is detected, but here it is cited with the prefix nitro-. It does not provide a suffix and is not classified as the principal functional group."
           : "Functional-group priority is checked before the parent skeleton is numbered.");
       if (!retainedReasoning && analysis.family === "cycloalkane" && analysis.primaryFunctionalGroup === "ketone"
@@ -6837,6 +6882,8 @@ export function buildEnglishReasoningSteps(
       ...step,
       title: englishReasoningTitle(step.title),
       explanation,
+      ...(step.number === "02" ? { parentSelectionEvidence: parentStructureSelectionEvidence(molecule, analysis, "en", parentName,
+        isLegacyExplanation ? "iupac-1979-legacy" : "blue-book-2013") } : {}),
       ...(alphabeticalOrder ? { alphabeticalOrder } : {}),
       ...(unsaturationContributions ? { unsaturationContributions } : {}),
     };
@@ -9615,8 +9662,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     reasoningUnsupported: reasoningUnsupported || unreconciledPyridineAcid,
     structuralStatus: structuralDerivation.status,
   })
-    ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language }) : null,
-  [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language]);
+    ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language,
+      parentSelection: parentStructureSelectionEvidence(molecule, activeAnalysis, language,
+        language === "en" ? translateSpanishIupacToOpsin(activeAnalysis.chainName) || activeAnalysis.chainName : activeAnalysis.chainName,
+        activeNomenclatureConvention === "iupac-1979-es" || activeNomenclatureConvention === "iupac-1979-legacy-en"
+          ? "iupac-1979-legacy" : "blue-book-2013") }) : null,
+  [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language, molecule,
+    activeAnalysis, activeNomenclatureConvention]);
   const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
     ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
       fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,
@@ -16318,6 +16370,57 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                           language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
                           selectedFragmentId={reasoningVisualTarget?.fragmentId}
                           onActivateTarget={activateReasoningCanvasReference} />}
+                        {step.parentSelectionEvidence && <section data-parent-selection-level={step.parentSelectionEvidence.level}
+                          data-parent-reconciliation={step.parentSelectionEvidence.reconciliation}>
+                          <p role="note">{step.parentSelectionEvidence.level === "rule-supported"
+                            ? language === "en"
+                              ? `Selection evidence uses the current analysis and ${step.parentSelectionEvidence.rule ?? "an implemented parent rule"}. The active name has not been independently reconciled.`
+                              : `La evidencia de selección utiliza el análisis actual y ${step.parentSelectionEvidence.rule ?? "una regla de selección de padre implementada"}. El nombre activo no se ha conciliado de forma independiente.`
+                            : step.parentSelectionEvidence.level === "selection-traced"
+                              ? step.parentSelectionEvidence.explanation
+                            : step.parentSelectionEvidence.level === "name-reconciled"
+                              ? language === "en"
+                                ? "The FULL derivation maps this parent to the active name; the derivation does not record a comparison against every admissible alternative."
+                                : "La derivación FULL asigna este padre al nombre activo; no registra una comparación con todas las alternativas admisibles."
+                              : language === "en"
+                                ? "Structural candidate only: the current rules do not justify a parent comparison for this case."
+                                : "Solo candidato estructural: las reglas actuales no justifican una comparación de padres para este caso."}</p>
+                          {step.parentSelectionEvidence.candidates.filter(candidate => {
+                            const visibleFragments = step.fragments ? [step.fragments, ...(step.fragments.additionalFragments ?? [])] : [];
+                            return !visibleFragments.some(fragment => fragment.atomIds?.length === candidate.atomIds.length
+                              && fragment.atomIds.every(id => candidate.atomIds.includes(id)));
+                          }).map(candidate => <button type="button" key={candidate.id}
+                            data-parent-candidate={candidate.status} aria-pressed={reasoningVisualTarget?.fragmentId === candidate.id}
+                            data-parent-evidence-kind={candidate.evidenceKind ?? "parent"}
+                            data-parent-admissibility={candidate.nomenclaturalAdmissibility}
+                            onClick={() => activateReasoningCanvasReference({ stepNumber: step.number, fragmentId: candidate.id,
+                              atomIds: candidate.atomIds, bondIds: candidate.bondIds, locants: [] })}>
+                            {candidate.label}{candidate.principalGroupCountStatus === "known"
+                              ? language === "en" ? ` · principal-group suffix count: ${candidate.principalGroupCount}`
+                                : ` · grupos principales expresables como sufijo: ${candidate.principalGroupCount}`
+                              : candidate.principalGroupCountStatus === "unknown"
+                                ? language === "en" ? " · count unknown" : " · cantidad desconocida"
+                                : ""}{candidate.evidenceKind === "principal-groups"
+                              ? language === "en" ? " · counted occurrence" : " · ocurrencia contabilizada"
+                              : candidate.currentAnalysisParent
+                                ? language === "en" ? " · selected by current analysis" : " · seleccionado por el análisis actual"
+                                : candidate.nomenclaturalAdmissibility === "candidate-unverified"
+                                  ? language === "en" ? " · parent admissibility unverified" : " · admisibilidad parental sin verificar"
+                                  : ""}{candidate.status === "not-compared"
+                              ? language === "en" ? " · not compared" : " · sin comparar"
+                              : candidate.status === "structural-region"
+                                ? candidate.evidenceKind && candidate.evidenceKind !== "parent"
+                                  ? ""
+                                  : language === "en" ? " · substituent region" : " · región sustituyente"
+                                : candidate.status === "candidate"
+                                  ? language === "en" ? " · unverified candidate" : " · candidato sin validar"
+                                  : candidate.status === "selected-by-engine"
+                                    ? language === "en" ? " · selected by current engine" : " · seleccionado por el motor actual"
+                                    : candidate.status === "evaluated-alternative"
+                                      ? language === "en" ? " · evaluated; not selected" : " · evaluado; no seleccionado"
+                                  : ""}
+                          </button>)}
+                        </section>}
                         {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
                           || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {
                           const fragmentId = `branch-count:${guide.componentId}`;

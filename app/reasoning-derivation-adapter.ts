@@ -8,6 +8,7 @@ import { resolveAcyloxyRegions } from "./reasoning-acyloxy-regions.ts";
 import type { ReasoningNameFragment } from "./reasoning-name-fragments.ts";
 import { reasoningFragmentId } from "./reasoning-visual-targets.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
+import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
 import { validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
 
 export type PriorityReasoningStep = {
@@ -20,6 +21,7 @@ export type PriorityReasoningStep = {
   alphabeticalOrder?: AlphabeticalOrderPresentation;
   componentIds: string[];
   componentKind?: StructuralComponent["kind"];
+  parentSelectionEvidence?: ParentSelectionEvidence;
   source: "FULL" | "structural" | "local";
 };
 
@@ -87,6 +89,22 @@ function componentLabel(component: NameComponent, language: AppLanguage, derivat
   return `${translated}${locant}`;
 }
 
+function localizedComponentExplanation(component: NameComponent, language: AppLanguage) {
+  if (language === "en") return component.explanation;
+  // Name components may come from an English source while the reasoning UI is
+  // Spanish. Use an authored Spanish explanation when available; never leak an
+  // English sentence into the localized view.
+  const explanation = component.explanationEs ?? (component.language === "es" ? component.explanation : undefined);
+  if (!explanation) return undefined;
+  return explanation
+    .replace(/\bhydroxy\b/gi, "hidroxi")
+    .replace(/\bphenyl\b/gi, "fenilo")
+    .replace(/\b2-methylpropyl\b/gi, "2-metilpropilo")
+    .replace(/\bmethyl\b/gi, "metilo")
+    .replace(/\bethyl\b/gi, "etilo")
+    .replace(/\bacetyl\b/gi, "acetilo");
+}
+
 function componentFragment(component: NameComponent, language: AppLanguage, derivation: ValidatedNameDerivation): ReasoningNameFragment {
   const literal=!!derivation.evidence || component.language===language;
   const text = literal ? component.text : componentLabel(component, language, derivation);
@@ -97,13 +115,13 @@ function componentFragment(component: NameComponent, language: AppLanguage, deri
   const explanation=repeated
     ? language==="en" ? `The selected prefix represents ${positions.length} separate groups at parent positions ${positions.join(", ")}.`
       : `El prefijo seleccionado representa ${positions.length} grupos separados en las posiciones ${positions.join(", ")} del progenitor.`
-    : language==="es"?component.explanationEs??component.explanation:component.explanation;
+    : localizedComponentExplanation(component, language);
   return { text, label: language === "en" ? `Select ${text}` : `Seleccionar ${text}`,
     kind: component.role === "parent" ? "parent" : component.role === "suffix" ? "function"
       : component.role === "unsaturation" ? "unsaturation"
       : component.role === "substituent" || component.role === "prefix" ? "substituent" : "numbering",
-    ...(literal?{start:component.start,language:component.language,numberingScope:component.numberingScope,
-      explanation}:{}),
+    ...(literal?{start:component.start,language:component.language,numberingScope:component.numberingScope}:{}),
+    ...(explanation?{explanation}:{}),
     semanticId: component.id, atomIds: component.atomIds, bondIds: component.bondIds };
 }
 
@@ -125,6 +143,10 @@ function makeStep(input: {
   const { number, title, explanation, components, derivation, language, graph, alphabeticalOrder } = input;
   const targets = safeValidatedTargets(graph,derivation);
   const fragments = components.map(component => componentFragment(component, language, derivation));
+  // Substituent evidence is summarized in the step itself below. Keeping the
+  // same prose under every button would repeat the explanation verbatim.
+  if (title === (language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores"))
+    fragments.forEach(fragment => { delete fragment.explanation; });
   const combined: ReasoningNameFragment | undefined = fragments.length
     ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
   const fragmentTargets: Record<string, ReasoningVisualTarget> = {};
@@ -260,9 +282,16 @@ export function buildValidatedPriorityReasoning(input: {
       : nitrile ? (language==="en" ? " Its selected atoms include the C≡N bond." : " Sus átomos seleccionados incluyen el enlace C≡N.") : "";
     const ester=derivation.principalGroup==="ester" && characteristicBonds.some(([a,b,o])=>o===1
       && (elements.get(a)==="C"&&elements.get(b)==="O" || elements.get(a)==="O"&&elements.get(b)==="C"));
+    const hydroxyPrefix = derivation.components.some(component => component.role === "prefix"
+      && /hydroxy/i.test(component.text) && component.atomIds.some(id => elements.get(id) === "O"));
+    const priorityDetail = derivation.principalGroup === "amide" && hydroxyPrefix
+      ? language === "en" ? " The amide has priority over the hydroxyl group, so hydroxy- is expressed as a prefix while amide supplies the suffix."
+        : " La amida tiene prioridad sobre el grupo hidroxilo: hidroxi- se expresa como prefijo y la amida aporta el sufijo."
+      : "";
     stages.push({ title: language === "en" ? "Principal functional group" : "Grupo funcional principal",
       explanation: (language === "en" ? `${groupNames.en[derivation.principalGroup]} is the principal functional group and is expressed by the validated suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante el sufijo validado.`)+detail
+        +priorityDetail
         +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol.") : ""), components: [suffix] });
   }
   if (derivation.principalGroup === "none") {
@@ -328,9 +357,9 @@ export function buildValidatedPriorityReasoning(input: {
   const substituents = [...roots, ...descendants, ...facets].filter((component, index, all) => all.findIndex(item => item.id === component.id) === index);
   if (substituents.length) {
     const descriptions=substituents.map(component=>{
-      const literal=(derivation.evidence?.language??component.language)===language
-        && derivation.name.slice(component.start,component.end)===component.text;
-      const label=literal?`«${component.text}»`:language==="en"?"The selected group":"El grupo seleccionado";
+      const specific = localizedComponentExplanation(component, language);
+      if (specific) return specific;
+      const label=`«${componentLabel(component, language, derivation)}»`;
       const parentAtoms=new Set(parent?.atomIds??[]);
       const positions=[...new Set(component.numbering.flatMap(([id,locant])=>parentAtoms.has(id)&&typeof locant==="number"?[locant]:[]))];
       const attachmentCount=component.bondIds.filter(([a,b])=>parentAtoms.has(a)!==parentAtoms.has(b)).length;
@@ -342,11 +371,21 @@ export function buildValidatedPriorityReasoning(input: {
       if(derivation.principalGroup==="ester" && component.parentId===suffix?.id)
         return language==="en" ? `${label} is the alcohol-derived group attached to the ester oxygen.`
           : `${label} es el grupo derivado del alcohol unido al oxígeno del éster.`;
+      const nestedParent = component.parentId ? byId.get(component.parentId) : undefined;
+      if (nestedParent && typeof component.locant === "number") {
+        const parentLabel = componentLabel(nestedParent, language, derivation);
+        return language === "en"
+          ? `${label} is a nested ${component.role === "prefix" ? "prefix" : "substituent"} within «${parentLabel}» at internal position ${component.locant}; this locant belongs to the nested numbering scope.`
+          : `${label} es un ${component.role === "prefix" ? "prefijo" : "sustituyente"} anidado en «${parentLabel}» en la posición interna ${component.locant}; este localizador pertenece a su propio sistema de numeración.`;
+      }
+      if (component.locant === "N" && component.role === "substituent")
+        return language === "en" ? `${label} attaches through the amide nitrogen and is introduced by N-.`
+          : `${label} se une mediante el nitrógeno de la amida y se introduce con N-.`;
       const locants=positions.join(", ");
       if(positions.length>1 && attachmentCount===positions.length)return language==="en" ? `${label} represents ${positions.length} groups at parent positions ${locants}; the multiplier counts separate attachments.`
         : `${label} representa ${positions.length} grupos en las posiciones ${locants} del progenitor; el multiplicador cuenta uniones separadas.`;
-      return language==="en" ? `${label} is connected to ${positions.length?`parent position ${locants}`:"the verified parent region"}${attachmentCount?"; its control includes the attachment bond":""}.`
-        : `${label} se une ${positions.length?`a la posición ${locants} del progenitor`:"a la región progenitora verificada"}${attachmentCount?"; su control incluye el enlace de unión":""}.`;
+      return language==="en" ? `${label} is cited as a connected substituent at ${positions.length?`parent position ${locants}`:"the verified parent"}.`
+        : `${label} se cita como sustituyente conectado en ${positions.length?`la posición ${locants} del progenitor`:"el progenitor verificado"}.`;
     });
     const paragraphs:{explanation:string;components:NameComponent[]}[]=[];
     descriptions.forEach((description,index)=>{const last=paragraphs.length-1;
@@ -406,7 +445,12 @@ export function buildValidatedPriorityReasoning(input: {
   if (parent && suffix && acyloxy) addAcyloxyReasoning(steps, derivation, graph, language, parent, suffix, acyloxy);
   const amideFragments = buildNSubstitutedAmideFragments(steps, derivation, graph, language);
   const acidFragments = buildSubstitutedArylAcidFragments(steps, derivation, graph, language);
-  return { name: derivation.name, steps: amideFragments ?? acidFragments ?? steps };
+  const resultSteps = amideFragments ?? acidFragments ?? steps;
+  const parentEvidence = parent && reconciledParentSelectionEvidence({ molecule: graph, parentAtomIds: parent.atomIds,
+    derivationName: derivation.name, activeName: input.activeName, language });
+  const parentStep = parent ? resultSteps.find(step => step.componentIds.includes(parent.id)) : undefined;
+  if (parentStep && parentEvidence) parentStep.parentSelectionEvidence = parentEvidence;
+  return { name: derivation.name, steps: resultSteps };
 }
 
 function addAcyloxyReasoning(steps: PriorityReasoningStep[], derivation: ValidatedNameDerivation,
@@ -629,14 +673,22 @@ function structuralLabel(component: StructuralComponent, language: AppLanguage) 
   return component.kind;
 }
 
+function structuralFragmentLabel(component: StructuralComponent, language: AppLanguage) {
+  return language === "en" ? component.displayLabel ?? structuralLabel(component, language)
+    : component.displayLabelEs ?? structuralLabel(component, language);
+}
+
 /** Structural-only evidence is deliberately presented as candidates and
  * connected regions; this adapter never turns it into name locants or parents. */
-export function buildStructuralPriorityReasoning(input: { derivation: StructuralDerivation; language: AppLanguage }): PriorityReasoningModel {
+export function buildStructuralPriorityReasoning(input: { derivation: StructuralDerivation; language: AppLanguage;
+  parentSelection?: ParentSelectionEvidence }): PriorityReasoningModel {
   const { derivation, language } = input;
   const ranks: Record<StructuralComponent["kind"], number> = {
     carboxylicAcid: 0, ester: 0, amide: 0, carbonyl: 0, hydroxyl: 0,
     "candidate carbon skeleton": 1, "carbohydrate backbone": 1,
     ringSystem: 2, "connected fragment": 3,
+    "phenoxy fragment": 3, "methoxy fragment": 3, "substituted phenoxy fragment": 4,
+    "fragment connection": 3, "amine fragment": 1, "trifluoromethyl group": 1, "ether linkage": 1, "benzyl fragment": 3,
     "N-bound methyl": 4, "ring oxygen": 4, hemiacetal: 4, hemiketal: 4,
     "configurational reference": 5, "anomeric centre": 5, stereo: 5,
   };
@@ -645,7 +697,7 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
   const steps = kinds.map((kind, index): PriorityReasoningStep => {
     const number = String(index + 1).padStart(2, "0"), group = derivation.components.filter(component => component.kind === kind);
     const fragments = group.map(component => {
-      const label = structuralLabel(component, language);
+      const label = structuralFragmentLabel(component, language);
       return { text: label, label: language === "en" ? `Select ${label}` : `Seleccionar ${label}`,
         kind: "substituent" as const, semanticId: component.id, atomIds: component.atomIds, bondIds: component.bondIds };
     });
@@ -655,15 +707,50 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
       fragmentTargets[fragmentId] = { stepNumber: number, fragmentId, atomIds: component.atomIds,
         bondIds: component.bondIds, locants: component.numbering ?? [] };
     });
-    const componentText = (component: StructuralComponent) => language === "en" ? component.evidence : component.evidenceEs ?? component.evidence;
-    const explanation = group.length === 1 ? componentText(group[0]) : language === "en"
-      ? `${group.length} graph regions of this kind are independently identified; no parent locants are inferred.`
-      : `Se identifican ${group.length} regiones de este tipo en el grafo; no se infieren localizadores parentales.`;
+    const componentText = (component: StructuralComponent) => {
+      const evidence = language === "en" ? component.evidence : component.evidenceEs ?? component.evidence;
+      const container = component.parentComponentId
+        ? derivation.components.find(candidate => candidate.id === component.parentComponentId) : undefined;
+      if (!container) return evidence;
+      const childName = structuralFragmentLabel(component, language), parentName = structuralFragmentLabel(container, language);
+      return evidence + (language === "en"
+        ? ` This ${childName} is a contained part of ${parentName}; this describes graph composition, not a verified name or locant.`
+        : ` Este elemento, ${childName}, forma parte de ${parentName}; esto describe la composición del grafo, no un nombre o localizador verificado.`);
+    };
+    const explanation = group.length === 1 ? componentText(group[0]) : ["ringSystem", "connected fragment", "fragment connection"].includes(kind)
+      ? `${language === "en" ? "Each control below describes an independently identified graph region; these labels do not establish name locants. " : "Cada control describe una región del grafo identificada por separado; estas etiquetas no establecen localizadores del nombre. "}${group.map(component => `${structuralFragmentLabel(component, language)}: ${componentText(component)}`).join(" ")}`
+      : language === "en"
+        ? `${group.length} graph regions of this kind are independently identified; no parent locants are inferred.`
+        : `Se identifican ${group.length} regiones de este tipo en el grafo; no se infieren localizadores parentales.`;
     const targets = group.map(component => ({ stepNumber: number, atomIds: component.atomIds,
       bondIds: component.bondIds, locants: component.numbering ?? [] }));
     return { number, title: structuralLabel(group[0], language), explanation, target: unionTarget(number, targets),
       fragments: { ...fragments[0], additionalFragments: fragments.slice(1) }, fragmentTargets,
       componentIds: group.map(component => component.id), componentKind: kind, source: "structural" };
   });
+  if (input.parentSelection) {
+    const evidence = input.parentSelection;
+    const sameRegion = (left: readonly number[], right: readonly number[]) => left.length === right.length
+      && left.every(id => right.includes(id));
+    const matchingStep = steps.find(step => derivation.components.some(component => step.componentIds.includes(component.id)
+      && evidence.candidates.some(item => sameRegion(item.atomIds, component.atomIds))));
+    if (matchingStep) matchingStep.parentSelectionEvidence = evidence;
+    else {
+      const number = String(steps.length + 1).padStart(2, "0");
+      const targets = evidence.candidates.map(item => ({ stepNumber: number, fragmentId: item.id,
+        atomIds: item.atomIds, bondIds: item.bondIds, locants: [] }));
+      const fragments = evidence.candidates.map(item => ({ text: item.label,
+        label: language === "en" ? `Select ${item.label}` : `Seleccionar ${item.label}`,
+        kind: "parent" as const, semanticId: item.id, atomIds: item.atomIds, bondIds: item.bondIds }));
+      const fragmentTargets = Object.fromEntries(evidence.candidates.map((item, index) => [
+        reasoningFragmentId(number, fragments[index]), targets[index],
+      ]));
+      steps.push({ number, title: language === "en" ? "Parent candidates" : "Candidatos a padre",
+        explanation: evidence.explanation, target: unionTarget(number, targets),
+        fragments: fragments[0] ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined,
+        fragmentTargets, componentIds: evidence.candidates.map(item => item.id),
+        parentSelectionEvidence: evidence, source: "structural" });
+    }
+  }
   return { name: derivation.name.text, steps };
 }

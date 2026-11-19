@@ -8,6 +8,8 @@ import { recognizeCarbohydrate, type CarbohydrateStructure } from "./carbohydrat
 export type StructuralComponent = {
   id: string;
   kind: "carboxylicAcid" | "ester" | "amide" | "carbonyl" | "hydroxyl" | "ringSystem" | "stereo" | "N-bound methyl"
+    | "phenoxy fragment" | "substituted phenoxy fragment" | "methoxy fragment"
+    | "fragment connection" | "amine fragment" | "trifluoromethyl group" | "ether linkage" | "benzyl fragment"
     | "carbohydrate backbone" | "ring oxygen" | "hemiacetal" | "hemiketal" | "configurational reference" | "anomeric centre"
     | "candidate carbon skeleton" | "connected fragment";
   atomIds: number[];
@@ -15,7 +17,11 @@ export type StructuralComponent = {
   evidence: string;
   evidenceEs?: string;
   kindEs?: string;
+  displayLabel?: string;
+  displayLabelEs?: string;
   numbering?: [number,number|string][];
+  /** Nearest strictly containing graph component; structural containment only. */
+  parentComponentId?: string;
 };
 export type StructuralDerivation = {
   status: "FULL" | "PARTIAL" | "UNSUPPORTED";
@@ -25,6 +31,26 @@ export type StructuralDerivation = {
   carbohydrate?: CarbohydrateStructure;
 };
 const key = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
+const structuralComponentId = (kind: StructuralComponent["kind"], ids: readonly number[]) =>
+  `graph:${kind}:${[...new Set(ids)].sort((a,b)=>a-b).join(",")}`;
+
+function assignStructuralContainment(components: StructuralComponent[]) {
+  const excluded = new Set<StructuralComponent["kind"]>([
+    "fragment connection", "candidate carbon skeleton", "stereo",
+    "configurational reference", "anomeric centre",
+  ]);
+  const byId = new Map(components.map(component => [component.id, component]));
+  for (const child of components) {
+    if (excluded.has(child.kind) || !child.atomIds.length) continue;
+    const childAtoms = new Set(child.atomIds);
+    const containers = components.filter(candidate => candidate !== child && !excluded.has(candidate.kind)
+      && candidate.atomIds.length > childAtoms.size && [...childAtoms].every(id => candidate.atomIds.includes(id)));
+    if (!containers.length) continue;
+    const nearestSize = Math.min(...containers.map(candidate => candidate.atomIds.length));
+    const nearest = containers.filter(candidate => candidate.atomIds.length === nearestSize);
+    if (nearest.length === 1 && byId.has(nearest[0].id)) child.parentComponentId = nearest[0].id;
+  }
+}
 
 /** Returns a unique longest path in the acyclic carbon-only graph, if one is
  * structurally distinguishable. This is candidate skeleton evidence only;
@@ -86,11 +112,16 @@ export function structuralVisualTargets(model: StructuralDerivation): Record<str
 export function remapStructuralDerivation(model: StructuralDerivation, source: GeneratedMolecule, target: GeneratedMolecule): StructuralDerivation | null {
   const map = mapStructuralRegions(source, target, model.components.map(c => c.atomIds));
   if (!map) return null;
-  return { ...model, components: model.components.map(c => ({ ...c,
+  const mappedIds = new Map(model.components.map(c => [c.id, c.id.startsWith("graph:")
+    ? structuralComponentId(c.kind, c.atomIds.map(id => map.get(id)!)) : c.id]));
+  const components = model.components.map(c => ({ ...c,
+    ...(c.id.startsWith("graph:") ? { id: structuralComponentId(c.kind, c.atomIds.map(id => map.get(id)!)) } : {}),
+    ...(c.parentComponentId ? { parentComponentId: mappedIds.get(c.parentComponentId) } : {}),
     atomIds: c.atomIds.map(id => map.get(id)!),
-    bondIds: c.bondIds.map(([a, b]) => [map.get(a)!, map.get(b)!]),
+    bondIds: c.bondIds.map(([a, b]): [number,number] => [map.get(a)!, map.get(b)!]),
     ...(c.numbering?{numbering:c.numbering.map(([id,p]):[number,number|string]=>[map.get(id)!,p])}:{}),
-  })),...(model.carbohydrate?{carbohydrate:recognizeCarbohydrate(target)??undefined}:{}) };
+  }));
+  return { ...model, components, ...(model.carbohydrate?{carbohydrate:recognizeCarbohydrate(target)??undefined}:{}) };
 }
 
 function normalized(graph: GeneratedMolecule) {
@@ -190,7 +221,7 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
       const region = [...new Set(ids)], included = new Set(region);
       result.components.push({ id: `structural-${result.components.length}`, kind, atomIds: region,
         bondIds: [...graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b] as [number,number]), ...extraBonds], evidence,...(numbering?{numbering}:{}),
-        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico','candidate carbon skeleton':'Candidato de cadena carbonada','connected fragment':'Fragmento conectado'} as const)[kind] });
+        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','phenoxy fragment':'Fragmento fenoxi','substituted phenoxy fragment':'Fragmento fenoxi sustituido','methoxy fragment':'Fragmento metoxi','fragment connection':'Conexión entre fragmentos','amine fragment':'Función amina','trifluoromethyl group':'Grupo trifluorometil','ether linkage':'Enlace éter','benzyl fragment':'Fragmento bencílico','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico','candidate carbon skeleton':'Candidato de cadena carbonada','connected fragment':'Fragmento conectado'} as const)[kind] });
     };
     const acylOxygens = new Set<number>();
     for (const c of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
@@ -224,6 +255,115 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
       const ids = [...region], count = ringEdges.filter(([a, b]) => region.has(a) && region.has(b)).length - ids.length + 1;
       add("ringSystem", ids, `Connected ring system with ${count} independent cycle(s). Shared ring atoms belong to this same system; no parent numbering is assigned.`,undefined,`Sistema de anillos conectado con ${count} ciclo(s) independiente(s). Los átomos compartidos pertenecen al mismo sistema; no se asigna numeración parental.`);
     }
+    // Refine each OCL ring-edge component with chemical composition, aromaticity
+    // and its external connectivity. Simple cycles remain independently
+    // selectable; fused, spiro and bridged systems stay one connected region.
+    const ringComponents = result.components.filter(item => item.kind === "ringSystem")
+      .sort((left,right) => Math.min(...left.atomIds) - Math.min(...right.atomIds));
+    for (const [ringIndex, component] of ringComponents.entries()) {
+      const region = new Set(component.atomIds);
+      component.id = structuralComponentId(component.kind, component.atomIds);
+      const internalEdges = ringEdges.filter(([a,b]) => region.has(a) && region.has(b));
+      component.bondIds = internalEdges.map(([a,b]) => [a,b]);
+      const cycleCount = internalEdges.length - region.size + 1;
+      const simpleCycle = cycleCount === 1 && internalEdges.length === region.size
+        && [...region].every(id => internalEdges.filter(([a,b]) => a === id || b === id).length === 2);
+      const aromatic = simpleCycle && [...region].every(id => molecule.isAromaticAtom(atomIdToIndex.get(id)!));
+      const allCarbon = [...region].every(id => (atom(id).element ?? "C") === "C");
+      const attachments = graph.bonds.filter(([a,b]) => region.has(a) !== region.has(b)).map(([a,b,order=1]) => {
+        const ringAtom = region.has(a) ? a : b, outerAtom = region.has(a) ? b : a;
+        return { ringAtom, outerAtom, order, ringElement: atom(ringAtom).element ?? "C", outerElement: atom(outerAtom).element ?? "C" };
+      });
+      const directCarbon = attachments.some(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "C");
+      const directOxygen = attachments.some(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "O");
+      const etherO = attachments.find(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "O"
+        && neighbors(edge.outerAtom).some(next => next.id !== edge.ringAtom && next.order === 1 && (atom(next.id).element ?? "C") === "C"));
+      const benzene = aromatic && allCarbon && region.size === 6;
+      component.displayLabel = benzene
+        ? etherO ? "Benzene ring · attached through O" : directOxygen ? "Benzene ring · C–O attachment" : directCarbon ? "Benzene ring · direct C–C attachment" : "Benzene ring · six carbon atoms"
+        : simpleCycle ? `${aromatic ? "Aromatic" : "Nonaromatic"} ${region.size}-membered ring` : `Connected ring system · ${cycleCount} independent cycles`;
+      component.displayLabelEs = benzene
+        ? etherO ? "Anillo bencénico · unido por O" : directOxygen ? "Anillo bencénico · unión C–O" : directCarbon ? "Anillo bencénico · unión directa C–C" : "Anillo bencénico · seis carbonos"
+        : simpleCycle ? `${aromatic ? "Anillo aromático" : "Anillo no aromático"} de ${region.size} átomos` : `Sistema de anillos conectado · ${cycleCount} ciclos independientes`;
+      if (ringComponents.length > 1) {
+        component.displayLabel = `Ring ${ringIndex + 1}: ${component.displayLabel}`;
+        component.displayLabelEs = `Anillo ${ringIndex + 1}: ${component.displayLabelEs}`;
+      }
+      if (simpleCycle) {
+        const elements = [...new Set([...region].map(id => atom(id).element ?? "C"))].sort().join("/");
+        const linkTypes = [...new Set(attachments.map(edge => `${edge.ringElement}–${edge.outerElement}`))];
+        const connections = linkTypes.length ? linkTypes.join(", ") : "none";
+        component.evidence = `OpenChemLib ${aromatic ? "confirms aromaticity" : "does not classify this ring as aromatic"} for this ${region.size}-atom cycle containing ${elements}. External connections are ${connections}; they are excluded from the ring selection. No parent or name locants are assigned.`;
+        component.evidenceEs = `OpenChemLib ${aromatic ? "confirma la aromaticidad" : "no clasifica este anillo como aromático"} para este ciclo de ${region.size} átomos con ${elements}. Las conexiones externas son ${connections}; quedan fuera de la selección del anillo. No se asignan padre ni localizadores del nombre.`;
+      } else {
+        const aromaticSystem = [...region].every(id => molecule.isAromaticAtom(atomIdToIndex.get(id)!));
+        const elements = [...new Set([...region].map(id => atom(id).element ?? "C"))].sort().join("/");
+        component.evidence = `OpenChemLib identifies a ${aromaticSystem ? "fully aromatic" : "partly or nonaromatic"} connected ring system with ${cycleCount} independent cycles, ${region.size} atoms (${elements}), and shared ring atoms. It is one connected system, not ${cycleCount} separate ring systems; no parent numbering is assigned.`;
+        component.evidenceEs = `OpenChemLib identifica un sistema de anillos conectado ${aromaticSystem ? "completamente aromático" : "parcial o no aromático"}, con ${cycleCount} ciclos independientes, ${region.size} átomos (${elements}) y átomos de anillo compartidos. Es un solo sistema conectado, no ${cycleCount} sistemas separados; no se asigna numeración parental.`;
+      }
+      if (benzene && simpleCycle) {
+        const benzylicCarbons = [...region].flatMap(ringCarbon => neighbors(ringCarbon)
+          .filter(next => !region.has(next.id) && next.order === 1 && (atom(next.id).element ?? "C") === "C"
+            && neutral(next.id) && hydrogen(next.id) === 2 && neighbors(next.id).length === 2)
+          .map(next => next.id));
+        for (const carbon of [...new Set(benzylicCarbons)]) {
+          const ids = [...region,carbon], index = result.components.length;
+          add("benzyl fragment", ids,
+            "An aromatic carbon is directly bonded to a neutral methylene carbon (Ar–CH2–). This is a benzylic/benzyl structural topology; no correspondence to the displayed name or parent is asserted.", undefined,
+            "Un carbono aromático se enlaza directamente a un carbono metileno neutro (Ar–CH2–). Es una topología bencílica/bencilo; no se afirma correspondencia con el nombre mostrado ni con su padre.");
+          const prefix = ringComponents.length > 1 ? `Ring ${ringIndex + 1}: ` : "";
+          const prefixEs = ringComponents.length > 1 ? `Anillo ${ringIndex + 1}: ` : "";
+          result.components[index].displayLabel = `${prefix}Benzylic motif · ring + CH2`;
+          result.components[index].displayLabelEs = `${prefixEs}Motivo bencílico · anillo + CH2`;
+          result.components[index].id = structuralComponentId("benzyl fragment", ids);
+        }
+      }
+      if (!benzene || !etherO) continue;
+      const oxygenNeighbors = neighbors(etherO.outerAtom);
+      if (!neutral(etherO.outerAtom) || oxygenNeighbors.length !== 2 || oxygenNeighbors.some(next => next.order !== 1)
+        || !oxygenNeighbors.some(next => next.id === etherO.ringAtom)) continue;
+      const oxygen = etherO.outerAtom, externalCarbon = oxygenNeighbors.find(next => next.id !== etherO.ringAtom)!.id;
+      const terminalMethyl = neutral(externalCarbon) && neighbors(externalCarbon).length === 1 && hydrogen(externalCarbon) === 3;
+      const phenoxyIds = [...region, oxygen];
+      const phenoxyIndex = result.components.length;
+      add(terminalMethyl ? "methoxy fragment" : "phenoxy fragment", terminalMethyl ? [...phenoxyIds, externalCarbon] : phenoxyIds,
+        terminalMethyl
+          ? "The aromatic ring is bonded to an ether oxygen connected to a terminal methyl carbon. This is a graph-supported methoxy substituent topology; no name locant or parent is inferred."
+          : "The aromatic ring is bonded to an external ether oxygen that connects onward to a larger carbon fragment. This graph fragment has phenoxy connectivity; the displayed name remains unreconciled.", undefined,
+        terminalMethyl
+          ? "El anillo aromático se une a un oxígeno éter conectado a un carbono metilo terminal. El grafo demuestra la topología de un sustituyente metoxi; no se infiere localizador ni padre."
+          : "El anillo aromático se une a un oxígeno éter externo que conecta con un fragmento carbonado mayor. Este fragmento tiene conectividad fenoxi; el nombre mostrado sigue sin conciliarse.");
+      const ringPrefix = ringComponents.length > 1 ? `Ring ${ringIndex + 1}: ` : "";
+      const ringPrefixEs = ringComponents.length > 1 ? `Anillo ${ringIndex + 1}: ` : "";
+      result.components[phenoxyIndex].displayLabel = `${ringPrefix}${terminalMethyl ? "Methoxy group · ring + O + C" : "Phenoxy group · ring + O"}`;
+      result.components[phenoxyIndex].displayLabelEs = `${ringPrefixEs}${terminalMethyl ? "Grupo metoxi · anillo + O + C" : "Grupo fenoxi · anillo + O"}`;
+      const ringAdjacency = new Map([...region].map(id => [id, [] as number[]]));
+      for (const [a,b] of internalEdges) { ringAdjacency.get(a)!.push(b); ringAdjacency.get(b)!.push(a); }
+      for (const opposite of region) {
+        if (opposite === etherO.ringAtom) continue;
+        const distance = (() => {
+          const queue: [number,number][] = [[etherO.ringAtom,0]], seen = new Set<number>();
+          while (queue.length) { const [current,depth] = queue.shift()!; if (current === opposite) return depth;
+            if (seen.has(current)) continue; seen.add(current);
+            for (const next of ringAdjacency.get(current)!) queue.push([next,depth+1]); }
+          return -1;
+        })();
+        if (distance !== 3) continue;
+        const attachedCarbons = neighbors(opposite).filter(next => !region.has(next.id) && next.order === 1 && (atom(next.id).element ?? "C") === "C");
+        if (attachedCarbons.length !== 1) continue;
+        const cf3 = attachedCarbons[0].id, cf3Neighbors = neighbors(cf3);
+        const fluorines = cf3Neighbors.filter(next => next.order === 1 && atom(next.id).element === "F");
+        if (!neutral(cf3) || fluorines.length !== 3 || cf3Neighbors.length !== 4
+          || fluorines.some(fluorine => !neutral(fluorine.id))) continue;
+        const expandedIndex = result.components.length;
+        add("substituted phenoxy fragment", [...phenoxyIds, cf3, ...fluorines.map(next => next.id)],
+          "A CF3 substituent is attached to the ring carbon three ring bonds from the O attachment. The para relationship is established by cycle connectivity, without assigning name locants or a parent.", undefined,
+          "Un sustituyente CF3 está unido al carbono del anillo situado a tres enlaces cíclicos de la conexión con O. La conectividad demuestra la relación para, sin asignar localizadores del nombre ni padre.");
+        result.components[expandedIndex].displayLabel = `${ringPrefix}4-(Trifluoromethyl)phenoxy fragment · ring + O + CF3`;
+        result.components[expandedIndex].displayLabelEs = `${ringPrefixEs}Fragmento 4-(trifluorometil)fenoxi · anillo + O + CF3`;
+        break;
+      }
+    }
     const ringAtomIds = new Set(ringEdges.flatMap(([a, b]) => [a, b]));
     const analyzedPath = analyzedCandidate && analyzedCandidate.length >= 2 && new Set(analyzedCandidate).size === analyzedCandidate.length
       && analyzedCandidate.every(id => graph.atoms.some(atom => atom.id === id && (atom.element ?? "C") === "C" && !ringAtomIds.has(id)))
@@ -235,10 +375,10 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
       add("candidate carbon skeleton", carbonSkeleton,
         analyzedPath
           ? `The local structure analysis identifies a connected ${carbonSkeleton.length}-carbon path. It remains a candidate only; longest-parent priority and name locants are not inferred.`
-          : `The graph contains a unique longest acyclic carbon path of ${carbonSkeleton.length} atoms. This is a structural candidate only; no IUPAC parent priority or locants are assigned.`, undefined,
+          : `The graph contains a unique acyclic path of ${carbonSkeleton.length} carbon atoms, compatible with a ${carbonSkeleton.length}-carbon alkane skeleton. It remains a candidate only; parent selection and name locants require nomenclature reconciliation.`, undefined,
         analyzedPath
           ? `El análisis estructural local identifica un camino conectado de ${carbonSkeleton.length} carbonos. Sigue siendo candidato; no se infieren la prioridad del padre más largo ni localizadores del nombre.`
-          : `El grafo contiene un camino carbonado acíclico máximo y único de ${carbonSkeleton.length} átomos. Es solo un candidato estructural; no se asignan prioridad de padre IUPAC ni localizadores.`);
+          : `El grafo contiene un camino acíclico único de ${carbonSkeleton.length} átomos de carbono, compatible con un esqueleto alcano de ${carbonSkeleton.length} carbonos. Sigue siendo candidato; la selección del padre y sus localizadores requieren conciliación nomenclatural.`);
       const outside = new Set(graph.atoms.map(atom => atom.id).filter(id => !skeleton.has(id))), pendingOutside = new Set(outside);
       while (pendingOutside.size) {
         const start = pendingOutside.values().next().value!, region = new Set<number>(), queue = [start];
@@ -250,10 +390,105 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
         const attachments = graph.bonds.filter(([a, b]) => region.has(a) && skeleton.has(b) || region.has(b) && skeleton.has(a))
           .map(([a, b]) => [a, b] as [number, number]);
         if (!attachments.length) continue;
+        const attachmentCodes = [...new Set(attachments.map(([a,b]) => {
+          const left = region.has(a) ? a : b, right = region.has(a) ? b : a;
+          return `${atom(left).element ?? "C"}–${atom(right).element ?? "C"}`;
+        }))];
+        const aromaticRegion = result.components.find(component => component.kind === "ringSystem"
+          && component.atomIds.length === 6 && component.atomIds.every(id => region.has(id))
+          && component.atomIds.every(id => molecule.isAromaticAtom(atomIdToIndex.get(id)!)));
+        const hasCf3 = [...region].some(id => {
+          const ns = neighbors(id), fluorines = ns.filter(next => next.order === 1 && atom(next.id).element === "F" && neutral(next.id));
+          const framework = ns.filter(next => atom(next.id).element !== "F");
+          return (atom(id).element ?? "C") === "C" && neutral(id) && fluorines.length === 3 && ns.length === 4
+            && framework.length === 1 && framework[0].order === 1 && (atom(framework[0].id).element ?? "C") === "C";
+        });
+        const hasNitrogen = [...region].some(id => atom(id).element === "N");
+        const hasArylEther = [...region].some(id => atom(id).element === "O" && neutral(id)
+          && neighbors(id).length === 2 && neighbors(id).every(next => next.order === 1)
+          && neighbors(id).some(next => region.has(next.id) && molecule.isAromaticAtom(atomIdToIndex.get(next.id)!)));
+        const composition = [...new Set([...region].map(id => atom(id).element ?? "C"))].sort().join("/");
+        const connectionText = attachmentCodes.join(", ");
+        const fragmentLabel = aromaticRegion && hasCf3 && hasArylEther
+          ? { en: "CF3-substituted aryl ether branch", es: "Rama de éter arílico con CF3" }
+          : aromaticRegion && hasArylEther
+            ? { en: "Aryl ether branch", es: "Rama de éter arílico" }
+            : aromaticRegion && attachmentCodes.includes("C–C")
+              ? { en: "Aromatic branch · direct C–C link", es: "Rama aromática · unión directa C–C" }
+              : hasNitrogen && attachmentCodes.includes("N–C")
+                ? { en: "Nitrogen-containing branch · C–N link", es: "Rama nitrogenada · unión C–N" }
+                : [...region].every(id => atom(id).element === "C")
+                  ? { en: `Acyclic carbon fragment · ${region.size} atom(s)`, es: `Fragmento carbonado acíclico · ${region.size} átomo(s)` }
+                  : { en: `Unclassified connected fragment · ${composition}`, es: `Fragmento conectado no clasificado · ${composition}` };
+        const attachmentSummary = attachments.map(([a,b,order=1]) => {
+          const inner = region.has(a) ? a : b, outer = region.has(a) ? b : a;
+          return `${atom(inner).element ?? "C"}${order === 2 ? "=" : order === 3 ? "≡" : "–"}${atom(outer).element ?? "C"}`;
+        }).join(", ");
+        const fragmentIndex = result.components.length;
         add("connected fragment", [...region],
-          `This connected graph fragment lies outside the candidate carbon path and retains ${attachments.length} attachment bond(s). No substituent name or locant is inferred.`, undefined,
-          `Este fragmento conectado queda fuera del camino carbonado candidato y conserva ${attachments.length} enlace(s) de unión. No se infieren nombres de sustituyentes ni localizadores.`, attachments);
+          `${fragmentLabel.en}. It contains ${region.size} connected atoms (${composition}); the external connection to the candidate carbon path is ${attachmentSummary}. The selected region includes that boundary bond for context. It is structural evidence, not a verified substituent or name locant.`, undefined,
+          `${fragmentLabel.es}. Contiene ${region.size} átomos conectados (${composition}); la conexión externa con el camino carbonado candidato es ${attachmentSummary}. La selección incluye ese enlace de borde para mostrar la conexión. Es evidencia estructural, no un sustituyente ni localizador del nombre ya verificado.`, attachments);
+        result.components[fragmentIndex].displayLabel = fragmentLabel.en;
+        result.components[fragmentIndex].displayLabelEs = fragmentLabel.es;
+        result.components[fragmentIndex].id = structuralComponentId("connected fragment", [...region]);
+        for (const [a,b,order=1] of attachments) {
+          const inner = region.has(a) ? a : b, outer = region.has(a) ? b : a;
+          const left = atom(inner).element ?? "C", right = atom(outer).element ?? "C";
+          const connectionType = `${left}–${right}`;
+          const context = hasArylEther && connectionType === "O–C" ? "aryl ether" : aromaticRegion ? "aromatic branch" : hasNitrogen ? "nitrogen fragment" : "structural fragment";
+          const connectionIndex = result.components.length;
+          add("fragment connection", [inner,outer],
+            `A ${order === 1 ? "single" : order === 2 ? "double" : "triple"} ${connectionType} bond connects this ${context} to the candidate carbon path. Both endpoint atoms are shown; no name locant or parent relationship is inferred.`, undefined,
+            `Un enlace ${order === 1 ? "simple" : order === 2 ? "doble" : "triple"} ${connectionType} conecta este ${context === "aryl ether" ? "éter arílico" : context === "aromatic branch" ? "fragmento aromático" : context === "nitrogen fragment" ? "fragmento nitrogenado" : "fragmento estructural"} con el camino carbonado candidato. Se muestran ambos extremos; no se infiere localizador ni relación parental del nombre.`);
+          result.components[connectionIndex].displayLabel = `${connectionType} connection · ${context} to carbon path`;
+          result.components[connectionIndex].displayLabelEs = `Conexión ${connectionType} · ${context === "aryl ether" ? "éter arílico" : context === "aromatic branch" ? "rama aromática" : context === "nitrogen fragment" ? "rama nitrogenada" : "fragmento estructural"} con el camino carbonado`;
+          result.components[connectionIndex].id = structuralComponentId("fragment connection", [inner,outer]);
+        }
       }
+    }
+    // A neutral, tetra-valent carbon bearing exactly three single-bonded
+    // fluorines is a graph-proved CF3 group, wherever it occurs in the graph.
+    for (const carbon of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
+      const ns = neighbors(carbon.id), fluorines = ns.filter(next => next.order === 1 && atom(next.id).element === "F" && neutral(next.id));
+      const framework = ns.filter(next => atom(next.id).element !== "F");
+      if (fluorines.length !== 3 || ns.length !== 4 || framework.length !== 1
+        || framework[0].order !== 1 || (atom(framework[0].id).element ?? "C") !== "C") continue;
+      const ids = [carbon.id, ...fluorines.map(next => next.id)], index = result.components.length;
+      add("trifluoromethyl group", ids,
+        "A neutral carbon has three single bonds to neutral fluorine atoms and one remaining single bond to the molecular framework. This verifies a CF3 group by valence and connectivity.", undefined,
+        "Un carbono neutro tiene tres enlaces simples a átomos de flúor neutros y un enlace simple restante con el esqueleto molecular. La valencia y la conectividad confirman un grupo CF3.");
+      result.components[index].displayLabel = "Trifluoromethyl group · CF3";
+      result.components[index].displayLabelEs = "Grupo trifluorometil · CF3";
+      result.components[index].id = structuralComponentId("trifluoromethyl group", ids);
+    }
+    for (const oxygen of graph.atoms.filter(a => a.element === "O" && neutral(a.id) && !acylOxygens.has(a.id)
+      && !molecule.isRingAtom(atomIdToIndex.get(a.id)!))) {
+      const ns = neighbors(oxygen.id);
+      if (ns.length !== 2 || ns.some(next => next.order !== 1 || (atom(next.id).element ?? "C") !== "C")) continue;
+      const ids = [oxygen.id, ...ns.map(next => next.id)], index = result.components.length;
+      add("ether linkage", ids,
+        "A neutral, noncyclic oxygen forms two single bonds to carbon (C–O–C). This verifies an ether linkage; it is not an alcohol or an ester oxygen.", undefined,
+        "Un oxígeno neutro y no cíclico forma dos enlaces simples con carbono (C–O–C). Esto confirma un enlace éter; no es un alcohol ni un oxígeno de éster.");
+      result.components[index].displayLabel = "Ether linkage · C–O–C";
+      result.components[index].displayLabelEs = "Enlace éter · C–O–C";
+      result.components[index].id = structuralComponentId("ether linkage", ids);
+    }
+    // Classify only neutral, non-amide nitrogens whose single-bond carbon
+    // count and implicit hydrogens give a valid primary/secondary/tertiary amine.
+    for (const nitrogen of graph.atoms.filter(a => a.element === "N" && neutral(a.id))) {
+      const ns = neighbors(nitrogen.id), carbonNeighbors = ns.filter(next => next.order === 1 && (atom(next.id).element ?? "C") === "C");
+      if (ns.length !== carbonNeighbors.length || ![1,2,3].includes(carbonNeighbors.length)
+        || hydrogen(nitrogen.id) !== 3 - carbonNeighbors.length) continue;
+      const amideCarbon = carbonNeighbors.some(next => neighbors(next.id).some(other => other.order === 2 && atom(other.id).element === "O"));
+      if (amideCarbon) continue;
+      const environment = carbonNeighbors.length === 1 ? "primary" : carbonNeighbors.length === 2 ? "secondary" : "tertiary";
+      const ids = [nitrogen.id, ...carbonNeighbors.map(next => next.id)], index = result.components.length;
+      add("amine fragment", ids,
+        `A neutral nitrogen has ${carbonNeighbors.length} single-bonded carbon neighbours and ${hydrogen(nitrogen.id)} implicit hydrogen(s), supporting a ${environment} amine environment. The graph does not by itself verify a suffix or parent choice.`, undefined,
+        `Un nitrógeno neutro tiene ${carbonNeighbors.length} vecinos carbonados unidos por enlace simple y ${hydrogen(nitrogen.id)} hidrógeno(s) implícito(s), compatible con una amina ${environment === "primary" ? "primaria" : environment === "secondary" ? "secundaria" : "terciaria"}. El grafo no verifica por sí solo el sufijo ni la selección del padre.`);
+      result.components[index].displayLabel = `${environment[0].toUpperCase()}${environment.slice(1)} amine · N and ${carbonNeighbors.length} C substituents`;
+      result.components[index].displayLabelEs = `Amina ${environment === "primary" ? "primaria" : environment === "secondary" ? "secundaria" : "terciaria"} · N y ${carbonNeighbors.length} sustituyentes C`;
+      result.components[index].id = structuralComponentId("amine fragment", ids);
     }
     for(const c of graph.atoms.filter(a=>(a.element??"C")==="C" && neutral(a.id))) {
       const ns=neighbors(c.id);
@@ -280,6 +515,27 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
           :'The highest numbered parent chirality centre is not explicitly configured; no D/L or stereoparent name is assigned.',[[sugar.configurationalAtomId,sugar.configurationalPosition]],sugar.series?`El centro quiral parental de mayor locante, C${sugar.configurationalPosition}, establece la serie ${sugar.series} según el orden de ligandos de Fischer. ${sugar.family?`Los demás centros no anoméricos también verifican ${sugar.series}-${sugar.family.name}.`:'Los centros restantes no establecen un estereoparental admitido.'}`:'El centro quiral parental de mayor locante no tiene configuración explícita; no se asigna D/L ni un nombre estereoparental.');
       result.limitations.push('Carbohydrate structural recognition does not by itself prove a retained or external name. Missing stereocentres and generic names remain PARTIAL.');
     }
+    // Topological complements that are completely covered by specific graph
+    // motifs are redundant as generic controls. Their external links remain
+    // available as independent `fragment connection` selections.
+    const recognizedKinds = new Set<StructuralComponent["kind"]>([
+      "ringSystem", "phenoxy fragment", "substituted phenoxy fragment", "methoxy fragment",
+      "carboxylicAcid", "ester", "amide", "carbonyl", "hydroxyl", "N-bound methyl",
+      "amine fragment", "trifluoromethyl group", "benzyl fragment", "carbohydrate backbone", "ring oxygen",
+      "ether linkage",
+      "hemiacetal", "hemiketal", "anomeric centre",
+    ]);
+    const recognized = result.components.filter(component => recognizedKinds.has(component.kind));
+    result.components = result.components.filter(component => {
+      if (component.kind !== "connected fragment") return true;
+      const region = new Set(component.atomIds), covering = recognized.filter(item => item.atomIds.some(id => region.has(id)));
+      const coveredAtoms = new Set(covering.flatMap(item => item.atomIds));
+      if ([...region].some(id => !coveredAtoms.has(id))) return true;
+      const coveredBonds = new Set(covering.flatMap(item => item.bondIds.map(([a,b]) => key(a,b))));
+      const internalBonds = graph.bonds.filter(([a,b]) => region.has(a) && region.has(b));
+      return internalBonds.some(([a,b]) => !coveredBonds.has(key(a,b)));
+    });
+    assignStructuralContainment(result.components);
     result.status = result.components.length ? "PARTIAL" : "UNSUPPORTED";
     return result;
   } catch { return result; }

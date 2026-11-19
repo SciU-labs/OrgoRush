@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { deriveStructuralComponents, mapStructuralRegions, remapStructuralDerivation, structuralVisualTargets } from "../app/structural-derivation.ts";
+import { buildStructuralPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
 
 const graph = smiles => { const built = moleculeFromSmiles(smiles); assert.equal(built.ok, true, built.error); return built.molecule; };
 const sorted = xs => [...xs].sort((a, b) => a - b);
@@ -108,7 +109,7 @@ test("candidate carbon paths and connected fragments are graph-backed, acyclic, 
   const atomIds = new Set(molecule.atoms.map(atom => atom.id));
   const elementCounts = new Map(molecule.atoms.map(atom => [atom.id, atom.element ?? "C"]));
   const candidateIds = new Set(candidate.atomIds);
-  const retainedHeteroatoms = new Set(fragments.flatMap(fragment => fragment.atomIds)
+  const retainedHeteroatoms = new Set(model.components.flatMap(component => component.atomIds)
     .filter(id => elementCounts.get(id) !== "C"));
   const expectedHeteroatoms = molecule.atoms.filter(atom => (atom.element ?? "C") !== "C").map(atom => atom.id);
   assert.deepEqual(sorted([...retainedHeteroatoms]), sorted(expectedHeteroatoms),
@@ -132,7 +133,7 @@ test("candidate carbon paths and connected fragments are graph-backed, acyclic, 
       && molecule.bonds.some(([x, y]) => x === a && y === b || x === b && y === a)),
     "declared attachment edges join this fragment to the candidate path in the graph");
     assert.doesNotMatch(fragment.kind, /substituent/i, "structural fragments are not validated IUPAC substituents");
-    assert.match(fragment.evidence, /No substituent name or locant is inferred/i);
+    assert.match(fragment.evidence, /name locant|localizador del nombre/i);
   }
   assert.deepEqual(molecule, before, "partial structural recognition is read-only");
 
@@ -153,6 +154,137 @@ test("fused heterocycle import is separate from a partial caffeine derivation", 
   assert.equal(model.status,"PARTIAL");
   assert.equal(model.components.filter(c=>c.kind==='ringSystem').length,1);
   assert.equal(model.components.filter(c=>c.kind==='N-bound methyl').length,3);
+});
+
+test("ring reasoning distinguishes aromaticity, individual rings and external connections", () => {
+  const examples = [
+    ["benzene", "c1ccccc1", 1, /aromaticity/],
+    ["toluene", "Cc1ccccc1", 1, /C–C/],
+    ["phenol", "Oc1ccccc1", 1, /C–O/],
+    ["anisole", "COc1ccccc1", 1, /aromaticity/],
+    ["biphenyl", "c1ccccc1-c1ccccc1", 2, /C–C/],
+    ["fluoxetine", "CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F", 2, /O/],
+    ["cyclohexane", "C1CCCCC1", 1, /does not classify this ring as aromatic/],
+    ["pyridine", "c1ccncc1", 1, /C\/N/],
+    ["naphthalene", "c1ccc2ccccc2c1", 1, /2 independent cycles/],
+  ];
+  for (const [label, smiles, count, evidence] of examples) {
+    const molecule = graph(smiles), model = deriveStructuralComponents(molecule, `${label} name is not reconciled`);
+    const rings = model.components.filter(component => component.kind === "ringSystem");
+    assert.equal(rings.length, count, `${label}: ring systems are counted by ring-edge connectivity`);
+    for (const ring of rings) {
+      assert.ok(ring.atomIds.length > 0);
+      assert.ok(ring.bondIds.every(([a,b]) => ring.atomIds.includes(a) && ring.atomIds.includes(b)));
+      assert.match(ring.evidence, evidence, `${label}: chemistry is described from the graph`);
+    }
+    const priorities = ["es", "en"].map(language => buildStructuralPriorityReasoning({ derivation: model, language }));
+    for (const reasoning of priorities) {
+      const ringStep = reasoning.steps.find(step => step.componentKind === "ringSystem");
+      assert.ok(ringStep);
+      const controls = [ringStep.fragments, ...(ringStep.fragments?.additionalFragments ?? [])];
+      assert.equal(controls.length, count, `${label}: each ring has an independent control`);
+      assert.equal(new Set(controls.map(control => control.text)).size, count, `${label}: ring controls are distinguishable`);
+      const expectedRingAtoms = new Set(rings.flatMap(ring => ring.atomIds));
+      assert.deepEqual(new Set(ringStep.target.atomIds), expectedRingAtoms, `${label}: the step control selects all rings together`);
+      assert.deepEqual(new Set(ringStep.target.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))),
+        new Set(rings.flatMap(ring => ring.bondIds).map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))));
+      for (const control of controls) {
+        const target = ringStep.fragmentTargets[JSON.stringify([ringStep.number, control.kind, control.start ?? null, control.text, control.semanticId ?? null])];
+        assert.ok(target);
+        const component = model.components.find(item => item.id === control.semanticId);
+        assert.deepEqual(new Set(target.atomIds), new Set(component.atomIds));
+        assert.deepEqual(new Set(target.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))),
+          new Set(component.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))));
+      }
+    }
+  }
+});
+
+test("fluoxetine exposes independent ring, phenoxy and para-CF3 graph selections bilingually", () => {
+  const molecule = graph("CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F");
+  const derivation = deriveStructuralComponents(molecule, "N-methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine");
+  assert.equal(derivation.status, "PARTIAL");
+  const rings = derivation.components.filter(component => component.kind === "ringSystem");
+  const phenoxy = derivation.components.find(component => component.kind === "phenoxy fragment");
+  const substituted = derivation.components.find(component => component.kind === "substituted phenoxy fragment");
+  const trifluoromethyl = derivation.components.find(component => component.kind === "trifluoromethyl group");
+  const amine = derivation.components.find(component => component.kind === "amine fragment");
+  const candidate = derivation.components.find(component => component.kind === "candidate carbon skeleton");
+  const connections = derivation.components.filter(component => component.kind === "fragment connection");
+  assert.equal(rings.length, 2);
+  assert.ok(phenoxy);
+  assert.ok(substituted);
+  assert.ok(trifluoromethyl);
+  assert.ok(amine);
+  assert.equal(candidate.atomIds.length, 3);
+  assert.equal(connections.length, 3);
+  assert.equal(derivation.components.filter(component => component.kind === "connected fragment").length, 0,
+    "recognized rings, amine and CF3 motifs replace redundant generic regions");
+  assert.equal(phenoxy.atomIds.length, 7);
+  assert.equal(substituted.atomIds.length, 11);
+  assert.equal(trifluoromethyl.atomIds.length, 4);
+  assert.match(amine.displayLabel, /Secondary amine/);
+  assert.match(candidate.evidence, /3-carbon alkane skeleton/);
+  assert.match(phenoxy.evidence, /ether oxygen/);
+  assert.match(substituted.evidence, /para relationship/);
+  assert.ok(!derivation.name.preferred, "fragment labels do not verify or promote the complete name");
+  const visual = structuralVisualTargets(derivation);
+  for (const component of [...rings, phenoxy, substituted]) {
+    assert.deepEqual(new Set(visual[component.id].atomIds), new Set(component.atomIds));
+    assert.deepEqual(new Set(visual[component.id].bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))),
+      new Set(component.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))));
+  }
+  const expectedLabels = [
+    ["Ring 1: Benzene ring · direct C–C attachment", "Anillo 1: Anillo bencénico · unión directa C–C"],
+    ["Ring 2: Benzene ring · attached through O", "Anillo 2: Anillo bencénico · unido por O"],
+    ["Ring 2: Phenoxy group · ring + O", "Anillo 2: Grupo fenoxi · anillo + O"],
+    ["Ring 2: 4-(Trifluoromethyl)phenoxy fragment · ring + O + CF3", "Anillo 2: Fragmento 4-(trifluorometil)fenoxi · anillo + O + CF3"],
+  ];
+  for (const [language,index] of [["en",0],["es",1]]) {
+    const reasoning = buildStructuralPriorityReasoning({ derivation, language });
+    const ringStep = reasoning.steps.find(step => step.componentKind === "ringSystem");
+    const ringControls = [ringStep.fragments, ...(ringStep.fragments.additionalFragments ?? [])];
+    assert.deepEqual(ringControls.map(fragment => fragment.text).sort(), expectedLabels.slice(0,2).map(pair=>pair[index]).sort());
+    const phenoxyStep = reasoning.steps.find(step => step.componentKind === "phenoxy fragment");
+    const substitutedStep = reasoning.steps.find(step => step.componentKind === "substituted phenoxy fragment");
+    assert.equal(phenoxyStep.fragments.text, expectedLabels[2][index]);
+    assert.equal(substitutedStep.fragments.text, expectedLabels[3][index]);
+    assert.match(ringStep.explanation, /C–C|C-C/);
+    assert.match(ringStep.explanation, /O/);
+  }
+});
+
+test("composable motif recognition generalizes across functional and aromatic families", () => {
+  const examples = [
+    ["ethanol", "CCO", { hydroxyl: 1, "ether linkage": 0 }],
+    ["anisole", "COc1ccccc1", { ringSystem: 1, "methoxy fragment": 1, "ether linkage": 1 }],
+    ["phenethylamine", "NCCc1ccccc1", { ringSystem: 1, "amine fragment": 1, "benzyl fragment": 1 }],
+    ["biphenyl", "c1ccccc1-c1ccccc1", { ringSystem: 2 }],
+    ["diphenyl ether", "c1ccc(Oc2ccccc2)cc1", { ringSystem: 2, "phenoxy fragment": 2, "ether linkage": 1 }],
+    ["benzyl alcohol", "OCc1ccccc1", { ringSystem: 1, hydroxyl: 1, "benzyl fragment": 1 }],
+    ["dopamine", "NCCc1ccc(O)c(O)c1", { ringSystem: 1, hydroxyl: 2, "amine fragment": 1 }],
+    ["2-hydroxybutanedioic acid", "O=C(O)C(O)CC(=O)O", { carboxylicAcid: 2, hydroxyl: 1 }],
+    ["carvone", "CC1=CC(=O)C(=CC1)C(C)C", { ringSystem: 1, carbonyl: 1 }],
+    ["ibuprofen", "CC(C)Cc1ccc(cc1)C(C)C(=O)O", { ringSystem: 1, carboxylicAcid: 1 }],
+    ["fluoxetine", "CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F", { ringSystem: 2, "phenoxy fragment": 1,
+      "substituted phenoxy fragment": 1, "trifluoromethyl group": 1, "amine fragment": 1, "ether linkage": 1,
+      "fragment connection": 3, "candidate carbon skeleton": 1 }],
+  ];
+  for (const [label, smiles, expected] of examples) {
+    const molecule = graph(smiles), model = deriveStructuralComponents(molecule, `${label}: unverified external name`);
+    for (const [kind,count] of Object.entries(expected)) assert.equal(model.components.filter(c=>c.kind===kind).length,count,`${label}: ${kind}`);
+    assert.equal(model.status, "PARTIAL", `${label}: structural motifs do not promote a complete name`);
+    for (const component of model.components) {
+      assert.ok(component.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)), `${label}: atom provenance`);
+      assert.ok(component.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x===a&&y===b || x===b&&y===a)), `${label}: bond provenance`);
+    }
+  }
+  const negative = deriveStructuralComponents(graph("COC(F)(F)F"), "trifluoromethoxy test");
+  assert.equal(negative.components.filter(c=>c.kind==="trifluoromethyl group").length,0,
+    "a CF3 carbon attached through oxygen is not mislabeled as a carbon-bound trifluoromethyl group");
+  const amide = deriveStructuralComponents(graph("CC(=O)N"), "acetamide test");
+  assert.equal(amide.components.filter(c=>c.kind==="amine fragment").length,0,
+    "an amide nitrogen is not classified as an amine");
 });
 test("steroid ring system stays intact, with explicit stereo and no artificial parent", () => {
   const molecule = graph("C[C@]12CC[C@H]3[C@@H]([C@@H]1CC[C@@H]2O)CCC4=CC(=O)CC[C@]34C");

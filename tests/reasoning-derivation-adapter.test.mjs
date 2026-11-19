@@ -11,6 +11,7 @@ import { buildReasoningVisualReferences, reasoningFragmentId } from "../app/reas
 import { functionalNameEvidence } from "../app/reasoning-functional-groups.ts";
 import { buildValidatedVisualNumbering } from "../app/visual-numbering.ts";
 import { resolveDerivationConsistency } from "../app/derivation-consistency.ts";
+import { parentStructureSelectionEvidence } from "../app/reasoning-parent-selection.ts";
 
 const imported = smiles => {
   const result = moleculeFromSmiles(smiles);
@@ -332,6 +333,26 @@ test("all ibuprofen and paracetamol controls name and target the region they des
       assert.ok(englishLocators.some(fragment => fragment.label === "2-methylpropyl substituent C2"));
       assert.equal(presentValidatedSystematicName(derivation, "es").name, "ácido 2-[4-(2-metilpropil)fenil]propanoico");
       assert.equal(presentValidatedSystematicName(derivation, "en").name, fixture.name);
+    } else {
+      assert.match(model.steps.find(step => step.title === "Grupo funcional principal").explanation,
+        /amida tiene prioridad.*hidroxilo.*hidroxi-.*prefijo.*sufijo/);
+      assert.match(english.steps.find(step => step.title === "Principal functional group").explanation,
+        /amide has priority over the hydroxyl group.*hydroxy-.*prefix.*suffix/);
+      const spanishSubstituentSteps = model.steps.filter(step => ["Sustituyentes y localizadores", "Detalle de los sustituyentes"].includes(step.title));
+      const englishSubstituentSteps = english.steps.filter(step => ["Substituents and locants", "Further substituent details"].includes(step.title));
+      assert.ok(spanishSubstituentSteps.length && englishSubstituentSteps.length);
+      const spanishSubstituentText = spanishSubstituentSteps.map(step => step.explanation).join(" ");
+      const englishSubstituentText = englishSubstituentSteps.map(step => step.explanation).join(" ");
+      assert.doesNotMatch(spanishSubstituentText, /El grupo seleccionado|región progenitora verificada|hydroxy/i);
+      assert.match(spanishSubstituentText, /fenilo se une al nitrógeno de la amida/);
+      assert.match(spanishSubstituentText, /C1.*C4/);
+      assert.match(spanishSubstituentText, /prefijo «hidroxi».*–OH.*C4/);
+      assert.doesNotMatch(englishSubstituentText, /The selected group|verified parent region/i);
+      assert.match(englishSubstituentText, /phenyl substituent attaches through the amide nitrogen/);
+      assert.match(englishSubstituentText, /hydroxy specifies the –OH group at ring position 4/i);
+      assert.ok(spanishSubstituentSteps.flatMap(step => [step.fragments, ...(step.fragments?.additionalFragments ?? [])])
+        .filter(Boolean).every(fragment => !fragment.explanation),
+      "the step contains the shared component explanations once instead of repeating them below every control");
     }
   }
 });
@@ -366,11 +387,12 @@ test("non-FULL structures retain a unique candidate carbon path and clickable at
   const structural = deriveStructuralComponents(graph, sourceName);
   assert.equal(structural.status, "PARTIAL");
   const backbone = structural.components.find(component => component.kind === "candidate carbon skeleton");
-  const attached = structural.components.find(component => component.kind === "connected fragment");
+  const attached = structural.components.find(component => component.kind === "fragment connection");
   assert.equal(backbone.atomIds.length, 8);
-  assert.ok(attached?.bondIds.some(([a, b]) => backbone.atomIds.includes(a) !== backbone.atomIds.includes(b)));
+  assert.ok(attached?.bondIds.length);
+  assert.ok(attached.atomIds.some(id => backbone.atomIds.includes(id)) && attached.atomIds.some(id => !backbone.atomIds.includes(id)));
   assert.deepEqual(backbone.numbering, undefined, "a structural candidate receives no IUPAC locants");
-  assert.match(backbone.evidenceEs, /solo un candidato estructural/);
+  assert.match(backbone.evidenceEs, /Sigue siendo candidato/);
   const priorities = buildStructuralPriorityReasoning({ derivation: structural, language: "es" });
   assert.ok(priorities.steps.findIndex(step => step.componentKind === "candidate carbon skeleton")
     > priorities.steps.findIndex(step => step.componentKind === "amide"));
@@ -387,6 +409,43 @@ test("non-FULL structures retain a unique candidate carbon path and clickable at
   const remappedBackbone = remapped.components.find(component => component.kind === "candidate carbon skeleton");
   assert.equal(remappedBackbone.atomIds.length, backbone.atomIds.length);
   assert.deepEqual([...remappedBackbone.atomIds].sort((a, b) => a - b), [...backbone.atomIds].map(id => idMap.get(id)).sort((a, b) => a - b));
+});
+
+test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with graph-backed controls", () => {
+  const molecule = imported("CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F");
+  const analysis = page.analyzeMolecule(molecule);
+  const derivation = deriveStructuralComponents(molecule, analysis.name);
+  assert.equal(derivation.status, "PARTIAL");
+  const phenoxy = derivation.components.find(component => component.kind === "phenoxy fragment");
+  const substitutedPhenoxy = derivation.components.find(component => component.kind === "substituted phenoxy fragment");
+  const trifluoromethyl = derivation.components.find(component => component.kind === "trifluoromethyl group");
+  const substitutedRing = derivation.components.find(component => component.kind === "ringSystem"
+    && component.atomIds.every(id => phenoxy.atomIds.includes(id)));
+  assert.ok(phenoxy && substitutedPhenoxy && trifluoromethyl && substitutedRing);
+  assert.equal(phenoxy.parentComponentId, substitutedPhenoxy.id);
+  assert.equal(trifluoromethyl.parentComponentId, substitutedPhenoxy.id);
+  assert.equal(substitutedRing.parentComponentId, phenoxy.id);
+  assert.ok(trifluoromethyl.atomIds.length === 4 && trifluoromethyl.atomIds.every(id => substitutedPhenoxy.atomIds.includes(id)));
+  const parentSelection = parentStructureSelectionEvidence(molecule, analysis, "es");
+  const reasoning = buildStructuralPriorityReasoning({ derivation, language: "es", parentSelection });
+  const englishStructural = buildStructuralPriorityReasoning({ derivation, language: "en" });
+  const spanishCf3 = reasoning.steps.find(step => step.componentKind === "trifluoromethyl group");
+  const englishCf3 = englishStructural.steps.find(step => step.componentKind === "trifluoromethyl group");
+  assert.match(spanishCf3.explanation, /forma parte de .*4-\(trifluorometil\)fenoxi/);
+  assert.match(englishCf3.explanation, /contained part of .*4-\(trifluoromethyl\)phenoxy/i);
+  assert.match(spanishCf3.explanation, /no un nombre o localizador verificado/);
+  assert.match(englishCf3.explanation, /not a verified name or locant/);
+  const parentStep = reasoning.steps.find(step => step.parentSelectionEvidence);
+  assert.ok(parentStep);
+  assert.equal(parentStep.parentSelectionEvidence.level, "rule-supported");
+  assert.equal(parentStep.parentSelectionEvidence.reconciliation, "unverified");
+  const selectedParent = parentStep.parentSelectionEvidence.candidates.find(candidate => candidate.evidenceKind === "parent"
+    && candidate.status === "selected-by-rule");
+  assert.ok(selectedParent);
+  assert.equal(selectedParent.atomIds.length, 3, "the selected amine-bound parent candidate is the three-carbon path");
+  assert.ok(selectedParent.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)));
+  assert.ok(selectedParent.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a)));
+  assert.equal(analysis.name, reasoning.name, "parent evidence does not replace or rewrite the local name");
 });
 
 test("TNT remains on the original local priority path when no FULL production applies", () => {
