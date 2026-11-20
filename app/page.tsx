@@ -169,7 +169,7 @@ import {
   type MoleculeVisualExtent,
 } from "./molecule-visual-bounds";
 import { findOrderedSimpleMonocycle } from "./simple-cycle";
-import { getAutoPlacedCarbonPosition, getRegularAromaticRadial, placeAttachmentTemplate } from "./manual-layout";
+import { getAutoPlacedCarbonPosition, getRegularRingRadial, placeAttachmentTemplate } from "./manual-layout";
 import {
   canonicalManualDisplayDirection,
   hasManualDisplayDirection,
@@ -10715,7 +10715,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     }
     const target = getAutoPlacedCarbonPosition(molecule, selectedAtom.id, { x: dx, y: dy });
     let manualDirection = manualDisplayDirectionFromVector(dx, dy);
-    const radial = typeof getRegularAromaticRadial === "function" ? getRegularAromaticRadial(molecule, selectedAtom.id) : null;
+    const radial = typeof getRegularRingRadial === "function" ? getRegularRingRadial(molecule, selectedAtom.id) : null;
     const deltaX = target.x - selectedAtom.x, deltaY = target.y - selectedAtom.y;
     const deltaLength = Math.hypot(deltaX, deltaY);
     if (radial && deltaLength > 1e-8 && (deltaX * radial.x + deltaY * radial.y) / deltaLength > 0.999) {

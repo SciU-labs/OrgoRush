@@ -174,23 +174,26 @@ function carbonNeighbors(molecule: ManualLayoutMolecule, atomId: number) {
   });
 }
 
-/** Radial exit only for an isolated, approximately regular aromatic hexagon.
+/** Radial exit for an isolated, approximately regular supported carbocycle.
  * Existing vertices are never moved. Irregular/fused rings keep their prior
  * placement policy, as do candidates obstructed by an existing atom or bond. */
-export function getRegularAromaticRadial(molecule: ManualLayoutMolecule, selectedId: number): Point | null {
+export function getRegularRingRadial(molecule: ManualLayoutMolecule, selectedId: number): Point | null {
   const component = getRingComponent(molecule, selectedId);
   if (component.rings.size !== 1) return null;
   const ring = [...component.rings][0];
-  if (ring.kind !== 'aromatic' || ring.atomIds.length !== 6 || new Set(ring.atomIds).size !== 6) return null;
+  const size = ring.atomIds.length;
+  const supportedRing = ring.kind === "aromatic" ? size === 6
+    : ring.kind === "cycloalkane" && size >= 3 && size <= 8;
+  if (!supportedRing || new Set(ring.atomIds).size !== size) return null;
   const byId = new Map(molecule.atoms.map(atom => [atom.id, atom]));
   const vertices = ring.atomIds.map(id => byId.get(id));
   if (vertices.some(vertex => !vertex)) return null;
   const points = vertices as ManualLayoutAtom[];
   if (ring.atomIds.some((id,index) => !molecule.bonds.some(([a,b]) =>
-    a === id && b === ring.atomIds[(index+1)%6] || b === id && a === ring.atomIds[(index+1)%6]))) return null;
-  const center = points.reduce((sum,p) => ({x:sum.x+p.x/6,y:sum.y+p.y/6}),{x:0,y:0});
+    a === id && b === ring.atomIds[(index+1)%size] || b === id && a === ring.atomIds[(index+1)%size]))) return null;
+  const center = points.reduce((sum,p) => ({x:sum.x+p.x/size,y:sum.y+p.y/size}),{x:0,y:0});
   const radii = points.map(p => Math.hypot(p.x-center.x,p.y-center.y));
-  const edges = points.map((p,i) => Math.hypot(p.x-points[(i+1)%6].x,p.y-points[(i+1)%6].y));
+  const edges = points.map((p,i) => Math.hypot(p.x-points[(i+1)%size].x,p.y-points[(i+1)%size].y));
   const nearUniform = (values: number[]) => {
     const mean = values.reduce((sum,value)=>sum+value,0)/values.length;
     return mean > 1e-8 && values.every(value => Math.abs(value-mean)/mean < 0.18);
@@ -213,7 +216,7 @@ export function getAutoPlacedCarbonPosition(
   const selected = molecule.atoms.find((atom) => atom.id === selectedId);
   if (!selected) return requestedDirection;
   if (molecule.rings?.some((ring) => ring.atomIds.includes(selectedId))) {
-    const radial = getRegularAromaticRadial(molecule, selectedId);
+    const radial = getRegularRingRadial(molecule, selectedId);
     if (radial) {
       const length = Math.hypot(requestedDirection.x, requestedDirection.y) || 1;
       const candidate = {x:selected.x+radial.x*length,y:selected.y+radial.y*length};

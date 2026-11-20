@@ -138,3 +138,62 @@ test("ring substituents start the zigzag for every arrow direction", () => {
     assert.ok(firstSide * secondSide < 0);
   }
 });
+
+test("regular supported cycles use the same radial branch geometry as benzene", () => {
+  const makeCycle = (size, kind) => {
+    const atoms = Array.from({ length: size }, (_, index) => {
+      const angle = -Math.PI / 2 + index * Math.PI * 2 / size;
+      return { id: index + 1, x: Math.cos(angle) * 1.35, y: Math.sin(angle) * 1.65 };
+    });
+    return {
+      atoms,
+      bonds: atoms.map((atom, index) => [atom.id, atoms[(index + 1) % size].id, kind === "aromatic" && index % 2 === 0 ? 2 : 1]),
+      rings: [{ kind, atomIds: atoms.map(({ id }) => id) }],
+    };
+  };
+  const measure = (molecule, parentId, vector) => {
+    const parent = molecule.atoms.find(({ id }) => id === parentId);
+    const point = getAutoPlacedCarbonPosition(molecule, parentId, vector);
+    const center = molecule.rings[0].atomIds.reduce((sum, id) => {
+      const atom = molecule.atoms.find(({ id: atomId }) => atomId === id);
+      return { x: sum.x + atom.x / molecule.rings[0].atomIds.length, y: sum.y + atom.y / molecule.rings[0].atomIds.length };
+    }, { x: 0, y: 0 });
+    const radial = { x: (parent.x - center.x) * 130, y: (parent.y - center.y) * 106 };
+    const branch = { x: (point.x - parent.x) * 130, y: (point.y - parent.y) * 106 };
+    const cosine = (radial.x * branch.x + radial.y * branch.y)
+      / (Math.hypot(radial.x, radial.y) * Math.hypot(branch.x, branch.y));
+    return { point, length: Math.hypot(point.x - parent.x, point.y - parent.y), cosine };
+  };
+
+  const benzene = makeCycle(6, "aromatic");
+  for (const size of [3, 4, 5, 6, 7, 8]) {
+    const cycle = makeCycle(size, "cycloalkane");
+    const parents = size === 6 ? [1, 2, 3, 4, 5, 6] : [1, Math.ceil(size / 2)];
+    const measurements = [benzene, cycle].map((molecule) => parents.map((parentId) => measure(molecule, parentId, { x: 0, y: -1 })));
+    measurements.forEach((links) => {
+      links.forEach(({ cosine, length }) => {
+        assert.ok(cosine > 0.995, "the displayed bond follows the cycle's radial direction");
+        assert.ok(Math.abs(length - 1) < 1e-9, "external bonds use the same editor bond length");
+      });
+    });
+    if (size === 6) {
+      assert.deepEqual(measurements[0], measurements[1], "cyclohexane and benzene use equivalent exits at C1 and C2");
+    }
+  }
+
+  const cyclohexane = makeCycle(6, "cycloalkane");
+  const before = cyclohexane.atoms.map(({ id, x, y }) => ({ id, x, y }));
+  const first = measure(cyclohexane, 1, { x: 0, y: -1 });
+  cyclohexane.atoms.push({ id: 7, ...first.point });
+  cyclohexane.bonds.push([1, 7, 1]);
+  const second = measure(cyclohexane, 2, { x: 0, y: -1 });
+  cyclohexane.atoms.push({ id: 8, ...second.point });
+  cyclohexane.bonds.push([2, 8, 1]);
+  assert.deepEqual(cyclohexane.atoms.slice(0, 6), before, "adding branches does not deform ring vertices");
+  assert.ok(Math.abs(first.length - second.length) < 1e-9, "C1 and C2 branch bonds remain equal");
+
+  const geminal = getAutoPlacedCarbonPosition(cyclohexane, 1, { x: 0, y: -1 });
+  assert.ok(Number.isFinite(geminal.x) && Number.isFinite(geminal.y), "a second substituent at one ring atom remains placeable");
+  assert.ok(Math.hypot(geminal.x - cyclohexane.atoms[6].x, geminal.y - cyclohexane.atoms[6].y) > 0.4,
+    "a geminal substituent keeps a distinct non-overlapping direction");
+});
