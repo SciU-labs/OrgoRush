@@ -54,7 +54,7 @@ test('B7: malformed, wrongly numbered and outside-family names do not gain proof
     const source=rows.find(r=>r.id==='B61-I20'), parsed=moleculeFromSmiles(source.smiles);assert.ok(parsed.ok);
     assert.equal(reconcileSystematicName(parsed.molecule,name),null,name);
   }
-  assert.equal(parseAdditionalSystematicFamily('1,3,5-trimethyl-2,4-dinitrobenzene'),null);
+  assert.ok(parseAdditionalSystematicFamily('1,3,5-trimethyl-2,4-dinitrobenzene'));
   for(const name of ['2,4,6-trifluorobenzonitrile','2-fluoro-4-chlorobenzamide',
     'N-methyl-4-chlorobenzamide','2,2-difluorobenzonitrile']) {
     const graph=moleculeFromSmiles(rows.find(r=>r.id==='B61-I06').smiles);assert.ok(graph.ok);
@@ -111,7 +111,9 @@ test('B7: the real generated profiles supply complete localized evidence',async(
     const boundaryProfiles=displayedProfiles(boundary.molecule,analyzeBoth(boundary.molecule,chemistry.engine),chemistry.engine);
     for(const language of ['es','en']) {
       const name=boundaryProfiles[`2013-${language}`].name;assert.ok(name);
-      assert.equal(resolveDerivationConsistency({molecule:boundary.molecule,activeName:name,activeProfile:'current',language}).status,'unverified');
+      const selected=resolveDerivationConsistency({molecule:boundary.molecule,activeName:name,activeProfile:'current',language});
+      assert.equal(selected.status,'verified',`${language}: supported polysubstituted benzene has a complete proof`);
+      assert.equal(selected.derivation?.status,'FULL');
     }
     const ibuprofen=fixture('b50-pubchem-rings.json').find(r=>r.cid===3672);
     const imported=moleculeFromSmiles(ibuprofen.smiles);assert.ok(imported.ok);

@@ -48,15 +48,17 @@ for (const item of cases) {
       assert.equal(result.derivation.name, name);
       assert.equal(result.derivation.preferred, false, 'FULL does not claim PIN status');
       assert.equal(result.derivation.principalGroup, 'none', 'substituted benzene has no suffix group');
-      assert.deepEqual(result.derivation.components.map(component => component.id).sort(), ['parent', 'prefix-0', 'prefix-1']);
+      assert.deepEqual(result.derivation.components.map(component => component.id).sort(), [
+        'parent', 'prefix-0', 'prefix-0-occurrence-0', 'prefix-1', 'prefix-1-occurrence-0',
+      ]);
 
       const parent = result.derivation.components.find(component => component.id === 'parent');
       assert.equal(parent.atomIds.length, 6);
       assert.deepEqual(parent.numbering.map(([, locant]) => locant), [1, 2, 3, 4, 5, 6]);
       assert.ok(parent.atomIds.every(id => graph.atoms.find(atom => atom.id === id)?.element === 'C'));
       assert.equal(parent.bondIds.length, 6, 'the parent contains exactly its six ring bonds');
-      const prefixes = result.derivation.components.filter(component => component.id.startsWith('prefix-'));
-      assert.deepEqual(prefixes.map(component => component.locant), item.locants[language]);
+      const prefixes = result.derivation.components.filter(component => component.role === 'prefix');
+      assert.deepEqual(prefixes.map(component => component.numbering[0]?.[1]), item.locants[language]);
       assert.ok(prefixes.every(component => component.parentId === 'parent' && component.numbering.length === 1));
       for (const component of prefixes) {
         const term = /^\d+-(.+)$/.exec(component.text)?.[1];
@@ -70,7 +72,7 @@ for (const item of cases) {
         assert.equal(component.bondIds.length, internalBonds + 1, `${component.text} includes only its internal and ring-attachment bonds`);
         const [ringAtom, branchAtom] = component.bondIds.find(([a, b]) =>
           parent.atomIds.includes(a) !== parent.atomIds.includes(b)) ?? [];
-        assert.equal(parent.numbering.find(([id]) => id === ringAtom)?.[1], component.locant, `${component.text} attaches at its written ring locant`);
+        assert.equal(parent.numbering.find(([id]) => id === ringAtom)?.[1], component.numbering[0]?.[1], `${component.text} attaches at its written ring locant`);
         assert.ok(component.atomIds.includes(branchAtom));
       }
       assert.ok(result.derivation.components.every(component =>
@@ -142,9 +144,11 @@ test('B5.4 rejects wrong positions, identities, language order, connectivity and
   assert.equal(reconcileSystematicName(changedAromaticOrder, '1-methoxy-4-methylbenzene'), null);
 });
 
-test('B5.4 does not admit unrequested disubstituted benzene families', () => {
+test('B5.4 accepts supported disubstituted benzene prefixes and rejects malformed multiplicity', () => {
   for (const name of [
-    '1,4-dimethylbenzene', '1-methyl-4-methylbenzene', '1-chloro-4-nitrobenzene',
-    '1-methoxy-4-methoxybenzene', '1-fluoro-4-iodobenzene', '4-methylbenzene',
-  ]) assert.equal(parseAdditionalSystematicFamily(name), null, name);
+    '1,4-dimethylbenzene', '1-chloro-4-nitrobenzene', '1-fluoro-4-iodobenzene',
+    '1,3,5-trimethyl-2,4-dinitrobenzene',
+  ]) assert.ok(parseAdditionalSystematicFamily(name), name);
+  for (const name of ['1-methyl-4-methylbenzene', '1-methoxy-4-methoxybenzene', '4-methylbenzene'])
+    assert.equal(parseAdditionalSystematicFamily(name), null, name);
 });

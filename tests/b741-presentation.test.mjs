@@ -23,7 +23,8 @@ test('a locally generated Spanish alternative replaces an unlocalized external n
     if(fragment.start!==undefined)assert.equal(es.slice(fragment.start,fragment.start+fragment.text.length),fragment.text);
   }}
   assert.equal(selectVerifiedLocalizedPresentation(model,p.molecule,'en',es).name,en);
-  assert.equal(selectVerifiedLocalizedPresentation(model,p.molecule,'es','3-metilbenceno').name,en);
+  assert.deepEqual(selectVerifiedLocalizedPresentation(model,p.molecule,'es','3-metilbenceno'),
+   selectVerifiedLocalizedPresentation(model,p.molecule,'es',null), 'an invalid external alternative cannot replace the internally verified presentation');
  }
 });
 
