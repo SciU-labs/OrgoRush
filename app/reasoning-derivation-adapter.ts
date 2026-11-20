@@ -1,7 +1,7 @@
 import type { AppLanguage } from "./i18n.ts";
 import { buildValidatedVisualNumbering } from "./visual-numbering.ts";
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
-import type { StructuralComponent, StructuralDerivation } from "./structural-derivation.ts";
+import { analyzeStructuralEquivalence, type StructuralComponent, type StructuralDerivation } from "./structural-derivation.ts";
 import type { AlphabeticalOrderPresentation } from "./reasoning-alphabetical-order.ts";
 import { describeAlphabeticalOrder } from "./reasoning-alphabetical-order.ts";
 import { resolveAcyloxyRegions } from "./reasoning-acyloxy-regions.ts";
@@ -46,6 +46,38 @@ function unionTarget(number: string, targets: readonly ReasoningVisualTarget[]):
   const locants = new Map<string, readonly [number, number | string]>();
   for (const target of targets) for (const item of target.locants) locants.set(`${item[0]}:${item[1]}`, item);
   return { stepNumber: number, atomIds, bondIds: [...bonds.values()], locants: [...locants.values()] };
+}
+
+function verifiedExternalMultiplier(component: NameComponent, derivation: ValidatedNameDerivation) {
+  if (component.externalMultiplier) return component.externalMultiplier;
+  if (!component.equivalenceGroup) return "";
+  const count = derivation.components.filter(item => item.equivalenceGroup === component.equivalenceGroup
+    && (item.parentId ?? "parent") === (component.parentId ?? "parent")).length;
+  const expected: Record<number,string> = {2:"di",3:"tri",4:"tetra",5:"penta",6:"hexa",7:"hepta",8:"octa",9:"nona",10:"deca"};
+  const multiplier = expected[count];
+  if (!multiplier) return "";
+  const name = component.text.replace(/^(?:(?:N(?:,N)*|[0-9]+(?:,[0-9]+)*)-)/, "");
+  return name.startsWith(multiplier) ? multiplier : "";
+}
+
+function peerNameForOrder(component: NameComponent, derivation: ValidatedNameDerivation) {
+  const locant = /^(?:(?:N(?:,N)*|[0-9]+(?:,[0-9]+)*)-)/.exec(component.text)?.[0] ?? "";
+  const cited = component.text.slice(locant.length);
+  const multiplier = verifiedExternalMultiplier(component, derivation);
+  const name = multiplier ? cited.slice(multiplier.length).replace(/^-/, "") : cited;
+  // Locants and grouping marks are not initial letters; every alphabetic part
+  // of the complete term stays in the key, including internal di-/tri- terms.
+  const comparisonName = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^A-Za-z]/g, "").toLocaleLowerCase();
+  return { cited, name, multiplier, comparisonName };
+}
+
+function compareLocantEvidence(left: readonly number[], right: readonly number[]) {
+  for (let index=0;index<Math.max(left.length,right.length);index+=1) {
+    const difference=(left[index]??Number.MAX_SAFE_INTEGER)-(right[index]??Number.MAX_SAFE_INTEGER);
+    if(difference)return difference;
+  }
+  return 0;
 }
 
 function localTerm(text: string, language: AppLanguage) {
@@ -188,6 +220,8 @@ function makeStep(input: {
     if (parent) addLocants(parent, language === "en" ? "Parent locant" : "Localizador del padre");
     if (aryl) addLocants(aryl, language === "en" ? "Phenyl ring locant" : "Localizador del anillo fenilo");
   }
+  for (const component of components) if (component.parentId && component.writtenLocants?.length)
+    addLocants(component, language==="en" ? "Internal locant" : "Localizador interno");
   // Literal internal locants select branch atoms only. Never merge these into
   // parent numbering or the canvas's global map.
   for (const component of components) if (component.attachmentScope === "amide-nitrogen" && component.locant === "N") {
@@ -253,6 +287,7 @@ export function buildValidatedPriorityReasoning(input: {
   derivation: ValidatedNameDerivation; graph: GeneratedMolecule; language: AppLanguage;
   alphabeticalOrder?: AlphabeticalOrderPresentation;
   activeName?: string;
+  structuralEvidence?: StructuralDerivation;
 }): PriorityReasoningModel {
   const { derivation, graph, language } = input, byId = new Map(derivation.components.map(component => [component.id, component]));
   const parent = byId.get("parent") ?? derivation.components.find(component => component.role === "parent");
@@ -310,6 +345,9 @@ export function buildValidatedPriorityReasoning(input: {
       explanation: (language === "en" ? `${groupNames.en[derivation.principalGroup]} is the principal functional group and is expressed by the validated suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante el sufijo validado.`)+detail
         +priorityDetail
+        +(derivation.evidence?.construction === "acyclic-aryl-amine"
+          ? " " + localizedComponentExplanation(suffix,language)
+          : "")
         +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix] });
   }
   if (derivation.principalGroup === "none") {
@@ -357,6 +395,9 @@ export function buildValidatedPriorityReasoning(input: {
   const numberExplanation=aromaticEvidence
     ? language==="en" ? `Ring C1 bears the characteristic group${writtenPositions.length?`; the written substituent positions are ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Equivalent orientations remain; only unambiguous atom locants are shown.":"The supported locants determine the displayed orientation."}`
       : `C1 del anillo lleva el grupo característico${writtenPositions.length?`; las posiciones escritas de los sustituyentes son ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Hay orientaciones equivalentes; solo se muestran los localizadores inequívocos por átomo.":"Los localizadores respaldados determinan la orientación mostrada."}`
+    : derivation.evidence?.construction === "acyclic-aryl-amine"
+      ? language === "en" ? `The amine fixes parent C1. Carbon substituents occur at ${writtenPositions.filter(p=>p!==1).map(p=>"C"+p).join(", ") || "C1"}. Ring locants start again at the attachment carbon.`
+        : `La amina fija C1 del padre. Los sustituyentes sobre carbono se sitúan en ${writtenPositions.filter(p=>p!==1).map(p=>"C"+p).join(", ") || "C1"}. Los localizadores del anillo se cuentan desde su carbono de unión.`
     : language === "en" ? roots.length || descendants.length
       ? "Parent, ring, and nested-substituent locants belong to their own numbering systems."
       : "Locants follow the numbering of the verified parent structure."
@@ -390,15 +431,15 @@ export function buildValidatedPriorityReasoning(input: {
         return language==="en" ? `${label} is the alcohol-derived group attached to the ester oxygen.`
           : `${label} es el grupo derivado del alcohol unido al oxígeno del éster.`;
       const nestedParent = component.parentId ? byId.get(component.parentId) : undefined;
-      if (nestedParent && typeof component.locant === "number") {
+      if (nestedParent && nestedParent.id !== parent?.id && typeof component.locant === "number") {
         const parentLabel = componentLabel(nestedParent, language, derivation);
         return language === "en"
           ? `${label} is a nested ${component.role === "prefix" ? "prefix" : "substituent"} within «${parentLabel}» at internal position ${component.locant}; this locant belongs to the nested numbering scope.`
           : `${label} es un ${component.role === "prefix" ? "prefijo" : "sustituyente"} anidado en «${parentLabel}» en la posición interna ${component.locant}; este localizador pertenece a su propio sistema de numeración.`;
       }
       if (component.locant === "N" && component.role === "substituent")
-        return language === "en" ? `${label} attaches through the amide nitrogen and is introduced by N-.`
-          : `${label} se une mediante el nitrógeno de la amida y se introduce con N-.`;
+        return language === "en" ? `${label} attaches through the ${derivation.principalGroup === "amide" ? "amide" : derivation.principalGroup === "amine" ? "amine" : "principal group"} nitrogen and is introduced by N-.`
+          : `${label} se une mediante el nitrógeno ${derivation.principalGroup === "amide" ? "de la amida" : derivation.principalGroup === "amine" ? "de la amina" : "del grupo principal"} y se introduce con N-.`;
       const locants=positions.join(", ");
       if(positions.length>1 && attachmentCount===positions.length)return language==="en" ? `${label} represents ${positions.length} groups at parent positions ${locants}; the multiplier counts separate attachments.`
         : `${label} representa ${positions.length} grupos en las posiciones ${locants} del progenitor; el multiplicador cuenta uniones separadas.`;
@@ -412,7 +453,21 @@ export function buildValidatedPriorityReasoning(input: {
     paragraphs.forEach((paragraph,index)=>stages.push({
       title:index===0 ? (language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores")
         : (language === "en" ? "Further substituent details" : "Detalle de los sustituyentes"),
-      explanation:paragraph.explanation, components:index===0?substituents:paragraph.components }));
+      explanation:paragraph.explanation, components:index===0 && !["acyclic-aryl-amine","substituted-alkanamide"].includes(derivation.evidence?.construction??"")?substituents:paragraph.components }));
+  }
+  const construction=derivation.evidence?.construction;
+  const hierarchical=construction==="acyclic-aryl-amine" || construction==="substituted-alkanamide" || construction==="aminoalkyl-benzenediol";
+  const compoundRoots=roots.filter(root=>descendants.some(child=>child.parentId===root.id));
+  if (hierarchical && compoundRoots.length) {
+    const explanation=compoundRoots.map(root => {
+      const brackets=root.text.includes("["), parentheses=root.text.includes("(");
+      if (brackets) return language==="en" ? `In ${root.text}, parentheses enclose the inner substituent and brackets enclose the substituted aromatic group. The leading locant belongs to the parent.`
+        : `En ${root.text}, los paréntesis delimitan el sustituyente interno y los corchetes el grupo aromático sustituido. El primer localizador pertenece al padre.`;
+      if (parentheses) return language==="en" ? `In ${root.text}, the parentheses keep the complete substituent together at its indicated attachment.`
+        : `En ${root.text}, los paréntesis mantienen unido el sustituyente completo en el punto de unión indicado.`;
+      return root.text;
+    }).join(" ");
+    stages.push({title:language==="en"?"Composition of substituents":"Composición de sustituyentes", explanation, components:compoundRoots});
   }
   // Compare siblings attached to the same parent/ring. A nested group is not
   // another independent substituent unless another sibling requires ordering.
@@ -428,14 +483,24 @@ export function buildValidatedPriorityReasoning(input: {
   // methylvinyl) in an active methylethenyl proof after localization.
   const directPeers=alphabeticalPeers.filter(component=>component.parentId==="parent"
     && (derivation.evidence || component.language===language)).sort((a,b)=>a.start-b.start);
-  const alphabeticalOrder=directPeers.length>1?describeAlphabeticalOrder(directPeers.map(component=>{
+  const legacyAlphabeticalOrder=directPeers.length>1?describeAlphabeticalOrder(directPeers.map(component=>{
     const term=derivation.evidence?component.text:component.text.replace(/^[\d,]+-/,"");
     const multiplied=/^(di|tri)(.+)$/.exec(term);
     const name=multiplied?multiplied[2]:term;
     return {sourceName:term,name,comparisonName:name.replace(/[\d,()-]/g,""),
       locants:component.numbering.flatMap(([,n])=>typeof n==="number"?[n]:[]),
       citedPrefix:term,multiplier:multiplied?.[1]??"",complex:/^\d/.test(name)};
-  }),language):input.alphabeticalOrder;
+  }),language):undefined;
+  const orderedPeers=directPeers.map(component=>({component,...peerNameForOrder(component,derivation)}))
+    .sort((a,b)=>a.comparisonName.localeCompare(b.comparisonName,language)
+      || compareLocantEvidence(a.component.internalNumbering?.map(([,locant])=>locant)??[],
+        b.component.internalNumbering?.map(([,locant])=>locant)??[]));
+  const alphabeticalOrder=orderedPeers.length>1?describeAlphabeticalOrder(orderedPeers.map(({component,cited,name,multiplier,comparisonName})=>({
+    sourceName:cited,name,comparisonName,
+    locants:component.numbering.flatMap(([,n])=>typeof n==="number"?[n]:[]),
+    internalLocants:component.internalNumbering?.map(([,locant])=>locant)??[],
+    citedPrefix:cited,multiplier,complex:/[()[\]{}-]/.test(name),
+  })),language):input.alphabeticalOrder??legacyAlphabeticalOrder;
   if (alphabeticalOrder && [...peerCounts.values()].some(count => count > 1))
     stages.push({ title: language === "en" ? "Alphabetical order" : "Orden alfabético",
       explanation: alphabeticalOrder.paragraphs.join(" "), components: substituents, alphabeticalOrder });
@@ -456,6 +521,11 @@ export function buildValidatedPriorityReasoning(input: {
       +esterOrder : `Se combinan los localizadores y prefijos verificados con el progenitor${suffix?" y su sufijo característico":"; no se utiliza sufijo principal"} para obtener ${derivation.name}.`+esterOrder,
     components:[]});
   const steps = stages.map((stage, index) => makeStep({ ...stage, number: String(index + 1).padStart(2, "0"), derivation, language, graph }));
+  if (hierarchical && input.structuralEvidence) {
+    const composition=steps.find(step=>step.title===(language==="en"?"Composition of substituents":"Composición de sustituyentes"))
+      ?? steps.find(step=>step.title===(language==="en"?"Substituents and locants":"Sustituyentes y localizadores"));
+    if(composition) retainStructuralControls(composition,steps,input.structuralEvidence,language,graph);
+  }
   const finalStep=steps.find(step=>step.title===(language==="en"?"Constructing the name":"Construcción del nombre"));
   if(finalStep){const target=unionTarget(finalStep.number,Object.values(safeValidatedTargets(graph,derivation)));
     if(target)finalStep.target={...target,locants:[]};}
@@ -469,6 +539,36 @@ export function buildValidatedPriorityReasoning(input: {
   const parentStep = parent ? resultSteps.find(step => step.componentIds.includes(parent.id)) : undefined;
   if (parentStep && parentEvidence) parentStep.parentSelectionEvidence = parentEvidence;
   return { name: derivation.name, steps: resultSteps };
+}
+
+/** Retain additional chemical views available before reconciliation. Never
+ * attach a name locant or an individual identity to a swappable occurrence. */
+function retainStructuralControls(step:PriorityReasoningStep, allSteps:PriorityReasoningStep[], evidence:StructuralDerivation,
+  language:AppLanguage, graph:GeneratedMolecule) {
+  const signature=(atoms:readonly number[],bonds:readonly (readonly [number,number])[])=>JSON.stringify([
+    [...atoms].sort((a,b)=>a-b),bonds.map(([a,b])=>[Math.min(a,b),Math.max(a,b)].join(":")).sort()]);
+  const seen=new Set(allSteps.flatMap(s=>Object.values(s.fragmentTargets).map(t=>signature(t.atomIds,t.bondIds))));
+  const structural=buildStructuralPriorityReasoning({derivation:evidence,language});
+  const symmetry=analyzeStructuralEquivalence(graph,graph);
+  if(!symmetry)return;
+  const retained:ReasoningNameFragment[]=[];
+  for(const region of structural.steps) {
+    if(!region.fragments || region.componentKind==="candidate carbon skeleton")continue;
+    for(const fragment of [region.fragments,...region.fragments.additionalFragments??[]]) {
+      const original=region.fragmentTargets[reasoningFragmentId(region.number,fragment)];
+      if(!original)continue;
+      const key=signature(original.atomIds,original.bondIds);
+      if(seen.has(key) || symmetry.mappings.some(map=>signature(original.atomIds.map(id=>map.get(id)!),
+        original.bondIds.map(([a,b])=>[map.get(a)!,map.get(b)!]))!==key))continue;
+      seen.add(key);
+      const part={...fragment,additionalFragments:undefined};
+      const id=reasoningFragmentId(step.number,part);
+      step.fragmentTargets[id]={...original,fragmentId:id,stepNumber:step.number,locants:[]};
+      retained.push(part);
+    }
+  }
+  if(step.fragments && retained.length)step.fragments={...step.fragments,
+    additionalFragments:[...step.fragments.additionalFragments??[],...retained]};
 }
 
 function addAcyloxyReasoning(steps: PriorityReasoningStep[], derivation: ValidatedNameDerivation,
@@ -699,7 +799,7 @@ function structuralFragmentLabel(component: StructuralComponent, language: AppLa
 /** Structural-only evidence is deliberately presented as candidates and
  * connected regions; this adapter never turns it into name locants or parents. */
 export function buildStructuralPriorityReasoning(input: { derivation: StructuralDerivation; language: AppLanguage;
-  parentSelection?: ParentSelectionEvidence }): PriorityReasoningModel {
+  parentSelection?: ParentSelectionEvidence; graph?:GeneratedMolecule }): PriorityReasoningModel {
   const { derivation, language } = input;
   const ranks: Record<StructuralComponent["kind"], number> = {
     carboxylicAcid: 0, ester: 0, amide: 0, carbonyl: 0, hydroxyl: 0,
@@ -708,24 +808,52 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
     "phenoxy fragment": 3, "methoxy fragment": 3, "substituted phenoxy fragment": 4,
     "fragment connection": 3, "amine fragment": 1, "trifluoromethyl group": 1, "ether linkage": 1, "benzyl fragment": 3,
     "N-bound methyl": 4, "ring oxygen": 4, hemiacetal: 4, hemiketal: 4,
+    "aromatic substituent fragment": 3, "aromatic ring locant": 4,
     "configurational reference": 5, "anomeric centre": 5, stereo: 5,
   };
   const kinds = [...new Set(derivation.components.map(component => component.kind))]
     .sort((a, b) => ranks[a] - ranks[b] || a.localeCompare(b));
   const steps = kinds.map((kind, index): PriorityReasoningStep => {
     const number = String(index + 1).padStart(2, "0"), group = derivation.components.filter(component => component.kind === kind);
-    const fragments = group.map(component => {
-      const label = structuralFragmentLabel(component, language);
-      return { text: label, label: language === "en" ? `Select ${label}` : `Seleccionar ${label}`,
+    const labelFor = (component: StructuralComponent) => {
+      const base = structuralFragmentLabel(component, language);
+      const peers = group.filter(item => structuralFragmentLabel(item, language) === base);
+      if (peers.length < 2) return base;
+      const sameSize = peers.filter(item => item.atomIds.length === component.atomIds.length);
+      const size = language === "en" ? `${component.atomIds.length} atoms` : `${component.atomIds.length} átomos`;
+      const occurrence = sameSize.length > 1 ? ` · ${sameSize.indexOf(component) + 1}` : "";
+      return `${base} · ${size}${occurrence}`;
+    };
+    const fragments = group.flatMap(component => {
+      const label = labelFor(component);
+      const whole = { text: label, label: language === "en" ? `Select ${label}` : `Seleccionar ${label}`,
         kind: "substituent" as const, semanticId: component.id, atomIds: component.atomIds, bondIds: component.bondIds };
+      const nested = (component.nestedSelections ?? []).map(selection => {
+        const text = language === "en" ? selection.label : selection.labelEs;
+        return { text, label: language === "en" ? `Select ${text}` : `Seleccionar ${text}`,
+          kind: "substituent" as const, semanticId: `${component.id}:${selection.id}`,
+          atomIds: selection.atomIds, bondIds: selection.bondIds };
+      });
+      return [whole, ...nested];
     });
     const fragmentTargets: Record<string, ReasoningVisualTarget> = {};
-    group.forEach((component, fragmentIndex) => {
-      const fragment = fragments[fragmentIndex], fragmentId = reasoningFragmentId(number, fragment);
-      fragmentTargets[fragmentId] = { stepNumber: number, fragmentId, atomIds: component.atomIds,
-        bondIds: component.bondIds, locants: component.numbering ?? [] };
+    group.forEach(component => {
+      const fragmentsForComponent = [
+        { semanticId: component.id, atomIds: component.atomIds, bondIds: component.bondIds, locants: component.numbering ?? [] },
+        ...(component.nestedSelections ?? []).map(selection => ({ semanticId: `${component.id}:${selection.id}`,
+          atomIds: selection.atomIds, bondIds: selection.bondIds, locants: selection.locants })),
+      ];
+      for (const target of fragmentsForComponent) {
+        const fragment = fragments.find(item => item.semanticId === target.semanticId);
+        if (!fragment) continue;
+        const fragmentId = reasoningFragmentId(number, fragment);
+        fragmentTargets[fragmentId] = { stepNumber: number, fragmentId, atomIds: target.atomIds,
+          bondIds: target.bondIds, locants: target.locants };
+      }
     });
     const componentText = (component: StructuralComponent) => {
+      if (component.nomenclature) return language === "en"
+        ? component.nomenclature.explanation : component.nomenclature.explanationEs;
       const evidence = language === "en" ? component.evidence : component.evidenceEs ?? component.evidence;
       const container = component.parentComponentId
         ? derivation.components.find(candidate => candidate.id === component.parentComponentId) : undefined;
@@ -736,7 +864,7 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
         : ` Este elemento, ${childName}, forma parte de ${parentName}; esto describe la composición del grafo, no un nombre o localizador verificado.`);
     };
     const explanation = group.length === 1 ? componentText(group[0]) : ["ringSystem", "connected fragment", "fragment connection"].includes(kind)
-      ? `${language === "en" ? "Each control below describes an independently identified graph region; these labels do not establish name locants. " : "Cada control describe una región del grafo identificada por separado; estas etiquetas no establecen localizadores del nombre. "}${group.map(component => `${structuralFragmentLabel(component, language)}: ${componentText(component)}`).join(" ")}`
+      ? `${language === "en" ? "Each control below describes an independently identified graph region; these labels do not establish name locants. " : "Cada control describe una región del grafo identificada por separado; estas etiquetas no establecen localizadores del nombre. "}${group.map(component => `${labelFor(component)}: ${componentText(component)}`).join(" ")}`
       : language === "en"
         ? `${group.length} graph regions of this kind are independently identified; no parent locants are inferred.`
         : `Se identifican ${group.length} regiones de este tipo en el grafo; no se infieren localizadores parentales.`;
@@ -770,5 +898,94 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
         parentSelectionEvidence: evidence, source: "structural" });
     }
   }
+  const composition = input.graph ? buildAmineArylComposition(derivation, input.parentSelection, language,
+    input.graph, String(steps.length+1).padStart(2,"0")) : undefined;
+  if (composition) steps.push(composition);
   return { name: derivation.name.text, steps };
+}
+
+function buildAmineArylComposition(derivation:StructuralDerivation, selection:ParentSelectionEvidence|undefined,
+  language:AppLanguage,graph:GeneratedMolecule,number:string):PriorityReasoningStep|undefined {
+  if(selection?.level!=="rule-supported"||selection.reconciliation!=="unverified"
+    ||selection.amineParentSelection?.outcome!=="acyclic-parent"||selection.amineParentSelection.rule!=="P-44.3.2")return;
+  const selected=selection.candidates.find(candidate=>candidate.status==="selected-by-rule"
+    &&candidate.evidenceKind==="parent"&&candidate.regionKind==="acyclic-chain"
+    &&candidate.nomenclaturalAdmissibility==="candidate-unverified"&&candidate.ruleReference==="P-44.3.2");
+  if(!selected)return;
+  const sameRegion=(left:readonly number[],right:readonly number[])=>left.length===right.length&&left.every(id=>right.includes(id));
+  const chain=derivation.components.find(component=>component.kind==="candidate carbon skeleton"&&sameRegion(component.atomIds,selected.atomIds));
+  const methyl=derivation.components.find(component=>component.kind==="N-bound methyl"
+    &&component.atomIds.includes(selection.amineParentSelection!.nitrogenAtomId));
+  if(!chain||!methyl||!methyl.atomIds.includes(selection.amineParentSelection.nitrogenAtomId))return;
+  const graphAtoms=new Set(chain.atomIds), nitrogen=selection.amineParentSelection.nitrogenAtomId;
+  const pathBonds=chain.bondIds.filter(([a,b])=>graphAtoms.has(a)&&graphAtoms.has(b));
+  if(pathBonds.length!==chain.atomIds.length-1||chain.atomIds.some(id=>graph.atoms.find(atom=>atom.id===id)?.element!=="C"))return;
+  const neighbors=(id:number)=>pathBonds.flatMap(([a,b])=>a===id?[b]:b===id?[a]:[]);
+  const nLinks=graph.bonds.filter(([a,b,order=1])=>order===1&&(
+    a===nitrogen&&graphAtoms.has(b)||b===nitrogen&&graphAtoms.has(a)))
+    .map(([a,b])=>a===nitrogen?b:a);
+  if(nLinks.length!==1)return;
+  const chainOrder=[nLinks[0]],visited=new Set(chainOrder);let previous=nitrogen,current=nLinks[0];
+  while(chainOrder.length<chain.atomIds.length){
+    const next=neighbors(current).filter(id=>id!==previous&&!visited.has(id));
+    if(next.length!==1)return;
+    previous=current;current=next[0];visited.add(current);chainOrder.push(current);
+  }
+  if(neighbors(chainOrder.at(-1)!).length!==1||visited.size!==chain.atomIds.length)return;
+  const locals=derivation.components.filter(component=>component.nomenclature
+    &&["phenyl","phenoxy"].includes(component.nomenclature.connection)
+    &&component.nomenclature.parentRule==="P-44.3.2"&&component.nomenclature.parentAttachmentLocant!==undefined);
+  const attachmentFor=(component:StructuralComponent)=>component.nomenclature!.attachmentBondIds
+    .flatMap(([a,b])=>[a,b]).find(id=>graphAtoms.has(id));
+  const verifiedLocals=locals.filter(component=>{
+    const atom=attachmentFor(component),locant=atom===undefined?-1:chainOrder.indexOf(atom)+1;
+    return locant===component.nomenclature!.parentAttachmentLocant;
+  });
+  const phenyl=verifiedLocals.find(component=>component.nomenclature?.connection==="phenyl"&&component.nomenclature.name==="phenyl");
+  const phenoxy=verifiedLocals.find(component=>component.nomenclature?.connection==="phenoxy"
+    &&component.nomenclature.substituents.some(sub=>sub.name==="trifluoromethyl"));
+  if(!phenyl||!phenoxy||phenyl.nomenclature!.parentAttachmentLocant!==phenoxy.nomenclature!.parentAttachmentLocant)return;
+  const ringLocant=derivation.components.find(component=>component.kind==="aromatic ring locant"
+    &&component.atomIds.some(id=>phenoxy.atomIds.includes(id)));
+  if(!ringLocant)return;
+  const parentLocant=phenyl.nomenclature!.parentAttachmentLocant!,parentAtom=chainOrder[parentLocant-1];
+  if(parentAtom===undefined)return;
+  const orderGroups=[
+    {name:language==="en"?"methyl":"metil",cited:language==="en"?"N-methyl":"N-metil",locants:[] as number[]},
+    {name:language==="en"?"phenyl":"fenil",cited:phenyl.nomenclature![language==="en"?"name":"nameEs"],locants:[parentLocant]},
+    {name:language==="en"?"trifluoromethylphenoxy":"trifluorometilfenoxi",
+      cited:phenoxy.nomenclature![language==="en"?"name":"nameEs"],locants:[parentLocant]},
+  ].sort((a,b)=>a.name.localeCompare(b.name,language));
+  const alphabeticalOrder=describeAlphabeticalOrder(orderGroups.map(group=>({sourceName:group.cited,name:group.name,
+    comparisonName:group.name.replace(/[^A-Za-z]/g,""),locants:group.locants,citedPrefix:group.cited,multiplier:"",
+    complex:group.cited.includes("(")})),language);
+  const en=language==="en";
+  const chainLabel=en?"Rule-supported propan-1-amine parent candidate":"Candidato parental de propan-1-amina respaldado por reglas";
+  const phenylLabel=en?`${parentLocant}-phenyl substituent`:`Sustituyente ${parentLocant}-fenil`;
+  const phenoxyName=phenoxy.nomenclature![en?"name":"nameEs"];
+  const phenoxyLabel=en?`${parentLocant}-[${phenoxyName}] substituent`:`Sustituyente ${parentLocant}-[${phenoxyName}]`;
+  const internalLocant=ringLocant.numbering?.[0]?.[1];
+  const explanation=en
+    ? `The N-bound three-carbon parent candidate starts at C1 where it attaches to the amine nitrogen (P-44.3.2; locant 1 under P-14.4). The graph places N-methyl on N and both verified aromatic substituents at parent C${parentLocant}. Their cited terms are ordered by their complete names: methyl, phenyl, then ${phenoxyName}; the initial ring locant and punctuation do not replace the internal name when alphabetizing (P-14.5.2). C${parentLocant} marks attachment of each complete substituent to the parent; ring C${internalLocant} is a separate internal locant for trifluoromethyl. The parentheses in ${phenoxyName} enclose its internal trifluoromethyl prefix, and square brackets enclose the complete phenoxy substituent because its name already contains parentheses (P-16.5.2.4). Braces are not needed at this nesting depth (P-16.5.3). This composes graph-supported name parts only; the complete active name and PIN remain unreconciled, so the derivation stays PARTIAL.`
+    : `El candidato parental de tres carbonos unido a N comienza en C1, donde se enlaza con el nitrógeno de la amina (P-44.3.2; localizador 1 según P-14.4). El grafo sitúa N-metil sobre N y ambos sustituyentes aromáticos verificados en C${parentLocant} del padre. Sus términos se ordenan por sus nombres completos: fenil, metil y después ${phenoxyName}; el localizador inicial del anillo y los signos de agrupación no sustituyen el nombre interno al alfabetizar (P-14.5.2). C${parentLocant} marca la unión de cada sustituyente completo al padre; C${internalLocant} del anillo es un localizador interno distinto para trifluorometil. Los paréntesis de ${phenoxyName} encierran el prefijo interno trifluorometil, y los corchetes delimitan el sustituyente fenoxi completo porque su nombre ya contiene paréntesis (P-16.5.2.4). No se requieren llaves a esta profundidad (P-16.5.3). Solo se componen partes respaldadas por el grafo; el nombre activo completo y el PIN siguen sin conciliarse, por lo que la derivación permanece PARTIAL.`;
+  const fragments=[
+    {text:chainLabel,semanticId:"composition:parent",kind:"parent" as const,atomIds:chain.atomIds,bondIds:pathBonds},
+    {text:en?"N-methyl":"N-metil",semanticId:"composition:n-methyl",kind:"substituent" as const,atomIds:methyl.atomIds,bondIds:methyl.bondIds},
+    {text:phenylLabel,semanticId:"composition:phenyl",kind:"substituent" as const,atomIds:phenyl.atomIds,bondIds:phenyl.bondIds},
+    {text:phenoxyLabel,semanticId:"composition:phenoxy",kind:"substituent" as const,atomIds:phenoxy.atomIds,bondIds:phenoxy.bondIds},
+    {text:en?`Parent locant C${parentLocant}`:`Localizador parental C${parentLocant}`,semanticId:"composition:parent-locant",
+      kind:"numbering" as const,atomIds:[parentAtom],bondIds:[]},
+    {text:en?`Ring locant C${internalLocant} · trifluoromethyl`:`Localizador del anillo C${internalLocant} · trifluorometil`,
+      semanticId:"composition:ring-locant",kind:"numbering" as const,atomIds:ringLocant.atomIds,bondIds:ringLocant.bondIds},
+  ].map(fragment=>({...fragment,label:en?`Select ${fragment.text}`:`Seleccionar ${fragment.text}`}));
+  const fragmentTargets=Object.fromEntries(fragments.map(fragment=>{
+    const fragmentId=reasoningFragmentId(number,fragment);
+    return [fragmentId,{stepNumber:number,fragmentId,atomIds:fragment.atomIds,bondIds:fragment.bondIds,
+      locants:fragment.semanticId==="composition:parent-locant"?[[parentAtom,parentLocant] as [number,number]]:[]}];
+  }));
+  const components=[chain,methyl,phenyl,phenoxy,ringLocant];
+  return {number,title:en?"Constructing the name":"Construcción del nombre",explanation,
+    target:unionTarget(number,fragments.map(fragment=>fragmentTargets[reasoningFragmentId(number,fragment)])),
+    fragments:fragments[0]?{...fragments[0],additionalFragments:fragments.slice(1)}:undefined,fragmentTargets,
+    componentIds:components.map(component=>component.id),source:"structural",alphabeticalOrder};
 }

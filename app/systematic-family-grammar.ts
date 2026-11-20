@@ -2,8 +2,12 @@ import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { analyzeStructuralEquivalence } from "./structural-derivation.ts";
 import { parsePurineFamily } from "./purine-derivation.ts";
-import { proveMonocycleNumbering, isLowestFreeRingNumbering, blueBookRule } from "./compositional-name-model.ts";
+import { compareLocantSequences, proveMonocycleNumbering, isLowestFreeRingNumbering, blueBookRule } from "./compositional-name-model.ts";
 import type { NameComponent, CompositionalFamilyGraph, NameRuleEvidence } from "./compositional-name-model.ts";
+import { parseAcyclicArylAmine } from "./acyclic-aryl-amine-grammar.ts";
+
+import { parseSubstitutedAlkanamide } from "./substituted-alkanamide.ts";
+import { proveArylAmine } from "./aryl-amine-proof.ts";
 
 type FamilyGraph = CompositionalFamilyGraph;
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
@@ -75,6 +79,12 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
 }
 
 export function parseAdditionalSystematicFamily(name: string): FamilyGraph | null {
+  const amine = parseAcyclicArylAmine(name);
+  if (amine) return proveArylAmine(amine);
+  if (/(?:amide|amida)$/.test(name) && /amino|N,N-|N-.*-N-|N-(?:methyl|ethyl|propyl|metil|etil|propil)/.test(name)) {
+    const alkanamide=parseSubstitutedAlkanamide(name);
+    if (alkanamide) return alkanamide;
+  }
   const purine=parsePurineFamily(name);if(purine)return purine;
   // Finite grammar for disubstituted benzene without a characteristic suffix.
   // Names are parsed in their written language; each term is independently
@@ -200,6 +210,45 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
   let evidence: NameRuleEvidence | undefined;
   let allowEquivalentNumbering = false;
   let equivalentParentPaths: number[][] | undefined;
+  // A diol on a single benzene ring outranks the amine on an aminoalkyl
+  // branch. Compare the suffix positions before the prefix over all 12
+  // numberings; expose atom-specific locants only for a unique winner.
+  const diol=/^([1-6])-\(([1-9])-amino(ethyl|propyl|butyl|etil|propil|butil)\)(benzene|benceno)-([1-6]),([1-6])-diol$/.exec(name);
+  if (diol) {
+    const language=diol[4]==="benzene"?"en":"es", position=Number(diol[1]);
+    const locants=[Number(diol[5]),Number(diol[6])], selected=[...locants,position];
+    if(locants[0]>=locants[1] || locants.includes(position))return null;
+    for(let origin=0;origin<6;origin++)for(const direction of [-1,1]) {
+      if(!origin && direction===1)continue;
+      const project=(n:number)=>((origin+direction*(n-1)+6)%6)+1;
+      const alternative=[...locants.map(project).sort((a,b)=>a-b),project(position)];
+      if(compareLocantSequences(selected,alternative)>=0)return null;
+    }
+    const text=diol[2]+"-amino"+diol[3],term=legacyPrefixTerm(text);
+    if(!term || term[language]!==text || term.kind!=="amine")return null;
+    const parent=ring(),sites=locants.map(p=>parent[p-1]),oxygen=sites.map(site=>{const o=atom("O");edge(site,o);return o;});
+    const ids=term.elements.map(el=>atom(el as "C"|"N")), anchor=parent[position-1];
+    term.bonds.forEach(([a,b])=>edge(ids[a],ids[b]));edge(anchor,ids[0]);
+    const n=ids.find(id=>graph.atoms[id-1].element==="N")!, internalPos=Number(diol[2]),root=diol[0].indexOf(diol[4]);
+    add("parent","parent",name.slice(root),root,parent,
+      "The ring bears both hydroxyl groups. Their suffix fixes the lowest pair of locants before the aminoalkyl position is compared.",
+      {explanationEs:"El anillo lleva ambos hidroxilos. Su sufijo recibe el par de localizadores más bajo antes de comparar la posición del aminoalquilo.",
+        numbering:parent.map((id,i)=>[id,i+1]),writtenLocants:[{start:0,end:1,locant:position,atomId:anchor},
+          ...locants.map((locant,i)=>({start:root+diol[4].length+1+2*i,end:root+diol[4].length+2+2*i,locant,atomId:sites[i]}))]});
+    add("suffix","suffix","diol",name.length-4,[...sites,...oxygen],"Two ring hydroxyl groups supply the diol suffix. The amine is subordinate.",
+      {explanationEs:"Dos hidroxilos del anillo aportan el sufijo diol. La amina se expresa mediante el prefijo amino.",bondIds:sites.map((id,i)=>[id,oxygen[i]])});
+    add("aminoalkyl","substituent",name.slice(0,root),0,ids,`The alkyl chain attaches at ring C${position}. Its internal C1 is bonded to the ring.`,
+      {parentId:"parent",locant:position,explanationEs:`El alquilo se une al C${position} del anillo. Su C1 interno es el carbono unido al anillo.`,
+        numbering:[[anchor,position]],writtenLocants:[{start:3,end:4,locant:internalPos,atomId:ids[internalPos-1]}],
+        bondIds:[...term.bonds.map(([a,b]):[number,number]=>[ids[a],ids[b]]),[anchor,ids[0]]]});
+    add("aminoalkyl-amino","prefix","amino",5,[n],`Amino denotes the nitrogen on branch C${internalPos}.`,
+      {parentId:"aminoalkyl",bondIds:[[ids[internalPos-1],n]],explanationEs:`Amino indica el nitrógeno unido al C${internalPos} de la rama.`});
+    for(const c of components)c.language=language;
+    return {graph,components,parent,group:"alcohol",evidence:{language,source:"active-name",construction:"aminoalkyl-benzenediol",
+      parentSelection:"sole-suffix-bearing-cycle",rules:[blueBookRule("P-63.1","P6"),blueBookRule("P-14.4","P1")],
+      numbering:{scope:"parent",priorities:["diol-suffix","aminoalkyl"],selected:[locants,[position]],
+        reflected:[locants.map(n=>n===1?1:8-n).sort((a,b)=>a-b),[position===1?1:8-position]],comparison:-1},stereo:"unspecified-only"}};
+  }
   const aromaticEnglish = /^(.*?)(benzoic acid|benzaldehyde|phenol|aniline|benzamide|benzonitrile)$/.exec(name);
   const aromaticSpanish = /^(.*?)(benzaldehído|anilina|benzamida|benzonitrilo)$/.exec(name);
   const retainedSpanish: Record<string,string> = {benzaldehído:"benzaldehyde",anilina:"aniline",benzamida:"benzamide",benzonitrilo:"benzonitrile"};

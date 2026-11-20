@@ -2,6 +2,18 @@ import type { AppLanguage } from "./i18n.ts";
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import type { ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import { presentValidatedSystematicName, reconcileSystematicName } from "./validated-name-derivation.ts";
+import type { ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
+
+/** Report missing proof without promoting local structural evidence to FULL. */
+export function missingGlobalDerivationEvidence(parent: ParentSelectionEvidence | undefined): {
+  parentAdmissibility: boolean; unexaminedParents: boolean;
+} {
+  return {
+    parentAdmissibility: !parent || parent.reconciliation !== "verified"
+      && parent.candidates.some(candidate => candidate.nomenclaturalAdmissibility === "candidate-unverified"),
+    unexaminedParents: !!parent?.candidates.some(candidate => candidate.status === "not-compared"),
+  };
+}
 
 export type DerivationConsistencyStatus = "verified" | "unverified" | "profile-mismatch";
 
@@ -20,6 +32,8 @@ export function resolveDerivationConsistency(input: {
   otherEvidence: ValidatedNameDerivation | null;
 } {
   const activeDerivation = reconcileSystematicName(input.molecule, input.activeName);
+  if (activeDerivation?.evidence && ["acyclic-aryl-amine","substituted-alkanamide","aminoalkyl-benzenediol"].includes(activeDerivation.evidence.construction) && input.activeProfile !== "current")
+    return { status: "profile-mismatch", derivation: null, otherEvidence: activeDerivation };
   if (activeDerivation) return { status: "verified", derivation: activeDerivation, otherEvidence: null };
 
   const currentEvidence = input.currentSourceName

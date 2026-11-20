@@ -6,6 +6,7 @@ export type AlphabeticalReasoningGroup = {
   name: string;
   comparisonName: string;
   locants: readonly number[];
+  internalLocants?: readonly number[];
   citedPrefix: string;
   multiplier: string;
   complex: boolean;
@@ -23,6 +24,12 @@ function compareNames(left: AlphabeticalReasoningGroup, right: AlphabeticalReaso
   let index = 0;
   while (index < Math.min(a.length, b.length) && a[index] === b[index]) index++;
   const letters = Boolean(a[index] && b[index] && a[index] < b[index]);
+  let internalDifference=0;
+  const leftInternal=left.internalLocants??[],rightInternal=right.internalLocants??[];
+  for(let position=0;position<Math.max(leftInternal.length,rightInternal.length);position+=1) {
+    internalDifference=(leftInternal[position]??Number.MAX_SAFE_INTEGER)-(rightInternal[position]??Number.MAX_SAFE_INTEGER);
+    if(internalDifference)break;
+  }
   const label = (group: AlphabeticalReasoningGroup, letter: string) => {
     const name = language === "es" ? `«${group.name}»` : `“${group.name}”`;
     if (conventional(group)) return language === "es"
@@ -31,7 +38,10 @@ function compareNames(left: AlphabeticalReasoningGroup, right: AlphabeticalReaso
   };
   const difference = letters && index > 0
     ? language === "es" ? ` por la primera diferencia (${a[index]} antes que ${b[index]})`
-      : ` at the first difference (${a[index]} before ${b[index]})` : "";
+      : ` at the first difference (${a[index]} before ${b[index]})`
+    : internalDifference
+      ? language === "es" ? ` por el localizador interno ${Math.min(...leftInternal)} antes que ${Math.min(...rightInternal)}`
+        : ` by internal locant ${Math.min(...leftInternal)} before ${Math.min(...rightInternal)}` : "";
   const citation = left.multiplier || right.multiplier
     ? language === "es" ? `; se cita «${left.citedPrefix}» antes de «${right.citedPrefix}»`
       : `; cite “${left.citedPrefix}” before “${right.citedPrefix}”` : "";

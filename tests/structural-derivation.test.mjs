@@ -3,9 +3,26 @@ import { test } from "node:test";
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
 import { deriveStructuralComponents, mapStructuralRegions, remapStructuralDerivation, structuralVisualTargets } from "../app/structural-derivation.ts";
 import { buildStructuralPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
+import { reasoningFragmentId } from "../app/reasoning-visual-targets.ts";
 
 const graph = smiles => { const built = moleculeFromSmiles(smiles); assert.equal(built.ok, true, built.error); return built.molecule; };
 const sorted = xs => [...xs].sort((a, b) => a - b);
+test("different connected nitrogen regions get distinguishable bilingual controls without merging targets", () => {
+  for (const smiles of ["CCN(CC)CC(=O)Nc1c(C)cccc1C", "CCN(CC)CC(=O)NCC"]) {
+    const molecule = graph(smiles), model = deriveStructuralComponents(molecule, "unverified");
+    for (const language of ["es", "en"]) {
+      const step = buildStructuralPriorityReasoning({ derivation: model, language }).steps.find(item => item.componentKind === "connected fragment");
+      if (!step) continue;
+      const fragments = [step.fragments, ...(step.fragments.additionalFragments ?? [])];
+      assert.equal(new Set(fragments.map(item => item.text)).size, fragments.length, `${smiles} ${language}`);
+      for (const fragment of fragments) {
+        const target = step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+        assert.deepEqual(sorted(target.atomIds), sorted(fragment.atomIds));
+        assert.ok(target.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)));
+      }
+    }
+  }
+});
 // Reference connectivity: PubChem CID 3672, 1983, 2244; atom IDs are
 // explicitly frozen for these SMILES, independently of component discovery.
 const cases = [
@@ -253,6 +270,143 @@ test("fluoxetine exposes independent ring, phenoxy and para-CF3 graph selections
     assert.match(ringStep.explanation, /O/);
   }
 });
+
+test("local aromatic substituent names and locants use exact graph regions without reconciling the whole name", () => {
+  const fluoxetine = graph("CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F");
+  const model = deriveStructuralComponents(fluoxetine, "deliberately unrelated displayed label");
+  assert.equal(model.status, "PARTIAL");
+  const phenoxy = model.components.find(component => component.kind === "substituted phenoxy fragment");
+  assert.equal(phenoxy.nomenclature.name, "4-(trifluoromethyl)phenoxy");
+  assert.equal(phenoxy.nomenclature.nameEs, "4-(trifluorometil)fenoxi");
+  assert.match(phenoxy.nomenclature.rule, /P-63\.2\.2\.2/);
+  assert.equal(phenoxy.nomenclature.substituents.length, 1);
+  const cf3 = model.components.find(component => component.kind === "trifluoromethyl group");
+  assert.deepEqual(sorted(phenoxy.nomenclature.substituents[0].atomIds), sorted(cf3.atomIds));
+  const locant = model.components.find(component => component.kind === "aromatic ring locant");
+  assert.ok(locant);
+  assert.equal(locant.numbering[0][1], 4);
+  assert.equal(locant.atomIds.length, 5, "the locator selects ring carbon and CF3 atoms by graph identity");
+  assert.deepEqual(new Set(locant.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))),
+    new Set([[locant.numbering[0][0], cf3.atomIds[0]], ...cf3.bondIds].map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":"))));
+  assert.ok(!phenoxy.atomIds.includes(model.components.find(component => component.kind === "candidate carbon skeleton").atomIds[0]));
+  const idMap = new Map(fluoxetine.atoms.map(atom => [atom.id, atom.id * 41 + 700]));
+  const permuted = { atoms: fluoxetine.atoms.map(atom => ({ ...atom, id: idMap.get(atom.id) })).reverse(),
+    bonds: fluoxetine.bonds.map(([a,b,order]) => [idMap.get(b), idMap.get(a), order]).reverse() };
+  const remapped = remapStructuralDerivation(model, fluoxetine, permuted);
+  assert.ok(remapped);
+  const remappedPhenoxy = remapped.components.find(component => component.kind === "substituted phenoxy fragment");
+  assert.deepEqual(sorted(remappedPhenoxy.nomenclature.substituents[0].atomIds),
+    sorted(phenoxy.nomenclature.substituents[0].atomIds.map(id => idMap.get(id))));
+
+  for (const [smiles, expected] of [
+    ["CCOc1c(C)cccc1", 2], ["CCOc1cc(C)ccc1", 3], ["CCOc1ccc(C)cc1", 4],
+    ["CCCCOc1c(CC(C)C)cccc1", 2], ["CCCCOc1cc(CC(C)C)ccc1", 3],
+  ]) {
+    const graphModel = deriveStructuralComponents(graph(smiles), "unverified");
+    const local = graphModel.components.find(component => component.nomenclature?.name.endsWith("phenoxy"));
+    assert.ok(local, smiles);
+    assert.equal(local.nomenclature.substituents[0].position, expected, smiles);
+    const selected = graphModel.components.find(component => component.kind === "aromatic ring locant");
+    assert.equal(selected.numbering[0][1], expected, smiles);
+  }
+  const branched = deriveStructuralComponents(graph("CCCCOc1c(CC(C(C)C)C)cccc1"), "unverified");
+  const branchedName = branched.components.find(component => component.nomenclature?.name.endsWith("phenoxy"));
+  assert.equal(branchedName.nomenclature.name, "2-(2,3-dimethylbutyl)phenoxy");
+  const multiple = deriveStructuralComponents(graph("CCCCOc1c(C)cc(Br)cc1"), "unverified");
+  const multipleName = multiple.components.find(component => component.nomenclature?.name.endsWith("phenoxy"));
+  assert.equal(multipleName.nomenclature.name, "4-bromo-2-methylphenoxy");
+  assert.deepEqual(multipleName.nomenclature.substituents.map(item => item.position).sort((a,b)=>a-b), [2,4]);
+  const repeatedComplex = deriveStructuralComponents(graph("CCCCOc1c(CC(C)C)cc(CC(C)C)cc1"), "unverified");
+  const repeatedComplexName = repeatedComplex.components.find(component => component.nomenclature?.name.endsWith("phenoxy"));
+  assert.equal(repeatedComplexName.nomenclature.name, "2,4-bis(2-methylpropyl)phenoxy",
+    "only graph-equivalent complex substituents at the same composition level use bis");
+  assert.deepEqual(repeatedComplexName.nomenclature.substituents.map(item => item.position).sort((a,b)=>a-b), [2,4]);
+  for (const [smiles, suffix, rule] of [
+    ["CCCCc1cc(C)ccc1", "3-methylphenyl", /P-29\.6\.1/],
+    ["CCCCNc1cc(C)ccc1", "3-methylanilino", /P-62\.2\.1\.1\.1/],
+    ["NCCC(Cc1ccc(C)cc1)CC", "4-methylbenzyl", /P-29\.6\.2\.1/],
+  ]) {
+    const localModel = deriveStructuralComponents(graph(smiles), "unverified");
+    const localComponent = localModel.components.find(component => component.nomenclature?.name === suffix);
+    assert.ok(localComponent, smiles);
+    assert.match(localComponent.nomenclature.rule, rule);
+    assert.equal(localModel.status, "PARTIAL");
+  }
+
+  const english = buildStructuralPriorityReasoning({ derivation: model, language: "en" });
+  const spanish = buildStructuralPriorityReasoning({ derivation: model, language: "es" });
+  assert.match(english.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation, /lowest locant set/);
+  assert.match(spanish.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation, /localizadores/);
+  assert.match(english.steps.find(step => step.componentKind === "aromatic ring locant").fragments.text, /Ring locant 4/);
+  assert.match(spanish.steps.find(step => step.componentKind === "aromatic ring locant").fragments.text, /Localizador 4/);
+  const legacy = deriveStructuralComponents(fluoxetine, "unverified", undefined, "iupac-1979-legacy");
+  assert.ok(legacy.components.every(component => !component.nomenclature),
+    "Blue Book local rules are not attributed to the legacy profile");
+});
+
+test("nested carbon substituent derivations expose exact bilingual chain, branch, locant, and attachment selections", () => {
+  const fixtures = [
+    ["CCCCOc1c(CC(C)C)cccc1", "2-methylpropyl", "2-metilpropil", "alkyl-type"],
+    ["CCCCOc1c(C(C)CC(C)CC)cccc1", "4-methylhexan-2-yl", "4-metilhexan-2-il", "alkanyl-type"],
+    ["CCCCOc1c(CCCCCC(CCC(C)C)CCCCC)cccc1", "6-(3-methylbutyl)undecyl", "6-(3-metilbutil)undecil", "alkyl-type"],
+  ];
+  for (const [smiles, expected, expectedEs, mode] of fixtures) {
+    const molecule = graph(smiles), model = deriveStructuralComponents(molecule, "unverified label");
+    const aromatic = model.components.find(component => component.nomenclature?.substituents.some(item => item.derivation));
+    assert.ok(aromatic, smiles);
+    const local = aromatic.nomenclature.substituents.find(item => item.derivation);
+    assert.equal(local.name, expected, smiles);
+    assert.equal(local.nameEs, expectedEs, smiles);
+    assert.equal(local.derivation.mode, mode, smiles);
+    assert.match(local.rule, /P-29\.2/);
+    assert.match(local.rule, /P-46\.1/);
+    const controls = local.nestedSelections;
+    assert.ok(controls?.length, smiles);
+    const locantStep = buildStructuralPriorityReasoning({ derivation: model, language: "en" }).steps
+      .find(step => step.componentKind === "aromatic ring locant");
+    const spanishStep = buildStructuralPriorityReasoning({ derivation: model, language: "es" }).steps
+      .find(step => step.componentKind === "aromatic ring locant");
+    const fragments = [locantStep.fragments, ...(locantStep.fragments.additionalFragments ?? [])];
+    const spanishFragments = [spanishStep.fragments, ...(spanishStep.fragments.additionalFragments ?? [])];
+    for (const control of controls) {
+      const semanticId = `${locantStep.componentIds[0]}:${control.id}`;
+      const fragment = fragments.find(item => item.semanticId === semanticId);
+      const spanish = spanishFragments.find(item => item.semanticId === semanticId);
+      assert.ok(fragment, control.id);
+      assert.ok(spanish, control.id);
+      const target = locantStep.fragmentTargets[reasoningFragmentId(locantStep.number, fragment)];
+      assert.ok(fragmentTargetsValid(target, molecule), control.id);
+      assert.deepEqual(sorted(target.atomIds), sorted(fragment.atomIds), control.id);
+      assert.deepEqual(target.bondIds.map(([a,b])=>[Math.min(a,b),Math.max(a,b)]).sort(),
+        fragment.bondIds.map(([a,b])=>[Math.min(a,b),Math.max(a,b)]).sort(), control.id);
+      for (const [a,b] of fragment.bondIds) assert.ok(molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a));
+    }
+    const chainControl = controls.find(control => control.id.startsWith("chain:"));
+    assert.deepEqual(sorted(chainControl.atomIds), sorted(local.derivation.chainAtomIds));
+    const branchControl = controls.find(control => control.id.startsWith("branch:") && control.label.startsWith("Branch at"));
+    if (local.derivation.branches.length) {
+      const branch = local.derivation.branches[0].derivation;
+      assert.deepEqual(sorted(branchControl.atomIds), sorted(branch.atomIds));
+      const branchBondKeys = branchControl.bondIds.map(([a,b])=>`${Math.min(a,b)}:${Math.max(a,b)}`).sort();
+      assert.ok(branchBondKeys.includes(local.derivation.branches[0].attachmentBondIds.map(([a,b])=>`${Math.min(a,b)}:${Math.max(a,b)}`)[0]));
+    }
+    const remapped = remapStructuralDerivation(model, molecule, { atoms: [...molecule.atoms].reverse().map(atom => ({...atom,id:atom.id*31+500})),
+      bonds: [...molecule.bonds].reverse().map(([a,b,o]) => [b*31+500,a*31+500,o]) });
+    assert.ok(remapped, smiles);
+    const permutedGraph = { atoms: [...molecule.atoms].reverse().map(atom => ({...atom,id:atom.id*31+500})),
+      bonds: [...molecule.bonds].reverse().map(([a,b,o]) => [b*31+500,a*31+500,o]) };
+    const atomMap = mapStructuralRegions(molecule, permutedGraph, model.components.map(component => component.atomIds));
+    assert.ok(atomMap, smiles);
+    const mappedAromatic = remapped.components.find(component => component.nomenclature?.substituents.some(item => item.derivation));
+    const mappedLocal = mappedAromatic.nomenclature.substituents.find(item => item.derivation);
+    assert.deepEqual(sorted(mappedLocal.nestedSelections[0].atomIds), sorted(controls[0].atomIds.map(id => atomMap.get(id))));
+  }
+});
+
+function fragmentTargetsValid(target, molecule) {
+  return !!target && target.atomIds.every(id => molecule.atoms.some(atom => atom.id === id))
+    && target.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a));
+}
 
 test("composable motif recognition generalizes across functional and aromatic families", () => {
   const examples = [

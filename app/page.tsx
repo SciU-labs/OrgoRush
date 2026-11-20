@@ -44,7 +44,7 @@ import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
 import { localizeCompositionalExternalName } from "./compositional-external-localization";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
-import { resolveDerivationConsistency } from "./derivation-consistency";
+import { missingGlobalDerivationEvidence, resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
 import { buildBranchCountingGuides, buildValidatedVisualNumbering } from "./visual-numbering";
 import { selectedAromaticCarboxylCarbonContext } from "./selected-atom-context";
@@ -9602,7 +9602,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   const automaticNumberingAvailable = !sourceNameOverrideRequiresExternal || derivationConsistency.status === "verified";
   const effectiveShowNumbering = showNumbering && automaticNumberingAvailable;
   const structuralColoring = useMemo(() => classifyValidatedStructureColors(molecule, validatedDerivation), [molecule, validatedDerivation]);
-  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain), [molecule, activeAnalysis.mainChain]);
+  const structuralProfile = activeNomenclatureConvention === "iupac-1979-es" || activeNomenclatureConvention === "iupac-1979-legacy-en"
+    ? "iupac-1979-legacy" as const : "blue-book-2013" as const;
+  const structuralParentSelection = useMemo(() => parentStructureSelectionEvidence(molecule, activeAnalysis, language,
+    language === "en" ? translateSpanishIupacToOpsin(activeAnalysis.chainName) || activeAnalysis.chainName : activeAnalysis.chainName,
+    structuralProfile), [molecule, activeAnalysis, language, structuralProfile]);
+  const structuralEvidence = useMemo(() => deriveStructuralComponents(molecule, "", activeAnalysis.mainChain,
+    structuralProfile, structuralParentSelection), [molecule, activeAnalysis.mainChain, structuralProfile, structuralParentSelection]);
   const contextualDerivationNumbering=!!validatedDerivation?.parentSystem || !!structuralEvidence.carbohydrate;
   const visualNumbering: ReadonlyMap<number, number | string> = contextualDerivationNumbering ? new Map() : validatedDerivation
     ? buildValidatedVisualNumbering(molecule, validatedDerivation)
@@ -9615,6 +9621,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? `${selectedCarboxylContext.heading} ${selectedCarboxylContext.explanation}`
     : baseNotice;
   const mainChainSet = new Set(validatedDerivation?.parentAtomIds ?? activeAnalysis.mainChain);
+  const parentIsRing = validatedDerivation
+    ? molecule.rings?.some(ring => ring.atomIds.every(id => mainChainSet.has(id)))
+      || structuralEvidence.components.some(region => region.kind === "ringSystem"
+        && region.atomIds.every(id => mainChainSet.has(id)))
+    : analysis.family !== "acyclic";
   // An external name without a verified local presentation has no validated
   // correspondence to the local analysis. Do not present its parent colors as authoritative.
   const reasoningUnsupported = activeLocalNameUnavailable
@@ -9654,21 +9665,17 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     steps: localizedReasoningSteps, fragments: reasoningNameFragments, displayedName: displayedIupacName, enabled: reasoningVisualsEnabled });
   const reasoningVisualTargets = reasoningVisualReferences.steps;
   const fullPriorityReasoning = useMemo(() => validatedDerivation ? buildValidatedPriorityReasoning({
-    derivation: validatedDerivation, graph: molecule, language, activeName: activeChemicalName,
+    derivation: validatedDerivation, graph: molecule, language, activeName: activeChemicalName, structuralEvidence,
     alphabeticalOrder: localizedReasoningSteps.find(step => step.alphabeticalOrder)?.alphabeticalOrder,
-  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps, activeChemicalName]);
+  }) : null, [validatedDerivation, molecule, language, localizedReasoningSteps, activeChemicalName, structuralEvidence]);
   const structuralPriorityReasoning = useMemo(() => shouldShowStructuralPriorityReasoning({
     hasValidatedDerivation: !!validatedDerivation,
     reasoningUnsupported: reasoningUnsupported || unreconciledPyridineAcid,
     structuralStatus: structuralDerivation.status,
   })
     ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language,
-      parentSelection: parentStructureSelectionEvidence(molecule, activeAnalysis, language,
-        language === "en" ? translateSpanishIupacToOpsin(activeAnalysis.chainName) || activeAnalysis.chainName : activeAnalysis.chainName,
-        activeNomenclatureConvention === "iupac-1979-es" || activeNomenclatureConvention === "iupac-1979-legacy-en"
-          ? "iupac-1979-legacy" : "blue-book-2013") }) : null,
-  [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language, molecule,
-    activeAnalysis, activeNomenclatureConvention]);
+      parentSelection: structuralParentSelection, graph: molecule }) : null,
+  [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language, structuralParentSelection]);
   const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
     ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
       fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,
@@ -14406,7 +14413,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             <div className="stage-legend" aria-label={t("Leyenda")}>
               {highlightSubstituents && (!reasoningUnsupported || validatedDerivation) ? (
                 <>
-                  <span><i className="main-key" /> {validatedDerivation?.parentSystem==="purine" ? language==="en"?"Purine system":"Sistema purínico" : validatedDerivation?.parentSystem==="carbohydrate" ? language==="en"?"Carbohydrate skeleton":"Esqueleto del carbohidrato" : isRingStructure ? t("Anillo principal") : t("Cadena principal")}</span>
+                  <span><i className="main-key" /> {validatedDerivation?.parentSystem==="purine" ? language==="en"?"Purine system":"Sistema purínico" : validatedDerivation?.parentSystem==="carbohydrate" ? language==="en"?"Carbohydrate skeleton":"Esqueleto del carbohidrato" : parentIsRing ? t("Anillo principal") : t("Cadena principal")}</span>
                   {structuralColoring && [...structuralColoring.atoms.values()].includes("functional") && <span><i className="functional-key" /> {language === "en" ? "Principal function (may share parent atoms)" : "Función principal (puede compartir átomos con el progenitor)"}</span>}
                   <span><i className="branch-key" /> {t("Sustituyente")}</span>
                   {structuralColoring && [...structuralColoring.atoms.values(), ...structuralColoring.bonds.values()].includes("unclassified") && <span><i className="unclassified-key" /> {language === "en" ? "Unclassified" : "Sin clasificar"}</span>}
@@ -16346,6 +16353,12 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 {structuralPriorityReasoning && <p role="note">{language === "en"
                   ? "PARTIAL: the active name is not reconciled. These steps show graph evidence only; candidate regions do not establish its parent or name locants."
                   : "PARTIAL: el nombre activo no está conciliado. Estos pasos muestran evidencia del grafo; las regiones candidatas no establecen su padre ni sus localizadores."}</p>}
+                {structuralPriorityReasoning && missingGlobalDerivationEvidence(structuralParentSelection).parentAdmissibility && <p role="note">{language === "en"
+                  ? "The selected parent remains a candidate: its nomenclatural admissibility has not been verified."
+                  : "El padre seleccionado sigue siendo candidato: su admisibilidad nomenclatural no se ha verificado."}</p>}
+                {structuralPriorityReasoning && missingGlobalDerivationEvidence(structuralParentSelection).unexaminedParents && <p role="note">{language === "en"
+                  ? "Some candidate regions were not compared in the available parent selection."
+                  : "La selección parental disponible no comparó algunas regiones candidatas."}</p>}
                 {structuralPriorityReasoning && structuralDerivation.carbohydrate && <p role="note">{language === "en"
                   ? "Carbohydrate numbers shown here are structural locants; they do not verify the displayed name."
                   : "Los números del carbohidrato son localizadores estructurales; no verifican el nombre mostrado."}</p>}

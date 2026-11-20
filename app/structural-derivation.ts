@@ -4,6 +4,8 @@ import { buildOpenChemLibStereoGraph } from "./tetrahedral-stereochemistry.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { editableValencesValid } from "./editable-valence.ts";
 import { recognizeCarbohydrate, type CarbohydrateStructure } from "./carbohydrate-structure.ts";
+import { deriveLocalAromaticNomenclature, type LocalAromaticNomenclature, type LocalSubstituentSelection } from "./structural-substituent-nomenclature.ts";
+import type { ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
 
 export type StructuralComponent = {
   id: string;
@@ -11,7 +13,7 @@ export type StructuralComponent = {
     | "phenoxy fragment" | "substituted phenoxy fragment" | "methoxy fragment"
     | "fragment connection" | "amine fragment" | "trifluoromethyl group" | "ether linkage" | "benzyl fragment"
     | "carbohydrate backbone" | "ring oxygen" | "hemiacetal" | "hemiketal" | "configurational reference" | "anomeric centre"
-    | "candidate carbon skeleton" | "connected fragment";
+    | "candidate carbon skeleton" | "connected fragment" | "aromatic ring locant" | "aromatic substituent fragment";
   atomIds: number[];
   bondIds: [number, number][];
   evidence: string;
@@ -20,6 +22,8 @@ export type StructuralComponent = {
   displayLabel?: string;
   displayLabelEs?: string;
   numbering?: [number,number|string][];
+  nomenclature?: LocalAromaticNomenclature;
+    nestedSelections?: LocalSubstituentSelection[];
   /** Nearest strictly containing graph component; structural containment only. */
   parentComponentId?: string;
 };
@@ -37,7 +41,7 @@ const structuralComponentId = (kind: StructuralComponent["kind"], ids: readonly 
 function assignStructuralContainment(components: StructuralComponent[]) {
   const excluded = new Set<StructuralComponent["kind"]>([
     "fragment connection", "candidate carbon skeleton", "stereo",
-    "configurational reference", "anomeric centre",
+    "configurational reference", "anomeric centre", "aromatic ring locant",
   ]);
   const byId = new Map(components.map(component => [component.id, component]));
   for (const child of components) {
@@ -109,6 +113,19 @@ export function structuralVisualTargets(model: StructuralDerivation): Record<str
   }]));
 }
 
+function remapCarbonDerivation(derivation: import("./structural-substituent-nomenclature.ts").CarbonSubstituentDerivation,
+  map: ReadonlyMap<number, number>): import("./structural-substituent-nomenclature.ts").CarbonSubstituentDerivation {
+  return { ...derivation, rootAtomId: map.get(derivation.rootAtomId)!, atomIds: derivation.atomIds.map(id=>map.get(id)!),
+    bondIds: derivation.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+    chainAtomIds: derivation.chainAtomIds.map(id=>map.get(id)!),
+    chainBonds: derivation.chainBonds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+    numbering: derivation.numbering.map(([id,locant]):[number,number]=>[map.get(id)!,locant]),
+    branches: derivation.branches.map(branch=>({...branch,parentAtomId:map.get(branch.parentAtomId)!,
+      attachmentBondIds:branch.attachmentBondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+      derivation:remapCarbonDerivation(branch.derivation,map)})),
+  };
+}
+
 export function remapStructuralDerivation(model: StructuralDerivation, source: GeneratedMolecule, target: GeneratedMolecule): StructuralDerivation | null {
   const map = mapStructuralRegions(source, target, model.components.map(c => c.atomIds));
   if (!map) return null;
@@ -120,6 +137,32 @@ export function remapStructuralDerivation(model: StructuralDerivation, source: G
     atomIds: c.atomIds.map(id => map.get(id)!),
     bondIds: c.bondIds.map(([a, b]): [number,number] => [map.get(a)!, map.get(b)!]),
     ...(c.numbering?{numbering:c.numbering.map(([id,p]):[number,number|string]=>[map.get(id)!,p])}:{}),
+      ...(c.nestedSelections?{nestedSelections:c.nestedSelections.map(selection=>({...selection,
+        atomIds:selection.atomIds.map(id=>map.get(id)!),
+        bondIds:selection.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+        locants:selection.locants.map(([id,locant]):[number,number]=>[map.get(id)!,locant]),
+      }))}:{}),
+    ...(c.nomenclature?{nomenclature:{...c.nomenclature,
+      attachmentAtomId:map.get(c.nomenclature.attachmentAtomId)!,
+      ...(c.nomenclature.linkerAtomId!==undefined?{linkerAtomId:map.get(c.nomenclature.linkerAtomId)!}:{}),
+      attachmentBondIds:c.nomenclature.attachmentBondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+      numbering:c.nomenclature.numbering.map(([id,p]):[number,number]=>[map.get(id)!,p]),
+        substituents:c.nomenclature.substituents.map(item=>({...item,
+        atomIds:item.atomIds.map(id=>map.get(id)!),
+        bondIds:item.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+          ...(item.derivation?{derivation:remapCarbonDerivation(item.derivation,map)}:{}),
+          ...(item.nestedSelections?{nestedSelections:item.nestedSelections.map(selection=>({...selection,
+            atomIds:selection.atomIds.map(id=>map.get(id)!),
+            bondIds:selection.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+            locants:selection.locants.map(([id,locant]):[number,number]=>[map.get(id)!,locant]),
+          }))}:{}),
+      })),
+        nestedSelections:c.nomenclature.nestedSelections.map(selection=>({...selection,
+          atomIds:selection.atomIds.map(id=>map.get(id)!),
+          bondIds:selection.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
+          locants:selection.locants.map(([id,locant]):[number,number]=>[map.get(id)!,locant]),
+        })),
+    }}:{}),
   }));
   return { ...model, components, ...(model.carbohydrate?{carbohydrate:recognizeCarbohydrate(target)??undefined}:{}) };
 }
@@ -205,9 +248,27 @@ export function analyzeStructuralEquivalence(source: GeneratedMolecule, target: 
   return correspondences(source,target,[],true);
 }
 
+/** Full graph automorphisms must permute the proposed set transitively. */
+export function regionsFormOrbit(regions: readonly number[][], automorphisms: readonly Map<number,number>[]): boolean {
+  if (!regions.length || !automorphisms.length) return false;
+  const key = (ids: number[]) => [...ids].sort((a,b) => a-b).join(",");
+  const expected = new Set(regions.map(key)), images = new Set<string>();
+  if (expected.size !== regions.length) return false;
+  for (const mapping of automorphisms) {
+    for (const [index, region] of regions.entries()) {
+      const image = key(region.map(id => mapping.get(id)!));
+      if (!expected.has(image)) return false;
+      if (index === 0) images.add(image);
+    }
+  }
+  return images.size === expected.size;
+}
+
 /** Structural evidence only: no external-name token parsing, parent selection,
  * locants or unspecified stereo assignments are performed by this fallback. */
-export function deriveStructuralComponents(graph: GeneratedMolecule, displayedName: string, analyzedCandidate?: readonly number[]): StructuralDerivation {
+export function deriveStructuralComponents(graph: GeneratedMolecule, displayedName: string, analyzedCandidate?: readonly number[],
+  nomenclatureProfile: "blue-book-2013"|"iupac-1979-legacy" = "blue-book-2013",
+  parentSelection?: ParentSelectionEvidence): StructuralDerivation {
   const result: StructuralDerivation = { status: "UNSUPPORTED", name: { text: displayedName, classification: "unverified", preferred: false },
     components: [], limitations: ["External-name fragments, parent selection and locants have not been reconciled with this graph."] };
   try {
@@ -219,9 +280,11 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
     const hydrogen = (id: number) => molecule.getImplicitHydrogens(atomIdToIndex.get(id)!);
     const add = (kind: StructuralComponent["kind"], ids: number[], evidence: string, numbering?:StructuralComponent['numbering'], evidenceEs?:string, extraBonds:[number,number][] = []) => {
       const region = [...new Set(ids)], included = new Set(region);
+      const bondMap = new Map<string,[number,number]>();
+      for (const [a,b] of [...graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)), ...extraBonds]) bondMap.set(key(a,b),[a,b]);
       result.components.push({ id: `structural-${result.components.length}`, kind, atomIds: region,
-        bondIds: [...graph.bonds.filter(([a, b]) => included.has(a) && included.has(b)).map(([a, b]) => [a, b] as [number,number]), ...extraBonds], evidence,...(numbering?{numbering}:{}),
-        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','phenoxy fragment':'Fragmento fenoxi','substituted phenoxy fragment':'Fragmento fenoxi sustituido','methoxy fragment':'Fragmento metoxi','fragment connection':'Conexión entre fragmentos','amine fragment':'Función amina','trifluoromethyl group':'Grupo trifluorometil','ether linkage':'Enlace éter','benzyl fragment':'Fragmento bencílico','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico','candidate carbon skeleton':'Candidato de cadena carbonada','connected fragment':'Fragmento conectado'} as const)[kind] });
+        bondIds: [...bondMap.values()], evidence,...(numbering?{numbering}:{}),
+        ...(evidenceEs?{evidenceEs}:{}), kindEs: ({carboxylicAcid:'Ácido carboxílico',ester:'Éster',amide:'Amida',carbonyl:'Carbonilo',hydroxyl:'Hidroxilo',ringSystem:'Sistema de anillos',stereo:'Estereoquímica','N-bound methyl':'Metilo unido a N','phenoxy fragment':'Fragmento fenoxi','substituted phenoxy fragment':'Fragmento fenoxi sustituido','methoxy fragment':'Fragmento metoxi','fragment connection':'Conexión entre fragmentos','amine fragment':'Función amina','trifluoromethyl group':'Grupo trifluorometil','ether linkage':'Enlace éter','benzyl fragment':'Fragmento bencílico','carbohydrate backbone':'Esqueleto de carbohidrato','ring oxygen':'Oxígeno del anillo',hemiacetal:'Hemiacetal',hemiketal:'Hemicetal','configurational reference':'Referencia configuracional','anomeric centre':'Centro anomérico','candidate carbon skeleton':'Candidato de cadena carbonada','connected fragment':'Fragmento conectado','aromatic ring locant':'Localizador del anillo aromático','aromatic substituent fragment':'Fragmento sustituyente aromático'} as const)[kind] });
     };
     const acylOxygens = new Set<number>();
     for (const c of graph.atoms.filter(a => (a.element ?? "C") === "C" && neutral(a.id))) {
@@ -443,6 +506,103 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
           result.components[connectionIndex].displayLabel = `${connectionType} connection · ${context} to carbon path`;
           result.components[connectionIndex].displayLabelEs = `Conexión ${connectionType} · ${context === "aryl ether" ? "éter arílico" : context === "aromatic branch" ? "rama aromática" : context === "nitrogen fragment" ? "rama nitrogenada" : "fragmento estructural"} con el camino carbonado`;
           result.components[connectionIndex].id = structuralComponentId("fragment connection", [inner,outer]);
+        }
+      }
+      // Give an aromatic substituent a local name only when its attachment to
+      // this graph-supported carbon path is explicit and the internal ring is
+      // a simple six-membered carbon cycle. This never consults displayedName.
+      const selectedAmineParent = parentSelection?.level === "rule-supported"
+        && parentSelection.reconciliation === "unverified"
+        && parentSelection.amineParentSelection?.outcome === "acyclic-parent"
+        ? parentSelection.candidates.find(candidate => candidate.status === "selected-by-rule"
+          && candidate.evidenceKind === "parent" && candidate.regionKind === "acyclic-chain"
+          && candidate.nomenclaturalAdmissibility === "candidate-unverified"
+          && candidate.ruleReference === "P-44.3.2") : undefined;
+      const parentPathFor = (root: number) => {
+        if (!selectedAmineParent || !parentSelection?.amineParentSelection) return null;
+        const ids = selectedAmineParent.atomIds, set = new Set(ids), nitrogen = parentSelection.amineParentSelection.nitrogenAtomId;
+        if (ids.length < 2 || ids.some(id => !graph.atoms.some(item => item.id === id && (item.element ?? "C") === "C"))) return null;
+        const adjacency = new Map(ids.map(id => [id, [] as number[]]));
+        for (const [a,b,order=1] of graph.bonds) if (set.has(a) && set.has(b)) {
+          if (order !== 1) return null;
+          adjacency.get(a)!.push(b); adjacency.get(b)!.push(a);
+        }
+        if ([...adjacency.values()].reduce((count, neighbors) => count + neighbors.length, 0) !== 2 * (ids.length - 1)) return null;
+        const nBoundRoots = neighbors(nitrogen).filter(edge => set.has(edge.id) && edge.order === 1);
+        if (nBoundRoots.length !== 1 || (adjacency.get(nBoundRoots[0].id)?.length ?? 0) !== 1) return null;
+        const ordered = [nBoundRoots[0].id]; let previous = -1, current = nBoundRoots[0].id;
+        while (ordered.length < ids.length) {
+          const next = (adjacency.get(current) ?? []).filter(id => id !== previous);
+          if (next.length !== 1 || ordered.includes(next[0])) return null;
+          previous = current; current = next[0]; ordered.push(current);
+        }
+        return ordered.includes(root) ? ordered : null;
+      };
+      for (const ringComponent of nomenclatureProfile === "blue-book-2013" ? ringComponents : []) {
+        const ring = new Set(ringComponent.atomIds);
+        if (ring.size !== 6 || [...ring].some(id => !molecule.isAromaticAtom(atomIdToIndex.get(id)!))) continue;
+        const internal = ringEdges.filter(([a,b]) => ring.has(a) && ring.has(b)).map(([a,b])=>[a,b] as [number,number]);
+        const externalCandidates = graph.bonds.flatMap(([a,b,order=1]) => {
+          if (ring.has(a) === ring.has(b)) return [];
+          return [{ ringAtom: ring.has(a) ? a : b, outerAtom: ring.has(a) ? b : a, order }];
+        });
+        for (const attachment of externalCandidates) {
+          let connection: "phenyl"|"phenoxy"|"benzyl"|"phenylamino"|undefined;
+          let linkerAtomId: number|undefined, rootAtomId: number|undefined;
+          if (attachment.order !== 1) continue;
+          if ((atom(attachment.outerAtom).element ?? "C") === "C" && neutral(attachment.outerAtom)
+            && skeleton.has(attachment.outerAtom)) {
+            connection = "phenyl";
+            rootAtomId = attachment.outerAtom;
+          } else if ((atom(attachment.outerAtom).element ?? "C") === "C" && neutral(attachment.outerAtom)
+            && hydrogen(attachment.outerAtom) === 2 && neighbors(attachment.outerAtom).length === 2) {
+            const next = neighbors(attachment.outerAtom).find(edge => edge.id !== attachment.ringAtom && skeleton.has(edge.id) && edge.order === 1);
+            if (next) { connection = "benzyl"; linkerAtomId = attachment.outerAtom; rootAtomId = next.id; }
+          } else if (atom(attachment.outerAtom).element === "O" && neutral(attachment.outerAtom)) {
+            const next = neighbors(attachment.outerAtom).find(edge => edge.id !== attachment.ringAtom && (atom(edge.id).element ?? "C") === "C" && edge.order === 1);
+            if (next) { connection = "phenoxy"; linkerAtomId = attachment.outerAtom; rootAtomId = next.id; }
+          } else if (atom(attachment.outerAtom).element === "N" && neutral(attachment.outerAtom)) {
+            const next = neighbors(attachment.outerAtom).find(edge => edge.id !== attachment.ringAtom && (atom(edge.id).element ?? "C") === "C" && edge.order === 1);
+            const carbonylNitrogen = next && neighbors(next.id).some(edge => edge.order === 2 && atom(edge.id).element === "O");
+            if (next && !carbonylNitrogen && neighbors(attachment.outerAtom).length === 2 && hydrogen(attachment.outerAtom) === 1) {
+              connection = "phenylamino"; linkerAtomId = attachment.outerAtom; rootAtomId = next.id;
+            }
+          }
+          if (!connection || rootAtomId === undefined) continue;
+          const parentPath = parentPathFor(rootAtomId);
+          const parentAttachmentLocant = parentPath ? parentPath.indexOf(rootAtomId) + 1 : undefined;
+          const local = deriveLocalAromaticNomenclature({ graph, ringAtomIds: [...ring], ringBondIds: internal,
+            attachmentAtomId: attachment.ringAtom, attachmentRootAtomId: rootAtomId, connection, linkerAtomId,
+            parentAtomIds: carbonSkeleton, ...(parentAttachmentLocant !== undefined ? { parentAttachmentLocant,
+              parentRule: selectedAmineParent?.ruleReference } : {}), implicitHydrogens: hydrogen });
+          if (!local) continue;
+          const regionIds = [...new Set([...ring, ...(linkerAtomId === undefined ? [] : [linkerAtomId]), ...local.substituents.flatMap(item => item.atomIds)])];
+          const existing = result.components.find(item => ["phenoxy fragment", "substituted phenoxy fragment", "benzyl fragment"].includes(item.kind)
+            && item.atomIds.length === regionIds.length && regionIds.every(id => item.atomIds.includes(id)));
+          if (existing) { existing.nomenclature = local; existing.numbering = local.numbering; }
+          else {
+            const label = local.name;
+            const componentIndex = result.components.length;
+            add("aromatic substituent fragment", regionIds, local.explanation, local.numbering, local.explanationEs,
+              local.attachmentBondIds);
+            result.components[componentIndex].displayLabel = `${label} · locally derived aromatic substituent`;
+            result.components[componentIndex].displayLabelEs = `${local.nameEs} · sustituyente aromático derivado localmente`;
+            result.components[componentIndex].nomenclature = local;
+            result.components[componentIndex].id = structuralComponentId("aromatic substituent fragment", regionIds);
+          }
+          for (const sub of local.substituents) {
+            const locantAtomId = local.numbering.find(([,n]) => n === sub.position)?.[0];
+            if (locantAtomId === undefined) continue;
+            const locantIds = [locantAtomId];
+            const index = result.components.length;
+            add("aromatic ring locant", [...locantIds, ...sub.atomIds], sub.explanation,
+              local.numbering.filter(([id]) => locantIds.includes(id)), sub.explanationEs, sub.bondIds);
+            result.components[index].displayLabel = `Ring locant ${sub.position} · ${sub.name}`;
+            result.components[index].displayLabelEs = `Localizador ${sub.position} del anillo · ${sub.nameEs}`;
+            result.components[index].id = structuralComponentId("aromatic ring locant", [...locantIds, ...sub.atomIds]);
+            result.components[index].nestedSelections = sub.nestedSelections;
+          }
+          break;
         }
       }
     }

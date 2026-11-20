@@ -2,6 +2,7 @@ import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { mapStructuralRegions, analyzeStructuralEquivalence } from "./structural-derivation.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
+import { spanishSubstitutiveName } from "./compositional-name-model.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
@@ -42,6 +43,11 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
   if (language === "en") return { name: model.name, language: "en", localized: false };
+  if ((model.evidence?.construction === "acyclic-aryl-amine" || model.evidence?.construction === "substituted-alkanamide" || model.evidence?.construction === "aminoalkyl-benzenediol") && model.evidence.language === "en") {
+    const name = spanishSubstitutiveName(model.components);
+    if (name && reconcileSystematicName(model.evidence.reconstructedGraph,name)?.evidence?.language==="es")
+      return {name,language:"es",localized:true};
+  }
   const components = Object.fromEntries(model.components.map(component => [component.id, component]));
   if (model.principalGroup === "amide" && !model.parentSystem) {
     const parent = components.parent, suffix = components.suffix, aryl = components.aryl;
@@ -339,7 +345,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
       "The carboxyl group determines the acid suffix and numbering origin.",
       { explanationEs: "El grupo carboxilo (–COOH) es la función principal y aporta el sufijo «oic acid» del nombre sistemático inglés." });
     if (!aryl(acyclic[2] ?? acyclic[3], 3, parent[position - 1], position)) return null;
-  } else if (amide) {
+  } else if (amide && !/\)-[N2-9]/.test(amide[1])) {
     const n = amide[2] === "acetamide" ? 2 : roots.indexOf(amide[2].slice(0, -7));
     if (n < 2) return null;
     parent = chain(n); const oxygen = atom("O"), nitrogen = atom("N"); bond(parent[0], oxygen, 2); bond(parent[0], nitrogen); group = "amide";
@@ -401,6 +407,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     components:components.map(c=>({...c,atomIds:c.atomIds.map(id=>map.get(id)!),
       bondIds:c.bondIds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!]),
       numbering:c.numbering.map(([id,n]):[number,number|string]=>[map.get(id)!,n]),
+      ...(c.attachmentBonds ? {attachmentBonds:c.attachmentBonds.map(([a,b]):[number,number]=>[map.get(a)!,map.get(b)!])} : {}),
       ...(c.internalNumbering ? {internalNumbering:c.internalNumbering.map(([id,n]):[number,number]=>[map.get(id)!,n])} : {}),
       ...(c.writtenLocants ? {writtenLocants:c.writtenLocants.map(item=>({...item,atomId:map.get(item.atomId)!}))} : {}),
     }))});
