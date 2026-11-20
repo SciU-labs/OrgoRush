@@ -13,7 +13,11 @@ export type NameComponent = {
   attachmentScope?: "ring" | "amide-nitrogen";
   /** Equivalent named branches share one written multiplicative prefix. */
   equivalenceGroup?: string;
+  /** The union has a unique image. Individual occurrences follow the same
+   * representative numbering, even when its direction is interchangeable. */
+  mappingGroup?: string;
   externalMultiplier?: string;
+  citationKey?: string;
   attachmentBonds?: [number,number][];
   nLocantStarts?: number[];
   locant?: number | "N";
@@ -35,10 +39,11 @@ export type NameComponent = {
  * Chemical decisions are shared by ES/EN; only literal spans are linguistic. */
 export type NameRuleEvidence = {
   source: "active-name";
+  profile?: "current";
   language: "es" | "en";
-  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol";
+  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol" | "polycarboxylic-acid" | "multifunctional-alcohol" | "polysubstituted-benzene-prefixes";
   rules: { id: string; source: string }[];
-  parentSelection: "retained-functional-parent" | "sole-suffix-bearing-cycle" | "amine-longest-n-attached-chain" | "acyl-chain";
+  parentSelection: "retained-functional-parent" | "sole-suffix-bearing-cycle" | "amine-longest-n-attached-chain" | "acyl-chain" | "polyacid-backbone" | "hydroxyl-bearing-parent" | "unfunctionalized-benzene";
   numbering: {
     scope: "parent";
     priorities: string[];
@@ -46,7 +51,7 @@ export type NameRuleEvidence = {
     reflected: number[][];
     comparison: number;
   };
-  stereo: "unspecified-only";
+  stereo: "unspecified-only" | "specified-tetrahedral";
 };
 
 export type CompositionalFamilyGraph = {
@@ -100,7 +105,7 @@ export function proveMonocycleNumbering(size: number, positions: readonly (reado
     selected, reflected, comparison };
 }
 
-export function blueBookRule(id: string, chapter: "P1" | "P3" | "P4" | "P5" | "P6" | "P6a") {
+export function blueBookRule(id: string, chapter: "P1" | "P2" | "P3" | "P4" | "P5" | "P6" | "P6a") {
   return { id, source: `https://iupac.qmul.ac.uk/BlueBook/${chapter}.html#${id.replace(/[-.]/g, "")}` };
 }
 

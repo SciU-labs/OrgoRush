@@ -1,3 +1,4 @@
+import { readBalanced } from "./name-delimiters.ts";
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { CanonizerUtil, Molecule as OCLMolecule, SmilesParser } from "openchemlib";
 import { moleculeFromSmiles, moleculeToSmiles } from "./openchemlib-adapter.ts";
@@ -47,22 +48,6 @@ function parseAlkyl(text: string, language: "en" | "es") {
   }
   const alkylMatch = new RegExp(`^(${Object.keys(rootMap).filter(Boolean).join("|")})${ending}$`).exec(text);
   if (alkylMatch) return { root: rootMap[alkylMatch[1]!]!, count: rootCarbonCount(rootMap[alkylMatch[1]!]!), functional: "", internalLocant: 1, term: "" };
-  return null;
-}
-
-function readBalanced(value: string, openingIndex: number) {
-  const opening = value[openingIndex];
-  const closing = opening === "(" ? ")" : opening === "[" ? "]" : "";
-  if (!closing) return null;
-  const stack = [closing];
-  for (let index = openingIndex + 1; index < value.length; index += 1) {
-    const char = value[index];
-    if (char === "(" || char === "[") stack.push(char === "(" ? ")" : "]");
-    else if (char === ")" || char === "]") {
-      if (stack.pop() !== char) return null;
-      if (!stack.length) return { text: value.slice(openingIndex + 1, index), end: index + 1, closing };
-    }
-  }
   return null;
 }
 

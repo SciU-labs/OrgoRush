@@ -199,7 +199,7 @@ export type StructuralEquivalence = {
   atomOrbits: number[][];
 };
 
-function correspondences(source: GeneratedMolecule, target: GeneratedMolecule, regions: readonly (readonly number[])[], collect: boolean): StructuralEquivalence | null {
+function correspondences(source: GeneratedMolecule, target: GeneratedMolecule, regions: readonly (readonly number[])[], collect: boolean, firstOnly=false): StructuralEquivalence | null {
   try {
     if (source.atoms.length !== target.atoms.length || source.bonds.length !== target.bonds.length
       || [...source.bonds, ...target.bonds].some(b => b[3] !== undefined)) return null;
@@ -218,6 +218,7 @@ function correspondences(source: GeneratedMolecule, target: GeneratedMolecule, r
         const next = regions.map(r => [...new Set(r.map(id => assigned.get(id)!))].sort((x, y) => x - y).join(","));
         if (!collect && images && next.some((image, i) => image !== images![i])) ambiguous = true;
         images = next; answer ??= new Map(assigned);
+      if(firstOnly)return;
         mappings.push(new Map(assigned));
         if (mappings.length > 256) exhausted = true;
         return;
@@ -226,7 +227,7 @@ function correspondences(source: GeneratedMolecule, target: GeneratedMolecule, r
       for (const other of options.get(id)!) {
         if (used.has(other) || [...assigned].some(([x, y]) => a.edges.get(key(id, x)) !== b.edges.get(key(other, y)))) continue;
         assigned.set(id, other); used.add(other); visit(depth + 1); used.delete(other); assigned.delete(id);
-        if (exhausted || ambiguous) return;
+        if (exhausted || ambiguous || firstOnly&&answer) return;
       }
     }
     visit(0);
@@ -240,6 +241,13 @@ function correspondences(source: GeneratedMolecule, target: GeneratedMolecule, r
 /** Strict historical contract: every referenced region has one invariant image. */
 export function mapStructuralRegions(source: GeneratedMolecule, target: GeneratedMolecule, regions: readonly (readonly number[])[]): Map<number, number> | null {
   return correspondences(source,target,regions,false)?.representative ?? null;
+}
+
+/** Return one complete graph isomorphism when the independently proved name
+ * admits symmetry-equivalent numbered orientations. The caller's grammar
+ * must establish locants before using this correspondence. */
+export function mapStructuralRepresentative(source:GeneratedMolecule,target:GeneratedMolecule):Map<number,number>|null {
+  return correspondences(source,target,[],false,true)?.representative??null;
 }
 
 /** All bounded full-graph isomorphisms. Composing any two gives an

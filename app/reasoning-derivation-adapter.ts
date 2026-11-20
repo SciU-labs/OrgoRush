@@ -69,7 +69,7 @@ function peerNameForOrder(component: NameComponent, derivation: ValidatedNameDer
   // of the complete term stays in the key, including internal di-/tri- terms.
   const comparisonName = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^A-Za-z]/g, "").toLocaleLowerCase();
-  return { cited, name, multiplier, comparisonName };
+  return { cited, name, multiplier, comparisonName:component.citationKey ?? comparisonName };
 }
 
 function compareLocantEvidence(left: readonly number[], right: readonly number[]) {
@@ -90,6 +90,7 @@ function localTerm(text: string, language: AppLanguage) {
 }
 
 function componentLabel(component: NameComponent, language: AppLanguage, derivation: ValidatedNameDerivation) {
+  if (component.label && component.labelEs) return language === "en" ? component.label : component.labelEs;
   if (component.id === "parent") {
     if (derivation.principalGroup === "amide" && component.text === "acetamide") return language === "en" ? "acetamide" : "acetamida";
     if (derivation.principalGroup === "carboxylicAcid" && component.text === "benzoic acid") return language === "en" ? component.text : "ácido benzoico";
@@ -148,7 +149,8 @@ function componentFragment(component: NameComponent, language: AppLanguage, deri
     ? language==="en" ? `The selected prefix represents ${positions.length} separate groups at parent positions ${positions.join(", ")}.`
       : `El prefijo seleccionado representa ${positions.length} grupos separados en las posiciones ${positions.join(", ")} del progenitor.`
     : localizedComponentExplanation(component, language);
-  return { text, label: language === "en" ? `Select ${text}` : `Seleccionar ${text}`,
+  const label=language==="en"?component.label:component.labelEs;
+  return { text, label: label ?? (language === "en" ? `Select ${text}` : `Seleccionar ${text}`),
     kind: component.role === "parent" ? "parent" : component.role === "suffix" ? "function"
       : component.role === "unsaturation" ? "unsaturation"
       : component.role === "substituent" || component.role === "prefix" ? "substituent" : "numbering",
@@ -160,7 +162,7 @@ function componentFragment(component: NameComponent, language: AppLanguage, deri
 function safeValidatedTargets(graph:GeneratedMolecule,derivation:ValidatedNameDerivation) {
   const targets=validatedNameTargets(derivation), evidence=derivation.evidence;
   if(!evidence || evidence.numbering.comparison!==0
-    || !["retained-aromatic","aromatic-ester","functional-monocycle"].includes(evidence.construction))return targets;
+    || !["retained-aromatic","aromatic-ester","functional-monocycle","polysubstituted-benzene-prefixes"].includes(evidence.construction))return targets;
   const parent=new Set(derivation.components.find(c=>c.role==="parent")?.atomIds??[]);
   const visible=buildValidatedVisualNumbering(graph,derivation);
   return Object.fromEntries(Object.entries(targets).map(([id,target])=>[id,{...target,
@@ -199,7 +201,7 @@ function makeStep(input: {
     for (const {atomId,locant,start} of entries) {
       if (!graph.atoms.some(atom => atom.id === atomId)) continue;
       if (component.id === "parent" && derivation.evidence?.numbering.comparison === 0
-        && ["retained-aromatic", "aromatic-ester", "functional-monocycle"].includes(derivation.evidence.construction)
+        && ["retained-aromatic", "aromatic-ester", "functional-monocycle", "polysubstituted-benzene-prefixes"].includes(derivation.evidence.construction)
         && buildValidatedVisualNumbering(graph,derivation).get(atomId) !== locant) continue;
       const key = `${atomId}:${locant}`;
       if (seenLocants.has(key)) continue;
@@ -345,10 +347,10 @@ export function buildValidatedPriorityReasoning(input: {
       explanation: (language === "en" ? `${groupNames.en[derivation.principalGroup]} is the principal functional group and is expressed by the validated suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante el sufijo validado.`)+detail
         +priorityDetail
-        +(derivation.evidence?.construction === "acyclic-aryl-amine"
+        +(["acyclic-aryl-amine","multifunctional-alcohol","polycarboxylic-acid"].includes(derivation.evidence?.construction??"")
           ? " " + localizedComponentExplanation(suffix,language)
           : "")
-        +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix] });
+        +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix, ...derivation.components.filter(c=>c.role==="suffix" && c.parentId===suffix.id)] });
   }
   if (derivation.principalGroup === "none") {
     const nitro = derivation.components.filter(component => component.role === "prefix" && /nitro$/.test(component.text)
@@ -389,10 +391,14 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const numberComponents = [parent, byId.get("aryl"), ...derivation.components.filter(component => component.id.startsWith("sugar-chain"))]
     .filter((component): component is NameComponent => Boolean(component && component.numbering.length));
-  const aromaticEvidence=derivation.evidence && ["retained-aromatic", "aromatic-ester", "functional-monocycle"].includes(derivation.evidence.construction)
+  const aromaticEvidence=derivation.evidence && ["retained-aromatic", "aromatic-ester", "functional-monocycle", "polysubstituted-benzene-prefixes"].includes(derivation.evidence.construction)
     ? derivation.evidence : undefined;
   const writtenPositions=[...new Set(parent?.writtenLocants?.map(item=>item.locant)??[])].sort((a,b)=>a-b);
-  const numberExplanation=aromaticEvidence
+  const multifunctional=derivation.evidence && ["polycarboxylic-acid","multifunctional-alcohol"].includes(derivation.evidence.construction) ? derivation.evidence : undefined;
+  const numberExplanation=multifunctional ? (language==="en" ? "Compare suffix locants first, then all prefix locants, then positions in citation order." : "Se comparan primero los localizadores del sufijo, después los de todos los prefijos y finalmente los de cada prefijo en orden de cita.") + (multifunctional.numbering.comparison===0 ? (language==="en" ? " The drawing shows one of the tied numberings." : "El dibujo muestra una de las numeraciones empatadas.") : "") : derivation.evidence?.construction==="polysubstituted-benzene-prefixes"
+    ? language==="en" ? `Benzene has no suffix-bearing group. Compare all six orientations by the complete set of substituent locants, then by the locants for prefixes in citation order. The written locants are ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" A symmetry tie remains.":" The written orientation is the lowest admissible one."}`
+      : `El benceno no tiene un grupo expresado mediante sufijo. Se comparan las seis orientaciones por el conjunto completo de localizadores y luego por los de cada prefijo en orden de cita. Los localizadores escritos son ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" Persiste un empate por simetría.":" La orientación escrita es la menor admisible."}`
+    : aromaticEvidence
     ? language==="en" ? `Ring C1 bears the characteristic group${writtenPositions.length?`; the written substituent positions are ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Equivalent orientations remain; only unambiguous atom locants are shown.":"The supported locants determine the displayed orientation."}`
       : `C1 del anillo lleva el grupo característico${writtenPositions.length?`; las posiciones escritas de los sustituyentes son ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Hay orientaciones equivalentes; solo se muestran los localizadores inequívocos por átomo.":"Los localizadores respaldados determinan la orientación mostrada."}`
     : derivation.evidence?.construction === "acyclic-aryl-amine"
@@ -453,16 +459,16 @@ export function buildValidatedPriorityReasoning(input: {
     paragraphs.forEach((paragraph,index)=>stages.push({
       title:index===0 ? (language === "en" ? "Substituents and locants" : "Sustituyentes y localizadores")
         : (language === "en" ? "Further substituent details" : "Detalle de los sustituyentes"),
-      explanation:paragraph.explanation, components:index===0 && !["acyclic-aryl-amine","substituted-alkanamide"].includes(derivation.evidence?.construction??"")?substituents:paragraph.components }));
+      explanation:paragraph.explanation, components:index===0 && !["acyclic-aryl-amine","substituted-alkanamide","multifunctional-alcohol"].includes(derivation.evidence?.construction??"")?substituents:paragraph.components }));
   }
   const construction=derivation.evidence?.construction;
-  const hierarchical=construction==="acyclic-aryl-amine" || construction==="substituted-alkanamide" || construction==="aminoalkyl-benzenediol";
+  const hierarchical=construction==="acyclic-aryl-amine" || construction==="substituted-alkanamide" || construction==="aminoalkyl-benzenediol" || construction==="multifunctional-alcohol";
   const compoundRoots=roots.filter(root=>descendants.some(child=>child.parentId===root.id));
   if (hierarchical && compoundRoots.length) {
     const explanation=compoundRoots.map(root => {
       const brackets=root.text.includes("["), parentheses=root.text.includes("(");
-      if (brackets) return language==="en" ? `In ${root.text}, parentheses enclose the inner substituent and brackets enclose the substituted aromatic group. The leading locant belongs to the parent.`
-        : `En ${root.text}, los paréntesis delimitan el sustituyente interno y los corchetes el grupo aromático sustituido. El primer localizador pertenece al padre.`;
+      if (brackets) return language==="en" ? `In ${root.text}, parentheses enclose the inner substituent and brackets enclose the entire compound substituent. The leading locant belongs to the parent.`
+        : `En ${root.text}, los paréntesis delimitan el sustituyente interno y los corchetes el sustituyente compuesto completo. El primer localizador pertenece al padre.`;
       if (parentheses) return language==="en" ? `In ${root.text}, the parentheses keep the complete substituent together at its indicated attachment.`
         : `En ${root.text}, los paréntesis mantienen unido el sustituyente completo en el punto de unión indicado.`;
       return root.text;

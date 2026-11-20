@@ -1,0 +1,18 @@
+export const cases=[
+  ["N-methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine","CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F"],
+  ["2-(diphenylmethoxy)-N,N-dimethylethan-1-amine","CN(C)CCOC(c1ccccc1)c1ccccc1"],
+  ["N,N-dimethyl-3-phenylpropan-1-amine","CN(C)CCCc1ccccc1"],
+  ["N-ethyl-3-(4-methylphenoxy)propan-1-amine","CCNCCCOc1ccc(C)cc1"],
+  ...["c1ccccc1Cl","c1cccc(Cl)c1","c1ccc(Cl)cc1"].map((ring,i)=>[`3-(${i+2}-chlorophenoxy)propan-1-amine`,"NCCCO"+ring]),
+  ["3-(4-methoxyphenyl)propan-1-amine","NCCCc1ccc(OC)cc1"],
+  ["2-methoxy-4-phenylbutan-1-amine","NCC(OC)CCc1ccccc1"],
+  ["2-methyl-4-phenylbutan-1-amine","NCC(C)CCc1ccccc1"],
+  ["2-(diethylamino)-N-(2,6-dimethylphenyl)acetamide","CCN(CC)CC(=O)Nc1c(C)cccc1C"],
+  ["2-(diethylamino)-N-(2,4-dimethylphenyl)acetamide","CCN(CC)CC(=O)Nc1c(C)cc(C)cc1"],
+  ["N,N-dimethylpropanamide","CCC(=O)N(C)C"],
+  ["3-(dimethylamino)-N-ethylbutanamide","CC(N(C)C)CC(=O)NCC"],
+  ["2-(diethylamino)-N-ethyl-3-methylpentanamide","CCC(C)C(N(CC)CC)C(=O)NCC"],
+  ["4-(2-aminoethyl)benzene-1,2-diol","NCCc1ccc(O)c(O)c1"],
+  ["4-(3-aminopropyl)benzene-1,2-diol","NCCCc1ccc(O)c(O)c1"],
+  ["N-ethyl-N-methyl-3-phenylpropan-1-amine","CCN(C)CCCc1ccccc1"],
+];

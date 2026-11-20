@@ -511,13 +511,12 @@ test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with
   }
 });
 
-test("TNT remains on the original local priority path when no FULL production applies", () => {
+test("TNT reconciles fully as a prefix-only polysubstituted benzene", () => {
   const graph = imported("CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-]"), analysis = page.analyzeMolecule(graph);
-  assert.equal(reconcileSystematicName(graph, analysis.name), null);
-  const steps = page.buildIupacReasoningSteps(graph, analysis);
-  assert.ok(steps.some(step => /nitro/i.test(step.explanation)));
-  assert.ok(steps.some(step => step.nameRole === "numbering"));
-  assert.ok(steps.some(step => step.alphabeticalOrder));
+  const proof=reconcileSystematicName(graph, analysis.name);
+  assert.equal(proof?.status,"FULL");
+  assert.equal(proof?.evidence?.construction,"polysubstituted-benzene-prefixes");
+  assert.equal(proof?.preferred,false);
   assert.equal(analysis.name, "2-metil-1,3,5-trinitrobenceno");
 });
 

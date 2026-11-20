@@ -32,7 +32,7 @@ export function resolveDerivationConsistency(input: {
   otherEvidence: ValidatedNameDerivation | null;
 } {
   const activeDerivation = reconcileSystematicName(input.molecule, input.activeName);
-  if (activeDerivation?.evidence && ["acyclic-aryl-amine","substituted-alkanamide","aminoalkyl-benzenediol"].includes(activeDerivation.evidence.construction) && input.activeProfile !== "current")
+  if (activeDerivation?.evidence && (activeDerivation.evidence.profile==="current" || ["acyclic-aryl-amine","substituted-alkanamide","aminoalkyl-benzenediol"].includes(activeDerivation.evidence.construction)) && input.activeProfile !== "current")
     return { status: "profile-mismatch", derivation: null, otherEvidence: activeDerivation };
   if (activeDerivation) return { status: "verified", derivation: activeDerivation, otherEvidence: null };
 

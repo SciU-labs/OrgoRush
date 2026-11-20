@@ -2,8 +2,9 @@ import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
 import { analyzeStructuralEquivalence } from "./structural-derivation.ts";
 import { parsePurineFamily } from "./purine-derivation.ts";
-import { compareLocantSequences, proveMonocycleNumbering, isLowestFreeRingNumbering, blueBookRule } from "./compositional-name-model.ts";
+import { compareLocantSequences, proveMonocycleNumbering, blueBookRule } from "./compositional-name-model.ts";
 import type { NameComponent, CompositionalFamilyGraph, NameRuleEvidence } from "./compositional-name-model.ts";
+import { parseMultifunctionalFamily } from "./multifunctional-family.ts";
 import { parseAcyclicArylAmine } from "./acyclic-aryl-amine-grammar.ts";
 
 import { parseSubstitutedAlkanamide } from "./substituted-alkanamide.ts";
@@ -19,7 +20,10 @@ type Prefix = { text: string; term: NonNullable<ReturnType<typeof legacyPrefixTe
 function prefixes(text: string, offset: number, maximum: number, repeated = false, language: "en" | "es" = "en", alkenyl = false, aromaticHalogens = false, amideN = false): Prefix[] | null {
   const result: Prefix[] = []; let consumed = 0;
   while (consumed < text.length) {
-    const termPattern = language === "en" ? "[a-z]+" : "[a-záéíóúñ]+";
+    const letters = language === "en" ? "[a-z]+" : "[a-záéíóúñ]+";
+    // P-16.5, general nomenclature. After separating the cyclic parent,
+    // this complete radical has a unique parse, including both internal locants.
+    const termPattern = alkenyl ? `prop-1-en-2-${language==="en"?"yl":"il"}$|${letters}` : letters;
     const m = new RegExp(`^(${amideN ? "N(?:,N)?|" : ""}[1-9](?:,[1-9])*)-(?:\\(([^()]+)\\)|(${termPattern}))`).exec(text.slice(consumed));
     if (!m) return null;
     const written = m[2] ?? m[3], onAmideN = m[1].startsWith("N"), positions = onAmideN ? [] : m[1].split(",").map(Number);
@@ -79,6 +83,134 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
 }
 
 export function parseAdditionalSystematicFamily(name: string): FamilyGraph | null {
+  return parseEstablishedFamily(name) ?? parseMultifunctionalFamily(name,"en") ?? parseMultifunctionalFamily(name,"es");
+}
+
+/** Prefix-only substitution on benzene. Each typed prefix is parsed once,
+ * expanded by its written multiplier, and attached at the written ring
+ * locants. The active locants must also be the lowest admissible orientation
+ * after citation-order tie breaking (Blue Book P-14.4/P-14.5). */
+function parsePolysubstitutedBenzene(name:string):FamilyGraph|null {
+  const parentMatch=/(benzene|benceno)$/.exec(name);if(!parentMatch)return null;
+  const language=parentMatch[1]==="benzene"?"en":"es",source=name.slice(0,parentMatch.index);
+  if(!source)return null;
+  const entries:{written:string;term:NonNullable<ReturnType<typeof legacyPrefixTerm>>;locants:number[];start:number;end:number;termStart:number;termEnd:number;multiplier:string}[]=[];
+  const multipliers:Record<string,number>={di:2,tri:3,tetra:4,penta:5,hexa:6};
+  let cursor=0;
+  while(cursor<source.length){
+    const locantMatch=/^([1-6](?:,[1-6])*)-/.exec(source.slice(cursor));if(!locantMatch)return null;
+    const locants=locantMatch[1]!.split(",").map(Number),start=cursor;
+    if(new Set(locants).size!==locants.length||locants.some((value,index)=>index>0&&value<=locants[index-1]!))return null;
+    cursor+=locantMatch[0].length;
+    let body="",bodyStart=cursor,bodyEnd=cursor;
+    if(source[cursor]==="("||source[cursor]==="["){
+      const close=source[cursor]==="("?")":"]";let depth=0,end=-1;
+      for(let i=cursor;i<source.length;i++){if(source[i]===source[cursor])depth++;else if(source[i]===close&&--depth===0){end=i;break;}}
+      if(end<0)return null;body=source.slice(cursor+1,end);bodyStart=cursor;bodyEnd=end+1;cursor=end+1;
+    }else{
+      const match=/^[a-záéíóúñ]+/i.exec(source.slice(cursor));if(!match)return null;
+      body=match[0];bodyStart=cursor;bodyEnd=cursor+body.length;cursor=bodyEnd;
+    }
+    const matchMultiplier=/^(di|tri|tetra|penta|hexa)(.+)$/i.exec(body);
+    let multiplier=matchMultiplier?.[1]?.toLowerCase()??"",base=matchMultiplier?.[2]??body;
+    let expected=multiplier?multipliers[multiplier]!:1,term=legacyPrefixTerm(base);
+    // A substituent name can itself begin with the same letters as a
+    // multiplicative prefix (trifluoromethyl); exact fragment recognition
+    // takes precedence unless the locant count confirms a multiplier.
+    if(multiplier&&locants.length===1&&legacyPrefixTerm(body)?.[language]===body){multiplier="";base=body;expected=1;term=legacyPrefixTerm(body);}
+    if(!term||term[language]!==base||locants.length!==expected
+      ||term.kind&&!["nitro","halogen","ether"].includes(term.kind)
+      ||term.elements.some(element=>!["C","O","N","F","Cl","Br","I"].includes(element))
+      ||term.charges&&Object.keys(term.charges).some(index=>!Number.isInteger(Number(index))||Number(index)<0||Number(index)>=term.elements.length)
+      ||term.bonds.some(([, ,order])=>order!==1&&!(term.kind==="nitro"&&order===2)
+        &&!/(?:phenyl|phenoxy)$/.test(term.en)))return null;
+    // The same substituent belongs in one multiplicative prefix, not in two
+    // separate tokens whose occurrences could be counted inconsistently.
+    if(entries.some(entry=>entry.term[language]===term[language]))return null;
+    entries.push({written:body,term,locants,start,end:cursor,termStart:bodyStart,termEnd:bodyEnd,multiplier});
+    if(cursor<source.length){if(source[cursor]!=="-")return null;cursor++;if(cursor===source.length)return null;}
+  }
+  if(!entries.length||entries.some(entry=>entry.locants.some(locant=>entries.some(other=>other!==entry&&other.locants.includes(locant)))))return null;
+  const citation=(entry:typeof entries[number])=>entry.term[language].replace(/[^a-záéíóúñ]/gi,"").toLocaleLowerCase(language);
+  const ordered=[...entries].sort((a,b)=>citation(a).localeCompare(citation(b),language));
+  if(entries.some((entry,index)=>entry!==ordered[index]))return null;
+  const score=(groups:readonly (readonly number[])[])=>{
+    const all=groups.flat().sort((a,b)=>a-b);
+    return [all,groups[0]?[...groups[0]].sort((a,b)=>a-b):[]];
+  };
+  const transform=(locant:number,origin:number,direction:number)=>((direction*(locant-1-origin)%6+6)%6)+1;
+  const selectedGroups=entries.map(entry=>entry.locants);
+  const selected=score(selectedGroups),alternatives:(number[][])[]=[];
+  for(let origin=0;origin<6;origin++)for(const direction of [1,-1])
+    if(origin!==0||direction!==1)alternatives.push(entries.map(entry=>entry.locants.map(value=>transform(value,origin,direction))));
+  const compare=(left:number[][],right:number[][])=>{
+    for(let i=0;i<Math.max(left.length,right.length);i++){
+      const a=left[i]??[],b=right[i]??[];for(let j=0;j<Math.max(a.length,b.length);j++){
+        const difference=(a[j]??-1)-(b[j]??-1);if(difference)return difference;
+      }
+    }return 0;
+  };
+  const locantScores=(groups:readonly (readonly number[])[]):number[][]=>{
+    const full=groups.flat().sort((a,b)=>a-b),first=[...(groups[0]??[])].sort((a,b)=>a-b);
+    return [full,first];
+  };
+  let best=locantScores(alternatives[0]??selectedGroups);
+  for(const candidate of alternatives){const candidateScore=locantScores(candidate);if(compare(candidateScore,best)<0)best=candidateScore;}
+  const selectedScore=locantScores(selectedGroups);
+  if(compare(selectedScore,best)>0)return null;
+
+  const graph:GeneratedMolecule={atoms:[],bonds:[]};
+  const atom=(element:GeneratedMolecule["atoms"][number]["element"],charge?:number)=>{const id=graph.atoms.length+1;graph.atoms.push({id,element,x:0,y:0,...(charge?{charge}:{})});return id;};
+  const ring=Array.from({length:6},()=>atom("C"));ring.forEach((id,index)=>graph.bonds.push([id,ring[(index+1)%6],(index%2?1:2) as 1|2]));
+  const components:NameComponent[]=[];
+  const parentStart=source.length,ringText=parentMatch[1]!;
+  components.push({id:"parent",role:"parent",text:ringText,start:parentStart,end:name.length,atomIds:ring,
+    bondIds:graph.bonds.map(([a,b])=>[a,b]),numbering:ring.map((id,index)=>[id,index+1]),language,numberingScope:"parent",
+    writtenLocants:entries.flatMap(entry=>entry.locants.map(locant=>{
+      const at=source.indexOf(`${locant}`,entry.start);return {start:at,end:at+String(locant).length,atomId:ring[locant-1]!,locant};
+    })),
+    explanation:`Benzene is the parent hydride because no characteristic group is expressed by a suffix. All six ring positions are admissible origins; the lowest complete prefix locant set is compared first, then the locants in citation order (P-22.1.3, P-14.4, P-14.5).`,
+    explanationEs:`El benceno es el hidruro progenitor porque ningún grupo característico se expresa con sufijo. Se comparan primero todos los conjuntos de localizadores; si empatan, se comparan en orden de cita (P-22.1.3, P-14.4, P-14.5).`});
+  for(const [index,entry] of entries.entries()){
+    const termStartInWritten=entry.written.indexOf(entry.term[language]);
+    if(termStartInWritten<0)return null;
+    const tokenStart=entry.start,tokenEnd=entry.end,written=name.slice(tokenStart,tokenEnd);
+    const groupIds:number[]=[],groupBonds:[number,number][]=[];
+    for(const [occurrence,locant] of entry.locants.entries()){
+      const ids=entry.term.elements.map((element,atomIndex)=>atom(element as GeneratedMolecule["atoms"][number]["element"],entry.term.charges?.[atomIndex]));
+      entry.term.bonds.forEach(([a,b,order])=>graph.bonds.push([ids[a]!,ids[b]!,order as 1|2|3]));
+      const attachment:[number,number]=[ring[locant-1]!,ids[0]!];graph.bonds.push(attachment);
+      groupIds.push(...ids);groupBonds.push(...entry.term.bonds.map(([a,b]):[number,number]=>[ids[a]!,ids[b]!]),attachment);
+      const oneWord=entry.term[language],oneStart=name.indexOf(oneWord,entry.termStart);
+      components.push({id:`prefix-${index}-occurrence-${occurrence}`,role:"substituent",text:oneWord,start:oneStart,end:oneStart+oneWord.length,
+        parentId:`prefix-${index}`,locant,atomIds:ids,bondIds:[...entry.term.bonds.map(([a,b]):[number,number]=>[ids[a]!,ids[b]!]),attachment],
+        numbering:[[ring[locant-1]!,locant]],language,numberingScope:"parent",
+        explanation:`This individual ${oneWord} group is bonded to benzene C${locant}. Its locant names the ring attachment, not an atom within the substituent.`,
+        explanationEs:`Este grupo ${oneWord} individual se une al C${locant} del benceno. El localizador identifica el carbono del anillo, no un átomo interno del sustituyente.`,
+        label:`${entry.term.en} at C${locant}`,labelEs:`${entry.term.es} en C${locant}`,
+        ...(entry.locants.length>1?{mappingGroup:`prefix-${index}-occurrences`}:{})});
+    }
+    const citationName=entry.term[language],prefixText=written;
+    const groupExplanation=entry.locants.length>1
+      ? `The multiplier ${entry.multiplier} counts ${entry.locants.length} separate ${citationName} groups at C${entry.locants.join(", C")}.`
+      : `The ${citationName} prefix identifies the attached group at benzene C${entry.locants[0]}.`;
+    const groupExplanationEs=entry.locants.length>1
+      ? `El multiplicador ${entry.multiplier} cuenta ${entry.locants.length} grupos ${citationName} separados en C${entry.locants.join(" y C")}.`
+      : `El prefijo ${citationName} identifica el grupo unido al C${entry.locants[0]} del benceno.`;
+    components.push({id:`prefix-${index}`,role:"prefix",text:prefixText,start:tokenStart,end:tokenEnd,parentId:"parent",
+      atomIds:groupIds,bondIds:groupBonds,numbering:entry.locants.map(locant=>[ring[locant-1]!,locant]),
+      language,numberingScope:"parent",citationKey:citation(entry),externalMultiplier:entry.multiplier||undefined,
+      explanation:groupExplanation,explanationEs:groupExplanationEs,label:entry.locants.length>1?`${citationName} groups (×${entry.locants.length})`:undefined,
+      labelEs:entry.locants.length>1?`Grupos ${citationName} (×${entry.locants.length})`:undefined});
+  }
+  const reflected=best;
+  return {graph,components,parent:ring,group:"none",allowEquivalentNumbering:true,evidence:{source:"active-name",profile:"current",language,
+    construction:"polysubstituted-benzene-prefixes",parentSelection:"unfunctionalized-benzene",
+    rules:[blueBookRule("P-22.1.3","P2"),blueBookRule("P-14.3.5","P1"),blueBookRule("P-14.4","P1"),blueBookRule("P-14.5.1","P1"),blueBookRule("P-14.5.4","P1")],
+    numbering:{scope:"parent",priorities:["all-detachable-prefix-locants-P-14.4-f","first-cited-prefix-locants-P-14.4-g"],selected,reflected,comparison:compare(selectedScore,best)},stereo:"unspecified-only"}};
+}
+
+function parseEstablishedFamily(name:string): FamilyGraph | null {
   const amine = parseAcyclicArylAmine(name);
   if (amine) return proveArylAmine(amine);
   if (/(?:amide|amida)$/.test(name) && /amino|N,N-|N-.*-N-|N-(?:methyl|ethyl|propyl|metil|etil|propil)/.test(name)) {
@@ -86,67 +218,11 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
     if (alkanamide) return alkanamide;
   }
   const purine=parsePurineFamily(name);if(purine)return purine;
-  // Finite grammar for disubstituted benzene without a characteristic suffix.
-  // Names are parsed in their written language; each term is independently
-  // translated to a structure from the shared chemical fragment table.
-  const benzene = /^(.*?)(benzene|benceno)$/.exec(name);
-  if (benzene) {
-    const language = benzene[2] === "benzene" ? "en" : "es";
-    const entries: { locant: number; written: string; term: NonNullable<ReturnType<typeof legacyPrefixTerm>>; start: number }[] = [];
-    const token = language === "en" ? /([1-6])-([a-z]+)/g : /([1-6])-([a-záéíóúñ]+)/g;
-    let cursor = 0, match: RegExpExecArray | null;
-    while ((match = token.exec(benzene[1]))) {
-      if (match.index !== cursor) return null;
-      const locant = Number(match[1]), written = match[2];
-      const term = legacyPrefixTerm(written);
-      if (locant < 1 || locant > 6 || !term || (language === "en" ? term.en !== written : term.es !== written)
-        || term.elements.some(element => !["C", "O", "N", "F", "Cl", "Br", "I"].includes(element))
-        || term.kind && !["ether", "nitro", "halogen"].includes(term.kind)
-        || term.kind !== "nitro" && (term.charges || term.bonds.some(([, , order]) => order !== 1))) return null;
-      const start = match.index;
-      entries.push({ locant, written, term, start });
-      cursor = token.lastIndex;
-      if (cursor < benzene[1].length) {
-        if (benzene[1][cursor] !== "-") return null;
-        cursor += 1;if(cursor===benzene[1].length)return null;token.lastIndex = cursor;
-      }
-    }
-    if (cursor !== benzene[1].length || entries.length !== 2 || new Set(entries.map(entry => entry.locant)).size !== 2) return null;
-    const terms = entries.map(entry => entry.term.en);
-    if (terms.filter(term => term === "methyl").length !== 1
-      || terms.some(term => !["methyl", "methoxy", "nitro", "fluoro", "chloro", "bromo", "iodo"].includes(term))) return null;
-    const second = terms.find(term => term !== "methyl");
-    if (!second || !["methoxy", "nitro", "fluoro", "chloro", "bromo", "iodo"].includes(second)) return null;
-    if (entries.some((entry, i) => i > 0 && entries[i - 1].written.localeCompare(entry.written, language) > 0)) return null;
-    if(!isLowestFreeRingNumbering(6,entries.map(entry=>entry.locant)))return null;
-    const graph: GeneratedMolecule = { atoms: [], bonds: [] };
-    const atom = (element: "C" | "O" | "N" | "F" | "Cl" | "Br" | "I", charge?: number) => {
-      const id = graph.atoms.length + 1; graph.atoms.push({ id, element, x: 0, y: 0, ...(charge ? { charge } : {}) }); return id;
-    };
-    const ring = Array.from({ length: 6 }, () => atom("C"));
-    ring.forEach((id, i) => graph.bonds.push([id, ring[(i + 1) % 6], i % 2 ? 1 : 2]));
-    const components: NameComponent[] = [];
-    const parentStart = benzene[1].length;
-    components.push({ id: "parent", role: "parent", text: benzene[2], start: parentStart, end: name.length,
-      atomIds: ring, bondIds: graph.bonds.map(([a, b]) => [a, b]),
-      numbering: ring.map((id, i) => [id, i + 1]),
-      explanation: "Benzene is the parent ring. Ring positions C1–C6 number the six aromatic carbons; the lowest locant set fixes the direction, and the alphabetically first substituent receives the lower locant when directions tie.",
-      explanationEs: "El benceno es el anillo padre. C1–C6 numeran sus seis carbonos; el conjunto más bajo de localizadores fija el sentido y, si hay empate, el sustituyente primero en orden alfabético recibe el localizador menor." });
-    for (const [index, entry] of entries.entries()) {
-      const ids = entry.term.elements.map((element, i) => atom(element as "C" | "O" | "N" | "F" | "Cl" | "Br" | "I", entry.term.charges?.[i]));
-      entry.term.bonds.forEach(([a, b, order]) => graph.bonds.push([ids[a], ids[b], order as 1 | 2 | 3]));
-      const attachment = [ring[entry.locant - 1], ids[0]] as [number, number]; graph.bonds.push(attachment);
-      const text = name.slice(entry.start, entry.start + `${entry.locant}-${entry.written}`.length);
-      components.push({ id: `prefix-${index}`, role: "prefix", text, start: entry.start, end: entry.start + text.length,
-        parentId: "parent", locant: entry.locant, atomIds: ids,
-        bondIds: [...graph.bonds.filter(([a, b]) => ids.includes(a) && ids.includes(b)).map(([a, b]) => [a, b] as [number, number]), attachment],
-        numbering: [[ring[entry.locant - 1], entry.locant]],
-        explanation: `${entry.written} identifies the ${entry.term.kind ?? "alkyl"} substituent attached at benzene ring position ${entry.locant}.`,
-        explanationEs: `${entry.written} identifica el sustituyente unido al C${entry.locant} del anillo de benceno.` });
-    }
-    for(const component of components){component.language=language;component.numberingScope="parent";}
-    return { graph, components, parent: ring, group: "none", allowEquivalentNumbering: true };
-  }
+  const polysubstitutedBenzene=parsePolysubstitutedBenzene(name);
+  if(polysubstitutedBenzene)return polysubstitutedBenzene;
+  // The prefix-only benzene grammar above owns this name family. Do not fall
+  // through to any older two-prefix grammar that lacks full tie-break proof.
+  if(/(?:benzene|benceno)$/.test(name))return null;
   const graph: GeneratedMolecule = { atoms: [], bonds: [] }, components: NameComponent[] = [];
   const atom = (element: "C" | "O" | "N" | "F" | "Cl" | "Br" | "I" = "C") => { const id = graph.atoms.length + 1; graph.atoms.push({id,element,x:0,y:0}); return id; };
   const edge = (a: number, b: number, order: 1 | 2 | 3 = 1) => { graph.bonds.push([a,b,order]); };
@@ -394,7 +470,8 @@ export function parseAdditionalSystematicFamily(name: string): FamilyGraph | nul
         {parentId:"parent",locant,numbering:[]});
     }
     evidence={source:"active-name",language,construction:"functional-monocycle",parentSelection:"sole-suffix-bearing-cycle",
-      rules:[...(ps.some(p=>p.text==="prop-1-en-2-il"||p.text==="prop-1-en-2-yl")?[blueBookRule("P-32.1.1","P3")]:[]),blueBookRule("P-59.2.1.4","P5"),blueBookRule("P-59.2.3","P5"),blueBookRule("P-59.2.5","P5"),
+      ...(ps.some(p=>p.text.startsWith("prop-1-en-2-") && name[p.start-1]!=="(")?{profile:"current" as const}:{}),
+      rules:[...(ps.some(p=>p.text==="prop-1-en-2-il"||p.text==="prop-1-en-2-yl")?[blueBookRule("P-32.1.1","P3"),blueBookRule("P-16.5","P1")]:[]),blueBookRule("P-59.2.1.4","P5"),blueBookRule("P-59.2.3","P5"),blueBookRule("P-59.2.5","P5"),
         blueBookRule(group==="alcohol"?"P-63.1.2":"P-64.2","P6"),blueBookRule("P-59.2.1.8","P5")],
       numbering,stereo:"unspecified-only"};
     allowEquivalentNumbering=true;

@@ -1,6 +1,6 @@
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import { legacyPrefixTerm } from "./iupac1979-name-structure.ts";
-import { mapStructuralRegions, analyzeStructuralEquivalence } from "./structural-derivation.ts";
+import { mapStructuralRegions, mapStructuralRepresentative, analyzeStructuralEquivalence } from "./structural-derivation.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { spanishSubstitutiveName } from "./compositional-name-model.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
@@ -43,10 +43,35 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
   if (language === "en") return { name: model.name, language: "en", localized: false };
+  if(model.evidence?.construction==="polysubstituted-benzene-prefixes"&&model.evidence.language==="en"){
+    const prefixes=model.components.filter(component=>component.role==="prefix"&&component.parentId==="parent")
+      .sort((a,b)=>a.start-b.start).map(component=>{
+        const term=component.citationKey?legacyPrefixTerm(component.citationKey):undefined;
+        const multiplicity=component.numbering.length;
+        if(!term||!multiplicity)return null;
+        const multiplier=multiplicity===1?"":({2:"di",3:"tri",4:"tetra",5:"penta",6:"hexa"} as Record<number,string>)[multiplicity];
+        if(multiplier===undefined)return null;
+        const enclosed=component.text.includes("(")?"(":"",prefix=component.numbering.map(([,locant])=>locant).join(",");
+        return `${prefix}-${enclosed}${multiplier}${term.es}${enclosed?")":""}`;
+      });
+    const parent=model.components.find(component=>component.id==="parent");
+    if(parent&&prefixes.length&&prefixes.every(Boolean)){
+      const name=`${prefixes.join("-")}${parent.text==="benzene"?"benceno":parent.text}`;
+      const proof=reconcileSystematicName(model.evidence.reconstructedGraph,name);
+      if(proof?.evidence?.construction==="polysubstituted-benzene-prefixes"&&proof.evidence.language==="es")return {name,language:"es",localized:true};
+    }
+  }
   if ((model.evidence?.construction === "acyclic-aryl-amine" || model.evidence?.construction === "substituted-alkanamide" || model.evidence?.construction === "aminoalkyl-benzenediol") && model.evidence.language === "en") {
     const name = spanishSubstitutiveName(model.components);
     if (name && reconcileSystematicName(model.evidence.reconstructedGraph,name)?.evidence?.language==="es")
       return {name,language:"es",localized:true};
+  }
+  if (model.evidence?.language==="en" && ["multifunctional-alcohol","polycarboxylic-acid"].includes(model.evidence.construction)) {
+    const terms:Record<string,string>={tricarboxylic:"tricarboxílico",anedioic:"anodioico",phenoxy:"fenoxi",phenyl:"fenil",phenol:"fenol",benzene:"benceno",hydroxy:"hidroxi",oxy:"oxi",meth:"met",eth:"et",yl:"il",cyclo:"ciclo",tert:"terc",ane:"ano"};
+    const acid=model.name.endsWith(" acid");
+    const spelling=(acid?"ácido ":"")+(acid?model.name.slice(0,-5):model.name).replace(/tricarboxylic|anedioic|phenoxy|phenyl|phenol|benzene|hydroxy|meth|eth|oxy|yl|cyclo|tert|ane/g,term=>terms[term]);
+    if(reconcileSystematicName(model.evidence.reconstructedGraph,spelling)?.evidence?.language==="es")
+      return {name:spelling,language:"es",localized:true};
   }
   const components = Object.fromEntries(model.components.map(component => [component.id, component]));
   if (model.principalGroup === "amide" && !model.parentSystem) {
@@ -152,7 +177,7 @@ export function reconcileSystematicName(actual: GeneratedMolecule, name: string)
 }
 function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
   const carbohydrate=reconcileCarbohydrateName(actual,name);if(carbohydrate)return carbohydrate;
-  if (name.length > 200 || actual.atoms.some(a => a.tetrahedralParity) || actual.bonds.some(b => b[3] !== undefined)) return null;
+  if (name.length > 200 || actual.bonds.some(b => b[3] !== undefined)) return null;
   const graph: GeneratedMolecule = { atoms: [], bonds: [] };
   const components: NameComponent[] = [];
   const atom = (element: "C" | "O" | "N" = "C") => {
@@ -388,6 +413,7 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     ruleEvidence=family.evidence;
   }
 
+  if (actual.atoms.some(a => a.tetrahedralParity) && ruleEvidence?.stereo !== "specified-tetrahedral") return null;
   // Every named span is literal and every graph atom must be accounted for.
   if (components.some(c => name.slice(c.start, c.end) !== c.text)
     || graph.atoms.some(a => !components.some(c => c.atomIds.includes(a.id)))) return null;
@@ -396,12 +422,15 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   // chemical regions must still have invariant images under all isomorphisms.
   // Families without this proof retain strict per-locant invariance.
   const grouped=new Map<string,number[]>();
-  for(const component of components) if(component.equivalenceGroup)
-    grouped.set(component.equivalenceGroup,[...(grouped.get(component.equivalenceGroup)??[]),...component.atomIds]);
+  for(const component of components) {
+    const key=component.mappingGroup ?? component.equivalenceGroup;
+    if(key) grouped.set(key,[...(grouped.get(key)??[]),...component.atomIds]);
+  }
   const regions = [...grouped.values(),...components.flatMap(c => [
-    ...(!c.equivalenceGroup?[c.atomIds]:[]), ...(allowEquivalentNumbering ? [] : c.numbering.map(([id]) => [id]))])];
+    ...(!c.mappingGroup && !c.equivalenceGroup?[c.atomIds]:[]), ...(allowEquivalentNumbering ? [] : c.numbering.map(([id]) => [id]))])];
   const equivalence=allowEquivalentParents?analyzeStructuralEquivalence(graph,actual):null;
-  const mapping = allowEquivalentParents ? equivalence?.representative : mapStructuralRegions(graph, actual, regions);
+  const mapping = equivalence ? equivalence.representative
+    : allowEquivalentNumbering ? mapStructuralRepresentative(graph,actual) : mapStructuralRegions(graph, actual, regions);
   if (!mapping) return null;
   const assignment=(map: Map<number,number>)=>({parentAtomIds:parent.map(id=>map.get(id)!),
     components:components.map(c=>({...c,atomIds:c.atomIds.map(id=>map.get(id)!),
