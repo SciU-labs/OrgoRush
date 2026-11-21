@@ -135,9 +135,15 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
   if(acid) groups.forEach((ids,i)=>part("carboxyl-"+suffixSites[i],"suffix",suffixStart,name.length,ids,why[0],why[1],
     {parentId:"suffix",mappingGroup:"acid-occurrences",label:"Carboxyl at C"+suffixSites[i],labelEs:"Carboxilo en C"+suffixSites[i]}));
 
+  const scopeNames=new Map<string,string>([["parent",en?"parent structure":"estructura principal"]]);
   function attach(t:Token,anchor:number,scope:string,depth:number):boolean {
     if(depth>3||t.positions.length!==1)return false;
     const {word,body:from}=t, p=t.positions[0], id="group-"+t.start;
+    scopeNames.set(id,word);
+    // The scope map is populated below for every nested component. Keeping the
+    // chemical name here lets locant evidence say which ring or chain is being
+    // numbered instead of referring to a generic "numbered skeleton".
+    const scopeName=scopeNames.get(scope);
     const first=graph.atoms.length;
     const hydroxy=word===(en?"hydroxy":"hidroxi");
     const amino=/(amino)$/.exec(word);
@@ -163,8 +169,21 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
           carbons.push(...ids);
         }
         const split=t.end-Number(!!t.wrapper)-(amino?5:3);
-        part(id+"-link","prefix",split,t.end-Number(!!t.wrapper),[hetero],"The attachment passes through this heteroatom.","La unión pasa por este heteroátomo.",{parentId:id},anchor);
-        part(id+"-alkyl","prefix",from,split,carbons,`The ${copies} alkyl group(s) are bonded to this heteroatom.`,`El heteroátomo lleva ${copies} grupo(s) alquilo.`,{parentId:id},hetero);
+        const heteroName=amino?(en?"amine nitrogen":"nitrógeno de la amina"):(en?"ether oxygen":"oxígeno del éter");
+        const rootedGroup=branched??radical;
+        const groupName=rootedGroup==="methyl"||rootedGroup==="metil"?(en?"methyl":"metilo")
+          :rootedGroup==="ethyl"||rootedGroup==="etil"?(en?"ethyl":"etilo")
+          :rootedGroup==="propyl"||rootedGroup==="propil"?(en?"propyl":"propilo")
+          :rootedGroup==="isopropyl"?(en?"propan-2-yl":"propan-2-ilo")
+          :rootedGroup==="tert-butyl"?(en?"tert-butyl":"terc-butilo"):null;
+        part(id+"-link","prefix",split,t.end-Number(!!t.wrapper),[hetero],
+          `The substituent attaches through the ${heteroName}.`,`El sustituyente se une a través del ${heteroName}.`,{parentId:id},anchor);
+        if(!groupName)return false;
+        const quantified=en?`${copies===2?"Two":"One"} ${groupName}${copies===2?" groups":" group"}`
+          :`${copies===2?"Dos grupos de ":"Un grupo de "}${groupName}`;
+        part(id+"-alkyl","prefix",from,split,carbons,
+          `${quantified} ${copies===1?(en?"is":"está"): (en?"are":"están")} bonded to the ${heteroName}.`,
+          `${quantified} ${copies===1?"está":"están"} unido${copies===1?"":"s"} al ${heteroName}.`,{parentId:id},hetero);
       }
     } else if(aryl||alkyl) {
       const core=(aryl??alkyl)!, isEther=!!aryl&&/oxy$|oxi$/.test(word);
@@ -192,13 +211,30 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
         if(!attach(sub,ids[at-1],id,depth+1))return false;
         used.add(at);
       }
-      if(nested.length || isEther)part(id+"-core","prefix",from+core.index,from+word.length,ids,
-        "Internal numbering starts at the carbon attached to the preceding group.","La numeración interna empieza en el carbono unido al grupo anterior.",
+      if(nested.length || isEther){
+        const internalDetail=nested.map(sub=>`${sub.word} ${en?"at":"en"} C${sub.positions.join(en?" and ":" y ")}`);
+        const internalText=internalDetail.length?`; ${internalDetail.join(en?" and ":" y ")}`:"";
+        const coreExplanation=aryl
+          ?en?`In this ${isEther?"phenoxy":"phenyl"} ring, C1 is the atom bonded to ${isEther?"oxygen":"the parent"}${internalText}.`
+            :`En este anillo ${isEther?"fenoxi":"fenilo"}, C1 es el átomo unido a ${isEther?"oxígeno":"la estructura principal"}${internalText}.`
+          :en?`The ${word} carbon chain starts at C1, the carbon attached to ${isEther?"oxygen":"the preceding group"}${internalText}.`
+            :`La cadena carbonada ${word} empieza en C1, el carbono unido a ${isEther?"oxígeno":"el grupo anterior"}${internalText}.`;
+        const coreExplanationEs=aryl
+          ?`En este anillo ${isEther?"fenoxi":"fenilo"}, C1 es el átomo unido a ${isEther?"oxígeno":"la estructura principal"}${internalText}.`
+          :`La cadena carbonada ${word} empieza en C1, el carbono unido a ${isEther?"oxígeno":"el grupo anterior"}${internalText}.`;
+        part(id+"-core","prefix",from+core.index,from+word.length,ids,
+        coreExplanation,coreExplanationEs,
         {parentId:id,numberingScope:id,numbering:[[ids[0],1]],writtenLocants:nested.filter(()=>!hydroxymethyl).map(s=>({start:s.start,end:s.start+1,atomId:ids[s.positions[0]-1],locant:s.positions[0]}))},attachment);
+      }
       if(isEther)part(id+"-link","prefix",from+word.length-3,from+word.length,[attachment],"Oxygen joins the two carbon regions.","El oxígeno une las dos regiones carbonadas.",{parentId:id},anchor);
     } else return false;
+    scopeNames.set(id,word);
+    const targetAt=scope==="parent"?(en?"of the parent structure":"de la estructura principal"):
+      /phenyl|fenil/.test(scopeName??"")?(en?"of the phenyl ring":"del anillo fenilo"):
+      /phenoxy|fenoxi/.test(scopeName??"")?(en?"of the phenoxy ring":"del anillo fenoxi"):
+      (en?`of the ${scopeName??"substituent"} group`:`de la cadena ${scopeName??"sustituyente"}`);
     part(id,scope==="parent"?"substituent":"prefix",t.start,t.end,graph.atoms.slice(first).map(a=>a.id),
-      `The ${word} group attaches at C${p} of its numbered skeleton.`,`El grupo ${word} se une al C${p} de su esqueleto numerado.`,
+      `The ${word} group attaches at C${p} ${targetAt}.`,`El grupo ${word} se une en C${p} ${targetAt}.`,
       {citationKey:citation(word),locant:p,parentId:scope,numberingScope:scope,numbering:[[anchor,p]]},anchor);
     return true;
   }
@@ -212,9 +248,10 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
       const ids=entry.positions.map(p=>{
         const id=atom(/^met/.test(base)?"C":base==="amino"?"N":"O");bond(parent[p-1],id);return id;
       });
+      const located=entry.positions.map(position=>`C${position}`).join(en?" and ":" y ");
       part("group-"+entry.start,"substituent",entry.start,entry.end,ids,
-        `The prefix locates ${base} at ${entry.positions.join(", ")} on the acid chain.`,
-        `El prefijo sitúa ${base} en ${entry.positions.join(", ")} de la cadena del ácido.`,
+        `The prefix places ${base} at ${located} of the acid parent chain.`,
+        `El prefijo sitúa ${base} en ${located} de la cadena principal del ácido.`,
         {parentId:"parent",citationKey:citation(base),...(multi?{externalMultiplier:"di"}:{}),numbering:entry.positions.map(p=>[parent[p-1],p]),bondIds:ids.map((id,i)=>[parent[entry.positions[i]-1],id])});
     } else {
       if(!aromatic && !cyclic && !/amino$|oxy$|oxi$/.test(entry.word))return null;

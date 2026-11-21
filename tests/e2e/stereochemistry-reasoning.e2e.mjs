@@ -11,6 +11,7 @@ const baseName = "N-methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine
 const constitution = "CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F";
 const fixtures = [
   { id:"fluoxetine-unspecified", smiles:constitution, name:baseName },
+  { id:"tartaric-acid-two-centers", smiles:"O=C(O)[C@H](O)[C@@H](O)C(=O)O", name:"(2R,3R)-2,3-dihydroxybutanedioic acid" },
   ...["@", "@@"].map(marker => {
     const smiles = `CNCC[C${marker}H](c1ccccc1)Oc1ccc(cc1)C(F)(F)F`;
     const graph = moleculeFromSmiles(smiles).molecule;
@@ -37,11 +38,13 @@ for (const fixture of fixtures) test(`${fixture.id}: stereochemical evidence rem
   const esStep = es.steps.find(step=>step.title==="Estereoquímica");
   assert.ok(enStep && esStep);
   const fragments = [enStep.fragments,...enStep.fragments.additionalFragments];
+  const hasAssignedConfiguration=graph.atoms.some(atom=>atom.tetrahedralParity);
   const expected = fragments.filter(fragment=>fragment.semanticId?.startsWith("stereo-"))
     .map(fragment=>({semanticId:fragment.semanticId,atoms:[...fragment.atomIds].sort((a,b)=>a-b),
       bonds:[...new Set((fragment.bondIds??[]).map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort()}));
   assert.ok(expected.some(item=>item.semanticId.startsWith("stereo-center:")));
-  assert.ok(expected.some(item=>item.semanticId.startsWith("stereo-ligand:")));
+  assert.equal(expected.some(item=>item.semanticId.startsWith("stereo-ligand:")),hasAssignedConfiguration,
+    "CIP branches are controls only when the graph specifies a configuration");
 
   const page = await browser.newPage({viewport:{width:1440,height:1000}});
   try {
@@ -71,6 +74,10 @@ for (const fixture of fixtures) test(`${fixture.id}: stereochemical evidence rem
       await page.getByRole("button",{name:language==="es"?"Español":"English",exact:true}).click();
       const expectedName=language==="es"?presentValidatedSystematicName(derivation,"es").name:fixture.name;
       await page.waitForFunction(name=>document.querySelector(".iupac-dock-name")?.textContent?.trim()===name,expectedName,{timeout:20000});
+      if(fixture.id==="tartaric-acid-two-centers"){
+        const text=await panel.innerText();
+        assert.match(text,language==="en"?/C2.*R.*carboxyl group.*oxygen outranks carbon.*C3.*R.*match those at C2/is:/C2.*R.*grupo carboxilo.*oxígeno tiene prioridad sobre carbono.*C3.*R.*coinciden con las de C2/is);
+      }
       const stage=panel.locator("li").filter({has:page.locator(language==="es"?"strong:text-is('Estereoquímica')":"strong:text-is('Stereochemistry')")});
       assert.equal(await stage.count(),1);
       for(const [mode,index] of [["semi",0],["skeletal",2]]) {

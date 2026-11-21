@@ -155,6 +155,30 @@ test("N locants in amines identify the substituted nitrogen during numbering",()
   assert.equal(nLocant.label,"Localizador del nitrógeno de la amina");
 });
 
+test("a selected unsaturation control does not repeat its step explanation",()=>{
+  const graph=imported("CC1=CCC(CC1=O)C(=C)C");
+  const derivation=reconcileSystematicName(graph,"2-methyl-5-prop-1-en-2-ylcyclohex-2-en-1-one");
+  assert.equal(derivation?.status,"FULL");
+  for(const language of ["en","es"]){
+    const model=buildValidatedPriorityReasoning({derivation,graph,language});
+    const step=model.steps.find(item=>item.title===(language==="en"?"Unsaturation":"Insaturaciones"));
+    assert.ok(step);
+    for(const fragment of [step.fragments,...step.fragments?.additionalFragments??[]])
+      if(fragment?.explanation)assert.equal(step.explanation.includes(fragment.explanation.trim()),false,
+        `${language}: ${fragment.semanticId} has no duplicate text below its control`);
+  }
+});
+
+test("P-44 hydroxyl comparison is not applied to an ester parent selected by another principal group",()=>{
+  const graph=imported("COC(=O)c1ccccc1O");
+  const derivation=reconcileSystematicName(graph,"methyl 2-hydroxybenzoate");
+  assert.equal(derivation?.status,"FULL");
+  const model=buildValidatedPriorityReasoning({derivation,graph,language:"en"});
+  const parent=model.steps.find(step=>step.title==="Parent structure");
+  assert.ok(parent);
+  assert.doesNotMatch(parent.explanation,/P-44\.1\.1.*hydroxyl|phenol.*senior|phenolic.*priority/i);
+});
+
 test("both FULL acetyloxy names give exact localized controls for the two distinct carbonyls and every other region", () => {
   const englishNames = ["2-acetyloxybenzoic acid", "2-(acetyloxy)benzoic acid"];
   const spanishName = "ácido 2-(acetiloxi)benzoico";

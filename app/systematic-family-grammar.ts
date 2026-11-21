@@ -169,8 +169,8 @@ function parsePolysubstitutedBenzene(name:string):FamilyGraph|null {
     writtenLocants:entries.flatMap(entry=>entry.locants.map(locant=>{
       const at=source.indexOf(`${locant}`,entry.start);return {start:at,end:at+String(locant).length,atomId:ring[locant-1]!,locant};
     })),
-    explanation:`Benzene is the parent hydride because no characteristic group is expressed by a suffix. All six ring positions are admissible origins; the lowest complete prefix locant set is compared first, then the locants in citation order (P-22.1.3, P-14.4, P-14.5).`,
-    explanationEs:`El benceno es el hidruro progenitor porque ningún grupo característico se expresa con sufijo. Se comparan primero todos los conjuntos de localizadores; si empatan, se comparan en orden de cita (P-22.1.3, P-14.4, P-14.5).`});
+    explanation:`Benzene is selected as the parent structure because no characteristic group is expressed by a suffix. All six ring positions are admissible origins; compare the complete prefix locant set first, then the locants in citation order (P-22.1.3, P-14.4, P-14.5).`,
+    explanationEs:`El benceno se selecciona como estructura principal porque ningún grupo característico se expresa mediante sufijo. Los seis átomos del anillo pueden iniciar la numeración; se compara primero el conjunto completo de localizadores de prefijos y después sus localizadores en orden de cita (P-22.1.3, P-14.4, P-14.5).`});
   for(const [index,entry] of entries.entries()){
     const termStartInWritten=entry.written.indexOf(entry.term[language]);
     if(termStartInWritten<0)return null;

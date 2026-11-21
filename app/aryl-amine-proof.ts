@@ -37,8 +37,14 @@ export function proveArylAmine(parsed: ParsedArylAmine): CompositionalFamilyGrap
     const id = parentId === "parent" ? node.kind : parentId+"-"+node.kind;
     const position = node.locant, parentLevel = parentId === "parent";
     const anchor = node.attachmentBond?.[0];
+    const nAlkyl=node.text.replace(/^N(?:,N)*-/ ,"");
+    const nAlkylBase=nAlkyl.replace(/^di/ ,"");
+    const nAlkylSpanish=nAlkylBase.replace(/^metil$/,"metilo").replace(/^etil$/,"etilo").replace(/^propil$/,"propilo");
     const descriptions: Partial<Record<AmineNameNode["kind"],[string,string]>> = {
-      "n-alkyl":[`The N locant places ${node.multiplicity ? "both alkyl groups" : "the alkyl group"} on the amine nitrogen.`,`El localizador N sitúa ${node.multiplicity ? "ambos grupos alquilo" : "el grupo alquilo"} en el nitrógeno de la amina.`],
+      "n-alkyl":node.multiplicity
+        ?[`The N locant places both ${nAlkylBase} groups directly on the amine nitrogen.`,`El localizador N sitúa ambos grupos ${nAlkylSpanish} directamente en el nitrógeno de la amina.`]
+        :[`The N locant places “${nAlkyl}” directly on the amine nitrogen.`,
+          `El localizador N indica que «${nAlkyl}» se une directamente al nitrógeno de la amina.`],
       phenyl:node.multiplicity ? ["Two equivalent phenyl rings attach to the same methine carbon. Di- counts both rings.","Dos fenilos equivalentes se unen al mismo carbono metínico. Di- cuenta ambos anillos."]
         : [`The phenyl ring bonds directly to parent C${position}.`,`El anillo fenilo se une directamente a C${position} del padre.`],
       phenoxy:[`Oxygen joins the aromatic ring to C${position}. The oxygen-bearing ring carbon is internal C1.`,`El oxígeno une el anillo aromático a C${position}. El carbono del anillo unido al oxígeno es el C1 interno.`],

@@ -892,15 +892,15 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
           locants: [[descriptor.atomIds[0], locant]] },
         explanation: language === "en"
           ? `The double bond C${locant}=C${locant + 1} is stereogenic. At each end the two ligands have different CIP priorities; the higher-priority ligands are ${descriptor.configuration === "E" ? "on opposite sides" : "on the same side"}, so the descriptor is ${descriptor.configuration}. The locant is C${locant} in the parent chain.`
-          : `El enlace doble C${locant}=C${locant + 1} es estereogénico. En cada extremo, los ligandos tienen prioridades CIP distintas; los de mayor prioridad quedan ${descriptor.configuration === "E" ? "en lados opuestos" : "del mismo lado"}, por lo que el descriptor es ${descriptor.configuration}. El localizador C${locant} pertenece a la cadena progenitora.` };
+          : `El enlace doble C${locant}=C${locant + 1} es estereogénico. En cada extremo, los ligandos tienen prioridades CIP distintas; los de mayor prioridad quedan ${descriptor.configuration === "E" ? "en lados opuestos" : "del mismo lado"}, por lo que el descriptor es ${descriptor.configuration}. El localizador C${locant} pertenece a la cadena principal.` };
       fragmentsForStereo.push(descriptorFragment);
       const locantText = String(locant);
       fragmentsForStereo.push({ text: locantText, start: stereo.prefixStart + stereo.text.indexOf(locantText),
         kind: "numbering", semanticId: `stereo:ez:${locant}:locant`, locant, atomIds: [descriptor.atomIds[0]], bondIds: [],
         explicitTarget: { atomIds: [descriptor.atomIds[0]], bondIds: [], locants: [[descriptor.atomIds[0], locant]] },
-        label: language === "en" ? `Parent-chain locant C${locant}` : `Localizador de la cadena progenitora C${locant}`,
+        label: language === "en" ? `Parent-chain locant C${locant}` : `Localizador de la cadena principal C${locant}`,
         explanation: language === "en" ? `This locant identifies the C${locant}=C${locant + 1} stereogenic bond in the parent chain.`
-          : `Este localizador identifica el enlace estereogénico C${locant}=C${locant + 1} de la cadena progenitora.` });
+          : `Este localizador identifica el enlace estereogénico C${locant}=C${locant + 1} de la cadena principal.` });
       for (const [sideIndex, pair] of (alkeneEvidence?.sides ?? []).entries()) {
         const endpointLocant = locant + sideIndex;
         for (const priority of pair) {
@@ -913,14 +913,14 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
             : language === "en" ? "The other ligand at this end is equivalent, so no E/Z descriptor can be assigned." : "El otro ligando de este extremo es equivalente, por lo que no puede asignarse E/Z.";
           if (priority.atomId === null) continue;
           const element = input.analysis.mainChain.includes(priority.atomId)
-            ? language === "en" ? "parent-chain carbon" : "carbono de la cadena progenitora"
+            ? language === "en" ? "parent-chain carbon" : "carbono de la cadena principal"
             : language === "en" ? "substituent" : "sustituyente";
           const branchFragment: ReasoningNameEvidence = { text: language === "en"
             ? `C${endpointLocant} · ${isHigh ? "higher" : "lower"}-priority ligand`
             : `C${endpointLocant} · ligando de prioridad ${isHigh ? "mayor" : "menor"}`,
             structuralReference: "cip-priority-branch",
             kind: "stereo", semanticId: `stereo:ez:${locant}:C${endpointLocant}:priority${rank}`,
-            label: language === "en" ? `Select the ${isHigh ? "higher" : "lower"}-priority ligand at C${endpointLocant}`
+        label: language === "en" ? `Select the ${isHigh ? "higher" : "lower"}-priority ligand at C${endpointLocant}`
               : `Seleccionar el ligando de prioridad ${isHigh ? "mayor" : "menor"} en C${endpointLocant}`,
             atomIds: priority.branchAtomIds, bondIds: priority.branchBondIds,
             explanation: language === "en" ? `This is the ${element} attached to C${endpointLocant}. ${comparison}`
