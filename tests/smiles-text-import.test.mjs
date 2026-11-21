@@ -7,6 +7,7 @@ import { moleculeFromSmiles, moleculeToSmiles } from "../app/openchemlib-adapter
 import { readSmilesFileRecord } from "../app/smiles-file.ts";
 import { retainValidManualDisplayPlacements } from "../app/manual-display-direction.ts";
 import { getCondensedUnavailableReason } from "../app/condensed-layout.ts";
+import { getMainChainStereoDescriptors } from "../app/double-bond-stereochemistry.ts";
 
 const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
 const ast = ts.createSourceFile("page.tsx", page, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
@@ -37,9 +38,11 @@ function editor(viewMode = "semi-developed") {
     getCondensedUnavailableReason,
     cloneMolecule: structuredClone,
     findMoleculeValenceViolation: () => null,
-    analyzeMolecule: () => { context.analysisCalls += 1; return { name: "test name" }; },
+    analyzeMolecule: (molecule) => { context.analysisCalls += 1; return { name: "test name",
+      mainChain: molecule.atoms.filter(atom => atom.element === "C").map(atom => atom.id) }; },
     externalCandidateNeedsNeutralLocalName: () => false,
     getTetrahedralStereoCenters: () => [],
+    getMainChainStereoDescriptors,
     localizedIupac: (name) => name,
     localizedDynamicText: (message) => message,
     preservesSourceName: () => false,

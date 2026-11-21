@@ -42,7 +42,7 @@ for (const { row, profile: fixedProfile } of failures) {
       assert.deepEqual([...model.analysis.numberedAtoms], previous[profile].analysis.numbering);
       if (row.family === "aromatic") {
         const explanation = model.steps.find(step => step.nameRole === "parent").explanation;
-        assert.match(explanation, selection.language === "en" ? /aromatic parent ring.*6 carbons/ : /anillo aromático.*6 carbonos/);
+        assert.match(explanation, /aromatic ring of 6 carbons.*is the parent|anillo aromático de 6 carbonos.*(?:padre|estructura principal)/);
         assert.doesNotMatch(explanation, /hex-|parent chain|cadena principal/);
         assert.equal(parent.text, selection.language === "en" ? "benzene" : "benceno");
         if (profile !== "2013-es") {

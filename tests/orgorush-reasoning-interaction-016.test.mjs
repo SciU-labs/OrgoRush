@@ -121,7 +121,12 @@ test("016 double, triple and E/Z targets come from exact structural evidence", (
     const m = model(smiles), target = m.role("unsaturation");
     const expected = m.molecule.bonds.filter(([, , actual]) => actual === order);
     assert.deepEqual(bondSet(target.bondIds), bondSet(expected));
-    if (smiles.includes("/")) assert.deepEqual(bondSet(m.role("stereo").bondIds), bondSet(expected));
+    if (smiles.includes("/")) {
+      const stereoTarget = m.role("stereo");
+      assert.ok(expected.every(([a, b]) => bondSet(stereoTarget.bondIds).has(key(a, b))));
+      assert.deepEqual(bondSet(stereoTarget.bondIds), bondSet(m.molecule.bonds),
+        "the E/Z step highlights its double bond and both priority branches");
+    }
   }
 });
 

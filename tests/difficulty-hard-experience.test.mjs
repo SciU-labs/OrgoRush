@@ -78,7 +78,9 @@ function checkFragments(q, a, locale) {
   for (const d of descriptors) {
     const linked = parts.find(p => p.semanticId === `stereo:ez:${d.locant}`);
     assert.ok(linked, `${name}: E/Z descriptor needs structured evidence`);
-    assert.equal(linked.text, `(${d.locant}${d.configuration})`); assert.deepEqual(linked.atomIds, d.atomIds);
+    assert.equal(linked.text, `${d.locant}${d.configuration}`);
+    assert.ok(name.includes(`(${linked.text})`), `${name}: descriptor keeps its locant and configuration`);
+    assert.deepEqual(linked.atomIds, d.atomIds);
   }
   totals.fragmentNames++;
 }

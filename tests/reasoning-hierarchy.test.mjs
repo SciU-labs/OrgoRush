@@ -166,10 +166,10 @@ test("aromatic nitro groups are explained as prefixes, not principal suffix grou
 
 test("explains ring-attached aldehydes and acids with the functional carbon outside the ring", () => {
   const cases = [
-    ["O=CC1CCCCC1", /aldehído.*fuera del padre cíclico/i, /carbono del grupo –CHO queda fuera del anillo/i, /–CHO remains outside the ring/i],
-    ["O=C(O)C1CCCCC1", /ácido carboxílico.*fuera del padre cíclico/i, /carbono del grupo –COOH queda fuera del anillo/i, /–COOH remains outside the ring/i],
-    ["O=CC1CCCC1", /aldehído.*fuera del padre cíclico/i, /carbono del grupo –CHO queda fuera del anillo/i, /–CHO remains outside the ring/i],
-    ["O=C(O)C1CCCC1", /ácido carboxílico.*fuera del padre cíclico/i, /carbono del grupo –COOH queda fuera del anillo/i, /–COOH remains outside the ring/i],
+    ["O=CC1CCCCC1", /aldehído.*fuera del padre cíclico/i, /carbono del grupo aldehído.*queda fuera del anillo/i, /aldehyde carbon lies outside the ring/i],
+    ["O=C(O)C1CCCCC1", /ácido carboxílico.*fuera del padre cíclico/i, /carbono del grupo carboxilo.*queda fuera del anillo/i, /carboxyl carbon lies outside the ring/i],
+    ["O=CC1CCCC1", /aldehído.*fuera del padre cíclico/i, /carbono del grupo aldehído.*queda fuera del anillo/i, /aldehyde carbon lies outside the ring/i],
+    ["O=C(O)C1CCCC1", /ácido carboxílico.*fuera del padre cíclico/i, /carbono del grupo carboxilo.*queda fuera del anillo/i, /carboxyl carbon lies outside the ring/i],
   ];
 
   for (const [smiles, spanishGroupPattern, spanishParentPattern, englishParentPattern] of cases) {

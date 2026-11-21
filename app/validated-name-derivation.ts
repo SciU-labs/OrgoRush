@@ -215,6 +215,10 @@ function parseNameStereo(name: string): ParsedNameStereo {
 }
 
 function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
+  // Preserve the dedicated carbohydrate reconciler's full stereo-aware path
+  // before generic R/S name parsing, which handles a different grammar.
+  const carbohydrate = reconcileCarbohydrateName(actual, name);
+  if (carbohydrate) return carbohydrate;
   const parsed = parseNameStereo(name);
   const constitutional = parsed.descriptors.length ? { ...actual,
     atoms: actual.atoms.map(({ tetrahedralParity: _parity, tetrahedralBondTo: _carrier, ...atom }) => atom) } : actual;

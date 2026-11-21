@@ -56,6 +56,10 @@ for (const [cid,es,en,group] of acceptance) test(`B6 compositional acceptance ${
       assert.ok(target.bondIds.every(pair=>graph.bonds.some(edge=>edgeKey(edge)===edgeKey(pair))));
     }
     for(const step of model.steps)for(const fragment of step.fragments?[step.fragments,...(step.fragments.additionalFragments??[])]:[]) {
+      if(fragment.structuralReference) {
+        assert.ok(fragment.atomIds.every(id=>graph.atoms.some(a=>a.id===id)),"structural control maps to the molecular graph");
+        continue;
+      }
       assert.equal(name.slice(fragment.start,fragment.start+fragment.text.length),fragment.text,'every new control has a literal source span');
       assert.equal(fragment.language,language);assert.ok(fragment.numberingScope);
       if(fragment.semanticId?.startsWith('branch-locant:')) {

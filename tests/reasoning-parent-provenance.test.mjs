@@ -270,16 +270,14 @@ test("a principal group confined to a cycloalkane supports the cyclic-parent rul
   const evidence = parentStructureSelectionEvidence(compound.molecule, compound.analysis, "es");
   assert.equal(compound.analysis.primaryFunctionalGroup, "alcohol");
   assert.equal(evidence.level, "rule-supported");
-  assert.equal(evidence.rule, "P-59.2.1.4");
+  assert.equal(evidence.rule, undefined, "the learner-facing selection omits internal rule identifiers");
   assert.equal(evidence.reconciliation, "unverified");
   assert.equal(evidence.candidates[0].status, "selected-by-rule");
   assert.equal(evidence.candidates[0].regionKind, "carbocyclic-ring");
   assert.equal(evidence.candidates[0].principalGroupCount, 1);
-  const context = evidence.candidates.find(item => item.status === "structural-region");
-  assert.ok(context);
-  assert.ok(context.atomIds.every(id => !compound.analysis.mainChain.includes(id)));
-  assert.ok(context.bondIds.every(([a, b]) => compound.molecule.bonds.some(([x, y]) => x === a && y === b || x === b && y === a)));
-  assert.match(evidence.explanation, /no como candidata a padre evaluada/);
+  assert.equal(evidence.candidates.some(item => item.status === "structural-region"), false,
+    "the learner-facing explanation does not expose discarded structural candidates");
+  assert.match(evidence.explanation, /contiene el grupo principal.*forma la estructura principal.*cadena unida se nombra como sustituyente/);
 
   const legacy = parentStructureSelectionEvidence(compound.molecule, compound.analysis, "en",
     compound.analysis.chainName, "iupac-1979-legacy");
@@ -388,7 +386,7 @@ test("a carboxyl group outside a ring is one suffix occurrence associated with t
     "the two oxygens do not become two carboxyl occurrences");
   assert.equal(evidence.principalGroupComparison, undefined,
     "the exocyclic carboxyl carbon belongs to the cyclic suffix construction, not a one-carbon chain comparison");
-  assert.match(evidence.explanation, /carbon of –COOH remains outside the ring/);
+  assert.match(evidence.explanation, /carboxyl carbon lies outside the ring/);
 
   const mixed = analyzed("O=C(O)CC1CCC(C(=O)O)CC1");
   const mixedEvidence = parentStructureSelectionEvidence(mixed.molecule, mixed.analysis, "en");

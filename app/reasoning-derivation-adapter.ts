@@ -586,7 +586,8 @@ function addTetrahedralStereoEvidence(steps: PriorityReasoningStep[], graph: Gen
       : `${centerLabel} es estereogénico: sus cuatro ligandos tienen prioridades CIP distintas. ${configuration
         ? `La configuración guardada es ${configuration}; este descriptor se incorpora al nombre conciliado.`
         : "El grafo no especifica una configuración tetraédrica, por lo que no se añade un descriptor R/S."}`);
-    fragments.push({ text: centerLabel, label: en ? `Select stereogenic center ${centerLabel}` : `Seleccionar centro estereogénico ${centerLabel}`,
+    fragments.push({ text: centerLabel, structuralReference: "stereogenic-center",
+      label: en ? `Select stereogenic center ${centerLabel}` : `Seleccionar centro estereogénico ${centerLabel}`,
       kind: "stereo", semanticId: `stereo-center:${centerId}`, atomIds: [centerId], bondIds: [],
       explanation: en ? "Tetrahedral stereogenic center." : "Centro estereogénico tetraédrico." });
     const centerFragment = fragments.at(-1)!;
@@ -610,7 +611,7 @@ function addTetrahedralStereoEvidence(steps: PriorityReasoningStep[], graph: Gen
       if (priority.atomId === null) continue;
       const branchLabel = en ? `Priority ${priority.rank} · ${element}-rooted branch`
         : `Prioridad ${priority.rank} · rama con átomo inicial ${element}`;
-      const branch: ReasoningNameFragment = { text: branchLabel,
+      const branch: ReasoningNameFragment = { text: branchLabel, structuralReference: "cip-priority-branch",
         label: en ? `Select ${branchLabel}` : `Seleccionar ${branchLabel}`, kind: "stereo",
         semanticId: `stereo-ligand:${centerId}:${priority.rank}`, atomIds: priority.branchAtomIds,
         bondIds: priority.branchBondIds, explanation: en

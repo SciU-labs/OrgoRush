@@ -74,7 +74,7 @@ for (const fixture of arylFunctionalCases) {
       assert.ok(result.linked.every((part) => part.text !== result.name), "no whole-name multi-role fallback");
       const parentStep = result.steps.find((step) => step.number === parent.stepNumber);
       const arylStep = result.steps.find((step) => step.number === aryl.stepNumber);
-      assert.match(parentStep.explanation, language === "en" ? /chain containing the principal/ : /cadena.*función principal/);
+      assert.match(parentStep.explanation, language === "en" ? /chain.*contains the principal/ : /cadena.*grupo principal/);
       assert.ok(parentStep.explanation.includes(language === "en"
         ? `${compound.analysis.mainChain.length}-carbon` : `cadena de ${compound.analysis.mainChain.length}`));
       assert.match(arylStep.explanation, language === "en" ? /hydrogen.*benzene.*aryl.*phenyl/ : /hidrógeno.*bencénico.*arilo.*fenil/);

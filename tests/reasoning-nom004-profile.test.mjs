@@ -144,7 +144,7 @@ test("NOM-004 C/D: 2013 and 1979 explanations use their selected NOM-003 parent"
     const modernResult = inspectProfile(molecule, current, currentName, "es", "current");
     const legacyResult = inspectProfile(molecule, legacy, legacyName, "es", "iupac-1979-es");
     assert.match(modernResult.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "", /cadena continua más larga/i);
-    assert.match(legacyResult.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "", /análisis Legacy de 1979/);
+    assert.match(legacyResult.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "", /perfil Legacy de 1979/);
     assert.equal(names.spanishLegacy, legacyName);
     assert.equal(modernResult.fragments["04"]?.text,
       expected.id === "19" ? "4-etenil" : "4-etinil", "the unsaturated substituent is linked in its assigned section");
@@ -154,7 +154,7 @@ test("NOM-004 C/D: 2013 and 1979 explanations use their selected NOM-003 parent"
     ]) {
       const result = inspectProfile(molecule, analysis, name, language, convention);
       assert.match(result.steps.find(({ nameRole }) => nameRole === "parent")?.explanation ?? "",
-        convention === "current" ? /continuous carbon chain chosen as the parent/i : /1979 Legacy analysis selects/);
+        convention === "current" ? /continuous carbon chain chosen as the parent/i : /1979 Legacy profile.*parent chain/i);
       const unsaturation = result.fragments["07"];
       if (analysis.doubleBondLocants.length || analysis.tripleBondLocants.length) {
         assert.ok(unsaturation || result.steps.find(({ nameRole }) => nameRole === "unsaturation"), name);
@@ -398,7 +398,8 @@ test("manual findings: parent, orientation, multiple bond and historical spellin
           }
           if (legacy) assert.doesNotMatch(step("function").explanation, /[«“]1-(?:ona|one)/, "an implicit Legacy carbonyl locant is not taught as a written suffix");
         }
-        if (legacy && !expected.function) assert.match(step("parent").explanation, language === "es" ? /enlaces múltiples antes.*longitud/ : /multiple bonds before chain length/);
+        if (legacy && !expected.function) assert.match(step("parent").explanation,
+          language === "es" ? /más enlaces múltiples y después se considera su longitud/ : /greatest number of multiple bonds.*before chain length/);
         if (legacy) assert.ok(result.steps.every((item) => !item.explanation.includes(expected.current[index])), `${name}: no modern spelling leaks`);
       }
     }

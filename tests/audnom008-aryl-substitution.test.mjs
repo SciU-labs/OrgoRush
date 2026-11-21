@@ -136,7 +136,7 @@ for (const fixture of [plain, ...methylPhenylCases]) {
           "the inner ring locant must not become a chain-numbering target");
         assert.match(model.steps.find((item) => item.nameRole === "function").explanation, /–OH/);
         assert.match(model.steps.find((item) => item.nameRole === "parent").explanation,
-          profile.language === "es" ? /función principal alcohol/ : /principal alcohol function/);
+          profile.language === "es" ? /grupo principal \(alcohol\)/ : /principal alcohol/);
       }
       const exported = moleculeToSmiles(molecule);
       assert.equal(exported.ok, true, exported.error);

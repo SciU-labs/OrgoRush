@@ -43,7 +43,8 @@ test('UNSATURATION-013 pedagogy separates parent C=C and the real C3=CH2 attachm
  const {engine}=chemistry,o=observe(engine,'C=CC(CC)=C'),a=o.analyses.current,s=a.substituents[0],anchor=a.mainChain[2],carbon=s.atomIds[0];
  for(const key of ['2013-es','2013-en']){
   const model=project(engine,o,key),text=model.steps.map(s=>s.explanation).join(' '),term=key==='2013-en'?'methylidene':'metilideno';
-  assert.match(text,/P-44\.3\.2/);assert.match(text,/5 carbon/);assert.match(text,/P-29\.2/);assert.match(text,/P-56\.4/);
+  assert.match(text,/5 carbon/);assert.match(text,/methylidene|metilideno/);
+  assert.doesNotMatch(text,/P-\d|P-\d+\.\d/);
   assert.match(text,/CH₂/);assert.match(text,/CH₃/);assert.ok(text.includes(o.profiles[key].name));
   const part=evidence(model).find(p=>p.semanticId==='substituent:methylidene:3');
   assert.equal(part.text,term);assert.equal(part.bondType,'double');assert.ok(part.bondIds.some(p=>isBond(p,anchor,carbon)));

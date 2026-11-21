@@ -24,7 +24,7 @@ export type ReasoningNameEvidence = {
   structuralContext?: { functionKind: string; numberingScope: "parent" | "substituent";
     attachment: readonly [number, number]; locant?: number };
   /** Graph-derived structural reference that is not a literal span in the name. */
-  structuralReference?: "detected-nitro-groups";
+  structuralReference?: "detected-nitro-groups" | "cip-priority-branch" | "stereogenic-center";
   explanation?: string;
   contributions?: FunctionalContribution[];
 };
@@ -918,6 +918,7 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
           const branchFragment: ReasoningNameEvidence = { text: language === "en"
             ? `C${endpointLocant} · ${isHigh ? "higher" : "lower"}-priority ligand`
             : `C${endpointLocant} · ligando de prioridad ${isHigh ? "mayor" : "menor"}`,
+            structuralReference: "cip-priority-branch",
             kind: "stereo", semanticId: `stereo:ez:${locant}:C${endpointLocant}:priority${rank}`,
             label: language === "en" ? `Select the ${isHigh ? "higher" : "lower"}-priority ligand at C${endpointLocant}`
               : `Seleccionar el ligando de prioridad ${isHigh ? "mayor" : "menor"} en C${endpointLocant}`,
