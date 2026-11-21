@@ -264,14 +264,15 @@ function makeStep(input: {
       const fragmentId=reasoningFragmentId(number,item);
       fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[]};
     }
-    if(component.equivalenceGroup && component.text.startsWith("di")) {
+  }
+  if(title===(language==="en"?"Substituents and locants":"Sustituyentes y localizadores"))
+    for(const component of components) if(component.attachmentScope==="amide-nitrogen"&&component.equivalenceGroup&&component.text.startsWith("di")) {
       const item:ReasoningNameFragment={text:"di",start:component.start,kind:"substituent",language,
         semanticId:`amide-multiplier:${component.id}`,atomIds:component.atomIds,bondIds:component.bondIds,
         label:language==="en"?"Two equivalent substituents":"Dos sustituyentes equivalentes"};
       locantFragments.push(item);const fragmentId=reasoningFragmentId(number,item);
       fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:component.atomIds,bondIds:component.bondIds,locants:[]};
     }
-  }
   for(const component of components) if(component.internalNumbering
     && !(title===(language==="en"?"Numbering":"Numeración")&&component.locant==="N")) {
     const systematic = /^prop-([1-9])-en-([1-9])-(?:il|yl)$/.exec(component.text);
@@ -367,13 +368,23 @@ export function buildValidatedPriorityReasoning(input: {
         : " La amida tiene prioridad sobre el grupo hidroxilo: hidroxi- se expresa como prefijo y la amida aporta el sufijo."
       : "";
     const aminePrefix=derivation.principalGroup==="amide" && derivation.components.some(component=>component.role==="prefix"&&component.text==="amino");
+    const amineNitrogen = derivation.principalGroup === "amine"
+      ? suffix.atomIds.find(id => elements.get(id) === "N") : undefined;
+    const amineCarbonSubstituents = amineNitrogen === undefined ? 0 : graph.bonds.filter(([a,b,order]) => order === 1
+      && (a === amineNitrogen && elements.get(b) === "C" || b === amineNitrogen && elements.get(a) === "C")).length;
+    const amineClass = amineCarbonSubstituents === 1 ? "primary" : amineCarbonSubstituents === 2 ? "secondary"
+      : amineCarbonSubstituents === 3 ? "tertiary" : undefined;
+    const amineClassDetail = amineClass
+      ? language === "en" ? ` The amine is ${amineClass}: its nitrogen is bonded to ${amineCarbonSubstituents} carbon groups.`
+        : ` La amina es ${amineClass === "primary" ? "primaria" : amineClass === "secondary" ? "secundaria" : "terciaria"}: su nitrógeno está unido a ${amineCarbonSubstituents} grupos carbonados.`
+      : "";
     const functionalExplanation=aminePrefix
       ? language==="en"?"Amide is the principal group. It takes priority over the amine, so amide uses the suffix and the amine is cited as amino-."
         : "La amida es la función principal y tiene prioridad sobre la amina: aporta el sufijo y la amina se cita como «amino-»."
       : language==="en"?`${groupNames.en[derivation.principalGroup]} is the principal functional group and is expressed by its characteristic suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante su sufijo característico.`;
     stages.push({ title: language === "en" ? "Principal functional group" : "Grupo funcional principal",
-      explanation: functionalExplanation+priorityDetail
+      explanation: functionalExplanation+priorityDetail+amineClassDetail
         +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix, ...derivation.components.filter(c=>c.role==="suffix" && c.parentId===suffix.id)] });
   }
   if (derivation.principalGroup === "none") {
@@ -561,17 +572,17 @@ export function buildValidatedPriorityReasoning(input: {
   const localizedCitations=orderedPeers.map(({component})=>localizedCitationName(component.text,language));
   const localizedAlphabeticalOrder=orderedPeers.length>1?describeAlphabeticalOrder(orderedPeers.map(({component,cited,name,multiplier})=>{
     const localizedName=localizedCitationName(name,language);
-    const comparisonName=localizedName.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z]/g,"").toLocaleLowerCase(language);
+    const localizedComparisonName=localizedCitationName(component.citationKey??name,language);
+    const comparisonName=localizedComparisonName.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z]/g,"").toLocaleLowerCase(language);
     return {sourceName:localizedCitationName(component.text,language),name:localizedName,comparisonName,
       locants:component.numbering.flatMap(([,n])=>typeof n==="number"?[n]:[]),
       internalLocants:component.internalNumbering?.map(([,locant])=>locant)??[],
       citedPrefix:localizedCitationName(cited,language),multiplier,complex:/[()[\]{}-]/.test(localizedName)};
   }),language):undefined;
-  const alphabeticSummary=localizedAlphabeticalOrder&&orderedPeers.length>1
-    ? (language==="en"?"Compare complete substituent names, ignoring locants and outside multipliers. ":"Se comparan los nombres completos de los sustituyentes, ignorando localizadores y multiplicadores externos. ")
-      +localizedAlphabeticalOrder.paragraphs.at(-1)
-    : localizedAlphabeticalOrder?.paragraphs.join(" ");
-  const displayedAlphabeticalOrder=localizedAlphabeticalOrder?{...localizedAlphabeticalOrder,
+  const alphabeticSummary=language==="es"&&localizedAlphabeticalOrder&&orderedPeers.length>1
+    ? "Se comparan los nombres completos de los sustituyentes, ignorando localizadores y multiplicadores externos. "+localizedAlphabeticalOrder.paragraphs.at(-1)
+    : alphabeticalOrder?.paragraphs.join(" ");
+  const displayedAlphabeticalOrder=language==="es"&&localizedAlphabeticalOrder?{...localizedAlphabeticalOrder,
     fragment:localizedCitations.join(" → ")}:alphabeticalOrder;
   if (alphabeticalOrder && [...peerCounts.values()].some(count => count > 1))
     stages.push({ title: language === "en" ? "Alphabetical order" : "Orden alfabético",

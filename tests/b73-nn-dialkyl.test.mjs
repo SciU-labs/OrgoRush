@@ -23,11 +23,14 @@ test('B7.3 N locants and multiplicative control target both actual branches',()=
   for(const [name,language] of [['N,N-dimetilbenzamida','es'],['N,N-dimethylbenzamide','en']]){
     const proof=reconcileSystematicName(p.molecule,name),branches=proof.components.filter(c=>c.attachmentScope==='amide-nitrogen');
     const model=buildValidatedPriorityReasoning({derivation:proof,graph:p.molecule,language});
-    const step=model.steps.find(s=>s.fragments?.semanticId?.startsWith('n-equivalent-'));
+    const step=model.steps.find(s=>s.title===(language==='en'?'Substituents and locants':'Sustituyentes y localizadores')
+      && s.fragments?.semanticId?.startsWith('n-equivalent-'));
     assert.ok(step);const fragments=[step.fragments,...step.fragments.additionalFragments??[]];
-    const n=fragments.filter(f=>f.semanticId?.startsWith('amide-n-locant:'));
+    const numbering=model.steps.find(s=>s.title===(language==='en'?'Numbering':'Numeración'));
+    assert.ok(numbering);const numberingFragments=[numbering.fragments,...numbering.fragments?.additionalFragments??[]].filter(Boolean);
+    const n=numberingFragments.filter(f=>f.semanticId?.startsWith('amide-n-locant:'));
     assert.equal(n.length,2);assert.deepEqual(n.map(x=>x.start),[0,2]);
-    for(const f of n)assert.deepEqual(step.fragmentTargets[reasoningFragmentId(step.number,f)].atomIds,[branches[0].numbering[0][0]]);
+    for(const f of n)assert.deepEqual(numbering.fragmentTargets[reasoningFragmentId(numbering.number,f)].atomIds,[branches[0].numbering[0][0]]);
     const f=fragments.find(x=>x.semanticId?.startsWith('amide-multiplier:'));assert.ok(f);
     const target=step.fragmentTargets[reasoningFragmentId(step.number,f)];assert.equal(target.atomIds.length,2);assert.equal(target.bondIds.length,2);
   }

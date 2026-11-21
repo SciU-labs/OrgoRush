@@ -67,13 +67,14 @@ test('amide multiplier and ester alcohol group retain their distinct graph targe
  assert.ok(alcohol&&methoxy);assert.ok(alcohol.atomIds.every(id=>!methoxy.atomIds.includes(id)));
 });
 
-test('nonliteral functional and numbering controls remain selectable as structural references',async()=>{
+test('nonliteral functional and numbering controls stay selectable without generic labels',async()=>{
  const c=await loadExerciseChemistry();try{
   const f={text:'aldehído',label:'Grupo aldehído',kind:'function',semanticId:'suffix',atomIds:[1,2]};
   const id=reasoningFragmentId('01',f),target={stepNumber:'01',fragmentId:id,atomIds:[1,2],bondIds:[[1,2]],locants:[]};
   const row=c.engine.ReasoningNameFragmentView({fragment:f,stepNumber:'01',visualTargets:{[id]:target},onActivateTarget(){},language:'es',activeName:'propanal'}).props.children[0];
-  const button=row.props.children[0],label=row.props.children[1];assert.equal(button.type,'button');assert.equal(button.props['data-reasoning-region'],'structural-reference');
-  assert.match(button.props['aria-label'],/Referencia estructural/);assert.match(label.props.children,/Referencia estructural/);
+  const button=row.props.children[0];assert.equal(button.type,'button');assert.equal(button.props['data-reasoning-region'],'structural-reference');
+  assert.match(button.props['aria-label'],/aldehído/);assert.doesNotMatch(button.props['aria-label'],/Referencia estructural|Structural reference/);
+  assert.doesNotMatch(JSON.stringify(row.props.children),/Referencia estructural|Structural reference/);
   for(const language of ['es','en']){
    const part={text:'2,4-diene',label:'Multiple bonds, locants, and multiplicity',kind:'unsaturation'};
    const partId=reasoningFragmentId('03',part),numberTarget={stepNumber:'03',fragmentId:partId,atomIds:[2,4],bondIds:[],locants:[[2,2],[4,4]]};
