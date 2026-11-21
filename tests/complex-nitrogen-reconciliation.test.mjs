@@ -61,11 +61,13 @@ test("FULL retains the ether bridge from structural reasoning alongside the comp
   assert.ok(ether);
   const proof=reconcileSystematicName(graph,name);
   const step=buildValidatedPriorityReasoning({graph,derivation:proof,language:"en",activeName:name,structuralEvidence})
-    .steps.find(s=>s.title==="Composition of substituents");
+    .steps.find(s=>s.title==="Substituents and locants");
   const controls=[step.fragments,...step.fragments.additionalFragments];
   const bridges=controls.filter(c=>c.semanticId===ether.id);
   assert.equal(bridges.length,1);
   assert.deepEqual(new Set(bridges[0].atomIds),new Set([5,12,13]));
   assert.deepEqual(new Set(bridges[0].bondIds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":"))),new Set(["5:12","12:13"]));
   assert.ok(controls.find(c=>c.semanticId==="phenoxy").atomIds.length>bridges[0].atomIds.length);
+  assert.ok(!controls.some(c=>["graph:amine fragment:2,3,4,6","graph:ringSystem:10,11,13,14,15,16"].includes(c.semanticId)),
+    "generic amine and ring controls are omitted when the chemical name already identifies those regions");
 });

@@ -66,6 +66,8 @@ const fullCases = [
   { name: "2-[4-(2-methylpropyl)phenyl]propanoic acid", smiles: "CC(C)Cc1ccc(cc1)C(C)C(=O)O", ids: ["suffix", "parent", "aryl", "aryl-prefix"] },
   { name: "2-(acetyloxy)benzoic acid", smiles: "CC(=O)Oc1ccccc1C(=O)O", ids: ["suffix", "parent", "acyloxy"] },
   { name: "N-(3-hydroxy-4-methylphenyl)acetamide", smiles: "CC(=O)Nc1cc(O)c(C)cc1", ids: ["suffix", "parent", "aryl", "aryl-prefix-3", "aryl-prefix-4"] },
+  { name: "2-(diethylamino)-N-(2,6-dimethylphenyl)acetamide", smiles: "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+    ids: ["suffix", "parent", "branch-0", "branch-17", "branch-0-amino-alkyl", "branch-17-ring-alkyl"] },
 ];
 const sortedIds = ids => [...ids].sort((a, b) => a - b);
 const edgeKey = ([a, b]) => sortedIds([a, b]).join(":");
@@ -82,7 +84,7 @@ test("FULL derivations become concise priority steps with independently selectab
     assert.ok(model.steps.some(step => step.title === "Estructura principal"));
     assert.ok(model.steps.some(step => step.title === "Numeración"));
     assert.ok(model.steps.some(step => step.title === "Sustituyentes y localizadores"));
-    assert.ok(model.steps.every(step => step.explanation.length < 260), `${fixture.name}: concise step text`);
+    assert.ok(model.steps.every(step => step.explanation.length < 260), `${fixture.name}: concise step text ${JSON.stringify(model.steps.map(({title,explanation})=>({title,explanation,length:explanation.length})))}`);
     const controls = model.steps.flatMap(step => [step.fragments, ...(step.fragments?.additionalFragments ?? [])])
       .filter(fragment => fragment?.semanticId);
     for (const id of fixture.ids) {
@@ -105,6 +107,52 @@ test("FULL derivations become concise priority steps with independently selectab
     const localizerButtons = [numbering.fragments, ...(numbering.fragments?.additionalFragments ?? [])];
     assert.ok(localizerButtons.some(fragment => fragment?.kind === "numbering"), `${fixture.name}: locant controls exist`);
   }
+});
+
+test("lidocaine explains amide priority and keeps its two nitrogen regions chemically distinct", () => {
+  const graph=imported("CCN(CC)CC(=O)Nc1c(C)cccc1C");
+  const derivation=reconcileSystematicName(graph,"2-(diethylamino)-N-(2,6-dimethylphenyl)acetamide");
+  assert.equal(derivation?.status,"FULL");
+  for(const language of ["es","en"]) {
+    const model=buildValidatedPriorityReasoning({derivation,graph,language});
+    const functionStep=model.steps.find(step=>step.title===(language==="es"?"Grupo funcional principal":"Principal functional group"));
+    const substituentSteps=model.steps.filter(step=>[language==="es"?"Sustituyentes y localizadores":"Substituents and locants",
+      language==="es"?"Detalle de los sustituyentes":"Further substituent details"].includes(step.title));
+    assert.match(functionStep.explanation,language==="es"?/amida.*prioridad sobre la amina/:/Amide.*priority over the amine/);
+    assert.doesNotMatch(functionStep.explanation,/átomos seleccionados|selected atoms/i);
+    const functionFragments=[functionStep.fragments,...functionStep.fragments.additionalFragments??[]];
+    assert.ok(functionFragments.every(fragment=>!fragment?.explanation),"the principal-function step does not repeat the suffix explanation under its control");
+    const numbering=model.steps.find(step=>step.title===(language==="es"?"Numeración":"Numbering"));
+    assert.match(numbering.explanation,language==="es"?/C1 a C2.*C2.*localizador N.*nitrógeno amídico/:/C1–C2.*C2.*N locant.*amide nitrogen/);
+    const numberingFragments=[numbering.fragments,...numbering.fragments.additionalFragments??[]];
+    const amideN=numberingFragments.find(fragment=>fragment?.semanticId?.startsWith("amide-n-locant:"));
+    assert.ok(amideN,"the substituted amide nitrogen is selectable in numbering");
+    assert.deepEqual(amideN.atomIds,[9]);
+    assert.match(substituentSteps.map(step=>step.explanation).join(" "),language==="es"?/amina terciaria.*dos grupos etilo.*nitrógeno amídico.*metilos/:/tertiary amine.*two ethyl groups.*amide N.*methyl groups/);
+    assert.doesNotMatch(model.steps.map(step=>step.explanation).join(" "),/cadena\(s\)|unión\(es\)|verified parent|progenitor verificado|validated suffix|sufijo validado/i);
+    assert.equal(model.steps.filter(step=>/Further substituent|Detalle de los sustituyentes|Composition of substituents|Composición de sustituyentes/.test(step.title)).length,0);
+    const alpha=model.steps.find(step=>step.title===(language==="es"?"Orden alfabético":"Alphabetical order"));
+    if(alpha) {
+      assert.ok(alpha.componentIds.every(id=>["branch-0","branch-17"].includes(id)),"alphabetical recap contains only cited substituents");
+      const alphabeticalText=alpha.alphabeticalOrder.paragraphs.join(" ")+" "+alpha.alphabeticalOrder.fragment;
+      assert.match(alphabeticalText,language==="es"?/dietilamino.*2,6-dimetilfenilo/:/diethylamino.*2,6-dimethylphenyl/);
+      assert.match(alpha.explanation,language==="es"?/primera diferencia \(e antes que m\)/:/first difference \(e before m\)/);
+      assert.doesNotMatch(alphabeticalText,/methyl groups|grupos metilo/i);
+    }
+  }
+});
+
+test("N locants in amines identify the substituted nitrogen during numbering",()=>{
+  const graph=imported("CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F");
+  const derivation=reconcileSystematicName(graph,"N-methyl-3-phenyl-3-[4-(trifluoromethyl)phenoxy]propan-1-amine");
+  const model=buildValidatedPriorityReasoning({derivation,graph,language:"es"});
+  const numbering=model.steps.find(step=>step.title==="Numeración");
+  assert.match(numbering.explanation,/localizador N.*nitrógeno de la amina/);
+  const fragments=[numbering.fragments,...numbering.fragments.additionalFragments??[]];
+  const nLocant=fragments.find(fragment=>fragment?.semanticId?.startsWith("amide-n-locant:n-alkyl"));
+  assert.ok(nLocant);
+  assert.deepEqual(nLocant.atomIds,[2]);
+  assert.equal(nLocant.label,"Localizador del nitrógeno de la amina");
 });
 
 test("both FULL acetyloxy names give exact localized controls for the two distinct carbonyls and every other region", () => {

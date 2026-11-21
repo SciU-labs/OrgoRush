@@ -345,16 +345,15 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
         const ringAtom = region.has(a) ? a : b, outerAtom = region.has(a) ? b : a;
         return { ringAtom, outerAtom, order, ringElement: atom(ringAtom).element ?? "C", outerElement: atom(outerAtom).element ?? "C" };
       });
-      const directCarbon = attachments.some(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "C");
-      const directOxygen = attachments.some(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "O");
+      const externalBondTypes=[...new Set(attachments.map(edge=>`${edge.ringElement}–${edge.outerElement}`))].sort();
       const etherO = attachments.find(edge => edge.order === 1 && edge.ringElement === "C" && edge.outerElement === "O"
         && neighbors(edge.outerAtom).some(next => next.id !== edge.ringAtom && next.order === 1 && (atom(next.id).element ?? "C") === "C"));
       const benzene = aromatic && allCarbon && region.size === 6;
       component.displayLabel = benzene
-        ? etherO ? "Benzene ring · attached through O" : directOxygen ? "Benzene ring · C–O attachment" : directCarbon ? "Benzene ring · direct C–C attachment" : "Benzene ring · six carbon atoms"
+        ? externalBondTypes.length ? `Benzene ring · external bonds ${externalBondTypes.join(", ")}` : "Benzene ring · six carbon atoms"
         : simpleCycle ? `${aromatic ? "Aromatic" : "Nonaromatic"} ${region.size}-membered ring` : `Connected ring system · ${cycleCount} independent cycles`;
       component.displayLabelEs = benzene
-        ? etherO ? "Anillo bencénico · unido por O" : directOxygen ? "Anillo bencénico · unión C–O" : directCarbon ? "Anillo bencénico · unión directa C–C" : "Anillo bencénico · seis carbonos"
+        ? externalBondTypes.length ? `Anillo bencénico · enlaces externos ${externalBondTypes.join(", ")}` : "Anillo bencénico · seis carbonos"
         : simpleCycle ? `${aromatic ? "Anillo aromático" : "Anillo no aromático"} de ${region.size} átomos` : `Sistema de anillos conectado · ${cycleCount} ciclos independientes`;
       if (ringComponents.length > 1) {
         component.displayLabel = `Ring ${ringIndex + 1}: ${component.displayLabel}`;
@@ -487,7 +486,7 @@ export function deriveStructuralComponents(graph: GeneratedMolecule, displayedNa
             : aromaticRegion && attachmentCodes.includes("C–C")
               ? { en: "Aromatic branch · direct C–C link", es: "Rama aromática · unión directa C–C" }
               : hasNitrogen && attachmentCodes.includes("N–C")
-                ? { en: "Nitrogen-containing branch · C–N link", es: "Rama nitrogenada · unión C–N" }
+                ? { en: "Nitrogen-containing fragment · C–N bond", es: "Fragmento con nitrógeno · enlace C–N" }
                 : [...region].every(id => atom(id).element === "C")
                   ? { en: `Acyclic carbon fragment · ${region.size} atom(s)`, es: `Fragmento carbonado acíclico · ${region.size} átomo(s)` }
                   : { en: `Unclassified connected fragment · ${composition}`, es: `Fragmento conectado no clasificado · ${composition}` };

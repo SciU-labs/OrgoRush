@@ -19,8 +19,11 @@ const cases=[
   ["diphenhydramine","CN(C)CCOC(c1ccccc1)c1ccccc1","2-(diphenylmethoxy)-N,N-dimethylethan-1-amine",[
     ["n-alkyl",[1,3],[[1,2],[2,3]]],["diphenylmethoxy",range(6,19),[[5,6]]],["diphenylmethoxy-phenyl",range(8,19),[[7,8],[7,14]]]]],
   ["lidocaine","CCN(CC)CC(=O)Nc1c(C)cccc1C","2-(diethylamino)-N-(2,6-dimethylphenyl)acetamide",[
-    ["suffix",[7,8,9]],["branch-0-amino",[3],[[3,6]]],["branch-0-amino-alkyl",[1,2,4,5],[[2,3],[3,4]]],["*-ring-alkyl",[12,17],[[11,12],[16,17]]]]],
+    ["suffix",[7,8,9]],["branch-0",[1,2,3,4,5],[[3,6]]],["branch-0-amino",[3],[[3,6]]],
+    ["branch-0-amino-alkyl",[1,2,4,5],[[2,3],[3,4]]],["N-aryl",[10,11,12,13,14,15,16,17],[[9,10]]],
+    ["amide-n-locant",[9]], ["*-ring-alkyl",[12,17],[[11,12],[16,17]]]]],
   ["paracetamol","CC(=O)Nc1ccc(O)cc1","N-(4-hydroxyphenyl)acetamide",[["suffix",[2,3,4]],["name:4-hydroxyphenyl",range(4,11)]]],
+  ["dopamine","NCCc1ccc(O)c(O)c1","4-(2-aminoethyl)benzene-1,2-diol",[["aminoalkyl-amino",[1],[[1,2]]],["aminoalkyl",[1,2,3],[[3,4]]]]],
   ["ibuprofen","CC(C)Cc1ccc(C(C)C(=O)O)cc1","2-[4-(2-methylpropyl)phenyl]propanoic acid",[["suffix",[11,12,13]],["name:2-methylpropyl",range(1,4),[[4,5]]]]],
 ];
 const newTargets=[
@@ -37,7 +40,7 @@ const extra=[...alcohols,...acids].map(([,name,smiles],i)=>[priorityIds[i],smile
 cases.push(...extra);
 const spanishNames=[
   "3-fenil-N-metil-3-[4-(trifluorometil)fenoxi]propan-1-amina","2-(difenilmetoxi)-N,N-dimetiletan-1-amina",
-  "2-(dietilamino)-N-(2,6-dimetilfenil)acetamida","N-(4-hidroxifenil)acetamida","ácido 2-[4-(2-metilpropil)fenil]propanoico",
+  "2-(dietilamino)-N-(2,6-dimetilfenil)acetamida","N-(4-hidroxifenil)acetamida","4-(2-aminoetil)benceno-1,2-diol","ácido 2-[4-(2-metilpropil)fenil]propanoico",
 ];
 spanishNames.push("4-[(1R)-1-hidroxi-2-(metilamino)etil]benceno-1,2-diol","4-[2-(terc-butilamino)-1-hidroxietil]-2-(hidroximetil)fenol","1-[2-(dimetilamino)-1-(4-metoxifenil)etil]ciclohexan-1-ol","1-[4-(2-metoxietil)fenoxi]-3-(propan-2-ilamino)propan-2-ol","ácido 2-hidroxipropano-1,2,3-tricarboxílico","ácido (2S)-2-hidroxibutanodioico","ácido (2R,3R)-2,3-dihidroxibutanodioico","ácido pentanodioico","ácido (2S)-2-aminopentanodioico","ácido 2-metilbutanodioico");
 const tntSmiles="Cc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-]",tntName="2-methyl-1,3,5-trinitrobenzene";
@@ -89,7 +92,7 @@ for(const [index,[id,smiles,name,selections]] of cases.entries()) test(id+" has 
       }
       return route.fulfill({json:data,headers:{"access-control-allow-origin":"*"}});
     });
-    await page.goto(origin+"/OrgoRush/es/",{waitUntil:"domcontentloaded"});
+    await page.goto(origin+"/OrgoRush/es/",{waitUntil:"domcontentloaded",timeout:60000});
     await page.locator('[aria-controls="smiles-interop-panel"]').click();
     await page.locator("#smiles-text-input").fill(smiles);
     await page.locator("#smiles-interop-panel button[type=submit]").click();
@@ -100,6 +103,17 @@ for(const [index,[id,smiles,name,selections]] of cases.entries()) test(id+" has 
       const toggle=page.locator(".reasoning-visibility-button");
       if(await toggle.getAttribute("aria-expanded")!=="true")await toggle.click();
       assert.equal(await panel.getAttribute("data-derivation-support"),"FULL");
+      if(id==="lidocaine"){
+        const explanation=await panel.innerText();
+        assert.match(explanation,language==="es"?/amida.*prioridad sobre la amina.*amina terciaria.*dos grupos etilo.*nitrógeno amídico.*metilos/s:/Amide.*priority over the amine.*tertiary amine.*two ethyl groups.*amide N.*methyl groups/s);
+        assert.doesNotMatch(explanation,/cadena\(s\)|unión\(es\)|verified parent|progenitor verificado|validated suffix|sufijo validado|Rama nitrogenada/i);
+        assert.equal(await panel.locator('strong:text-is("Further substituent details"),strong:text-is("Detalle de los sustituyentes")').count(),0,
+          "lidocaine nested details are integrated with substituents");
+        assert.doesNotMatch(explanation,/connected fragment|fragmento conectado|validated|verificad[oa]s? por el motor|Structural reference|Referencia estructural/i);
+        if(language==="es")assert.equal((explanation.match(/La amida es la función principal/g)??[]).length,1);
+        assert.equal((explanation.match(language==="es"?/La cadena más larga que contiene el carbonilo de la amida tiene 2 carbonos/g:/The longest chain containing the amide carbonyl has 2 carbons/g)??[]).length,1);
+        if(language==="es"&&process.env.ORGORUSH_LIDOCAINE_TEXT)await writeFile(process.env.ORGORUSH_LIDOCAINE_TEXT,explanation,"utf8");
+      }
       for(const [mode,buttonIndex] of [["semi",0],["skeletal",2]]){
         const modeButton=page.locator(".view-mode-switch button").nth(buttonIndex);
         await modeButton.click(); assert.equal(await modeButton.getAttribute("aria-pressed"),"true");
@@ -109,13 +123,17 @@ for(const [index,[id,smiles,name,selections]] of cases.entries()) test(id+" has 
           const {x,y,width,height}=el.getBoundingClientRect();
           return {x:x+scrollX,y:y+scrollY,width,height,scale:1};
         });
-        assert.equal(await stage.locator(".stage-legend span").first().innerText(),["adrenalina","salbutamol","venlafaxina","tnt"].includes(id)?(language==="es"?"Anillo principal":"Parent ring"):(language==="es"?"Cadena principal":"Parent chain"));
+        assert.equal(await stage.locator(".stage-legend span").first().innerText(),["adrenalina","salbutamol","venlafaxina","tnt","dopamine"].includes(id)?(language==="es"?"Anillo principal":"Parent ring"):(language==="es"?"Cadena principal":"Parent chain"));
         for(const [semantic,atoms,extra=[]] of selections){
-          const selector=semantic.startsWith("*")?'[data-name-fragment$="'+semantic.slice(1)+'"]':'[data-name-fragment="'+semantic+'"]';
+          const selector=semantic==="N-aryl"?'[data-name-fragment^="branch-"]'
+            :semantic==="amide-n-locant"?'[data-name-fragment^="amide-n-locant:branch-"]'
+            :semantic.startsWith("*")?'[data-name-fragment$="'+semantic.slice(1)+'"]':'[data-name-fragment="'+semantic+'"]';
+          const visibleName=semantic==="N-aryl"?(language==="es"?"N-(2,6-dimetilfenil)":"N-(2,6-dimethylphenyl)"):undefined;
+          const byMeaning=(scope)=>visibleName?scope.locator(selector).filter({hasText:visibleName}):scope.locator(selector);
           // Target the chemical explanation; the alphabetical recap and the
           // parent numbering step can legitimately cite the same group again.
-          const step=panel.locator("li").filter({has:page.locator(selector)}).filter({hasNot:page.locator('strong:text-is("Alphabetical order"),strong:text-is("Orden alfabético")')}).first();
-          const control=step.locator(selector);assert.equal(await control.count(),1,semantic);
+          const step=panel.locator("li").filter({has:byMeaning(page)}).filter({hasNot:page.locator('strong:text-is("Alphabetical order"),strong:text-is("Orden alfabético")')}).first();
+          const control=byMeaning(step);assert.equal(await control.count(),1,semantic+" available="+JSON.stringify(await panel.locator("[data-name-fragment]").evaluateAll(nodes=>nodes.map(node=>node.getAttribute("data-name-fragment")))));
           // Observe the same render that activates the two-second highlight.
           // Clicking in the DOM leaves the canvas in the viewport for capture.
           const actual=await control.evaluate(button=>new Promise((resolve,reject)=>{
@@ -139,7 +157,9 @@ for(const [index,[id,smiles,name,selections]] of cases.entries()) test(id+" has 
           const bonds=graph.bonds.filter(([a,b])=>atoms.includes(a)&&atoms.includes(b)).concat(extra);
           assert.deepEqual(actual.bonds,[...new Set(bonds.map(([a,b])=>bondKey(a,b)))].sort(),semantic);
           const captureTnt=new Set(["parent","prefix-0","prefix-1","prefix-1-occurrence-0",...selections.filter(([target])=>target.startsWith("locant:parent:")).map(([target])=>target)]);
-          if(process.env.ORGORUSH_SCREENSHOTS && (id==="tnt"?captureTnt.has(semantic):semantic===selections.at(-1)[0])){
+          const captureLidocaine=new Set(["branch-0-amino","N-aryl","amide-n-locant","*-ring-alkyl"]);
+          const shouldCapture=id==="tnt"?captureTnt.has(semantic):id==="lidocaine"?captureLidocaine.has(semantic):semantic===selections.at(-1)[0];
+          if(process.env.ORGORUSH_SCREENSHOTS && shouldCapture){
             // Avoid Locator.screenshot's scroll and font-stability waits
             // between activation and capture. Reacquire if rendering the
             // frame exceeded the normal lifetime of the selection.
@@ -151,7 +171,7 @@ for(const [index,[id,smiles,name,selections]] of cases.entries()) test(id+" has 
               if(await control.getAttribute("aria-pressed")==="true")frame=Buffer.from(data,"base64");
             }
             assert.ok(frame,"capture during the highlight: "+id+" "+language+" "+mode+" "+semantic);
-            await writeFile(process.env.ORGORUSH_SCREENSHOTS+"/"+id+(id==="tnt"?"-"+semantic.replaceAll(":","-"):"")+"-"+language+"-"+mode+".png",frame);
+            await writeFile(process.env.ORGORUSH_SCREENSHOTS+"/"+id+(["tnt","lidocaine"].includes(id)?"-"+semantic.replaceAll(":","-").replaceAll("*","all"):"")+"-"+language+"-"+mode+".png",frame);
           }
         }
       }

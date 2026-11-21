@@ -816,8 +816,8 @@ export function ReasoningNameFragmentView({
                   data-name-fragment={part.semanticId}
                   data-reasoning-region={literal ? undefined : "structural-reference"}
                   aria-label={visualTargets
-                    ? language === "en" ? `${literal ? "" : "Structural reference. "}${part.text}: ${displayLabel}. Highlight in the molecule for two seconds`
-                      : `${literal ? "" : "Referencia estructural. "}${part.text}: ${displayLabel}. Resaltar en la molécula durante dos segundos`
+                    ? language === "en" ? `${literal ? `${part.text}: ${displayLabel}. ` : `${part.text}. `}Highlight in the molecule for two seconds`
+                      : `${literal ? `${part.text}: ${displayLabel}. ` : `${part.text}. `}Resaltar en la molécula durante dos segundos`
                     : displayLabel} aria-pressed={selected}
                   onClick={(event) => {
                     event?.stopPropagation();
@@ -827,8 +827,7 @@ export function ReasoningNameFragmentView({
                   <span className="reasoning-name-fragment-text">{part.text}</span>
                 </button>
               : <span className="reasoning-name-fragment-text">{part.text}</span>}
-            <small className="reasoning-name-fragment-label">{literal ? displayLabel
-              : `${language === "en" ? "Structural reference" : "Referencia estructural"}: ${displayLabel}`}</small>
+            {literal && <small className="reasoning-name-fragment-label">{displayLabel}</small>}
             {part.explanation && <p className="reasoning-name-fragment-explanation"><ChemicalNotationText value={part.explanation} /></p>}
           </div>
         );

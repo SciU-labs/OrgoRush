@@ -252,8 +252,8 @@ test("fluoxetine exposes independent ring, phenoxy and para-CF3 graph selections
       new Set(component.bondIds.map(([a,b]) => [a,b].sort((x,y)=>x-y).join(":"))));
   }
   const expectedLabels = [
-    ["Ring 1: Benzene ring · direct C–C attachment", "Anillo 1: Anillo bencénico · unión directa C–C"],
-    ["Ring 2: Benzene ring · attached through O", "Anillo 2: Anillo bencénico · unido por O"],
+    ["Ring 1: Benzene ring · external bonds C–C", "Anillo 1: Anillo bencénico · enlaces externos C–C"],
+    ["Ring 2: Benzene ring · external bonds C–C, C–O", "Anillo 2: Anillo bencénico · enlaces externos C–C, C–O"],
     ["Ring 2: Phenoxy group", "Anillo 2: Grupo fenoxi"],
     ["Ring 2: 4-(trifluoromethyl)phenoxy", "Anillo 2: 4-(trifluorometil)fenoxi"],
   ];

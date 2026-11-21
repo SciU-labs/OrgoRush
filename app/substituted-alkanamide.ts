@@ -67,10 +67,26 @@ export function parseSubstitutedAlkanamide(name: string): CompositionalFamilyGra
     const ringPositions=aryl?.[1].split(",").map(Number)??[];
     if(aryl && (ringPositions.length!==(aryl[2]?2:1) ||
       proveMonocycleNumbering(6,[ringPositions]).comparison>0))return null;
-    const whyEn=onN ? `N places ${body} on the nitrogen directly bonded to the amide carbonyl.`
-      : `${body} is attached to C${position} of the amide chain.`;
-    const whyEs=onN ? `N sitúa «${body}» en el nitrógeno unido directamente al carbonilo de la amida.`
-      : `«${body}» se une al C${position} de la cadena de la amida.`;
+    const alkylWords:Record<string,[string,string]>={methyl:["methyl","metilo"],ethyl:["ethyl","etilo"],propyl:["propyl","propilo"],butyl:["butyl","butilo"],
+      metil:["methyl","metilo"],etil:["ethyl","etilo"],propil:["propyl","propilo"],butil:["butyl","butilo"]};
+    const alkylGroup=(word:string,n:number)=>{
+      const match=/^(di|tri)?(methyl|ethyl|propyl|butyl|metil|etil|propil|butil)$/.exec(word);
+      if(!match)return undefined;
+      const count=match[1]==="di"?2:match[1]==="tri"?3:1, [en,es]=alkylWords[match[2]];
+      return n>1||count>1?{en:`${count===2?"two":count===3?"three":count} ${en} groups`,es:`${count===2?"dos":count===3?"tres":count} grupos ${es}`}:{en:`${en} group`,es:`grupo ${es}`};
+    };
+    const aminoSubstituent=amino ? body.slice(0,-5) : "";
+    const aminoGroups=alkylGroup(aminoSubstituent,amino?.[1]?2:1);
+    const arylMethylCount=aryl&&/methyl|metil/.test(body)?ringPositions.length:0;
+    const bodyEs=body.replace(/diethyl/g,"dietil").replace(/ethyl/g,"etil").replace(/dimethyl/g,"dimetil").replace(/methyl/g,"metil").replace(/phenyl/g,"fenilo");
+    const whyEn=amino
+      ? `At C${position}, ${body} is a tertiary amine with ${aminoGroups?.en??aminoSubstituent+" groups"}.`
+      : onN ? `${body} attaches to amide N;${arylMethylCount===2?" its methyl groups are at ring positions "+ringPositions.join(" and ")+".":""}`
+        : `${body} is attached to C${position} of the amide chain.`;
+    const whyEs=amino
+      ? `En C${position}, «${bodyEs}» es una amina terciaria unida a ${aminoGroups?.es??aminoSubstituent+" grupos"}.`
+      : onN ? `«${bodyEs}» se une al nitrógeno amídico;${arylMethylCount===2?" sus metilos están en C"+ringPositions.join(" y C")+" del anillo.":""}`
+        : `«${body}» se une al C${position} de la cadena de la amida.`;
     part(id,"substituent",cursor,full,ids,whyEn,whyEs,anchor,{
       parentId:"parent",locant:onN?"N":position,numbering:[[anchor,onN?"N":position]],
       ...(onN?{attachmentScope:"amide-nitrogen",nLocantStarts:count===2?[cursor,cursor+2]:[cursor]}:{}),
@@ -82,11 +98,11 @@ export function parseSubstitutedAlkanamide(name: string): CompositionalFamilyGra
         equivalentBranches.push([ids.slice(1,1+size),ids.slice(1+size)]);
       }
       part(id+"-amino","prefix",start+alkyl.length,"amino",[nitrogen],
-        "This nitrogen bears the alkyl branches. The amide outranks the amine, which is cited as amino.",
-        "Este nitrógeno lleva las ramas alquilo. La amida tiene prioridad y la amina se cita como amino.",anchor,{parentId:id});
+        "This is a tertiary amine; amide has higher priority, so the amine is cited as the amino prefix.",
+        "Es una amina terciaria; la amida tiene mayor prioridad y la amina se cita mediante el prefijo amino.",anchor,{parentId:id});
       part(id+"-amino-alkyl","prefix",start,alkyl,ids.slice(1),
-        `${alkyl} counts ${amino[1]?2:1} alkyl chain(s) directly bonded to the amino nitrogen.`,
-        `«${alkyl}» cuenta ${amino[1]?2:1} cadena(s) alquilo unida(s) al nitrógeno del amino.`,nitrogen,{parentId:id+"-amino"});
+        aminoGroups ? `The amino nitrogen bears ${aminoGroups.en}.` : `${alkyl} is bonded to the amino nitrogen.`,
+        aminoGroups ? `El nitrógeno de la amina está unido a ${aminoGroups.es}.` : `«${alkyl}» se une al nitrógeno de la amina.`,nitrogen,{parentId:id+"-amino"});
     }
     if(aryl) {
       const ring=ids.slice(0,6), branches=ids.slice(6), ringStart=start+body.length-aryl[4].length;
@@ -107,9 +123,10 @@ export function parseSubstitutedAlkanamide(name: string): CompositionalFamilyGra
         `Ring positions ${aryl[1]} locate the substituents within phenyl.`,
         `Las posiciones ${aryl[1]} sitúan los sustituyentes dentro del fenilo.`,undefined,{parentId:id+"-ring",bondIds:[]});
       const branchBonds=graph.bonds.filter(([a,b])=>branches.includes(a)||branches.includes(b)).map(([a,b]):[number,number]=>[a,b]);
+      const ringGroups=alkylGroup(word,ringPositions.length);
       part(id+"-ring-alkyl","prefix",start+aryl[1].length+1,word,branches,
-        `${word} counts ${ringPositions.length} alkyl attachment(s) at ring positions ${aryl[1]}.`,
-        `«${word}» cuenta ${ringPositions.length} unión(es) alquilo en las posiciones ${aryl[1]} del anillo.`,
+        ringGroups ? `The phenyl ring bears ${ringGroups.en} at positions ${aryl[1]}.` : `${word} marks alkyl groups at phenyl positions ${aryl[1]}.`,
+        ringGroups ? `El anillo fenilo lleva ${ringGroups.es} en las posiciones ${aryl[1]}.` : `«${word}» identifica grupos alquilo en las posiciones ${aryl[1]} del fenilo.`,
         undefined,{parentId:id+"-ring",bondIds:branchBonds});
     }
     cursor+=full.length;
