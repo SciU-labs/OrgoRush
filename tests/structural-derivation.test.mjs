@@ -254,8 +254,8 @@ test("fluoxetine exposes independent ring, phenoxy and para-CF3 graph selections
   const expectedLabels = [
     ["Ring 1: Benzene ring · direct C–C attachment", "Anillo 1: Anillo bencénico · unión directa C–C"],
     ["Ring 2: Benzene ring · attached through O", "Anillo 2: Anillo bencénico · unido por O"],
-    ["Ring 2: Phenoxy group · ring + O", "Anillo 2: Grupo fenoxi · anillo + O"],
-    ["Ring 2: 4-(Trifluoromethyl)phenoxy fragment · ring + O + CF3", "Anillo 2: Fragmento 4-(trifluorometil)fenoxi · anillo + O + CF3"],
+    ["Ring 2: Phenoxy group", "Anillo 2: Grupo fenoxi"],
+    ["Ring 2: 4-(trifluoromethyl)phenoxy", "Anillo 2: 4-(trifluorometil)fenoxi"],
   ];
   for (const [language,index] of [["en",0],["es",1]]) {
     const reasoning = buildStructuralPriorityReasoning({ derivation, language });
@@ -336,7 +336,7 @@ test("local aromatic substituent names and locants use exact graph regions witho
   const english = buildStructuralPriorityReasoning({ derivation: model, language: "en" });
   const spanish = buildStructuralPriorityReasoning({ derivation: model, language: "es" });
   assert.match(english.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation, /lowest locant set/);
-  assert.match(spanish.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation, /localizadores/);
+  assert.match(spanish.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation, /conjunto más bajo/);
   assert.match(english.steps.find(step => step.componentKind === "aromatic ring locant").fragments.text, /Ring locant 4/);
   assert.match(spanish.steps.find(step => step.componentKind === "aromatic ring locant").fragments.text, /Localizador 4/);
   const legacy = deriveStructuralComponents(fluoxetine, "unverified", undefined, "iupac-1979-legacy");

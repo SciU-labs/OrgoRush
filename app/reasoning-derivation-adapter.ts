@@ -10,6 +10,8 @@ import { reasoningFragmentId } from "./reasoning-visual-targets.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
 import { validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
+import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
+import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
 
 export type PriorityReasoningStep = {
   number: string;
@@ -510,9 +512,10 @@ export function buildValidatedPriorityReasoning(input: {
   if (alphabeticalOrder && [...peerCounts.values()].some(count => count > 1))
     stages.push({ title: language === "en" ? "Alphabetical order" : "Orden alfabético",
       explanation: alphabeticalOrder.paragraphs.join(" "), components: substituents, alphabeticalOrder });
-  if (stereoComponents.length) stages.push({ title: language === "en" ? "Stereochemistry" : "Estereoquímica",
-    explanation: language === "en" ? "Only configurations included in the FULL structural proof are stated."
-      : "Solo se expresan configuraciones incluidas en la prueba estructural FULL.", components: stereoComponents });
+  if (stereoComponents.length || getPotentialTetrahedralStereoCenterIds(graph).length)
+    stages.push({ title: language === "en" ? "Stereochemistry" : "Estereoquímica",
+      explanation: language === "en" ? "CIP priorities and only specified configurations are shown."
+        : "Se muestran las prioridades CIP y únicamente las configuraciones especificadas.", components: stereoComponents });
   const literalActiveName = (derivation.evidence?.language ?? parent?.language) === language
     && (input.activeName === undefined || input.activeName === derivation.name);
   const esterAlcohol=derivation.principalGroup==="ester" ? substituents.find(c=>c.parentId===suffix?.id) : undefined;
@@ -527,6 +530,7 @@ export function buildValidatedPriorityReasoning(input: {
       +esterOrder : `Se combinan los localizadores y prefijos verificados con el progenitor${suffix?" y su sufijo característico":"; no se utiliza sufijo principal"} para obtener ${derivation.name}.`+esterOrder,
     components:[]});
   const steps = stages.map((stage, index) => makeStep({ ...stage, number: String(index + 1).padStart(2, "0"), derivation, language, graph }));
+  addTetrahedralStereoEvidence(steps, graph, derivation, language);
   if (hierarchical && input.structuralEvidence) {
     const composition=steps.find(step=>step.title===(language==="en"?"Composition of substituents":"Composición de sustituyentes"))
       ?? steps.find(step=>step.title===(language==="en"?"Substituents and locants":"Sustituyentes y localizadores"));
@@ -545,6 +549,96 @@ export function buildValidatedPriorityReasoning(input: {
   const parentStep = parent ? resultSteps.find(step => step.componentIds.includes(parent.id)) : undefined;
   if (parentStep && parentEvidence) parentStep.parentSelectionEvidence = parentEvidence;
   return { name: derivation.name, steps: resultSteps };
+}
+
+function addTetrahedralStereoEvidence(steps: PriorityReasoningStep[], graph: GeneratedMolecule,
+  derivation: ValidatedNameDerivation, language: AppLanguage) {
+  const en = language === "en";
+  const assigned = new Map(getTetrahedralStereoCenters(graph).map(center => [center.atomId, center.configuration]));
+  const centers = [...new Set([...getPotentialTetrahedralStereoCenterIds(graph), ...assigned.keys()])];
+  if (!centers.length) return;
+  let step = steps.find(candidate => candidate.title === (en ? "Stereochemistry" : "Estereoquímica"));
+  if (!step) {
+    const number = String(steps.length + 1).padStart(2, "0");
+    step = { number, title: en ? "Stereochemistry" : "Estereoquímica", explanation: "",
+      fragmentTargets: {}, componentIds: [], source: "FULL" };
+    const construction = steps.findIndex(candidate => candidate.title === (en ? "Constructing the name" : "Construcción del nombre"));
+    steps.splice(construction < 0 ? steps.length : construction, 0, step);
+  }
+  const elements = new Map(graph.atoms.map(atom => [atom.id, atom.element ?? "C"]));
+  const atomicElement: Record<number, string> = { 0: "—", 1: "H", 6: "C", 7: "N", 8: "O", 9: "F", 16: "S", 17: "Cl", 35: "Br", 53: "I" };
+  const elementNames: Record<number, [string, string]> = { 1: ["hydrogen", "hidrógeno"], 6: ["carbon", "carbono"],
+    7: ["nitrogen", "nitrógeno"], 8: ["oxygen", "oxígeno"], 9: ["fluorine", "flúor"],
+    16: ["sulfur", "azufre"], 17: ["chlorine", "cloro"], 35: ["bromine", "bromo"], 53: ["iodine", "yodo"] };
+  const explanations: string[] = [], fragments: ReasoningNameFragment[] = [];
+  for (const centerId of centers) {
+    const evidence = inspectTetrahedralCipPriorities(graph, centerId);
+    if (!evidence) continue;
+    const locant = derivation.components.flatMap(component => [
+      ...component.numbering, ...(component.internalNumbering ?? []),
+    ]).find(([atomId]) => atomId === centerId)?.[1];
+    const centerLabel = typeof locant === "number" ? `C${locant}` : `atom ${centerId}`;
+    const configuration = assigned.get(centerId);
+    explanations.push(en
+      ? `${centerLabel} is stereogenic: its four ligands have distinct CIP priorities. ${configuration
+        ? `The stored configuration is ${configuration}; this descriptor is included in the reconciled name.`
+        : "No tetrahedral configuration is specified in the molecular graph, so no R/S descriptor is added."}`
+      : `${centerLabel} es estereogénico: sus cuatro ligandos tienen prioridades CIP distintas. ${configuration
+        ? `La configuración guardada es ${configuration}; este descriptor se incorpora al nombre conciliado.`
+        : "El grafo no especifica una configuración tetraédrica, por lo que no se añade un descriptor R/S."}`);
+    fragments.push({ text: centerLabel, label: en ? `Select stereogenic center ${centerLabel}` : `Seleccionar centro estereogénico ${centerLabel}`,
+      kind: "stereo", semanticId: `stereo-center:${centerId}`, atomIds: [centerId], bondIds: [],
+      explanation: en ? "Tetrahedral stereogenic center." : "Centro estereogénico tetraédrico." });
+    const centerFragment = fragments.at(-1)!;
+    let fragmentId = reasoningFragmentId(step.number, centerFragment);
+    step.fragmentTargets[fragmentId] = { stepNumber: step.number, fragmentId, atomIds: [centerId], bondIds: [], locants: [] };
+
+    // Without a specified tetrahedral configuration, CIP ranking does not
+    // contribute to an R/S descriptor. Keep the centre note and omit unused
+    // priority detail and controls.
+    if (!configuration) continue;
+
+    for (const priority of evidence.priorities) {
+      const element = priority.atomId === null ? "H" : elements.get(priority.atomId) ?? "C";
+      const difference = priority.firstDifference;
+      const reason = difference
+        ? en ? ` At the first atom where the branches differ, ${elementNames[difference.higherAtomicNumber]?.[0] ?? "the higher-priority atom"} outranks ${elementNames[difference.lowerAtomicNumber]?.[0] ?? "the other atom"}.`
+          : ` En el primer átomo donde difieren las ramas, ${elementNames[difference.higherAtomicNumber]?.[1] ?? "el átomo de mayor prioridad"} tiene prioridad sobre ${elementNames[difference.lowerAtomicNumber]?.[1] ?? "el otro átomo"}.`
+        : en ? " It is the lowest-ranked ligand." : " Es el ligando de menor prioridad.";
+      explanations.push(en ? `Priority ${priority.rank} starts with ${element}.${reason}`
+        : `La prioridad ${priority.rank} comienza por ${element}.${reason}`);
+      if (priority.atomId === null) continue;
+      const branchLabel = en ? `Priority ${priority.rank} · ${element}-rooted branch`
+        : `Prioridad ${priority.rank} · rama con átomo inicial ${element}`;
+      const branch: ReasoningNameFragment = { text: branchLabel,
+        label: en ? `Select ${branchLabel}` : `Seleccionar ${branchLabel}`, kind: "stereo",
+        semanticId: `stereo-ligand:${centerId}:${priority.rank}`, atomIds: priority.branchAtomIds,
+        bondIds: priority.branchBondIds, explanation: en
+          ? `CIP priority ${priority.rank}.${reason}` : `Prioridad CIP ${priority.rank}.${reason}` };
+      fragments.push(branch);
+      fragmentId = reasoningFragmentId(step.number, branch);
+      step.fragmentTargets[fragmentId] = { stepNumber: step.number, fragmentId,
+        atomIds: branch.atomIds ?? [], bondIds: branch.bondIds ?? [], locants: [] };
+    }
+  }
+  for (const component of derivation.components.filter(item => item.id.startsWith("stereo-"))) {
+    const fragment: ReasoningNameFragment = { text: component.text,
+      label: en ? `Select descriptor (${component.text})` : `Seleccionar descriptor (${component.text})`,
+      kind: "stereo", semanticId: `stereo-descriptor:${component.id}`, start: component.start,
+      language, atomIds: component.atomIds, bondIds: [],
+      explanation: en ? "This R/S descriptor is verified against the configured stereocenter."
+        : "Este descriptor R/S se ha verificado frente al centro estereogénico configurado." };
+    fragments.push(fragment);
+    const fragmentId = reasoningFragmentId(step.number, fragment);
+    step.fragmentTargets[fragmentId] = { stepNumber: step.number, fragmentId,
+      atomIds: component.atomIds, bondIds: [], locants: component.numbering };
+  }
+  step.explanation = explanations.join(" ");
+  step.fragments = fragments.length ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
+  step.target = { stepNumber: step.number,
+    atomIds: [...new Set(fragments.flatMap(fragment => [...fragment.atomIds ?? []]))],
+    bondIds: [...new Map(fragments.flatMap(fragment => [...fragment.bondIds ?? []])
+      .map(([a,b]) => [`${Math.min(a,b)}:${Math.max(a,b)}`, [a,b] as [number,number]])).values()], locants: [] };
 }
 
 /** Retain additional chemical views available before reconciliation. Never
@@ -802,8 +896,180 @@ function structuralFragmentLabel(component: StructuralComponent, language: AppLa
     : component.displayLabelEs ?? structuralLabel(component, language);
 }
 
-/** Structural-only evidence is deliberately presented as candidates and
- * connected regions; this adapter never turns it into name locants or parents. */
+function studentStructuralLabel(component: StructuralComponent, language: AppLanguage) {
+  const en = language === "en";
+  const labels: Partial<Record<StructuralComponent["kind"], string>> = en ? {
+    carboxylicAcid: "Carboxyl group", ester: "Ester group", amide: "Amide group", carbonyl: "Carbonyl group",
+    hydroxyl: "Hydroxy group", ringSystem: "Ring system", stereo: "Stereogenic centre", "N-bound methyl": "N-methyl group",
+    "phenoxy fragment": "Phenoxy group", "substituted phenoxy fragment": "Substituted phenoxy group", "methoxy fragment": "Methoxy group",
+    "amine fragment": "Amine group", "trifluoromethyl group": "Trifluoromethyl group", "ether linkage": "Ether linkage",
+    "benzyl fragment": "Benzyl group", "carbohydrate backbone": "Carbohydrate chain", "ring oxygen": "Ring oxygen",
+    hemiacetal: "Hemiacetal group", hemiketal: "Hemiketal group", "configurational reference": "Configurational reference",
+    "anomeric centre": "Anomeric centre", "candidate carbon skeleton": "Carbon chain",
+    "aromatic ring locant": "Aromatic ring substituent", "aromatic substituent fragment": "Aromatic substituent",
+    "connected fragment": "Connected substituent",
+  } : {
+    carboxylicAcid: "Grupo carboxilo", ester: "Grupo éster", amide: "Grupo amida", carbonyl: "Grupo carbonilo",
+    hydroxyl: "Grupo hidroxilo", ringSystem: "Sistema de anillos", stereo: "Centro estereogénico", "N-bound methyl": "Grupo N-metilo",
+    "phenoxy fragment": "Grupo fenoxi", "substituted phenoxy fragment": "Grupo fenoxi sustituido", "methoxy fragment": "Grupo metoxi",
+    "amine fragment": "Grupo amina", "trifluoromethyl group": "Grupo trifluorometilo", "ether linkage": "Enlace éter",
+    "benzyl fragment": "Grupo bencilo", "carbohydrate backbone": "Cadena de carbohidrato", "ring oxygen": "Oxígeno del anillo",
+    hemiacetal: "Grupo hemiacetal", hemiketal: "Grupo hemicetal", "configurational reference": "Referencia configuracional",
+    "anomeric centre": "Centro anomérico", "candidate carbon skeleton": "Cadena de carbonos",
+    "aromatic ring locant": "Sustituyente del anillo aromático", "aromatic substituent fragment": "Sustituyente aromático",
+    "connected fragment": "Sustituyente conectado",
+  };
+  if (component.kind === "connected fragment") {
+    const raw = structuralFragmentLabel(component, language);
+    if (/CF3-substituted aryl ether/i.test(raw) || /éter arílico con CF3/i.test(raw))
+      return en ? "Aryl ether branch with trifluoromethyl" : "Rama de éter arílico con trifluorometilo";
+    if (/Aryl ether branch/i.test(raw) || /Rama de éter arílico/i.test(raw))
+      return en ? "Aryl ether branch" : "Rama de éter arílico";
+    if (/Aromatic branch/i.test(raw) || /Rama aromática/i.test(raw))
+      return en ? "Phenyl branch" : "Rama fenilo";
+    if (/Nitrogen-containing branch/i.test(raw) || /Rama nitrogenada/i.test(raw))
+      return en ? "Nitrogen-containing branch" : "Rama nitrogenada";
+    if (/Acyclic carbon fragment/i.test(raw) || /Fragmento carbonado acíclico/i.test(raw))
+      return en ? "Carbon branch" : "Rama carbonada";
+    return undefined;
+  }
+  if (component.kind === "aromatic ring locant")
+    return language === "en" ? component.displayLabel ?? "Aromatic ring substituent"
+      : component.displayLabelEs ?? "Sustituyente del anillo aromático";
+  if (component.kind === "ringSystem") {
+    const raw = structuralFragmentLabel(component, language);
+    if (/Benzene ring|Anillo bencénico/i.test(raw)) return raw;
+    return language === "en"
+      ? /Aromatic/i.test(raw) ? "Aromatic ring" : "Ring system"
+      : /Aromatic|aromático/i.test(raw) ? "Anillo aromático" : "Sistema de anillos";
+  }
+  if (component.kind === "amine fragment") {
+    const raw = structuralFragmentLabel(component, language);
+    const match = raw.match(/(primary|secondary|tertiary)/i) ?? raw.match(/(primaria|secundaria|terciaria)/i);
+    if (match) return en ? `${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)} amine` : `Amina ${match[1]!.toLowerCase()}`;
+  }
+  if (component.kind === "substituted phenoxy fragment" || component.kind === "phenoxy fragment"
+    || component.kind === "aromatic substituent fragment") {
+    const raw = structuralFragmentLabel(component, language);
+    const ringIndex = raw.match(/^(?:Ring|Anillo)\s+(\d+):/i)?.[1];
+    const prefix = ringIndex ? `${en ? "Ring" : "Anillo"} ${ringIndex}: ` : "";
+    if (component.kind === "phenoxy fragment") return `${prefix}${en ? "Phenoxy group" : "Grupo fenoxi"}`;
+    if (component.nomenclature) return `${prefix}${component.nomenclature[en ? "name" : "nameEs"]}`;
+    if (component.kind === "substituted phenoxy fragment") return `${prefix}${en ? "Substituted phenoxy group" : "Grupo fenoxi sustituido"}`;
+  }
+  return labels[component.kind] ?? (component.kind === "fragment connection" ? undefined : structuralLabel(component, language));
+}
+
+function studentStructuralExplanation(component: StructuralComponent, language: AppLanguage, derivation: StructuralDerivation,
+  graph?: GeneratedMolecule) {
+  const en = language === "en";
+  const child = component.parentComponentId
+    ? derivation.components.find(candidate => candidate.id === component.parentComponentId) : undefined;
+  const childName = studentStructuralLabel(component, language);
+  const containerName = child ? studentStructuralLabel(child, language) : undefined;
+  if (component.kind === "phenoxy fragment" && component.nomenclature) return en
+    ? "The aromatic ring joins the carbon chain through an ether oxygen, forming a phenoxy group. The attachment carbon is ring C1."
+    : "El anillo aromático se une a la cadena de carbonos mediante un oxígeno éter y forma un grupo fenoxi. El carbono de unión es C1 del anillo.";
+  if (component.nomenclature) {
+    const local = component.nomenclature;
+    const connection = local.connection === "phenoxy" ? (en ? "through an ether oxygen" : "mediante un oxígeno éter")
+      : local.connection === "benzyl" ? (en ? "through a methylene group" : "mediante un grupo metileno")
+      : local.connection === "phenylamino" ? (en ? "through an –NH– group" : "mediante un grupo –NH–")
+      : (en ? "directly through a ring carbon" : "directamente mediante un carbono del anillo");
+    const locants = local.substituents.map(item => `C${item.position} ${language === "en" ? item.name : item.nameEs}`);
+    const parentLocant = local.parentAttachmentLocant;
+    const localNumbering = locants.length
+      ? en
+        ? `Numbering starts at the ring attachment as C1; the lowest locant set places the ring substituents at ${locants.join(", ")}.`
+        : `La numeración comienza en el punto de unión del anillo como C1; el conjunto más bajo sitúa los sustituyentes en ${locants.join(", ")}.`
+      : en ? "The ring attachment is C1." : "El punto de unión corresponde a C1 del anillo.";
+    const parent = parentLocant === undefined ? "" : en
+      ? ` It joins the identified carbon chain at C${parentLocant}.`
+      : ` Se une a la cadena de carbonos identificada en C${parentLocant}.`;
+    const result = en
+      ? `${local.name} is used because this ring connects to the rest of the molecule ${connection}. ${localNumbering}${parent}`
+      : `Se usa ${local.nameEs} porque este anillo se conecta con el resto de la molécula ${connection}. ${localNumbering}${parent}`;
+    return result;
+  }
+
+  let explanation: string;
+  switch (component.kind) {
+    case "carboxylicAcid": explanation = en ? "The C(=O)–OH arrangement is a carboxyl group." : "La estructura C(=O)–OH corresponde a un grupo carboxilo."; break;
+    case "ester": explanation = en ? "The C(=O)–O–C arrangement identifies an ester linkage." : "La estructura C(=O)–O–C identifica un enlace éster."; break;
+    case "amide": explanation = en ? "The C(=O)–N arrangement identifies an amide." : "La estructura C(=O)–N identifica una amida."; break;
+    case "carbonyl": explanation = en ? "The C=O bond forms a carbonyl group." : "El enlace C=O forma un grupo carbonilo."; break;
+    case "hydroxyl": explanation = en ? "This C–OH group is a hydroxyl group." : "Este grupo C–OH es un grupo hidroxilo."; break;
+    case "ringSystem": {
+      const raw = structuralFragmentLabel(component, language);
+      explanation = en
+        ? /attached through O/i.test(raw) ? "The benzene ring connects to the rest of the structure through an ether oxygen (C–O)."
+          : /direct C–C attachment/i.test(raw) ? "A direct C–C bond connects the benzene ring to the rest of the structure."
+          : /C–O attachment/i.test(raw) ? "The ring connects to the rest of the structure through a C–O bond."
+          : /Aromatic/i.test(raw) ? "This is an aromatic ring." : "These atoms form a ring system."
+        : /unido por O/i.test(raw) ? "El anillo bencénico se conecta con el resto de la estructura mediante un oxígeno éter (C–O)."
+          : /unión directa C–C/i.test(raw) ? "Un enlace C–C directo conecta el anillo bencénico con el resto de la estructura."
+          : /unión C–O/i.test(raw) ? "El anillo se conecta con el resto de la estructura mediante un enlace C–O."
+          : /Aromático/i.test(raw) ? "Este es un anillo aromático." : "Estos átomos forman un sistema de anillos.";
+      break;
+    }
+    case "candidate carbon skeleton": explanation = en
+      ? `This region contains a continuous chain of ${component.atomIds.length} carbon atoms.`
+      : `Esta región contiene una cadena continua de ${component.atomIds.length} átomos de carbono.`; break;
+    case "connected fragment": {
+      const region = new Set(component.atomIds);
+      const boundary = component.bondIds.filter(([a, b]) => region.has(a) !== region.has(b));
+      const connections = graph ? [...new Set(boundary.map(([a, b]) => {
+        const inside = region.has(a) ? a : b, outside = region.has(a) ? b : a;
+        const left = graph.atoms.find(atom => atom.id === inside)?.element ?? "C";
+        const right = graph.atoms.find(atom => atom.id === outside)?.element ?? "C";
+        return `${left}–${right}`;
+      }))] : [];
+      explanation = en
+        ? `This ${childName?.toLowerCase() ?? "branch"} attaches to the carbon chain${connections.length ? ` through ${connections.join(" and ")}` : ""}.`
+        : `Esta ${childName?.toLowerCase() ?? "rama"} se une a la cadena de carbonos${connections.length ? ` mediante ${connections.join(" y ")}` : ""}.`;
+      break;
+    }
+    case "amine fragment": explanation = en ? `The nitrogen has the bonds of a ${childName?.toLowerCase() ?? "amine"}.` : `El nitrógeno presenta los enlaces propios de una ${childName?.toLowerCase() ?? "amina"}.`; break;
+    case "N-bound methyl": explanation = en ? "A methyl group is bonded directly to the nitrogen atom." : "Un grupo metilo está unido directamente al nitrógeno."; break;
+    case "trifluoromethyl group": explanation = en ? "This carbon is bonded to three fluorine atoms, forming a trifluoromethyl group (–CF₃)." : "Este carbono está unido a tres átomos de flúor y forma un grupo trifluorometilo (–CF₃)."; break;
+    case "ether linkage": explanation = en ? "The C–O–C arrangement is an ether linkage." : "La estructura C–O–C es un enlace éter."; break;
+    case "benzyl fragment": explanation = en ? "The aromatic ring connects through a methylene group (–CH₂–)." : "El anillo aromático se conecta mediante un grupo metileno (–CH₂–)."; break;
+    case "phenoxy fragment": explanation = en ? "The aromatic ring connects to the rest of the molecule through an ether oxygen; this is a phenoxy group." : "El anillo aromático se conecta con el resto de la molécula mediante un oxígeno éter; es un grupo fenoxi."; break;
+    case "substituted phenoxy fragment": explanation = en ? "This phenoxy group carries the aromatic substituents shown in the controls." : "Este grupo fenoxi contiene los sustituyentes aromáticos indicados en los controles."; break;
+    case "methoxy fragment": explanation = en ? "The oxygen joins the aromatic ring to a methyl group, forming methoxy." : "El oxígeno une el anillo aromático con un grupo metilo y forma metoxi."; break;
+    case "stereo": explanation = en ? `The molecular structure specifies configuration ${component.evidence.match(/\b([RS])\b/)?.[1] ?? ""} at this centre.` : `La estructura molecular especifica la configuración ${component.evidence.match(/\b([RS])\b/)?.[1] ?? ""} en este centro.`; break;
+    case "aromatic ring locant": explanation = en ? "This ring position carries the indicated substituent." : "Esta posición del anillo lleva el sustituyente indicado."; break;
+    case "aromatic substituent fragment": explanation = en ? "The aromatic substituent and its internal positions are shown here." : "Aquí se muestra el sustituyente aromático y sus posiciones internas."; break;
+    case "carbohydrate backbone": explanation = en ? `The structure contains a ${component.atomIds.length}-carbon carbohydrate chain.` : `La estructura contiene una cadena de carbohidrato de ${component.atomIds.length} carbonos.`; break;
+    case "ring oxygen": explanation = en ? "This oxygen is part of the ring." : "Este oxígeno forma parte del anillo."; break;
+    case "hemiacetal": explanation = en ? "This carbon is bonded to the ring oxygen and a hydroxyl group." : "Este carbono está unido al oxígeno del anillo y a un grupo hidroxilo."; break;
+    case "hemiketal": explanation = en ? "This carbon is bonded to the ring oxygen and a hydroxyl group." : "Este carbono está unido al oxígeno del anillo y a un grupo hidroxilo."; break;
+    case "anomeric centre": explanation = en ? "The marked carbon is the anomeric centre." : "El carbono señalado es el centro anomérico."; break;
+    case "configurational reference": explanation = en ? "This centre sets the configurational reference for the carbohydrate." : "Este centro establece la referencia configuracional del carbohidrato."; break;
+    case "fragment connection": return "";
+    default: explanation = en ? "This part of the structure is identified in the molecule." : "Esta parte de la estructura se identifica en la molécula.";
+  }
+  if (component.kind === "ringSystem" || component.kind === "N-bound methyl") return explanation;
+  if (component.kind === "trifluoromethyl group" && child?.kind === "substituted phenoxy fragment") {
+    const position = child.nomenclature?.substituents.find(item => /trifluoromethyl|trifluorometil/i.test(item.name))?.position;
+    if (position !== undefined) return en
+      ? `${explanation} It is attached at C${position} of the phenoxy ring.`
+      : `${explanation} Se une en C${position} del anillo fenoxi.`;
+  }
+  if (component.kind === "phenoxy fragment" && child?.kind === "substituted phenoxy fragment") {
+    const substituent = child.nomenclature?.substituents.map(item => `C${item.position} ${en ? item.name : item.nameEs}`).join(", ");
+    return en
+      ? `The phenoxy ring carries ${substituent || "the indicated ring substituent"}.`
+      : `El anillo fenoxi lleva ${substituent || "el sustituyente indicado"}.`;
+  }
+  if (child && childName && containerName) return en
+    ? `${explanation} The ${childName.toLowerCase()} is part of the ${containerName.toLowerCase()}.`
+    : `${explanation} El ${childName.toLowerCase()} forma parte del ${containerName.toLowerCase()}.`;
+  return explanation;
+}
+
+/** Presents only chemical features established by structural evidence. It does
+ * not turn a structural region into a verified name component or parent. */
 export function buildStructuralPriorityReasoning(input: { derivation: StructuralDerivation; language: AppLanguage;
   parentSelection?: ParentSelectionEvidence; graph?:GeneratedMolecule }): PriorityReasoningModel {
   const { derivation, language } = input;
@@ -812,23 +1078,22 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
     "candidate carbon skeleton": 1, "carbohydrate backbone": 1,
     ringSystem: 2, "connected fragment": 3,
     "phenoxy fragment": 3, "methoxy fragment": 3, "substituted phenoxy fragment": 4,
-    "fragment connection": 3, "amine fragment": 1, "trifluoromethyl group": 1, "ether linkage": 1, "benzyl fragment": 3,
+    "fragment connection": 9, "amine fragment": 1, "trifluoromethyl group": 1, "ether linkage": 1, "benzyl fragment": 3,
     "N-bound methyl": 4, "ring oxygen": 4, hemiacetal: 4, hemiketal: 4,
     "aromatic substituent fragment": 3, "aromatic ring locant": 4,
     "configurational reference": 5, "anomeric centre": 5, stereo: 5,
   };
-  const kinds = [...new Set(derivation.components.map(component => component.kind))]
+  const studentComponents = derivation.components.filter(component => component.kind !== "fragment connection"
+    && studentStructuralLabel(component, language) !== undefined);
+  const kinds = [...new Set(studentComponents.map(component => component.kind))]
     .sort((a, b) => ranks[a] - ranks[b] || a.localeCompare(b));
   const steps = kinds.map((kind, index): PriorityReasoningStep => {
-    const number = String(index + 1).padStart(2, "0"), group = derivation.components.filter(component => component.kind === kind);
+    const number = String(index + 1).padStart(2, "0"), group = studentComponents.filter(component => component.kind === kind);
     const labelFor = (component: StructuralComponent) => {
-      const base = structuralFragmentLabel(component, language);
-      const peers = group.filter(item => structuralFragmentLabel(item, language) === base);
+      const base = studentStructuralLabel(component, language) ?? structuralFragmentLabel(component, language);
+      const peers = group.filter(item => studentStructuralLabel(item, language) === base);
       if (peers.length < 2) return base;
-      const sameSize = peers.filter(item => item.atomIds.length === component.atomIds.length);
-      const size = language === "en" ? `${component.atomIds.length} atoms` : `${component.atomIds.length} átomos`;
-      const occurrence = sameSize.length > 1 ? ` · ${sameSize.indexOf(component) + 1}` : "";
-      return `${base} · ${size}${occurrence}`;
+      return `${base} · ${peers.indexOf(component) + 1}`;
     };
     const fragments = group.flatMap(component => {
       const label = labelFor(component);
@@ -857,28 +1122,26 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
           bondIds: target.bondIds, locants: target.locants };
       }
     });
-    const componentText = (component: StructuralComponent) => {
-      if (component.nomenclature) return language === "en"
-        ? component.nomenclature.explanation : component.nomenclature.explanationEs;
-      const evidence = language === "en" ? component.evidence : component.evidenceEs ?? component.evidence;
-      const container = component.parentComponentId
-        ? derivation.components.find(candidate => candidate.id === component.parentComponentId) : undefined;
-      if (!container) return evidence;
-      const childName = structuralFragmentLabel(component, language), parentName = structuralFragmentLabel(container, language);
-      return evidence + (language === "en"
-        ? ` This ${childName} is a contained part of ${parentName}; this describes graph composition, not a verified name or locant.`
-        : ` Este elemento, ${childName}, forma parte de ${parentName}; esto describe la composición del grafo, no un nombre o localizador verificado.`);
-    };
-    const explanation = group.length === 1 ? componentText(group[0]) : ["ringSystem", "connected fragment", "fragment connection"].includes(kind)
-      ? `${language === "en" ? "Each control below describes an independently identified graph region; these labels do not establish name locants. " : "Cada control describe una región del grafo identificada por separado; estas etiquetas no establecen localizadores del nombre. "}${group.map(component => `${labelFor(component)}: ${componentText(component)}`).join(" ")}`
-      : language === "en"
-        ? `${group.length} graph regions of this kind are independently identified; no parent locants are inferred.`
-        : `Se identifican ${group.length} regiones de este tipo en el grafo; no se infieren localizadores parentales.`;
-    const targets = group.map(component => ({ stepNumber: number, atomIds: component.atomIds,
+    const signature = (component: StructuralComponent) => JSON.stringify([
+      [...component.atomIds].sort((a, b) => a - b), component.bondIds.map(([a, b]) => `${Math.min(a, b)}:${Math.max(a, b)}`).sort(),
+    ]);
+    const uniqueGroup = group.filter((component, position) => group.findIndex(other => signature(other) === signature(component)) === position);
+    const componentText = (component: StructuralComponent) => studentStructuralExplanation(component, language, derivation, input.graph);
+    const explanation = uniqueGroup.length === 1 ? componentText(uniqueGroup[0])
+      : uniqueGroup.map(component => `${labelFor(component)}: ${componentText(component)}`).join(" ");
+    const visibleGroup = uniqueGroup;
+    const visibleFragments = fragments.filter(fragment => visibleGroup.some(component => component.id === fragment.semanticId
+      || component.nestedSelections?.some(selection => `${component.id}:${selection.id}` === fragment.semanticId)));
+    const targets = visibleGroup.map(component => ({ stepNumber: number, atomIds: component.atomIds,
       bondIds: component.bondIds, locants: component.numbering ?? [] }));
-    return { number, title: structuralLabel(group[0], language), explanation, target: unionTarget(number, targets),
-      fragments: { ...fragments[0], additionalFragments: fragments.slice(1) }, fragmentTargets,
-      componentIds: group.map(component => component.id), componentKind: kind, source: "structural" };
+    const visibleTargets = Object.fromEntries(Object.entries(fragmentTargets).filter(([fragmentId]) => {
+      const semanticId = fragments.find(fragment => reasoningFragmentId(number, fragment) === fragmentId)?.semanticId;
+      return visibleFragments.some(fragment => fragment.semanticId === semanticId);
+    }));
+    return { number, title: studentStructuralLabel(visibleGroup[0], language) ?? structuralLabel(visibleGroup[0], language), explanation,
+      target: unionTarget(number, targets),
+      fragments: visibleFragments[0] ? { ...visibleFragments[0], additionalFragments: visibleFragments.slice(1) } : undefined,
+      fragmentTargets: visibleTargets, componentIds: visibleGroup.map(component => component.id), componentKind: kind, source: "structural" };
   });
   if (input.parentSelection) {
     const evidence = input.parentSelection;
@@ -887,22 +1150,6 @@ export function buildStructuralPriorityReasoning(input: { derivation: Structural
     const matchingStep = steps.find(step => derivation.components.some(component => step.componentIds.includes(component.id)
       && evidence.candidates.some(item => sameRegion(item.atomIds, component.atomIds))));
     if (matchingStep) matchingStep.parentSelectionEvidence = evidence;
-    else {
-      const number = String(steps.length + 1).padStart(2, "0");
-      const targets = evidence.candidates.map(item => ({ stepNumber: number, fragmentId: item.id,
-        atomIds: item.atomIds, bondIds: item.bondIds, locants: [] }));
-      const fragments = evidence.candidates.map(item => ({ text: item.label,
-        label: language === "en" ? `Select ${item.label}` : `Seleccionar ${item.label}`,
-        kind: "parent" as const, semanticId: item.id, atomIds: item.atomIds, bondIds: item.bondIds }));
-      const fragmentTargets = Object.fromEntries(evidence.candidates.map((item, index) => [
-        reasoningFragmentId(number, fragments[index]), targets[index],
-      ]));
-      steps.push({ number, title: language === "en" ? "Parent candidates" : "Candidatos a padre",
-        explanation: evidence.explanation, target: unionTarget(number, targets),
-        fragments: fragments[0] ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined,
-        fragmentTargets, componentIds: evidence.candidates.map(item => item.id),
-        parentSelectionEvidence: evidence, source: "structural" });
-    }
   }
   const composition = input.graph ? buildAmineArylComposition(derivation, input.parentSelection, language,
     input.graph, String(steps.length+1).padStart(2,"0")) : undefined;
@@ -966,14 +1213,15 @@ function buildAmineArylComposition(derivation:StructuralDerivation, selection:Pa
     comparisonName:group.name.replace(/[^A-Za-z]/g,""),locants:group.locants,citedPrefix:group.cited,multiplier:"",
     complex:group.cited.includes("(")})),language);
   const en=language==="en";
-  const chainLabel=en?"Rule-supported propan-1-amine parent candidate":"Candidato parental de propan-1-amina respaldado por reglas";
+  const chainLabel=en?"Propan-1-amine chain":"Cadena de propan-1-amina";
   const phenylLabel=en?`${parentLocant}-phenyl substituent`:`Sustituyente ${parentLocant}-fenil`;
   const phenoxyName=phenoxy.nomenclature![en?"name":"nameEs"];
   const phenoxyLabel=en?`${parentLocant}-[${phenoxyName}] substituent`:`Sustituyente ${parentLocant}-[${phenoxyName}]`;
   const internalLocant=ringLocant.numbering?.[0]?.[1];
+  const citedOrder=orderGroups.map(group=>group.cited).join(", ");
   const explanation=en
-    ? `The N-bound three-carbon parent candidate starts at C1 where it attaches to the amine nitrogen (P-44.3.2; locant 1 under P-14.4). The graph places N-methyl on N and both verified aromatic substituents at parent C${parentLocant}. Their cited terms are ordered by their complete names: methyl, phenyl, then ${phenoxyName}; the initial ring locant and punctuation do not replace the internal name when alphabetizing (P-14.5.2). C${parentLocant} marks attachment of each complete substituent to the parent; ring C${internalLocant} is a separate internal locant for trifluoromethyl. The parentheses in ${phenoxyName} enclose its internal trifluoromethyl prefix, and square brackets enclose the complete phenoxy substituent because its name already contains parentheses (P-16.5.2.4). Braces are not needed at this nesting depth (P-16.5.3). This composes graph-supported name parts only; the complete active name and PIN remain unreconciled, so the derivation stays PARTIAL.`
-    : `El candidato parental de tres carbonos unido a N comienza en C1, donde se enlaza con el nitrógeno de la amina (P-44.3.2; localizador 1 según P-14.4). El grafo sitúa N-metil sobre N y ambos sustituyentes aromáticos verificados en C${parentLocant} del padre. Sus términos se ordenan por sus nombres completos: fenil, metil y después ${phenoxyName}; el localizador inicial del anillo y los signos de agrupación no sustituyen el nombre interno al alfabetizar (P-14.5.2). C${parentLocant} marca la unión de cada sustituyente completo al padre; C${internalLocant} del anillo es un localizador interno distinto para trifluorometil. Los paréntesis de ${phenoxyName} encierran el prefijo interno trifluorometil, y los corchetes delimitan el sustituyente fenoxi completo porque su nombre ya contiene paréntesis (P-16.5.2.4). No se requieren llaves a esta profundidad (P-16.5.3). Solo se componen partes respaldadas por el grafo; el nombre activo completo y el PIN siguen sin conciliarse, por lo que la derivación permanece PARTIAL.`;
+    ? `The three-carbon chain is numbered from the end attached to the amine, giving propan-1-amine. N-methyl is attached to nitrogen; phenyl and ${phenoxyName} attach at C${parentLocant}. The prefixes are cited alphabetically by their complete names: ${citedOrder}. Ring C${internalLocant} is an internal locant of the phenoxy substituent, separate from parent C${parentLocant}. Parentheses enclose the trifluoromethyl part, and square brackets enclose the complete phenoxy substituent.`
+    : `La cadena de tres carbonos se numera desde el extremo unido a la amina y da propan-1-amina. El grupo N-metil se une al nitrógeno; fenil y ${phenoxyName} se unen en C${parentLocant}. Los prefijos se citan alfabéticamente por sus nombres completos: ${citedOrder}. C${internalLocant} es un localizador interno del sustituyente fenoxi y se distingue del C${parentLocant} de la cadena. Los paréntesis encierran el grupo trifluorometil y los corchetes delimitan el sustituyente fenoxi completo.`;
   const fragments=[
     {text:chainLabel,semanticId:"composition:parent",kind:"parent" as const,atomIds:chain.atomIds,bondIds:pathBonds},
     {text:en?"N-methyl":"N-metil",semanticId:"composition:n-methyl",kind:"substituent" as const,atomIds:methyl.atomIds,bondIds:methyl.bondIds},

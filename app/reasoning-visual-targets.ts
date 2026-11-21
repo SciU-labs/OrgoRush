@@ -261,7 +261,8 @@ export function buildReasoningVisualReferences(input: VisualInput): {
     if (!step.nameRole) continue;
     const numberedFragments: ReasoningVisualTarget[] = [];
     for (const part of [evidence, ...(evidence.additionalFragments ?? [])]) {
-      if (!isWrittenFragment(part, input.displayedName)) continue;
+      const graphBackedStereo = part.kind === "stereo" && part.semanticId?.startsWith("stereo:ez:");
+      if (!isWrittenFragment(part, input.displayedName) && !part.explicitTarget && !graphBackedStereo) continue;
       if (part.explicitTarget) {
         const explicit = part.explicitTarget, atoms = new Set(explicit.atomIds);
         const known = new Set(input.molecule.atoms.map(atom => atom.id));

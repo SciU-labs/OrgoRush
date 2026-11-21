@@ -81,6 +81,34 @@ type CipSignature = {
   children: CipSignature[];
 };
 
+export type TetrahedralCipPriority = {
+  atomId: number | null;
+  rank: number;
+  /** Atom IDs in the selectable branch (the implicit hydrogen has no region). */
+  branchAtomIds: number[];
+  branchBondIds: [number, number][];
+  firstDifference?: { sphere: number; higherAtomicNumber: number; lowerAtomicNumber: number };
+};
+
+export type TetrahedralCipPriorityEvidence = {
+  centerAtomId: number;
+  priorities: TetrahedralCipPriority[];
+} | null;
+
+export type DoubleBondCipPriority = {
+  atomId: number | null;
+  rank: 1 | 2;
+  branchAtomIds: number[];
+  branchBondIds: [number, number][];
+  firstDifference?: { sphere: number; higherAtomicNumber: number; lowerAtomicNumber: number };
+};
+
+export type DoubleBondCipPriorityEvidence = {
+  atomIds: [number, number];
+  configuration: StereoConfiguration | null;
+  sides: [DoubleBondCipPriority[], DoubleBondCipPriority[]];
+} | null;
+
 const atomicNumbers: Record<StereoElement, number> = {
   C: 6,
   N: 7,
@@ -213,6 +241,84 @@ function buildCipSignature(
   return { atomicNumber, children };
 }
 
+function firstCipDifference(left: CipSignature, right: CipSignature, sphere = 1): {
+  sphere: number; higherAtomicNumber: number; lowerAtomicNumber: number;
+} | undefined {
+  if (left.atomicNumber !== right.atomicNumber) return {
+    sphere, higherAtomicNumber: Math.max(left.atomicNumber, right.atomicNumber),
+    lowerAtomicNumber: Math.min(left.atomicNumber, right.atomicNumber),
+  };
+  const length = Math.max(left.children.length, right.children.length);
+  for (let index = 0; index < length; index += 1) {
+    const leftChild = left.children[index], rightChild = right.children[index];
+    if (!leftChild || !rightChild) {
+      const present = leftChild ?? rightChild;
+      if (!present) continue;
+      return { sphere: sphere + 1, higherAtomicNumber: leftChild ? present.atomicNumber : 0,
+        lowerAtomicNumber: rightChild ? present.atomicNumber : 0 };
+    }
+    const difference = firstCipDifference(leftChild, rightChild, sphere + 1);
+    if (difference) return difference;
+  }
+  return undefined;
+}
+
+function branchRegion(molecule: ReadonlyStereoMolecule, centerAtomId: number, firstAtomId: number) {
+  const atomIds = new Set<number>([firstAtomId]), pending = [firstAtomId];
+  while (pending.length) {
+    const current = pending.pop()!;
+    for (const bond of atomBonds(molecule, current)) {
+      const next = bond[0] === current ? bond[1] : bond[0];
+      if (next === centerAtomId || atomIds.has(next)) continue;
+      atomIds.add(next); pending.push(next);
+    }
+  }
+  const bondIds = molecule.bonds.filter(([left, right]) =>
+    atomIds.has(left) && atomIds.has(right) || left === centerAtomId && atomIds.has(right)
+      || right === centerAtomId && atomIds.has(left))
+    .map(([left, right]): [number, number] => [left, right]);
+  return { atomIds: [...atomIds], bondIds };
+}
+
+/** Uses the same recursive CIP ligand signatures as alkene-priority analysis.
+ * The absolute R/S descriptor itself remains assigned by OpenChemLib. */
+export function inspectTetrahedralCipPriorities(
+  molecule: ReadonlyStereoMolecule,
+  centerAtomId: number,
+): TetrahedralCipPriorityEvidence {
+  const candidates: AttachedSubstituent[] = atomBonds(molecule, centerAtomId).flatMap(bond => {
+    const atomId = bond[0] === centerAtomId ? bond[1] : bond[0];
+    return [{ atomId, signature: buildCipSignature(molecule, atomId, centerAtomId, new Set([centerAtomId])) }];
+  });
+  for (let hydrogen = 0; hydrogen < implicitHydrogens(molecule, centerAtomId); hydrogen += 1)
+    candidates.push({ atomId: null, signature: hydrogenSignature });
+  if (candidates.length !== 4) return null;
+  candidates.sort((left, right) => compareCipSignatures(right.signature, left.signature));
+  for (let index = 1; index < candidates.length; index += 1)
+    if (compareCipSignatures(candidates[index - 1].signature, candidates[index].signature) === 0) return null;
+  const priorities = candidates.map((candidate, index): TetrahedralCipPriority => {
+    const region = candidate.atomId === null ? { atomIds: [], bondIds: [] as [number, number][] }
+      : branchRegion(molecule, centerAtomId, candidate.atomId);
+    const comparison = index < candidates.length - 1
+      ? firstCipDifference(candidate.signature, candidates[index + 1].signature) : undefined;
+    return { atomId: candidate.atomId, rank: index + 1, branchAtomIds: region.atomIds,
+      branchBondIds: region.bondIds, ...(comparison ? { firstDifference: comparison } : {}) };
+  });
+  // Ligands that rejoin through a ring do not have distinct atom-only regions.
+  // Keep each selectable target local to its root bond in that case.
+  for (let left = 0; left < priorities.length; left += 1) for (let right = left + 1; right < priorities.length; right += 1) {
+    const a = priorities[left], b = priorities[right];
+    if (a.atomId === null || b.atomId === null) continue;
+    if (a.branchAtomIds.some(id => b.branchAtomIds.includes(id))) {
+      for (const item of [a, b]) {
+        item.branchAtomIds = [item.atomId!];
+        item.branchBondIds = [[centerAtomId, item.atomId!]];
+      }
+    }
+  }
+  return { centerAtomId, priorities };
+}
+
 type AttachedSubstituent = {
   atomId: number | null;
   signature: CipSignature;
@@ -259,6 +365,33 @@ function prioritySubstituent(
   const comparison = compareCipSignatures(candidates[0].signature, candidates[1].signature);
   if (comparison === 0) return null;
   return comparison > 0 ? candidates[0].atomId : candidates[1].atomId;
+}
+
+/** Returns the two ligand priorities at each alkene endpoint, using the same
+ * recursive CIP signatures that determine E/Z. Regions are mapped to the
+ * original graph IDs so callers can attach exact canvas selections. */
+export function inspectDoubleBondCipPriorities(
+  molecule: ReadonlyStereoMolecule,
+  leftAtomId: number,
+  rightAtomId: number,
+): DoubleBondCipPriorityEvidence {
+  const inspection = inspectDoubleBondStereochemistry(molecule, leftAtomId, rightAtomId);
+  if (!inspection.stereogenic) return null;
+  const sides: [DoubleBondCipPriority[], DoubleBondCipPriority[]] = [leftAtomId, rightAtomId].map((center, index) => {
+    const other = index === 0 ? rightAtomId : leftAtomId;
+    const candidates = attachedSubstituents(molecule, center, other);
+    candidates.sort((left, right) => compareCipSignatures(right.signature, left.signature));
+    return candidates.map((candidate, candidateIndex) => {
+      const region = candidate.atomId === null ? { atomIds: [], bondIds: [] as [number, number][] }
+        : branchRegion(molecule, center, candidate.atomId);
+      const difference = candidateIndex === 0
+        ? firstCipDifference(candidate.signature, candidates[1].signature) : undefined;
+      return { atomId: candidate.atomId, rank: (candidateIndex + 1) as 1 | 2,
+        branchAtomIds: region.atomIds, branchBondIds: region.bondIds,
+        ...(difference ? { firstDifference: difference } : {}) };
+    });
+  }) as [DoubleBondCipPriority[], DoubleBondCipPriority[]];
+  return { atomIds: [leftAtomId, rightAtomId], configuration: inspection.configuration, sides };
 }
 
 function signedSide(

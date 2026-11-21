@@ -7,6 +7,7 @@ import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts"
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedCompositionalEvidence } from "./compositional-name-model.ts";
+import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
@@ -17,6 +18,9 @@ export type ValidatedNameDerivation = {
   parentSystem?: "purine" | "carbohydrate";
   components: NameComponent[];
   parentAtomIds: number[];
+  /** The constitution name and locants whose stereodescriptors were separately verified. */
+  stereochemicalBaseName?: string;
+  stereochemicalDescriptors?: { locant: number; configuration: "R" | "S"; baseOffset: number }[];
   evidence?: ValidatedCompositionalEvidence;
   symmetry?: {
     mappingCount: number;
@@ -43,6 +47,17 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
   if (language === "en") return { name: model.name, language: "en", localized: false };
+  if (model.evidence?.stereo === "specified-tetrahedral" && model.stereochemicalBaseName
+    && model.stereochemicalDescriptors?.length) {
+    const topLevel = model.stereochemicalDescriptors.every(descriptor => descriptor.baseOffset === 0);
+    const base = topLevel ? spanishSubstitutiveName(model.components.filter(component => !component.id.startsWith("stereo-"))) : null;
+    const descriptor = `(${model.stereochemicalDescriptors.map(item => `${item.locant}${item.configuration}`).join(",")})-${base ?? ""}`;
+    if (base && reconcileSystematicName(model.evidence.reconstructedGraph, descriptor)?.status === "FULL") {
+      return { name: descriptor, language: "es", localized: true };
+    }
+    // Other supported constructions continue through their own localized
+    // presentation path, preserving descriptors in their original scope.
+  }
   if(model.evidence?.construction==="polysubstituted-benzene-prefixes"&&model.evidence.language==="en"){
     const prefixes=model.components.filter(component=>component.role==="prefix"&&component.parentId==="parent")
       .sort((a,b)=>a.start-b.start).map(component=>{
@@ -175,7 +190,95 @@ export function reconcileSystematicName(actual: GeneratedMolecule, name: string)
   entries.set(name, result);
   return result;
 }
+type ParsedNameStereo = { baseName: string; descriptors: { locant: number; configuration: "R" | "S"; baseOffset: number; tokenStart: number; tokenEnd: number }[]; baseToOriginal: number[] };
+
+function parseNameStereo(name: string): ParsedNameStereo {
+  const expression = /\((\d+[RS](?:,\d+[RS])*)\)-/g;
+  const descriptors: ParsedNameStereo["descriptors"] = [], baseToOriginal: number[] = [];
+  let baseName = "", cursor = 0, match: RegExpExecArray | null;
+  while ((match = expression.exec(name))) {
+    const before = name.slice(cursor, match.index);
+    baseName += before;
+    for (let index = cursor; index < match.index; index += 1) baseToOriginal.push(index);
+    const tokenEnd = match.index + match[0].length - 1;
+    const baseOffset = baseName.length;
+    for (const entry of match[1].split(",")) {
+      const descriptor = /^(\d+)([RS])$/.exec(entry)!;
+      descriptors.push({ locant: Number(descriptor[1]), configuration: descriptor[2] as "R" | "S",
+        baseOffset, tokenStart: match.index, tokenEnd });
+    }
+    cursor = match.index + match[0].length;
+  }
+  baseName += name.slice(cursor);
+  for (let index = cursor; index < name.length; index += 1) baseToOriginal.push(index);
+  return { baseName, descriptors, baseToOriginal };
+}
+
 function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
+  const parsed = parseNameStereo(name);
+  const constitutional = parsed.descriptors.length ? { ...actual,
+    atoms: actual.atoms.map(({ tetrahedralParity: _parity, tetrahedralBondTo: _carrier, ...atom }) => atom) } : actual;
+  const proof = reconcileConstitution(constitutional, parsed.baseName);
+  if (!proof) return null;
+  const actualCenters = getTetrahedralStereoCenters(actual);
+  const hasStoredParity = actual.atoms.some(atom => atom.tetrahedralParity);
+  if (hasStoredParity && actualCenters.length !== actual.atoms.filter(atom => atom.tetrahedralParity).length) return null;
+  if (!parsed.descriptors.length) return hasStoredParity ? null : proof;
+  if (actualCenters.length !== parsed.descriptors.length) return null;
+
+  const resolved = parsed.descriptors.map(descriptor => {
+    const candidates = proof.components.flatMap(component => {
+      const topLevelDescriptor = descriptor.baseOffset === 0;
+      if (topLevelDescriptor ? component.role !== "parent"
+        : descriptor.baseOffset < component.start || descriptor.baseOffset > component.end) return [];
+      const mappings = component.internalNumbering?.length ? component.internalNumbering : component.numbering;
+      return mappings.filter(([, locant]) => locant === descriptor.locant).map(([atomId]) => atomId);
+    });
+    const atomIds = [...new Set(candidates)];
+    if (atomIds.length !== 1) return null;
+    const center = actualCenters.find(item => item.atomId === atomIds[0]);
+    return center?.configuration === descriptor.configuration ? { ...descriptor, atomId: center.atomId } : null;
+  });
+  if (resolved.some(item => !item)) return null;
+  const uniqueCenters = new Set(resolved.map(item => item!.atomId));
+  if (uniqueCenters.size !== actualCenters.length) return null;
+
+  const originalStart = (offset: number) => parsed.baseToOriginal[offset] ?? name.length;
+  const originalEnd = (offset: number) => offset <= 0 ? 0 : (parsed.baseToOriginal[offset - 1] ?? name.length - 1) + 1;
+  const components = proof.components.map(component => {
+    const start = originalStart(component.start), end = originalEnd(component.end);
+    return { ...component, start, end, text: name.slice(start, end),
+      ...(component.writtenLocants ? { writtenLocants: component.writtenLocants.map(item => ({ ...item,
+        start: originalStart(item.start), end: originalEnd(item.end) })) } : {}) };
+  });
+  for (const descriptor of resolved as NonNullable<(typeof resolved)[number]>[]) {
+    const token = name.slice(descriptor.tokenStart, descriptor.tokenEnd);
+    const text = `${descriptor.locant}${descriptor.configuration}`;
+    const localStart = token.indexOf(text);
+    if (localStart < 0) return null;
+    components.push({ id: `stereo-${descriptor.locant}`, role: "prefix", text,
+      start: descriptor.tokenStart + localStart, end: descriptor.tokenStart + localStart + text.length,
+      parentId: "parent", atomIds: [descriptor.atomId], bondIds: [],
+      numbering: [[descriptor.atomId, descriptor.locant]],
+      explanation: `At locant ${descriptor.locant}, the molecular graph has the specified ${descriptor.configuration} configuration.`,
+      explanationEs: `En el localizador ${descriptor.locant}, el grafo molecular presenta la configuración ${descriptor.configuration} especificada.`,
+      label: `(${text})`, labelEs: `(${text})` });
+  }
+  const actualParity = new Map(actual.atoms.filter(atom => atom.tetrahedralParity).map(atom => [atom.id, atom.tetrahedralParity!]));
+  const mappedReconstruction = proof.evidence ? { ...proof.evidence.reconstructedGraph,
+    atoms: proof.evidence.reconstructedGraph.atoms.map(atom => {
+      const sourceId = proof.evidence!.atomMapping.find(([constructed]) => constructed === atom.id)?.[1];
+      const parity = sourceId === undefined ? undefined : actualParity.get(sourceId);
+      return { ...atom, ...(parity ? { tetrahedralParity: parity } : {}) };
+    }) } : undefined;
+  const evidence = proof.evidence && mappedReconstruction ? { ...proof.evidence,
+    reconstructedGraph: mappedReconstruction, stereo: "specified-tetrahedral" as const } : undefined;
+  return { ...proof, name, components, stereochemicalBaseName: parsed.baseName,
+    stereochemicalDescriptors: parsed.descriptors.map(({locant,configuration,baseOffset})=>({locant,configuration,baseOffset})),
+    ...(evidence ? { evidence } : {}) };
+}
+
+function reconcileConstitution(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
   const carbohydrate=reconcileCarbohydrateName(actual,name);if(carbohydrate)return carbohydrate;
   if (name.length > 200 || actual.bonds.some(b => b[3] !== undefined)) return null;
   const graph: GeneratedMolecule = { atoms: [], bonds: [] };
@@ -413,7 +516,6 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     ruleEvidence=family.evidence;
   }
 
-  if (actual.atoms.some(a => a.tetrahedralParity) && ruleEvidence?.stereo !== "specified-tetrahedral") return null;
   // Every named span is literal and every graph atom must be accounted for.
   if (components.some(c => name.slice(c.start, c.end) !== c.text)
     || graph.atoms.some(a => !components.some(c => c.atomIds.includes(a.id)))) return null;

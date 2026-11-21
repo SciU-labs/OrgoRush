@@ -446,7 +446,7 @@ test("non-FULL structures retain a unique candidate carbon path and clickable at
   assert.deepEqual([...remappedBackbone.atomIds].sort((a, b) => a - b), [...backbone.atomIds].map(id => idMap.get(id)).sort((a, b) => a - b));
 });
 
-test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with graph-backed controls", () => {
+test("PARTIAL fluoxetine keeps graph-backed chemistry without exposing internal parent diagnostics", () => {
   const molecule = imported("CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F");
   const analysis = page.analyzeMolecule(molecule);
   const parentSelection = parentStructureSelectionEvidence(molecule, analysis, "es");
@@ -466,10 +466,10 @@ test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with
   const englishStructural = buildStructuralPriorityReasoning({ derivation, language: "en", parentSelection, graph: molecule });
   const spanishCf3 = reasoning.steps.find(step => step.componentKind === "trifluoromethyl group");
   const englishCf3 = englishStructural.steps.find(step => step.componentKind === "trifluoromethyl group");
-  assert.match(spanishCf3.explanation, /forma parte de .*4-\(trifluorometil\)fenoxi/);
-  assert.match(englishCf3.explanation, /contained part of .*4-\(trifluoromethyl\)phenoxy/i);
-  assert.match(spanishCf3.explanation, /no un nombre o localizador verificado/);
-  assert.match(englishCf3.explanation, /not a verified name or locant/);
+  assert.match(spanishCf3.explanation, /tres átomos de flúor/);
+  assert.match(englishCf3.explanation, /three fluorine atoms/i);
+  assert.doesNotMatch(spanishCf3.explanation, /nombre o localizador verificado|grafo|candidato/i);
+  assert.doesNotMatch(englishCf3.explanation, /verified name or locant|graph|candidate/i);
   const parentStep = reasoning.steps.find(step => step.parentSelectionEvidence);
   assert.ok(parentStep);
   assert.equal(parentStep.parentSelectionEvidence.level, "rule-supported");
@@ -480,9 +480,9 @@ test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with
   assert.equal(selectedParent.atomIds.length, 3, "the selected amine-bound parent candidate is the three-carbon path");
   assert.equal(substitutedPhenoxy.nomenclature.parentAttachmentLocant, 3);
   assert.match(reasoning.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation,
-    /C3 del candidato parental de amina/);
+    /se une a la cadena de carbonos identificada en C3/i);
   assert.match(englishStructural.steps.find(step => step.componentKind === "substituted phenoxy fragment").explanation,
-    /at C3 of the rule-supported amine-parent candidate/);
+    /joins the identified carbon chain at C3/);
   assert.ok(selectedParent.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)));
   assert.ok(selectedParent.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a)));
   assert.equal(analysis.name, reasoning.name, "parent evidence does not replace or rewrite the local name");
@@ -490,11 +490,13 @@ test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with
   const compositionEn = englishStructural.steps.find(step => step.title === "Constructing the name");
   assert.ok(composition && compositionEn);
   assert.equal(derivation.status, "PARTIAL", "composing supported evidence does not promote the whole derivation");
-  assert.match(composition.explanation, /C1.*amina.*C3.*fenil, metil.*4-\(trifluorometil\)fenoxi/s);
-  assert.match(composition.explanation, /paréntesis.*corchetes.*No se requieren llaves/);
-  assert.match(compositionEn.explanation, /complete names: methyl, phenyl, then 4-\(trifluoromethyl\)phenoxy/);
-  assert.match(compositionEn.explanation, /C3.*ring C4.*parentheses.*square brackets.*Braces are not needed/);
-  assert.match(compositionEn.explanation, /active name and PIN remain unreconciled/);
+  assert.match(composition.explanation, /tres carbonos.*amina.*C3.*fenil, N-metil, 4-\(trifluorometil\)fenoxi/s);
+  assert.match(composition.explanation, /C4.*paréntesis.*corchetes/i);
+  assert.match(compositionEn.explanation, /complete names: N-methyl, phenyl, 4-\(trifluoromethyl\)phenoxy/);
+  assert.doesNotMatch(composition.explanation, /P-\d|candidato|concili|PIN|candidato/i);
+  assert.doesNotMatch(compositionEn.explanation, /P-\d|candidate|reconcil|PIN/i);
+  assert.match(compositionEn.explanation, /C3.*C4.*Parentheses.*square brackets/);
+  assert.doesNotMatch(compositionEn.explanation, /Braces are not needed|active name|reconcil|PIN|P-\d/);
   assert.ok(!compositionEn.explanation.includes("N-methyl-3-phenyl-3-"), "the active name is not copied into the explanation");
   assert.deepEqual(compositionEn.alphabeticalOrder.groups.map(group => group.citedPrefix),
     ["N-methyl", "phenyl", "4-(trifluoromethyl)phenoxy"]);
@@ -507,6 +509,45 @@ test("PARTIAL fluoxetine keeps its parent region as an unverified candidate with
       assert.deepEqual(target.atomIds, fragment.atomIds, fragment.semanticId);
       assert.ok(target.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)), fragment.semanticId);
       assert.ok(target.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a)), fragment.semanticId);
+    }
+  }
+});
+
+test("structural explanations expose student-facing chemistry without algorithm traces across supported families", () => {
+  const cases = [
+    "CNCCC(c1ccccc1)Oc1ccc(cc1)C(F)(F)F", "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+    "CN(C)CCOC(c1ccccc1)c1ccccc1", "CC(=O)Nc1ccc(O)cc1", "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+    "CNC[C@H](O)c1ccc(O)c(O)c1", "CC(C)(C)NCC(C1=CC(=C(C=C1)CO)O)O",
+    "CN(C)CC(C1=CC=C(C=C1)OC)C2(CCCCC2)O", "COCCc1ccc(OCC(O)CNC(C)C)cc1",
+    "NCCc1ccc(O)c(O)c1", "CC1=CC(=O)CC(C1)C(=C)C",
+    "Cc1cc([N+](=O)[O-])cc([N+](=O)[O-])c1[N+](=O)[O-]",
+    "C(C(=O)O)(CC(=O)O)(O)CC(=O)O", "O=C(O)[C@@H](O)[C@@H](O)C(=O)O",
+    "C/C=C/C=C/C(=O)O",
+  ];
+  const forbidden = /skeletal atom count|enumerated carbon paths|evaluated; not selected|evaluado; no seleccionado|not compared|sin comparar|candidate regions|regiones candidatas|parent candidates|candidatos a padre|principal-group suffix count|isomorphism|comparador|P-\d+|no se ha conciliado|not been reconciled/i;
+  for (const smiles of cases) {
+    const molecule = imported(smiles), analysis = page.analyzeMolecule(molecule);
+    const selection = parentStructureSelectionEvidence(molecule, analysis, "es", analysis.chainName);
+    for (const language of ["es", "en"]) {
+      const model = buildStructuralPriorityReasoning({ derivation: deriveStructuralComponents(molecule,
+        analysis.name, analysis.mainChain, "blue-book-2013", selection), language, parentSelection: selection, graph: molecule });
+      assert.ok(!model.steps.some(step => /Parent candidates|Candidatos a padre/i.test(step.title)), smiles);
+      for (const step of model.steps) {
+        assert.doesNotMatch(`${step.title} ${step.explanation}`, forbidden, `${language}: ${smiles}`);
+        assert.notEqual(step.componentKind, "fragment connection", `${language}: generic connection step removed`);
+        const controls = step.fragments ? [step.fragments, ...(step.fragments.additionalFragments ?? [])] : [];
+        const exact = controls.map(fragment => JSON.stringify([
+          fragment.text, [...fragment.atomIds].sort((a,b)=>a-b), fragment.bondIds.map(([a,b])=>`${Math.min(a,b)}:${Math.max(a,b)}`).sort(),
+        ]));
+        assert.equal(new Set(exact).size, exact.length, `${language}: duplicate controls with the same region and purpose removed for ${smiles}`);
+        for (const fragment of controls) {
+          const target = step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
+          assert.ok(target, fragment.text);
+          assert.deepEqual([...target.atomIds].sort((a,b)=>a-b), [...fragment.atomIds].sort((a,b)=>a-b));
+          assert.ok(target.atomIds.every(id => molecule.atoms.some(atom => atom.id === id)), fragment.text);
+          assert.ok(target.bondIds.every(([a,b]) => molecule.bonds.some(([x,y]) => x === a && y === b || x === b && y === a)), fragment.text);
+        }
+      }
     }
   }
 });

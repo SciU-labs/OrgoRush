@@ -424,19 +424,22 @@ test("general cyclic parent guidance uses cyclic acid/aldehyde criteria and limi
   };
   const acid = makeAnalysis("O=C(O)C1CCCCC1", "carboxylicAcid");
   const acidEs = parentStructureSelectionReasoning(acid.molecule, acid.analysis, "es");
-  assert.match(acidEs, /P-65\.1\.2\.2\.2/);
+  assert.match(acidEs, /anillo de 6 carbonos.*estructura principal/);
+  assert.doesNotMatch(acidEs, /P-\d/);
   assert.match(acidEs, /fuera del anillo/);
-  assert.doesNotMatch(acidEs, /P-59\.2\.1\.8/);
+  assert.match(acidEs, /se une en C1/);
   const aldehyde = makeAnalysis("O=CC1CCCCC1", "aldehyde");
   const aldehydeEn = parentStructureSelectionReasoning(aldehyde.molecule, aldehyde.analysis, "en");
-  assert.match(aldehydeEn, /P-66\.6\.1\.1\.3/);
-  assert.match(aldehydeEn, /remains outside the ring/);
+  assert.doesNotMatch(aldehydeEn, /P-\d/);
+  assert.match(aldehydeEn, /aldehyde carbon lies outside the ring/);
+  assert.match(aldehydeEn, /attaches at ring C1/);
 
   const hydrocarbon = imported("CCc1ccccc1"), aromaticRing = hydrocarbon.rings.find(item => item.kind === "aromatic");
   const general = parentStructureSelectionReasoning(hydrocarbon, { family: "aromatic", mainChain: aromaticRing.atomIds,
     chainName: "benzene", functionalGroups: [], numberedAtoms: new Map(aromaticRing.atomIds.map((id, index) => [id, index + 1])) }, "en");
-  assert.match(general, /P-44\.1\.2\.2 and P-52\.2\.8/);
-  assert.match(general, /does not establish that it is the PIN/);
+  assert.match(general, /aromatic ring of 6 carbons.*is the parent/);
+  assert.match(general, /attached carbon chain is named as a substituent/);
+  assert.doesNotMatch(general, /P-\d|candidate|PIN/i);
   assert.deepEqual(verifiedStructuralReasoning({ molecule: hydrocarbon, derivation: null, consistency: "unverified",
     activeProfile: "current", language: "en" }), [], "unsupported hydrocarbons receive no new FULL claim");
 });

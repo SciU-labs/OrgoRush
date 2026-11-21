@@ -44,7 +44,7 @@ import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
 import { localizeCompositionalExternalName } from "./compositional-external-localization";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
-import { missingGlobalDerivationEvidence, resolveDerivationConsistency } from "./derivation-consistency";
+import { resolveDerivationConsistency } from "./derivation-consistency";
 import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
 import { buildBranchCountingGuides, buildValidatedVisualNumbering } from "./visual-numbering";
 import { selectedAromaticCarboxylCarbonContext } from "./selected-atom-context";
@@ -77,6 +77,7 @@ import {
 import {
   formatStereochemicalName,
   getMainChainStereoDescriptors,
+  inspectDoubleBondCipPriorities,
   isDoubleBondEZToggleAvailable,
   inspectDoubleBondStereochemistry,
   toggleDoubleBondGeometry,
@@ -4886,7 +4887,10 @@ export function steroidStereochemistryStatus(
 }
 
 function withExplicitGeometricName(molecule: Molecule, analysis: Analysis): Analysis {
-  if (analysis.family !== "acyclic") return analysis;
+  // Any analyzed acyclic parent path may carry an explicit stereogenic C=C,
+  // including polyfunctional parents such as alkenedioic acids. Aromatic and
+  // cyclic C=C remain filtered by the shared E/Z classifier.
+  if (analysis.mainChain.length < 2 || !analysis.doubleBondLocants.length) return analysis;
   const name = formatStereochemicalName(molecule, analysis.mainChain, analysis.name, {
     explicitDoubleBonds: true,
     includeTetrahedral: false,
@@ -5875,8 +5879,8 @@ function legacyStructuralReasoningText(
       const parentName = isEnglish ? translateSpanishIupacForDisplay(analysis.chainName) : analysis.chainName;
       const retainedBenzene = analysis.chainName === "benceno";
       return isEnglish
-        ? `The 1979 Legacy analysis selects the aromatic parent ring of ${analysis.mainChain.length} carbons. Its ${retainedBenzene ? "retained " : ""}parent name is “${parentName}”; the aromatic ring determines the numbering${retainedBenzene ? " (A-11.3)" : ""}. The selected name is ${displayedName}.`
-        : `El análisis Legacy de 1979 selecciona el anillo aromático de ${analysis.mainChain.length} carbonos. El nombre${retainedBenzene ? " retenido" : ""} del padre es «${parentName}»; el anillo aromático determina la numeración${retainedBenzene ? " (A-11.3)" : ""}. El nombre seleccionado es ${displayedName}.`;
+        ? `In the 1979 Legacy profile, the aromatic ring of ${analysis.mainChain.length} carbons is the parent. Its ${retainedBenzene ? "retained " : ""}parent name is “${parentName}”, and the ring determines its numbering. The resulting name is ${displayedName}.`
+        : `En el perfil Legacy de 1979, el anillo aromático de ${analysis.mainChain.length} carbonos es el padre. Su nombre${retainedBenzene ? " retenido" : ""} es «${parentName}» y el anillo determina su numeración. El nombre resultante es ${displayedName}.`;
     }
     const linkingVowelExplanation = legacyCyclicKetoneLinkingVowelExplanation(analysis, displayedName, language);
     if (linkingVowelExplanation) return linkingVowelExplanation;
@@ -5895,8 +5899,8 @@ function legacyStructuralReasoningText(
       ? isEnglish ? ` The principal ${groupDescription} is at C${locantText(functionalLocants)}.` : ` La función principal (${groupDescription}) está en C${locantText(functionalLocants)}.`
       : "";
     const historicalSelection = !ring && bonds.length && !analysis.primaryFunctionalGroup
-      ? isEnglish ? " In this 1979 profile, candidate chains are compared by the maximum number of multiple bonds before chain length (A-3.4)."
-        : " En este perfil 1979, las cadenas candidatas se comparan por el máximo número de enlaces múltiples antes que por la longitud (A-3.4)."
+      ? isEnglish ? " In the 1979 profile, the chain with the greatest number of multiple bonds is preferred before chain length is considered."
+        : " En el perfil de 1979, se prioriza la cadena con más enlaces múltiples y después se considera su longitud."
       : "";
     const presentation = deriveLegacyParentNamePresentation(analysis, displayedName, language);
     const root = alkaneRoots[analysis.mainChain.length] ?? "";
@@ -5913,8 +5917,8 @@ function legacyStructuralReasoningText(
         : ` El alcano de referencia es ${numericalRoot}ano. A-3.1 sustituye «ano» por «a${simplePrefixes[analysis.doubleBondLocants.length]}eno»; todos los localizadores de dobles enlaces preceden al padre en el nombre histórico.`
       : "";
     return isEnglish
-      ? `The 1979 Legacy analysis selects a ${parentKind} of ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} Its selected name is ${displayedName}.`
-      : `El análisis Legacy de 1979 selecciona ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre seleccionado se escribe ${displayedName}.`;
+      ? `In the 1979 Legacy profile, the parent is a ${parentKind} of ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} The resulting name is ${displayedName}.`
+      : `En el perfil Legacy de 1979, el padre es ${ring ? "el" : "la"} ${parentKind} de ${structure}.${morphology}${polyeneMorphology}${ringCarbonyl}${functionText}${unsaturation}${historicalSelection} El nombre resultante es ${displayedName}.`;
   }
   if (role === "numbering") {
     if (analysis.family === "aromatic") {
@@ -5932,14 +5936,14 @@ function legacyStructuralReasoningText(
     const substituentLocants = analysis.substituents.map((item) => item.locant).sort((a, b) => a - b);
     const details = [functional, multipleBonds, substituentLocants.length ? `${isEnglish ? "substituents" : "sustituyentes"} C${locantText(substituentLocants)}` : ""].filter(Boolean).join(isEnglish ? "; " : "; ");
     return isEnglish
-      ? `Locants shown here come from the selected 1979 Legacy parent: ${details || "no locanted groups"}. The final written form is ${displayedName}.`
-      : `Los localizadores proceden del padre seleccionado por el análisis Legacy de 1979: ${details || "no hay grupos con localizador"}. La forma escrita es ${displayedName}.`;
+      ? `The 1979 Legacy name uses these locants: ${details || "no locanted groups"}. Its written form is ${displayedName}.`
+      : `El nombre Legacy de 1979 usa estos localizadores: ${details || "no hay grupos con localizador"}. Su forma escrita es ${displayedName}.`;
   }
   if (role === "substituent") {
     const items = analysis.substituents.map((item) => `${isEnglish ? translateSpanishIupacToOpsin(item.name) || item.name : item.name} ${isEnglish ? "at" : "en"} C${item.locant}`);
     return items.length
-      ? isEnglish ? `The selected parent has these graph-derived substituents: ${items.join(", ")}.`
-        : `El padre seleccionado tiene estos sustituyentes, derivados del grafo: ${items.join(", ")}.`
+      ? isEnglish ? `The parent has these substituents: ${items.join(", ")}.`
+        : `El padre tiene estos sustituyentes: ${items.join(", ")}.`
       : isEnglish ? "No carbon substituents are added to the selected parent."
         : "No se añaden sustituyentes de carbono al padre seleccionado.";
   }
@@ -5951,6 +5955,10 @@ function legacyStructuralReasoningText(
     : isEnglish ? "No multiple bond lies in the selected parent."
       : "El padre seleccionado no contiene enlaces múltiples.";
 }
+
+const cipElementNames: Record<number, [string, string]> = { 1: ["hidrógeno", "hydrogen"], 6: ["carbono", "carbon"],
+  7: ["nitrógeno", "nitrogen"], 8: ["oxígeno", "oxygen"], 9: ["flúor", "fluorine"],
+  16: ["azufre", "sulfur"], 17: ["cloro", "chlorine"], 35: ["bromo", "bromine"], 53: ["yodo", "iodine"] };
 
 export function buildIupacReasoningSteps(
   molecule: Molecule,
@@ -6478,17 +6486,22 @@ export function buildIupacReasoningSteps(
       const geometry = descriptor.configuration === "E"
         ? "lados opuestos"
         : "el mismo lado";
-      return `C${descriptor.locant}=C${descriptor.locant + 1} es ${descriptor.locant}${descriptor.configuration}: los sustituyentes de mayor prioridad quedan en ${geometry}`;
+      const cip = inspectDoubleBondCipPriorities(molecule, descriptor.atomIds[0], descriptor.atomIds[1]);
+      const differences = cip?.sides.flatMap((side, index) => {
+        const comparison = side[0]?.firstDifference;
+        return comparison ? [`en C${descriptor.locant + index}, ${cipElementNames[comparison.higherAtomicNumber]?.[0] ?? "un átomo"} tiene prioridad sobre ${cipElementNames[comparison.lowerAtomicNumber]?.[0] ?? "el otro"}`] : [];
+      }) ?? [];
+      return `C${descriptor.locant}=C${descriptor.locant + 1} permite isomería geométrica: se comparan los sustituyentes de cada extremo${differences.length ? `; ${differences.join(" y ")}` : ""}. El descriptor ${descriptor.locant}${descriptor.configuration} indica que los prioritarios quedan en ${geometry}`;
     });
     descriptorDetails.push(...tetrahedralDescriptors.map((descriptor) =>
-      `C${descriptor.locant} es ${descriptor.locant}${descriptor.configuration}: OpenChemLib ordena sus cuatro sustituyentes mediante CIP y la paridad queda guardada independientemente de las coordenadas`,
+      `C${descriptor.locant} tiene configuración ${descriptor.configuration}; las prioridades de sus cuatro sustituyentes determinan cómo se expresa en el nombre`,
     ));
     steps.push({
       number: "06",
       title: "Estereoquímica (E/Z o R/S)",
       explanation: `Se aplican las reglas CIP. ${descriptorDetails.join("; ")}.`,
-      ...(stereoDescriptors.length === 1 && !tetrahedralDescriptors.length
-        ? { nameRole: "stereo" as const, stereoDescriptors } : {}),
+      ...(stereoDescriptors.length
+        ? { nameRole: "stereo" as const, stereoDescriptors, tetrahedralDescriptors } : {}),
     });
   }
 
@@ -6868,8 +6881,15 @@ export function buildEnglishReasoningSteps(
       const tetrahedralDescriptors = getMainChainTetrahedralDescriptors(molecule, analysis.mainChain);
       explanation = descriptors.length || tetrahedralDescriptors.length
         ? `CIP priority rules are applied to every defined stereogenic element. ${[
-            ...descriptors.map((descriptor) => `${descriptor.locant}${descriptor.configuration} identifies the relative position of the higher-priority alkene substituents`),
-            ...tetrahedralDescriptors.map((descriptor) => `${descriptor.locant}${descriptor.configuration} is the stored absolute tetrahedral configuration`),
+            ...descriptors.map((descriptor) => {
+              const cip = inspectDoubleBondCipPriorities(molecule, descriptor.atomIds[0], descriptor.atomIds[1]);
+              const differences = cip?.sides.flatMap((side, index) => {
+                const comparison = side[0]?.firstDifference;
+              return comparison ? [`at C${descriptor.locant + index}, ${cipElementNames[comparison.higherAtomicNumber]?.[1] ?? "one atom"} outranks ${cipElementNames[comparison.lowerAtomicNumber]?.[1] ?? "the other"}`] : [];
+              }) ?? [];
+              return `C${descriptor.locant}=C${descriptor.locant + 1} allows geometric isomerism: substituents are compared at each end${differences.length ? `; ${differences.join(" and ")}` : ""}. Descriptor ${descriptor.locant}${descriptor.configuration} places the higher-priority substituents ${descriptor.configuration === "E" ? "on opposite sides" : "on the same side"}`;
+            }),
+            ...tetrahedralDescriptors.map((descriptor) => `C${descriptor.locant} has configuration ${descriptor.configuration}; the priorities of its four substituents determine the descriptor used in the name`),
           ].join("; ")}.`
         : "Stereochemical descriptors are assigned from molecular geometry using CIP priority rules when the structure requires them.";
     }
@@ -6915,13 +6935,13 @@ export function buildActiveIupacReasoning(input: {
     && displayedName === (language === "en" ? translateSpanishIupacForDisplay(analysis.name) : analysis.name)
     ? analysis.substituents.find(substituent => substituent.name === "metilideno") : undefined;
   const methylideneText = methylidene ? language === "en"
-    ? `The =CH₂ group is attached by a double bond at C${methylidene.locant}: methylidene, not the single-bonded –CH₃ methyl group (P-29.2, P-56.4). This double bond is represented by the prefix; the parent-chain double bonds retain their own locants.`
-    : `El grupo =CH₂ se une mediante un enlace doble en C${methylidene.locant}: metilideno, distinto del metilo –CH₃ unido por enlace sencillo (P-29.2, P-56.4). Ese doble enlace se representa en el prefijo; los dobles enlaces del padre conservan sus propios localizadores.` : "";
+    ? `The =CH₂ group is attached by a double bond at C${methylidene.locant}: methylidene, distinct from a methyl group (–CH₃) attached by a single bond. The double bond is represented in the prefix; double bonds in the parent chain keep their own locants.`
+    : `El grupo =CH₂ se une mediante un enlace doble en C${methylidene.locant}: metilideno, distinto del metilo (–CH₃) unido por enlace sencillo. El doble enlace se representa en el prefijo; los dobles enlaces del padre conservan sus propios localizadores.` : "";
   if (methylidene) {
     const parent = steps.find(step => step.nameRole === "parent");
     if (parent) parent.explanation += language === "en"
-      ? ` P-44.3.2 selects the longest acyclic parent (${analysis.mainChain.length} carbons) before comparing unsaturation; the lateral =CH₂ remains outside that parent.`
-      : ` P-44.3.2 selecciona el padre acíclico más largo (${analysis.mainChain.length} carbonos) antes de comparar insaturaciones; el =CH₂ lateral queda fuera de ese padre.`;
+      ? ` The parent is the ${analysis.mainChain.length}-carbon acyclic chain; the =CH₂ group remains a substituent outside it.`
+      : ` El padre es la cadena acíclica de ${analysis.mainChain.length} carbonos; el grupo =CH₂ queda como sustituyente fuera de ella.`;
     const substituent = steps.find(step => step.nameRole === "substituent");
     if (substituent) substituent.explanation += ` ${methylideneText} ${language === "en" ? "The complete name is" : "El nombre completo es"} ${displayedName}.`;
     const unsaturation = steps.find(step => step.nameRole === "unsaturation");
@@ -6944,7 +6964,7 @@ export function buildActiveIupacReasoning(input: {
     }
   }
   const fragments = deriveReasoningNameFragments({
-    analysis, convention, language, displayedName, generatedNames, canHighlight, steps,
+    analysis, molecule, convention, language, displayedName, generatedNames, canHighlight, steps,
   });
   if (canHighlight && convention === "current" && analysis.substituents.some(item => item.hydroxyAlkyl || item.aminoAlkyl || item.oxoAlkyl)
     && !localNamerCannotSafelyName(molecule, analysis)) {
@@ -11788,7 +11808,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         throw new Error("El SMILES fue interpretado, pero el canvas lo bloqueó por una validación de valencia.");
       }
 
-      if (getTetrahedralStereoCenters(next).length) setShowStereochemistry(true);
+      if (getTetrahedralStereoCenters(next).length
+        || getMainChainStereoDescriptors(next, importedAnalysis.mainChain, true).length) setShowStereochemistry(true);
       setSelectedId(next.atoms[0].id);
       setCommonAlkylNameSelections([]);
       setShowIupacName(true);
@@ -16329,18 +16350,13 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
               <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning || functionalizedLocalReasoning ? "PARTIAL" : undefined}>
-                {functionalizedLocalReasoning && <p role="note">{language === "en"
-                  ? "PARTIAL: branch regions and local numbering are supported by the molecular graph; the full name has not been independently reconciled."
-                  : "PARTIAL: las regiones de la rama y su numeración local están respaldadas por el grafo; el nombre completo no se ha conciliado independientemente."}</p>}
-                {derivationConsistency.status === "profile-mismatch" && <p role="note">
+                {!validatedDerivation && (structuralPriorityReasoning || functionalizedLocalReasoning
+                  || effectiveShowNumbering || derivationConsistency.status === "profile-mismatch") && <p role="note" data-reasoning-partial>
                   {language === "en"
-                    ? "The available FULL derivation verifies a different name or nomenclature profile; it is not used to justify the active name."
-                    : "La derivación FULL disponible verifica otro nombre o perfil de nomenclatura; no se utiliza para justificar el nombre activo."}
+                    ? "The complete name cannot yet be justified. The steps below show the structural features that can be explained."
+                    : "Aún no se puede justificar el nombre completo. Los pasos siguientes muestran los rasgos estructurales que sí pueden explicarse."}
                 </p>}
                 {validatedDerivation && <p className="reasoning-validated-name"><strong>{activeChemicalName}</strong></p>}
-                {!validatedDerivation && effectiveShowNumbering && <p role="note">{language === "en"
-                  ? "The displayed numbering comes from the local analysis and has no complete name reconciliation; equivalent orientations may exist."
-                  : "La numeración mostrada procede del análisis local y no tiene una reconciliación completa del nombre; pueden existir orientaciones equivalentes."}</p>}
                 {validatedDerivation?.evidence?.numbering.comparison === 0
                   && ["retained-aromatic", "aromatic-ester"].includes(validatedDerivation.evidence.construction)
                   && <p role="note">{language === "en"
@@ -16350,21 +16366,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
                   && displayedIupacName === verifiedSystematicPresentation.name
                   && <p role="note">Nombre sistemático verificado en inglés; no hay una localización española validada para esta construcción.</p>}
-                {structuralPriorityReasoning && <p role="note">{language === "en"
-                  ? "PARTIAL: the active name is not reconciled. These steps show graph evidence only; candidate regions do not establish its parent or name locants."
-                  : "PARTIAL: el nombre activo no está conciliado. Estos pasos muestran evidencia del grafo; las regiones candidatas no establecen su padre ni sus localizadores."}</p>}
-                {structuralPriorityReasoning && missingGlobalDerivationEvidence(structuralParentSelection).parentAdmissibility && <p role="note">{language === "en"
-                  ? "The selected parent remains a candidate: its nomenclatural admissibility has not been verified."
-                  : "El padre seleccionado sigue siendo candidato: su admisibilidad nomenclatural no se ha verificado."}</p>}
-                {structuralPriorityReasoning && missingGlobalDerivationEvidence(structuralParentSelection).unexaminedParents && <p role="note">{language === "en"
-                  ? "Some candidate regions were not compared in the available parent selection."
-                  : "La selección parental disponible no comparó algunas regiones candidatas."}</p>}
-                {structuralPriorityReasoning && structuralDerivation.carbohydrate && <p role="note">{language === "en"
-                  ? "Carbohydrate numbers shown here are structural locants; they do not verify the displayed name."
-                  : "Los números del carbohidrato son localizadores estructurales; no verifican el nombre mostrado."}</p>}
                 {structuralPriorityReasoning?.steps.length === 0 && <p>{language === "en"
-                  ? "No selectable structural region can be established from this graph."
-                  : "El grafo no permite establecer una región estructural seleccionable."}</p>}
+                  ? "No structural feature can be explained from this molecule yet."
+                  : "Aún no se puede explicar ningún rasgo de esta molécula."}</p>}
                 <ol>
                   {displayedReasoningSteps.map(step => {
                     const stepActive = reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId;
@@ -16383,57 +16387,6 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                           language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
                           selectedFragmentId={reasoningVisualTarget?.fragmentId}
                           onActivateTarget={activateReasoningCanvasReference} />}
-                        {step.parentSelectionEvidence && <section data-parent-selection-level={step.parentSelectionEvidence.level}
-                          data-parent-reconciliation={step.parentSelectionEvidence.reconciliation}>
-                          <p role="note">{step.parentSelectionEvidence.level === "rule-supported"
-                            ? language === "en"
-                              ? `Selection evidence uses the current analysis and ${step.parentSelectionEvidence.rule ?? "an implemented parent rule"}. The active name has not been independently reconciled.`
-                              : `La evidencia de selección utiliza el análisis actual y ${step.parentSelectionEvidence.rule ?? "una regla de selección de padre implementada"}. El nombre activo no se ha conciliado de forma independiente.`
-                            : step.parentSelectionEvidence.level === "selection-traced"
-                              ? step.parentSelectionEvidence.explanation
-                            : step.parentSelectionEvidence.level === "name-reconciled"
-                              ? language === "en"
-                                ? "The FULL derivation maps this parent to the active name; the derivation does not record a comparison against every admissible alternative."
-                                : "La derivación FULL asigna este padre al nombre activo; no registra una comparación con todas las alternativas admisibles."
-                              : language === "en"
-                                ? "Structural candidate only: the current rules do not justify a parent comparison for this case."
-                                : "Solo candidato estructural: las reglas actuales no justifican una comparación de padres para este caso."}</p>
-                          {step.parentSelectionEvidence.candidates.filter(candidate => {
-                            const visibleFragments = step.fragments ? [step.fragments, ...(step.fragments.additionalFragments ?? [])] : [];
-                            return !visibleFragments.some(fragment => fragment.atomIds?.length === candidate.atomIds.length
-                              && fragment.atomIds.every(id => candidate.atomIds.includes(id)));
-                          }).map(candidate => <button type="button" key={candidate.id}
-                            data-parent-candidate={candidate.status} aria-pressed={reasoningVisualTarget?.fragmentId === candidate.id}
-                            data-parent-evidence-kind={candidate.evidenceKind ?? "parent"}
-                            data-parent-admissibility={candidate.nomenclaturalAdmissibility}
-                            onClick={() => activateReasoningCanvasReference({ stepNumber: step.number, fragmentId: candidate.id,
-                              atomIds: candidate.atomIds, bondIds: candidate.bondIds, locants: [] })}>
-                            {candidate.label}{candidate.principalGroupCountStatus === "known"
-                              ? language === "en" ? ` · principal-group suffix count: ${candidate.principalGroupCount}`
-                                : ` · grupos principales expresables como sufijo: ${candidate.principalGroupCount}`
-                              : candidate.principalGroupCountStatus === "unknown"
-                                ? language === "en" ? " · count unknown" : " · cantidad desconocida"
-                                : ""}{candidate.evidenceKind === "principal-groups"
-                              ? language === "en" ? " · counted occurrence" : " · ocurrencia contabilizada"
-                              : candidate.currentAnalysisParent
-                                ? language === "en" ? " · selected by current analysis" : " · seleccionado por el análisis actual"
-                                : candidate.nomenclaturalAdmissibility === "candidate-unverified"
-                                  ? language === "en" ? " · parent admissibility unverified" : " · admisibilidad parental sin verificar"
-                                  : ""}{candidate.status === "not-compared"
-                              ? language === "en" ? " · not compared" : " · sin comparar"
-                              : candidate.status === "structural-region"
-                                ? candidate.evidenceKind && candidate.evidenceKind !== "parent"
-                                  ? ""
-                                  : language === "en" ? " · substituent region" : " · región sustituyente"
-                                : candidate.status === "candidate"
-                                  ? language === "en" ? " · unverified candidate" : " · candidato sin validar"
-                                  : candidate.status === "selected-by-engine"
-                                    ? language === "en" ? " · selected by current engine" : " · seleccionado por el motor actual"
-                                    : candidate.status === "evaluated-alternative"
-                                      ? language === "en" ? " · evaluated; not selected" : " · evaluado; no seleccionado"
-                                  : ""}
-                          </button>)}
-                        </section>}
                         {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
                           || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {
                           const fragmentId = `branch-count:${guide.componentId}`;
@@ -16441,8 +16394,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                             aria-pressed={reasoningVisualTarget?.fragmentId === fragmentId}
                             onClick={() => activateReasoningCanvasReference({stepNumber:step.number,fragmentId,
                               atomIds:guide.atomIds,bondIds:guide.bondIds,locants:guide.locants})}>
-                            {language === "en" ? `Branch ${index + 1}: counting guide (not name locants)`
-                              : `Rama ${index + 1}: guía de conteo (no son localizadores del nombre)`}
+                            {language === "en" ? `Count carbons in branch ${index + 1}`
+                              : `Contar los carbonos de la rama ${index + 1}`}
                           </button>;
                         })}
                         {validatedDerivation?.symmetry && step.source === "FULL" && step.componentIds.includes("parent")

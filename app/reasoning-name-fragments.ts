@@ -2,7 +2,8 @@ import type { AppLanguage } from "./i18n.ts";
 import { uiText } from "./i18n.ts";
 import { translateSpanishIupacForDisplay } from "./iupac-name-normalization.ts";
 import { functionalNameEvidence, matchFunctionalParentSuffix, type FunctionalContribution, type FunctionalReasoningAnalysis } from "./reasoning-functional-groups.ts";
-import type { StereoDescriptor } from "./double-bond-stereochemistry.ts";
+import { inspectDoubleBondCipPriorities, type ReadonlyStereoMolecule, type StereoDescriptor } from "./double-bond-stereochemistry.ts";
+import type { MainChainTetrahedralDescriptor } from "./tetrahedral-stereochemistry.ts";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes.ts";
 
 export type ReasoningNameEvidence = {
@@ -44,11 +45,13 @@ type FragmentAnalysis = FunctionalReasoningAnalysis & {
 
 type FragmentInput = {
   analysis: FragmentAnalysis;
+  molecule?: ReadonlyStereoMolecule;
   displayedName: string;
   /** Available local profile outputs supplied by the existing naming pipeline. */
   generatedNames?: readonly string[];
   language: AppLanguage;
-  steps: readonly { number: string; nameRole?: ReasoningNameFragment["kind"]; stereoDescriptors?: readonly StereoDescriptor[] }[];
+  steps: readonly { number: string; nameRole?: ReasoningNameFragment["kind"]; stereoDescriptors?: readonly StereoDescriptor[];
+    tetrahedralDescriptors?: readonly MainChainTetrahedralDescriptor[] }[];
   canHighlight: boolean;
   convention?: string;
 };
@@ -57,14 +60,28 @@ type FragmentInput = {
  * an arbitrary descriptor, R/S or a different local name supplies no evidence. */
 function verifiedStereoPrefix(input: FragmentInput) {
   const descriptors = input.steps.find(step => step.nameRole === "stereo")?.stereoDescriptors;
-  if (descriptors?.length !== 1) return;
-  const descriptor = descriptors[0], name = input.displayedName.trim();
-  if (descriptor.atomIds.length !== 2 || !input.analysis.doubleBondLocants.includes(descriptor.locant)
+  const tetrahedralDescriptors = input.steps.find(step => step.nameRole === "stereo")?.tetrahedralDescriptors ?? [];
+  if (!descriptors?.length) return;
+  const name = input.displayedName.trim();
+  if (descriptors.some(descriptor => descriptor.atomIds.length !== 2
+    || !input.analysis.doubleBondLocants.includes(descriptor.locant)
     || descriptor.atomIds.some((id, index) => input.analysis.mainChain[descriptor.locant - 1 + index] !== id)
-    || !["E", "Z"].includes(descriptor.configuration)
+    || !["E", "Z"].includes(descriptor.configuration))
     || name !== input.analysis.name && !input.generatedNames?.includes(name)) return;
-  const text = `(${descriptor.locant}${descriptor.configuration})`;
-  return name.startsWith(`${text}-`) ? { descriptor, text } : undefined;
+  const prefixStart = name.startsWith("ácido ") ? "ácido ".length : name.startsWith("acid ") ? "acid ".length : 0;
+  const match = /^\(((?:\d+[EZRS])(?:,\d+[EZRS])*)\)-/.exec(name.slice(prefixStart));
+  if (!match) return;
+  const tokens = new Set(match[1].split(","));
+  const expected = [...descriptors.map(descriptor => `${descriptor.locant}${descriptor.configuration}`),
+    ...tetrahedralDescriptors.map(descriptor => `${descriptor.locant}${descriptor.configuration}`)].sort();
+  if (expected.length !== tokens.size || expected.some(token => !tokens.has(token))) return;
+  const text = name.slice(prefixStart, prefixStart + match[0].length - 1);
+  return { descriptors: [...descriptors], text, prefixStart };
+}
+
+function cipElement(number: number, language: AppLanguage) {
+  const symbols: Record<number, string> = { 0: "—", 1: "H", 6: "C", 7: "N", 8: "O", 9: "F", 16: "S", 17: "Cl", 35: "Br", 53: "I" };
+  return symbols[number] ?? (language === "en" ? `atomic number ${number}` : `número atómico ${number}`);
 }
 
 function unsaturationMorpheme(token: string, bondType: "double" | "triple") {
@@ -847,7 +864,7 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
     && /^[a-záéíóúüñ0-9, -]+$/i.test(nameWithVerifiedSubstituentParentheses);
   const supportedText = /^[a-záéíóúüñ0-9, -]+$/i.test(name)
     || verifiedParentheses
-    || stereo && /^[a-záéíóúüñ0-9, -]+$/i.test(name.slice(stereo.text.length + 1))
+    || stereo && /^[a-záéíóúüñ0-9, -]+$/i.test(name.slice(stereo.prefixStart + stereo.text.length + 1))
     || (complexEther || complexAryl) && /^[a-záéíóúüñ0-9(), -]+$/i.test(name);
   if (!canHighlight || !supportedText
     || !["acyclic", "cycloalkane", "aromatic"].includes(analysis.family)) return fragments;
@@ -859,12 +876,60 @@ export function deriveReasoningNameFragments(input: FragmentInput): Record<strin
   const evidence = functionalNameEvidence(analysis, name, language);
   const stereoStep = steps.find(step => step.nameRole === "stereo");
   if (stereo && stereoStep) {
-    const { descriptor, text } = stereo;
-    fragments[stereoStep.number] = { text, start: 0, kind: "stereo", semanticId: `stereo:ez:${descriptor.locant}`,
-      label: language === "en" ? `E/Z descriptor at position ${descriptor.locant}` : `Descriptor E/Z en la posición ${descriptor.locant}`,
-      bondType: "double", locant: descriptor.locant, atomIds: descriptor.atomIds, bondIds: [descriptor.atomIds],
-      explanation: language === "en" ? `The explicit double bond at C${descriptor.locant} has descriptor ${descriptor.configuration}, as verified by the structural CIP inspection.`
-        : `El doble enlace explícito en C${descriptor.locant} tiene el descriptor ${descriptor.configuration}, verificado por la inspección CIP estructural.` };
+    const fragmentsForStereo: ReasoningNameEvidence[] = [];
+    for (const descriptor of stereo.descriptors) {
+      const alkeneEvidence = input.molecule
+        ? inspectDoubleBondCipPriorities(input.molecule, descriptor.atomIds[0], descriptor.atomIds[1]) : null;
+      if (alkeneEvidence && alkeneEvidence.configuration !== descriptor.configuration) continue;
+      const locant = descriptor.locant;
+      const descriptorText = `${locant}${descriptor.configuration}`;
+      const descriptorFragment: ReasoningNameEvidence = { text: descriptorText,
+        start: stereo.prefixStart + stereo.text.indexOf(descriptorText),
+        kind: "stereo", semanticId: `stereo:ez:${locant}`,
+        label: language === "en" ? `E/Z descriptor at position ${locant}` : `Descriptor E/Z en la posición ${locant}`,
+        bondType: "double", locant, atomIds: descriptor.atomIds, bondIds: [[...descriptor.atomIds] as [number, number]],
+        explicitTarget: { atomIds: descriptor.atomIds, bondIds: [[...descriptor.atomIds] as [number, number]],
+          locants: [[descriptor.atomIds[0], locant]] },
+        explanation: language === "en"
+          ? `The double bond C${locant}=C${locant + 1} is stereogenic. At each end the two ligands have different CIP priorities; the higher-priority ligands are ${descriptor.configuration === "E" ? "on opposite sides" : "on the same side"}, so the descriptor is ${descriptor.configuration}. The locant is C${locant} in the parent chain.`
+          : `El enlace doble C${locant}=C${locant + 1} es estereogénico. En cada extremo, los ligandos tienen prioridades CIP distintas; los de mayor prioridad quedan ${descriptor.configuration === "E" ? "en lados opuestos" : "del mismo lado"}, por lo que el descriptor es ${descriptor.configuration}. El localizador C${locant} pertenece a la cadena progenitora.` };
+      fragmentsForStereo.push(descriptorFragment);
+      const locantText = String(locant);
+      fragmentsForStereo.push({ text: locantText, start: stereo.prefixStart + stereo.text.indexOf(locantText),
+        kind: "numbering", semanticId: `stereo:ez:${locant}:locant`, locant, atomIds: [descriptor.atomIds[0]], bondIds: [],
+        explicitTarget: { atomIds: [descriptor.atomIds[0]], bondIds: [], locants: [[descriptor.atomIds[0], locant]] },
+        label: language === "en" ? `Parent-chain locant C${locant}` : `Localizador de la cadena progenitora C${locant}`,
+        explanation: language === "en" ? `This locant identifies the C${locant}=C${locant + 1} stereogenic bond in the parent chain.`
+          : `Este localizador identifica el enlace estereogénico C${locant}=C${locant + 1} de la cadena progenitora.` });
+      for (const [sideIndex, pair] of (alkeneEvidence?.sides ?? []).entries()) {
+        const endpointLocant = locant + sideIndex;
+        for (const priority of pair) {
+          const rank = priority.rank, isHigh = rank === 1;
+          const difference = priority.firstDifference;
+          const comparison = difference
+            ? language === "en"
+              ? `At the first point where these branches differ, ${cipElement(difference.higherAtomicNumber, language)} outranks ${cipElement(difference.lowerAtomicNumber, language)}.`
+              : `En el primer punto donde difieren estas ramas, ${cipElement(difference.higherAtomicNumber, language)} tiene prioridad sobre ${cipElement(difference.lowerAtomicNumber, language)}.`
+            : language === "en" ? "The other ligand at this end is equivalent, so no E/Z descriptor can be assigned." : "El otro ligando de este extremo es equivalente, por lo que no puede asignarse E/Z.";
+          if (priority.atomId === null) continue;
+          const element = input.analysis.mainChain.includes(priority.atomId)
+            ? language === "en" ? "parent-chain carbon" : "carbono de la cadena progenitora"
+            : language === "en" ? "substituent" : "sustituyente";
+          const branchFragment: ReasoningNameEvidence = { text: language === "en"
+            ? `C${endpointLocant} · ${isHigh ? "higher" : "lower"}-priority ligand`
+            : `C${endpointLocant} · ligando de prioridad ${isHigh ? "mayor" : "menor"}`,
+            kind: "stereo", semanticId: `stereo:ez:${locant}:C${endpointLocant}:priority${rank}`,
+            label: language === "en" ? `Select the ${isHigh ? "higher" : "lower"}-priority ligand at C${endpointLocant}`
+              : `Seleccionar el ligando de prioridad ${isHigh ? "mayor" : "menor"} en C${endpointLocant}`,
+            atomIds: priority.branchAtomIds, bondIds: priority.branchBondIds,
+            explanation: language === "en" ? `This is the ${element} attached to C${endpointLocant}. ${comparison}`
+              : `Este es el ${element} unido a C${endpointLocant}. ${comparison}` };
+          fragmentsForStereo.push(branchFragment);
+        }
+      }
+    }
+    const [first, ...rest] = fragmentsForStereo;
+    if (first) fragments[stereoStep.number] = { ...first, additionalFragments: rest };
   }
   const unsaturationStep = steps.find((step) => step.nameRole === "unsaturation");
   if (unsaturationStep) {
