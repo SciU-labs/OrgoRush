@@ -62,7 +62,7 @@ test('amide multiplier and ester alcohol group retain their distinct graph targe
  for(const branch of branches){for(const atom of branch.atomIds)assert.ok(target.atomIds.includes(atom));for(const [a,b] of branch.bondIds)assert.ok(target.bondIds.some(([x,y])=>x===a&&y===b||x===b&&y===a));}
  const ester=moleculeFromSmiles('COC(=O)c1cc(Br)c(OC)cc1');assert.ok(ester.ok);const esterProof=reconcileSystematicName(ester.molecule,'3-bromo-4-metoxibenzoato de metilo');assert.ok(esterProof);
  const model=buildValidatedPriorityReasoning({derivation:esterProof,graph:ester.molecule,language:'es'});
- assert.match(model.steps.map(s=>s.explanation).join(' '),/grupo derivado del alcohol unido al oxígeno del éster/);
+ assert.match(model.steps.map(s=>s.explanation).join(' '),/grupo alquilo procedente del alcohol se une al oxígeno del éster/);
  const alcohol=esterProof.components.find(c=>c.parentId==='suffix'&&c.role==='substituent'),methoxy=esterProof.components.find(c=>c.text==='metoxi');
  assert.ok(alcohol&&methoxy);assert.ok(alcohol.atomIds.every(id=>!methoxy.atomIds.includes(id)));
 });

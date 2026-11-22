@@ -417,10 +417,18 @@ function makeStep(input: {
       fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[[atomId,locant]]};
     }
   }
-  // The parent and ring controls already appeared in their own explanation
-  // stages. The numbering stage exposes the atom-level locant controls only,
-  // avoiding duplicate full-fragment buttons while retaining exact locant picks.
-  const displayedFragments = title === (language === "en" ? "Numbering" : "Numeración") ? [] : fragments;
+  // The parent and standalone ring controls already appeared in their own
+  // explanation stages. Keep composite branch controls here: an N-benzyl
+  // branch, for example, is more than its phenyl ring and remains selectable.
+  const numberingStage = title === (language === "en" ? "Numbering" : "Numeración");
+  const displayedFragments = numberingStage ? fragments.filter((_, index) => {
+    const component = components[index]!;
+    if (component.id === "parent") return false;
+    const atoms = new Set(component.atomIds);
+    const standaloneRing = (graph.rings ?? []).some(ring => ring.atomIds.length === atoms.size
+      && ring.atomIds.every(atomId => atoms.has(atomId)));
+    return !standaloneRing;
+  }) : fragments;
   const allFragments = [...displayedFragments, ...locantFragments];
   const fragmentView = allFragments.length ? { ...allFragments[0], additionalFragments: allFragments.slice(1) } : undefined;
   const stepTargets = title === (language === "en" ? "Numbering" : "Numeración")

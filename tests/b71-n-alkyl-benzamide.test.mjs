@@ -44,7 +44,6 @@ test('B7.1: finite N-alkyl grammar does not confuse N and ring positions',()=>{
     [ref.smiles,'4-ethyl-N-methylbenzamide'],
     // B7.3 admits the correct dialkyl name; a missing N remains unsafe.
     ['CN(C)C(=O)c1ccccc1','N-dimethylbenzamide'],
-    ['O=C(Nc1ccccc1)c1ccccc1','N-phenylbenzamide'],
     ['C=CCNC(=O)c1ccccc1','N-(prop-2-en-1-yl)benzamide'],
     [ref.smiles,'N-propyl-4-methylbenzamide'],
     [ref.smiles,'N-ethyl-3-methylbenzamide'],
@@ -58,6 +57,18 @@ test('B7.1: finite N-alkyl grammar does not confuse N and ring positions',()=>{
   assert.equal(reconcileSystematicName(stereo,'N-ethyl-4-methylbenzamide'),null,'explicit unsupported stereo');
   const stronger=moleculeFromSmiles('CCNC(=O)c1ccc(C(=O)O)cc1');assert.ok(stronger.ok);
   assert.equal(reconcileSystematicName(stronger.molecule,'N-ethyl-4-methylbenzamide'),null,'additional senior function');
+});
+
+test('B7.1: supported N-aryl benzamides reconcile as complete structures',()=>{
+  const p=moleculeFromSmiles('O=C(Nc1ccccc1)c1ccccc1');assert.ok(p.ok);
+  for(const [name,language] of [['N-phenylbenzamide','en'],['N-fenilbenzamida','es']]){
+    const proof=reconcileSystematicName(p.molecule,name);
+    assert.equal(proof?.status,'FULL',name);
+    assert.equal(proof?.evidence?.language,language,name);
+    assert.equal(proof?.evidence?.equivalence,'complete-graph-isomorphism',name);
+    assert.equal(new Set(proof.components.flatMap(component=>component.atomIds)).size,p.molecule.atoms.length,name);
+  }
+  assert.equal(reconcileSystematicName(p.molecule,'N-methylbenzamide'),null,'wrong N-substituent');
 });
 
 test('B7.1: N and ring scopes survive permutations and aromatic representations',()=>{
