@@ -445,8 +445,8 @@ test("all ibuprofen and paracetamol controls name and target the region they des
         /amida tiene prioridad.*hidroxilo.*hidroxi-.*prefijo.*sufijo/);
       assert.match(english.steps.find(step => step.title === "Principal functional group").explanation,
         /amide has priority over the hydroxyl group.*hydroxy-.*prefix.*suffix/);
-      const spanishSubstituentSteps = model.steps.filter(step => ["Sustituyentes y localizadores", "Detalle de los sustituyentes"].includes(step.title));
-      const englishSubstituentSteps = english.steps.filter(step => ["Substituents and locants", "Further substituent details"].includes(step.title));
+      const spanishSubstituentSteps = model.steps.filter(step => ["Sustituyentes y localizadores", "Composición de los sustituyentes anidados"].includes(step.title));
+      const englishSubstituentSteps = english.steps.filter(step => ["Substituents and locants", "Nested substituent composition"].includes(step.title));
       assert.ok(spanishSubstituentSteps.length && englishSubstituentSteps.length);
       const spanishSubstituentText = spanishSubstituentSteps.map(step => step.explanation).join(" ");
       const englishSubstituentText = englishSubstituentSteps.map(step => step.explanation).join(" ");

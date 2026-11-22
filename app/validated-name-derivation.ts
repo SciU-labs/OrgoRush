@@ -4,10 +4,12 @@ import { mapStructuralRegions, mapStructuralRepresentative, analyzeStructuralEqu
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { spanishSubstitutiveName } from "./compositional-name-model.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
+import { localizeAromaticNitrogenAcidName } from "./aromatic-nitrogen-acid-grammar.ts";
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedCompositionalEvidence } from "./compositional-name-model.ts";
 import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
+import { getMainChainStereoDescriptors } from "./double-bond-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
@@ -47,6 +49,11 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
   if (language === "en") return { name: model.name, language: "en", localized: false };
+  if (model.evidence?.language === "en" && model.evidence.reconstructedGraph) {
+    const localized = localizeAromaticNitrogenAcidName(model.name);
+    if (localized && reconcileSystematicName(model.evidence.reconstructedGraph, localized)?.evidence?.language === "es")
+      return { name: localized, language: "es", localized: true };
+  }
   if (model.evidence?.stereo === "specified-tetrahedral" && model.stereochemicalBaseName
     && model.stereochemicalDescriptors?.length) {
     const topLevel = model.stereochemicalDescriptors.every(descriptor => descriptor.baseOffset === 0);
@@ -190,7 +197,12 @@ export function reconcileSystematicName(actual: GeneratedMolecule, name: string)
   entries.set(name, result);
   return result;
 }
-type ParsedNameStereo = { baseName: string; descriptors: { locant: number; configuration: "R" | "S"; baseOffset: number; tokenStart: number; tokenEnd: number }[]; baseToOriginal: number[] };
+type ParsedNameStereo = {
+  baseName: string;
+  descriptors: { locant: number; configuration: "R" | "S"; baseOffset: number; tokenStart: number; tokenEnd: number }[];
+  geometric: { locant?: number; configuration: "E" | "Z"; tokenStart: number; tokenEnd: number }[];
+  baseToOriginal: number[];
+};
 
 function parseNameStereo(name: string): ParsedNameStereo {
   const expression = /\((\d+[RS](?:,\d+[RS])*)\)-/g;
@@ -211,7 +223,19 @@ function parseNameStereo(name: string): ParsedNameStereo {
   }
   baseName += name.slice(cursor);
   for (let index = cursor; index < name.length; index += 1) baseToOriginal.push(index);
-  return { baseName, descriptors, baseToOriginal };
+  const geometric: ParsedNameStereo["geometric"] = [];
+  const geometricPrefix = /^\(((?:\d+[EZ])(?:,\d+[EZ])*|[EZ])\)-/.exec(baseName);
+  if (geometricPrefix) {
+    const tokenStart = baseToOriginal[0] ?? 0;
+    const tokenEnd = (baseToOriginal[geometricPrefix[0].length - 1] ?? (geometricPrefix[0].length - 1)) + 1;
+    for (const item of geometricPrefix[1].split(",")) {
+      const descriptor = /^(\d+)?([EZ])$/.exec(item)!;
+      geometric.push({ ...(descriptor[1] ? { locant: Number(descriptor[1]) } : {}), configuration: descriptor[2] as "E" | "Z", tokenStart, tokenEnd });
+    }
+    baseName = baseName.slice(geometricPrefix[0].length);
+    baseToOriginal.splice(0, geometricPrefix[0].length);
+  }
+  return { baseName, descriptors, geometric, baseToOriginal };
 }
 
 function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
@@ -220,15 +244,16 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
   const carbohydrate = reconcileCarbohydrateName(actual, name);
   if (carbohydrate) return carbohydrate;
   const parsed = parseNameStereo(name);
-  const constitutional = parsed.descriptors.length ? { ...actual,
-    atoms: actual.atoms.map(({ tetrahedralParity: _parity, tetrahedralBondTo: _carrier, ...atom }) => atom) } : actual;
+  const constitutional = parsed.descriptors.length || parsed.geometric.length ? { ...actual,
+    atoms: parsed.descriptors.length ? actual.atoms.map(({ tetrahedralParity: _parity, tetrahedralBondTo: _carrier, ...atom }) => atom) : actual.atoms,
+    ...(parsed.geometric.length ? { bonds: actual.bonds.map(([a,b,order]) => [a,b,order] as [number,number,1|2|3]) } : {}) } : actual;
   const proof = reconcileConstitution(constitutional, parsed.baseName);
   if (!proof) return null;
   const actualCenters = getTetrahedralStereoCenters(actual);
   const hasStoredParity = actual.atoms.some(atom => atom.tetrahedralParity);
   if (hasStoredParity && actualCenters.length !== actual.atoms.filter(atom => atom.tetrahedralParity).length) return null;
-  if (!parsed.descriptors.length) return hasStoredParity ? null : proof;
-  if (actualCenters.length !== parsed.descriptors.length) return null;
+  if (!parsed.descriptors.length && !parsed.geometric.length) return hasStoredParity ? null : proof;
+  if (parsed.descriptors.length && actualCenters.length !== parsed.descriptors.length) return null;
 
   const resolved = parsed.descriptors.map(descriptor => {
     const candidates = proof.components.flatMap(component => {
@@ -244,8 +269,24 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
     return center?.configuration === descriptor.configuration ? { ...descriptor, atomId: center.atomId } : null;
   });
   if (resolved.some(item => !item)) return null;
-  const uniqueCenters = new Set(resolved.map(item => item!.atomId));
-  if (uniqueCenters.size !== actualCenters.length) return null;
+  if (parsed.descriptors.length) {
+    const uniqueCenters = new Set(resolved.map(item => item!.atomId));
+    if (uniqueCenters.size !== actualCenters.length) return null;
+  } else if (hasStoredParity) return null;
+
+  let resolvedGeometric: { locant: number; configuration: "E" | "Z"; atomIds: [number,number] }[] = [];
+  if (parsed.geometric.length) {
+    const markedDoubleBonds = actual.bonds.filter(bond => bond[3] === true);
+    const actualDescriptors = getMainChainStereoDescriptors(actual, proof.parentAtomIds, true);
+    if (markedDoubleBonds.length !== parsed.geometric.length || actualDescriptors.length !== parsed.geometric.length) return null;
+    resolvedGeometric = parsed.geometric.map((descriptor, index) => {
+      const inferredLocant = descriptor.locant ?? (parsed.geometric.length === 1 ? actualDescriptors[0]?.locant : undefined);
+      if (inferredLocant === undefined) return null;
+      const match = actualDescriptors.find(item => item.locant === inferredLocant && item.configuration === descriptor.configuration);
+      return match ? { locant: inferredLocant, configuration: descriptor.configuration, atomIds: [match.atomIds[0], match.atomIds[1]] as [number,number] } : null;
+    }).filter((item): item is NonNullable<typeof item> => item !== null);
+    if (resolvedGeometric.length !== parsed.geometric.length) return null;
+  } else if (actual.bonds.some(bond => bond[3] === true)) return null;
 
   const originalStart = (offset: number) => parsed.baseToOriginal[offset] ?? name.length;
   const originalEnd = (offset: number) => offset <= 0 ? 0 : (parsed.baseToOriginal[offset - 1] ?? name.length - 1) + 1;
@@ -268,15 +309,37 @@ function reconcile(actual: GeneratedMolecule, name: string): ValidatedNameDeriva
       explanationEs: `En el localizador ${descriptor.locant}, el grafo molecular presenta la configuración ${descriptor.configuration} especificada.`,
       label: `(${text})`, labelEs: `(${text})` });
   }
+  for (let index = 0; index < resolvedGeometric.length; index++) {
+    const descriptor = resolvedGeometric[index]!;
+    const sourceToken = parsed.geometric[index]!;
+    const start = sourceToken.tokenStart, end = sourceToken.tokenEnd - 1;
+    components.push({ id: `geometry-${descriptor.locant}`, role: "unsaturation", text: name.slice(start, end), start, end,
+      parentId: "parent", atomIds: descriptor.atomIds, bondIds: [[descriptor.atomIds[0], descriptor.atomIds[1]]],
+      numbering: [[descriptor.atomIds[0], descriptor.locant]], locant: descriptor.locant,
+      explanation: `The explicit ${descriptor.configuration} descriptor is verified for the parent C${descriptor.locant}=C${descriptor.locant + 1} double bond.`,
+      explanationEs: `El descriptor ${descriptor.configuration} se verifica en el doble enlace parental C${descriptor.locant}=C${descriptor.locant + 1}.`,
+      label: `${descriptor.configuration} at C${descriptor.locant}=C${descriptor.locant + 1}`,
+      labelEs: `${descriptor.configuration} en C${descriptor.locant}=C${descriptor.locant + 1}` });
+  }
   const actualParity = new Map(actual.atoms.filter(atom => atom.tetrahedralParity).map(atom => [atom.id, atom.tetrahedralParity!]));
   const mappedReconstruction = proof.evidence ? { ...proof.evidence.reconstructedGraph,
     atoms: proof.evidence.reconstructedGraph.atoms.map(atom => {
       const sourceId = proof.evidence!.atomMapping.find(([constructed]) => constructed === atom.id)?.[1];
       const parity = sourceId === undefined ? undefined : actualParity.get(sourceId);
       return { ...atom, ...(parity ? { tetrahedralParity: parity } : {}) };
+    }),
+    bonds: proof.evidence.reconstructedGraph.bonds.map(([a,b,order]) => {
+      const map = new Map(proof.evidence!.atomMapping);
+      const sourceA = map.get(a), sourceB = map.get(b);
+      const marked = sourceA !== undefined && sourceB !== undefined && actual.bonds.some(([left,right,,explicit]) => explicit === true
+        && (left === sourceA && right === sourceB || left === sourceB && right === sourceA));
+      const reconstructedBond = [a,b,order] as typeof proof.evidence.reconstructedGraph.bonds[number];
+      if (marked) reconstructedBond[3] = true;
+      return reconstructedBond;
     }) } : undefined;
-  const evidence = proof.evidence && mappedReconstruction ? { ...proof.evidence,
-    reconstructedGraph: mappedReconstruction, stereo: "specified-tetrahedral" as const } : undefined;
+  const stereo: NameRuleEvidence["stereo"] = parsed.descriptors.length && resolvedGeometric.length ? "specified-tetrahedral-and-geometric"
+    : parsed.descriptors.length ? "specified-tetrahedral" : resolvedGeometric.length ? "specified-geometric" : "unspecified-only";
+  const evidence = proof.evidence && mappedReconstruction ? { ...proof.evidence, reconstructedGraph: mappedReconstruction, stereo } : undefined;
   return { ...proof, name, components, stereochemicalBaseName: parsed.baseName,
     stereochemicalDescriptors: parsed.descriptors.map(({locant,configuration,baseOffset})=>({locant,configuration,baseOffset})),
     ...(evidence ? { evidence } : {}) };
@@ -476,7 +539,14 @@ function reconcileConstitution(actual: GeneratedMolecule, name: string): Validat
     component("suffix", "suffix", "oic acid", name.length - 8, functionIds,
       "The carboxyl group determines the acid suffix and numbering origin.",
       { explanationEs: "El grupo carboxilo (–COOH) es la función principal y aporta el sufijo «oic acid» del nombre sistemático inglés." });
-    if (!aryl(acyclic[2] ?? acyclic[3], 3, parent[position - 1], position)) return null;
+    if (!aryl(acyclic[2] ?? acyclic[3], 3, parent[position - 1], position)) {
+      const family = parseAdditionalSystematicFamily(name); if (!family) return null;
+      graph.atoms.length = 0; graph.bonds.length = 0;
+      graph.atoms.push(...family.graph.atoms); graph.bonds.push(...family.graph.bonds);
+      components.length = 0; components.push(...family.components); parent = family.parent; group = family.group;
+      allowEquivalentParents = !!family.equivalentParentPaths; allowEquivalentNumbering = !!family.allowEquivalentNumbering;
+      parentSystem = family.parentSystem; ruleEvidence = family.evidence;
+    }
   } else if (amide && !/\)-[N2-9]/.test(amide[1])) {
     const n = amide[2] === "acetamide" ? 2 : roots.indexOf(amide[2].slice(0, -7));
     if (n < 2) return null;
@@ -562,7 +632,7 @@ function reconcileConstitution(actual: GeneratedMolecule, name: string): Validat
   return {status:"FULL",name,preferred:false,principalGroup:group,...representative,symmetry:{
     mappingCount:equivalence.mappings.length,atomOrbits:equivalence.atomOrbits,assignments,
     explanation:`There are ${assignments.length} symmetry-equivalent numbered parent choices. The displayed choice has no chemical preference; switching changes the whole valid parent/substituent assignment together.`,
-  }};
+  },...(evidence?{evidence}:{})};
 }
 
 export function selectEquivalentAssignment(model: ValidatedNameDerivation, index: number): ValidatedNameDerivation {

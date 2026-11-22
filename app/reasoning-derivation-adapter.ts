@@ -417,7 +417,11 @@ function makeStep(input: {
       fragmentTargets[fragmentId]={stepNumber:number,fragmentId,atomIds:[atomId],bondIds:[],locants:[[atomId,locant]]};
     }
   }
-  const allFragments = [...fragments, ...locantFragments];
+  // The parent and ring controls already appeared in their own explanation
+  // stages. The numbering stage exposes the atom-level locant controls only,
+  // avoiding duplicate full-fragment buttons while retaining exact locant picks.
+  const displayedFragments = title === (language === "en" ? "Numbering" : "Numeración") ? [] : fragments;
+  const allFragments = [...displayedFragments, ...locantFragments];
   const fragmentView = allFragments.length ? { ...allFragments[0], additionalFragments: allFragments.slice(1) } : undefined;
   const stepTargets = title === (language === "en" ? "Numbering" : "Numeración")
     ? numberingTargets : components.map(component => targets[component.id] ?? (component.equivalenceGroup ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering}:undefined)).filter(Boolean);
@@ -517,11 +521,14 @@ export function buildValidatedPriorityReasoning(input: {
       : ringHydroxyls.length>=1&&sideHydroxy.length
         ?language==="en"?`Under P-41, phenolic and alcoholic hydroxyl groups belong to the same hydroxy-compound class; neither has separate seniority. ${countWord} hydroxyl group${ringHydroxyls.length===1?"":"s"} bonded directly to the aromatic ring ${ringHydroxyls.length===1?"is":"are"} expressed by the ${derivation.components.find(c=>c.id==="suffix")?.text??"polyol"} suffix. Hydroxyl groups on the side chains are cited as hydroxy- prefixes.`
           :`Según P-41, los grupos hidroxilo fenólicos y alcohólicos pertenecen a la misma clase de compuestos hidroxilados; no tienen prioridades separadas. ${countWord} grupo${ringHydroxyls.length===1?"":"s"} hidroxilo unido${ringHydroxyls.length===1?"":"s"} directamente al anillo aromático ${ringHydroxyls.length===1?"se expresa":"se expresan"} mediante el sufijo ${derivation.components.find(c=>c.id==="suffix")?.text??"poliol"}. Los hidroxilos de las cadenas laterales se citan como prefijos hidroxi-.`
+      : derivation.principalGroup === "ester"
+        ? language === "en" ? "The ester name cites the alcohol-derived group before the acid-derived alkanoate."
+          : "El nombre del éster cita el grupo procedente del alcohol antes del alcanoato derivado del ácido."
       : language==="en"?`The principal functional group is ${groupNames.en[derivation.principalGroup]} and it is expressed by its characteristic suffix.`
         : `La función principal es ${groupNames.es[derivation.principalGroup]} y se expresa mediante su sufijo característico.`;
     stages.push({ title: language === "en" ? "Principal functional group" : "Grupo funcional principal",
-      explanation: functionalExplanation+priorityDetail+amineClassDetail
-        +(ester ? (language==="en" ? " The ester oxygen connects the acid-derived part to the alcohol-derived group attached to the ester oxygen." : " El oxígeno del éster conecta la parte derivada del ácido con el grupo derivado del alcohol unido al oxígeno del éster.") : ""), components: [suffix, ...derivation.components.filter(c=>c.role==="suffix" && c.parentId===suffix.id)] });
+      explanation: functionalExplanation+priorityDetail+amineClassDetail,
+      components: [suffix, ...derivation.components.filter(c=>c.role==="suffix" && c.parentId===suffix.id)] });
   }
   if (derivation.principalGroup === "none") {
     const nitro = derivation.components.filter(component => component.role === "prefix" && /nitro$/.test(component.text)
@@ -599,12 +606,17 @@ export function buildValidatedPriorityReasoning(input: {
     ? derivation.evidence : undefined;
   const writtenPositions=[...new Set(parent?.writtenLocants?.map(item=>item.locant)??[])].sort((a,b)=>a-b);
   const multifunctional=derivation.evidence && ["polycarboxylic-acid","multifunctional-alcohol"].includes(derivation.evidence.construction) ? derivation.evidence : undefined;
+  const parentContainsRing=Boolean(parent&&(graph.rings??[]).some(candidate=>candidate.atomIds.length>=3
+    &&candidate.atomIds.every(id=>parent.atomIds.includes(id))));
     const numberExplanation=multifunctional ? (language==="en" ? "Compare suffix locants first, then all prefix locants, then positions in citation order." : "Se comparan primero los localizadores del sufijo, después los de todos los prefijos y finalmente los de cada prefijo en orden de cita.") + (multifunctional.numbering.comparison===0 ? (language==="en" ? " The drawing shows one of the tied numberings." : " El dibujo muestra una de las numeraciones empatadas.") : "") : derivation.evidence?.construction==="polysubstituted-benzene-prefixes"
     ? language==="en" ? `Benzene has no suffix-bearing group. Compare all six orientations by the complete set of substituent locants, then by the locants for prefixes in citation order. The written locants are ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" A symmetry tie remains.":" The written orientation is the lowest admissible one."}`
       : `El benceno no tiene un grupo expresado mediante sufijo. Se comparan las seis orientaciones por el conjunto completo de localizadores y luego por los de cada prefijo en orden de cita. Los localizadores escritos son ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" Persiste un empate por simetría.":" La orientación escrita es la menor admisible."}`
-    : aromaticEvidence
+    : aromaticEvidence&&parentContainsRing
     ? language==="en" ? `Ring C1 bears the characteristic group${writtenPositions.length?`; the written substituent positions are ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Equivalent orientations remain; only unambiguous atom locants are shown.":"The supported locants determine the displayed orientation."}`
       : `C1 del anillo lleva el grupo característico${writtenPositions.length?`; las posiciones escritas de los sustituyentes son ${writtenPositions.join(", ")}`:""}. ${aromaticEvidence.numbering.comparison===0?"Hay orientaciones equivalentes; solo se muestran los localizadores inequívocos por átomo.":"Los localizadores respaldados determinan la orientación mostrada."}`
+    : aromaticEvidence&&!parentContainsRing
+      ? language==="en" ? "The parent chain, each aromatic ring, and each nested substituent use separate numbering scopes."
+        : "La cadena principal, cada anillo aromático y cada sustituyente anidado usan sistemas de numeración separados."
     : derivation.evidence?.construction === "acyclic-aryl-amine"
       ? language === "en" ? `The amine fixes parent C1. Carbon substituents occur at ${writtenPositions.filter(p=>p!==1).map(p=>"C"+p).join(", ") || "C1"}. Ring locants start again at the attachment carbon.`
         : `La amina fija C1 de la estructura principal. Los sustituyentes sobre carbono se sitúan en ${writtenPositions.filter(p=>p!==1).map(p=>"C"+p).join(", ") || "C1"}. Los localizadores del anillo se cuentan desde su carbono de unión.`
@@ -626,7 +638,8 @@ export function buildValidatedPriorityReasoning(input: {
   for(const component of roots) {
     const core=derivation.components.find(child=>child.parentId===component.id&&child.role==="prefix"
       &&child.atomIds.length>=2&&child.atomIds.every(id=>graph.atoms.find(atom=>atom.id===id)?.element==="C"));
-    const body=localizedCitationName(core?.text??component.text.replace(/^(?:(?:N(?:,N)*)|(?:[\d,]+))-/,""),language).replace(/^\((.*)\)$/,"$1");
+    const body=core?localizedCitationName(core.text,language)
+      :language==="en"?component.label??component.text:component.labelEs??component.text;
     const locants=[...new Set(component.numbering.flatMap(([atomId,locant])=>parentNumbering.has(atomId)&&typeof locant==="number"?[locant]:[]))];
     if(locants.length)concreteNumbering.push(language==="en"
       ?`“${body}” is attached at parent ${locants.map(locant=>`C${locant}`).join(" and ")}.`
@@ -762,7 +775,7 @@ export function buildValidatedPriorityReasoning(input: {
     });
     paragraphs.forEach((paragraph,index)=>stages.push({
       title:index===0?(language==="en"?"Substituents and locants":"Sustituyentes y localizadores")
-        :(language==="en"?"Further substituent details":"Detalle de los sustituyentes"),
+        :(language==="en"?"Nested substituent composition":"Composición de los sustituyentes anidados"),
       explanation:paragraph.explanation,
       components:index===0&&derivation.evidence?.construction==="substituted-alkanamide"?substituents:paragraph.components}));
     }

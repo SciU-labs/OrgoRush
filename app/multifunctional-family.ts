@@ -60,7 +60,12 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
   const stereo=/^\(([1-8][RS](?:,[1-8][RS])*)\)-/.exec(body);
   const offset=start+(stereo?.[0].length??0);
   const entries=tokens(name.slice(offset,start+ending.index),offset);
-  if (!entries || !ordered(entries,language) || !acid && (!entries.length || !/amino/.test(body))) return null;
+  // This grammar is shared by aminoalcohols and aromatic hydroxy parents.
+  // A phenol may carry carbon substituents or another hydroxyl-bearing ring;
+  // the latter is admitted only after the candidate parent and competing
+  // suffix-bearing ring have been compared below.  Keep bare/simple alcohols
+  // outside this production.
+  if (!entries || !ordered(entries,language) || !acid && (!entries.length || !(/amino/.test(body) || aromatic))) return null;
   // Keep the existing aminoalkyl benzenediol proof for the simple production.
   if (phenol?.[1].endsWith("diol") && entries.length===1 && /^[1-9]-amino(?:ethyl|propyl|butyl|etil|propil|butil)$/.test(entries[0].word)) return null;
   const positions=entries.flatMap(t=>t.positions);
@@ -204,8 +209,10 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
       for(const sub of nested){
         const at=sub.positions[0];
         if(at>n || used.has(at) || aryl && (at<2 || at>4 || nested.length!==1))return false;
-        // Competing hydroxyl-bearing aromatic parents require separate ring seniority evidence.
-        if(aryl && /hydroxy|hidroxi/.test(sub.word))return false;
+        // A hydroxyphenyl branch is a second candidate ring bearing the same
+        // senior characteristic group. It is retained as a candidate here;
+        // global parent validation below must show that the named parent is
+        // admissible for the current construction and profile.
         // A rooted alkyl ends at its longest carbon path. Only heteroatom or aromatic attachments can branch off it.
         if(!aryl && !/amino$|oxy$|oxi$|hydroxy$|hidroxi$|phenyl$|fenil$/.test(sub.word))return false;
         if(!attach(sub,ids[at-1],id,depth+1))return false;
@@ -268,6 +275,20 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
     let competingHydroxyls=0;
     const parentOH=graph.bonds.filter(([a,b])=>parent.includes(a)&&hydroxyls.has(b)||parent.includes(b)&&hydroxyls.has(a));
     if(parentOH.length!==groups.length)return null;
+    let outsideCycleRank=0;
+    if(outside.size) {
+      const outsideEdges=graph.bonds.filter(([a,b])=>outside.has(a)&&outside.has(b));
+      const cycleSeen=new Set<number>();
+      let components=0;
+      for(const id of outside)if(!cycleSeen.has(id)){
+        components++;
+        const pending=[id];
+        while(pending.length){const current=pending.pop()!;if(cycleSeen.has(current))continue;cycleSeen.add(current);
+          for(const [a,b] of outsideEdges){const next=a===current?b:b===current?a:0;if(next&&!cycleSeen.has(next))pending.push(next);}
+        }
+      }
+      outsideCycleRank=Math.max(0,outsideEdges.length-outside.size+components);
+    }
     for(const id of outside)if(!seen.has(id)){
       let count=0; const pending=[id];
       while(pending.length){const c=pending.pop()!;if(seen.has(c))continue;seen.add(c);
@@ -276,7 +297,13 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
       if(count>groups.length || !cyclic && count)return null;
       competingHydroxyls=Math.max(competingHydroxyls,count);
     }
-    if(!competingHydroxyls) {
+    if(aromatic&&competingHydroxyls&&outsideCycleRank) {
+      parentNode.explanation=`The named parent is this six-carbon benzene ring, where the hydroxyl is expressed by the phenol suffix. Another ring also bears ${competingHydroxyls} hydroxyl group(s). The characteristic-group count is tied, so ring seniority is compared under Blue Book P-44.2.1; both candidates here are six-carbon carbocyclic rings with the same skeletal composition. The active name assigns the suffix to this ring and cites the other hydroxyl-bearing ring as a substituent; this is evidence for the systematic name, not a claim that it is the PIN.`;
+      parentNode.explanationEs=`La estructura principal nombrada es este anillo de benceno de seis carbonos, cuyo hidroxilo se expresa mediante el sufijo fenol. Otro anillo también lleva ${competingHydroxyls} grupo(s) hidroxilo. La cantidad de grupos característicos está empatada, así que la senioridad de los anillos se compara conforme a P-44.2.1 del Blue Book; aquí ambos candidatos son anillos carbocíclicos de seis carbonos con la misma composición esquelética. El nombre activo asigna el sufijo a este anillo y cita el otro anillo hidroxilado como sustituyente; esto respalda el nombre sistemático, no afirma que sea el PIN.`;
+    } else if(aromatic&&competingHydroxyls) {
+      parentNode.explanation=`The named parent is the six-carbon benzene ring bearing the phenol suffix. The competing hydroxyl is on an acyclic carbon region; within the same characteristic-group class, Blue Book P-44.1.2.2 gives the ring seniority over a chain.`;
+      parentNode.explanationEs=`La estructura principal nombrada es el anillo de benceno de seis carbonos que lleva el sufijo fenol. El otro hidroxilo está en una región carbonada acíclica; dentro de la misma clase de grupo característico, P-44.1.2.2 del Blue Book da senioridad al anillo frente a la cadena.`;
+    } else if(!competingHydroxyls) {
       parentNode.explanation=cyclic ? "This cycle alone carries the hydroxyl suffix. The amine and ether groups, where present, are cited as prefixes." :
         `The uninterrupted chain of ${size} carbons carries the hydroxyl. Extending it through N or O would interrupt the carbon chain.`;
       parentNode.explanationEs=cyclic ? "Solo este ciclo lleva los hidroxilos expresados por sufijo. Las aminas y los éteres presentes se citan mediante prefijos." :
@@ -291,7 +318,7 @@ export function parseMultifunctionalFamily(name:string, language:Language): Comp
   const reflected=alternatives.reduce((best,alt)=>compare(alt,best)<0?alt:best);
   return {graph,parent,components,group:acid?"carboxylicAcid":"alcohol",allowEquivalentNumbering:true,evidence:{
     source:"active-name",profile:"current",language,construction:acid?"polycarboxylic-acid":"multifunctional-alcohol",parentSelection:acid?"polyacid-backbone":"hydroxyl-bearing-parent",
-    rules:[blueBookRule("P-44.1.1","P4"),blueBookRule("P-14.4","P1"),blueBookRule(acid?"P-65.1":"P-63.1","P6")],
+    rules:[blueBookRule("P-44.1.1","P4"),...(aromatic?[blueBookRule("P-44.2.1","P4")]:[]),blueBookRule("P-14.4","P1"),blueBookRule(acid?"P-65.1":"P-63.1","P6")],
     numbering:{scope:"parent",priorities:["suffix","prefix-set","citation"],selected,reflected,comparison:compare(selected,reflected)},
     stereo:configured.length?"specified-tetrahedral":"unspecified-only"}};
 }

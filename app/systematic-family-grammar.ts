@@ -9,6 +9,10 @@ import { parseAcyclicArylAmine } from "./acyclic-aryl-amine-grammar.ts";
 
 import { parseSubstitutedAlkanamide } from "./substituted-alkanamide.ts";
 import { proveArylAmine } from "./aryl-amine-proof.ts";
+import { parseBenzeneRingAssembly } from "./benzene-ring-assembly.ts";
+import { parseIndependentAromaticLink } from "./independent-aromatic-link-grammar.ts";
+import { parseCarbonLinkedIndependentRings } from "./carbon-linked-independent-rings.ts";
+import { parseAromaticNitrogenAcid } from "./aromatic-nitrogen-acid-grammar.ts";
 
 type FamilyGraph = CompositionalFamilyGraph;
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
@@ -83,7 +87,8 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
 }
 
 export function parseAdditionalSystematicFamily(name: string): FamilyGraph | null {
-  return parseEstablishedFamily(name) ?? parseMultifunctionalFamily(name,"en") ?? parseMultifunctionalFamily(name,"es");
+  return parseAromaticNitrogenAcid(name) ?? parseEstablishedFamily(name) ?? parseBenzeneRingAssembly(name) ?? parseIndependentAromaticLink(name)
+    ?? parseCarbonLinkedIndependentRings(name) ?? parseMultifunctionalFamily(name,"en") ?? parseMultifunctionalFamily(name,"es");
 }
 
 /** Prefix-only substitution on benzene. Each typed prefix is parsed once,
