@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { moleculeFromSmiles } from '../app/openchemlib-adapter.ts';
-import { reconcileSystematicName } from '../app/validated-name-derivation.ts';
+import { presentValidatedSystematicName, reconcileSystematicName } from '../app/validated-name-derivation.ts';
 
 // Structures and English names for the two single-hydroxy biaryls are from
 // PubChem CIDs 7017 and 4-phenylphenol's record, respectively. The synthetic
@@ -61,6 +61,9 @@ for (const item of assemblies) {
       assert.ok(proof?.components.some(component => component.id === 'assembly-link-1' && component.bondIds.length === 1));
       assert.equal(reconcileSystematicName(permute(parsed.molecule), name)?.status, 'FULL', 'atom ordering and drawing rotation must not matter');
     }
+    const englishProof = reconcileSystematicName(parsed.molecule, item.name);
+    assert.deepEqual(presentValidatedSystematicName(englishProof, 'es'), { name: item.spanish, language: 'es', localized: true },
+      'switching language from the English proof must display a Spanish name that independently reconciles');
   });
 }
 

@@ -3,6 +3,15 @@ import { blueBookRule, type CompositionalFamilyGraph, type NameComponent } from 
 
 const assemblies = new Map([["biphenyl", 2], ["terphenyl", 3], ["quaterphenyl", 4], ["quinquephenyl", 5], ["sexiphenyl", 6]]);
 const spanish: Record<string, string> = { biphenyl: "bifenilo", terphenyl: "terfenilo", quaterphenyl: "quaterfenilo", quinquephenyl: "quinquefenilo", sexiphenyl: "sexifenilo" };
+
+/** Translate only the established unbranched ring-assembly parent term. */
+export function localizeBenzeneRingAssemblyName(name: string): string | null {
+  for (const [english, localized] of Object.entries(spanish)) {
+    if (name.endsWith(english)) return `${name.slice(0, -english.length)}${localized}`;
+  }
+  return null;
+}
+
 type Attachment = { ring: number; locant: number; start: number; end: number };
 
 /**

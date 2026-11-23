@@ -5,6 +5,7 @@ import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { spanishSubstitutiveName } from "./compositional-name-model.ts";
 import { parseAdditionalSystematicFamily } from "./systematic-family-grammar.ts";
 import { localizeAromaticNitrogenAcidName } from "./aromatic-nitrogen-acid-grammar.ts";
+import { localizeBenzeneRingAssemblyName } from "./benzene-ring-assembly.ts";
 import { reconcileCarbohydrateName } from "./carbohydrate-derivation.ts";
 import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedCompositionalEvidence } from "./compositional-name-model.ts";
@@ -53,6 +54,11 @@ export function presentValidatedSystematicName(model: ValidatedNameDerivation, l
     const localized = localizeAromaticNitrogenAcidName(model.name);
     if (localized && reconcileSystematicName(model.evidence.reconstructedGraph, localized)?.evidence?.language === "es")
       return { name: localized, language: "es", localized: true };
+    if (model.evidence.construction === "benzene-ring-assembly") {
+      const assemblyName = localizeBenzeneRingAssemblyName(model.name);
+      if (assemblyName && reconcileSystematicName(model.evidence.reconstructedGraph, assemblyName)?.evidence?.language === "es")
+        return { name: assemblyName, language: "es", localized: true };
+    }
   }
   if (model.evidence?.stereo === "specified-tetrahedral" && model.stereochemicalBaseName
     && model.stereochemicalDescriptors?.length) {
