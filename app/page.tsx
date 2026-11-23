@@ -5254,22 +5254,41 @@ function retainedFusedReasoning(result: RetainedFusedResult, language: AppLangua
   if (result.status !== "SUPPORTED") return [];
   const en = language === "en";
   const junctions = [...result.locants.values()].filter((locant) => /[a-z]/.test(locant));
+  const hydrogenation = result.parentId === "indane"
+    ? en ? "This is a five-membered saturated ring fused to a six-membered aromatic ring. Hydrogenation of indene's 2–3 bond gives saturated locants 1, 2, and 3; positions 4–7 and the fusion atoms retain the benzene region."
+      : "Es un anillo saturado de cinco miembros fusionado con uno aromático de seis. La hidrogenación del enlace 2–3 del indeno produce los localizadores saturados 1, 2 y 3; las posiciones 4–7 y los átomos de fusión conservan la región bencénica."
+    : result.parentId === "1,2,3,4-tetrahydronaphthalene"
+      ? en ? "The parent is a partially hydrogenated naphthalene: locants 1–4 form the saturated ring, while the second six-membered ring remains aromatic. The tetrahydro prefix records four added hydrogen atoms."
+        : "El padre es un naftaleno parcialmente hidrogenado: los localizadores 1–4 forman el anillo saturado y el segundo anillo de seis miembros permanece aromático. El prefijo tetrahidro registra cuatro átomos de hidrógeno añadidos."
+      : result.parentId === "indene"
+        ? en ? "Indene contains one benzene ring fused to a five-membered ring. Locant 1 is saturated; the localized 2–3 double bond distinguishes this graph from both indane and the fully aromatic systems."
+          : "El indeno contiene un anillo de benceno fusionado con uno de cinco miembros. El localizador 1 está saturado; el doble enlace localizado 2–3 distingue este grafo del indano y de los sistemas completamente aromáticos."
+        : undefined;
   const steps:IupacReasoningStep[] = [
-    { number: "01", title: en ? "Retained fused parent" : "Padre fusionado retenido", nameRole: "parent",
-      explanation: en ? `The complete constitutional graph matches ${result.parentEn}. ${result.rule}.`
-        : `El grafo constitucional completo corresponde a ${result.parentEs}. ${result.rule}.` },
+    { number: "01", title: result.parentId === "indane" ? en ? "Hydrogenated indene parent" : "Padre indeno hidrogenado"
+      : en ? "Fused parent structure" : "Estructura del padre fusionado", nameRole: "parent",
+      explanation: result.parentId === "indane"
+        ? en ? `The graph matches the PIN parent ${result.parentEn}, rather than using the retained common name indane. ${result.rule}.`
+          : `El grafo corresponde al padre PIN ${result.parentEs}; no se usa el nombre común retenido indano. ${result.rule}.`
+        : en ? `The complete constitutional graph matches ${result.parentEn}. ${result.rule}.`
+          : `El grafo constitucional completo corresponde a ${result.parentEs}. ${result.rule}.` },
     { number: "02", title: en ? "Fused-ring numbering" : "Numeración del sistema fusionado",
       explanation: en ? `The verified 1979 numbering includes junction locants ${junctions.join(", ")}; canvas coordinates do not select the numbering.`
         : `La numeración verificada de 1979 incluye las uniones ${junctions.join(", ")}; las coordenadas del dibujo no determinan la numeración.` },
   ];
+  if (hydrogenation) steps.push({number:"03",title:en?"Ring hydrogenation and unsaturation":"Hidrogenación e insaturación del sistema",explanation:hydrogenation});
   const hydroxyls=groups.filter(group=>group.kind==="alcohol");
-  if(hydroxyls.length)steps.push({number:"03",title:en?"Hydroxy function":"Función hidroxilo",nameRole:"function",
+  if(hydroxyls.length)steps.push({number:hydrogenation?"04":"03",title:en?"Hydroxy function":"Función hidroxilo",nameRole:"function",
     explanation:result.parentId === "indole"
       ? en ? `The OH group at indole position ${result.locants.get(hydroxyls[0].carbonId)} takes the suffix -ol: C-II ranks alcohols and phenols above amines, and C-201.1 gives the principal hydroxy group the suffix.`
         : `El grupo OH en la posición ${result.locants.get(hydroxyls[0].carbonId)} del indol lleva el sufijo -ol: C-II da prioridad a alcoholes y fenoles sobre aminas, y C-201.1 asigna el sufijo al grupo hidroxilo principal.`
       : en?`The OH group at C${result.locants.get(hydroxyls[0].carbonId)} gives the retained naphthol suffix under C-202.`
         :`El grupo OH en C${result.locants.get(hydroxyls[0].carbonId)} da el sufijo retenido naftol según C-202.`});
-  steps.push({ number: hydroxyls.length?"04":"03", title: en ? "Constitutional name" : "Nombre constitucional",
+  const ketones=groups.filter(group=>group.kind==="ketone");
+  if(ketones.length)steps.push({number:(steps.length+1).toString().padStart(2,"0") as IupacReasoningStep["number"],title:en?"Ring ketone suffix":"Sufijo de cetona cíclica",nameRole:"function",
+    explanation:en?`The carbonyl at parent locant ${result.locants.get(ketones[0]!.carbonId)} is part of the fused ring and is expressed with the suffix -one.`
+      :`El carbonilo del anillo fusionado en el localizador ${result.locants.get(ketones[0]!.carbonId)} se expresa con el sufijo -ona.`});
+  steps.push({ number: (steps.length+1).toString().padStart(2,"0") as IupacReasoningStep["number"], title: en ? "Constitutional name" : "Nombre constitucional",
       explanation: en ? `The name is ${result.nameEn}. Coverage is limited to the verified retained-parent subset.`
         : `El nombre es ${result.nameEs}. La cobertura se limita al subconjunto verificado de padres retenidos.` });
   return steps;

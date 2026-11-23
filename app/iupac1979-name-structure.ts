@@ -295,10 +295,10 @@ export function legacyGraphsIdentical(expected: RingGraph, actual: RingGraph, fo
   } catch { return false; }
 }
 
-export function attachLegacyFragment(graph: {atoms: RingGraph["atoms"][number][];bonds:[number,number,number][]}, anchor:number, term:LegacyFragment) {
+export function attachLegacyFragment(graph: {atoms: RingGraph["atoms"][number][];bonds:[number,number,number][]}, anchor:number, term:LegacyFragment, attachmentOrder=1) {
   const offset=graph.atoms.length;
   term.elements.forEach((element,i)=>graph.atoms.push({id:offset+i,element,charge:term.charges?.[i]}));
-  graph.bonds.push([anchor,offset,1],...term.bonds.map(([a,b,o]):[number,number,number]=>[a+offset,b+offset,o]));
+  graph.bonds.push([anchor,offset,attachmentOrder],...term.bonds.map(([a,b,o]):[number,number,number]=>[a+offset,b+offset,o]));
 }
 
 /** Return graph atom ids in the exact atom order used by a parsed fragment.

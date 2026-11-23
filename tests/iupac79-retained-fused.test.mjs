@@ -125,7 +125,9 @@ for (const f of fixtures.filter((f) => f.status === "PASS")) test(`integrated ES
 });
 
 test("unsupported fused aromatic functional and peri parents cannot fall through to an invented chain name", () => {
-  for (const f of [{smiles:"Oc1ccc2cc(O)ccc2c1"},{smiles:"c1ccc2c(c1)C(=O)CC2"}]) {
+  // 1-indanone is now positively audited in the phase-3 grammar; retain a
+  // fused quinone as the fail-closed functional-parent regression.
+  for (const f of [{smiles:"Oc1ccc2cc(O)ccc2c1"},{smiles:"O=C1C=CC(=O)c2ccccc21"}]) {
     const graph = rawGraph(f.smiles), analysis = engine.analyzeMolecule(graph);
     assert.equal(analysis.retainedFused.status, "UNSUPPORTED");
     assert.equal(engine.localNamerCannotSafelyName(graph, analysis), true);

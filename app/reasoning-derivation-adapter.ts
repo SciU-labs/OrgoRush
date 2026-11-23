@@ -563,7 +563,7 @@ export function buildValidatedPriorityReasoning(input: {
     const rule = /P-\d+(?:\.\d+)+/.exec(parent.explanation)?.[0];
     const aromaticParentRing=(graph.rings??[]).find(candidate=>candidate.kind==="aromatic"&&candidate.atomIds.every(id=>parent.atomIds.includes(id)));
     const parentRingOxygens=derivation.principalGroup==="alcohol"&&aromaticParentRing&&suffix?suffix.atomIds.filter(id=>graph.atoms.find(atom=>atom.id===id)?.element==="O"
-      &&parent.atomIds.some(parentId=>graph.bonds.some(([a,b,order])=>order===1&&(a===id&&b===parentId||b===id&&a===parentId)))):[];
+      &&aromaticParentRing.atomIds.some(parentId=>graph.bonds.some(([a,b,order])=>order===1&&(a===id&&b===parentId||b===id&&a===parentId)))):[];
     const hydroxyOnSubstituent=Boolean(aromaticParentRing)&&derivation.components.some(component=>component.role==="prefix"
       &&(component.citationKey==="hydroxy"||/hydroxy|hidroxi/i.test(component.text))
       &&component.atomIds.some(id=>graph.atoms.find(atom=>atom.id===id)?.element==="O"&&!parent.atomIds.includes(id)));

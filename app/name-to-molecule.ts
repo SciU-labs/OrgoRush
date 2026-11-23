@@ -10,6 +10,7 @@ import {
 } from "./fused-ring-nomenclature.ts";
 import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
 import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
+import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -80,12 +81,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1385,6 +1386,9 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const fusedPartiallySaturated = parseFusedPartiallySaturatedName(value.trim().toLocaleLowerCase("en"));
+  if (fusedPartiallySaturated) return { ok: true, molecule: fusedPartiallySaturated.graph,
+    normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-partially-saturated-bicycle" };
   const tricyclicArene = parseFusedTricyclicArene(value.trim().toLocaleLowerCase("en"));
   if (tricyclicArene) return { ok: true, molecule: tricyclicArene.graph,
     normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-tricyclic-arene" };

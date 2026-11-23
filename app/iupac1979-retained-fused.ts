@@ -37,6 +37,12 @@ export const RETAINED_FUSED_1979: readonly ParentDefinition[] = [
     bridges: pairs("4a-10a 4b-8a"), doubles: pairs("1-2 3-4 4a-10a 4b-5 6-7 8-8a 9-10"), rule: "A-21.1(12); A-22.5", figure: `${A21}#bm2550` },
   { id: "indene", es: "indeno", en: "indene", perimeter: perimeter("1 2 3 3a 4 5 6 7 7a"),
     bridges: pairs("3a-7a"), doubles: pairs("2-3 3a-7a 4-5 6-7"), rule: "A-21.1(2); A-21.6; A-22.4", figure: `${A21}#bm2450` },
+  // The PIN for indane is the hydrogenated indene parent, not the retained
+  // common name “indane” (Blue Book P-31.2.3.3.1). The numbering is that of
+  // indene; only the 2–3 double bond is hydrogenated.
+  { id: "indane", es: "2,3-dihidro-1H-indeno", en: "2,3-dihydro-1H-indene",
+    perimeter: perimeter("1 2 3 3a 4 5 6 7 7a"), bridges: pairs("3a-7a"),
+    doubles: pairs("3a-7a 4-5 6-7"), rule: "P-31.2.3.3.1; A-21.1(2); A-22.4", figure: `${A21}#bm2450` },
   { id: "fluorene", es: "fluoreno", en: "fluorene", perimeter: perimeter("1 2 3 4 4a 4b 5 6 7 8 8a 9 9a"),
     bridges: pairs("4a-9a 4b-8a"), doubles: pairs("1-2 3-4 4a-9a 4b-8a 5-6 7-8"), rule: "A-21.1(10); A-22.1–4", figure: `${A21}#bm2530` },
   { id: "azulene", es: "azuleno", en: "azulene", perimeter: perimeter("1 2 3 3a 4 5 6 7 8 8a"),
@@ -161,7 +167,7 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
     || graph.bonds.some((bond) => bond[3])) return unsupported("charge-or-stereochemistry-outside-retained-subset");
   const external = graph.atoms.filter((a) => !coreIds.has(a.id));
   const remaining=new Set(external.map(a=>a.id));
-  const attachments: {anchor:number;term:NonNullable<ReturnType<typeof legacyPrefixTerm>>}[]=[];
+  const attachments: {anchor:number;term:NonNullable<ReturnType<typeof legacyPrefixTerm>>;order:1|2}[]=[];
   const candidates=["fluoro","cloro","bromo","yodo","hidroxi",
     ...Array.from({length:20},(_,i)=>iupacAlkylNameForCarbonCount(i+1)!)]
     .map(legacyPrefixTerm).filter((t):t is NonNullable<typeof t>=>Boolean(t));
@@ -170,12 +176,14 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
     while(stack.length) {const id=stack.pop()!;if(ids.has(id))continue;ids.add(id);remaining.delete(id);
       for(const [a,b] of graph.bonds) {const other=a===id?b:b===id?a:undefined;if(other!==undefined&&!coreIds.has(other)&&!ids.has(other))stack.push(other);}}
     const links=graph.bonds.filter(([a,b])=>ids.has(a)&&coreIds.has(b)||ids.has(b)&&coreIds.has(a));
-    if(links.length!==1||(links[0][2]??1)!==1)return unsupported("unsupported-attachment");
-    const [a,b]=links[0], anchor=coreIds.has(a)?a:b, root=coreIds.has(a)?b:a;
+    if(links.length!==1)return unsupported("unsupported-attachment");
+    const [a,b,rawOrder=1]=links[0],order=rawOrder as 1|2,anchor=coreIds.has(a)?a:b,root=coreIds.has(a)?b:a;
     const component={atoms:external.filter(a=>ids.has(a.id)),bonds:graph.bonds.filter(([a,b])=>ids.has(a)&&ids.has(b))};
-    const term=candidates.find(t=>legacyGraphsIdentical({atoms:t.elements.map((element,id)=>({id,element})),bonds:t.bonds},component,new Map([[0,root]])));
-    if(!term)return unsupported("substitution-outside-retained-subset");
-    attachments.push({anchor,term});
+    const term=order===2&&component.atoms.length===1&&component.atoms[0]?.element==="O"&&!component.bonds.length
+      ? {es:"oxo",en:"oxo",elements:["O"],bonds:[],kind:"ketone"}
+      : order===1?candidates.find(t=>legacyGraphsIdentical({atoms:t.elements.map((element,id)=>({id,element})),bonds:t.bonds},component,new Map([[0,root]]))):undefined;
+    if(!term||!legacyGraphsIdentical({atoms:term.elements.map((element,id)=>({id,element})),bonds:term.bonds},component,new Map([[0,root]])))return unsupported("substitution-outside-retained-subset");
+    attachments.push({anchor,term,order});
   }
   // Remove the substituent's valence contribution before matching the parent;
   // an ordinary aromatic CH has exactly one replaceable H.
@@ -184,11 +192,13 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
       const choices = mappings(parent, actual);
       if (!choices.length) continue;
       const labels=[...definition.perimeter,...(definition.interior??[])];
-      const hydroxyls=attachments.filter(a=>a.term.kind==="alcohol");
-      if(hydroxyls.length&&(!["naphthalene","anthracene","phenanthrene"].includes(definition.id)||hydroxyls.length!==1))return unsupported("functional-suffix-outside-retained-subset");
+      const hydroxyls=attachments.filter(a=>a.term.kind==="alcohol"),ketones=attachments.filter(a=>a.term.kind==="ketone");
+      if(hydroxyls.length&&(!["naphthalene","anthracene","phenanthrene","indane","1,2,3,4-tetrahydronaphthalene"].includes(definition.id)||hydroxyls.length!==1))return unsupported("functional-suffix-outside-retained-subset");
+      if(ketones.length&&(!["indane","1,2,3,4-tetrahydronaphthalene"].includes(definition.id)||ketones.length!==1))return unsupported("functional-suffix-outside-retained-subset");
       const locant=(choice:number[],anchor:number)=>Number(labels[choice.indexOf(anchor)]);
       const ordered=(choice:number[],items:typeof attachments)=>items.map(a=>locant(choice,a.anchor)).sort((a,b)=>a-b);
       const select=(language:"es"|"en")=>[...choices].sort((a,b)=>compareHistoricalLocants(ordered(a,hydroxyls),ordered(b,hydroxyls))
+        ||compareHistoricalLocants(ordered(a,ketones),ordered(b,ketones))
         ||compareHistoricalLocants(ordered(a,attachments),ordered(b,attachments))
         ||[...new Set(attachments.map(t=>t.term[language]))].sort((a,b)=>historicalPrefixKey(a).localeCompare(historicalPrefixKey(b),language))
           .reduce((cmp,name)=>cmp||compareHistoricalLocants(ordered(a,attachments.filter(t=>t.term[language]===name)),ordered(b,attachments.filter(t=>t.term[language]===name))),0)
@@ -198,18 +208,23 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
       if(attachments.some(a=>!/^\d+$/.test(locants.get(a.anchor)??"")))return unsupported("fusion-atom-has-no-replaceable-hydrogen");
       // Verify the complete decorated graph, with every parent position fixed.
       const template=definitionGraph(definition), expected={atoms:[...template.atoms],bonds:template.bonds.map(([a,b,o=1]):[number,number,number]=>[a,b,o])};
-      for(const a of attachments)attachLegacyFragment(expected,chosen.indexOf(a.anchor),a.term);
+      for(const a of attachments)attachLegacyFragment(expected,chosen.indexOf(a.anchor),a.term,a.order);
       if(!legacyGraphsIdentical(expected,graph,new Map(chosen.map((id,i)=>[i,id]))))return unsupported("decorated-parent-identity-failed");
       const render=(language:"es"|"en",choice:number[])=>{
         const groups=new Map<string,number[]>();
-        for(const a of attachments.filter(a=>a.term.kind!=="alcohol")){const name=a.term[language];groups.set(name,[...(groups.get(name)??[]),locant(choice,a.anchor)]);}
+        for(const a of attachments.filter(a=>a.term.kind!=="alcohol"&&a.term.kind!=="ketone")){const name=a.term[language];groups.set(name,[...(groups.get(name)??[]),locant(choice,a.anchor)]);}
         const prefixes=[...groups].sort(([a],[b])=>historicalPrefixKey(a).localeCompare(historicalPrefixKey(b),language)).map(([name,values])=>
           `${values.sort((a,b)=>a-b).join(",")}-${multipliers[values.length]}${name}`);
-        const base=hydroxyls.length
-          ? definition.id === "naphthalene"
-            ? `${locant(choice,hydroxyls[0].anchor)}-${language==="es"?"naftol":"naphthol"}`
-            : `${definition[language].replace(/e?o?$/, "").replace(/e$/, "")}-${locant(choice,hydroxyls[0].anchor)}-ol`
-          : definition[language];
+        const base=ketones.length
+          ? definition.id==="indane"
+            ? `${definition[language].replace(/-1H-/,"").replace(language==="es"? /o$/ : /e$/,"")}-${locant(choice,ketones[0].anchor)}-${language==="es"?"ona":"one"}`
+            : language==="en"?`3,4-dihydro-2H-naphthalen-${locant(choice,ketones[0].anchor)}-one`
+              :`3,4-dihidro-2H-naftalen-${locant(choice,ketones[0].anchor)}-ona`
+          : hydroxyls.length
+            ? definition.id === "naphthalene"
+              ? `${locant(choice,hydroxyls[0].anchor)}-${language==="es"?"naftol":"naphthol"}`
+              : `${definition[language].replace(/e?o?$/, "").replace(/e$/, "")}-${locant(choice,hydroxyls[0].anchor)}-ol`
+            : definition[language];
         return prefixes.length?`${prefixes.join("-")}${/^\d/.test(base)?"-":""}${base}`:base;
       };
       return { status: "SUPPORTED", topology, parentId: definition.id,

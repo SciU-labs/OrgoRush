@@ -41,7 +41,7 @@ export type NameRuleEvidence = {
   source: "active-name";
   profile?: "current";
   language: "es" | "en";
-  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol" | "polycarboxylic-acid" | "multifunctional-alcohol" | "polysubstituted-benzene-prefixes" | "benzene-ring-assembly" | "independent-ring-substitution" | "aromatic-amine" | "carbon-linked-aromatic" | "functional-biaryl" | "aromatic-alkene" | "aryl-cycloalkane" | "functional-cycloaryl" | "fused-naphthalene" | "fused-tricyclic-arene";
+  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol" | "polycarboxylic-acid" | "multifunctional-alcohol" | "polysubstituted-benzene-prefixes" | "benzene-ring-assembly" | "independent-ring-substitution" | "aromatic-amine" | "carbon-linked-aromatic" | "functional-biaryl" | "aromatic-alkene" | "aryl-cycloalkane" | "functional-cycloaryl" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle";
   rules: { id: string; source: string }[];
   parentSelection: "retained-functional-parent" | "sole-suffix-bearing-cycle" | "amine-longest-n-attached-chain" | "acyl-chain" | "polyacid-backbone" | "hydroxyl-bearing-parent" | "unfunctionalized-benzene" | "ring-assembly" | "aromatic-parent" | "acyclic-chain" | "functionalized-ring";
   numbering: {

@@ -15,6 +15,7 @@ import { parseCarbonLinkedIndependentRings } from "./carbon-linked-independent-r
 import { parseAromaticNitrogenAcid } from "./aromatic-nitrogen-acid-grammar.ts";
 import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
 import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
+import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";
 
 type FamilyGraph = CompositionalFamilyGraph;
 const roots = ["", "meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
@@ -89,6 +90,8 @@ function prefixes(text: string, offset: number, maximum: number, repeated = fals
 }
 
 export function parseAdditionalSystematicFamily(name: string): FamilyGraph | null {
+  const fusedPartiallySaturated = parseFusedPartiallySaturatedName(name);
+  if (fusedPartiallySaturated) return fusedPartiallySaturated;
   return parseFusedTricyclicArene(name) ?? parseFusedNaphthalene(name) ?? parseAromaticNitrogenAcid(name) ?? parseEstablishedFamily(name) ?? parseBenzeneRingAssembly(name) ?? parseIndependentAromaticLink(name)
     ?? parseCarbonLinkedIndependentRings(name) ?? parseMultifunctionalFamily(name,"en") ?? parseMultifunctionalFamily(name,"es");
 }

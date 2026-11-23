@@ -1,0 +1,26 @@
+{
+  "source": "PubChem PUG REST, ConnectivitySMILES and InChIKey",
+  "retrieved": "2026-11-23",
+  "records": [
+    { "name": "indane", "cid": 10326, "smiles": "C1CC2=CC=CC=C2C1", "inchiKey": "PQNFLJBBNBOBRQ-UHFFFAOYSA-N" },
+    { "name": "1-methylindane", "cid": 13023, "smiles": "CC1CCC2=CC=CC=C12", "inchiKey": "FIPKSKMDTAQBDJ-UHFFFAOYSA-N" },
+    { "name": "2-methylindane", "cid": 13213, "smiles": "CC1CC2=CC=CC=C2C1", "inchiKey": "MWGYLUXMIMSOTM-UHFFFAOYSA-N" },
+    { "name": "5-methylindane", "cid": 13402, "smiles": "CC1=CC2=C(CCC2)C=C1", "inchiKey": "RFXBCGVZEJEYGG-UHFFFAOYSA-N" },
+    { "name": "indan-1-ol", "cid": 22819, "smiles": "C1CC2=CC=CC=C2C1O", "inchiKey": "YIAPLDFPUUJILH-UHFFFAOYSA-N" },
+    { "name": "indan-2-ol", "cid": 77936, "smiles": "C1C(CC2=CC=CC=C21)O", "inchiKey": "KMGCKSAIIHOKCX-UHFFFAOYSA-N" },
+    { "name": "indan-1-one", "cid": 6735, "smiles": "C1CC(=O)C2=CC=CC=C21", "inchiKey": "QNXSIUBBGPHDDE-UHFFFAOYSA-N" },
+    { "name": "indene", "cid": 7219, "smiles": "C1C=CC2=CC=CC=C21", "inchiKey": "YBYIRNPNPLQARY-UHFFFAOYSA-N" },
+    { "name": "2-methylindene", "cid": 16587, "smiles": "CC1=CC2=CC=CC=C2C1", "inchiKey": "YSAXEHWHSLANOM-UHFFFAOYSA-N" },
+    { "name": "3-methylindene", "cid": 13025, "smiles": "CC1=CCC2=CC=CC=C12", "inchiKey": "COOKKJGOGWACMY-UHFFFAOYSA-N" },
+    { "name": "5-methylindene", "cid": 81997, "smiles": "CC1=CC2=C(CC=C2)C=C1", "inchiKey": "YLHSETDFVAXPRB-UHFFFAOYSA-N" },
+    { "name": "5-bromoindene", "cid": 2747571, "smiles": "C1C=CC2=C1C=CC(=C2)Br", "inchiKey": "ZPZKSAJLIFPVSR-UHFFFAOYSA-N" },
+    { "name": "6-chloroindene", "cid": 17819867, "smiles": "C1C=CC2=C1C=C(C=C2)Cl", "inchiKey": "XDBIANUEJXHUHN-UHFFFAOYSA-N" },
+    { "name": "tetralin", "cid": 8404, "smiles": "C1CCC2=CC=CC=C2C1", "inchiKey": "CXWXQJXEFPUFDZ-UHFFFAOYSA-N" },
+    { "name": "1-methyltetralin", "cid": 15262, "smiles": "CC1CCCC2=CC=CC=C12", "inchiKey": "APBBTKKLSNPFDP-UHFFFAOYSA-N" },
+    { "name": "2-methyltetralin", "cid": 19755, "smiles": "CC1CCC2=CC=CC=C2C1", "inchiKey": "WJRGJANWBCPTLH-UHFFFAOYSA-N" },
+    { "name": "5-methyltetralin", "cid": 17768, "smiles": "CC1=C2CCCCC2=CC=C1", "inchiKey": "YXOVIGZJPGLNGM-UHFFFAOYSA-N" },
+    { "name": "tetralin-1-ol", "cid": 10723, "smiles": "C1CC(C2=CC=CC=C2C1)O", "inchiKey": "JAAJQSRLGAYGKZ-UHFFFAOYSA-N" },
+    { "name": "tetralin-2-ol", "cid": 10747, "smiles": "C1CC2=CC=CC=C2CC1O", "inchiKey": "JWQYZECMEPOAPF-UHFFFAOYSA-N" },
+    { "name": "1-tetralone", "cid": 10724, "smiles": "C1CC2=CC=CC=C2C(=O)C1", "inchiKey": "XHLHPRDBBAGVEG-UHFFFAOYSA-N" }
+  ]
+}
