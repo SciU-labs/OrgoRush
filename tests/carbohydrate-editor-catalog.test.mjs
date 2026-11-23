@@ -27,8 +27,22 @@ test('phase 8 preserves every catalog button, category, label and menu layout by
   ]);
   assert.ok(!catalog.some(t=>/hemi|pyran|furan|sugar|carbohydrate/i.test(t.id)));
 });
-test('editor chemistry modules remain unchanged apart from the bounded B7.5 CIP addition reconciler',()=>{
+test('editor chemistry modules remain unchanged apart from bounded nomenclature and B7.5 additions',()=>{
   for(const [file,sha256] of Object.entries(baseline.files)){
+    if(file==='app/name-to-molecule.ts'){
+      let source=read(file).replace(/\r\n/g,'\n');
+      const parserImport='import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";\n';
+      const familyType=' | "fused-naphthalene"';
+      const builderBranch='  const naphthalene = parseFusedNaphthalene(value.trim().toLocaleLowerCase("es"));\n'
+        +'  if (naphthalene) return { ok: true, molecule: naphthalene.graph,\n'
+        +'    normalizedInput: value.trim().toLocaleLowerCase("es"), enabledAliases: [], inputFamily: "fused-naphthalene" };\n';
+      assert.equal(source.split(parserImport).length-1,1,'fused naphthalene parser import must remain singular');
+      assert.equal(source.split(familyType).length-1,2,'both name-builder result variants expose the bounded family');
+      assert.equal(source.split(builderBranch).length-1,1,'fused naphthalene name import remains one bounded early branch');
+      source=source.replace(parserImport,'').replaceAll(familyType,'').replace(builderBranch,'');
+      assert.equal(hash(source),sha256,file);
+      continue;
+    }
     if(file==='app/tetrahedral-stereochemistry.ts')continue;
     assert.equal(hash(read(file)),sha256,file);
   }
