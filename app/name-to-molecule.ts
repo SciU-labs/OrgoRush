@@ -9,6 +9,7 @@ import {
   getFusedTricyclicSystem,
 } from "./fused-ring-nomenclature.ts";
 import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
+import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -79,12 +80,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1384,6 +1385,9 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const tricyclicArene = parseFusedTricyclicArene(value.trim().toLocaleLowerCase("en"));
+  if (tricyclicArene) return { ok: true, molecule: tricyclicArene.graph,
+    normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-tricyclic-arene" };
   const naphthalene = parseFusedNaphthalene(value.trim().toLocaleLowerCase("es"));
   if (naphthalene) return { ok: true, molecule: naphthalene.graph,
     normalizedInput: value.trim().toLocaleLowerCase("es"), enabledAliases: [], inputFamily: "fused-naphthalene" };

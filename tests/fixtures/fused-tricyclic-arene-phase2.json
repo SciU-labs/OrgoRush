@@ -1,0 +1,31 @@
+{
+  "source": "PubChem compound record; structure references are connectivity SMILES maintained independently from name reconciliation.",
+  "iupacRuleReferences": [
+    "Blue Book 2013 P-25.3.3 (traditional retained numbering for anthracene and phenanthrene)",
+    "Blue Book 2013 P-25.3.3.1 (peripheral/fusion locants)",
+    "Blue Book 2013 P-14.4 (locants and numbering selection)",
+    "IUPAC 1979 A-21.1(12–13) and A-22.5 (retained tricyclic parent structures)"
+  ],
+  "cases": [
+    {"id":"anthracene","en":"anthracene","es":"antraceno","cid":8418,"smiles":"C1=CC=C2C=C3C=CC=CC3=CC2=C1","url":"https://pubchem.ncbi.nlm.nih.gov/compound/8418"},
+    {"id":"anthracene-1-methyl","en":"1-methylanthracene","es":"1-metilantraceno","cid":11884,"smiles":"CC1=CC=CC2=CC3=CC=CC=C3C=C12","url":"https://pubchem.ncbi.nlm.nih.gov/compound/11884"},
+    {"id":"anthracene-2-methyl","en":"2-methylanthracene","es":"2-metilantraceno","cid":11936,"smiles":"CC1=CC2=CC3=CC=CC=C3C=C2C=C1","url":"https://pubchem.ncbi.nlm.nih.gov/compound/11936"},
+    {"id":"anthracene-9-methyl","en":"9-methylanthracene","es":"9-metilantraceno","cid":13068,"smiles":"CC1=C2C=CC=CC2=CC3=CC=CC=C13","url":"https://pubchem.ncbi.nlm.nih.gov/compound/13068"},
+    {"id":"anthracene-9,10-dimethyl","en":"9,10-dimethylanthracene","es":"9,10-dimetilantraceno","cid":13076,"smiles":"CC1=C2C=CC=CC2=C(C3=CC=CC=C13)C","url":"https://pubchem.ncbi.nlm.nih.gov/compound/13076"},
+    {"id":"anthracene-1,8-dimethyl","en":"1,8-dimethylanthracene","es":"1,8-dimetilantraceno","cid":14965403,"smiles":"CC1=C2C=C3C(=CC=CC3=CC2=CC=C1)C","url":"https://pubchem.ncbi.nlm.nih.gov/compound/14965403"},
+    {"id":"anthracene-9-bromo","en":"9-bromoanthracene","es":"9-bromoantraceno","cid":74062,"smiles":"C1=CC=C2C(=C1)C=C3C=CC=CC3=C2Br","url":"https://pubchem.ncbi.nlm.nih.gov/compound/74062"},
+    {"id":"anthracene-2-chloro","en":"2-chloroanthracene","es":"2-cloroantraceno","cid":28308,"smiles":"C1=CC=C2C=C3C=C(C=CC3=CC2=C1)Cl","url":"https://pubchem.ncbi.nlm.nih.gov/compound/28308"},
+    {"id":"anthracene-2-ol","en":"anthracen-2-ol","es":"antracen-2-ol","cid":99503,"smiles":"C1=CC=C2C=C3C=C(C=CC3=CC2=C1)O","url":"https://pubchem.ncbi.nlm.nih.gov/compound/99503"},
+    {"id":"anthracene-9-ol","en":"anthracen-9-ol","es":"antracen-9-ol","cid":10731,"smiles":"C1=CC=C2C(=C1)C=C3C=CC=CC3=C2O","url":"https://pubchem.ncbi.nlm.nih.gov/compound/10731"},
+    {"id":"phenanthrene","en":"phenanthrene","es":"fenantreno","cid":995,"smiles":"C1=CC=C2C(=C1)C=CC3=CC=CC=C32","url":"https://pubchem.ncbi.nlm.nih.gov/compound/995"},
+    {"id":"phenanthrene-1-methyl","en":"1-methylphenanthrene","es":"1-metilfenantreno","cid":13257,"smiles":"CC1=C2C=CC3=CC=CC=C3C2=CC=C1","url":"https://pubchem.ncbi.nlm.nih.gov/compound/13257"},
+    {"id":"phenanthrene-2-methyl","en":"2-methylphenanthrene","es":"2-metilfenantreno","cid":17321,"smiles":"CC1=CC2=C(C=C1)C3=CC=CC=C3C=C2","url":"https://pubchem.ncbi.nlm.nih.gov/compound/17321"},
+    {"id":"phenanthrene-3-methyl","en":"3-methylphenanthrene","es":"3-metilfenantreno","cid":13258,"smiles":"CC1=CC2=C(C=C1)C=CC3=CC=CC=C32","url":"https://pubchem.ncbi.nlm.nih.gov/compound/13258"},
+    {"id":"phenanthrene-9-methyl","en":"9-methylphenanthrene","es":"9-metilfenantreno","cid":13438,"smiles":"CC1=CC2=CC=CC=C2C3=CC=CC=C13","url":"https://pubchem.ncbi.nlm.nih.gov/compound/13438"},
+    {"id":"phenanthrene-9,10-dimethyl","en":"9,10-dimethylphenanthrene","es":"9,10-dimetilfenantreno","cid":69056,"smiles":"CC1=C(C2=CC=CC=C2C3=CC=CC=C13)C","url":"https://pubchem.ncbi.nlm.nih.gov/compound/69056"},
+    {"id":"phenanthrene-9-bromo","en":"9-bromophenanthrene","es":"9-bromofenantreno","cid":11309,"smiles":"C1=CC=C2C(=C1)C=C(C3=CC=CC=C23)Br","url":"https://pubchem.ncbi.nlm.nih.gov/compound/11309"},
+    {"id":"phenanthrene-2-chloro","en":"2-chlorophenanthrene","es":"2-clorofenantreno","cid":32363,"smiles":"C1=CC=C2C(=C1)C=CC3=C2C=CC(=C3)Cl","url":"https://pubchem.ncbi.nlm.nih.gov/compound/32363"},
+    {"id":"phenanthrene-2-ol","en":"phenanthren-2-ol","es":"fenantren-2-ol","cid":69061,"smiles":"C1=CC=C2C(=C1)C=CC3=C2C=CC(=C3)O","url":"https://pubchem.ncbi.nlm.nih.gov/compound/69061"},
+    {"id":"phenanthrene-9-ol","en":"phenanthren-9-ol","es":"fenantren-9-ol","cid":10229,"smiles":"C1=CC=C2C(=C1)C=C(C3=CC=CC=C23)O","url":"https://pubchem.ncbi.nlm.nih.gov/compound/10229"}
+  ]
+}

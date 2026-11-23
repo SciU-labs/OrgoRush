@@ -9772,7 +9772,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         : analysis.family === "polycyclic"
           ? "Policíclico"
           : "Hidrocarburo");
-  const fusedPrincipalGroup=validatedDerivation?.evidence?.construction==="fused-naphthalene"
+  const fusedPrincipalGroup=validatedDerivation&&["fused-naphthalene","fused-tricyclic-arene"].includes(validatedDerivation.evidence?.construction??"")
     && Object.hasOwn(functionalGroupLabels,validatedDerivation.principalGroup)
     ? validatedDerivation.principalGroup as FunctionalGroupKind : undefined;
   const principalGroupLabel = principalGroupAnalysisLabel(molecule, analysis, fusedPrincipalGroup);
@@ -10322,6 +10322,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     const localPreflight = buildHydrocarbonFromIupacName(submittedName);
     if (!localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
       || localPreflight.inputFamily === "fused-naphthalene"
+      || localPreflight.inputFamily === "fused-tricyclic-arene"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
       setNameBuilderOpen(true);
       setNameBuilderFeedback({ kind: "error", message: localPreflight.error });
@@ -10346,6 +10347,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
 
       if (localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
         || localPreflight.inputFamily === "fused-naphthalene"
+        || localPreflight.inputFamily === "fused-tricyclic-arene"
         || localPreflight.inputFamily === "alkene-stereo")) {
         next = localPreflight.molecule;
         enabledAliases = localPreflight.enabledAliases;
@@ -10406,6 +10408,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         Boolean(getSubstituentAlias(substituent.name)),
       );
       const preserveTrustedSourceName = (preserveSourceName || localPreflight.inputFamily === "fused-naphthalene"
+        || localPreflight.inputFamily === "fused-tricyclic-arene"
         || moleculeContainsHeterocycle(next)
         || advancedNameResolved)
         && externalCandidateNeedsNeutralLocalName(next, generatedAnalysis);

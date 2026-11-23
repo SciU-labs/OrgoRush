@@ -258,7 +258,13 @@ function localizedComponentExplanation(component: NameComponent, language: AppLa
 
 function componentFragment(component: NameComponent, language: AppLanguage, derivation: ValidatedNameDerivation): ReasoningNameFragment {
   const literal=!!derivation.evidence || component.language===language;
-  const text = literal ? component.text : componentLabel(component, language, derivation);
+  const fusedControl=derivation.evidence?.construction==="fused-tricyclic-arene";
+  const ringControl=fusedControl?/^fused-ring:(\d+)$/.exec(component.id):null;
+  const text = ringControl
+    ?language==="en"?`ring ${ringControl[1]}`:`anillo ${ringControl[1]}`
+    :fusedControl&&component.id==="fusion-bonds"?language==="en"?"fusion bonds":"enlaces de fusión"
+    :fusedControl&&component.id==="fusion-atoms"?language==="en"?"fusion atoms":"átomos de fusión"
+    :literal ? component.text : componentLabel(component, language, derivation);
   const parentAtoms=new Set(derivation.parentAtomIds);
   const positions=component.numbering.flatMap(([id,locant])=>parentAtoms.has(id)&&typeof locant==="number"?[locant]:[]);
   const attachments=component.bondIds.filter(([a,b])=>parentAtoms.has(a)!==parentAtoms.has(b)).length;
@@ -331,7 +337,7 @@ function makeStep(input: {
   const locantFragments: ReasoningNameFragment[] = [], numberingTargets: ReasoningVisualTarget[] = [], seenLocants = new Set<string>();
   const addLocants = (component: NameComponent, labelPrefix: string) => {
     const entries = derivation.evidence
-      ? (derivation.evidence.construction==="fused-naphthalene"&&component.id==="parent"
+      ? (["fused-naphthalene","fused-tricyclic-arene"].includes(derivation.evidence.construction)&&component.id==="parent"
         ? component.numbering.map(([atomId,locant])=>({atomId,locant,start:component.writtenLocants?.find(item=>item.atomId===atomId)?.start}))
         : (component.writtenLocants??[]).map(item=>({atomId:item.atomId,locant:item.locant,start:item.start})))
       : component.numbering.map(([atomId,locant])=>({atomId,locant,start:undefined}));
@@ -582,7 +588,14 @@ export function buildValidatedPriorityReasoning(input: {
         ?language==="en"?`P-44.1.1 ties the ring and attached carbon-chain alternatives at ${parentRingOxygens.length} suffix hydroxyl group${parentRingOxygens.length===1?"":"s"} each. Both have carbon as the senior atom; P-44.1.2.2 prefers the ring over the chain.`
           :`P-44.1.1 empata el anillo y las cadenas carbonadas laterales con ${parentRingOxygens.length} grupo${parentRingOxygens.length===1?"":"s"} hidroxilo${parentRingOxygens.length===1?"":"s"} expresable${parentRingOxygens.length===1?"":"s"} mediante sufijo. Ambas alternativas tienen carbono como átomo senior; P-44.1.2.2 da preferencia al anillo sobre la cadena.`
         :undefined;
-    const explanation = parentReason
+    const fusedTricyclicParent=derivation.evidence?.construction==="fused-tricyclic-arene"
+      ?language==="en"
+        ?`${parent.explanation}${derivation.principalGroup==="alcohol"?` The hydroxy group at parent locant ${suffix?.locant} is expressed by the alcohol suffix.`:""}`
+        :`${parent.explanationEs??parent.explanation}${derivation.principalGroup==="alcohol"?` El grupo hidroxi del localizador ${suffix?.locant} se expresa mediante el sufijo de alcohol.`:""}`
+      :undefined;
+    const explanation = fusedTricyclicParent
+      ?fusedTricyclicParent
+      : parentReason
       ?parentReason
       : parentRingOxygens.length>=1&&hydroxyOnSubstituent
       ?language==="en"?`The reconciled name places ${parentRingOxygens.length} suffix-expressed hydroxyl group${parentRingOxygens.length===1?"":"s"} on this aromatic parent. P-41 does not rank phenolic hydroxyls above alcoholic hydroxyls; the available parent-selection evidence does not compare all alternatives.`
@@ -609,8 +622,11 @@ export function buildValidatedPriorityReasoning(input: {
           : " El carbono carboxílico queda fuera del padre fusionado de naftaleno, formado por diez carbonos.")
         : (language==="en" ? ` The ring has ${ring.atomIds.length} atoms; the carbonyl carbon is outside it.`
           : ` El anillo tiene ${ring.atomIds.length} átomos; el carbono carbonílico está fuera de él.`) : "";
+    const fusedRingControls=derivation.evidence?.construction==="fused-tricyclic-arene"
+      ?derivation.components.filter(component=>component.id.startsWith("fused-ring:")||component.id==="fusion-bonds"||component.id==="fusion-atoms")
+      :[];
     stages.push({ title: language === "en" ? "Parent structure" : "Estructura principal", explanation:explanation+ringDetail,
-      components: [parent, ...(carbohydrate && byId.get("sugar-ring") ? [byId.get("sugar-ring")!] : [])] });
+      components: [parent, ...fusedRingControls, ...(carbohydrate && byId.get("sugar-ring") ? [byId.get("sugar-ring")!] : [])] });
   }
   const heteroatomSubstituents=roots.filter(component=>component.locant==="N"||component.attachmentScope==="amide-nitrogen");
   const numberComponents = [parent, byId.get("aryl"), ...derivation.components.filter(component => component.id.startsWith("sugar-chain")),...heteroatomSubstituents]
@@ -624,6 +640,9 @@ export function buildValidatedPriorityReasoning(input: {
     const numberExplanation=derivation.evidence?.construction==="fused-naphthalene"
       ? language==="en" ? "The fused parent uses peripheral locants 1–8 and fusion locants 4a and 8a. Each control identifies the corresponding atom in the molecular graph."
         : "El padre fusionado usa los localizadores periféricos 1–8 y los localizadores 4a y 8a para los átomos de fusión. Cada control identifica el átomo correspondiente del grafo molecular."
+      : derivation.evidence?.construction==="fused-tricyclic-arene"
+        ? language==="en" ? `The retained ${derivation.components.find(component=>component.id==="parent")?.explanation.includes("linear")?"linear anthracene":"angular phenanthrene"} numbering covers peripheral positions 1–10 and fusion atoms ${derivation.components.find(component=>component.id==="parent")?.numbering.filter(([,locant])=>/[a-z]/i.test(String(locant))).sort(([,a],[,b])=>String(a).localeCompare(String(b),"en",{numeric:true})).map(([,locant])=>locant).join(", ")}.`
+          : `La numeración tradicional del sistema ${derivation.components.find(component=>component.id==="parent")?.explanationEs?.includes("lineal")?"lineal de antraceno":"angular de fenantreno"} comprende las posiciones periféricas 1–10 y los átomos de fusión ${derivation.components.find(component=>component.id==="parent")?.numbering.filter(([,locant])=>/[a-z]/i.test(String(locant))).sort(([,a],[,b])=>String(a).localeCompare(String(b),"es",{numeric:true})).map(([,locant])=>locant).join(", ")}.`
       : multifunctional ? (language==="en" ? "Compare suffix locants first, then all prefix locants, then positions in citation order." : "Se comparan primero los localizadores del sufijo, después los de todos los prefijos y finalmente los de cada prefijo en orden de cita.") + (multifunctional.numbering.comparison===0 ? (language==="en" ? " The drawing shows one of the tied numberings." : " El dibujo muestra una de las numeraciones empatadas.") : "") : derivation.evidence?.construction==="polysubstituted-benzene-prefixes"
     ? language==="en" ? `Benzene has no suffix-bearing group. Compare all six orientations by the complete set of substituent locants, then by the locants for prefixes in citation order. The written locants are ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" A symmetry tie remains.":" The written orientation is the lowest admissible one."}`
       : `El benceno no tiene un grupo expresado mediante sufijo. Se comparan las seis orientaciones por el conjunto completo de localizadores y luego por los de cada prefijo en orden de cita. Los localizadores escritos son ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" Persiste un empate por simetría.":" La orientación escrita es la menor admisible."}`
@@ -651,6 +670,9 @@ export function buildValidatedPriorityReasoning(input: {
   if(derivation.evidence?.construction==="fused-naphthalene") concreteNumbering.push(language==="en"
     ? "The fixed fused-parent numbering includes peripheral atoms 1–8 and bridgehead atoms 4a and 8a."
     : "La numeración fija del padre fusionado incluye los átomos periféricos 1–8 y los átomos de fusión 4a y 8a.");
+  else if(derivation.evidence?.construction==="fused-tricyclic-arene") concreteNumbering.push(language==="en"
+    ? `The retained tricyclic numbering covers positions 1–10 and fusion atoms ${parent?.numbering.filter(([,locant])=>/[a-z]/i.test(String(locant))).sort(([,a],[,b])=>String(a).localeCompare(String(b),"en",{numeric:true})).map(([,locant])=>locant).join(", ")}.`
+    : `La numeración tricíclica tradicional comprende las posiciones 1–10 y los átomos de fusión ${parent?.numbering.filter(([,locant])=>/[a-z]/i.test(String(locant))).sort(([,a],[,b])=>String(a).localeCompare(String(b),"es",{numeric:true})).map(([,locant])=>locant).join(", ")}.`);
   else if(parentCarbonLocants.length>1)concreteNumbering.push(parentRing
     ?language==="en"?`The parent ring is numbered C${parentCarbonLocants[0]}–C${parentCarbonLocants.at(-1)}.`:`El anillo principal se numera de C${parentCarbonLocants[0]} a C${parentCarbonLocants.at(-1)}.`
     :language==="en"?`The parent chain is numbered C${parentCarbonLocants[0]}–C${parentCarbonLocants.at(-1)}.`:`La cadena principal se numera de C${parentCarbonLocants[0]} a C${parentCarbonLocants.at(-1)}.`);
@@ -803,7 +825,7 @@ export function buildValidatedPriorityReasoning(input: {
   // substituents themselves; a second punctuation recap repeated that content.
   // Compare siblings attached to the same parent/ring. A nested group is not
   // another independent substituent unless another sibling requires ordering.
-  const alphabeticalPeers = derivation.evidence?.construction === "fused-naphthalene"
+  const alphabeticalPeers = ["fused-naphthalene","fused-tricyclic-arene"].includes(derivation.evidence?.construction??"")
     ? [...new Map([...roots,...descendants].filter(component=>component.role==="prefix"&&component.parentId==="parent")
       .map(component=>[component.id,component])).values()]
     : [...roots, ...descendants].filter(component =>

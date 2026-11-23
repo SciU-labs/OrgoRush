@@ -12,6 +12,7 @@ import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedComposit
 import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { getMainChainStereoDescriptors } from "./double-bond-stereochemistry.ts";
 import { normalizeChemicalNameForParser } from "./iupac-name-normalization.ts";
+import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
@@ -50,6 +51,14 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
+  if(model.evidence?.construction==="fused-tricyclic-arene"&&model.evidence.reconstructedGraph){
+    const retained=nameRetainedFused1979(model.evidence.reconstructedGraph);
+    if(retained.status==="SUPPORTED"){
+      const candidate=language==="en"?retained.nameEn:retained.nameEs;
+      if(reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
+        return {name:candidate,language,localized:language!==model.evidence.language};
+    }
+  }
   if (language === "en") {
     if(model.evidence?.construction==="fused-naphthalene"&&model.evidence.language==="es"&&model.evidence.reconstructedGraph){
       const english=normalizeChemicalNameForParser(model.name,"es");

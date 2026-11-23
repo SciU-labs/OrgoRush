@@ -8,7 +8,7 @@ type FusedGraph = {
   atoms: readonly (RingGraph["atoms"][number] & { tetrahedralParity?: string; tetrahedralBondTo?: number })[];
   bonds: RingGraph["bonds"];
 };
-type ParentDefinition = {
+export type ParentDefinition = {
   id: string;
   es: string;
   en: string;
@@ -89,6 +89,32 @@ function definitionGraph(parent: ParentDefinition): RingGraph {
       parent.doubles.some(([c, d]) => a === c && b === d || a === d && b === c) ? 2 : 1]),
   };
 }
+
+/** Deterministic numbered skeleton used by the current-profile retained-arene
+ * derivation. It is sourced from the independently maintained A-21/A-22
+ * locant registry, never from a SMILES traversal or a selected cycle basis. */
+export function retainedFusedParentTemplate(parentId: string) {
+  const definition = RETAINED_FUSED_1979.find((item) => item.id === parentId);
+  if (!definition) return null;
+  const locants = [...definition.perimeter, ...(definition.interior ?? [])];
+  const graph = definitionGraph(definition);
+  const adjacency = new Map(graph.atoms.map((atom) => [atom.id, new Set<number>()]));
+  for (const [a, b] of graph.bonds) { adjacency.get(a)!.add(b); adjacency.get(b)!.add(a); }
+  const found = new Map<string, number[]>();
+  // Face controls are the induced six-membered cycles of this exact parent
+  // graph. Enumerating the small graph directly avoids reliance on SSSR order.
+  function walk(path: number[]) {
+    const at = path[path.length - 1]!;
+    for (const next of adjacency.get(at)!) {
+      if (next === path[0] && path.length === 6) {
+        const cycle = [...path];
+        if (cycle[1]! < cycle[5]!) found.set([...cycle].sort((a,b)=>a-b).join(","), cycle);
+      } else if (path.length < 6 && next > path[0]! && !path.includes(next)) walk([...path, next]);
+    }
+  }
+  for (const atom of graph.atoms) walk([atom.id]);
+  return { definition, locants, graph, rings: [...found.values()] };
+}
 const normalizedParents = RETAINED_FUSED_1979.map((definition) => ({ definition, graph: normalize(definitionGraph(definition)) }));
 
 // Enumerate graph isomorphisms so numbering choices can be compared by locants,
@@ -159,7 +185,7 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
       if (!choices.length) continue;
       const labels=[...definition.perimeter,...(definition.interior??[])];
       const hydroxyls=attachments.filter(a=>a.term.kind==="alcohol");
-      if(hydroxyls.length&&(definition.id!=="naphthalene"||hydroxyls.length!==1))return unsupported("functional-suffix-outside-retained-subset");
+      if(hydroxyls.length&&(!["naphthalene","anthracene","phenanthrene"].includes(definition.id)||hydroxyls.length!==1))return unsupported("functional-suffix-outside-retained-subset");
       const locant=(choice:number[],anchor:number)=>Number(labels[choice.indexOf(anchor)]);
       const ordered=(choice:number[],items:typeof attachments)=>items.map(a=>locant(choice,a.anchor)).sort((a,b)=>a-b);
       const select=(language:"es"|"en")=>[...choices].sort((a,b)=>compareHistoricalLocants(ordered(a,hydroxyls),ordered(b,hydroxyls))
@@ -179,7 +205,11 @@ export function nameRetainedFused1979(graph: FusedGraph): RetainedFusedResult {
         for(const a of attachments.filter(a=>a.term.kind!=="alcohol")){const name=a.term[language];groups.set(name,[...(groups.get(name)??[]),locant(choice,a.anchor)]);}
         const prefixes=[...groups].sort(([a],[b])=>historicalPrefixKey(a).localeCompare(historicalPrefixKey(b),language)).map(([name,values])=>
           `${values.sort((a,b)=>a-b).join(",")}-${multipliers[values.length]}${name}`);
-        const base=hydroxyls.length?`${locant(choice,hydroxyls[0].anchor)}-${language==="es"?"naftol":"naphthol"}`:definition[language];
+        const base=hydroxyls.length
+          ? definition.id === "naphthalene"
+            ? `${locant(choice,hydroxyls[0].anchor)}-${language==="es"?"naftol":"naphthol"}`
+            : `${definition[language].replace(/e?o?$/, "").replace(/e$/, "")}-${locant(choice,hydroxyls[0].anchor)}-ol`
+          : definition[language];
         return prefixes.length?`${prefixes.join("-")}${/^\d/.test(base)?"-":""}${base}`:base;
       };
       return { status: "SUPPORTED", topology, parentId: definition.id,
