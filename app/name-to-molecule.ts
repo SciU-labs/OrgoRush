@@ -8,6 +8,7 @@ import {
   getFusedTetracyclicSystem,
   getFusedTricyclicSystem,
 } from "./fused-ring-nomenclature.ts";
+import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -78,12 +79,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1383,6 +1384,9 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const naphthalene = parseFusedNaphthalene(value.trim().toLocaleLowerCase("es"));
+  if (naphthalene) return { ok: true, molecule: naphthalene.graph,
+    normalizedInput: value.trim().toLocaleLowerCase("es"), enabledAliases: [], inputFamily: "fused-naphthalene" };
   const normalizedInput = normalizeName(value);
   if (!normalizedInput) {
     return { ok: false, error: "Escribe un nombre, por ejemplo: 3-etil-2-metilhexano." };

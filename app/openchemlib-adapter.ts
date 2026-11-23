@@ -370,6 +370,18 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
   // hydrogens; other topologies stay guarded.
   const verifiedRetainedFusion = (topology === "fused" || topology === "bridged")
     && nameRetainedFused1979({ atoms, bonds }).status === "SUPPORTED";
+  // Naphthalene has a tightly bounded all-carbon aromatic core: two six-member
+  // rings, ten distinct atoms and eleven bonds. Substituents remain external
+  // to that core and are preserved verbatim; this import allowance does not
+  // grant fused-parent naming support to any other polycycle.
+  const fusedCoreIds = new Set(rings.flatMap(ring => ring.atomIds));
+  const fusedCoreEdges = bonds.filter(([a,b]) => fusedCoreIds.has(a) && fusedCoreIds.has(b));
+  const naphthaleneFusion = topology === "fused" && rings.length === 2
+    && rings.every(ring => ring.kind === "aromatic" && ring.atomIds.length === 6
+      && ring.atomIds.every(id => (atoms[id - 1]?.element ?? "C") === "C"))
+    && fusedCoreIds.size === 10 && fusedCoreEdges.length === 11
+    && rings[0]!.atomIds.filter(id => rings[1]!.atomIds.includes(id)).length === 2
+    && ringHasBond(rings[0]!, ...rings[0]!.atomIds.filter(id => rings[1]!.atomIds.includes(id)) as [number,number]);
   const editableFusion = topology === "fused"
     && rings.every((ring) => ring.kind === "cycloalkane"
       && (ring.atomIds.length === 5 || ring.atomIds.length === 6)
@@ -387,7 +399,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       const shared=r.atomIds.filter(id=>other.atomIds.includes(id));
       return shared.length===0 || shared.length===2 && ringHasBond(r,shared[0],shared[1]) && ringHasBond(other,shared[0],shared[1]);
     }));
-  if (!verifiedRetainedFusion && ((topology === "fused" && !editableFusion && !neutralHeterocyclicFusion) || topology === "bridged" || topology === "spiro")) {
+  if (!verifiedRetainedFusion && !naphthaleneFusion && ((topology === "fused" && !editableFusion && !neutralHeterocyclicFusion) || topology === "bridged" || topology === "spiro")) {
     return { ok: false, error: polycyclicSupportMessage(topology) };
   }
 

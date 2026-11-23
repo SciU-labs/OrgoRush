@@ -2763,8 +2763,9 @@ function heterocycleRingCompositionText(molecule: Molecule, ring: RingInfo, lang
 }
 
 /** The analysis card mixes functional classes with a hydrocarbon fallback; keep its structural fallback truthful. */
-export function principalGroupAnalysisLabel(molecule: Molecule, analysis: Analysis) {
+export function principalGroupAnalysisLabel(molecule: Molecule, analysis: Analysis, validatedGroup?: FunctionalGroupKind) {
   molecule = perceiveNamingRings(molecule).molecule;
+  if (validatedGroup) return functionalGroupLabels[validatedGroup];
   if (analysis.primaryFunctionalLabel) return analysis.primaryFunctionalLabel;
   if (analysis.family === "aromatic"
     && analysis.functionalGroups.length > 0
@@ -9771,7 +9772,10 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         : analysis.family === "polycyclic"
           ? "Policíclico"
           : "Hidrocarburo");
-  const principalGroupLabel = principalGroupAnalysisLabel(molecule, analysis);
+  const fusedPrincipalGroup=validatedDerivation?.evidence?.construction==="fused-naphthalene"
+    && Object.hasOwn(functionalGroupLabels,validatedDerivation.principalGroup)
+    ? validatedDerivation.principalGroup as FunctionalGroupKind : undefined;
+  const principalGroupLabel = principalGroupAnalysisLabel(molecule, analysis, fusedPrincipalGroup);
   const localizedHistoryFamilyLabel = t(historyFamilyLabel);
   const filteredHistoryEntries = useMemo(() => {
     const query = historyQuery.trim().toLocaleLowerCase(language);
@@ -10317,6 +10321,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     // instead of silently retaining a malformed presentation.
     const localPreflight = buildHydrocarbonFromIupacName(submittedName);
     if (!localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
+      || localPreflight.inputFamily === "fused-naphthalene"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
       setNameBuilderOpen(true);
       setNameBuilderFeedback({ kind: "error", message: localPreflight.error });
@@ -10340,6 +10345,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       let resolvedPubChemIdentity: PubChemStructureIdentity | null = null;
 
       if (localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
+        || localPreflight.inputFamily === "fused-naphthalene"
         || localPreflight.inputFamily === "alkene-stereo")) {
         next = localPreflight.molecule;
         enabledAliases = localPreflight.enabledAliases;
@@ -10399,7 +10405,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       const hasGraphRenderableAlias = generatedAnalysis.substituents.some((substituent) =>
         Boolean(getSubstituentAlias(substituent.name)),
       );
-      const preserveTrustedSourceName = (preserveSourceName
+      const preserveTrustedSourceName = (preserveSourceName || localPreflight.inputFamily === "fused-naphthalene"
         || moleculeContainsHeterocycle(next)
         || advancedNameResolved)
         && externalCandidateNeedsNeutralLocalName(next, generatedAnalysis);

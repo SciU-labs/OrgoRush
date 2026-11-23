@@ -331,7 +331,9 @@ function makeStep(input: {
   const locantFragments: ReasoningNameFragment[] = [], numberingTargets: ReasoningVisualTarget[] = [], seenLocants = new Set<string>();
   const addLocants = (component: NameComponent, labelPrefix: string) => {
     const entries = derivation.evidence
-      ? (component.writtenLocants??[]).map(item=>({atomId:item.atomId,locant:item.locant,start:item.start}))
+      ? (derivation.evidence.construction==="fused-naphthalene"&&component.id==="parent"
+        ? component.numbering.map(([atomId,locant])=>({atomId,locant,start:component.writtenLocants?.find(item=>item.atomId===atomId)?.start}))
+        : (component.writtenLocants??[]).map(item=>({atomId:item.atomId,locant:item.locant,start:item.start})))
       : component.numbering.map(([atomId,locant])=>({atomId,locant,start:undefined}));
     for (const {atomId,locant,start} of entries) {
       if (!graph.atoms.some(atom => atom.id === atomId)) continue;
@@ -602,8 +604,11 @@ export function buildValidatedPriorityReasoning(input: {
         || b===id&&suffix.atomIds.includes(a)&&graph.atoms.find(atom=>atom.id===a)?.element==="O")));
     const ringDetail=ring && functionalCarbon!==undefined && !ring.atomIds.includes(functionalCarbon)
       && graph.bonds.some(([a,b])=>a===functionalCarbon&&ring.atomIds.includes(b)||b===functionalCarbon&&ring.atomIds.includes(a))
-      ? (language==="en" ? ` The ring has ${ring.atomIds.length} atoms; the carbonyl carbon is outside it.`
-        : ` El anillo tiene ${ring.atomIds.length} átomos; el carbono carbonílico está fuera de él.`) : "";
+      ? derivation.evidence?.construction==="fused-naphthalene"
+        ? (language==="en" ? " The carboxyl carbon is outside the ten-carbon fused naphthalene parent."
+          : " El carbono carboxílico queda fuera del padre fusionado de naftaleno, formado por diez carbonos.")
+        : (language==="en" ? ` The ring has ${ring.atomIds.length} atoms; the carbonyl carbon is outside it.`
+          : ` El anillo tiene ${ring.atomIds.length} átomos; el carbono carbonílico está fuera de él.`) : "";
     stages.push({ title: language === "en" ? "Parent structure" : "Estructura principal", explanation:explanation+ringDetail,
       components: [parent, ...(carbohydrate && byId.get("sugar-ring") ? [byId.get("sugar-ring")!] : [])] });
   }
@@ -616,7 +621,10 @@ export function buildValidatedPriorityReasoning(input: {
   const multifunctional=derivation.evidence && ["polycarboxylic-acid","multifunctional-alcohol"].includes(derivation.evidence.construction) ? derivation.evidence : undefined;
   const parentContainsRing=Boolean(parent&&(graph.rings??[]).some(candidate=>candidate.atomIds.length>=3
     &&candidate.atomIds.every(id=>parent.atomIds.includes(id))));
-    const numberExplanation=multifunctional ? (language==="en" ? "Compare suffix locants first, then all prefix locants, then positions in citation order." : "Se comparan primero los localizadores del sufijo, después los de todos los prefijos y finalmente los de cada prefijo en orden de cita.") + (multifunctional.numbering.comparison===0 ? (language==="en" ? " The drawing shows one of the tied numberings." : " El dibujo muestra una de las numeraciones empatadas.") : "") : derivation.evidence?.construction==="polysubstituted-benzene-prefixes"
+    const numberExplanation=derivation.evidence?.construction==="fused-naphthalene"
+      ? language==="en" ? "The fused parent uses peripheral locants 1–8 and fusion locants 4a and 8a. Each control identifies the corresponding atom in the molecular graph."
+        : "El padre fusionado usa los localizadores periféricos 1–8 y los localizadores 4a y 8a para los átomos de fusión. Cada control identifica el átomo correspondiente del grafo molecular."
+      : multifunctional ? (language==="en" ? "Compare suffix locants first, then all prefix locants, then positions in citation order." : "Se comparan primero los localizadores del sufijo, después los de todos los prefijos y finalmente los de cada prefijo en orden de cita.") + (multifunctional.numbering.comparison===0 ? (language==="en" ? " The drawing shows one of the tied numberings." : " El dibujo muestra una de las numeraciones empatadas.") : "") : derivation.evidence?.construction==="polysubstituted-benzene-prefixes"
     ? language==="en" ? `Benzene has no suffix-bearing group. Compare all six orientations by the complete set of substituent locants, then by the locants for prefixes in citation order. The written locants are ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" A symmetry tie remains.":" The written orientation is the lowest admissible one."}`
       : `El benceno no tiene un grupo expresado mediante sufijo. Se comparan las seis orientaciones por el conjunto completo de localizadores y luego por los de cada prefijo en orden de cita. Los localizadores escritos son ${writtenPositions.join(", ")}.${aromaticEvidence?.numbering.comparison===0?" Persiste un empate por simetría.":" La orientación escrita es la menor admisible."}`
     : aromaticEvidence&&parentContainsRing
@@ -640,7 +648,10 @@ export function buildValidatedPriorityReasoning(input: {
   const parentRing=Boolean(parent&&(graph.rings??[]).some(candidate=>candidate.atomIds.length>=3
     && candidate.atomIds.every(id=>parent.atomIds.includes(id))));
   const concreteNumbering:string[]=[];
-  if(parentCarbonLocants.length>1)concreteNumbering.push(parentRing
+  if(derivation.evidence?.construction==="fused-naphthalene") concreteNumbering.push(language==="en"
+    ? "The fixed fused-parent numbering includes peripheral atoms 1–8 and bridgehead atoms 4a and 8a."
+    : "La numeración fija del padre fusionado incluye los átomos periféricos 1–8 y los átomos de fusión 4a y 8a.");
+  else if(parentCarbonLocants.length>1)concreteNumbering.push(parentRing
     ?language==="en"?`The parent ring is numbered C${parentCarbonLocants[0]}–C${parentCarbonLocants.at(-1)}.`:`El anillo principal se numera de C${parentCarbonLocants[0]} a C${parentCarbonLocants.at(-1)}.`
     :language==="en"?`The parent chain is numbered C${parentCarbonLocants[0]}–C${parentCarbonLocants.at(-1)}.`:`La cadena principal se numera de C${parentCarbonLocants[0]} a C${parentCarbonLocants.at(-1)}.`);
   for(const component of roots) {
@@ -792,8 +803,11 @@ export function buildValidatedPriorityReasoning(input: {
   // substituents themselves; a second punctuation recap repeated that content.
   // Compare siblings attached to the same parent/ring. A nested group is not
   // another independent substituent unless another sibling requires ordering.
-  const alphabeticalPeers = [...roots, ...descendants].filter(component =>
-    component.role === "substituent" || component.role === "prefix");
+  const alphabeticalPeers = derivation.evidence?.construction === "fused-naphthalene"
+    ? [...new Map([...roots,...descendants].filter(component=>component.role==="prefix"&&component.parentId==="parent")
+      .map(component=>[component.id,component])).values()]
+    : [...roots, ...descendants].filter(component =>
+      component.role === "substituent" || component.role === "prefix");
   const peerCounts = new Map<string, number>();
   for (const component of alphabeticalPeers) {
     const parentId = component.parentId ?? "parent";

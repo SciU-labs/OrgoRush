@@ -11,6 +11,7 @@ import { englishIupacRoot, iupacRootForCarbonCount } from "./iupac-prefixes.ts";
 import type { NameComponent, PrincipalGroup, NameRuleEvidence, ValidatedCompositionalEvidence } from "./compositional-name-model.ts";
 import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { getMainChainStereoDescriptors } from "./double-bond-stereochemistry.ts";
+import { normalizeChemicalNameForParser } from "./iupac-name-normalization.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
@@ -49,7 +50,44 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
-  if (language === "en") return { name: model.name, language: "en", localized: false };
+  if (language === "en") {
+    if(model.evidence?.construction==="fused-naphthalene"&&model.evidence.language==="es"&&model.evidence.reconstructedGraph){
+      const english=normalizeChemicalNameForParser(model.name,"es");
+      if(english&&reconcileSystematicName(model.evidence.reconstructedGraph,english)?.evidence?.language==="en")
+        return {name:english,language:"en",localized:true};
+    }
+    return { name: model.name, language: "en", localized: false };
+  }
+  if(model.evidence?.construction==="fused-naphthalene"&&model.evidence.language==="es")
+    return {name:model.name,language:"es",localized:true};
+  if(model.evidence?.construction==="fused-naphthalene"&&model.evidence.language==="en"){
+    let localized:string|null=null;
+    if(model.name==="naphthalene")localized="naftaleno";
+    else if(/^naphthalene-(\d+)-carboxylic acid$/.test(model.name))localized=model.name.replace(/^naphthalene-(\d+)-carboxylic acid$/,"ácido naftaleno-$1-carboxílico");
+    else if(/^naphthalene-(\d+)-carbonitrile$/.test(model.name))localized=model.name.replace(/^naphthalene-(\d+)-carbonitrile$/,"naftaleno-$1-carbonitrilo");
+    else if(/^naphthalene-(\d+),(\d+)-diol$/.test(model.name))localized=model.name.replace(/^naphthalene-(\d+),(\d+)-diol$/,"naftaleno-$1,$2-diol");
+    else if(/^naphthalen-(\d+)-ol$/.test(model.name))localized=model.name.replace(/^naphthalen-(\d+)-ol$/,"naftalen-$1-ol");
+    else if(/^naphthalen-(\d+)-amine$/.test(model.name))localized=model.name.replace(/^naphthalen-(\d+)-amine$/,"naftalen-$1-amina");
+    else if(/^methyl naphthalene-(\d+)-carboxylate$/.test(model.name))localized=model.name.replace(/^methyl naphthalene-(\d+)-carboxylate$/,"metil naftaleno-$1-carboxilato");
+    else if(model.name.endsWith("naphthalene")&&model.name!=="naphthalene"){
+      const core=model.components.find(component=>component.id==="parent");
+      const prefixes=model.components.filter(component=>component.role==="prefix"&&component.id.startsWith("prefix-group-"));
+      if(core&&prefixes.length){
+        const words=prefixes.map(component=>{
+          const body=component.text.replace(/^\d+(?:,\d+)*-/,"");
+          const termName=body.replace(/^(di|tri)/,"");
+          const term=legacyPrefixTerm(termName);
+          const multiplicity=component.numbering.length;
+          if(!term||term.en!==termName||!multiplicity)return null;
+          const multiplier=multiplicity===1?"":({2:"di",3:"tri"} as Record<number,string>)[multiplicity];
+          return multiplier===undefined?null:`${component.numbering.map(([,locant])=>locant).join(",")}-${multiplier}${term.es}`;
+        });
+        if(words.every(Boolean))localized=`${words.join("-")}naftaleno`;
+      }
+    }
+    if(localized&&reconcileSystematicName(model.evidence.reconstructedGraph,localized)?.evidence?.language==="es")
+      return {name:localized,language:"es",localized:true};
+  }
   if (model.evidence?.language === "en" && model.evidence.reconstructedGraph) {
     const localized = localizeAromaticNitrogenAcidName(model.name);
     if (localized && reconcileSystematicName(model.evidence.reconstructedGraph, localized)?.evidence?.language === "es")
