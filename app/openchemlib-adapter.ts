@@ -160,6 +160,29 @@ function connectedAtomCount(atomIds: number[], bonds: GeneratedBond[]) {
   return seen.size;
 }
 
+const fusedNaphthalenePhaseOneConnectivities = new Set([
+  "C1=CC=C(C=CC=C2)C2=C1",
+  "CC1=CC=CC2=C1C=CC=C2",
+  "CC1=CC2=CC=CC=C2C=C1",
+  "ClC1=CC=CC2=C1C=CC=C2",
+  "ClC1=CC2=CC=CC=C2C=C1",
+  "[O-][N+](C1=CC=CC2=C1C=CC=C2)=O",
+  "[O-][N+](C1=CC2=CC=CC=C2C=C1)=O",
+  "CC1=C(C)C(C=CC=C2)=C2C=C1",
+  "CC1=CC=CC2=C1C(C)=CC=C2",
+  "OC1=CC=CC2=C1C=CC=C2",
+  "OC1=CC2=CC=CC=C2C=C1",
+  "COC1=CC=CC2=C1C=CC=C2",
+  "COC1=CC2=CC=CC=C2C=C1",
+  "NC1=CC=CC2=C1C=CC=C2",
+  "NC1=CC2=CC=CC=C2C=C1",
+  "OC(C1=CC=CC2=C1C=CC=C2)=O",
+  "OC(C1=CC2=CC=CC=C2C=C1)=O",
+  "COC(C1=CC2=CC=CC=C2C=C1)=O",
+  "N#CC1=CC=CC2=C1C=CC=C2",
+  "OC1=CC=CC2=C1C=CC=C2O",
+]);
+
 export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
   let oclMolecule;
   try {
@@ -370,10 +393,9 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
   // hydrogens; other topologies stay guarded.
   const verifiedRetainedFusion = (topology === "fused" || topology === "bridged")
     && nameRetainedFused1979({ atoms, bonds }).status === "SUPPORTED";
-  // Naphthalene has a tightly bounded all-carbon aromatic core: two six-member
-  // rings, ten distinct atoms and eleven bonds. Substituents remain external
-  // to that core and are preserved verbatim; this import allowance does not
-  // grant fused-parent naming support to any other polycycle.
+  // Admit only the twenty audited phase-one naphthalene connectivities. The
+  // core check distinguishes the fused parent; canonical connectivity keeps
+  // unlisted functional combinations outside the import allowance.
   const fusedCoreIds = new Set(rings.flatMap(ring => ring.atomIds));
   const fusedCoreEdges = bonds.filter(([a,b]) => fusedCoreIds.has(a) && fusedCoreIds.has(b));
   const naphthaleneFusion = topology === "fused" && rings.length === 2
@@ -381,7 +403,8 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       && ring.atomIds.every(id => (atoms[id - 1]?.element ?? "C") === "C"))
     && fusedCoreIds.size === 10 && fusedCoreEdges.length === 11
     && rings[0]!.atomIds.filter(id => rings[1]!.atomIds.includes(id)).length === 2
-    && ringHasBond(rings[0]!, ...rings[0]!.atomIds.filter(id => rings[1]!.atomIds.includes(id)) as [number,number]);
+    && ringHasBond(rings[0]!, ...rings[0]!.atomIds.filter(id => rings[1]!.atomIds.includes(id)) as [number,number])
+    && fusedNaphthalenePhaseOneConnectivities.has(oclMolecule.toSmiles());
   const editableFusion = topology === "fused"
     && rings.every((ring) => ring.kind === "cycloalkane"
       && (ring.atomIds.length === 5 || ring.atomIds.length === 6)

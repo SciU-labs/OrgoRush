@@ -77,6 +77,11 @@ test("naphthalene structure keeps the fused edge and import rejects other polycy
   assert.equal(naphthalene.rings[0].atomIds.filter(id => naphthalene.rings[1].atomIds.includes(id)).length, 2);
   assert.equal(moleculeFromSmiles("c1ccccc1-c1ccccc1").ok, true, "biphenyl remains a valid independent-ring import");
   assert.equal(reconcileSystematicName(build("c1ccccc1-c1ccccc1"), "naphthalene"), null, "biphenyl is not fused naphthalene");
+  const unsupportedDihydroxy="Oc1ccc2cc(O)ccc2c1";
+  assert.equal(moleculeFromSmiles(unsupportedDihydroxy).ok,false,"unlisted 2,7-naphthalenediol remains outside the phase-one import envelope");
+  assert.equal(buildHydrocarbonFromIupacName("naphthalene-2,7-diol").ok,false,"the name builder rejects the unlisted diol locants");
+  assert.equal(buildHydrocarbonFromIupacName("naftaleno-2,7-diol").ok,false,"the Spanish name builder rejects the unlisted diol locants");
+  assert.equal(moleculeFromSmiles("Oc1cccc2c(O)cccc12").ok,true,"the supported 1,5-diol remains importable");
   assert.equal(moleculeFromSmiles("C1CCC2(CC1)CCCC2").ok, false, "spiro fusion remains outside the import allowance");
 });
 

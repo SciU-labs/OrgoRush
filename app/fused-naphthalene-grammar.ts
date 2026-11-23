@@ -103,6 +103,12 @@ export function parseFusedNaphthalene(name: string): Family | null {
       {explanationEs:"El naftaleno es un único sistema bicíclico ortofusionado: sus dos anillos de seis miembros comparten dos carbonos adyacentes y su enlace común. Cada uno de sus diez átomos esqueléticos aparece una sola vez.",numbering:ring.map((id,index)=>[id,labels[index]!]),numberingScope:"parent"});
   } else if(prefixForm) {
     const prefixes=scanPrefixes(prefixForm[1]!,language);if(!prefixes?.length)return null;
+    if(prefixes.length!==1)return null;
+    const entry=prefixes[0]!,locantsKey=entry.locants.join(",");
+    const supportedMonoPrefix=["methyl","chloro","nitro","methoxy"].includes(entry.term.en)
+      &&entry.locants.length===1&&[1,2].includes(entry.locants[0]!);
+    const supportedDimethyl=entry.term.en==="methyl"&&["1,2","1,8"].includes(locantsKey);
+    if(!supportedMonoPrefix&&!supportedDimethyl)return null;
     const locantSets=prefixes.map(entry=>entry.locants);
     if(!bestNumbering(locantSets))return null;
     const seen=new Set<number>();
@@ -135,6 +141,11 @@ export function parseFusedNaphthalene(name: string): Family | null {
   } else if(phenol||amine||acid||ester||nitrile||diol) {
     const match=phenol??amine??acid??ester??nitrile??diol!;
     const locants=diol?[Number(diol[2]),Number(diol[3])]:[Number(ester?match[3]:match[2])];
+    const supportedSuffix=diol?locants[0]===1&&locants[1]===5
+      :ester?locants[0]===2
+      :nitrile?locants[0]===1
+      :[1,2].includes(locants[0]!);
+    if(!supportedSuffix)return null;
     if(!bestNumbering([],locants))return null;
     suffixLocants=locants;
     const parentText=match[0];
