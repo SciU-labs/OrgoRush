@@ -33,19 +33,29 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       let source=read(file).replace(/\r\n/g,'\n');
       const parserImport='import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";\n';
       const tricyclicParserImport='import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";\n';
+      const partiallySaturatedParserImport='import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";\n';
       const familyTypes=[' | "fused-naphthalene"',' | "fused-tricyclic-arene"'];
+      const partiallySaturatedFamilyType=' | "fused-partially-saturated-bicycle"';
       const builderBranch='  const naphthalene = parseFusedNaphthalene(value.trim().toLocaleLowerCase("es"));\n'
         +'  if (naphthalene) return { ok: true, molecule: naphthalene.graph,\n'
         +'    normalizedInput: value.trim().toLocaleLowerCase("es"), enabledAliases: [], inputFamily: "fused-naphthalene" };\n';
       const tricyclicBuilderBranch='  const tricyclicArene = parseFusedTricyclicArene(value.trim().toLocaleLowerCase("en"));\n'
         +'  if (tricyclicArene) return { ok: true, molecule: tricyclicArene.graph,\n'
         +'    normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-tricyclic-arene" };\n';
+      const partiallySaturatedBuilderBranch='  const fusedPartiallySaturated = parseFusedPartiallySaturatedName(value.trim().toLocaleLowerCase("en"));\n'
+        +'  if (fusedPartiallySaturated) return { ok: true, molecule: fusedPartiallySaturated.graph,\n'
+        +'    normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-partially-saturated-bicycle" };\n';
       assert.equal(source.split(parserImport).length-1,1,'fused naphthalene parser import must remain singular');
       assert.equal(source.split(tricyclicParserImport).length-1,1,'fused tricyclic arene parser import must remain singular');
+      assert.equal(source.split(partiallySaturatedParserImport).length-1,1,'partially saturated fused parser import must remain singular');
       for(const familyType of familyTypes)assert.equal(source.split(familyType).length-1,2,'both name-builder result variants expose the bounded family');
+      assert.equal(source.split(partiallySaturatedFamilyType).length-1,2,'both name-builder result variants expose the bounded partially saturated family');
       assert.equal(source.split(builderBranch).length-1,1,'fused naphthalene name import remains one bounded early branch');
       assert.equal(source.split(tricyclicBuilderBranch).length-1,1,'fused tricyclic arene name import remains one bounded early branch');
-      source=source.replace(parserImport,'').replace(tricyclicParserImport,'').replaceAll(familyTypes[0],'').replaceAll(familyTypes[1],'').replace(builderBranch,'').replace(tricyclicBuilderBranch,'');
+      assert.equal(source.split(partiallySaturatedBuilderBranch).length-1,1,'partially saturated fused name import remains one bounded early branch');
+      source=source.replace(parserImport,'').replace(tricyclicParserImport,'').replace(partiallySaturatedParserImport,'')
+        .replaceAll(familyTypes[0],'').replaceAll(familyTypes[1],'').replaceAll(partiallySaturatedFamilyType,'')
+        .replace(builderBranch,'').replace(tricyclicBuilderBranch,'').replace(partiallySaturatedBuilderBranch,'');
       assert.equal(hash(source),sha256,file);
       continue;
     }
