@@ -14,6 +14,7 @@ import {cyclicVariants} from "./helpers/cyclic-audit-003.mjs";
 import {formatStereochemicalName} from "../app/double-bond-stereochemistry.ts";
 import {getMainChainTetrahedralDescriptors} from "../app/tetrahedral-stereochemistry.ts";
 import {normalizeChemicalNameForParser} from "../app/iupac-name-normalization.ts";
+import {reconcileSystematicName} from "../app/validated-name-derivation.ts";
 
 let chemistry,engine;
 before(async()=>{chemistry=await loadExerciseChemistry();engine=chemistry.engine;});
@@ -184,6 +185,21 @@ test("bounded grammar keeps uncovered aromatic functions and fused heterocycles 
   const polyunsaturated=observe(aromaticGraph({smiles:"C=CC=Cc1ccccc1"}));
   assert.equal(polyunsaturated.englishName,"-","an uncovered diene radical must never be rendered as a saturated radical or Spanish text in EN");
   assert.equal(polyunsaturated.spanishResolution.status,"UNSUPPORTED");
+});
+
+test("anthracen-2-ol is newly covered while dihydroxynaphthalene stays unsupported",()=>{
+  const anthracenol=aromaticGraph({smiles:"Oc1ccc2cc3ccccc3cc2c1"});
+  const legacy=observe(anthracenol);
+  assert.equal(legacy.englishName,"anthracen-2-ol");
+  assert.equal(legacy.spanishResolution.status,"TRANSLATED_FROM_LEGACY_EN");
+  assert.equal(legacy.spanishResolution.name,"antracen-2-ol");
+  for(const [language,name] of [["en","anthracen-2-ol"],["es","antracen-2-ol"]]) {
+    const proof=reconcileSystematicName(anthracenol,name);
+    assert.equal(proof?.status,"FULL",name);
+    assert.equal(proof?.evidence?.language,language,name);
+  }
+  const dihydroxy=aromaticGraph(AROMATIC_004_LIMITS.find(ref=>ref.id==="naphthalene-diol"));
+  assert.equal(observe(dihydroxy).spanishResolution.status,"UNSUPPORTED","2,7-dihydroxynaphthalene remains outside the retained suffix subset");
 });
 
 test("existing native aromatic-side-chain stereochemistry and SMILES configuration are preserved",()=>{

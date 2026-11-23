@@ -63,7 +63,6 @@ export const AROMATIC_004_LIMITS=[
   {id:"benzene-diacid",smiles:"OC(=O)c1ccccc1C(=O)O",reason:"multiple-principal-functions-outside-translation-subset"},
   {id:"benzenesulfonic-acid",smiles:"O=S(=O)(O)c1ccccc1",reason:"unrepresented-sulfur-function"},
   {id:"naphthalene-diol",smiles:"Oc1ccc2cc(O)ccc2c1",reason:"functional-suffix-outside-retained-subset"},
-  {id:"anthracenol",smiles:"Oc1ccc2cc3ccccc3cc2c1",reason:"functional-suffix-outside-retained-subset"},
   {id:"quinoline",smiles:"c1ccc2ncccc2c1",reason:"unregistered-fused-heterocycle"},
 ];
 export const aromaticGraph=reference=>graphFromCyclicReference(reference);
