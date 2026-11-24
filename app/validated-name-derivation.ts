@@ -13,6 +13,8 @@ import { getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { getMainChainStereoDescriptors } from "./double-bond-stereochemistry.ts";
 import { normalizeChemicalNameForParser } from "./iupac-name-normalization.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
+import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
+import { findExactDecalinFusion, type FusedJunctionConfiguration } from "./fused-junction-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
 export type ValidatedNameDerivation = {
@@ -51,6 +53,18 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
+  if(model.evidence?.construction==="fused-decalin"&&model.evidence.reconstructedGraph){
+    const parsed=parseFusedDecalinName(model.name);
+    if(parsed){
+      const base=parsed.form==="retained"?(parsed.configuration==="unspecified"?"decalin":`${parsed.configuration}-decalin`)
+        :parsed.form==="systematic"?(parsed.configuration==="unspecified"?"decahydronaphthalene":`${parsed.configuration}-decahydronaphthalene`)
+        :`(4a${parsed.descriptors?.[0]},8a${parsed.descriptors?.[1]})-decahydronaphthalene`;
+      const candidate=language==="en"?base:base.replace("decahydronaphthalene","decahidronaftaleno").replace(/decalin$/,"decalina");
+      if(candidate===model.name)return {name:candidate,language,localized:false};
+      if(reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
+        return {name:candidate,language,localized:true};
+    }
+  }
   if(model.evidence?.construction==="fused-tricyclic-arene"&&model.evidence.reconstructedGraph){
     const retained=nameRetainedFused1979(model.evidence.reconstructedGraph);
     if(retained.status==="SUPPORTED"){
@@ -238,17 +252,61 @@ const cache = new WeakMap<GeneratedMolecule, {signature:string; entries:Map<stri
 export function reconcileSystematicName(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
   // The UI commits immutable graphs, but callers must not reuse a FULL proof
   // after editing the same object's connectivity, stereo or isotope metadata.
-  const signature=JSON.stringify([actual.atoms,actual.bonds]);
+  const signature=JSON.stringify([actual.atoms,actual.bonds,actual.rings,actual.fusedRingJunctionStereo]);
   let cached = cache.get(actual);
   if (!cached || cached.signature!==signature) {
     cached = {signature,entries:new Map()}; cache.set(actual,cached);
   }
   const {entries}=cached;
   if (entries.has(name)) return entries.get(name)!;
-  const result = reconcile(actual, name);
+  const result = reconcileDecalin(actual,name) ?? reconcile(actual, name);
   if (entries.size >= 16) entries.clear();
   entries.set(name, result);
   return result;
+}
+
+function reconcileDecalin(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
+  const parsed=parseFusedDecalinName(name);
+  if(!parsed)return null;
+  const fusion=findExactDecalinFusion(actual);
+  if(!fusion)return null;
+  const parsedFusion=findExactDecalinFusion(parsed.graph);
+  if(!parsedFusion)return null;
+  const actualConfiguration: FusedJunctionConfiguration=actual.fusedRingJunctionStereo?.configuration??"unspecified";
+  if(actualConfiguration!==parsed.configuration)return null;
+  const mapping=mapStructuralRepresentative(parsed.graph,actual);
+  if(!mapping)return null;
+  const mapIds=(ids:number[])=>ids.map(id=>mapping.get(id)!);
+  const parent=mapIds(parsed.graph.atoms.map(atom=>atom.id));
+  const allBonds=(ids:number[])=>parsed.graph.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b)
+    ).map(([a,b]):[number,number]=>[mapping.get(a)!,mapping.get(b)!]);
+  const nameStart=parsed.form==="pin"?parsed.normalized.indexOf("decahydronaphthalene"):
+    parsed.form==="systematic"?parsed.normalized.indexOf(parsed.language==="en"?"decahydronaphthalene":"decahidronaftaleno"):0;
+  const components:NameComponent[]=[
+    {id:"parent",role:"parent",text:parsed.normalized.slice(nameStart),start:nameStart,end:parsed.normalized.length,
+      atomIds:parent,bondIds:allBonds(parent),numbering:[],explanation:"The parent is decalin: two saturated six-membered rings share one bond.",
+      explanationEs:"La estructura principal es la decalina: dos anillos saturados de seis miembros comparten un enlace."},
+    ...parsed.graph.rings!.map((ring,index)=>({id:`fused-ring-${index+1}`,role:"parent" as const,text:"",start:nameStart,end:parsed.normalized.length,
+      atomIds:mapIds(ring.atomIds),bondIds:allBonds(ring.atomIds),numbering:[],
+      explanation:`Ring ${index+1} is a six-membered saturated ring in the fused parent.`,
+      explanationEs:`El anillo ${index+1} es un ciclo saturado de seis miembros de la estructura fusionada.`})),
+    {id:"fusion-junction",role:"prefix",text:"",start:0,end:parsed.normalized.length,atomIds:mapIds(parsedFusion.fusionAtomIds),
+      bondIds:[parsedFusion.fusionBond.map(id=>mapping.get(id)!) as [number,number]],numbering:[],
+      label:parsed.configuration==="unspecified"?"fusion junction":`${parsed.configuration} fusion`,
+      labelEs:parsed.configuration==="unspecified"?"unión de fusión":`fusión ${parsed.configuration}`,
+      explanation:parsed.configuration==="unspecified"?"No relative configuration is specified at the shared bond."
+        :`The two bridgehead hydrogens have a ${parsed.configuration} relative relationship across the shared bond.`,
+      explanationEs:parsed.configuration==="unspecified"?"El nombre no especifica la configuración relativa en el enlace compartido."
+        :`Los hidrógenos de los carbonos de fusión tienen relación relativa ${parsed.configuration} respecto del enlace compartido.`},
+  ];
+  const reconstructedGraph=parsed.graph;
+  const evidence:ValidatedCompositionalEvidence={source:"active-name",profile:"current",language:parsed.language,
+    construction:"fused-decalin",rules:[{id:"fused-decalin-parent",source:"Two saturated six-membered rings sharing a single edge"},
+      {id:"relative-fusion-configuration",source:"Verified cis/trans junction relation or unspecified configuration"}],
+    parentSelection:"fused-ring-system",numbering:{scope:"parent",priorities:["two fused six-membered saturated rings"],
+    selected:[],reflected:[],comparison:0},stereo:parsed.configuration==="unspecified"?"unspecified-only":"specified-fused-junction",
+    reconstructedGraph,atomMapping:[...mapping],equivalence:"complete-graph-isomorphism"};
+  return {status:"FULL",name,preferred:false,principalGroup:"none",components,parentAtomIds:parent,evidence};
 }
 type ParsedNameStereo = {
   baseName: string;

@@ -80,6 +80,18 @@ test("accepts a valid current .quimica structure and returns a safe graph copy",
   assert.deepEqual(mustRead(makeStructure(ring.molecule)).molecule, ring.molecule);
 });
 
+test(".quimica documents preserve cis/trans junction metadata without recoding pseudo-centers as R/S",()=>{
+  for(const [configuration,smiles] of [["cis","[H][C@]12CCCC[C@@]1([H])CCCC2"],["trans","[H][C@]12CCCC[C@]1([H])CCCC2"]]){
+    const imported=moleculeFromSmiles(smiles);assert.equal(imported.ok,true,imported.error);
+    assert.equal(imported.molecule.fusedRingJunctionStereo.configuration,configuration);
+    assert.equal(imported.molecule.atoms.some(atom=>atom.tetrahedralParity),false);
+    const doc=createChemistryDocument("structure",[{id:`decalin-${configuration}`,...makeStructure(imported.molecule)}],"2026-11-23T00:00:00.000Z");
+    const restored=readChemistryDocument(JSON.parse(JSON.stringify(doc)))[0];
+    assert.deepEqual(restored.molecule.fusedRingJunctionStereo,imported.molecule.fusedRingJunctionStereo);
+    assert.equal(restored.molecule.atoms.some(atom=>atom.tetrahedralParity),false);
+  }
+});
+
 test("rejects duplicate atom IDs, missing bond endpoints, self-bonds and duplicate edges", () => {
   const duplicateIds = { atoms: [{ id: 1, x: 0, y: 0 }, { id: 1, x: 1, y: 0 }], bonds: [[1, 1, 1]] };
   const missingEndpoint = { atoms: [{ id: 1, x: 0, y: 0 }], bonds: [[1, 2, 1]] };

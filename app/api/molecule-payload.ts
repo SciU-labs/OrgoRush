@@ -8,8 +8,9 @@ import {
   normalizeManualDisplayPlacements,
   type ManualDisplayPlacement,
 } from "../manual-display-direction.ts";
+import { isValidFusedRingJunctionStereo } from "../fused-junction-stereochemistry.ts";
 
-export type PersistedMolecule = Pick<GeneratedMolecule, "atoms" | "bonds"> & {
+export type PersistedMolecule = Pick<GeneratedMolecule, "atoms" | "bonds" | "fusedRingJunctionStereo"> & {
   rings?: GeneratedRing[];
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** Display orientation is retained for backwards compatibility with the editor. */
@@ -154,11 +155,24 @@ export function normalizeMoleculePayload(value: unknown): PersistedMolecule | nu
   const manualDisplayDirections = normalizeManualDisplayPlacements(candidate.manualDisplayDirections, { atoms, bonds });
   if (candidate.manualDisplayDirections !== undefined && manualDisplayDirections === undefined) return null;
 
+  const graph: GeneratedMolecule = {atoms,bonds,...(rings?.length?{rings}:{})};
+  if(candidate.fusedRingJunctionStereo!==undefined){
+    const stereo=candidate.fusedRingJunctionStereo;
+    if(!isRecord(stereo)||stereo.system!=="decalin"||!Array.isArray(stereo.fusionAtomIds)||stereo.fusionAtomIds.length!==2
+      ||!stereo.fusionAtomIds.every(id=>Number.isSafeInteger(id)&&ids.has(id as number))
+      ||!Array.isArray(stereo.fusionBond)||stereo.fusionBond.length!==2
+      ||!stereo.fusionBond.every(id=>Number.isSafeInteger(id)&&ids.has(id as number))
+      ||!(["cis","trans","unspecified"].includes(stereo.configuration as string)))return null;
+    graph.fusedRingJunctionStereo=stereo as unknown as NonNullable<GeneratedMolecule["fusedRingJunctionStereo"]>;
+    if(!isValidFusedRingJunctionStereo(graph))return null;
+  }
+
   return {
     atoms,
     bonds,
     ...(rings?.length ? { rings } : {}),
     ...(candidate.isMirrored === true ? { isMirrored: true } : {}),
     ...(manualDisplayDirections?.length ? { manualDisplayDirections } : {}),
+    ...(graph.fusedRingJunctionStereo?{fusedRingJunctionStereo:graph.fusedRingJunctionStereo}:{}),
   };
 }

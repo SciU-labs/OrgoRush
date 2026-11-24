@@ -3168,6 +3168,10 @@ html .app-shell.a11y-high-contrast .selection-icon { border-color: var(--brand-p
   letter-spacing: 0.02em;
 }
 
+.fused-junction-stereo-label { pointer-events: none; }
+.fused-junction-stereo-label rect { fill: #f3e8d5; stroke: #a56a24; stroke-width: 1.25; }
+.fused-junction-stereo-label text { fill: #754816; font-size: 9px; font-weight: 800; }
+
 .stereo-bond-marker.stereo-labels-hidden rect {
   fill: transparent;
   stroke: transparent;

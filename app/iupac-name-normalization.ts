@@ -571,6 +571,14 @@ function alphabetizeEnglishHalogenPrefixes(value: string) {
 
 /** English display localization; OPSIN candidates keep their parser punctuation and source order. */
 export function translateSpanishIupacForDisplay(value: string) {
+  const decalin = /^(cis|trans)-decalina$/i.exec(value.trim());
+  if (decalin) return `${decalin[1].toLowerCase()}-decalin`;
+  if (/^decalina$/i.test(value.trim())) return "decalin";
+  const hydratedDecalin = /^(cis|trans)-decahidronaftaleno$/i.exec(value.trim());
+  if (hydratedDecalin) return `${hydratedDecalin[1].toLowerCase()}-decahydronaphthalene`;
+  if (/^decahidronaftaleno$/i.test(value.trim())) return "decahydronaphthalene";
+  const pinDecalin = /^\(4a([rs]),8a([rs])\)-decahidronaftaleno$/i.exec(value.trim());
+  if (pinDecalin) return `(4a${pinDecalin[1].toLowerCase()},8a${pinDecalin[2].toLowerCase()})-decahydronaphthalene`;
   return canonicalizeEnglishAcyclicPrefixes(
     alphabetizeEnglishHalogenPrefixes(compactHalogenatedName(translateSpanishIupacToOpsin(value))),
   );

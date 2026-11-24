@@ -11,6 +11,8 @@ import {
 import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
 import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
 import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";
+import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
+import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -39,6 +41,8 @@ export type GeneratedMolecule = {
   atoms: GeneratedAtom[];
   bonds: GeneratedBond[];
   rings?: GeneratedRing[];
+  /** Relative configuration of the shared edge in an audited fused-ring system. */
+  fusedRingJunctionStereo?: FusedRingJunctionStereo;
 };
 
 type ParentDescription = {
@@ -81,12 +85,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1386,6 +1390,8 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const decalin = parseFusedDecalinName(value);
+  if (decalin) return {ok:true,molecule:decalin.graph,normalizedInput:decalin.normalized,enabledAliases:[],inputFamily:"fused-decalin"};
   const fusedPartiallySaturated = parseFusedPartiallySaturatedName(value.trim().toLocaleLowerCase("en"));
   if (fusedPartiallySaturated) return { ok: true, molecule: fusedPartiallySaturated.graph,
     normalizedInput: value.trim().toLocaleLowerCase("en"), enabledAliases: [], inputFamily: "fused-partially-saturated-bicycle" };
@@ -1432,6 +1438,8 @@ function buildConstitutionFromIupacName(value: string): NameBuildResult {
  * and functional groups are known. Atom IDs of the compact parser's parent
  * are its name locants; external parsers must not assume that correspondence. */
 export function buildHydrocarbonFromIupacName(value: string): NameBuildResult {
+  const decalin = parseFusedDecalinName(value);
+  if (decalin) return {ok:true,molecule:decalin.graph,normalizedInput:decalin.normalized,enabledAliases:[],inputFamily:"fused-decalin"};
   const normalized = normalizeName(value);
   const relative = /^(cis|trans)-(.*)$/.exec(normalized);
   const absolute = /^\(((?:\d+)?[ez](?:,(?:\d+)?[ez])*)\)-(.+)$/.exec(normalized);

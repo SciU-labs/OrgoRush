@@ -41,9 +41,9 @@ export type NameRuleEvidence = {
   source: "active-name";
   profile?: "current";
   language: "es" | "en";
-  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol" | "polycarboxylic-acid" | "multifunctional-alcohol" | "polysubstituted-benzene-prefixes" | "benzene-ring-assembly" | "independent-ring-substitution" | "aromatic-amine" | "carbon-linked-aromatic" | "functional-biaryl" | "aromatic-alkene" | "aryl-cycloalkane" | "functional-cycloaryl" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle";
+  construction: "retained-aromatic" | "aromatic-ester" | "functional-monocycle" | "acyclic-aryl-amine" | "substituted-alkanamide" | "aminoalkyl-benzenediol" | "polycarboxylic-acid" | "multifunctional-alcohol" | "polysubstituted-benzene-prefixes" | "benzene-ring-assembly" | "independent-ring-substitution" | "aromatic-amine" | "carbon-linked-aromatic" | "functional-biaryl" | "aromatic-alkene" | "aryl-cycloalkane" | "functional-cycloaryl" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin";
   rules: { id: string; source: string }[];
-  parentSelection: "retained-functional-parent" | "sole-suffix-bearing-cycle" | "amine-longest-n-attached-chain" | "acyl-chain" | "polyacid-backbone" | "hydroxyl-bearing-parent" | "unfunctionalized-benzene" | "ring-assembly" | "aromatic-parent" | "acyclic-chain" | "functionalized-ring";
+  parentSelection: "retained-functional-parent" | "sole-suffix-bearing-cycle" | "amine-longest-n-attached-chain" | "acyl-chain" | "polyacid-backbone" | "hydroxyl-bearing-parent" | "unfunctionalized-benzene" | "ring-assembly" | "aromatic-parent" | "acyclic-chain" | "functionalized-ring" | "fused-ring-system";
   numbering: {
     scope: "parent";
     priorities: string[];
@@ -51,7 +51,7 @@ export type NameRuleEvidence = {
     reflected: number[][];
     comparison: number;
   };
-  stereo: "unspecified-only" | "specified-tetrahedral" | "specified-geometric" | "specified-tetrahedral-and-geometric";
+  stereo: "unspecified-only" | "specified-tetrahedral" | "specified-geometric" | "specified-tetrahedral-and-geometric" | "specified-fused-junction";
 };
 
 export type CompositionalFamilyGraph = {

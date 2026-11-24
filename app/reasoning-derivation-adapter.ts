@@ -259,11 +259,13 @@ function localizedComponentExplanation(component: NameComponent, language: AppLa
 function componentFragment(component: NameComponent, language: AppLanguage, derivation: ValidatedNameDerivation): ReasoningNameFragment {
   const literal=!!derivation.evidence || component.language===language;
   const fusedControl=derivation.evidence?.construction==="fused-tricyclic-arene";
-  const ringControl=fusedControl?/^fused-ring:(\d+)$/.exec(component.id):null;
+  const decalinControl=derivation.evidence?.construction==="fused-decalin";
+  const ringControl=fusedControl?/^fused-ring:(\d+)$/.exec(component.id):decalinControl?/^fused-ring-(\d+)$/.exec(component.id):null;
   const text = ringControl
     ?language==="en"?`ring ${ringControl[1]}`:`anillo ${ringControl[1]}`
     :fusedControl&&component.id==="fusion-bonds"?language==="en"?"fusion bonds":"enlaces de fusión"
     :fusedControl&&component.id==="fusion-atoms"?language==="en"?"fusion atoms":"átomos de fusión"
+    :decalinControl&&component.id==="fusion-junction"?language==="en"?"fusion junction":"unión de fusión"
     :literal ? component.text : componentLabel(component, language, derivation);
   const parentAtoms=new Set(derivation.parentAtomIds);
   const positions=component.numbering.flatMap(([id,locant])=>parentAtoms.has(id)&&typeof locant==="number"?[locant]:[]);
@@ -485,6 +487,27 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
+  if(derivation.evidence?.construction==="fused-decalin"){
+    const rings=displayedComponents.filter(component=>component.id.startsWith("fused-ring-"));
+    const junction=byId.get("fusion-junction");
+    const configuration=graph.fusedRingJunctionStereo?.configuration??"unspecified";
+    const steps:PriorityReasoningStep[]=[makeStep({number:"1",title:language==="en"?"Parent structure":"Estructura principal",
+      explanation:language==="en"?"Decalin is the parent: two saturated six-membered rings share one bond."
+        :"La decalina es la estructura principal: dos anillos saturados de seis miembros comparten un enlace.",
+      components:[...(parent?[parent]:[]),...rings],derivation,language,graph})];
+    if(junction)steps.push(makeStep({number:"2",title:language==="en"?"Fusion configuration":"Configuración de la fusión",
+      explanation:configuration==="unspecified"
+        ?language==="en"?"The name leaves the relative configuration at the shared ring junction unspecified."
+          :"El nombre deja sin especificar la configuración relativa de la unión entre los anillos."
+        :language==="en"?`The two junction hydrogens have the verified ${configuration} relationship. This relation comes from stereochemical identity, not their screen positions.`
+          :`Los dos hidrógenos de la unión tienen la relación ${configuration} verificada. Esta relación procede de la identidad estereoquímica, no de su posición en pantalla.`,
+      components:[junction],derivation,language,graph}));
+    steps.push(makeStep({number:String(steps.length+1),title:language==="en"?"Build the name":"Construcción del nombre",
+      explanation:language==="en"?"Use decalin or decahydronaphthalene; add cis/trans only when the fusion configuration is specified."
+        :"Se usa decalina o decahidronaftaleno; se añade cis/trans solo cuando se especifica la configuración de fusión.",
+      components:[...(parent?[parent]:[]),...(junction?[junction]:[])],derivation,language,graph}));
+    return {name:derivation.name,steps};
+  }
   const parentAtomIds=new Set(byId.get("parent")?.atomIds??[]);
   const ringBoundSuffixHydroxylCount=(byId.get("suffix")?.atomIds??[]).filter(id=>graph.atoms.find(atom=>atom.id===id)?.element==="O"
     &&graph.bonds.some(([a,b,order])=>order===1&&(a===id&&parentAtomIds.has(b)||b===id&&parentAtomIds.has(a)))).length;

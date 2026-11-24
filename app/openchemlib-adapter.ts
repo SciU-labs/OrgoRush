@@ -12,10 +12,16 @@ import {
   buildOpenChemLibStereoGraph,
   tetrahedralConfigurationFromOpenChemLib,
 } from "./tetrahedral-stereochemistry.ts";
+import {
+  classifyImportedDecalinJunction,
+  findExactDecalinFusion,
+  isValidFusedRingJunctionStereo,
+  DECALIN_REFERENCE_SMILES,
+} from "./fused-junction-stereochemistry.ts";
 
 type SupportedElement = NonNullable<GeneratedAtom["element"]>;
 
-export type OpenChemLibImportErrorCode = "EXPLICIT_ISOTOPE_UNSUPPORTED";
+export type OpenChemLibImportErrorCode = "EXPLICIT_ISOTOPE_UNSUPPORTED" | "UNPRESERVED_FUSED_JUNCTION_STEREO";
 type OpenChemLibImportFailure = { ok: false; error: string; errorCode?: OpenChemLibImportErrorCode };
 
 export type OpenChemLibBuildResult =
@@ -93,6 +99,17 @@ export function moleculeToSmiles(molecule: GeneratedMolecule): OpenChemLibSmiles
   }
 
   try {
+    if (molecule.fusedRingJunctionStereo) {
+      if (!isValidFusedRingJunctionStereo(molecule)) {
+        return { ok: false, error: "La edición cambió la unión fusionada y su configuración dejó de ser verificable; no se exportó como decalina estereoespecificada." };
+      }
+      const configuration = molecule.fusedRingJunctionStereo.configuration;
+      if (configuration !== "unspecified") {
+        const smiles = DECALIN_REFERENCE_SMILES[configuration];
+        if (!smiles) return { ok: false, error: "La configuración de la unión fusionada no está admitida para exportación." };
+        return { ok: true, smiles };
+      }
+    }
     for (const atom of molecule.atoms) {
       const element = atom.element ?? "C";
       const atomicNumber = atomicNumberByElement[element];
@@ -214,6 +231,10 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
   }
 
   oclMolecule.ensureHelperArrays(OCLMolecule.cHelperCIP);
+  const importedDecalinJunction = classifyImportedDecalinJunction(oclMolecule);
+  if (importedDecalinJunction.status === "unsupported") {
+    return { ok: false, error: importedDecalinJunction.error, errorCode: "UNPRESERVED_FUSED_JUNCTION_STEREO" };
+  }
 
   try { oclMolecule.validate(); } catch (error) {
     // OCL's coordinate inventor can put both pairs of bonds at a tetrahedral
@@ -426,12 +447,26 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     return { ok: false, error: polycyclicSupportMessage(topology) };
   }
 
+  const fusedJunctionStereo = importedDecalinJunction.status === "supported"
+    ? { system: "decalin" as const,
+      fusionAtomIds: importedDecalinJunction.fusionAtomIndices.map(index => atomIndexToId.get(index)!) as [number, number],
+      fusionBond: importedDecalinJunction.fusionAtomIndices.map(index => atomIndexToId.get(index)!) as [number, number],
+      configuration: importedDecalinJunction.configuration }
+    : undefined;
+  const editableDecalinFusion = findExactDecalinFusion({atoms,bonds,rings});
+  if (fusedJunctionStereo && (!editableDecalinFusion
+    || editableDecalinFusion.fusionAtomIds.join(",") !== [...fusedJunctionStereo.fusionAtomIds].sort((a,b)=>a-b).join(","))) {
+    return { ok: false, error: "La configuración de la unión fusionada no pudo asociarse al enlace compartido; no se importó.",
+      errorCode: "UNPRESERVED_FUSED_JUNCTION_STEREO" };
+  }
+
   return {
     ok: true,
     molecule: {
       atoms,
       bonds,
       ...(rings.length ? { rings } : {}),
+      ...(fusedJunctionStereo ? { fusedRingJunctionStereo: fusedJunctionStereo } : {}),
     },
   };
 }

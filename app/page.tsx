@@ -39,6 +39,7 @@ import { getSemiDevelopedBounds } from "./semi-developed-layout";
 import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator";
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
+import { findExactDecalinFusion, type FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
@@ -474,6 +475,7 @@ type Molecule = {
   atoms: CarbonAtom[];
   bonds: Bond[];
   rings?: RingInfo[];
+  fusedRingJunctionStereo?: FusedRingJunctionStereo;
   /** Editor-only direction constraints for Semi-developed display bonds. */
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** UI-only orientation for display-only skeletal coordinates. */
@@ -1744,6 +1746,9 @@ function cloneMolecule(molecule: Molecule): Molecule {
     rings: molecule.rings
       ? molecule.rings.map((ring) => ({ id: ring.id, kind: ring.kind, atomIds: [...ring.atomIds] }))
       : undefined,
+    ...(molecule.fusedRingJunctionStereo?{fusedRingJunctionStereo:{...molecule.fusedRingJunctionStereo,
+      fusionAtomIds:[...molecule.fusedRingJunctionStereo.fusionAtomIds] as [number,number],
+      fusionBond:[...molecule.fusedRingJunctionStereo.fusionBond] as [number,number]} }:{}),
     ...(molecule.manualDisplayDirections?.length
       ? { manualDisplayDirections: molecule.manualDisplayDirections.map((placement) => ({ ...placement })) }
       : {}),
@@ -4967,6 +4972,17 @@ function analyzePerceivedMolecule(
   enabledAliases: readonly string[] = [],
   convention: ParentSelectionConvention = "blue-book-2013",
 ): Analysis {
+  const decalinFusion=convention!=="iupac-1979-legacy"
+    &&molecule.fusedRingJunctionStereo?.configuration!==undefined
+    &&molecule.fusedRingJunctionStereo.configuration!=="unspecified"
+    ?findExactDecalinFusion(molecule):null;
+  if(decalinFusion){
+    const configuration=molecule.fusedRingJunctionStereo?.configuration??"unspecified";
+    const stem=configuration==="unspecified"?"decalina":`${configuration}-decalina`;
+    return {name:stem,chainName:"decalina",family:"polycyclic",formula:molecularFormula(molecule),
+      mainChain:molecule.atoms.map(atom=>atom.id),substituents:[],numberedAtoms:new Map(),doubleBondLocants:[],
+      tripleBondLocants:[],functionalGroups:[],ringSystem:"Decalina",};
+  }
   // A connected graph needs E >= V + 1 to be polycyclic. Keep the new
   // recognizer out of the frequently repeated acyclic/monocyclic exercise path.
   const indole1979 = convention === "iupac-1979-legacy"
@@ -7309,6 +7325,8 @@ export function localNamerCannotSafelyName(molecule: Molecule, analysis: Analysi
   molecule = perceiveNamingRings(molecule).molecule;
   if (analysis.saturatedFused1979?.status === "SUPPORTED") return false;
   if (analysis.retainedFused) return analysis.retainedFused.status !== "SUPPORTED";
+  if(findExactDecalinFusion(molecule)&&analysis.mainChain.length===molecule.atoms.length
+    &&analysis.mainChain.every(id=>molecule.atoms.some(atom=>atom.id===id)))return false;
   // A benzamide N directly bonded to a second aromatic ring requires an
   // N-aryl grammar. The generic multi-ring selector can otherwise choose
   // that ring as parent and silently omit it from the emitted local name.
@@ -14138,6 +14156,19 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
               {viewMode !== "condensed" && <ReasoningVisualOverlay target={reasoningVisualTarget}
                 positions={displayPositions} showLocants
                 semiDeveloped={viewMode === "semi-developed"} numberOffsets={skeletalNumberBadgeOffsets} visibleNumbering={visualNumbering} />}
+              {molecule.fusedRingJunctionStereo && (() => {
+                const [leftId,rightId]=molecule.fusedRingJunctionStereo.fusionBond;
+                const left=displayPositions.get(leftId),right=displayPositions.get(rightId);
+                if(!left||!right)return null;
+                const configuration=molecule.fusedRingJunctionStereo.configuration;
+                const label=language==="en"?`${configuration} ring fusion`:configuration==="unspecified"?"fusión sin especificar":`fusión ${configuration}`;
+                return <g className="fused-junction-stereo-label" data-fused-junction-configuration={molecule.fusedRingJunctionStereo.configuration}
+                  data-fused-junction-atom-ids={molecule.fusedRingJunctionStereo.fusionAtomIds.join(",")}
+                  data-fused-junction-bond-ids={molecule.fusedRingJunctionStereo.fusionBond.join(",")} aria-label={label}
+                  transform={`translate(${(left.x+right.x)/2} ${(left.y+right.y)/2-22})`}>
+                  <rect x="-43" y="-10" width="86" height="20" rx="10"/><text textAnchor="middle" dominantBaseline="central">{label}</text>
+                </g>;
+              })()}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
                 const element = getElement(atom);

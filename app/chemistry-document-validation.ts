@@ -11,6 +11,7 @@ import {
   type ViewMode,
 } from "./view-mode.ts";
 import { getCondensedUnavailableReason } from "./condensed-layout.ts";
+import { isValidFusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 
 export type PortableMolecule = GeneratedMolecule & {
   isMirrored?: boolean;
@@ -233,12 +234,24 @@ function normalizePortableMolecule(
   if (value.isMirrored !== undefined && typeof value.isMirrored !== "boolean") return null;
   const manualDisplayDirections = normalizeManualDisplayPlacements(value.manualDisplayDirections, { atoms, bonds });
   if (value.manualDisplayDirections !== undefined && manualDisplayDirections === undefined) return null;
+  let fusedRingJunctionStereo: GeneratedMolecule["fusedRingJunctionStereo"];
+  if(value.fusedRingJunctionStereo!==undefined){
+    const stereo=value.fusedRingJunctionStereo;
+    if(!isRecord(stereo)||stereo.system!=="decalin"||!Array.isArray(stereo.fusionAtomIds)||stereo.fusionAtomIds.length!==2
+      ||!stereo.fusionAtomIds.every(id=>Number.isSafeInteger(id)&&atomIds.has(id as number))
+      ||!Array.isArray(stereo.fusionBond)||stereo.fusionBond.length!==2
+      ||!stereo.fusionBond.every(id=>Number.isSafeInteger(id)&&atomIds.has(id as number))
+      ||!(["cis","trans","unspecified"].includes(stereo.configuration as string)))return null;
+    fusedRingJunctionStereo=stereo as unknown as NonNullable<GeneratedMolecule["fusedRingJunctionStereo"]>;
+    if(!isValidFusedRingJunctionStereo({atoms,bonds,...(rings!==undefined?{rings}:{}),fusedRingJunctionStereo}))return null;
+  }
   return {
     atoms,
     bonds,
     ...(rings !== undefined ? { rings } : {}),
     ...(value.isMirrored !== undefined ? { isMirrored: value.isMirrored } : {}),
     ...(manualDisplayDirections?.length ? { manualDisplayDirections } : {}),
+    ...(fusedRingJunctionStereo?{fusedRingJunctionStereo}:{}),
   };
 }
 
