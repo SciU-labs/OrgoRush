@@ -14,6 +14,7 @@ import { getMainChainStereoDescriptors } from "./double-bond-stereochemistry.ts"
 import { normalizeChemicalNameForParser } from "./iupac-name-normalization.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
+import { parseFusedTricyclicStereoName, reconcileFusedTricyclicStereoName } from "./fused-tricyclic-stereo-grammar.ts";
 import { findExactDecalinFusion, type FusedJunctionConfiguration } from "./fused-junction-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
@@ -60,6 +61,20 @@ export function presentValidatedSystematicName(model: ValidatedNameDerivation, l
         :parsed.form==="systematic"?(parsed.configuration==="unspecified"?"decahydronaphthalene":`${parsed.configuration}-decahydronaphthalene`)
         :`(4a${parsed.descriptors?.[0]},8a${parsed.descriptors?.[1]})-decahydronaphthalene`;
       const candidate=language==="en"?base:base.replace("decahydronaphthalene","decahidronaftaleno").replace(/decalin$/,"decalina");
+      if(candidate===model.name)return {name:candidate,language,localized:false};
+      if(reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
+        return {name:candidate,language,localized:true};
+    }
+  }
+  if(model.evidence?.construction==="fused-tricyclic-stereo"&&model.evidence.reconstructedGraph){
+    const parsed=parseFusedTricyclicStereoName(model.name);
+    if(parsed){
+      const descriptor=parsed.descriptors?`(${parsed.descriptors})-`:"";
+      const locants=parsed.locants?`${parsed.locants}-`:"";
+      const root=parsed.root==="anthracene"
+        ?language==="en"?"tetradecahydroanthracene":"tetradecahidroantraceno"
+        :language==="en"?"tetradecahydrophenanthrene":"tetradecahidrofenantreno";
+      const candidate=`${descriptor}${locants}${root}`;
       if(candidate===model.name)return {name:candidate,language,localized:false};
       if(reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
         return {name:candidate,language,localized:true};
@@ -252,14 +267,14 @@ const cache = new WeakMap<GeneratedMolecule, {signature:string; entries:Map<stri
 export function reconcileSystematicName(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
   // The UI commits immutable graphs, but callers must not reuse a FULL proof
   // after editing the same object's connectivity, stereo or isotope metadata.
-  const signature=JSON.stringify([actual.atoms,actual.bonds,actual.rings,actual.fusedRingJunctionStereo]);
+  const signature=JSON.stringify([actual.atoms,actual.bonds,actual.rings,actual.fusedRingJunctionStereo,actual.fusedRingSystemStereo]);
   let cached = cache.get(actual);
   if (!cached || cached.signature!==signature) {
     cached = {signature,entries:new Map()}; cache.set(actual,cached);
   }
   const {entries}=cached;
   if (entries.has(name)) return entries.get(name)!;
-  const result = reconcileDecalin(actual,name) ?? reconcile(actual, name);
+  const result = reconcileFusedTricyclicStereoName(actual,name) ?? reconcileDecalin(actual,name) ?? reconcile(actual, name);
   if (entries.size >= 16) entries.clear();
   entries.set(name, result);
   return result;

@@ -18,6 +18,11 @@ import {
   isValidFusedRingJunctionStereo,
   DECALIN_REFERENCE_SMILES,
 } from "./fused-junction-stereochemistry.ts";
+import {
+  findSaturatedFusedTricycle,
+  fusedTricyclicStereochemistryFromImported,
+  isValidFusedTricyclicStereochemistry,
+} from "./fused-tricyclic-stereochemistry.ts";
 
 type SupportedElement = NonNullable<GeneratedAtom["element"]>;
 
@@ -99,6 +104,12 @@ export function moleculeToSmiles(molecule: GeneratedMolecule): OpenChemLibSmiles
   }
 
   try {
+    if (molecule.fusedRingSystemStereo) {
+      if (!isValidFusedTricyclicStereochemistry(molecule)) {
+        return {ok:false,error:"La edición cambió el sistema tricíclico o no conserva la identidad estereoquímica; no se exportó un SMILES especulativo."};
+      }
+      return {ok:true,smiles:molecule.fusedRingSystemStereo.sourceSmiles};
+    }
     if (molecule.fusedRingJunctionStereo) {
       if (!isValidFusedRingJunctionStereo(molecule)) {
         return { ok: false, error: "La edición cambió la unión fusionada y su configuración dejó de ser verificable; no se exportó como decalina estereoespecificada." };
@@ -460,6 +471,14 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       errorCode: "UNPRESERVED_FUSED_JUNCTION_STEREO" };
   }
 
+  const fusedTricycle = findSaturatedFusedTricycle({atoms,bonds,rings});
+  const fusedTricycleStereo = fusedTricycle
+    ? fusedTricyclicStereochemistryFromImported(oclMolecule,{atoms,bonds,rings},atomIndexToId,smiles)
+    : null;
+  if (fusedTricycle && !fusedTricycleStereo) return {ok:false,
+    error:"No se pudo asociar la configuración de ambas uniones al grafo tricíclico; la estructura estereoespecífica no se importó.",
+    errorCode:"UNPRESERVED_FUSED_JUNCTION_STEREO"};
+
   return {
     ok: true,
     molecule: {
@@ -467,6 +486,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       bonds,
       ...(rings.length ? { rings } : {}),
       ...(fusedJunctionStereo ? { fusedRingJunctionStereo: fusedJunctionStereo } : {}),
+      ...(fusedTricycleStereo ? { fusedRingSystemStereo: fusedTricycleStereo } : {}),
     },
   };
 }

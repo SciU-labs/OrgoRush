@@ -282,3 +282,14 @@ test("local history decoding distinguishes V1 legacy condensed from V2 real Cond
     id: "cyclic-v2", ...makeStructure(ring.molecule, { viewMode: "condensed" }), viewModeVersion: 2,
   }).viewMode, "semi-developed");
 });
+
+test(".quimica round-trip preserves validated global stereo metadata for a fused tricycle",()=>{
+  const imported=moleculeFromSmiles('C1CC[C@@H]2[C@H](C1)CC[C@H]3[C@@H]2CCCC3');
+  assert.equal(imported.ok,true);
+  const source=makeStructure(imported.molecule);
+  const restored=mustRead(source);
+  assert.deepEqual(restored.molecule.fusedRingSystemStereo,imported.molecule.fusedRingSystemStereo);
+  const forged={...source,molecule:{...source.molecule,fusedRingSystemStereo:{
+    ...source.molecule.fusedRingSystemStereo,sourceSmiles:'C1CCC2CC3CCCCC3CC2C1'}}};
+  assert.throws(()=>readChemistryDocument(documentFor([forged])),/no contiene estructuras orgánicas válidas/i);
+});

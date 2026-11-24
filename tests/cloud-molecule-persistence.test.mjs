@@ -163,3 +163,12 @@ test("invalid chemical metadata is rejected instead of being silently discarded"
     atoms: [{ id: 1, x: 0, y: 0, element: "P" }, base.atoms[1]],
   }), null);
 });
+
+test("cloud persistence preserves audited global stereo metadata for a fused tricycle",()=>{
+  const imported=moleculeFromSmiles('C1CC[C@H]2C[C@H]3CCCC[C@H]3C[C@H]2C1');
+  assert.equal(imported.ok,true);
+  const recovered=assertSameIsomericSmiles(imported.molecule);
+  assert.deepEqual(recovered.fusedRingSystemStereo,imported.molecule.fusedRingSystemStereo);
+  const invalid={...imported.molecule,fusedRingSystemStereo:{...imported.molecule.fusedRingSystemStereo,identityCode:'forged'}};
+  assert.equal(normalizeMoleculePayload(invalid),null);
+});

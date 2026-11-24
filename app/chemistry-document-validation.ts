@@ -12,6 +12,7 @@ import {
 } from "./view-mode.ts";
 import { getCondensedUnavailableReason } from "./condensed-layout.ts";
 import { isValidFusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
+import { isValidFusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
 
 export type PortableMolecule = GeneratedMolecule & {
   isMirrored?: boolean;
@@ -245,6 +246,12 @@ function normalizePortableMolecule(
     fusedRingJunctionStereo=stereo as unknown as NonNullable<GeneratedMolecule["fusedRingJunctionStereo"]>;
     if(!isValidFusedRingJunctionStereo({atoms,bonds,...(rings!==undefined?{rings}:{}),fusedRingJunctionStereo}))return null;
   }
+  let fusedRingSystemStereo: GeneratedMolecule["fusedRingSystemStereo"];
+  if(value.fusedRingSystemStereo!==undefined){
+    if(!isRecord(value.fusedRingSystemStereo))return null;
+    fusedRingSystemStereo=value.fusedRingSystemStereo as unknown as NonNullable<GeneratedMolecule["fusedRingSystemStereo"]>;
+    if(!isValidFusedTricyclicStereochemistry({atoms,bonds,...(rings!==undefined?{rings}:{}),fusedRingSystemStereo}))return null;
+  }
   return {
     atoms,
     bonds,
@@ -252,6 +259,7 @@ function normalizePortableMolecule(
     ...(value.isMirrored !== undefined ? { isMirrored: value.isMirrored } : {}),
     ...(manualDisplayDirections?.length ? { manualDisplayDirections } : {}),
     ...(fusedRingJunctionStereo?{fusedRingJunctionStereo}:{}),
+    ...(fusedRingSystemStereo?{fusedRingSystemStereo}:{}),
   };
 }
 

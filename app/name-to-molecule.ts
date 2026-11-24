@@ -13,6 +13,7 @@ import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
 import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";
 import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
 import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
+import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -43,6 +44,8 @@ export type GeneratedMolecule = {
   rings?: GeneratedRing[];
   /** Relative configuration of the shared edge in an audited fused-ring system. */
   fusedRingJunctionStereo?: FusedRingJunctionStereo;
+  /** Global stereo identity and independent shared edges of a saturated fused tricycle. */
+  fusedRingSystemStereo?: FusedTricyclicStereochemistry;
 };
 
 type ParentDescription = {

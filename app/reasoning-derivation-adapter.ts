@@ -260,12 +260,16 @@ function componentFragment(component: NameComponent, language: AppLanguage, deri
   const literal=!!derivation.evidence || component.language===language;
   const fusedControl=derivation.evidence?.construction==="fused-tricyclic-arene";
   const decalinControl=derivation.evidence?.construction==="fused-decalin";
-  const ringControl=fusedControl?/^fused-ring:(\d+)$/.exec(component.id):decalinControl?/^fused-ring-(\d+)$/.exec(component.id):null;
+  const fusedStereoControl=derivation.evidence?.construction==="fused-tricyclic-stereo";
+  const ringControl=fusedControl?/^fused-ring:(\d+)$/.exec(component.id):decalinControl||fusedStereoControl?/^fused-ring-(\d+)$/.exec(component.id):null;
+  const junctionControl=fusedStereoControl?/^fusion-junction-(\d+)$/.exec(component.id):null;
   const text = ringControl
     ?language==="en"?`ring ${ringControl[1]}`:`anillo ${ringControl[1]}`
     :fusedControl&&component.id==="fusion-bonds"?language==="en"?"fusion bonds":"enlaces de fusión"
     :fusedControl&&component.id==="fusion-atoms"?language==="en"?"fusion atoms":"átomos de fusión"
     :decalinControl&&component.id==="fusion-junction"?language==="en"?"fusion junction":"unión de fusión"
+    :junctionControl?language==="en"?`fusion ${junctionControl[1]}`:`fusión ${junctionControl[1]}`
+    :fusedStereoControl&&component.id==="stereo-descriptor"?language==="en"?"global fusion stereodescriptors":"estereodescriptores globales de fusión"
     :literal ? component.text : componentLabel(component, language, derivation);
   const parentAtoms=new Set(derivation.parentAtomIds);
   const positions=component.numbering.flatMap(([id,locant])=>parentAtoms.has(id)&&typeof locant==="number"?[locant]:[]);
@@ -506,6 +510,33 @@ export function buildValidatedPriorityReasoning(input: {
       explanation:language==="en"?"Use decalin or decahydronaphthalene; add cis/trans only when the fusion configuration is specified."
         :"Se usa decalina o decahidronaftaleno; se añade cis/trans solo cuando se especifica la configuración de fusión.",
       components:[...(parent?[parent]:[]),...(junction?[junction]:[])],derivation,language,graph}));
+    return {name:derivation.name,steps};
+  }
+  if(derivation.evidence?.construction==="fused-tricyclic-stereo"){
+    const rings=displayedComponents.filter(component=>component.id.startsWith("fused-ring-"));
+    const junctions=displayedComponents.filter(component=>component.id.startsWith("fusion-junction-"));
+    const descriptor=byId.get("stereo-descriptor");
+    const topology=graph.fusedRingSystemStereo?.topology;
+    const layout=topology==="linear"?language==="en"?"linear":"lineal":language==="en"?"angular":"angular";
+    const steps:PriorityReasoningStep[]=[makeStep({number:"1",title:language==="en"?"Tricyclic parent":"Estructura tricíclica principal",
+      explanation:language==="en"?`The parent contains three saturated six-membered rings in a ${layout} arrangement.`
+        :`La estructura principal contiene tres anillos saturados de seis miembros en disposición ${layout}.`,
+      components:[...(parent?[parent]:[]),...rings],derivation,language,graph})];
+    junctions.forEach((junction,index)=>steps.push(makeStep({number:String(steps.length+1),
+      title:language==="en"?`Fusion ${index+1}`:`Fusión ${index+1}`,
+      explanation:localizedComponentExplanation(junction,language)??(language==="en"
+        ?"This control identifies only the two fusion atoms and their shared bond."
+        :"Este control identifica solo los dos átomos de fusión y su enlace compartido."),
+      components:[junction],derivation,language,graph})));
+    if(descriptor)steps.push(makeStep({number:String(steps.length+1),title:language==="en"?"Global stereochemistry":"Estereoquímica global",
+      explanation:localizedComponentExplanation(descriptor,language)??(language==="en"
+        ?"The four absolute descriptors are validated as one global stereochemical identity across both junctions."
+        :"Los cuatro descriptores absolutos se validan como una sola identidad estereoquímica global en ambas uniones."),
+      components:[descriptor,...junctions],derivation,language,graph}));
+    steps.push(makeStep({number:String(steps.length+1),title:language==="en"?"Build the name":"Construcción del nombre",
+      explanation:language==="en"?"Name the retained tricyclic parent and its hydrogenation state; include the absolute fusion descriptors only when the complete global identity is verified."
+        :"Se nombra el sistema tricíclico retenido y su estado de hidrogenación; los descriptores absolutos de fusión se incluyen solo cuando se verifica la identidad global completa.",
+      components:[...(parent?[parent]:[]),...junctions,...(descriptor?[descriptor]:[])],derivation,language,graph}));
     return {name:derivation.name,steps};
   }
   const parentAtomIds=new Set(byId.get("parent")?.atomIds??[]);

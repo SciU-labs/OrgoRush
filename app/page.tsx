@@ -40,6 +40,7 @@ import { createRestrictedChemicalGenerator } from "./exercise-chemical-generator
 import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { findExactDecalinFusion, type FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
+import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
 import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
@@ -476,6 +477,7 @@ type Molecule = {
   bonds: Bond[];
   rings?: RingInfo[];
   fusedRingJunctionStereo?: FusedRingJunctionStereo;
+  fusedRingSystemStereo?: FusedTricyclicStereochemistry;
   /** Editor-only direction constraints for Semi-developed display bonds. */
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** UI-only orientation for display-only skeletal coordinates. */
@@ -1749,6 +1751,11 @@ function cloneMolecule(molecule: Molecule): Molecule {
     ...(molecule.fusedRingJunctionStereo?{fusedRingJunctionStereo:{...molecule.fusedRingJunctionStereo,
       fusionAtomIds:[...molecule.fusedRingJunctionStereo.fusionAtomIds] as [number,number],
       fusionBond:[...molecule.fusedRingJunctionStereo.fusionBond] as [number,number]} }:{}),
+    ...(molecule.fusedRingSystemStereo?{fusedRingSystemStereo:{...molecule.fusedRingSystemStereo,
+      junctions:molecule.fusedRingSystemStereo.junctions.map(junction=>({...junction,
+        fusionAtomIds:[...junction.fusionAtomIds] as [number,number],
+        fusionBond:[...junction.fusionBond] as [number,number],
+        ringIds:[...junction.ringIds] as [number,number]})) as FusedTricyclicStereochemistry["junctions"]}}:{}),
     ...(molecule.manualDisplayDirections?.length
       ? { manualDisplayDirections: molecule.manualDisplayDirections.map((placement) => ({ ...placement })) }
       : {}),
@@ -14169,6 +14176,23 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   <rect x="-43" y="-10" width="86" height="20" rx="10"/><text textAnchor="middle" dominantBaseline="central">{label}</text>
                 </g>;
               })()}
+              {molecule.fusedRingSystemStereo?.junctions.map((junction,index)=>{
+                const [leftId,rightId]=junction.fusionBond;
+                const left=displayPositions.get(leftId),right=displayPositions.get(rightId);
+                if(!left||!right)return null;
+                const dx=right.x-left.x,dy=right.y-left.y,length=Math.hypot(dx,dy)||1;
+                const side=index===0?-1:1,x=(left.x+right.x)/2+(dy/length)*19*side,y=(left.y+right.y)/2-(dx/length)*19*side;
+                const label=language==="en"?`fusion ${index+1}`:`fusión ${index+1}`;
+                return <g key={`fused-tricyclic-junction-${index+1}`} className="fused-tricyclic-junction-label"
+                  data-fused-tricyclic-topology={molecule.fusedRingSystemStereo!.topology}
+                  data-fused-tricyclic-junction-index={index+1}
+                  data-fused-tricyclic-junction-relation={junction.relation}
+                  data-fused-tricyclic-junction-atom-ids={junction.fusionAtomIds.join(",")}
+                  data-fused-tricyclic-junction-bond-ids={junction.fusionBond.join(",")}
+                  aria-label={label} transform={`translate(${x} ${y})`}>
+                  <rect x="-37" y="-10" width="74" height="20" rx="10"/><text textAnchor="middle" dominantBaseline="central">{label}</text>
+                </g>;
+              })}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
                 const element = getElement(atom);

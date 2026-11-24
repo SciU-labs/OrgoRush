@@ -36,7 +36,9 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       const partiallySaturatedParserImport='import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";\n';
       const decalinParserImport='import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";\n';
       const junctionStereoTypeImport='import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";\n';
+      const tricyclicStereoTypeImport='import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";\n';
       const junctionStereoField='  /** Relative configuration of the shared edge in an audited fused-ring system. */\n  fusedRingJunctionStereo?: FusedRingJunctionStereo;\n';
+      const tricyclicStereoField='  /** Global stereo identity and independent shared edges of a saturated fused tricycle. */\n  fusedRingSystemStereo?: FusedTricyclicStereochemistry;\n';
       const familyTypes=[' | "fused-naphthalene"',' | "fused-tricyclic-arene"'];
       const partiallySaturatedFamilyType=' | "fused-partially-saturated-bicycle"';
       const decalinFamilyType=' | "fused-decalin"';
@@ -57,6 +59,8 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       assert.equal(source.split(decalinParserImport).length-1,1,'decalin parser import must remain singular');
       assert.equal(source.split(junctionStereoTypeImport).length-1,1,'fused junction stereo type import must remain singular');
       assert.equal(source.split(junctionStereoField).length-1,1,'fused junction stereo metadata remains a single optional graph field');
+      assert.equal(source.split(tricyclicStereoTypeImport).length-1,1,'fused tricycle stereo type import must remain singular');
+      assert.equal(source.split(tricyclicStereoField).length-1,1,'fused tricycle metadata remains one bounded optional graph field');
       for(const familyType of familyTypes)assert.equal(source.split(familyType).length-1,2,'both name-builder result variants expose the bounded family');
       assert.equal(source.split(partiallySaturatedFamilyType).length-1,2,'both name-builder result variants expose the bounded partially saturated family');
       assert.equal(source.split(decalinFamilyType).length-1,2,'both name-builder result variants expose the bounded decalin family');
@@ -65,7 +69,8 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       assert.equal(source.split(partiallySaturatedBuilderBranch).length-1,1,'partially saturated fused name import remains one bounded early branch');
       assert.equal(source.split(decalinBuilderBranch).length-1,2,'both name-builder entry points expose the bounded decalin parser');
       source=source.replace(parserImport,'').replace(tricyclicParserImport,'').replace(partiallySaturatedParserImport,'')
-        .replace(decalinParserImport,'').replace(junctionStereoTypeImport,'').replace(junctionStereoField,'')
+        .replace(decalinParserImport,'').replace(junctionStereoTypeImport,'').replace(tricyclicStereoTypeImport,'')
+        .replace(junctionStereoField,'').replace(tricyclicStereoField,'')
         .replace(decalinParserImport,'').replaceAll(familyTypes[0],'').replaceAll(familyTypes[1],'').replaceAll(partiallySaturatedFamilyType,'').replaceAll(decalinFamilyType,'')
         .replace(builderBranch,'').replace(tricyclicBuilderBranch,'').replace(partiallySaturatedBuilderBranch,'').replaceAll(decalinBuilderBranch,'');
       assert.equal(hash(source),sha256,file);
@@ -76,12 +81,15 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
   }
   const file='app/tetrahedral-stereochemistry.ts',source=read(file).replace(/\r\n/g,'\n');
   const fusedJunctionSanitizerImport='import { sanitizeFusedRingJunctionStereochemistry } from "./fused-junction-stereochemistry.ts";\n';
-  const fusedJunctionSanitizerReturn='  return sanitizeFusedRingJunctionStereochemistry(changed ? { ...source, atoms } : source);';
+  const fusedTricycleSanitizerImport='import { sanitizeFusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";\n';
+  const fusedJunctionSanitizerReturn='  return sanitizeFusedTricyclicStereochemistry(sanitizeFusedRingJunctionStereochemistry(changed ? { ...source, atoms } : source));';
   assert.equal(source.split(fusedJunctionSanitizerImport).length-1,1,'fused junction sanitizer import remains singular');
-  assert.equal(source.split(fusedJunctionSanitizerReturn).length-1,1,'fused junction metadata is sanitized after tetrahedral edits');
+  assert.equal(source.split(fusedTricycleSanitizerImport).length-1,1,'fused tricycle sanitizer import remains singular');
+  assert.equal(source.split(fusedJunctionSanitizerReturn).length-1,1,'all fused stereo metadata is sanitized after tetrahedral edits');
   const startMarker='/** Preserve the local tetrahedral arrangement when an automatic addition';
   const endMarker='export function setTetrahedralConfiguration';
-  const baselineComparable=source.replace(fusedJunctionSanitizerImport,'').replace(fusedJunctionSanitizerReturn,'  return changed ? { ...source, atoms } : source;');
+  const baselineComparable=source.replace(fusedJunctionSanitizerImport,'').replace(fusedTricycleSanitizerImport,'')
+    .replace(fusedJunctionSanitizerReturn,'  return changed ? { ...source, atoms } : source;');
   const start=baselineComparable.indexOf(startMarker),end=baselineComparable.indexOf(endMarker,start);
   assert.ok(start>=0&&end>start,'B7.5 addition reconciler must remain a single bounded insertion');
   assert.equal(hash(baselineComparable.slice(0,start)+baselineComparable.slice(end)),baseline.files[file],file);
