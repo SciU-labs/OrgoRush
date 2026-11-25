@@ -491,6 +491,39 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
+  if(derivation.evidence?.construction==="fused-steroid-family-stereo"){
+    const rings=["A","B","C","D"].map(letter=>byId.get(`steroid-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
+    const fusions=[1,2,3].map(index=>byId.get(`steroid-fusion-${index}`)).filter((item):item is NameComponent=>Boolean(item));
+    const c18=byId.get("steroid-c18"),c19=byId.get("steroid-c19"),locants=byId.get("steroid-locants"),stereo=byId.get("steroid-stereo");
+    const priorityLocants=[5,10,13,17].map(locant=>byId.get(`steroid-locant-${locant}`)).filter((item):item is NameComponent=>Boolean(item));
+    const descriptor=derivation.name.match(/^5[αβξ]/)?.[0]??"5ξ",androstane=/androst/.test(derivation.name);
+    const steps:PriorityReasoningStep[]=[
+      makeStep({number:"1",title:language==="en"?"Recognize the steroid skeleton":"Reconocer el esqueleto esteroideo",
+        explanation:language==="en"?`The molecular graph is a saturated ${androstane?"C19H32":"C18H30"} tetracycle with a 6–6–6–5 ring path.`
+          :`El grafo molecular es un tetraciclo saturado ${androstane?"C19H32":"C18H30"} con anillos 6–6–6–5.`,components:parent?[parent]:[],derivation,language,graph}),
+      makeStep({number:"2",title:language==="en"?"Identify the four rings":"Identificar los cuatro anillos",
+        explanation:language==="en"?"Rings A–D and their shared edges are identified from the graph, independently of drawing orientation."
+          :"Los anillos A–D y sus enlaces compartidos se identifican en el grafo, sin depender de la orientación del dibujo.",components:rings,derivation,language,graph}),
+      makeStep({number:"3",title:language==="en"?"Number the steroid core":"Numerar el núcleo esteroideo",
+        explanation:language==="en"?"Conventional locants C1–C17 are mapped to the actual atoms; the numbering does not shift when angular methyls are present."
+          :"Los localizadores convencionales C1–C17 se asignan a los átomos reales y no cambian al añadir metilos angulares.",components:[...(locants?[locants]:[]),...fusions,...priorityLocants],derivation,language,graph}),
+      makeStep({number:"4",title:language==="en"?"Locate C18":"Localizar C18",
+        explanation:language==="en"?"C18 is the terminal methyl attached to C13 in both estrane and androstane."
+          :"C18 es el metilo terminal unido a C13 tanto en estrano como en androstano.",components:c18?[c18]:[],derivation,language,graph}),
+      makeStep({number:"5",title:language==="en"?"Choose the parent family":"Elegir la familia principal",
+        explanation:language==="en"?androstane?"C19 is attached to C10, so this graph is androstane.":"C10 has no angular methyl; with C18 at C13, this graph is estrane."
+          :androstane?"C19 está unido a C10, por lo que el grafo corresponde a androstano.":"C10 no tiene metilo angular; con C18 en C13, el grafo corresponde a estrano.",components:c19?[c19]:[],derivation,language,graph}),
+      makeStep({number:"6",title:language==="en"?"Check fusion stereochemistry":"Comprobar la estereoquímica de las uniones",
+        explanation:language==="en"?"The reference comparison checks all specified fusion configurations globally; it does not reuse gonane R/S labels."
+          :"La comparación de referencia comprueba globalmente las configuraciones especificadas de las uniones; no reutiliza etiquetas R/S del gonano.",components:stereo?[stereo]:[],derivation,language,graph}),
+      makeStep({number:"7",title:language==="en"?"Interpret C5":"Interpretar C5",
+        explanation:(stereo?localizedComponentExplanation(stereo,language):undefined)??(language==="en"?`The audited designation is ${descriptor}.`:`La designación auditada es ${descriptor}.`),components:[],derivation,language,graph}),
+      makeStep({number:"8",title:language==="en"?"Build the semisystematic name":"Construir el nombre semisistemático",
+        explanation:language==="en"?"Place the verified 5α, 5β or 5ξ descriptor before estrane or androstane."
+          :"Anteponer el descriptor 5α, 5β o 5ξ verificado a estrano o androstano.",components:[],derivation,language,graph}),
+    ];
+    return {name:derivation.name,steps};
+  }
   if(derivation.evidence?.construction==="fused-gonane-stereo"){
     const rings=["A","B","C","D"].map(letter=>byId.get(`gonane-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
     const fusions=[1,2,3].map(index=>byId.get(`gonane-fusion-${index}`)).filter((item):item is NameComponent=>Boolean(item));

@@ -4899,8 +4899,9 @@ export function steroidStereochemistryStatus(
   const { detected, assigned, complete } = getTetrahedralAssignmentSummary(molecule);
   const gonane = molecule.atoms.length === 17 && molecule.fusedPolycyclicStereo?.ringSizes
     .slice().sort((a,b)=>a-b).join(",") === "5,6,6,6";
-  const nucleus = language === "en" ? gonane ? "Gonane nucleus" : "Androstane nucleus"
-    : gonane ? "Núcleo de gonano" : "Núcleo de androstano";
+  const estrane = molecule.atoms.length === 18 && Boolean(molecule.fusedPolycyclicStereo?.locantAtomIds?.["18"]);
+  const nucleus = language === "en" ? gonane ? "Gonane nucleus" : estrane ? "Estrane nucleus" : "Androstane nucleus"
+    : gonane ? "Núcleo de gonano" : estrane ? "Núcleo de estrano" : "Núcleo de androstano";
   if (language === "en") {
     return complete
       ? `${nucleus} recognized · ${assigned} tetrahedral stereocenters assigned`
@@ -10381,6 +10382,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       || localPreflight.inputFamily === "fused-naphthalene"
       || localPreflight.inputFamily === "fused-tricyclic-arene"
       || localPreflight.inputFamily === "fused-gonane-stereo"
+      || localPreflight.inputFamily === "fused-steroid-family"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
       setNameBuilderOpen(true);
       setNameBuilderFeedback({ kind: "error", message: localPreflight.error });
@@ -10407,6 +10409,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         || localPreflight.inputFamily === "fused-naphthalene"
         || localPreflight.inputFamily === "fused-tricyclic-arene"
         || localPreflight.inputFamily === "fused-gonane-stereo"
+        || localPreflight.inputFamily === "fused-steroid-family"
         || localPreflight.inputFamily === "alkene-stereo")) {
         next = localPreflight.molecule;
         enabledAliases = localPreflight.enabledAliases;

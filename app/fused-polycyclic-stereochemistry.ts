@@ -62,13 +62,69 @@ export function auditedGonaneLocantAtomIds(sourceSmiles:string):Record<string,nu
   }catch{return undefined;}
 }
 
+/**
+ * Maps the conventional steroid locants for the saturated gonane/estrane/
+ * androstane ring core.  The ring atoms are identified from the molecular
+ * graph; terminal angular methyls are assigned only when they are attached
+ * at the conventional C13 and C10 positions.  This deliberately does not
+ * infer any stereochemistry.
+ */
+export function steroidLocantAtomIds(graph:GeneratedMolecule):Record<string,number>|undefined{
+  try{
+    const ringAtoms=[...new Set((graph.rings??[]).flatMap(ring=>ring.atomIds))];
+    if(ringAtoms.length!==17)return undefined;
+    const core=new Set(ringAtoms),adj=(ids:Set<number>)=>new Map([...ids].map(id=>[id,new Set<number>()]));
+    const targetAdj=adj(core),allAdj=adj(new Set(graph.atoms.map(atom=>atom.id)));
+    for(const [a,b,order=1] of graph.bonds){
+      if(order!==1||!allAdj.has(a)||!allAdj.has(b))return undefined;
+      allAdj.get(a)!.add(b);allAdj.get(b)!.add(a);
+      if(core.has(a)&&core.has(b)){targetAdj.get(a)!.add(b);targetAdj.get(b)!.add(a);}
+    }
+    const reference=new SmilesParser().parseMolecule(AUDITED_GONANE_SMILES["5α"]);reference.removeExplicitHydrogens();
+    if(reference.getAllAtoms()!==17)return undefined;
+    const sourceAdj=new Map<number,Set<number>>();
+    for(let i=0;i<17;i++)sourceAdj.set(i,new Set(Array.from({length:reference.getConnAtoms(i)},(_,j)=>reference.getConnAtom(i,j))));
+    const c13Index=gonaneLocantSourceIndex["13"]!,c10Index=gonaneLocantSourceIndex["10"]!;
+    const c13Candidates=ringAtoms.filter(id=>[...allAdj.get(id)!].filter(neighbor=>!core.has(neighbor)
+      &&graph.atoms.find(atom=>atom.id===neighbor)?.element==="C").length===1);
+    const solutions:number[][]=[],mapping=Array(17).fill(-1) as number[],used=new Set<number>();
+    const order=Array.from({length:17},(_,i)=>i).sort((a,b)=>sourceAdj.get(b)!.size-sourceAdj.get(a)!.size);
+    const visit=(depth:number)=>{
+      if(solutions.length>1)return;
+      if(depth===17){solutions.push([...mapping]);return;}
+      const sourceIndex=order[depth]!,sourceNeighbors=sourceAdj.get(sourceIndex)!;
+      const candidates=sourceIndex===c13Index?c13Candidates:ringAtoms;
+      for(const candidate of candidates){
+        if(used.has(candidate)||sourceNeighbors.size!==targetAdj.get(candidate)!.size)continue;
+        let matches=true;
+        for(let previous=0;previous<17;previous++)if(mapping[previous]!==-1
+          &&sourceNeighbors.has(previous)!==targetAdj.get(candidate)!.has(mapping[previous]!)){matches=false;break;}
+        if(!matches)continue;
+        mapping[sourceIndex]=candidate;used.add(candidate);visit(depth+1);used.delete(candidate);mapping[sourceIndex]=-1;
+      }
+    };
+    visit(0);
+    if(solutions.length!==1)return undefined;
+    const coreMapping=solutions[0]!,locants=Object.fromEntries(Object.entries(gonaneLocantSourceIndex)
+      .map(([locant,index])=>[locant,coreMapping[index]!])) as Record<string,number>;
+    const terminalMethylAt=(parent:number)=>[...allAdj.get(parent)!].filter(id=>!core.has(id)
+      &&graph.atoms.find(atom=>atom.id===id)?.element==="C"&&allAdj.get(id)?.size===1);
+    const c18=terminalMethylAt(locants["13"]!),c19=terminalMethylAt(locants["10"]!);
+    if(c18.length!==1||c19.length>1)return undefined;
+    locants["18"]=c18[0]!;
+    if(c19.length===1)locants["19"]=c19[0]!;
+    const allowed=new Set([...core,...c18,...c19]);
+    if(allowed.size!==graph.atoms.length)return undefined;
+    return locants;
+  }catch{return undefined;}
+}
+
 const edgeKey = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
 
 /** Finds a connected path of saturated carbon rings joined only by shared edges. */
 export function findSaturatedFusedPolycycle(graph: GeneratedMolecule, expectedRingSizes?: readonly number[]): FusedPolycyclicTopology | null {
   const rings = graph.rings ?? [];
-  if (rings.length < 2 || graph.atoms.length !== rings.reduce((sum, ring) => sum + ring.atomIds.length, 0) - (rings.length - 1) * 2) return null;
-  if (graph.bonds.length !== rings.reduce((sum, ring) => sum + ring.atomIds.length, 0) - (rings.length - 1)) return null;
+  if (rings.length < 2) return null;
   if (expectedRingSizes && (rings.length !== expectedRingSizes.length
     || [...rings].map(r => r.atomIds.length).sort((a,b)=>a-b).join(",") !== [...expectedRingSizes].sort((a,b)=>a-b).join(","))) return null;
   if (graph.atoms.some(atom => (atom.element ?? "C") !== "C" || (atom.charge ?? 0) !== 0)
@@ -96,10 +152,21 @@ export function findSaturatedFusedPolycycle(graph: GeneratedMolecule, expectedRi
   }
   if(visited.size!==rings.length)return null;
   const covered=new Set(rings.flatMap(r=>r.atomIds));
-  if(covered.size!==atomIds.size||[...atomIds].some(id=>!covered.has(id)))return null;
+  const extras=[...atomIds].filter(id=>!covered.has(id));
+  if(extras.some(id=>(graph.atoms.find(atom=>atom.id===id)?.element??"C")!=="C"))return null;
+  const extraEdges=graph.bonds.filter(([a,b])=>extras.includes(a)||extras.includes(b));
+  if(extraEdges.length!==extras.length||extraEdges.some(([a,b])=>{
+    const extra=extras.includes(a)?a:b,core=extra===a?b:a;
+    return !covered.has(core)||graph.bonds.some(([x,y])=>x===extra&&y!==core||y===extra&&x!==core);
+  }))return null;
+  if(graph.atoms.length!==covered.size+extras.length
+    ||graph.bonds.length!==rings.reduce((sum,ring)=>sum+ring.atomIds.length,0)-(rings.length-1)+extras.length)return null;
   const degree=new Map([...atomIds].map(id=>[id,0]));
   for(const [a,b] of graph.bonds){degree.set(a,(degree.get(a)??0)+1);degree.set(b,(degree.get(b)??0)+1);}
-  if([...degree.values()].some(d=>d!==2&&d!==3)||[...degree.values()].filter(d=>d===3).length!==shared.length*2)return null;
+  const coreDegreeThree=[...degree].filter(([id,d])=>!extras.includes(id)&&d===3).length;
+  const coreDegreeFour=[...degree].filter(([id,d])=>!extras.includes(id)&&d===4).length;
+  if([...degree].some(([id,d])=>extras.includes(id)?d!==1:d!==2&&d!==3&&d!==4)
+    ||coreDegreeFour!==extras.length||coreDegreeThree+coreDegreeFour!==shared.length*2)return null;
   return {ringIds:rings.map(r=>r.id),ringSizes:rings.map(r=>r.atomIds.length),junctions:shared};
 }
 
@@ -130,7 +197,8 @@ export function fusedPolycyclicStereochemistryFromImported(molecule:OCLMolecule,
     return {system:"saturated-fused-polycycle",ringSizes:topology.ringSizes,ringIds:topology.ringIds,junctions:topology.junctions,
       specification,atomStereo:graph.atoms.filter(a=>topology.junctions.some(j=>j.fusionAtomIds.includes(a.id)))
         .map(a=>({atomId:a.id,parity:a.tetrahedralParity??null})),identityCode,connectivityCode,sourceSmiles,
-      ...(auditedGonaneLocantAtomIds(sourceSmiles)?{locantAtomIds:auditedGonaneLocantAtomIds(sourceSmiles)}:{})};
+      ...(graph.atoms.length===17&&auditedGonaneLocantAtomIds(sourceSmiles)?{locantAtomIds:auditedGonaneLocantAtomIds(sourceSmiles)}:{}),
+      ...(graph.atoms.length>17&&steroidLocantAtomIds(graph)?{locantAtomIds:steroidLocantAtomIds(graph)}:{})};
   }catch{return null;}
 }
 
@@ -157,9 +225,9 @@ export function isValidFusedPolycyclicStereochemistry(graph:GeneratedMolecule):b
     if(metadata.specification!==expectedSpecification)return false;
     const locantAtomIds=metadata.locantAtomIds;
     if(locantAtomIds){
-      const audited=auditedGonaneLocantAtomIds(metadata.sourceSmiles);
+      const audited=graph.atoms.length===17?auditedGonaneLocantAtomIds(metadata.sourceSmiles):steroidLocantAtomIds(graph);
       if(!audited||JSON.stringify(locantAtomIds)!==JSON.stringify(audited)
-        ||Object.keys(locantAtomIds).length!==17||new Set(Object.values(locantAtomIds)).size!==17
+        ||Object.keys(locantAtomIds).length!==graph.atoms.length||new Set(Object.values(locantAtomIds)).size!==graph.atoms.length
         ||Object.values(locantAtomIds).some(id=>!graphAtomIds.has(id)))return false;
       const expectedEdges=[[5,10],[8,9],[13,14]].map(([a,b])=>edgeKey(locantAtomIds[String(a)]!,locantAtomIds[String(b)]!)).sort();
       if(expectedEdges.join(";")!==topology.junctions.map(j=>edgeKey(...j.fusionBond)).sort().join(";"))return false;

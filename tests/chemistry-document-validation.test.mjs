@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { createServer } from "vite";
 
 import { moleculeFromSmiles } from "../app/openchemlib-adapter.ts";
+import { STEROID_REFERENCES } from "../app/steroid-family-grammar.ts";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 let server;
@@ -300,4 +301,15 @@ test(".quimica round-trip preserves a variable-length steroid fusion and convent
   assert.deepEqual(restored.molecule.fusedPolycyclicStereo,imported.molecule.fusedPolycyclicStereo);
   const edited={...source,molecule:{...source.molecule,atoms:source.molecule.atoms.map((atom,index)=>index===3?{...atom,tetrahedralParity:'R'}:atom)}};
   assert.throws(()=>readChemistryDocument(documentFor([edited])),/no contiene estructuras orgánicas válidas/i);
+});
+
+test(".quimica round-trip preserves estrane/androstane angular-methyl locants and partial C5 stereo",()=>{
+  for(const family of ["estrane","androstane"]){
+    const imported=moleculeFromSmiles(STEROID_REFERENCES[family]["5ξ"].smiles);assert.equal(imported.ok,true);
+    const source=makeStructure(imported.molecule),restored=mustRead(source);
+    assert.deepEqual(restored.molecule.fusedPolycyclicStereo,imported.molecule.fusedPolycyclicStereo);
+    assert.equal(restored.molecule.fusedPolycyclicStereo.specification,"partial");
+    assert.ok(restored.molecule.fusedPolycyclicStereo.locantAtomIds["18"]);
+    assert.equal(Boolean(restored.molecule.fusedPolycyclicStereo.locantAtomIds["19"]),family==="androstane");
+  }
 });
