@@ -293,3 +293,11 @@ test(".quimica round-trip preserves validated global stereo metadata for a fused
     ...source.molecule.fusedRingSystemStereo,sourceSmiles:'C1CCC2CC3CCCCC3CC2C1'}}};
   assert.throws(()=>readChemistryDocument(documentFor([forged])),/no contiene estructuras orgánicas válidas/i);
 });
+
+test(".quimica round-trip preserves a variable-length steroid fusion and conventional locants",()=>{
+  const imported=moleculeFromSmiles('C1CC[C@H]2[C@H](C1)CC[C@@H]3[C@@H]2CC[C@H]4[C@H]3CCC4');
+  assert.equal(imported.ok,true);const source=makeStructure(imported.molecule),restored=mustRead(source);
+  assert.deepEqual(restored.molecule.fusedPolycyclicStereo,imported.molecule.fusedPolycyclicStereo);
+  const edited={...source,molecule:{...source.molecule,atoms:source.molecule.atoms.map((atom,index)=>index===3?{...atom,tetrahedralParity:'R'}:atom)}};
+  assert.throws(()=>readChemistryDocument(documentFor([edited])),/no contiene estructuras orgánicas válidas/i);
+});

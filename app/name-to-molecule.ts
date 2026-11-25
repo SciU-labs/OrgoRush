@@ -12,8 +12,10 @@ import { parseFusedNaphthalene } from "./fused-naphthalene-grammar.ts";
 import { parseFusedTricyclicArene } from "./fused-tricyclic-arene-grammar.ts";
 import { parseFusedPartiallySaturatedName } from "./fused-partially-saturated-grammar.ts";
 import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
+import { buildGonaneMoleculeFromName } from "./gonane-stereo-grammar.ts";
 import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
+import type { FusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";
 
 export type GeneratedBondOrder = 1 | 2 | 3;
 
@@ -46,6 +48,8 @@ export type GeneratedMolecule = {
   fusedRingJunctionStereo?: FusedRingJunctionStereo;
   /** Global stereo identity and independent shared edges of a saturated fused tricycle. */
   fusedRingSystemStereo?: FusedTricyclicStereochemistry;
+  /** Global stereo identity for connected saturated fused systems with a variable ring count. */
+  fusedPolycyclicStereo?: FusedPolycyclicStereochemistry;
 };
 
 type ParentDescription = {
@@ -88,12 +92,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1393,6 +1397,8 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const gonane=buildGonaneMoleculeFromName(value);
+  if(gonane)return gonane;
   const decalin = parseFusedDecalinName(value);
   if (decalin) return {ok:true,molecule:decalin.graph,normalizedInput:decalin.normalized,enabledAliases:[],inputFamily:"fused-decalin"};
   const fusedPartiallySaturated = parseFusedPartiallySaturatedName(value.trim().toLocaleLowerCase("en"));

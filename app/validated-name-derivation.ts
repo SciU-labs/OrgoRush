@@ -15,6 +15,7 @@ import { normalizeChemicalNameForParser } from "./iupac-name-normalization.ts";
 import { nameRetainedFused1979 } from "./iupac1979-retained-fused.ts";
 import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
 import { parseFusedTricyclicStereoName, reconcileFusedTricyclicStereoName } from "./fused-tricyclic-stereo-grammar.ts";
+import { parseGonaneStereoName, reconcileGonaneStereoName } from "./gonane-stereo-grammar.ts";
 import { findExactDecalinFusion, type FusedJunctionConfiguration } from "./fused-junction-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
@@ -54,6 +55,13 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
+  if(model.evidence?.construction==="fused-gonane-stereo"){
+    const parsed=parseGonaneStereoName(model.name);
+    if(parsed){const candidate=`${parsed.descriptor}-${language==="en"?"gonane":"gonano"}`;
+      if(candidate===model.name)return {name:candidate,language,localized:false};
+      if(model.evidence.reconstructedGraph&&reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
+        return {name:candidate,language,localized:true};}
+  }
   if(model.evidence?.construction==="fused-decalin"&&model.evidence.reconstructedGraph){
     const parsed=parseFusedDecalinName(model.name);
     if(parsed){
@@ -267,14 +275,14 @@ const cache = new WeakMap<GeneratedMolecule, {signature:string; entries:Map<stri
 export function reconcileSystematicName(actual: GeneratedMolecule, name: string): ValidatedNameDerivation | null {
   // The UI commits immutable graphs, but callers must not reuse a FULL proof
   // after editing the same object's connectivity, stereo or isotope metadata.
-  const signature=JSON.stringify([actual.atoms,actual.bonds,actual.rings,actual.fusedRingJunctionStereo,actual.fusedRingSystemStereo]);
+  const signature=JSON.stringify([actual.atoms,actual.bonds,actual.rings,actual.fusedRingJunctionStereo,actual.fusedRingSystemStereo,actual.fusedPolycyclicStereo]);
   let cached = cache.get(actual);
   if (!cached || cached.signature!==signature) {
     cached = {signature,entries:new Map()}; cache.set(actual,cached);
   }
   const {entries}=cached;
   if (entries.has(name)) return entries.get(name)!;
-  const result = reconcileFusedTricyclicStereoName(actual,name) ?? reconcileDecalin(actual,name) ?? reconcile(actual, name);
+  const result = reconcileGonaneStereoName(actual,name) ?? reconcileFusedTricyclicStereoName(actual,name) ?? reconcileDecalin(actual,name) ?? reconcile(actual, name);
   if (entries.size >= 16) entries.clear();
   entries.set(name, result);
   return result;

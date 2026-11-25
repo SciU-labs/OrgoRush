@@ -23,6 +23,7 @@ import {
   fusedTricyclicStereochemistryFromImported,
   isValidFusedTricyclicStereochemistry,
 } from "./fused-tricyclic-stereochemistry.ts";
+import { findSaturatedFusedPolycycle, fusedPolycyclicStereochemistryFromImported, isValidFusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";
 
 type SupportedElement = NonNullable<GeneratedAtom["element"]>;
 
@@ -109,6 +110,10 @@ export function moleculeToSmiles(molecule: GeneratedMolecule): OpenChemLibSmiles
         return {ok:false,error:"La edición cambió el sistema tricíclico o no conserva la identidad estereoquímica; no se exportó un SMILES especulativo."};
       }
       return {ok:true,smiles:molecule.fusedRingSystemStereo.sourceSmiles};
+    }
+    if (molecule.fusedPolycyclicStereo) {
+      if (!isValidFusedPolycyclicStereochemistry(molecule)) return {ok:false,error:"La metadata policíclica no coincide con el grafo editable."};
+      return {ok:true,smiles:molecule.fusedPolycyclicStereo.sourceSmiles};
     }
     if (molecule.fusedRingJunctionStereo) {
       if (!isValidFusedRingJunctionStereo(molecule)) {
@@ -479,6 +484,15 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
     error:"No se pudo asociar la configuración de ambas uniones al grafo tricíclico; la estructura estereoespecífica no se importó.",
     errorCode:"UNPRESERVED_FUSED_JUNCTION_STEREO"};
 
+  // Keep one variable-length global stereo record for fused systems beyond
+  // the historical three-ring envelope. The ring graph is the source of truth.
+  const fusedPolycycle = rings.length >= 3 ? findSaturatedFusedPolycycle({atoms,bonds,rings}) : null;
+  const fusedPolycycleStereo = fusedPolycycle && !fusedTricycleStereo
+    ? fusedPolycyclicStereochemistryFromImported(oclMolecule,{atoms,bonds,rings},smiles) : null;
+  if (fusedPolycycle && !fusedTricycleStereo && !fusedPolycycleStereo) return {ok:false,
+    error:"No se pudo conservar la identidad estereoquímica global del sistema policíclico fusionado.",
+    errorCode:"UNPRESERVED_FUSED_JUNCTION_STEREO"};
+
   return {
     ok: true,
     molecule: {
@@ -487,6 +501,7 @@ export function moleculeFromSmiles(smiles: string): OpenChemLibBuildResult {
       ...(rings.length ? { rings } : {}),
       ...(fusedJunctionStereo ? { fusedRingJunctionStereo: fusedJunctionStereo } : {}),
       ...(fusedTricycleStereo ? { fusedRingSystemStereo: fusedTricycleStereo } : {}),
+      ...(fusedPolycycleStereo ? { fusedPolycyclicStereo: fusedPolycycleStereo } : {}),
     },
   };
 }

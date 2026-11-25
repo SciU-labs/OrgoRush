@@ -2,6 +2,7 @@ import { Molecule as OCLMolecule } from "openchemlib";
 import type { GeneratedAtom, GeneratedMolecule } from "./name-to-molecule.ts";
 import { sanitizeFusedRingJunctionStereochemistry } from "./fused-junction-stereochemistry.ts";
 import { sanitizeFusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
+import { sanitizeFusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";
 
 export type TetrahedralConfiguration = NonNullable<GeneratedAtom["tetrahedralParity"]>;
 
@@ -197,7 +198,7 @@ export function sanitizeTetrahedralStereochemistry<T extends GeneratedMolecule>(
     changed = true;
     return rest;
   });
-  return sanitizeFusedTricyclicStereochemistry(sanitizeFusedRingJunctionStereochemistry(changed ? { ...source, atoms } : source));
+  return sanitizeFusedPolycyclicStereochemistry(sanitizeFusedTricyclicStereochemistry(sanitizeFusedRingJunctionStereochemistry(changed ? { ...source, atoms } : source)));
 }
 
 /** Preserve the local tetrahedral arrangement when an automatic addition

@@ -172,3 +172,13 @@ test("cloud persistence preserves audited global stereo metadata for a fused tri
   const invalid={...imported.molecule,fusedRingSystemStereo:{...imported.molecule.fusedRingSystemStereo,identityCode:'forged'}};
   assert.equal(normalizeMoleculePayload(invalid),null);
 });
+
+test("cloud persistence preserves variable-length fusion metadata and gonane locants",()=>{
+  const imported=moleculeFromSmiles('C1CC[C@H]2[C@H](C1)CC[C@@H]3[C@@H]2CC[C@H]4[C@H]3CCC4');
+  assert.equal(imported.ok,true);const graph=imported.molecule;
+  const recovered=assertSameIsomericSmiles(graph);
+  assert.deepEqual(recovered.fusedPolycyclicStereo,graph.fusedPolycyclicStereo);
+  assert.deepEqual(Object.keys(recovered.fusedPolycyclicStereo.locantAtomIds).sort((a,b)=>Number(a)-Number(b)),Array.from({length:17},(_,i)=>String(i+1)));
+  assert.equal(normalizeMoleculePayload({...graph,fusedPolycyclicStereo:{...graph.fusedPolycyclicStereo,
+    locantAtomIds:{...graph.fusedPolycyclicStereo.locantAtomIds,'5':999}}}),null);
+});

@@ -491,6 +491,37 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
+  if(derivation.evidence?.construction==="fused-gonane-stereo"){
+    const rings=["A","B","C","D"].map(letter=>byId.get(`gonane-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
+    const fusions=[1,2,3].map(index=>byId.get(`gonane-fusion-${index}`)).filter((item):item is NameComponent=>Boolean(item));
+    const locants=byId.get("gonane-locants"),stereo=byId.get("gonane-stereo"),descriptor=derivation.name.match(/^5[αβξ]/)?.[0]??"";
+    const steps:PriorityReasoningStep[]=[
+      makeStep({number:"1",title:language==="en"?"Recognize the saturated polycycle":"Reconocer el policiclo saturado",
+        explanation:language==="en"?"The graph is a neutral, saturated, all-carbon polycycle with formula C17H28."
+          :"El grafo es un policiclo neutro, saturado y formado solo por carbono, con fórmula C17H28.",components:parent?[parent]:[],derivation,language,graph}),
+      makeStep({number:"2",title:language==="en"?"Identify rings A–D":"Identificar los anillos A–D",
+        explanation:language==="en"?"Four actual cycles have sizes 6, 6, 6 and 5; the smaller ring is D."
+          :"Se verifican cuatro ciclos reales de tamaños 6, 6, 6 y 5; el anillo menor es D.",components:rings,derivation,language,graph}),
+      makeStep({number:"3",title:language==="en"?"Locate the fused junctions":"Localizar las uniones fusionadas",
+        explanation:language==="en"?"The shared bonds are C5–C10, C8–C9 and C13–C14; each selection targets its graph bond."
+          :"Los enlaces compartidos son C5–C10, C8–C9 y C13–C14; cada selección apunta al enlace real del grafo.",components:fusions,derivation,language,graph}),
+      makeStep({number:"4",title:language==="en"?"Select the gonane parent":"Elegir el esqueleto gonánico",
+        explanation:language==="en"?"The unsubstituted saturated tetracyclic steroid parent is gonane under the 1989 steroid recommendations; this is not asserted to be a 2013 PIN."
+          :"El hidrocarburo esteroideo tetracíclico saturado y sin sustituyentes se denomina gonano según las recomendaciones esteroideas de 1989; no se afirma que sea un PIN de 2013.",components:parent?[parent]:[],derivation,language,graph}),
+      makeStep({number:"5",title:language==="en"?"Apply steroid numbering":"Aplicar la numeración esteroidea",
+        explanation:language==="en"?"Conventional locants are mapped explicitly to graph atom IDs, independent of drawing coordinates."
+          :"Los localizadores convencionales se vinculan explícitamente con los ID de átomos, sin depender de las coordenadas del dibujo.",components:locants?[locants]:[],derivation,language,graph}),
+      makeStep({number:"6",title:language==="en"?"Audit specified stereochemistry":"Auditar la estereoquímica especificada",
+        explanation:language==="en"?"Only stereochemistry present in the audited isomeric reference is used; absent information is not filled in."
+          :"Solo se utiliza la estereoquímica presente en la referencia isomérica auditada; la información ausente no se completa.",components:stereo?[stereo]:[],derivation,language,graph}),
+      makeStep({number:"7",title:language==="en"?"Choose the C5 descriptor":"Elegir el descriptor de C5",
+        explanation:(stereo?localizedComponentExplanation(stereo,language):undefined)??(language==="en"?`The verified designation is ${descriptor}.`: `La designación verificada es ${descriptor}.`),components:stereo?[stereo]:[],derivation,language,graph}),
+      makeStep({number:"8",title:language==="en"?"Build the name":"Construir el nombre",
+        explanation:language==="en"?"Place the C5 α, β or ξ descriptor before gonane, or use the independently reconciled Spanish form gonano."
+          :"Se antepone a gonano el descriptor α, β o ξ de C5, validado de forma independiente en el nombre español.",components:[...(parent?[parent]:[]),...(stereo?[stereo]:[])],derivation,language,graph}),
+    ];
+    return {name:derivation.name,steps};
+  }
   if(derivation.evidence?.construction==="fused-decalin"){
     const rings=displayedComponents.filter(component=>component.id.startsWith("fused-ring-"));
     const junction=byId.get("fusion-junction");

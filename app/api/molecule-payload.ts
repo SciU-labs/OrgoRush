@@ -10,8 +10,9 @@ import {
 } from "../manual-display-direction.ts";
 import { isValidFusedRingJunctionStereo } from "../fused-junction-stereochemistry.ts";
 import { isValidFusedTricyclicStereochemistry } from "../fused-tricyclic-stereochemistry.ts";
+import { isValidFusedPolycyclicStereochemistry } from "../fused-polycyclic-stereochemistry.ts";
 
-export type PersistedMolecule = Pick<GeneratedMolecule, "atoms" | "bonds" | "fusedRingJunctionStereo" | "fusedRingSystemStereo"> & {
+export type PersistedMolecule = Pick<GeneratedMolecule, "atoms" | "bonds" | "fusedRingJunctionStereo" | "fusedRingSystemStereo" | "fusedPolycyclicStereo"> & {
   rings?: GeneratedRing[];
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** Display orientation is retained for backwards compatibility with the editor. */
@@ -173,6 +174,11 @@ export function normalizeMoleculePayload(value: unknown): PersistedMolecule | nu
     graph.fusedRingSystemStereo=stereo as unknown as NonNullable<GeneratedMolecule["fusedRingSystemStereo"]>;
     if(!isValidFusedTricyclicStereochemistry(graph))return null;
   }
+  if(candidate.fusedPolycyclicStereo!==undefined){
+    if(!isRecord(candidate.fusedPolycyclicStereo))return null;
+    graph.fusedPolycyclicStereo=candidate.fusedPolycyclicStereo as unknown as NonNullable<GeneratedMolecule["fusedPolycyclicStereo"]>;
+    if(!isValidFusedPolycyclicStereochemistry(graph))return null;
+  }
 
   return {
     atoms,
@@ -182,5 +188,6 @@ export function normalizeMoleculePayload(value: unknown): PersistedMolecule | nu
     ...(manualDisplayDirections?.length ? { manualDisplayDirections } : {}),
     ...(graph.fusedRingJunctionStereo?{fusedRingJunctionStereo:graph.fusedRingJunctionStereo}:{}),
     ...(graph.fusedRingSystemStereo?{fusedRingSystemStereo:graph.fusedRingSystemStereo}:{}),
+    ...(graph.fusedPolycyclicStereo?{fusedPolycyclicStereo:graph.fusedPolycyclicStereo}:{}),
   };
 }

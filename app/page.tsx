@@ -41,6 +41,7 @@ import { createExerciseChemistryOracles } from "./exercise-chemistry-oracles";
 import { buildHydrocarbonFromIupacName } from "./name-to-molecule";
 import { findExactDecalinFusion, type FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
+import type { FusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";
 import { inspectHydroxyalkyl, inspectAminoalkyl, inspectOxoalkyl, type HydroxyalkylEvidence, type AminoalkylEvidence, type OxoalkylEvidence } from "./hydroxyalkyl-substituent";
 import { deriveStructuralComponents } from "./structural-derivation";
 import { presentValidatedSystematicName, reconcileSystematicName, selectEquivalentAssignment, selectVerifiedLocalizedPresentation } from "./validated-name-derivation";
@@ -478,6 +479,7 @@ type Molecule = {
   rings?: RingInfo[];
   fusedRingJunctionStereo?: FusedRingJunctionStereo;
   fusedRingSystemStereo?: FusedTricyclicStereochemistry;
+  fusedPolycyclicStereo?: FusedPolycyclicStereochemistry;
   /** Editor-only direction constraints for Semi-developed display bonds. */
   manualDisplayDirections?: ManualDisplayPlacement[];
   /** UI-only orientation for display-only skeletal coordinates. */
@@ -1756,6 +1758,13 @@ function cloneMolecule(molecule: Molecule): Molecule {
         fusionAtomIds:[...junction.fusionAtomIds] as [number,number],
         fusionBond:[...junction.fusionBond] as [number,number],
         ringIds:[...junction.ringIds] as [number,number]})) as FusedTricyclicStereochemistry["junctions"]}}:{}),
+    ...(molecule.fusedPolycyclicStereo?{fusedPolycyclicStereo:{...molecule.fusedPolycyclicStereo,
+      ringSizes:[...molecule.fusedPolycyclicStereo.ringSizes],ringIds:[...molecule.fusedPolycyclicStereo.ringIds],
+      junctions:molecule.fusedPolycyclicStereo.junctions.map(junction=>({...junction,
+        fusionAtomIds:[...junction.fusionAtomIds] as [number,number],fusionBond:[...junction.fusionBond] as [number,number],
+        ringIds:[...junction.ringIds] as [number,number]})),
+      atomStereo:molecule.fusedPolycyclicStereo.atomStereo.map(center=>({...center})),
+      ...(molecule.fusedPolycyclicStereo.locantAtomIds?{locantAtomIds:{...molecule.fusedPolycyclicStereo.locantAtomIds}}:{})}}:{}),
     ...(molecule.manualDisplayDirections?.length
       ? { manualDisplayDirections: molecule.manualDisplayDirections.map((placement) => ({ ...placement })) }
       : {}),
@@ -4888,14 +4897,18 @@ export function steroidStereochemistryStatus(
   language: AppLanguage,
 ) {
   const { detected, assigned, complete } = getTetrahedralAssignmentSummary(molecule);
+  const gonane = molecule.atoms.length === 17 && molecule.fusedPolycyclicStereo?.ringSizes
+    .slice().sort((a,b)=>a-b).join(",") === "5,6,6,6";
+  const nucleus = language === "en" ? gonane ? "Gonane nucleus" : "Androstane nucleus"
+    : gonane ? "Núcleo de gonano" : "Núcleo de androstano";
   if (language === "en") {
     return complete
-      ? `Androstane nucleus recognized · ${assigned} tetrahedral stereocenters assigned`
-      : `Androstane nucleus recognized · ${assigned} of ${detected} tetrahedral stereocenters preserved`;
+      ? `${nucleus} recognized · ${assigned} tetrahedral stereocenters assigned`
+      : `${nucleus} recognized · ${assigned} of ${detected} tetrahedral stereocenters preserved`;
   }
   return complete
-    ? `Núcleo de androstano reconocido · ${assigned} centros estereogénicos tetraédricos asignados`
-    : `Núcleo de androstano reconocido · ${assigned} de ${detected} centros estereogénicos tetraédricos conservados`;
+    ? `${nucleus} reconocido · ${assigned} centros estereogénicos tetraédricos asignados`
+    : `${nucleus} reconocido · ${assigned} de ${detected} centros estereogénicos tetraédricos conservados`;
 }
 
 function withExplicitGeometricName(molecule: Molecule, analysis: Analysis): Analysis {
@@ -10367,6 +10380,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     if (!localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
       || localPreflight.inputFamily === "fused-naphthalene"
       || localPreflight.inputFamily === "fused-tricyclic-arene"
+      || localPreflight.inputFamily === "fused-gonane-stereo"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
       setNameBuilderOpen(true);
       setNameBuilderFeedback({ kind: "error", message: localPreflight.error });
@@ -10392,6 +10406,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       if (localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
         || localPreflight.inputFamily === "fused-naphthalene"
         || localPreflight.inputFamily === "fused-tricyclic-arene"
+        || localPreflight.inputFamily === "fused-gonane-stereo"
         || localPreflight.inputFamily === "alkene-stereo")) {
         next = localPreflight.molecule;
         enabledAliases = localPreflight.enabledAliases;
@@ -14193,6 +14208,21 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                   <rect x="-37" y="-10" width="74" height="20" rx="10"/><text textAnchor="middle" dominantBaseline="central">{label}</text>
                 </g>;
               })}
+              {molecule.fusedPolycyclicStereo?.junctions.map((junction,index)=>{
+                const [leftId,rightId]=junction.fusionBond;
+                const left=displayPositions.get(leftId),right=displayPositions.get(rightId);
+                if(!left||!right)return null;
+                const dx=right.x-left.x,dy=right.y-left.y,length=Math.hypot(dx,dy)||1;
+                const side=index%2===0?-1:1,x=(left.x+right.x)/2+(dy/length)*21*side,y=(left.y+right.y)/2-(dx/length)*21*side;
+                const label=language==="en"?`ring fusion ${index+1}`:`unión de anillos ${index+1}`;
+                return <g key={`fused-polycyclic-junction-${index+1}`} className="fused-polycyclic-junction-label"
+                  data-fused-polycyclic-junction-index={index+1}
+                  data-fused-polycyclic-junction-atom-ids={junction.fusionAtomIds.join(",")}
+                  data-fused-polycyclic-junction-bond-ids={junction.fusionBond.join(",")}
+                  aria-label={label} transform={`translate(${x} ${y})`}>
+                  <rect x="-48" y="-10" width="96" height="20" rx="10"/><text textAnchor="middle" dominantBaseline="central">{label}</text>
+                </g>;
+              })}
               <g className="molecule-nodes-layer" display={viewMode === "condensed" ? "none" : undefined}>
               {molecule.atoms.map((atom) => {
                 const element = getElement(atom);
@@ -16197,8 +16227,9 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             <div className="functional-detection ring-system-detection" aria-label={t("Sistema de anillos detectado")}>
               <span>{t("Anillos")}</span>
               <div>
-                <strong><ChemicalNotationText value={analysis.steroidSystem?.constitutionNameEs && language === "en"
-                  ? steroidStereochemistryStatus(molecule, "en")
+                <strong><ChemicalNotationText value={(analysis.steroidSystem?.constitutionNameEs
+                  || analysis.ringSystem?.startsWith("Núcleo de gonano reconocido"))
+                  ? steroidStereochemistryStatus(molecule, language === "en" ? "en" : "es")
                   : localizedDynamicText(analysis.ringSystem)} /></strong>
                 {analysis.commonName && <strong>{t("Nombre tradicional")}: {analysis.commonName}</strong>}
               </div>
