@@ -17,6 +17,7 @@ import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
 import { parseFusedTricyclicStereoName, reconcileFusedTricyclicStereoName } from "./fused-tricyclic-stereo-grammar.ts";
 import { parseGonaneStereoName, reconcileGonaneStereoName } from "./gonane-stereo-grammar.ts";
 import { parseSteroidFamilyName, reconcileSteroidFamilyName } from "./steroid-family-grammar.ts";
+import { reconcileTestosteroneName, TESTOSTERONE_NAMES } from "./testosterone-stereo-grammar.ts";
 import { findExactDecalinFusion, type FusedJunctionConfiguration } from "./fused-junction-stereochemistry.ts";
 // Preserve the existing public import path while keeping shared types acyclic.
 export type { NameComponent } from "./compositional-name-model.ts";
@@ -56,6 +57,12 @@ export function selectVerifiedLocalizedPresentation(model: ValidatedNameDerivati
  * The original English name remains the validation key and component spans
  * continue to refer to it; atom mappings come from the reconciled model. */
 export function presentValidatedSystematicName(model: ValidatedNameDerivation, language: "en" | "es"): ValidatedNamePresentation {
+  if(model.evidence?.construction==="fused-testosterone-stereo"){
+    const candidate=language==="en"?TESTOSTERONE_NAMES.en:TESTOSTERONE_NAMES.es;
+    if(candidate===model.name)return {name:candidate,language,localized:language==="es"&&model.evidence.language==="es"};
+    if(model.evidence.reconstructedGraph&&reconcileSystematicName(model.evidence.reconstructedGraph,candidate)?.evidence?.language===language)
+      return {name:candidate,language,localized:true};
+  }
   if(model.evidence?.construction==="fused-steroid-family-stereo"){
     const parsed=parseSteroidFamilyName(model.name);
     if(parsed){const stem=parsed.family==="estrane"?(language==="en"?"estrane":"estrano"):(language==="en"?"androstane":"androstano");
@@ -291,7 +298,7 @@ export function reconcileSystematicName(actual: GeneratedMolecule, name: string)
   }
   const {entries}=cached;
   if (entries.has(name)) return entries.get(name)!;
-  const result = reconcileSteroidFamilyName(actual,name) ?? reconcileGonaneStereoName(actual,name) ?? reconcileFusedTricyclicStereoName(actual,name) ?? reconcileDecalin(actual,name) ?? reconcile(actual, name);
+  const result = reconcileTestosteroneName(actual,name) ?? reconcileSteroidFamilyName(actual,name) ?? reconcileGonaneStereoName(actual,name) ?? reconcileFusedTricyclicStereoName(actual,name) ?? reconcileDecalin(actual,name) ?? reconcile(actual, name);
   if (entries.size >= 16) entries.clear();
   entries.set(name, result);
   return result;

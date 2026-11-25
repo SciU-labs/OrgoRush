@@ -9248,7 +9248,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
   // name is produced only when the FULL grammar proves the complete construction.
   const verifiedSystematicModel = (pubChemIupacName
     ? reconcileSystematicName(molecule, pubChemIupacName) : null)
-    ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null);
+    ?? (reasoningSourceName ? reconcileSystematicName(molecule, reasoningSourceName) : null)
+    ?? reconcileSystematicName(molecule, "17β-hydroxyandrost-4-en-3-one");
   let verifiedSystematicPresentation = verifiedSystematicModel
     ? presentValidatedSystematicName(verifiedSystematicModel, language) : null;
   if (verifiedSystematicModel && verifiedSystematicPresentation && !verifiedSystematicPresentation.localized
@@ -10381,6 +10382,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     if (!localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
       || localPreflight.inputFamily === "fused-naphthalene"
       || localPreflight.inputFamily === "fused-tricyclic-arene"
+      || localPreflight.inputFamily === "fused-testosterone-stereo"
       || localPreflight.inputFamily === "fused-gonane-stereo"
       || localPreflight.inputFamily === "fused-steroid-family"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
@@ -10408,6 +10410,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       if (localPreflight.ok && (localPreflight.inputFamily === "fused-von-baeyer"
         || localPreflight.inputFamily === "fused-naphthalene"
         || localPreflight.inputFamily === "fused-tricyclic-arene"
+        || localPreflight.inputFamily === "fused-testosterone-stereo"
         || localPreflight.inputFamily === "fused-gonane-stereo"
         || localPreflight.inputFamily === "fused-steroid-family"
         || localPreflight.inputFamily === "alkene-stereo")) {
@@ -10503,7 +10506,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       // If OPSIN/OpenChemLib successfully parsed a structure whose nested
       // functional groups exceed the local naming grammar, keep the validated
       // source name rather than replacing it with an incomplete suggestion.
-      setSourceNameOverride(preserveGraphSourceName ? preferredSourceName : null);
+      setSourceNameOverride(preserveGraphSourceName && localPreflight.inputFamily !== "fused-testosterone-stereo"
+        ? preferredSourceName : null);
       if (getTetrahedralStereoCenters(next).length || next.bonds.some(bond => bond[3] === true)) {
         setShowStereochemistry(true);
       }
