@@ -210,7 +210,7 @@ test("By name retains the submitted common term as source and only preserves a P
   const page = readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(page, /setReasoningSourceName\(submittedName\);/);
   assert.match(page, /const preferredSourceName = localPreflight\.inputFamily === "alkene-stereo"\s*\? normalizedInput\s*:\s*resolvedPubChemIdentity\?\.iupacName \?\? submittedName;/);
-  assert.match(page, /setSourceNameOverride\(preserveGraphSourceName \? preferredSourceName : null\);/);
+  assert.match(page, /setSourceNameOverride\(preserveGraphSourceName && localPreflight\.inputFamily !== "fused-testosterone-stereo"\s*\? preferredSourceName : null\);/);
 });
 
 test("does not warn when every PubChem tetrahedral center is preserved", async () => {
