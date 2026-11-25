@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Fragment,
   type ChangeEvent,
   type CSSProperties,
   type DragEvent as ReactDragEvent,
@@ -48,7 +49,7 @@ import { presentValidatedSystematicName, reconcileSystematicName, selectEquivale
 import { localizeCompositionalExternalName } from "./compositional-external-localization";
 import { classifyValidatedStructureColors, structuralBondKey } from "./structural-color-classification";
 import { resolveDerivationConsistency } from "./derivation-consistency";
-import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning } from "./reasoning-derivation-adapter";
+import { buildStructuralPriorityReasoning, buildValidatedPriorityReasoning, shouldShowStructuralPriorityReasoning, type PriorityReasoningStep } from "./reasoning-derivation-adapter";
 import { buildBranchCountingGuides, buildValidatedVisualNumbering } from "./visual-numbering";
 import { selectedAromaticCarboxylCarbonContext } from "./selected-atom-context";
 import { englishIupacRoot, IUPAC_ROOTS } from "./iupac-prefixes";
@@ -790,6 +791,7 @@ export function ReasoningNameFragmentView({
   onActivateTarget,
   language = "es",
   activeName,
+  showLabel = true,
 }: {
   fragment: ReasoningNameFragment;
   onSelectContribution?: (contribution: ReasoningNameFragment) => void;
@@ -800,13 +802,15 @@ export function ReasoningNameFragmentView({
   onActivateTarget?: (target: ReasoningVisualTarget) => void;
   language?: AppLanguage;
   activeName?: string;
+  showLabel?: boolean;
 }) {
   return (
     <>
       {[fragment, ...(fragment.additionalFragments ?? [])].map((part, index) => {
         const fragmentId = stepNumber ? reasoningFragmentId(stepNumber, part) : undefined;
         const target = fragmentId ? visualTargets?.[fragmentId] : undefined;
-        const literal = activeName === undefined || (part.start !== undefined
+        const visibleText = part.displayText ?? part.text;
+        const literal = activeName === undefined || Boolean(part.text) && (part.start !== undefined
           ? activeName.slice(part.start,part.start+part.text.length) === part.text
           : part.kind !== "numbering" && activeName.indexOf(part.text) >= 0
             && activeName.indexOf(part.text) === activeName.lastIndexOf(part.text));
@@ -822,24 +826,69 @@ export function ReasoningNameFragmentView({
                   data-name-fragment={part.semanticId}
                   data-reasoning-region={literal ? undefined : "structural-reference"}
                   aria-label={visualTargets
-                    ? language === "en" ? `${literal ? `${part.text}: ${displayLabel}. ` : `${part.text}. `}Highlight in the molecule for two seconds`
-                      : `${literal ? `${part.text}: ${displayLabel}. ` : `${part.text}. `}Resaltar en la molécula durante dos segundos`
+                    ? language === "en" ? `${literal ? `${visibleText}: ${displayLabel}. ` : `${visibleText}. `}Highlight in the molecule for two seconds`
+                      : `${literal ? `${visibleText}: ${displayLabel}. ` : `${visibleText}. `}Resaltar en la molécula durante dos segundos`
                     : displayLabel} aria-pressed={selected}
                   onClick={(event) => {
                     event?.stopPropagation();
                     if (target && onActivateTarget) onActivateTarget(target);
                     else onSelectContribution?.(part);
                   }}>
-                  <span className="reasoning-name-fragment-text">{part.text}</span>
+                  <span className="reasoning-name-fragment-text">{visibleText}</span>
                 </button>
-              : <span className="reasoning-name-fragment-text">{part.text}</span>}
-            {literal && <small className="reasoning-name-fragment-label">{displayLabel}</small>}
+              : <span className="reasoning-name-fragment-text">{visibleText}</span>}
+            {literal && showLabel && <small className="reasoning-name-fragment-label">{displayLabel}</small>}
             {part.explanation && <p className="reasoning-name-fragment-explanation"><ChemicalNotationText value={part.explanation} /></p>}
           </div>
         );
       })}
     </>
   );
+}
+
+function TestosteroneReasoningControls({step,language,visualTarget,selectedFragmentId,onActivateTarget,activeName}: {
+  step:PriorityReasoningStep; language:AppLanguage; visualTarget?:Readonly<Record<string,ReasoningVisualTarget>>;
+  selectedFragmentId?:string|null; onActivateTarget:(target:ReasoningVisualTarget)=>void; activeName:string;
+}) {
+  const fragments=step.fragments?[step.fragments,...(step.fragments.additionalFragments??[])]:[];
+  const controls=(ids:readonly string[])=>ids.map(id=>fragments.find(fragment=>fragment.semanticId===id))
+    .filter((fragment):fragment is ReasoningNameFragment=>Boolean(fragment)).map(fragment=>(
+      <ReasoningNameFragmentView key={fragment.semanticId} fragment={{...fragment,displayText:fragment.text||fragment.label,additionalFragments:undefined,explanation:undefined}}
+        stepNumber={step.number} visualTargets={visualTarget} selectedFragmentId={selectedFragmentId}
+        onActivateTarget={onActivateTarget} language={language} activeName={activeName} showLabel={false}/>
+    ));
+  const en=language==="en";
+  if(step.number==="1")return <div className="testosterone-control-stack" data-testosterone-layout="skeleton">
+    {controls(["testosterone-parent"])}
+    <details className="testosterone-advanced-controls" data-testosterone-ring-details>
+      <summary>{en?"Explore rings and fused junctions":"Explorar anillos y uniones"}</summary>
+      <div className="testosterone-control-grid">{controls(["testosterone-ring-A","testosterone-ring-B","testosterone-ring-C","testosterone-ring-D",
+        "testosterone-fusion-ab","testosterone-fusion-bc","testosterone-fusion-cd"])}</div>
+    </details>
+  </div>;
+  if(step.number==="2")return <details className="testosterone-advanced-controls testosterone-locant-explorer"
+      data-testosterone-locant-explorer>
+    <summary>{en?"Explore all 19 carbon locants":"Explorar los 19 localizadores de carbono"}</summary>
+    <div className="testosterone-locant-grid">{controls(Array.from({length:19},(_,index)=>`testosterone-locant-${index+1}`))}</div>
+  </details>;
+  if(step.number==="3")return <div className="testosterone-control-grid" data-testosterone-layout="unsaturation">{controls(["testosterone-unsaturation-4"])}</div>;
+  if(step.number==="4")return <div className="testosterone-control-grid" data-testosterone-layout="functional-groups">{controls(["testosterone-carbonyl-3","testosterone-hydroxy-17"])}</div>;
+  if(step.number==="5")return <div className="testosterone-control-stack" data-testosterone-layout="stereochemistry">
+    {controls(["testosterone-17beta"])}
+    <details className="testosterone-advanced-controls" data-testosterone-stereo-details>
+      <summary>{en?"Inspect all six specified stereocentres":"Consultar los seis centros estereogénicos especificados"}</summary>
+      <div className="testosterone-control-grid">{controls(["testosterone-global-stereo"])}</div>
+    </details>
+  </div>;
+  return <div className="testosterone-name-construction" data-testosterone-layout="name">
+    <div className="testosterone-name-parts" aria-label={en?"Name components":"Componentes del nombre"}>
+      {(en?["17β-hydroxy","androst","4-en","3-one"]:["17β-hidroxi","androst","4-en","3-ona"]).map((part,index)=><Fragment key={part}>
+        {index>0&&<span aria-hidden="true">+</span>}<code>{part}</code>
+      </Fragment>)}
+    </div>
+    <p className="testosterone-name-result"><strong>{en?"17β-hydroxyandrost-4-en-3-one":"17β-hidroxiandrost-4-en-3-ona"}</strong></p>
+    <small>{en?"Common name: testosterone":"Nombre común: testosterona"}</small>
+  </div>;
 }
 
 const alkaneRoots = IUPAC_ROOTS;
@@ -16489,7 +16538,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 {structuralPriorityReasoning?.steps.length === 0 && <p>{language === "en"
                   ? "No structural feature can be explained from this molecule yet."
                   : "Aún no se puede explicar ningún rasgo de esta molécula."}</p>}
-                <ol>
+                <ol data-testosterone-steps={validatedDerivation?.evidence?.construction==="fused-testosterone-stereo"?"6":undefined}>
                   {displayedReasoningSteps.map(step => {
                     const stepActive = reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId;
                     return <li key={step.number} id={`iupac-reasoning-step-${step.number}`}
@@ -16503,10 +16552,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                         {step.alphabeticalOrder
                           ? <ReasoningAlphabeticalContent presentation={step.alphabeticalOrder} />
                           : <p><ChemicalNotationText value={step.explanation} /></p>}
-                        {step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
-                          language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
-                          selectedFragmentId={reasoningVisualTarget?.fragmentId}
-                          onActivateTarget={activateReasoningCanvasReference} />}
+                        {validatedDerivation?.evidence?.construction==="fused-testosterone-stereo"
+                          ? <TestosteroneReasoningControls step={step} language={language} activeName={displayedIupacName}
+                              visualTarget={step.fragmentTargets} selectedFragmentId={reasoningVisualTarget?.fragmentId}
+                              onActivateTarget={activateReasoningCanvasReference} />
+                          : step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
+                              language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
+                              selectedFragmentId={reasoningVisualTarget?.fragmentId}
+                              onActivateTarget={activateReasoningCanvasReference} />}
                         {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
                           || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {
                           const fragmentId = `branch-count:${guide.componentId}`;

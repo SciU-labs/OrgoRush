@@ -495,45 +495,33 @@ export function buildValidatedPriorityReasoning(input: {
     const rings=["A","B","C","D"].map(letter=>byId.get(`testosterone-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
     const fusions=["ab","bc","cd"].map(label=>byId.get(`testosterone-fusion-${label}`)).filter((item):item is NameComponent=>Boolean(item));
     const locants=Array.from({length:19},(_,index)=>byId.get(`testosterone-locant-${index+1}`)).filter((item):item is NameComponent=>Boolean(item));
-    const common=byId.get("testosterone-common-name"),parent=byId.get("testosterone-parent");
+    const parent=byId.get("testosterone-parent");
     const steps:PriorityReasoningStep[]=[
-      makeStep({number:"1",title:language==="en"?"Identify the steroid parent":"Identificar el estereoparent esteroideo",
-        explanation:language==="en"?"Four fused rings with sizes 6–6–6–5 form the androstane stereoparent; the full carbon graph includes conventional locants C1–C19."
-          :"Cuatro anillos fusionados de tamaños 6–6–6–5 forman el estereoparent androstano; el grafo de carbono completo lleva los localizadores convencionales C1–C19.",
+      makeStep({number:"1",title:language==="en"?"Identify the steroid skeleton":"Identificar el esqueleto esteroideo",
+        explanation:language==="en"?"Four fused rings of sizes 6–6–6–5 form the androstane skeleton. The angular methyls C18 and C19, attached to C13 and C10 respectively, identify this steroid framework."
+          :"Cuatro anillos fusionados de tamaños 6–6–6–5 forman el esqueleto del androstano. Los metilos angulares C18 y C19, unidos a C13 y C10 respectivamente, permiten reconocer esta estructura esteroidea.",
         components:[...(parent?[parent]:[]),...rings,...fusions],derivation,language,graph}),
       makeStep({number:"2",title:language==="en"?"Apply steroid numbering":"Aplicar la numeración esteroidea",
-        explanation:language==="en"?"Conventional steroid numbering maps C1–C17 across the fused core; C18 is attached to C13 and C19 to C10. Each control selects its graph atom."
-          :"La numeración esteroidea convencional asigna C1–C17 al núcleo fusionado; C18 está unido a C13 y C19 a C10. Cada control selecciona su átomo real.",
-        components:[...locants,...[byId.get("testosterone-c18"),byId.get("testosterone-c19")].filter((item):item is NameComponent=>Boolean(item))],derivation,language,graph}),
+        explanation:language==="en"?"The steroid convention numbers the core C1–C17 and assigns C18 and C19 to the angular methyls. These locants identify the positions used for the functional groups and double bond."
+          :"La convención esteroidea numera el núcleo del C1 al C17 y asigna C18 y C19 a los metilos angulares. Estos localizadores permiten ubicar los grupos funcionales y el doble enlace.",
+        components:locants,derivation,language,graph}),
       makeStep({number:"3",title:language==="en"?"Locate the double bond":"Localizar el doble enlace",
-        explanation:language==="en"?"C4=C5 is the sole carbon–carbon double bond. C5 is trigonal here, so the saturated-parent 5α/5β tetrahedral descriptor does not apply."
-          :"C4=C5 es el único doble enlace carbono–carbono. C5 es trigonal en esta estructura, así que no se traslada el descriptor tetraédrico 5α/5β del androstano saturado.",
+        explanation:language==="en"?"The C4=C5 double bond places the unsaturation at position 4; this is shown by “androst-4-en-” in the name. C5 is trigonal and has no tetrahedral 5α/5β descriptor."
+          :"El doble enlace C4=C5 sitúa la insaturación en la posición 4, que se indica en el nombre mediante «androst-4-en-». C5 es trigonal y no lleva descriptor tetraédrico 5α/5β.",
         components:[byId.get("testosterone-unsaturation-4")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
-      makeStep({number:"4",title:language==="en"?"Identify the C3 ketone":"Identificar la cetona en C3",
-        explanation:language==="en"?"The C3 oxygen is double-bonded to C3, establishing the ketone as the principal characteristic group and the -3-one/-3-ona suffix."
-          :"El oxígeno de C3 forma un doble enlace con C3; la cetona es el grupo característico principal y se expresa con el sufijo -3-one/-3-ona.",
-        components:[byId.get("testosterone-carbonyl-3")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
-      makeStep({number:"5",title:language==="en"?"Identify the C17 hydroxyl":"Identificar el hidroxilo en C17",
-        explanation:language==="en"?"C17 bears a single-bonded hydroxyl group. Because the ketone has suffix priority, this group is expressed as the prefix 17β-hydroxy-/17β-hidroxi-."
-          :"C17 lleva un grupo hidroxilo unido por enlace sencillo. Como la cetona tiene prioridad para el sufijo, el hidroxilo se expresa mediante el prefijo 17β-hydroxy-/17β-hidroxi-.",
-        components:[byId.get("testosterone-hydroxy-17")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
-      makeStep({number:"6",title:language==="en"?"Verify the full stereochemistry":"Verificar la estereoquímica completa",
-        explanation:language==="en"?"All six specified tetrahedral centres match the testosterone structure. At C17, β is checked against the steroid reference and distinguishes epitestosterone; C5 carries no tetrahedral descriptor."
-          :"Los seis centros tetraédricos especificados coinciden con la estructura de testosterona. En C17, β se verifica frente a la referencia esteroidea y distingue la epitestosterona; C5 no tiene descriptor tetraédrico.",
+      makeStep({number:"4",title:language==="en"?"Identify the functional groups and their priority":"Identificar los grupos funcionales y su prioridad",
+        explanation:language==="en"?"C3 bears a ketone (C=O) and C17 a hydroxyl (–OH). The ketone has suffix priority and gives -3-one; the hydroxyl is named with the prefix 17β-hydroxy-."
+          :"En C3 hay una cetona (C=O) y en C17 un grupo hidroxilo (–OH). La cetona tiene prioridad para el sufijo y aporta -3-ona; el hidroxilo se expresa con el prefijo 17β-hidroxi-.",
+        components:[byId.get("testosterone-carbonyl-3"),byId.get("testosterone-hydroxy-17")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
+      makeStep({number:"5",title:language==="en"?"Check the stereochemistry":"Comprobar la estereoquímica",
+        explanation:language==="en"?"The C17 hydroxyl has β orientation. The other five tetrahedral centres also match testosterone; the C17 configuration distinguishes its epimer, epitestosterone."
+          :"El hidroxilo de C17 tiene orientación β. Los otros cinco centros tetraédricos también coinciden con la testosterona; la configuración de C17 la distingue de su epímero, la epitestosterona.",
         components:[byId.get("testosterone-17beta"),byId.get("testosterone-global-stereo")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
-      makeStep({number:"7",title:language==="en"?"Set functional-group priority":"Establecer la prioridad funcional",
-        explanation:language==="en"?"The ketone is named by the suffix -3-one/-3-ona, while the lower-priority hydroxyl is named with the 17β-hydroxy-/17β-hidroxi- prefix."
-          :"La cetona se nombra con el sufijo -3-one/-3-ona y el hidroxilo, de menor prioridad, con el prefijo 17β-hydroxy-/17β-hidroxi-.",
-        components:[],derivation,language,graph}),
-      makeStep({number:"8",title:language==="en"?"Construct the semisystematic name":"Construir el nombre semisistemático",
-        explanation:language==="en"?"Combine 17β-hydroxy + androst + 4-en + 3-one as 17β-hydroxyandrost-4-en-3-one. The supported Spanish form is 17β-hidroxiandrost-4-en-3-ona."
-          :"Se combinan 17β-hidroxi + androst + 4-en + 3-ona para formar 17β-hidroxiandrost-4-en-3-ona. La forma inglesa verificada es 17β-hydroxyandrost-4-en-3-one.",
+      makeStep({number:"6",title:language==="en"?"Build the name":"Construir el nombre",
+        explanation:language==="en"?"Combine 17β-hydroxy + androst + 4-en + 3-one to form 17β-hydroxyandrost-4-en-3-one. Common name: testosterone."
+          :"Se combinan 17β-hidroxi + androst + 4-en + 3-ona para formar 17β-hidroxiandrost-4-en-3-ona. Nombre común: testosterona.",
         components:[],derivation,language,graph}),
     ];
-    steps.push(makeStep({number:"9",title:language==="en"?"Relate the common name":"Relacionar el nombre común",
-      explanation:language==="en"?"Testosterone/testosterona is accepted as a common-name equivalent only after the complete structure and all stereocentres match the audited reference."
-        :"Testosterone/testosterona se acepta como equivalencia del nombre común solo después de verificar la estructura completa y todos los centros estereogénicos frente a la referencia auditada.",
-      components:common?[common]:[],derivation,language,graph}));
     return {name:language==="en"?"17β-hydroxyandrost-4-en-3-one":"17β-hidroxiandrost-4-en-3-ona",steps};
   }
   if(derivation.evidence?.construction==="fused-steroid-family-stereo"){

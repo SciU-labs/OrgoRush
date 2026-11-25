@@ -147,9 +147,11 @@ test("position and functional-group edits immediately invalidate the testosteron
 test("bilingual How obtained reasoning maps each unique control to the verified graph",()=>{
   const expectedIds=["testosterone-parent",..."ABCD".split("").map(label=>`testosterone-ring-${label}`),
     ...["ab","bc","cd"].map(label=>`testosterone-fusion-${label}`),...Array.from({length:19},(_,i)=>`testosterone-locant-${i+1}`),
-    "testosterone-c18","testosterone-c19","testosterone-unsaturation-4","testosterone-carbonyl-3","testosterone-hydroxy-17","testosterone-17beta","testosterone-global-stereo"];
+    "testosterone-unsaturation-4","testosterone-carbonyl-3","testosterone-hydroxy-17","testosterone-17beta","testosterone-global-stereo"];
   for(const [language,name] of [["en",TESTOSTERONE_NAMES.en],["es",TESTOSTERONE_NAMES.es]]){
     const proof=reconcileSystematicName(testosterone,name),model=buildValidatedPriorityReasoning({derivation:proof,graph:testosterone,language});
+    assert.equal(model.steps.length,6,`${language}: six progressive stages`);
+    assert.deepEqual(model.steps.map(step=>step.number),["1","2","3","4","5","6"]);
     const fragments=model.steps.flatMap(step=>step.fragments?[step.fragments,...(step.fragments.additionalFragments??[])]:[]);
     const semanticIds=fragments.map(fragment=>fragment.semanticId);
     assert.equal(new Set(semanticIds).size,semanticIds.length,`${language}: no duplicate interactive controls`);
@@ -163,7 +165,13 @@ test("bilingual How obtained reasoning maps each unique control to the verified 
       assert.deepEqual([...new Set(target.bondIds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort(),
         [...new Set(component.bondIds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort(),`${language}: ${id} bond IDs`);
     }
-    assert.match(model.steps.map(step=>step.title+" "+step.explanation).join(" "),language==="en"?/C4=C5.*C3 ketone.*C17 hydroxyl.*17β.*C5.*-3-one/is:/C4=C5.*cetona en C3.*hidroxilo en C17.*17β.*C5.*-3-one/is);
+    const completeText=model.steps.map(step=>step.title+" "+step.explanation).join(" ");
+    assert.match(completeText,language==="en"?/C4=C5.*C3.*C17.*17β.*-3-one/is:/C4=C5.*C3.*C17.*17β.*-3-ona/is);
+    if(language==="en")assert.doesNotMatch(completeText,/hidroxi|localizadores|estereoparent/);
+    else assert.doesNotMatch(completeText,/hydroxy|stereoparent|locants/);
+    assert.equal(semanticIds.filter(id=>id==="testosterone-locant-18").length,1);
+    assert.equal(semanticIds.filter(id=>id==="testosterone-locant-19").length,1);
+    assert.equal(semanticIds.some(id=>id==="testosterone-c18"||id==="testosterone-c19"),false,"angular methyls are not duplicated outside the C1–C19 explorer");
   }
 });
 

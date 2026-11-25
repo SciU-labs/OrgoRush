@@ -10103,6 +10103,24 @@ html .a11y-high-contrast .reasoning-name-fragment-control[aria-pressed="true"] {
 .reasoning-step-number:hover,
 .reasoning-step-number[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--brand-selected-ink); }
 .reasoning-step-number:focus-visible { outline: 3px solid var(--brand-selected-ink); outline-offset: 3px; }
+.testosterone-control-stack { display: grid; gap: 8px; margin-top: 8px; }
+.testosterone-control-grid { display: flex; flex-wrap: wrap; align-items: start; gap: 6px; margin-top: 8px; }
+.testosterone-control-grid .reasoning-name-fragment,
+.testosterone-locant-grid .reasoning-name-fragment { margin: 0; }
+.testosterone-advanced-controls { min-width: 0; border: 1px solid var(--brand-border); border-radius: 8px; background: color-mix(in srgb, var(--paper) 90%, var(--brand-primary-soft)); }
+.testosterone-advanced-controls > summary { min-height: 36px; padding: 8px 10px; color: var(--brand-selected-ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.testosterone-advanced-controls > summary:focus-visible { outline: 3px solid var(--brand-selected-ink); outline-offset: 2px; border-radius: 7px; }
+.testosterone-advanced-controls[open] > summary { border-bottom: 1px solid var(--brand-border); }
+.testosterone-advanced-controls > .testosterone-control-grid { padding: 0 9px 9px; }
+.testosterone-locant-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; padding: 9px; }
+.testosterone-locant-grid .reasoning-name-fragment-control { width: 100%; min-height: 34px; }
+.testosterone-name-construction { margin-top: 8px; padding: 10px; border: 1px solid var(--brand-border); border-radius: 8px; background: var(--paper); }
+.testosterone-name-parts { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
+.testosterone-name-parts code { padding: 4px 6px; border-radius: 5px; background: var(--brand-primary-soft); color: var(--ink); font: 700 12px/1.35 ui-monospace, monospace; }
+.testosterone-name-parts > span { color: var(--muted); }
+.testosterone-name-result { margin-top: 9px !important; text-align: center; }
+.testosterone-name-construction > small { display: block; margin-top: 4px; color: var(--muted); text-align: center; }
+@media (max-width: 520px) { .testosterone-locant-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .molecule-stage .reasoning-visual-overlay {
   --reasoning-visual-color: #a64200;
   pointer-events: none;

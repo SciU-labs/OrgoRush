@@ -23,7 +23,7 @@ const allCases = [
 const requestedCase = process.env.TESTOSTERONE_E2E_CASE;
 const cases = requestedCase ? allCases.filter(fixture => fixture.id === requestedCase) : allCases;
 if (requestedCase && cases.length !== 1) throw new Error(`Unknown TESTOSTERONE_E2E_CASE: ${requestedCase}`);
-const outputDirectory = "reports/steroid-testosterone-phase5c/e2e";
+const outputDirectory = "reports/steroid-testosterone-pedagogy/e2e";
 const report = { status: "RUNNING", browser: null, cases: [], errors: [], failedRequests: [], unexpectedRequests: [], optionalRequests: [] };
 let server, browser, origin;
 before(async () => {
@@ -34,12 +34,18 @@ before(async () => {
   report.browser = browser.version();
 });
 after(async () => {
-  report.status = report.cases.length === cases.length && report.errors.length === 0 && report.failedRequests.length === 0 && report.unexpectedRequests.length === 0 ? "PASS" : "FAIL";
+  report.status = report.cases.length === cases.length && report.cases.every(item=>item.status==="PASS")
+    && report.errors.length === 0 && report.failedRequests.length === 0 && report.unexpectedRequests.length === 0 ? "PASS" : "FAIL";
   await writeFile(`${outputDirectory}/results.json`, JSON.stringify(report, null, 2) + "\n");
   await browser?.close(); await server?.close();
 });
 const sorted = items => [...new Set(items)].sort((a, b) => a - b);
 const bondKey = ([a, b]) => [Number(a), Number(b)].sort((x, y) => x - y).join(":");
+async function setView(page,mode){
+  const index=mode==="semi"?0:2,button=page.locator(".view-mode-switch button").nth(index);
+  await button.evaluate(node=>{if(node.getAttribute("aria-pressed")!=="true")node.click();});
+  await page.waitForFunction(index=>document.querySelectorAll(".view-mode-switch button")[index]?.getAttribute("aria-pressed")==="true",index);
+}
 
 async function observeSelection(page, button, target, semanticId) {
   const selector = await button.evaluate(node => `#${node.closest('[id^="iupac-reasoning-step-"]').id} button[data-name-fragment=${JSON.stringify(node.dataset.nameFragment)}]`);
@@ -125,22 +131,52 @@ for (const fixture of cases) test(`${fixture.id}: EN/ES, skeletal/semi and exact
         assert.equal(await panel.locator(".reasoning-validated-name").innerText(), visibleName);
         const model = buildValidatedPriorityReasoning({ derivation: proofs[language], graph: referenceGraph, language, activeName: visibleName });
         const allExpectedIds = ["testosterone-parent", ...["A", "B", "C", "D"].map(x => `testosterone-ring-${x}`), ...["ab", "bc", "cd"].map(x => `testosterone-fusion-${x}`),
-          ...Array.from({ length: 19 }, (_, i) => `testosterone-locant-${i + 1}`), "testosterone-c18", "testosterone-c19", "testosterone-unsaturation-4",
+          ...Array.from({ length: 19 }, (_, i) => `testosterone-locant-${i + 1}`), "testosterone-unsaturation-4",
           "testosterone-carbonyl-3", "testosterone-hydroxy-17", "testosterone-17beta", "testosterone-global-stereo"];
-        const routeControlIds = ["testosterone-parent", "testosterone-c18", "testosterone-c19", "testosterone-unsaturation-4",
+        const routeControlIds = ["testosterone-parent", "testosterone-locant-4", "testosterone-locant-17",
+          "testosterone-locant-18", "testosterone-locant-19", "testosterone-unsaturation-4",
           "testosterone-carbonyl-3", "testosterone-hydroxy-17", "testosterone-17beta", "testosterone-global-stereo"];
-        const expectedIds = fixture.id === "pubchem-smiles" ? allExpectedIds : routeControlIds;
+        assert.equal(model.steps.length, 6, `${language}: exactly six progressive stages`);
+        assert.deepEqual(model.steps.map(step => step.number), ["1", "2", "3", "4", "5", "6"]);
+        const renderedSteps = panel.locator("ol[data-testosterone-steps='6'] > li");
+        assert.equal(await renderedSteps.count(), 6, `${language}: six rendered stages`);
+        const renderedText = await panel.innerText();
+        assert.doesNotMatch(renderedText, language === "en" ? /estereoparent|hidroxiandrost/ : /stereoparent|hydroxyandrost/);
+        assert.equal(await panel.locator('[data-name-fragment="testosterone-locant-18"]').count(), 1, "C18 appears only in the carbon explorer");
+        assert.equal(await panel.locator('[data-name-fragment="testosterone-locant-19"]').count(), 1, "C19 appears only in the carbon explorer");
         for (const mode of ["semi", "skeletal"]) {
-          if (mode === "skeletal") await page.locator(".view-mode-switch button").nth(2).click();
-          else await page.locator(".view-mode-switch button").nth(0).click();
+          const expectedIds = fixture.id === "pubchem-smiles" && language === "es" && mode === "semi"
+            ? allExpectedIds : routeControlIds;
+          await setView(page,mode);
           const viewSelector = mode === "semi" ? ".semi-developed-view .semi-developed-node" : ".skeletal-view .skeletal-node";
           await page.locator(viewSelector).first().waitFor({ state: "attached" });
+          if (fixture.id === "pubchem-smiles") await page.screenshot({ path: `${outputDirectory}/testosterone-${language}-${mode}.png`, fullPage: true });
+          const locantExplorer = panel.locator("[data-testosterone-locant-explorer]");
+          if (fixture.id === "pubchem-smiles" && language === "es" && mode === "semi") {
+            if (await locantExplorer.evaluate(node => node.open)) await locantExplorer.locator("summary").click();
+            assert.equal(await locantExplorer.evaluate(node => node.open), false, "the 19-carbon explorer starts collapsed");
+            const locantSummary = locantExplorer.locator("summary");
+            await locantSummary.focus(); await locantSummary.press("Enter");
+            assert.equal(await locantExplorer.evaluate(node => node.open), true, "the locator explorer opens with the keyboard");
+            assert.equal(await locantExplorer.locator("button[data-name-fragment^='testosterone-locant-']").count(), 19);
+            await locantSummary.press("Enter");
+            assert.equal(await locantExplorer.evaluate(node => node.open), false, "the locator explorer closes with the keyboard");
+          }
           for (const semanticId of expectedIds) {
             const step = model.steps.find(candidate => [candidate.fragments, ...(candidate.fragments?.additionalFragments ?? [])].some(fragment => fragment?.semanticId === semanticId));
             assert.ok(step, `${language}/${mode}: model has ${semanticId}`);
             const fragment = [step.fragments, ...(step.fragments?.additionalFragments ?? [])].find(candidate => candidate?.semanticId === semanticId);
             const target = step.fragmentTargets[reasoningFragmentId(step.number, fragment)];
             assert.ok(target, `${language}/${mode}: target has ${semanticId}`);
+            if (semanticId.startsWith("testosterone-ring-") || semanticId.startsWith("testosterone-fusion-")) {
+              const details = panel.locator("[data-testosterone-ring-details]"); if (!await details.evaluate(node => node.open)) await details.locator("summary").click();
+            }
+            if (semanticId.startsWith("testosterone-locant-")) {
+              const details = panel.locator("[data-testosterone-locant-explorer]"); if (!await details.evaluate(node => node.open)) await details.locator("summary").click();
+            }
+            if (semanticId === "testosterone-global-stereo") {
+              const details = panel.locator("[data-testosterone-stereo-details]"); if (!await details.evaluate(node => node.open)) await details.locator("summary").click();
+            }
             const control = panel.locator(`#iupac-reasoning-step-${step.number} button[data-name-fragment=${JSON.stringify(semanticId)}]`);
             assert.equal(await control.count(), 1, `${fixture.id}/${language}/${mode}: unique ${semanticId}`);
             const selected = await observeSelection(page, control, target, semanticId);
@@ -148,9 +184,17 @@ for (const fixture of cases) test(`${fixture.id}: EN/ES, skeletal/semi and exact
             assert.deepEqual(selected.bonds, [...new Set(target.bondIds.map(bondKey))].sort(), `${semanticId} bond IDs`);
             entry.controlsChecked++;
           }
-          if (fixture.id === "pubchem-smiles") await page.screenshot({ path: `${outputDirectory}/testosterone-${language}-${mode}.png`, fullPage: true });
           entry.combinations.push({ language, mode, support: "FULL" });
         }
+      }
+      if(fixture.id==="pubchem-smiles"){
+        await page.setViewportSize({width:390,height:844});
+        const mobileLayout=await page.evaluate(()=>({viewport:window.innerWidth,document:document.documentElement.scrollWidth,
+          overflowing:[...document.querySelectorAll("body *")].filter(node=>{const rect=node.getBoundingClientRect();return rect.width>0&&rect.right>window.innerWidth+1;})
+            .slice(0,10).map(node=>({tag:node.tagName,className:typeof node.className==="string"?node.className:"",right:Math.round(node.getBoundingClientRect().right)}))}));
+        assert.equal(mobileLayout.document<=mobileLayout.viewport,true,`mobile page width: ${JSON.stringify(mobileLayout)}`);
+        assert.deepEqual(mobileLayout.overflowing,[],`mobile controls stay within the viewport: ${JSON.stringify(mobileLayout)}`);
+        await page.screenshot({path:`${outputDirectory}/testosterone-mobile-es.png`,fullPage:true});
       }
     } else {
       await page.waitForFunction(() => Boolean(document.querySelector("#iupac-reasoning-content")?.innerText.trim()), null, { timeout: 30000 });
@@ -158,7 +202,7 @@ for (const fixture of cases) test(`${fixture.id}: EN/ES, skeletal/semi and exact
       for (const language of ["es", "en"]) {
         if (language === "en") await page.getByRole("button", { name: "English", exact: true }).click();
         for (const mode of ["semi", "skeletal"]) {
-          await page.locator(".view-mode-switch button").nth(mode === "semi" ? 0 : 2).click();
+          await setView(page,mode);
           await page.locator(mode === "semi" ? ".semi-developed-view .semi-developed-node" : ".skeletal-view .skeletal-node").first().waitFor({ state: "attached" });
           const support = await panel.getAttribute("data-derivation-support");
           assert.notEqual(support, "FULL", `${fixture.id}/${language}/${mode} cannot be testosterone FULL`);

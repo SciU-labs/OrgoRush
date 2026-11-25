@@ -15,6 +15,8 @@ export type ReasoningNameEvidence = {
   numberingScope?: string;
   atomIds?: readonly number[];
   semanticId?: string;
+  /** Optional presentation label that does not participate in structural identity. */
+  displayText?: string;
   bondType?: "double" | "triple";
   locant?: number;
   bondIds?: readonly (readonly [number, number])[];
