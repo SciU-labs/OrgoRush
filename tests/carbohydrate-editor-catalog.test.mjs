@@ -27,7 +27,7 @@ test('phase 8 preserves every catalog button, category, label and menu layout by
   ]);
   assert.ok(!catalog.some(t=>/hemi|pyran|furan|sugar|carbohydrate/i.test(t.id)));
 });
-test('editor chemistry modules remain unchanged apart from bounded nomenclature and B7.5 additions',()=>{
+test('editor chemistry modules remain unchanged apart from bounded nomenclature and audited steroid additions',()=>{
   for(const [file,sha256] of Object.entries(baseline.files)){
     if(file==='app/name-to-molecule.ts'){
       let source=read(file).replace(/\r\n/g,'\n');
@@ -38,6 +38,7 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       const gonaneBuilderImport='import { buildGonaneMoleculeFromName } from "./gonane-stereo-grammar.ts";\n';
       const steroidBuilderImport='import { buildSteroidFamilyMoleculeFromName } from "./steroid-family-grammar.ts";\n';
       const testosteroneBuilderImport='import { buildTestosteroneMoleculeFromName } from "./testosterone-stereo-grammar.ts";\n';
+      const progesteroneBuilderImport='import { buildProgesteroneMoleculeFromName } from "./progesterone-stereo-grammar.ts";\n';
       const junctionStereoTypeImport='import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";\n';
       const tricyclicStereoTypeImport='import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";\n';
       const polycyclicStereoTypeImport='import type { FusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";\n';
@@ -50,9 +51,11 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       const gonaneFamilyType=' | "fused-gonane-stereo"';
       const steroidFamilyType=' | "fused-steroid-family"';
       const testosteroneFamilyType=' | "fused-testosterone-stereo"';
+      const progesteroneFamilyType=' | "fused-progesterone-stereo"';
       const gonaneBuilderBranch='  const gonane=buildGonaneMoleculeFromName(value);\n  if(gonane)return gonane;\n';
       const steroidBuilderBranch='  const steroid=buildSteroidFamilyMoleculeFromName(value);\n  if(steroid)return steroid;\n';
       const testosteroneBuilderBranch='  const testosterone=buildTestosteroneMoleculeFromName(value);\n  if(testosterone)return testosterone;\n';
+      const progesteroneBuilderBranch='  const progesterone=buildProgesteroneMoleculeFromName(value);\n  if(progesterone)return progesterone;\n';
       const builderBranch='  const naphthalene = parseFusedNaphthalene(value.trim().toLocaleLowerCase("es"));\n'
         +'  if (naphthalene) return { ok: true, molecule: naphthalene.graph,\n'
         +'    normalizedInput: value.trim().toLocaleLowerCase("es"), enabledAliases: [], inputFamily: "fused-naphthalene" };\n';
@@ -71,6 +74,7 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       assert.equal(source.split(gonaneBuilderImport).length-1,1,'gonane stereo builder import must remain singular');
       assert.equal(source.split(steroidBuilderImport).length-1,1,'steroid family builder import must remain singular');
       assert.equal(source.split(testosteroneBuilderImport).length-1,1,'testosterone builder import must remain singular');
+      assert.equal(source.split(progesteroneBuilderImport).length-1,1,'progesterone builder import must remain singular');
       assert.equal(source.split(junctionStereoTypeImport).length-1,1,'fused junction stereo type import must remain singular');
       assert.equal(source.split(junctionStereoField).length-1,1,'fused junction stereo metadata remains a single optional graph field');
       assert.equal(source.split(tricyclicStereoTypeImport).length-1,1,'fused tricycle stereo type import must remain singular');
@@ -83,19 +87,21 @@ test('editor chemistry modules remain unchanged apart from bounded nomenclature 
       assert.equal(source.split(gonaneFamilyType).length-1,2,'both name-builder result variants expose the bounded gonane family');
       assert.equal(source.split(steroidFamilyType).length-1,2,'both name-builder result variants expose the bounded steroid family');
       assert.equal(source.split(testosteroneFamilyType).length-1,2,'both name-builder result variants expose the bounded testosterone family');
+      assert.equal(source.split(progesteroneFamilyType).length-1,2,'both name-builder result variants expose the bounded progesterone family');
       assert.equal(source.split(gonaneBuilderBranch).length-1,1,'gonane name import remains one bounded early branch');
       assert.equal(source.split(steroidBuilderBranch).length-1,1,'steroid-family name import remains one bounded early branch');
       assert.equal(source.split(testosteroneBuilderBranch).length-1,1,'testosterone name import remains one bounded early branch');
+      assert.equal(source.split(progesteroneBuilderBranch).length-1,1,'progesterone name import remains one bounded early branch');
       assert.equal(source.split(builderBranch).length-1,1,'fused naphthalene name import remains one bounded early branch');
       assert.equal(source.split(tricyclicBuilderBranch).length-1,1,'fused tricyclic arene name import remains one bounded early branch');
       assert.equal(source.split(partiallySaturatedBuilderBranch).length-1,1,'partially saturated fused name import remains one bounded early branch');
       assert.equal(source.split(decalinBuilderBranch).length-1,2,'both name-builder entry points expose the bounded decalin parser');
       source=source.replace(parserImport,'').replace(tricyclicParserImport,'').replace(partiallySaturatedParserImport,'')
-        .replace(decalinParserImport,'').replace(gonaneBuilderImport,'').replace(steroidBuilderImport,'').replace(testosteroneBuilderImport,'').replace(junctionStereoTypeImport,'').replace(tricyclicStereoTypeImport,'')
+        .replace(decalinParserImport,'').replace(gonaneBuilderImport,'').replace(steroidBuilderImport,'').replace(testosteroneBuilderImport,'').replace(progesteroneBuilderImport,'').replace(junctionStereoTypeImport,'').replace(tricyclicStereoTypeImport,'')
         .replace(polycyclicStereoTypeImport,'').replace(junctionStereoField,'').replace(tricyclicStereoField,'').replace(polycyclicStereoField,'')
         .replace(decalinParserImport,'').replaceAll(familyTypes[0],'').replaceAll(familyTypes[1],'').replaceAll(partiallySaturatedFamilyType,'').replaceAll(decalinFamilyType,'')
-        .replaceAll(gonaneFamilyType,'').replaceAll(steroidFamilyType,'').replaceAll(testosteroneFamilyType,'').replace(builderBranch,'').replace(tricyclicBuilderBranch,'').replace(partiallySaturatedBuilderBranch,'')
-        .replace(gonaneBuilderBranch,'').replace(steroidBuilderBranch,'').replace(testosteroneBuilderBranch,'').replaceAll(decalinBuilderBranch,'');
+        .replaceAll(gonaneFamilyType,'').replaceAll(steroidFamilyType,'').replaceAll(testosteroneFamilyType,'').replaceAll(progesteroneFamilyType,'').replace(builderBranch,'').replace(tricyclicBuilderBranch,'').replace(partiallySaturatedBuilderBranch,'')
+        .replace(gonaneBuilderBranch,'').replace(steroidBuilderBranch,'').replace(testosteroneBuilderBranch,'').replace(progesteroneBuilderBranch,'').replaceAll(decalinBuilderBranch,'');
       assert.equal(hash(source),sha256,file);
       continue;
     }
