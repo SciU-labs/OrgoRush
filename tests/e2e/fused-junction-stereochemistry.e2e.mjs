@@ -65,7 +65,9 @@ for(const language of ['es','en'])for(const fixture of cases)test(`${fixture.con
     if(fixture.requiresFull!==false){
       await page.locator('#iupac-reasoning-content').getByText(language==='en'?'Fusion configuration':'Configuración de la fusión',{exact:true}).waitFor();
       const junctionControl=page.locator('[data-name-fragment="fusion-junction"]').first();
-      await junctionControl.click();
+      await junctionControl.focus();
+      assert.equal(await junctionControl.evaluate(node=>node===document.activeElement),true,'fusion control must receive keyboard focus');
+      await junctionControl.press('Enter');
       const highlighted=await page.locator('.reasoning-visual-overlay[data-reasoning-step="2"]').evaluate(node=>({
         atoms:[...node.querySelectorAll('[data-reasoning-atom]')].map(item=>Number(item.getAttribute('data-reasoning-atom'))).sort((a,b)=>a-b),
         bonds:[...node.querySelectorAll('[data-reasoning-bond]')].map(item=>item.getAttribute('data-reasoning-bond').split(':').map(Number).sort((a,b)=>a-b)),

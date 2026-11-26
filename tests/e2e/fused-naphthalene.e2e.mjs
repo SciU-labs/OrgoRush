@@ -22,7 +22,7 @@ const selected=process.env.NAPHTHALENE_E2E_CASES?.split(",");
 const output=resolve(process.env.NAPHTHALENE_E2E_OUT_DIR??"reports/fused-naphthalene-phase1/e2e");
 const key=([a,b])=>[Number(a),Number(b)].sort((x,y)=>x-y).join(":");
 const sorted=values=>[...new Set(values)].sort((a,b)=>a-b);
-async function selectExact(page,button,target,visibleLocants){
+async function selectExact(page,button,target,visibleLocants,activation="click"){
   const expected={atoms:sorted(target.atomIds),bonds:target.bondIds.map(key).sort(),
     locants:target.locants.filter(([id,locant])=>visibleLocants[id]!==String(locant))
       .map(([id,locant])=>[Number(id),String(locant)]).sort(([a],[b])=>a-b)};
@@ -43,7 +43,11 @@ async function selectExact(page,button,target,visibleLocants){
     observer=new MutationObserver(snapshot);observer.observe(document.body,{subtree:true,attributes:true,childList:true});
     timer=setTimeout(()=>complete({ok:false,selector,pressed:document.querySelector(selector)?.getAttribute("aria-pressed")}),10000);
   },{expected,selector});
-  await button.click();
+  if(activation==="keyboard"){
+    await button.focus();
+    assert.equal(await button.evaluate(node=>node===document.activeElement),true,"graph control must receive keyboard focus");
+    await button.press("Enter");
+  }else await button.click();
   const result=await page.evaluate(()=>window.__naphthaleneSelection.promise);
   assert.equal(result.ok,true,JSON.stringify(result));
   assert.deepEqual(result.actual,expected);
@@ -102,7 +106,7 @@ test("six naphthalene cases retain exact graph selections across both languages 
       assert.equal(parentEdges.length,11);
       const locants=new Map(fusionParent.components.find(component=>component.id==="parent").numbering.map(([id,locant])=>[String(locant),id]));
       assert.ok(parentEdges.some(([a,b])=>key([a,b])===key([locants.get("4a"),locants.get("8a")])),"fused bond is one exact parent graph edge");
-      const observations=[];
+      const observations=[];let keyboardSelectionVerified=false;
       for(const language of ["es","en"]){
         if(language==="en")await page.getByRole("button",{name:"English",exact:true}).click();
         const name=language==="es"?item.es:item.en;
@@ -126,7 +130,8 @@ test("six naphthalene cases retain exact graph selections across both languages 
               const button=panel.locator(`#iupac-reasoning-step-${step.number} button[data-name-fragment=${JSON.stringify(fragment.semanticId)}]`);
               assert.equal(await button.count(),1,`${item.id}/${language}/${mode}/${fragment.semanticId}`);
               const visible=await page.locator(".molecule-stage [data-atom-id]").evaluateAll(nodes=>Object.fromEntries(nodes.map(node=>[node.dataset.atomId,node.querySelector(".number-label")?.textContent])));
-              const observed=await selectExact(page,button,target,visible);
+              const observed=await selectExact(page,button,target,visible,keyboardSelectionVerified?"click":"keyboard");
+              keyboardSelectionVerified=true;
               observations.push({language,mode,id:fragment.semanticId,...observed.actual,elapsedMs:observed.elapsedMs});
             }
           }

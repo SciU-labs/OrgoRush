@@ -13,6 +13,8 @@ import { validatedNameTargets, type NameComponent, type ValidatedNameDerivation 
 import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
 import { deriveSteroidPedagogicalDecisions } from "./steroid-pedagogy-engine.ts";
+import { renderPedagogicalDecisionPlan, type PedagogicalDecision, type PedagogicalStepPlan } from "./pedagogical-decision-model.ts";
+import { adaptDecalinEvidence, adaptNaphthaleneEvidence } from "./fused-ring-pedagogy-adapters.ts";
 
 export type PriorityReasoningStep = {
   number: string;
@@ -338,7 +340,9 @@ function makeStep(input: {
     ? { ...fragments[0], additionalFragments: fragments.slice(1) } : undefined;
   const fragmentTargets: Record<string, ReasoningVisualTarget> = {};
   components.forEach((component, index) => {
-    const target = targets[component.id] ?? (component.equivalenceGroup ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering} : undefined), fragment = fragments[index];
+    const presentationOnly = !derivation.components.some(existing => existing.id === component.id);
+    const target = targets[component.id] ?? (component.equivalenceGroup || presentationOnly
+      ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering} : undefined), fragment = fragments[index];
     if (target) fragmentTargets[reasoningFragmentId(number, fragment)] = { ...target, stepNumber: number,
       fragmentId: reasoningFragmentId(number, fragment) };
   });
@@ -448,9 +452,23 @@ function makeStep(input: {
   const allFragments = [...displayedFragments, ...locantFragments];
   const fragmentView = allFragments.length ? { ...allFragments[0], additionalFragments: allFragments.slice(1) } : undefined;
   const stepTargets = title === (language === "en" ? "Numbering" : "Numeración")
-    ? numberingTargets : components.map(component => targets[component.id] ?? (component.equivalenceGroup ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering}:undefined)).filter(Boolean);
+    ? numberingTargets : components.map(component => targets[component.id] ?? (component.equivalenceGroup || !derivation.components.some(existing => existing.id === component.id)
+      ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering}:undefined)).filter(Boolean);
   return { number, title, explanation, target: unionTarget(number, stepTargets),
     fragments: fragmentView, fragmentTargets, componentIds: components.map(component => component.id), source: "FULL", alphabeticalOrder };
+}
+
+function renderCommonPedagogy(input: { decisions: readonly PedagogicalDecision[]; plan: readonly PedagogicalStepPlan[];
+  derivation: ValidatedNameDerivation; graph: GeneratedMolecule; language: AppLanguage; extras?: readonly NameComponent[] }) {
+  const rendered = renderPedagogicalDecisionPlan(input.decisions, input.plan, input.language);
+  const components = new Map([...input.derivation.components, ...(input.extras ?? [])].map(component => [component.id, component]));
+  return rendered.map((item, index) => {
+    const targets = item.componentIds.map(id => components.get(id)).filter((value): value is NameComponent => Boolean(value));
+    const step = makeStep({ number: String(index + 1), title: item.title, explanation: item.explanation, components: targets,
+      derivation: input.derivation, language: input.language, graph: input.graph });
+    if (item.advancedExplanation) step.advancedExplanation = item.advancedExplanation;
+    return step;
+  });
 }
 
 /** Projects FULL component evidence into the same numbered priority-list UI as
@@ -494,10 +512,18 @@ export function buildValidatedPriorityReasoning(input: {
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
   if (derivation.evidence?.steroidPedagogy) {
-    const decisions = deriveSteroidPedagogicalDecisions(derivation.evidence.steroidPedagogy);
-    const decision = (id: string) => decisions.find(item => item.id === id);
-    const decisionText = (ids: string[]) => ids.map(id => decision(id)?.explanation[language]).filter(Boolean).join(" ");
-    const rationaleText = (ids: string[]) => ids.map(id => decision(id)?.why?.[language]).filter(Boolean).join(" ");
+    const steroidEvidence = derivation.evidence.steroidPedagogy;
+    const steroidDecisions = deriveSteroidPedagogicalDecisions(steroidEvidence);
+    const decisions: PedagogicalDecision[] = steroidDecisions.map(item => ({ id: item.id,
+      kind: item.kind === "conventional-numbering" ? "conventional-numbering" : item.kind === "unsaturation" ? "unsaturation"
+        : item.kind === "side-chain-recognition" ? "side-chain-recognition" : item.kind === "principal-functional-group" ? "functional-priority"
+          : item.kind === "subordinate-functional-group" ? "subordinate-functional-group" : item.kind === "functional-multiplicity" ? "functional-multiplicity"
+            : item.kind === "stereochemical-orientation" ? "absolute-stereochemistry" : item.kind === "name-assembly" ? "name-assembly" : "parent-recognition",
+      family: "steroid", rule: item.rule, evidenceSource: "complete graph isomorphism and steroid family adapter",
+      atomIds: item.evidence.atomIds, bondIds: item.evidence.bondIds, locants: item.evidence.locants,
+      result: item.result, explanation: item.explanation, why: item.why, nameFragments: item.nameFragments,
+      dependsOn: item.dependsOn, verification: item.verification }));
+    const decisionIds = (kind: string) => steroidDecisions.filter(item => item.kind === kind).map(item => item.id);
     const rings = displayedComponents.filter(component => component.id.startsWith("steroid-ring-")
       || component.id.startsWith("testosterone-ring-"));
     const fusions = displayedComponents.filter(component => component.id.startsWith("steroid-fusion-")
@@ -521,31 +547,34 @@ export function buildValidatedPriorityReasoning(input: {
     const functions = displayedComponents.filter(component => component.id.startsWith("steroid-ketone-")
       || component.id.startsWith("steroid-hydroxyl-") || component.id.startsWith("testosterone-carbonyl-")
       || component.id.startsWith("testosterone-hydroxy-"));
-    const steps: PriorityReasoningStep[] = [];
-    const push = (title: string, explanation: string, components: NameComponent[], rationaleIds: string[]) => {
-      if (!explanation) return;
-      const step = makeStep({ number: String(steps.length + 1), title, explanation, components, derivation, language, graph });
-      const advancedExplanation = rationaleText(rationaleIds);
-      if (advancedExplanation) step.advancedExplanation = advancedExplanation;
-      steps.push(step);
-    };
-    push(language === "en" ? "Identify the steroid skeleton" : "Identificar el esqueleto esteroideo",
-      decisionText(["steroid.parent", "steroid.side-chain"]), [parent, byId.get("steroid-side-chain"), byId.get("testosterone-androstane-core") ?? testosteroneCore,
-        byId.get("steroid-c18") ?? byId.get("testosterone-c18"), byId.get("steroid-c19") ?? byId.get("testosterone-c19"), ...rings, ...fusions]
-        .filter((item): item is NameComponent => Boolean(item)), ["steroid.parent", "steroid.side-chain"]);
-    push(language === "en" ? "Apply conventional numbering" : "Aplicar la numeración convencional",
-      decisionText(["steroid.numbering"]), locants, ["steroid.numbering"]);
-    const unsaturation = decisionText(decisions.filter(item => item.kind === "unsaturation").map(item => item.id));
-    push(language === "en" ? "Locate unsaturation" : "Localizar la insaturación",
-      unsaturation, displayedComponents.filter(component => component.role === "unsaturation"), decisions.filter(item => item.kind === "unsaturation").map(item => item.id));
-    push(language === "en" ? "Identify functions and their multiplicity" : "Identificar las funciones y su multiplicidad",
-      decisionText(["steroid.principal-function", "steroid.hydroxyls"]), functions, ["steroid.principal-function", "steroid.hydroxyls"]);
-    push(language === "en" ? "Verify stereochemistry" : "Verificar la estereoquímica",
-      decisionText(["steroid.stereochemistry"]), [byId.get("steroid-stereo") ?? byId.get("testosterone-global-stereo"),
-        byId.get("testosterone-17beta"), betaBondControl]
-        .filter((item): item is NameComponent => Boolean(item)), ["steroid.stereochemistry"]);
-    push(language === "en" ? "Assemble the name" : "Construir el nombre",
-      decisionText(["steroid.name-assembly"]), [], ["steroid.name-assembly"]);
+    const testosteroneRoute = derivation.evidence.construction === "fused-testosterone-stereo";
+    const plans: PedagogicalStepPlan[] = testosteroneRoute ? [
+      { id: "steroid-parent", title: { en: "Identify the steroid skeleton", es: "Identificar el esqueleto esteroideo" },
+        decisionIds: ["steroid.parent"], componentIds: ["testosterone-parent", "testosterone-androstane-core", "testosterone-c18", "testosterone-c19",
+          ...["A","B","C","D"].map(letter=>`testosterone-ring-${letter}`), ...["ab","bc","cd"].map(edge=>`testosterone-fusion-${edge}`)] },
+      { id: "steroid-numbering", title: { en: "Apply conventional numbering", es: "Aplicar la numeración convencional" }, decisionIds: ["steroid.numbering"],
+        componentIds: Array.from({length:19},(_,index)=>`testosterone-locant-${index+1}`) },
+      { id: "steroid-unsaturation", title: { en: "Locate unsaturation", es: "Localizar la insaturación" }, decisionIds: decisionIds("unsaturation"), componentIds: ["testosterone-unsaturation-4"] },
+      { id: "steroid-functions", title: { en: "Identify functions and their multiplicity", es: "Identificar las funciones y su multiplicidad" },
+        decisionIds: ["steroid.principal-function", "steroid.hydroxyls"], componentIds: ["testosterone-carbonyl-3", "testosterone-hydroxy-17"] },
+      { id: "steroid-stereo", title: { en: "Verify stereochemistry", es: "Verificar la estereoquímica" }, decisionIds: ["steroid.stereochemistry"],
+        componentIds: ["testosterone-17beta", "testosterone-global-stereo", "testosterone-17beta-bond"] },
+      { id: "steroid-name", title: { en: "Assemble the name", es: "Construir el nombre" }, decisionIds: ["steroid.name-assembly"], componentIds: [] },
+    ] : [
+      { id: "steroid-parent", title: { en: "Identify the steroid skeleton", es: "Identificar el esqueleto esteroideo" },
+        decisionIds: ["steroid.parent", "steroid.side-chain"], componentIds: [parent?.id, byId.get("steroid-side-chain")?.id,
+          byId.get("testosterone-androstane-core")?.id ?? testosteroneCore?.id, byId.get("steroid-c18")?.id ?? byId.get("testosterone-c18")?.id,
+          byId.get("steroid-c19")?.id ?? byId.get("testosterone-c19")?.id, ...rings.map(item=>item.id), ...fusions.map(item=>item.id)].filter((id):id is string=>Boolean(id)) },
+      { id: "steroid-numbering", title: { en: "Apply conventional numbering", es: "Aplicar la numeración convencional" }, decisionIds: ["steroid.numbering"], componentIds: locants.map(item=>item.id) },
+      { id: "steroid-unsaturation", title: { en: "Locate unsaturation", es: "Localizar la insaturación" }, decisionIds: decisionIds("unsaturation"), componentIds: displayedComponents.filter(item=>item.role==="unsaturation").map(item=>item.id) },
+      { id: "steroid-functions", title: { en: "Identify functions and their multiplicity", es: "Identificar las funciones y su multiplicidad" },
+        decisionIds: ["steroid.principal-function", "steroid.hydroxyls"], componentIds: functions.map(item=>item.id) },
+      { id: "steroid-stereo", title: { en: "Verify stereochemistry", es: "Verificar la estereoquímica" }, decisionIds: ["steroid.stereochemistry"],
+        componentIds: [byId.get("steroid-stereo")?.id ?? byId.get("testosterone-global-stereo")?.id, byId.get("testosterone-17beta")?.id, betaBondControl?.id].filter((id):id is string=>Boolean(id)) },
+      { id: "steroid-name", title: { en: "Assemble the name", es: "Construir el nombre" }, decisionIds: ["steroid.name-assembly"], componentIds: parent?[parent.id]:[] },
+    ];
+    const steps = renderCommonPedagogy({ decisions, plan: plans, derivation, graph, language,
+      extras: [testosteroneCore, betaBondControl].filter((item):item is NameComponent=>Boolean(item)) });
     if (steps.length) return { name: input.activeName ?? derivation.name, steps };
   }
   if(derivation.evidence?.construction==="fused-testosterone-stereo"){
@@ -662,25 +691,26 @@ export function buildValidatedPriorityReasoning(input: {
     return {name:derivation.name,steps};
   }
   if(derivation.evidence?.construction==="fused-decalin"){
-    const rings=displayedComponents.filter(component=>component.id.startsWith("fused-ring-"));
-    const junction=byId.get("fusion-junction");
-    const configuration=graph.fusedRingJunctionStereo?.configuration??"unspecified";
-    const steps:PriorityReasoningStep[]=[makeStep({number:"1",title:language==="en"?"Parent structure":"Estructura principal",
-      explanation:language==="en"?"Decalin is the parent: two saturated six-membered rings share one bond."
-        :"La decalina es la estructura principal: dos anillos saturados de seis miembros comparten un enlace.",
-      components:[...(parent?[parent]:[]),...rings],derivation,language,graph})];
-    if(junction)steps.push(makeStep({number:"2",title:language==="en"?"Fusion configuration":"Configuración de la fusión",
-      explanation:configuration==="unspecified"
-        ?language==="en"?"The name leaves the relative configuration at the shared ring junction unspecified."
-          :"El nombre deja sin especificar la configuración relativa de la unión entre los anillos."
-        :language==="en"?`The two junction hydrogens have the verified ${configuration} relationship. This relation comes from stereochemical identity, not their screen positions.`
-          :`Los dos hidrógenos de la unión tienen la relación ${configuration} verificada. Esta relación procede de la identidad estereoquímica, no de su posición en pantalla.`,
-      components:[junction],derivation,language,graph}));
-    steps.push(makeStep({number:String(steps.length+1),title:language==="en"?"Build the name":"Construcción del nombre",
-      explanation:language==="en"?"Use decalin or decahydronaphthalene; add cis/trans only when the fusion configuration is specified."
-        :"Se usa decalina o decahidronaftaleno; se añade cis/trans solo cuando se especifica la configuración de fusión.",
-      components:[...(parent?[parent]:[]),...(junction?[junction]:[])],derivation,language,graph}));
-    return {name:derivation.name,steps};
+    const adaptation=adaptDecalinEvidence(graph,derivation);
+    if(adaptation)return {name:input.activeName??derivation.name,steps:renderCommonPedagogy({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language})};
+  }
+  if(derivation.evidence?.construction==="fused-naphthalene"){
+    const adaptation=adaptNaphthaleneEvidence(graph,derivation);
+    if(adaptation){
+      const reference=parent??displayedComponents.find(component=>component.id==="parent");
+      const rings=(graph.rings??[]).filter(ring=>ring.kind==="aromatic"&&ring.atomIds.length===6&&ring.atomIds.every(id=>derivation.parentAtomIds.includes(id)));
+      const fusionAtoms=rings.length===2?rings[0]!.atomIds.filter(id=>rings[1]!.atomIds.includes(id)):[];
+      const shared=graph.bonds.find(([a,b])=>fusionAtoms.includes(a)&&fusionAtoms.includes(b));
+      const extras:NameComponent[]=[...rings.map((ring,index)=>({...(reference??derivation.components[0]!),id:`fused-ring:${index+1}`,text:language==="en"?`aromatic ring ${index+1}`:`anillo aromático ${index+1}`,role:"parent" as const,language,
+        atomIds:[...ring.atomIds],bondIds:graph.bonds.filter(([a,b])=>ring.atomIds.includes(a)&&ring.atomIds.includes(b)).map(([a,b])=>[a,b] as [number,number]),numbering:[],start:0,end:derivation.name.length,
+        label:language==="en"?`Aromatic ring ${index+1}`:`Anillo aromático ${index+1}`,labelEs:`Anillo aromático ${index+1}`})),
+        ...(fusionAtoms.length? [{...(reference??derivation.components[0]!),id:"fusion-atoms",text:language==="en"?"fusion atoms":"átomos de fusión",role:"parent" as const,language,atomIds:fusionAtoms,bondIds:shared?[[shared[0],shared[1]] as [number,number]]:[],numbering:[],start:0,end:derivation.name.length,
+          label:language==="en"?"Fusion atoms":"Átomos de fusión",labelEs:"Átomos de fusión"}]:[]),
+        ...(shared? [{...(reference??derivation.components[0]!),id:"fusion-bonds",text:language==="en"?"shared fusion bond":"enlace de fusión compartido",role:"parent" as const,language,atomIds:[...fusionAtoms],bondIds:[[shared[0],shared[1]] as [number,number]],numbering:[],start:0,end:derivation.name.length,
+          label:language==="en"?"Shared fusion bond":"Enlace de fusión compartido",labelEs:"Enlace de fusión compartido"}]:[]),
+      ];
+      return {name:input.activeName??derivation.name,steps:renderCommonPedagogy({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language,extras})};
+    }
   }
   if(derivation.evidence?.construction==="fused-tricyclic-stereo"){
     const rings=displayedComponents.filter(component=>component.id.startsWith("fused-ring-"));
