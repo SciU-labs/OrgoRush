@@ -10582,7 +10582,8 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         || moleculeContainsHeterocycle(next)
         || advancedNameResolved)
         && externalCandidateNeedsNeutralLocalName(next, generatedAnalysis);
-      const preserveGraphSourceName = preserveTrustedSourceName && !hasGraphRenderableAlias;
+      const preserveGraphSourceName = preserveTrustedSourceName && !hasGraphRenderableAlias
+        && localPreflight.inputFamily !== "fused-progesterone-stereo";
       // Keep a PubChem common-name input as the recorded reasoning source,
       // while any preserved graph override must be a systematic name from the
       // verified record rather than the user's common-name spelling.
@@ -10611,7 +10612,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       // If OPSIN/OpenChemLib successfully parsed a structure whose nested
       // functional groups exceed the local naming grammar, keep the validated
       // source name rather than replacing it with an incomplete suggestion.
-      setSourceNameOverride(preserveGraphSourceName && !["fused-testosterone-stereo","fused-progesterone-stereo"].includes(localPreflight.inputFamily ?? "")
+      setSourceNameOverride(preserveGraphSourceName && localPreflight.inputFamily !== "fused-testosterone-stereo"
         ? preferredSourceName : null);
       if (getTetrahedralStereoCenters(next).length || next.bonds.some(bond => bond[3] === true)) {
         setShowStereochemistry(true);
