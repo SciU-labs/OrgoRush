@@ -496,30 +496,46 @@ export function buildValidatedPriorityReasoning(input: {
     const fusions=["ab","bc","cd"].map(label=>byId.get(`testosterone-fusion-${label}`)).filter((item):item is NameComponent=>Boolean(item));
     const locants=Array.from({length:19},(_,index)=>byId.get(`testosterone-locant-${index+1}`)).filter((item):item is NameComponent=>Boolean(item));
     const parent=byId.get("testosterone-parent");
+    const c18=byId.get("testosterone-c18"),c19=byId.get("testosterone-c19");
+    const c17Hydroxy=byId.get("testosterone-hydroxy-17");
+    const coreAtomIds=locants.slice(0,17).flatMap(component=>component.atomIds);
+    const coreAtoms=new Set(coreAtomIds);
+    const coreBonds=graph.bonds.filter(([a,b])=>coreAtoms.has(a)&&coreAtoms.has(b))
+      .map(([a,b])=>a<b?[a,b] as [number,number]:[b,a] as [number,number]);
+    // These are presentation-only selections assembled from the validated
+    // locant map and graph. The nomenclature grammar remains the single source
+    // of chemical identity and name components.
+    const steroidCore:NameComponent={...(parent??locants[0]!),id:"testosterone-androstane-core",role:"parent",
+      text:"C1–C17",label:"C1–C17 steroid nucleus",labelEs:"núcleo esteroideo C1–C17",
+      atomIds:coreAtomIds,bondIds:coreBonds,numbering:locants.slice(0,17).flatMap(component=>component.numbering),
+      equivalenceGroup:"testosterone-reasoning-core"};
+    const c17HydroxyBondControl=c17Hydroxy?{...c17Hydroxy,id:"testosterone-17beta-bond",text:"C17–OH",
+      label:"C17–OH bond in the steroid reference",labelEs:"enlace C17–OH en la referencia esteroidea",
+      equivalenceGroup:"testosterone-reasoning-17beta-bond"}:undefined;
     const steps:PriorityReasoningStep[]=[
       makeStep({number:"1",title:language==="en"?"Identify the steroid skeleton":"Identificar el esqueleto esteroideo",
-        explanation:language==="en"?"Four fused rings of sizes 6–6–6–5 form the androstane skeleton. The angular methyls C18 and C19, attached to C13 and C10 respectively, identify this steroid framework."
-          :"Cuatro anillos fusionados de tamaños 6–6–6–5 forman el esqueleto del androstano. Los metilos angulares C18 y C19, unidos a C13 y C10 respectivamente, permiten reconocer esta estructura esteroidea.",
-        components:[...(parent?[parent]:[]),...rings,...fusions],derivation,language,graph}),
+        explanation:language==="en"?"The four fused rings have the 6–6–6–5 pattern, and the C1–C17 core contains 17 carbons: together these identify the gonane skeleton, without angular methyls at C10 or C13. The angular methyl C18 at C13 gives the 18-carbon estrane pattern; adding C19 at C10 identifies the 19-carbon androstane skeleton, whose stem is androst-. The ring pattern alone would not distinguish these steroid skeletons."
+          :"Los cuatro anillos fusionados siguen el patrón 6–6–6–5 y el núcleo C1–C17 contiene 17 carbonos: en conjunto corresponden al esqueleto del gonano, sin metilos angulares en C10 ni C13. El metilo angular C18 en C13 da el patrón de 18 carbonos del estrano; al añadir C19 en C10 se identifica el esqueleto de 19 carbonos del androstano, del que procede el tema androst-. El patrón de anillos por sí solo no distingue estos esqueletos esteroideos.",
+        components:[...(parent?[parent]:[]),steroidCore,...(c18?[c18]:[]),...(c19?[c19]:[]),...rings,...fusions],derivation,language,graph}),
       makeStep({number:"2",title:language==="en"?"Apply steroid numbering":"Aplicar la numeración esteroidea",
-        explanation:language==="en"?"The steroid convention numbers the core C1–C17 and assigns C18 and C19 to the angular methyls. These locants identify the positions used for the functional groups and double bond."
-          :"La convención esteroidea numera el núcleo del C1 al C17 y asigna C18 y C19 a los metilos angulares. Estos localizadores permiten ubicar los grupos funcionales y el doble enlace.",
+        explanation:language==="en"?"Steroids use a conventional numbering of the skeleton: C1–C17 form the core, C18 is the methyl attached to C13, and C19 is the methyl attached to C10. The hydroxyl is at C17 because its oxygen is bonded to the atom mapped to C17; functional groups do not renumber this skeleton."
+          :"Los esteroides usan una numeración convencional del esqueleto: C1–C17 forman el núcleo, C18 es el metilo unido a C13 y C19 el unido a C10. El hidroxilo está en C17 porque su oxígeno se enlaza al átomo asignado a C17; los grupos funcionales no renumeran este esqueleto.",
         components:locants,derivation,language,graph}),
       makeStep({number:"3",title:language==="en"?"Locate the double bond":"Localizar el doble enlace",
-        explanation:language==="en"?"The C4=C5 double bond places the unsaturation at position 4; this is shown by “androst-4-en-” in the name. C5 is trigonal and has no tetrahedral 5α/5β descriptor."
-          :"El doble enlace C4=C5 sitúa la insaturación en la posición 4, que se indica en el nombre mediante «androst-4-en-». C5 es trigonal y no lleva descriptor tetraédrico 5α/5β.",
+        explanation:language==="en"?"The double bond joins C4 and C5. Its locant is 4, the lower-numbered end of the bond, so the unsaturation is written -4-en- in androst-4-en-. C5 is trigonal here and has no tetrahedral 5α/5β descriptor."
+          :"El doble enlace une C4 y C5. Su localizador es 4, el extremo de menor número, por lo que la insaturación se expresa como -4-en- en androst-4-en-. En esta estructura C5 es trigonal y no lleva descriptor tetraédrico 5α/5β.",
         components:[byId.get("testosterone-unsaturation-4")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
       makeStep({number:"4",title:language==="en"?"Identify the functional groups and their priority":"Identificar los grupos funcionales y su prioridad",
-        explanation:language==="en"?"C3 bears a ketone (C=O) and C17 a hydroxyl (–OH). The ketone has suffix priority and gives -3-one; the hydroxyl is named with the prefix 17β-hydroxy-."
-          :"En C3 hay una cetona (C=O) y en C17 un grupo hidroxilo (–OH). La cetona tiene prioridad para el sufijo y aporta -3-ona; el hidroxilo se expresa con el prefijo 17β-hidroxi-.",
+        explanation:language==="en"?"C3 bears a ketone (C=O), and C17 bears a hydroxyl (–OH). For this combination of steroid functions, the ketone takes the suffix -3-one and the alcohol is named with the prefix 17-hydroxy-. The C4=C5 unsaturation is indicated separately by -4-en-; it does not displace the ketone suffix."
+          :"C3 lleva una cetona (C=O) y C17 un hidroxilo (–OH). En esta combinación de funciones esteroideas, la cetona aporta el sufijo -3-ona y el alcohol se nombra con el prefijo 17-hidroxi-. La insaturación C4=C5 se indica aparte con -4-en-; no desplaza el sufijo de cetona.",
         components:[byId.get("testosterone-carbonyl-3"),byId.get("testosterone-hydroxy-17")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
       makeStep({number:"5",title:language==="en"?"Check the stereochemistry":"Comprobar la estereoquímica",
-        explanation:language==="en"?"The C17 hydroxyl has β orientation. The other five tetrahedral centres also match testosterone; the C17 configuration distinguishes its epimer, epitestosterone."
-          :"El hidroxilo de C17 tiene orientación β. Los otros cinco centros tetraédricos también coinciden con la testosterona; la configuración de C17 la distingue de su epímero, la epitestosterona.",
-        components:[byId.get("testosterone-17beta"),byId.get("testosterone-global-stereo")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
+        explanation:language==="en"?"In the conventional steroid projection, β is the face assigned to groups above the reference plane and α to the opposite face. The graph’s C17 tetrahedral configuration matches the independently audited testosterone reference, as do the other five specified tetrahedral centres; that reference places C17–OH on the β face. This is not inferred from a rotated 2D drawing or equated with R/S."
+          :"En la proyección esteroidea convencional, β designa la cara situada sobre el plano de referencia y α la cara opuesta. La configuración tetraédrica C17 del grafo coincide con la referencia independiente auditada de testosterona, al igual que los otros cinco centros tetraédricos especificados; esa referencia sitúa C17–OH en la cara β. No se deduce de un dibujo 2D rotado ni se equipara con R/S.",
+        components:[byId.get("testosterone-17beta"),...(c17HydroxyBondControl?[c17HydroxyBondControl]:[]),byId.get("testosterone-global-stereo")].filter((item):item is NameComponent=>Boolean(item)),derivation,language,graph}),
       makeStep({number:"6",title:language==="en"?"Build the name":"Construir el nombre",
-        explanation:language==="en"?"Combine 17β-hydroxy + androst + 4-en + 3-one to form 17β-hydroxyandrost-4-en-3-one. Common name: testosterone."
-          :"Se combinan 17β-hidroxi + androst + 4-en + 3-ona para formar 17β-hidroxiandrost-4-en-3-ona. Nombre común: testosterona.",
+        explanation:language==="en"?"Assemble the validated hydroxyl prefix, androstane stem, unsaturation, and ketone suffix in that order. The common name is testosterone."
+          :"Se ensamblan, en ese orden, el prefijo hidroxilo, el tema androstano, la insaturación y el sufijo de cetona. El nombre común es testosterona.",
         components:[],derivation,language,graph}),
     ];
     return {name:language==="en"?"17β-hydroxyandrost-4-en-3-one":"17β-hidroxiandrost-4-en-3-ona",steps};

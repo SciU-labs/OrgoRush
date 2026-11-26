@@ -860,21 +860,57 @@ function TestosteroneReasoningControls({step,language,visualTarget,selectedFragm
   const en=language==="en";
   if(step.number==="1")return <div className="testosterone-control-stack" data-testosterone-layout="skeleton">
     {controls(["testosterone-parent"])}
+    <details className="testosterone-advanced-controls" data-testosterone-skeleton-rationale>
+      <summary>{en?"Why androstane?":"¿Por qué androstano?"}</summary>
+      <div className="testosterone-rationale-content">
+        <p>{en?"Compare the same steroid core by its angular methyls: gonane has 17 skeletal carbons and neither C10 nor C13 methyl; estrane adds C18 at C13 (18 carbons); androstane has C18 at C13 and C19 at C10 (19 carbons). This is a structural and nomenclatural comparison, not a reaction sequence."
+          :"Compara el mismo núcleo esteroideo según sus metilos angulares: el gonano tiene 17 carbonos esqueléticos y no lleva metilos en C10 ni C13; el estrano añade C18 en C13 (18 carbonos); el androstano presenta C18 en C13 y C19 en C10 (19 carbonos). Es una comparación estructural y nomenclatural, no una secuencia de reacciones."}</p>
+        <div className="testosterone-control-grid">{controls(["testosterone-androstane-core","testosterone-c18","testosterone-c19"])}</div>
+      </div>
+    </details>
     <details className="testosterone-advanced-controls" data-testosterone-ring-details>
       <summary>{en?"Explore rings and fused junctions":"Explorar anillos y uniones"}</summary>
       <div className="testosterone-control-grid">{controls(["testosterone-ring-A","testosterone-ring-B","testosterone-ring-C","testosterone-ring-D",
         "testosterone-fusion-ab","testosterone-fusion-bc","testosterone-fusion-cd"])}</div>
     </details>
   </div>;
-  if(step.number==="2")return <details className="testosterone-advanced-controls testosterone-locant-explorer"
-      data-testosterone-locant-explorer>
-    <summary>{en?"Explore all 19 carbon locants":"Explorar los 19 localizadores de carbono"}</summary>
-    <div className="testosterone-locant-grid">{controls(Array.from({length:19},(_,index)=>`testosterone-locant-${index+1}`))}</div>
-  </details>;
-  if(step.number==="3")return <div className="testosterone-control-grid" data-testosterone-layout="unsaturation">{controls(["testosterone-unsaturation-4"])}</div>;
-  if(step.number==="4")return <div className="testosterone-control-grid" data-testosterone-layout="functional-groups">{controls(["testosterone-carbonyl-3","testosterone-hydroxy-17"])}</div>;
+  if(step.number==="2")return <div className="testosterone-control-stack" data-testosterone-layout="numbering">
+    <details className="testosterone-advanced-controls testosterone-locant-explorer" data-testosterone-locant-explorer>
+      <summary>{en?"Explore all 19 carbon locants":"Explorar los 19 localizadores de carbono"}</summary>
+      <div className="testosterone-locant-grid">{controls(Array.from({length:19},(_,index)=>`testosterone-locant-${index+1}`))}</div>
+    </details>
+    <details className="testosterone-advanced-controls" data-testosterone-c17-locant-rationale>
+      <summary>{en?"Why is the hydroxyl at C17?":"¿Por qué el hidroxilo está en C17?"}</summary>
+      <div className="testosterone-rationale-content"><p>{en?"The fixed steroid map identifies one graph atom as C17. The hydroxyl oxygen is bonded to that atom, so its locant is 17; the functional group does not choose or shift the numbering."
+        :"El mapa esteroideo fijo identifica un átomo del grafo como C17. El oxígeno del hidroxilo está enlazado a ese átomo, por eso su localizador es 17; el grupo funcional no elige ni desplaza la numeración."}</p></div>
+    </details>
+  </div>;
+  if(step.number==="3")return <div className="testosterone-control-stack" data-testosterone-layout="unsaturation">
+    <div className="testosterone-control-grid">{controls(["testosterone-unsaturation-4"])}</div>
+    <details className="testosterone-advanced-controls" data-testosterone-unsaturation-rationale>
+      <summary>{en?"Why is it written 4-en?":"¿Por qué se escribe 4-en?"}</summary>
+      <div className="testosterone-rationale-content"><p>{en?"The double-bond locant names the bond by its lower-numbered endpoint, C4. The suffix-like unsaturation element -en- is placed between the steroid stem and the principal functional-group suffix."
+        :"El localizador del doble enlace usa su extremo de menor número, C4. El elemento de insaturación -en- se intercala entre el tema esteroideo y el sufijo del grupo funcional principal."}</p></div>
+    </details>
+  </div>;
+  if(step.number==="4")return <div className="testosterone-control-stack" data-testosterone-layout="functional-groups">
+    <div className="testosterone-control-grid">{controls(["testosterone-carbonyl-3","testosterone-hydroxy-17"])}</div>
+    <details className="testosterone-advanced-controls" data-testosterone-functional-priority-rationale>
+      <summary>{en?"Why hydroxy- rather than -ol?":"¿Por qué hidroxi- y no -ol?"}</summary>
+      <div className="testosterone-rationale-content"><p>{en?"An alcohol named as the principal characteristic group can use the suffix -ol. Testosterone also has a ketone; for this steroid combination IUPAC steroid recommendations use -one for the ketone and hydroxy- for the alcohol. The alkene is named separately and does not replace that suffix. This does not claim ketones outrank every possible functional group."
+        :"Si el alcohol se nombra como grupo característico principal puede usar el sufijo -ol. La testosterona también contiene una cetona; para esta combinación esteroidea, las recomendaciones IUPAC usan -ona para la cetona e hidroxi- para el alcohol. El alqueno se nombra aparte y no reemplaza ese sufijo. Esto no afirma que las cetonas tengan prioridad sobre cualquier grupo funcional posible."}</p></div>
+    </details>
+  </div>;
   if(step.number==="5")return <div className="testosterone-control-stack" data-testosterone-layout="stereochemistry">
     {controls(["testosterone-17beta"])}
+    <details className="testosterone-advanced-controls" data-testosterone-beta-rationale>
+      <summary>{en?"Why β rather than α?":"¿Por qué β y no α?"}</summary>
+      <div className="testosterone-rationale-content">
+        <p>{en?"In the conventionally oriented steroid projection, β is above the reference plane and α is below it. The stereochemical graph at C17 is checked against the independently audited testosterone structure; that reference assigns the C17–OH bond to β, on the same face as angular methyl C18. The assignment is not inferred from arbitrary 2D coordinates. α/β are steroid descriptors and are not universally equivalent to R/S. Inverting C17 alone gives the 17α epimer, epitestosterone."
+          :"En la proyección esteroidea con orientación convencional, β queda sobre el plano de referencia y α debajo. El grafo estereoquímico de C17 se contrasta con la estructura de testosterona auditada de forma independiente; esa referencia asigna el enlace C17–OH a β, en la misma cara que el metilo angular C18. La asignación no se deduce de coordenadas 2D arbitrarias. α/β son descriptores esteroideos y no equivalen universalmente a R/S. Al invertir solo C17 se obtiene el epímero 17α, epitestosterona."}</p>
+        <div className="testosterone-control-grid">{controls(["testosterone-17beta-bond"])}</div>
+      </div>
+    </details>
     <details className="testosterone-advanced-controls" data-testosterone-stereo-details>
       <summary>{en?"Inspect all six specified stereocentres":"Consultar los seis centros estereogénicos especificados"}</summary>
       <div className="testosterone-control-grid">{controls(["testosterone-global-stereo"])}</div>
@@ -882,11 +918,21 @@ function TestosteroneReasoningControls({step,language,visualTarget,selectedFragm
   </div>;
   return <div className="testosterone-name-construction" data-testosterone-layout="name">
     <div className="testosterone-name-parts" aria-label={en?"Name components":"Componentes del nombre"}>
-      {(en?["17β-hydroxy","androst","4-en","3-one"]:["17β-hidroxi","androst","4-en","3-ona"]).map((part,index)=><Fragment key={part}>
-        {index>0&&<span aria-hidden="true">+</span>}<code>{part}</code>
+      {(en?[
+        ["17β-hydroxy","Subordinate alcohol prefix, locant 17 and β orientation."],
+        ["androst-","19-carbon androstane parent selected from C18 at C13 and C19 at C10."],
+        ["4-en-","Double bond between C4 and C5."],
+        ["3-one","Principal ketone suffix at C3."],
+      ]:[
+        ["17β-hidroxi","Prefijo de alcohol subordinado, localizador 17 y orientación β."],
+        ["androst-","Estructura principal androstano de 19 carbonos: C18 en C13 y C19 en C10."],
+        ["4-en-","Doble enlace entre C4 y C5."],
+        ["3-ona","Sufijo de cetona principal en C3."],
+      ]).map(([part,description],index)=><Fragment key={part}>
+        {index>0&&<span aria-hidden="true">+</span>}<span className="testosterone-name-part"><code>{part}</code><small>{description}</small></span>
       </Fragment>)}
     </div>
-    <p className="testosterone-name-result"><strong>{en?"17β-hydroxyandrost-4-en-3-one":"17β-hidroxiandrost-4-en-3-ona"}</strong></p>
+    <p className="testosterone-name-result" data-testosterone-name-result><strong>{en?"17β-hydroxyandrost-4-en-3-one":"17β-hidroxiandrost-4-en-3-ona"}</strong></p>
     <small>{en?"Common name: testosterone":"Nombre común: testosterona"}</small>
   </div>;
 }

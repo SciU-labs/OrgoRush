@@ -147,7 +147,8 @@ test("position and functional-group edits immediately invalidate the testosteron
 test("bilingual How obtained reasoning maps each unique control to the verified graph",()=>{
   const expectedIds=["testosterone-parent",..."ABCD".split("").map(label=>`testosterone-ring-${label}`),
     ...["ab","bc","cd"].map(label=>`testosterone-fusion-${label}`),...Array.from({length:19},(_,i)=>`testosterone-locant-${i+1}`),
-    "testosterone-unsaturation-4","testosterone-carbonyl-3","testosterone-hydroxy-17","testosterone-17beta","testosterone-global-stereo"];
+    "testosterone-androstane-core","testosterone-c18","testosterone-c19","testosterone-unsaturation-4","testosterone-carbonyl-3",
+    "testosterone-hydroxy-17","testosterone-17beta","testosterone-17beta-bond","testosterone-global-stereo"];
   for(const [language,name] of [["en",TESTOSTERONE_NAMES.en],["es",TESTOSTERONE_NAMES.es]]){
     const proof=reconcileSystematicName(testosterone,name),model=buildValidatedPriorityReasoning({derivation:proof,graph:testosterone,language});
     assert.equal(model.steps.length,6,`${language}: six progressive stages`);
@@ -160,18 +161,46 @@ test("bilingual How obtained reasoning maps each unique control to the verified 
       const fragment=[step?.fragments,...(step?.fragments?.additionalFragments??[])].find(candidate=>candidate?.semanticId===id);
       assert.ok(step&&fragment,`${language}: ${id} appears in the explanation`);
       const target=step.fragmentTargets[reasoningFragmentId(step.number,fragment)];assert.ok(target,`${language}: ${id} has a real graph target`);
-      const component=proof.components.find(candidate=>candidate.id===id);assert.ok(component,`${id} is in the compositional proof`);
-      assert.deepEqual([...target.atomIds].sort((a,b)=>a-b),[...new Set(component.atomIds)].sort((a,b)=>a-b),`${language}: ${id} atom IDs`);
+      const component=proof.components.find(candidate=>candidate.id===id);
+      let expectedAtoms,expectedBonds;
+      if(id==="testosterone-androstane-core"){
+        const core=new Set(Array.from({length:17},(_,index)=>inspectTestosteroneGraph(testosterone).locants[String(index+1)]));
+        expectedAtoms=[...core];expectedBonds=testosterone.bonds.filter(([a,b])=>core.has(a)&&core.has(b)).map(([a,b])=>[a,b]);
+      }else if(id==="testosterone-17beta-bond"){
+        const hydroxyl=proof.components.find(candidate=>candidate.id==="testosterone-hydroxy-17");assert.ok(hydroxyl);
+        expectedAtoms=hydroxyl.atomIds;expectedBonds=hydroxyl.bondIds;
+      }else{
+        assert.ok(component,`${id} is in the compositional proof`);expectedAtoms=component.atomIds;expectedBonds=component.bondIds;
+      }
+      assert.deepEqual([...target.atomIds].sort((a,b)=>a-b),[...new Set(expectedAtoms)].sort((a,b)=>a-b),`${language}: ${id} atom IDs`);
       assert.deepEqual([...new Set(target.bondIds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort(),
-        [...new Set(component.bondIds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort(),`${language}: ${id} bond IDs`);
+        [...new Set(expectedBonds.map(([a,b])=>[a,b].sort((x,y)=>x-y).join(":")))].sort(),`${language}: ${id} bond IDs`);
     }
     const completeText=model.steps.map(step=>step.title+" "+step.explanation).join(" ");
-    assert.match(completeText,language==="en"?/C4=C5.*C3.*C17.*17β.*-3-one/is:/C4=C5.*C3.*C17.*17β.*-3-ona/is);
+    assert.match(model.steps[0].explanation,language==="en"?/6–6–6–5.*C1–C17.*17 carbons.*gonane.*without angular methyls at C10 or C13.*C18 at C13.*18-carbon estrane.*C19 at C10.*19-carbon androstane.*pattern alone would not distinguish/is
+      :/6–6–6–5.*C1–C17.*17 carbonos.*gonano.*sin metilos angulares en C10 ni C13.*C18 en C13.*18 carbonos.*estrano.*C19 en C10.*19 carbonos.*androstano.*por sí solo no distingue/is);
+    assert.match(model.steps[1].explanation,language==="en"?/conventional numbering.*C1–C17.*C18.*C13.*C19.*C10.*oxygen is bonded to.*C17.*do not renumber/is
+      :/numeración convencional.*C1–C17.*C18.*C13.*C19.*C10.*oxígeno.*C17.*no renumeran/is);
+    assert.match(model.steps[2].explanation,language==="en"?/double bond joins C4 and C5.*locant is 4.*-4-en-/is
+      :/doble enlace une C4 y C5.*localizador es 4.*-4-en-/is);
+    assert.match(model.steps[3].explanation,language==="en"?/C3 bears a ketone.*C17 bears a hydroxyl.*ketone takes the suffix.*alcohol.*prefix.*does not displace/is
+      :/C3 lleva una cetona.*C17 un hidroxilo.*cetona aporta el sufijo.*alcohol.*prefijo.*no desplaza/is);
+    assert.match(model.steps[4].explanation,language==="en"?/conventional steroid projection.*β.*reference.*not inferred.*R\/S/is
+      :/proyección esteroidea convencional.*β.*referencia.*no se deduce.*R\/S/is);
     if(language==="en")assert.doesNotMatch(completeText,/hidroxi|localizadores|estereoparent/);
     else assert.doesNotMatch(completeText,/hydroxy|stereoparent|locants/);
+    assert.equal(model.name,name,`${language}: exact validated name punctuation`);
+    assert.match(model.steps[0].explanation,language==="en"?/gonane.*estrane.*androstane/is:/gonano.*estrano.*androstano/is);
+    assert.match(model.steps[3].explanation,language==="en"?/ketone takes the suffix.*alcohol.*prefix.*does not displace/is:/cetona aporta el sufijo.*alcohol.*prefijo.*no desplaza/is);
+    assert.match(model.steps[4].explanation,language==="en"?/reference.*β.*not inferred.*R\/S/is:/referencia.*β.*no se deduce.*R\/S/is);
+    assert.doesNotMatch(model.steps[4].explanation,/β\s*=\s*R|beta\s+(?:means|equals)\s+R|α\s*=\s*S|alpha\s+(?:means|equals)\s+S/i,`${language}: α/β is not equated with CIP R/S`);
+    const mapped=inspectTestosteroneGraph(testosterone);
+    assert.ok(testosterone.bonds.some(([a,b])=>(a===mapped.locants["13"]&&b===mapped.locants["18"])||(b===mapped.locants["13"]&&a===mapped.locants["18"])));
+    assert.ok(testosterone.bonds.some(([a,b])=>(a===mapped.locants["10"]&&b===mapped.locants["19"])||(b===mapped.locants["10"]&&a===mapped.locants["19"])));
     assert.equal(semanticIds.filter(id=>id==="testosterone-locant-18").length,1);
     assert.equal(semanticIds.filter(id=>id==="testosterone-locant-19").length,1);
-    assert.equal(semanticIds.some(id=>id==="testosterone-c18"||id==="testosterone-c19"),false,"angular methyls are not duplicated outside the C1–C19 explorer");
+    assert.equal(semanticIds.filter(id=>id==="testosterone-c18").length,1,"C18 has one independently selectable angular-methyl control");
+    assert.equal(semanticIds.filter(id=>id==="testosterone-c19").length,1,"C19 has one independently selectable angular-methyl control");
   }
 });
 
