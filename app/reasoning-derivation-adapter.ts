@@ -12,6 +12,7 @@ import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from 
 import { validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
+import { deriveSteroidPedagogicalDecisions } from "./steroid-pedagogy-engine.ts";
 
 export type PriorityReasoningStep = {
   number: string;
@@ -25,6 +26,7 @@ export type PriorityReasoningStep = {
   componentKind?: StructuralComponent["kind"];
   parentSelectionEvidence?: ParentSelectionEvidence;
   source: "FULL" | "structural" | "local";
+  advancedExplanation?: string;
 };
 
 export type PriorityReasoningModel = { steps: PriorityReasoningStep[]; name: string };
@@ -491,6 +493,61 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
+  if (derivation.evidence?.steroidPedagogy) {
+    const decisions = deriveSteroidPedagogicalDecisions(derivation.evidence.steroidPedagogy);
+    const decision = (id: string) => decisions.find(item => item.id === id);
+    const decisionText = (ids: string[]) => ids.map(id => decision(id)?.explanation[language]).filter(Boolean).join(" ");
+    const rationaleText = (ids: string[]) => ids.map(id => decision(id)?.why?.[language]).filter(Boolean).join(" ");
+    const rings = displayedComponents.filter(component => component.id.startsWith("steroid-ring-")
+      || component.id.startsWith("testosterone-ring-"));
+    const fusions = displayedComponents.filter(component => component.id.startsWith("steroid-fusion-")
+      || component.id.startsWith("testosterone-fusion-"));
+    const locants = displayedComponents.filter(component => component.id.startsWith("steroid-locant-")
+      || component.id.startsWith("testosterone-locant-"));
+    const testosteroneCoreLocants = Array.from({ length: 17 }, (_, index) => byId.get(`testosterone-locant-${index + 1}`))
+      .filter((item): item is NameComponent => Boolean(item));
+    const testosteroneCoreAtomIds = testosteroneCoreLocants.flatMap(component => component.atomIds);
+    const testosteroneCoreAtomSet = new Set(testosteroneCoreAtomIds);
+    const testosteroneCore: NameComponent | undefined = testosteroneCoreLocants.length === 17 && parent
+      ? { ...parent, id: "testosterone-androstane-core", text: "C1–C17", label: "C1–C17 steroid nucleus", labelEs: "núcleo esteroideo C1–C17",
+        atomIds: testosteroneCoreAtomIds,
+        bondIds: graph.bonds.filter(([a,b]) => testosteroneCoreAtomSet.has(a) && testosteroneCoreAtomSet.has(b)).map(([a,b]) => [a,b] as [number,number]),
+        numbering: testosteroneCoreLocants.flatMap(component => component.numbering), equivalenceGroup: "testosterone-reasoning-core" }
+      : undefined;
+    const betaBondSource = byId.get("testosterone-hydroxy-17");
+    const betaBondControl = betaBondSource ? { ...betaBondSource, id: "testosterone-17beta-bond", text: "C17–OH",
+      label: "C17–OH bond in the steroid reference", labelEs: "enlace C17–OH en la referencia esteroidea",
+      equivalenceGroup: "testosterone-reasoning-17beta-bond" } : undefined;
+    const functions = displayedComponents.filter(component => component.id.startsWith("steroid-ketone-")
+      || component.id.startsWith("steroid-hydroxyl-") || component.id.startsWith("testosterone-carbonyl-")
+      || component.id.startsWith("testosterone-hydroxy-"));
+    const steps: PriorityReasoningStep[] = [];
+    const push = (title: string, explanation: string, components: NameComponent[], rationaleIds: string[]) => {
+      if (!explanation) return;
+      const step = makeStep({ number: String(steps.length + 1), title, explanation, components, derivation, language, graph });
+      const advancedExplanation = rationaleText(rationaleIds);
+      if (advancedExplanation) step.advancedExplanation = advancedExplanation;
+      steps.push(step);
+    };
+    push(language === "en" ? "Identify the steroid skeleton" : "Identificar el esqueleto esteroideo",
+      decisionText(["steroid.parent", "steroid.side-chain"]), [parent, byId.get("steroid-side-chain"), byId.get("testosterone-androstane-core") ?? testosteroneCore,
+        byId.get("steroid-c18") ?? byId.get("testosterone-c18"), byId.get("steroid-c19") ?? byId.get("testosterone-c19"), ...rings, ...fusions]
+        .filter((item): item is NameComponent => Boolean(item)), ["steroid.parent", "steroid.side-chain"]);
+    push(language === "en" ? "Apply conventional numbering" : "Aplicar la numeración convencional",
+      decisionText(["steroid.numbering"]), locants, ["steroid.numbering"]);
+    const unsaturation = decisionText(decisions.filter(item => item.kind === "unsaturation").map(item => item.id));
+    push(language === "en" ? "Locate unsaturation" : "Localizar la insaturación",
+      unsaturation, displayedComponents.filter(component => component.role === "unsaturation"), decisions.filter(item => item.kind === "unsaturation").map(item => item.id));
+    push(language === "en" ? "Identify functions and their multiplicity" : "Identificar las funciones y su multiplicidad",
+      decisionText(["steroid.principal-function", "steroid.hydroxyls"]), functions, ["steroid.principal-function", "steroid.hydroxyls"]);
+    push(language === "en" ? "Verify stereochemistry" : "Verificar la estereoquímica",
+      decisionText(["steroid.stereochemistry"]), [byId.get("steroid-stereo") ?? byId.get("testosterone-global-stereo"),
+        byId.get("testosterone-17beta"), betaBondControl]
+        .filter((item): item is NameComponent => Boolean(item)), ["steroid.stereochemistry"]);
+    push(language === "en" ? "Assemble the name" : "Construir el nombre",
+      decisionText(["steroid.name-assembly"]), [], ["steroid.name-assembly"]);
+    if (steps.length) return { name: input.activeName ?? derivation.name, steps };
+  }
   if(derivation.evidence?.construction==="fused-testosterone-stereo"){
     const rings=["A","B","C","D"].map(letter=>byId.get(`testosterone-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
     const fusions=["ab","bc","cd"].map(label=>byId.get(`testosterone-fusion-${label}`)).filter((item):item is NameComponent=>Boolean(item));

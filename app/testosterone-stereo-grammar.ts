@@ -3,7 +3,7 @@ import { type NameComponent, type ValidatedCompositionalEvidence } from "./compo
 import type { ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import type { NameBuildResult } from "./name-to-molecule.ts";
 import { moleculeFromSmiles } from "./openchemlib-adapter.ts";
-import { inspectTestosteroneGraph, TESTOSTERONE_REFERENCE_SMILES } from "./testosterone-stereo-structure.ts";
+import { inspectTestosteroneGraph, TESTOSTERONE_CIP_BY_LOCANT, TESTOSTERONE_REFERENCE_SMILES } from "./testosterone-stereo-structure.ts";
 
 export type TestosteroneNameForm="common"|"semisystematic";
 export type ParsedTestosteroneName={language:"en"|"es";form:TestosteroneNameForm;normalized:string;canonicalName:string};
@@ -103,6 +103,22 @@ function makeDerivation(actual:GeneratedMolecule,parsed:ParsedTestosteroneName):
       explanationEs:"El nombre común se acepta solo después de verificar el grafo completo y la estereoquímica frente a la estructura auditada de testosterona."}]:[]),
   ];
 
+  const rings=(["A","B","C","D"] as const).map(label=>{const ids=system.ringsByLabel[label];return {id:`testosterone-ring-${label}`,atomIds:[...ids],
+    bondIds:actual.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b)).map(([a,b])=>edge(a,b))};});
+  const fusions=(["AB","BC","CD"] as const).map(label=>{const ids=system.junctions[label];return {id:`testosterone-fusion-${label.toLowerCase()}`,
+    atomIds:[...ids],bondIds:[edge(...ids)]};});
+  const namedLocants=Object.fromEntries(Object.entries(locants).map(([locant,id])=>[locant,id])) as Record<string,number>;
+  const stereoLocants=Object.entries(TESTOSTERONE_CIP_BY_LOCANT).map(([locant])=>Number(locant));
+  const steroidPedagogy={verification:"complete-graph-isomorphism" as const,family:"androstane" as const,graph:actual,locants:namedLocants,rings,fusions,
+    angularMethyls:{C18:locants["18"]!,C19:locants["19"]!},
+    unsaturations:[{locant:4,atomIds:[...c4C5Bond],bondIds:[c4C5Bond]}],
+    functions:[{kind:"ketone" as const,locant:3,atomIds:[locants["3"]!,carbonylOxygenId],bondIds:[c3OxoBond]},
+      {kind:"hydroxyl" as const,locant:17,atomIds:[locants["17"]!,hydroxylOxygenId],bondIds:[c17HydroxyBond]}],
+    stereo:{atomIds:stereoLocants.map(locant=>locants[String(locant)]!),bondIds:actual.bonds.filter(([a,b])=>stereoLocants.includes(Number(Object.entries(locants).find(([,id])=>id===a)?.[0]))
+      &&stereoLocants.includes(Number(Object.entries(locants).find(([,id])=>id===b)?.[0]))).map(([a,b])=>edge(a,b)),reference:"testosterone reference",
+      descriptors:stereoLocants.map(locant=>`${locant}${TESTOSTERONE_CIP_BY_LOCANT[locant]}`)},
+    betaOrientation:{locant:17,atomId:locants["17"]!,bondId:c17HydroxyBond,referenceLabel:"testosterone"},
+    name,commonName:{en:TESTOSTERONE_NAMES.commonEn,es:TESTOSTERONE_NAMES.commonEs}};
   const evidence:ValidatedCompositionalEvidence={source:"active-name",profile:"current",language:parsed.language,
     construction:"fused-testosterone-stereo",
     rules:[
@@ -112,7 +128,8 @@ function makeDerivation(actual:GeneratedMolecule,parsed:ParsedTestosteroneName):
       {id:"not-pin",source:"The name is treated as a supported semisystematic steroid name/common-name equivalence, not asserted to be a 2013 PIN"},
     ],parentSelection:"steroid-core",numbering:{scope:"parent",priorities:["steroid numbering mapped from the four-ring graph; C18 at C13 and C19 at C10"],
       selected:Object.entries(locants).map(([locant,id])=>[id,Number(locant)]),reflected:[],comparison:0},
-    stereo:"specified-tetrahedral",reconstructedGraph:actual,atomMapping:actual.atoms.map(atom=>[atom.id,atom.id]),equivalence:"complete-graph-isomorphism"};
+    stereo:"specified-tetrahedral",reconstructedGraph:actual,atomMapping:actual.atoms.map(atom=>[atom.id,atom.id]),equivalence:"complete-graph-isomorphism",
+    steroidPedagogy};
   return {status:"FULL",name,preferred:false,principalGroup:"ketone",components,parentAtomIds:allCarbonIds,evidence};
 }
 

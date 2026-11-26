@@ -10,7 +10,7 @@ export const TESTOSTERONE_CHEBI_SMILES =
 export const EPITESTOSTERONE_REFERENCE_SMILES =
   "C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@H]2O)CCC4=CC(=O)CC[C@]34C";
 
-const TESTOSTERONE_CIP_BY_LOCANT: Readonly<Record<number, "R" | "S">> = {
+export const TESTOSTERONE_CIP_BY_LOCANT: Readonly<Record<number, "R" | "S">> = {
   8: "R", 9: "S", 10: "R", 13: "S", 14: "S", 17: "S",
 };
 

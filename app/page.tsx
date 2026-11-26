@@ -937,6 +937,14 @@ function TestosteroneReasoningControls({step,language,visualTarget,selectedFragm
   </div>;
 }
 
+function SteroidPedagogyControls({step,language}:{step:PriorityReasoningStep;language:AppLanguage}) {
+  if(!step.advancedExplanation)return null;
+  return <details className="steroid-advanced-rationale" data-steroid-rationale={step.number}>
+    <summary>{language==="en"?"Why?":"¿Por qué?"}</summary>
+    <div><p>{step.advancedExplanation}</p></div>
+  </details>;
+}
+
 const alkaneRoots = IUPAC_ROOTS;
 const alkylNames = IUPAC_ROOTS.map((root) => root ? `${root}il` : "");
 
@@ -10478,6 +10486,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       || localPreflight.inputFamily === "fused-naphthalene"
       || localPreflight.inputFamily === "fused-tricyclic-arene"
       || localPreflight.inputFamily === "fused-testosterone-stereo"
+      || localPreflight.inputFamily === "fused-progesterone-stereo"
       || localPreflight.inputFamily === "fused-gonane-stereo"
       || localPreflight.inputFamily === "fused-steroid-family"
       || (localPreflight.inputFamily === "alkene-stereo" && !localPreflight.requiresAdvancedConnectivity))) {
@@ -10506,6 +10515,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
         || localPreflight.inputFamily === "fused-naphthalene"
         || localPreflight.inputFamily === "fused-tricyclic-arene"
         || localPreflight.inputFamily === "fused-testosterone-stereo"
+        || localPreflight.inputFamily === "fused-progesterone-stereo"
         || localPreflight.inputFamily === "fused-gonane-stereo"
         || localPreflight.inputFamily === "fused-steroid-family"
         || localPreflight.inputFamily === "alkene-stereo")) {
@@ -10601,7 +10611,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       // If OPSIN/OpenChemLib successfully parsed a structure whose nested
       // functional groups exceed the local naming grammar, keep the validated
       // source name rather than replacing it with an incomplete suggestion.
-      setSourceNameOverride(preserveGraphSourceName && localPreflight.inputFamily !== "fused-testosterone-stereo"
+      setSourceNameOverride(preserveGraphSourceName && !["fused-testosterone-stereo","fused-progesterone-stereo"].includes(localPreflight.inputFamily ?? "")
         ? preferredSourceName : null);
       if (getTetrahedralStereoCenters(next).length || next.bonds.some(bond => bond[3] === true)) {
         setShowStereochemistry(true);
@@ -16602,10 +16612,14 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                           ? <TestosteroneReasoningControls step={step} language={language} activeName={displayedIupacName}
                               visualTarget={step.fragmentTargets} selectedFragmentId={reasoningVisualTarget?.fragmentId}
                               onActivateTarget={activateReasoningCanvasReference} />
-                          : step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
-                              language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
-                              selectedFragmentId={reasoningVisualTarget?.fragmentId}
-                              onActivateTarget={activateReasoningCanvasReference} />}
+                          : <>
+                              {step.fragments && <ReasoningNameFragmentView fragment={step.fragments} stepNumber={step.number}
+                                language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
+                                selectedFragmentId={reasoningVisualTarget?.fragmentId}
+                                onActivateTarget={activateReasoningCanvasReference} />}
+                              {validatedDerivation?.evidence?.steroidPedagogy
+                                && <SteroidPedagogyControls step={step} language={language} />}
+                            </>}
                         {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
                           || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {
                           const fragmentId = `branch-count:${guide.componentId}`;

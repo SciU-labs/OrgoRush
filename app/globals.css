@@ -10115,6 +10115,12 @@ html .a11y-high-contrast .reasoning-name-fragment-control[aria-pressed="true"] {
 .testosterone-rationale-content { padding: 0 10px 10px; }
 .testosterone-rationale-content > p { margin: 8px 0 0; font-size: 12px; line-height: 1.55; }
 .testosterone-rationale-content > .testosterone-control-grid { margin-top: 8px; }
+.steroid-advanced-rationale { min-width: 0; margin-top: 7px; border: 1px solid var(--brand-border); border-radius: 8px; background: color-mix(in srgb, var(--paper) 90%, var(--brand-primary-soft)); }
+.steroid-advanced-rationale > summary { min-height: 36px; padding: 8px 10px; color: var(--brand-selected-ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+.steroid-advanced-rationale > summary:focus-visible { outline: 3px solid var(--brand-selected-ink); outline-offset: 2px; border-radius: 7px; }
+.steroid-advanced-rationale[open] > summary { border-bottom: 1px solid var(--brand-border); }
+.steroid-advanced-rationale > div { padding: 0 10px 10px; }
+.steroid-advanced-rationale > div > p { margin: 8px 0 0; font-size: 12px; line-height: 1.55; }
 .testosterone-locant-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; padding: 9px; }
 .testosterone-locant-grid .reasoning-name-fragment-control { width: 100%; min-height: 34px; }
 .testosterone-name-construction { margin-top: 8px; padding: 10px; border: 1px solid var(--brand-border); border-radius: 8px; background: var(--paper); }

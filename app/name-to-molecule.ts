@@ -15,6 +15,7 @@ import { parseFusedDecalinName } from "./fused-decalin-grammar.ts";
 import { buildGonaneMoleculeFromName } from "./gonane-stereo-grammar.ts";
 import { buildSteroidFamilyMoleculeFromName } from "./steroid-family-grammar.ts";
 import { buildTestosteroneMoleculeFromName } from "./testosterone-stereo-grammar.ts";
+import { buildProgesteroneMoleculeFromName } from "./progesterone-stereo-grammar.ts";
 import type { FusedRingJunctionStereo } from "./fused-junction-stereochemistry.ts";
 import type { FusedTricyclicStereochemistry } from "./fused-tricyclic-stereochemistry.ts";
 import type { FusedPolycyclicStereochemistry } from "./fused-polycyclic-stereochemistry.ts";
@@ -94,12 +95,12 @@ export type NameBuildResult =
       molecule: GeneratedMolecule;
       normalizedInput: string;
       enabledAliases: string[];
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "fused-steroid-family" | "fused-testosterone-stereo" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "fused-steroid-family" | "fused-testosterone-stereo" | "fused-progesterone-stereo" | "alkene-stereo";
     }
   | {
       ok: false;
       error: string;
-      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "fused-steroid-family" | "fused-testosterone-stereo" | "alkene-stereo";
+      inputFamily?: "fused-von-baeyer" | "fused-naphthalene" | "fused-tricyclic-arene" | "fused-partially-saturated-bicycle" | "fused-decalin" | "fused-gonane-stereo" | "fused-steroid-family" | "fused-testosterone-stereo" | "fused-progesterone-stereo" | "alkene-stereo";
       /** The compact grammar did not resolve connectivity; no stereo was assigned. */
       requiresAdvancedConnectivity?: boolean;
     };
@@ -1399,6 +1400,8 @@ function validateParsedName(parsed: ParsedName, molecule: GeneratedMolecule) {
 }
 
 function buildConstitutionFromIupacName(value: string): NameBuildResult {
+  const progesterone=buildProgesteroneMoleculeFromName(value);
+  if(progesterone)return progesterone;
   const gonane=buildGonaneMoleculeFromName(value);
   if(gonane)return gonane;
   const testosterone=buildTestosteroneMoleculeFromName(value);

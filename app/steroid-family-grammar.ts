@@ -6,6 +6,8 @@ import type { NameBuildResult } from "./name-to-molecule.ts";
 import { moleculeFromSmiles } from "./openchemlib-adapter.ts";
 import { findSaturatedFusedPolycycle, isValidFusedPolycyclicStereochemistry, steroidLocantAtomIds } from "./fused-polycyclic-stereochemistry.ts";
 
+const edge=(a:number,b:number):[number,number]=>a<b?[a,b]:[b,a];
+
 export const AUDITED_STEROID_SMILES={
   estrane:{
     "5α":"C[C@@]12CCC[C@H]1[C@@H]3CC[C@H]4CCCC[C@@H]4[C@H]3CC2",
@@ -103,12 +105,26 @@ function makeDerivation(actual:GeneratedMolecule,parsed:ParsedSteroidName):Valid
         :`The ${descriptorText} descriptor is checked against the complete stereochemical reference, not inferred from SMILES @/@@ or screen orientation.`,
       explanationEs:parsed.descriptor==="5ξ"?"La referencia auditada deja C5 sin resolver y conserva las demás configuraciones implícitas de las uniones esteroideas."
         :`El descriptor ${descriptorText} se contrasta con la referencia estereoquímica completa; no se deduce de @/@@ en SMILES ni de la orientación en pantalla.`}];
+  const pedagogyRings=ringLocants.map(([letter,positions])=>{const ids=positions.map(n=>locants[String(n)]!);
+    const ring=actual.rings?.find(item=>item.atomIds.length===ids.length&&item.atomIds.every(id=>ids.includes(id)));
+    return {id:`steroid-ring-${letter}`,atomIds:ring?[...ring.atomIds]:ids,
+      bondIds:actual.bonds.filter(([a,b])=>ids.includes(a)&&ids.includes(b)).map(([a,b])=>edge(a,b))};});
+  const pedagogyFusions=orderedJunctions.map(({junction},index)=>({id:`steroid-fusion-${index+1}`,
+    atomIds:[...junction.fusionAtomIds],bondIds:[[...junction.fusionBond] as [number,number]]}));
+  const mappedStereo=actual.atoms.filter(atom=>atom.tetrahedralParity).map(atom=>({atom,
+    locant:Number(Object.entries(locants).find(([,id])=>id===atom.id)?.[0])})).filter(item=>item.locant>0);
+  const steroidPedagogy={verification:"complete-graph-isomorphism" as const,family:parsed.family,graph:actual,locants,rings:pedagogyRings,fusions:pedagogyFusions,
+    angularMethyls:{C18:locants["18"]!,...(locants["19"]?{C19:locants["19"]}:{})},unsaturations:[],functions:[],
+    stereo:{atomIds:mappedStereo.map(item=>item.atom.id),bondIds:actual.bonds.filter(([a,b])=>mappedStereo.some(item=>item.atom.id===a)
+      &&mappedStereo.some(item=>item.atom.id===b)).map(([a,b])=>edge(a,b)),reference:`${parsed.descriptor}-${parsed.family}`,
+      descriptors:mappedStereo.map(item=>`${item.locant}${item.atom.tetrahedralParity}`)},
+    name:parsed.normalized,commonName:{en:parsed.family,es:parsed.family==="estrane"?"estrano":"androstano"}};
   const evidence:ValidatedCompositionalEvidence={source:"active-name",profile:"current",language,construction:"fused-steroid-family-stereo",
     rules:[{id:`steroid-${parsed.family}-parent`,source:"IUPAC-IUBMB Steroid Nomenclature (1989), 3S-1.1, 3S-1.3, 3S-1.5 and 3S-2.2/2.3; semisystematic parent, not claimed as a 2013 PIN"},
       {id:"steroid-reference-identity",source:"Audited PubChem isomeric structure and global stereochemical graph identity"}],
     parentSelection:"steroid-core",numbering:{scope:"parent",priorities:["conventional steroid numbering mapped from fused-ring graph and angular methyl anchors"],selected:Object.entries(locants).map(([n,id])=>[id,Number(n)]),reflected:[],comparison:0},
     stereo:parsed.descriptor==="5ξ"?"partially-specified-stereochemistry":"specified-fused-junction",reconstructedGraph:actual,
-    atomMapping:actual.atoms.map(atom=>[atom.id,atom.id]),equivalence:"complete-graph-isomorphism"};
+    atomMapping:actual.atoms.map(atom=>[atom.id,atom.id]),equivalence:"complete-graph-isomorphism",steroidPedagogy};
   return {status:"FULL",name:parsed.normalized,preferred:false,principalGroup:"none",components,parentAtomIds:actual.atoms.map(atom=>atom.id),evidence};
 }
 
