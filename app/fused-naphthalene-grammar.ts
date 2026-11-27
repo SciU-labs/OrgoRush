@@ -20,6 +20,14 @@ const transforms = [
   [8,7,6,5,4,3,2,1],
 ];
 
+/** The four orientations used by bestNumbering, restricted to one class of
+ * equivalent groups. In this case one sorted locant set suffices to compare them. */
+export function equivalentNaphthaleneLocantSets(positions: readonly number[]): number[][] {
+  if (!positions.length || positions.some(n => !locantAtom.has(n))) return [];
+  const sets = transforms.map(map => positions.map(n => map[n - 1]!).sort((a,b) => a - b));
+  return sets.filter((set, i) => sets.findIndex(other => other.every((n,j) => n === set[j])) === i);
+}
+
 function bestNumbering(locants: number[][], suffixLocants: number[] = []): boolean {
   const score = (sets: number[][]) => [sets.flat().sort((a,b)=>a-b), ...sets.map(set=>[...set].sort((a,b)=>a-b))];
   const compare = (a: number[][], b: number[][]) => {
@@ -162,7 +170,9 @@ export function parseFusedNaphthalene(name: string): Family | null {
         const oxygen=atom("O");bond(locantId(locant),oxygen);
         component(`hydroxy-${locant}`,"suffix",diol?"diol":"ol",name.lastIndexOf(diol?"diol":"ol"),[locantId(locant),oxygen],
           `The hydroxy group at naphthalene C${locant} is expressed by the alcohol suffix.`,
-          {explanationEs:`El grupo hidroxi del C${locant} del naftaleno se expresa mediante el sufijo de alcohol.`,parentId:"parent",locant,numbering:[[locantId(locant),locant]],numberingScope:"parent"});
+          {explanationEs:`El grupo hidroxi del C${locant} del naftaleno se expresa mediante el sufijo de alcohol.`,
+            ...(diol ? { label: `Hydroxyl at C${locant}`, labelEs: `Hidroxilo en C${locant}` } : {}),
+            parentId:"parent",locant,numbering:[[locantId(locant),locant]],numberingScope:"parent"});
       }
     } else if(amine){
       group="amine";const nitrogen=atom("N");bond(locantId(locants[0]!),nitrogen);

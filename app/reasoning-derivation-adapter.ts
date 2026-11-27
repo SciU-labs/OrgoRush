@@ -9,12 +9,14 @@ import type { ReasoningNameFragment } from "./reasoning-name-fragments.ts";
 import { reasoningFragmentId } from "./reasoning-visual-targets.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
-import { validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
+import { presentValidatedSystematicName, validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
 import { deriveSteroidPedagogicalDecisions } from "./steroid-pedagogy-engine.ts";
-import { renderPedagogicalDecisionPlan, type PedagogicalDecision, type PedagogicalStepPlan } from "./pedagogical-decision-model.ts";
+import { auditPedagogicalCoverage, renderPedagogicalDecisionPlan, type PedagogicalCoverageDiagnostic, type PedagogicalDecision, type PedagogicalStepPlan } from "./pedagogical-decision-model.ts";
 import { adaptDecalinEvidence, adaptNaphthaleneEvidence } from "./fused-ring-pedagogy-adapters.ts";
+import { adaptPurineEvidence } from "./purine-pedagogy-adapter.ts";
+import { nestedAromaticAttachmentDecisions, numberedAttachmentDecisions } from "./numbered-attachment-decisions.ts";
 
 export type PriorityReasoningStep = {
   number: string;
@@ -29,9 +31,10 @@ export type PriorityReasoningStep = {
   parentSelectionEvidence?: ParentSelectionEvidence;
   source: "FULL" | "structural" | "local";
   advancedExplanation?: string;
+  decisionIds?: string[];
 };
 
-export type PriorityReasoningModel = { steps: PriorityReasoningStep[]; name: string };
+export type PriorityReasoningModel = { steps: PriorityReasoningStep[]; name: string; coverage?: PedagogicalCoverageDiagnostic };
 
 export function shouldShowStructuralPriorityReasoning(input: {
   hasValidatedDerivation: boolean; reasoningUnsupported: boolean; structuralStatus: StructuralDerivation["status"];
@@ -274,7 +277,8 @@ function componentFragment(component: NameComponent, language: AppLanguage, deri
     :decalinControl&&component.id==="fusion-junction"?language==="en"?"fusion junction":"unión de fusión"
     :junctionControl?language==="en"?`fusion ${junctionControl[1]}`:`fusión ${junctionControl[1]}`
     :fusedStereoControl&&component.id==="stereo-descriptor"?language==="en"?"global fusion stereodescriptors":"estereodescriptores globales de fusión"
-    :literal ? component.text : componentLabel(component, language, derivation);
+    :literal ? component.text || (language === "en" ? component.label : component.labelEs) || component.id
+      : componentLabel(component, language, derivation);
   const parentAtoms=new Set(derivation.parentAtomIds);
   const positions=component.numbering.flatMap(([id,locant])=>parentAtoms.has(id)&&typeof locant==="number"?[locant]:[]);
   const attachments=component.bondIds.filter(([a,b])=>parentAtoms.has(a)!==parentAtoms.has(b)).length;
@@ -312,7 +316,8 @@ function makeStep(input: {
   derivation: ValidatedNameDerivation; language: AppLanguage; graph: GeneratedMolecule;
   alphabeticalOrder?: AlphabeticalOrderPresentation;
 }): PriorityReasoningStep {
-  const { number, title, explanation, components, derivation, language, graph, alphabeticalOrder } = input;
+  const { number, title, explanation, derivation, language, graph, alphabeticalOrder } = input;
+  const components = input.components.filter((component, index, all) => all.findIndex(item => item.id === component.id) === index);
   const targets = safeValidatedTargets(graph,derivation);
   const fragments = components.map(component => componentFragment(component, language, derivation));
   // A step already gives the explanation for its selected target. Repeating
@@ -455,7 +460,9 @@ function makeStep(input: {
     ? numberingTargets : components.map(component => targets[component.id] ?? (component.equivalenceGroup || !derivation.components.some(existing => existing.id === component.id)
       ? {stepNumber:component.id,atomIds:component.atomIds,bondIds:component.bondIds,locants:component.numbering}:undefined)).filter(Boolean);
   return { number, title, explanation, target: unionTarget(number, stepTargets),
-    fragments: fragmentView, fragmentTargets, componentIds: components.map(component => component.id), source: "FULL", alphabeticalOrder };
+    fragments: alphabeticalOrder ? undefined : fragmentView,
+    fragmentTargets: alphabeticalOrder ? {} : fragmentTargets,
+    componentIds: components.map(component => component.id), source: "FULL", alphabeticalOrder };
 }
 
 function renderCommonPedagogy(input: { decisions: readonly PedagogicalDecision[]; plan: readonly PedagogicalStepPlan[];
@@ -466,9 +473,24 @@ function renderCommonPedagogy(input: { decisions: readonly PedagogicalDecision[]
     const targets = item.componentIds.map(id => components.get(id)).filter((value): value is NameComponent => Boolean(value));
     const step = makeStep({ number: String(index + 1), title: item.title, explanation: item.explanation, components: targets,
       derivation: input.derivation, language: input.language, graph: input.graph });
+    step.decisionIds = item.decisionIds;
     if (item.advancedExplanation) step.advancedExplanation = item.advancedExplanation;
     return step;
   });
+}
+
+function renderCommonPedagogyModel(input: { decisions: readonly PedagogicalDecision[]; plan: readonly PedagogicalStepPlan[];
+  derivation: ValidatedNameDerivation; graph: GeneratedMolecule; language: AppLanguage; activeName?: string;
+  extras?: readonly NameComponent[] }): PriorityReasoningModel {
+  const name = input.activeName ?? input.derivation.name;
+  const steps = renderCommonPedagogy(input);
+  const coverage = auditPedagogicalCoverage({ name, chemicalStatus: "FULL", decisions: input.decisions, plan: input.plan,
+    profile: input.decisions.some(d => d.kind === "retained-identity") ? "common-steroid-name"
+      : input.derivation.evidence?.steroidPedagogy ? "conventional-steroid" : input.derivation.parentSystem ?? input.derivation.evidence?.construction,
+    nameSource: "reconciled-active-name",
+    steps: steps.map(step => ({ title: step.title, explanation: step.explanation, componentIds: step.componentIds,
+      decisionIds: step.decisionIds ?? [] })), componentIds: input.derivation.components.map(component => component.id) });
+  return { name, steps, coverage };
 }
 
 /** Projects FULL component evidence into the same numbered priority-list UI as
@@ -511,8 +533,24 @@ export function buildValidatedPriorityReasoning(input: {
   }
   const roots = displayedComponents.filter(component => component.role === "substituent"
     && (!component.parentId || component.parentId === "parent"));
+  if (derivation.parentSystem === "purine" && (!input.activeName || input.activeName === derivation.name)) {
+    const adaptation = adaptPurineEvidence(graph, derivation);
+    if (adaptation) return renderCommonPedagogyModel({ ...input, ...adaptation });
+  }
   if (derivation.evidence?.steroidPedagogy) {
     const steroidEvidence = derivation.evidence.steroidPedagogy;
+    const commonName = Object.values(steroidEvidence.commonName).find(name => name.toLowerCase() === input.activeName?.toLowerCase());
+    if (commonName && input.activeName !== derivation.name) {
+      const identity: PedagogicalDecision = { id: "steroid.common-identity", family: "steroid", kind: "retained-identity",
+        rule: "common-name-by-audited-steroid-identity", evidenceSource: steroidEvidence.stereo.reference,
+        atomIds: graph.atoms.map(a => a.id), bondIds: graph.bonds.map(([a,b]) => [a,b]), locants: [],
+        result: commonName, nameFragments: [commonName], dependsOn: [], verification: "verified",
+        explanation: { en: `The conventional name ${commonName} identifies the structure whose skeleton, functional groups and specified configurations match the audited reference. The corresponding steroid name is ${derivation.name}.`,
+          es: `El nombre común ${commonName} identifica la estructura cuyo esqueleto, grupos funcionales y configuraciones especificadas coinciden con la referencia verificada. Su denominación esteroidea es ${derivation.name}.` } };
+      return renderCommonPedagogyModel({ ...input, decisions: [identity], plan: [{ id: "identity",
+        decisionIds: [identity.id], componentIds: parent ? [parent.id] : [],
+        title: { en: "Identify the common name", es: "Identificar el nombre común" } }] });
+    }
     const steroidDecisions = deriveSteroidPedagogicalDecisions(steroidEvidence);
     const decisions: PedagogicalDecision[] = steroidDecisions.map(item => ({ id: item.id,
       kind: item.kind === "conventional-numbering" ? "conventional-numbering" : item.kind === "unsaturation" ? "unsaturation"
@@ -548,6 +586,13 @@ export function buildValidatedPriorityReasoning(input: {
       || component.id.startsWith("steroid-hydroxyl-") || component.id.startsWith("testosterone-carbonyl-")
       || component.id.startsWith("testosterone-hydroxy-"));
     const testosteroneRoute = derivation.evidence.construction === "fused-testosterone-stereo";
+    const attachmentDetails = parent ? functions.flatMap(component => {
+      const suffix = component.role === "suffix" ? derivation.name.match(/\d+(?:,\d+)*-(?:(?:di|tri)?on[ea])$/)?.[0] : undefined;
+      const writtenFragment = suffix ?? (derivation.name.includes(component.text) ? component.text : undefined);
+      return numberedAttachmentDecisions({ graph, derivation, parent, components: [component], family: "steroid",
+        numberingDecisionId: "steroid.numbering", writtenFragment });
+    }) : [];
+    decisions.push(...attachmentDetails);
     const plans: PedagogicalStepPlan[] = testosteroneRoute ? [
       { id: "steroid-parent", title: { en: "Identify the steroid skeleton", es: "Identificar el esqueleto esteroideo" },
         decisionIds: ["steroid.parent"], componentIds: ["testosterone-parent", "testosterone-androstane-core", "testosterone-c18", "testosterone-c19",
@@ -573,9 +618,11 @@ export function buildValidatedPriorityReasoning(input: {
         componentIds: [byId.get("steroid-stereo")?.id ?? byId.get("testosterone-global-stereo")?.id, byId.get("testosterone-17beta")?.id, betaBondControl?.id].filter((id):id is string=>Boolean(id)) },
       { id: "steroid-name", title: { en: "Assemble the name", es: "Construir el nombre" }, decisionIds: ["steroid.name-assembly"], componentIds: parent?[parent.id]:[] },
     ];
-    const steps = renderCommonPedagogy({ decisions, plan: plans, derivation, graph, language,
+    const functionalStep = plans.find(step => step.id === "steroid-functions");
+    if (functionalStep) functionalStep.detailDecisionIds = attachmentDetails.map(d => d.id);
+    const model = renderCommonPedagogyModel({ decisions, plan: plans, derivation, graph, language, activeName: input.activeName,
       extras: [testosteroneCore, betaBondControl].filter((item):item is NameComponent=>Boolean(item)) });
-    if (steps.length) return { name: input.activeName ?? derivation.name, steps };
+    if (model.steps.length) return model;
   }
   if(derivation.evidence?.construction==="fused-testosterone-stereo"){
     const rings=["A","B","C","D"].map(letter=>byId.get(`testosterone-ring-${letter}`)).filter((item):item is NameComponent=>Boolean(item));
@@ -692,7 +739,7 @@ export function buildValidatedPriorityReasoning(input: {
   }
   if(derivation.evidence?.construction==="fused-decalin"){
     const adaptation=adaptDecalinEvidence(graph,derivation);
-    if(adaptation)return {name:input.activeName??derivation.name,steps:renderCommonPedagogy({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language})};
+    if(adaptation)return renderCommonPedagogyModel({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language,activeName:input.activeName});
   }
   if(derivation.evidence?.construction==="fused-naphthalene"){
     const adaptation=adaptNaphthaleneEvidence(graph,derivation);
@@ -709,7 +756,7 @@ export function buildValidatedPriorityReasoning(input: {
         ...(shared? [{...(reference??derivation.components[0]!),id:"fusion-bonds",text:language==="en"?"shared fusion bond":"enlace de fusión compartido",role:"parent" as const,language,atomIds:[...fusionAtoms],bondIds:[[shared[0],shared[1]] as [number,number]],numbering:[],start:0,end:derivation.name.length,
           label:language==="en"?"Shared fusion bond":"Enlace de fusión compartido",labelEs:"Enlace de fusión compartido"}]:[]),
       ];
-      return {name:input.activeName??derivation.name,steps:renderCommonPedagogy({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language,extras})};
+      return renderCommonPedagogyModel({decisions:adaptation.decisions,plan:adaptation.plan,derivation,graph,language,activeName:input.activeName,extras});
     }
   }
   if(derivation.evidence?.construction==="fused-tricyclic-stereo"){
@@ -1180,6 +1227,26 @@ export function buildValidatedPriorityReasoning(input: {
     ||parentStep.explanation.startsWith("El anillo aromático es la estructura principal porque")))
     for(const fragment of [parentStep.fragments,...parentStep.fragments?.additionalFragments??[]])
       if(fragment)delete fragment.explanation;
+  if (!input.activeName || input.activeName === derivation.name
+    || input.activeName === presentValidatedSystematicName(derivation, language).name) {
+    const nested = nestedAromaticAttachmentDecisions(graph, derivation);
+    if (nested.length) {
+      const plan: PedagogicalStepPlan[] = [];
+      for (const {componentId, decision} of nested) {
+        const step = resultSteps.find(item => item.componentIds.includes(componentId));
+        if (!step) continue;
+        step.advancedExplanation = [step.advancedExplanation, decision.explanation[language]].filter(Boolean).join(" ");
+        (step.decisionIds ??= []).push(decision.id);
+        plan.push({id: step.number, title: {en: step.title, es: step.title}, decisionIds: [decision.id], componentIds: [componentId]});
+      }
+      const coverage = auditPedagogicalCoverage({name: input.activeName ?? derivation.name, chemicalStatus: "FULL", nameSource: "reconciled-active-name",
+        profile: derivation.evidence?.construction ?? "substitutive", decisions: nested.map(item => item.decision), plan,
+        steps: plan.map(item => ({title: item.title[language], explanation: resultSteps.find(s => s.number === item.id)!.advancedExplanation!,
+          componentIds: item.componentIds, decisionIds: item.decisionIds})), componentIds: derivation.components.map(c => c.id),
+        limitations: ["remaining-steps-use-component-explanations"]});
+      return { name: derivation.name, steps: resultSteps, coverage };
+    }
+  }
   return { name: derivation.name, steps: resultSteps };
 }
 

@@ -6,6 +6,7 @@ import { PROGESTERONE_CHEBI_SMILES, PROGESTERONE_NAMES, PROGESTERONE_REFERENCE_I
 import { reconcileSystematicName } from "../app/validated-name-derivation.ts";
 import { buildValidatedPriorityReasoning } from "../app/reasoning-derivation-adapter.ts";
 import { buildSteroidFamilyMoleculeFromName } from "../app/steroid-family-grammar.ts";
+import { auditPedagogicalCoverage } from "../app/pedagogical-decision-model.ts";
 
 const built = buildProgesteroneMoleculeFromName(PROGESTERONE_NAMES.commonEn);
 assert.ok(built?.ok, "the audited PubChem reference is importable");
@@ -45,7 +46,12 @@ test("the same verified decision rules generate concise bilingual causal steps a
     const fullText = reasoning.steps.map(step => step.explanation).join(" ");
     assert.match(fullText,/C20/);
     assert.match(fullText,/C21/);
+    assert.match(fullText,language === "en" ? /C4 and C5|C4=C5/ : /C4 y C5|C4=C5/);
     assert.match(fullText,language === "en" ? /two ketone groups|di-/ : /dos funciones|di-/);
+    assert.match(fullText,language === "en" ? /C3 and C20|C3,20/ : /C3 y C20|C3,20/);
+    assert.match(fullText,/8S, 9S, 10R, 13S, 14S, 17S/);
+    assert.deepEqual(derivation.evidence.steroidPedagogy.stereo.descriptors,["8S","9S","10R","13S","14S","17S"]);
+    assert.match(fullText,language === "en" ? /not being parsed as a literal source/ : /no se presenta como fuente literal/);
     assert.doesNotMatch(fullText,/hydroxy|hidroxi|alcohol suffix|sufijo de alcohol/i);
     assert.ok(reasoning.steps.every(step => step.advancedExplanation?.length),"every derived step has advanced causal rationale");
     assert.ok(reasoning.steps.every(step => language === "en" ? /the |is |are |does /i.test(step.advancedExplanation) : /el |la |los |las |se |no /i.test(step.advancedExplanation)),"rationale is localized with the selected language");
@@ -105,4 +111,23 @@ test("the same rule engine is reusable for separately audited estrane and andros
     assert.match(reasoning.steps[0].explanation,/6–6–6–5/);
     assert.match(reasoning.steps.at(-1).explanation,/validated steroid grammar/);
   }
+});
+
+test("pedagogical coverage is auditable without changing FULL reconciliation", () => {
+  const derivation = reconcileSystematicName(progesterone, PROGESTERONE_NAMES.en);
+  const reasoning = buildValidatedPriorityReasoning({ derivation, graph: progesterone, language: "en", activeName: PROGESTERONE_NAMES.en });
+  assert.equal(derivation.status, "FULL");
+  assert.equal(reasoning.coverage?.chemicalStatus, "FULL");
+  assert.equal(reasoning.coverage?.name, PROGESTERONE_NAMES.en);
+  assert.ok(reasoning.coverage?.availableDecisions.includes("steroid.unsaturation.4"));
+  assert.ok(reasoning.coverage?.explainedDecisions.includes("steroid.unsaturation.4"));
+  assert.ok(reasoning.coverage?.coveredNameFragments.some(item => item.decisionId === "steroid.name-assembly"));
+  assert.equal(reasoning.coverage?.coverage, "complete");
+  assert.deepEqual(reasoning.coverage?.unjustifiedComponents, []);
+  const partial = auditPedagogicalCoverage({ name: "unreconciled example", chemicalStatus: "PARTIAL",
+    decisions: [], plan: [], steps: [], componentIds: ["unexplained-fragment"] });
+  assert.equal(partial.chemicalStatus, "PARTIAL");
+  assert.equal(partial.coverage, "none");
+  assert.deepEqual(partial.unjustifiedComponents.map(item => item.componentId), ["unexplained-fragment"]);
+  assert.deepEqual(partial.causes, ["unmapped-components:unexplained-fragment", "no-applicable-pedagogical-decisions"]);
 });

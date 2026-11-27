@@ -898,7 +898,8 @@ function TestosteroneReasoningControls({step,language,visualTarget,selectedFragm
     <details className="testosterone-advanced-controls" data-testosterone-functional-priority-rationale>
       <summary>{en?"Why hydroxy- rather than -ol?":"¿Por qué hidroxi- y no -ol?"}</summary>
       <div className="testosterone-rationale-content"><p>{en?"An alcohol named as the principal characteristic group can use the suffix -ol. Testosterone also has a ketone; for this steroid combination IUPAC steroid recommendations use -one for the ketone and hydroxy- for the alcohol. The alkene is named separately and does not replace that suffix. This does not claim ketones outrank every possible functional group."
-        :"Si el alcohol se nombra como grupo característico principal puede usar el sufijo -ol. La testosterona también contiene una cetona; para esta combinación esteroidea, las recomendaciones IUPAC usan -ona para la cetona e hidroxi- para el alcohol. El alqueno se nombra aparte y no reemplaza ese sufijo. Esto no afirma que las cetonas tengan prioridad sobre cualquier grupo funcional posible."}</p></div>
+        :"Si el alcohol se nombra como grupo característico principal puede usar el sufijo -ol. La testosterona también contiene una cetona; para esta combinación esteroidea, las recomendaciones IUPAC usan -ona para la cetona e hidroxi- para el alcohol. El alqueno se nombra aparte y no reemplaza ese sufijo. Esto no afirma que las cetonas tengan prioridad sobre cualquier grupo funcional posible."}</p>
+        {step.advancedExplanation && <p>{step.advancedExplanation}</p>}</div>
     </details>
   </div>;
   if(step.number==="5")return <div className="testosterone-control-stack" data-testosterone-layout="stereochemistry">
@@ -937,9 +938,9 @@ function TestosteroneReasoningControls({step,language,visualTarget,selectedFragm
   </div>;
 }
 
-function SteroidPedagogyControls({step,language}:{step:PriorityReasoningStep;language:AppLanguage}) {
+function PedagogicalRationale({step,language,steroid}:{step:PriorityReasoningStep;language:AppLanguage;steroid:boolean}) {
   if(!step.advancedExplanation)return null;
-  return <details className="steroid-advanced-rationale" data-steroid-rationale={step.number}>
+  return <details className="steroid-advanced-rationale" data-reasoning-rationale={step.number} data-steroid-rationale={steroid ? step.number : undefined}>
     <summary>{language==="en"?"Why?":"¿Por qué?"}</summary>
     <div><p>{step.advancedExplanation}</p></div>
   </details>;
@@ -9362,7 +9363,11 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
       suggestedIupacNameWithOmittedLocants(calculatedAnalysis))), "current", language);
     verifiedSystematicPresentation = selectVerifiedLocalizedPresentation(verifiedSystematicModel, molecule, language, localName);
   }
-  const suggestedName = language === "en" && compositionalExternalSpanishName
+  // Purine reconciliation currently proves the English grammar. Keep that
+  // verified literal while localizing its explanation.
+  const suggestedName = verifiedSystematicModel?.parentSystem === "purine"
+    ? verifiedSystematicModel.name
+    : language === "en" && compositionalExternalSpanishName
     ? pubChemIupacName!
     : verifiedSystematicPresentation?.localized
     ? verifiedSystematicPresentation.name
@@ -9858,7 +9863,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
     ? buildStructuralPriorityReasoning({ derivation: structuralEvidence, language,
       parentSelection: structuralParentSelection, graph: molecule }) : null,
   [validatedDerivation, reasoningUnsupported, unreconciledPyridineAcid, structuralEvidence, language, structuralParentSelection]);
-  const displayedReasoningSteps = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
+  const displayedReasoningSteps: PriorityReasoningStep[] = fullPriorityReasoning?.steps ?? structuralPriorityReasoning?.steps
     ?? localizedReasoningSteps.map(step => ({ ...step, target: reasoningVisualReferences.steps[step.number],
       fragments: reasoningNameFragments[step.number], fragmentTargets: reasoningVisualReferences.fragments,
       componentIds: [], componentKind: undefined, source: "local" as const }));
@@ -16575,13 +16580,16 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
             </div>
 
             <div className="reasoning-collapse" aria-hidden={!reasoningHelpVisible}>
-              <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning || functionalizedLocalReasoning ? "PARTIAL" : undefined}>
-                {!validatedDerivation && (structuralPriorityReasoning || functionalizedLocalReasoning
-                  || effectiveShowNumbering || derivationConsistency.status === "profile-mismatch") && <p role="note" data-reasoning-partial>
-                  {language === "en"
-                    ? "The complete name cannot yet be justified. The steps below show the structural features that can be explained."
-                    : "Aún no se puede justificar el nombre completo. Los pasos siguientes muestran los rasgos estructurales que sí pueden explicarse."}
-                </p>}
+              <div id="iupac-reasoning-content" data-derivation-support={validatedDerivation ? "FULL" : structuralPriorityReasoning || functionalizedLocalReasoning ? "PARTIAL" : undefined}
+                data-pedagogical-coverage={fullPriorityReasoning?.coverage ? JSON.stringify({ ...fullPriorityReasoning.coverage,
+                  activeConvention: activeNomenclatureConvention,
+                  nameSource: activeNomenclatureConvention !== "current" ? "local-legacy-profile"
+                    : verifiedSystematicPresentation?.localized ? "verified-localized-presentation"
+                    : pubChemIupacName && activeChemicalName === pubChemIupacName ? "PubChem"
+                    : verifiedSystematicPresentation?.name === activeChemicalName ? "verified-systematic-presentation"
+                    : externalNameSource ? "external-name-presentation" : "local-nomenclature" }) : undefined}
+                data-pedagogical-coverage-status={fullPriorityReasoning?.coverage?.coverage
+                  ?? (!validatedDerivation && localizedReasoningSteps.length ? "unverified" : undefined)}>
                 {validatedDerivation && <p className="reasoning-validated-name"><strong>{activeChemicalName}</strong></p>}
                 {validatedDerivation?.evidence?.numbering.comparison === 0
                   && ["retained-aromatic", "aromatic-ester"].includes(validatedDerivation.evidence.construction)
@@ -16595,7 +16603,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                 {structuralPriorityReasoning?.steps.length === 0 && <p>{language === "en"
                   ? "No structural feature can be explained from this molecule yet."
                   : "Aún no se puede explicar ningún rasgo de esta molécula."}</p>}
-                <ol data-testosterone-steps={validatedDerivation?.evidence?.construction==="fused-testosterone-stereo"?"6":undefined}>
+                <ol data-testosterone-steps={validatedDerivation?.evidence?.construction==="fused-testosterone-stereo" && displayedReasoningSteps.length === 6 ? "6" : undefined}>
                   {displayedReasoningSteps.map(step => {
                     const stepActive = reasoningVisualTarget?.stepNumber === step.number && !reasoningVisualTarget.fragmentId;
                     return <li key={step.number} id={`iupac-reasoning-step-${step.number}`}
@@ -16609,7 +16617,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                         {step.alphabeticalOrder
                           ? <ReasoningAlphabeticalContent presentation={step.alphabeticalOrder} />
                           : <p><ChemicalNotationText value={step.explanation} /></p>}
-                        {validatedDerivation?.evidence?.construction==="fused-testosterone-stereo"
+                        {validatedDerivation?.evidence?.construction==="fused-testosterone-stereo" && !step.decisionIds?.includes("steroid.common-identity")
                           ? <TestosteroneReasoningControls step={step} language={language} activeName={displayedIupacName}
                               visualTarget={step.fragmentTargets} selectedFragmentId={reasoningVisualTarget?.fragmentId}
                               onActivateTarget={activateReasoningCanvasReference} />
@@ -16618,8 +16626,7 @@ export default function Home({ initialLanguage = "es", buildEditor }: { initialL
                                 language={language} activeName={displayedIupacName} visualTargets={step.fragmentTargets}
                                 selectedFragmentId={reasoningVisualTarget?.fragmentId}
                                 onActivateTarget={activateReasoningCanvasReference} />}
-                              {validatedDerivation?.evidence?.steroidPedagogy
-                                && <SteroidPedagogyControls step={step} language={language} />}
+                              <PedagogicalRationale step={step} language={language} steroid={Boolean(validatedDerivation?.evidence?.steroidPedagogy)} />
                             </>}
                         {step.source === "FULL" && branchCountingGuides.filter(guide => step.componentIds.includes(guide.componentId)
                           || Boolean(guide.equivalenceGroup && step.componentIds.includes(guide.equivalenceGroup))).map((guide, index) => {

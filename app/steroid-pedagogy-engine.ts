@@ -85,10 +85,12 @@ export function deriveSteroidPedagogicalDecisions(evidence: SteroidPedagogicalEv
     rule: "conventional-steroid-numbering", result: `C1–C${numbered.length}`,
     explanation: { en: evidence.family === "androstane" && hydroxylAt(17, evidence.functions)
       ? "Steroids use a conventional numbering of the skeleton: C1–C17 form the core, C18 is the methyl attached to C13, and C19 is the methyl attached to C10. The hydroxyl is at C17 because its oxygen is bonded to the atom mapped to C17; functional groups do not renumber this skeleton."
-      : "Conventional steroid locants are assigned by graph connectivity. C20 and C21 follow the C17 side chain; neither atom order nor drawing coordinates determine their numbers.",
+      : evidence.sideChain ? "Conventional steroid locants are assigned by graph connectivity. C20 and C21 follow the C17 side chain; neither atom order nor drawing coordinates determine their numbers."
+      : `The four fused rings fix C1–C17. C18 is the methyl attached to C13.${evidence.angularMethyls.C19 !== undefined ? " The methyl attached to C10 is C19." : ""}`,
       es: evidence.family === "androstane" && hydroxylAt(17, evidence.functions)
         ? "Los esteroides usan una numeración convencional del esqueleto: C1–C17 forman el núcleo, C18 es el metilo unido a C13 y C19 el unido a C10. El hidroxilo está en C17 porque su oxígeno se enlaza al átomo asignado a C17; los grupos funcionales no renumeran este esqueleto."
-        : "Los localizadores esteroideos convencionales se asignan según la conectividad del grafo. C20 y C21 siguen la cadena unida a C17; ni el orden de los átomos ni las coordenadas del dibujo determinan sus números." },
+        : evidence.sideChain ? "Los localizadores esteroideos convencionales se asignan según la conectividad del grafo. C20 y C21 siguen la cadena unida a C17; ni el orden de los átomos ni las coordenadas del dibujo determinan sus números."
+        : `Los cuatro anillos fusionados fijan C1–C17. C18 es el metilo unido a C13.${evidence.angularMethyls.C19 !== undefined ? " El metilo unido a C10 es C19." : ""}` },
     nameFragments: [evidence.name], dependsOn: ["steroid.parent"] }));
   if (evidence.family === "pregnane" && evidence.sideChain && validAtoms(evidence.sideChain.atomIds) && validBonds(evidence.sideChain.bondIds))
     decisions.push(add({ id: "steroid.side-chain", kind: "side-chain-recognition",
@@ -103,9 +105,13 @@ export function deriveSteroidPedagogicalDecisions(evidence: SteroidPedagogicalEv
     rule: "lowest-locant-end-of-double-bond", result: String(unsaturation.locant),
     explanation: { en: evidence.family === "androstane" && unsaturation.locant === 4
       ? "The double bond joins C4 and C5. Its locant is 4, the lower-numbered end of the bond, so the unsaturation is written -4-en- in androst-4-en-. C5 is trigonal here and has no tetrahedral 5α/5β descriptor."
+      : evidence.family === "pregnane" && unsaturation.locant === 4
+      ? "The verified double bond joins C4 and C5, so 4 is its locant: the lower-numbered endpoint. In this validated pregnane name, that feature appears as -4-ene- before the functional-group locants; C5 is trigonal and is not assigned a tetrahedral α/β descriptor."
       : `The double bond joins C${unsaturation.locant} and C${unsaturation.locant + 1}; its locant is the lower-numbered end.`,
       es: evidence.family === "androstane" && unsaturation.locant === 4
         ? "El doble enlace une C4 y C5. Su localizador es 4, el extremo de menor número, por lo que la insaturación se expresa como -4-en- en androst-4-en-. En esta estructura C5 es trigonal y no lleva descriptor tetraédrico 5α/5β."
+        : evidence.family === "pregnane" && unsaturation.locant === 4
+        ? "El doble enlace verificado une C4 y C5, por lo que su localizador es 4: el extremo con menor número. En este nombre pregnano validado, esa característica aparece como -4-eno- antes de los localizadores funcionales; C5 es trigonal y no recibe un descriptor tetraédrico α/β."
         : `El doble enlace une C${unsaturation.locant} y C${unsaturation.locant + 1}; su localizador es el extremo con el número menor.` },
     nameFragments: [evidence.name], dependsOn: ["steroid.numbering"] }));
   const functions = evidence.functions.filter(item => item.locant > 0 && validAtoms(item.atomIds) && validBonds(item.bondIds));
@@ -149,9 +155,13 @@ export function deriveSteroidPedagogicalDecisions(evidence: SteroidPedagogicalEv
     evidence: { atomIds: [], bondIds: [], locants: [] }, rule: "validated-name-grammar", result: evidence.name,
     explanation: { en: evidence.family === "androstane" && hydroxylAt(17, evidence.functions)
       ? `Assemble the validated hydroxyl prefix, androstane stem, unsaturation, and ketone suffix in that order. The common name is ${evidence.commonName.en}.`
+      : evidence.family === "pregnane" && ketones.length > 1
+      ? `The validated spelling combines the pregnane stem, the mapped C${unsaturations.map(item => item.locant).join(",")} unsaturation, and the ketone suffix at C${ketones.map(item => item.locant).join(" and C")}. The two ketones therefore appear as the multiplicative dione ending, yielding “${evidence.name}”. The independently verified common name is ${evidence.commonName.en}; it is not being parsed as a literal source for this systematic form.`
       : `The displayed semisystematic name is assembled by the validated steroid grammar. The common name is ${evidence.commonName.en}; this does not assert that the semisystematic form is a 2013 PIN.`,
       es: evidence.family === "androstane" && hydroxylAt(17, evidence.functions)
         ? `Se ensamblan, en ese orden, el prefijo hidroxilo, el tema androstano, la insaturación y el sufijo de cetona. El nombre común es ${evidence.commonName.es}.`
+        : evidence.family === "pregnane" && ketones.length > 1
+        ? `La forma validada combina el tema pregnano, la insaturación mapeada en C${unsaturations.map(item => item.locant).join(",")} y el sufijo de cetona en C${ketones.map(item => item.locant).join(" y C")}. Por eso las dos cetonas aparecen con la terminación multiplicativa diona y se obtiene «${evidence.name}». El nombre común verificado de forma independiente es ${evidence.commonName.es}; no se presenta como fuente literal de esta forma sistemática.`
         : `El nombre semisistemático mostrado se ensambla con la gramática esteroidea validada. El nombre común es ${evidence.commonName.es}; esto no afirma que la forma semisistemática sea un PIN de 2013.` },
     nameFragments: [evidence.name], dependsOn: decisions.map(item => item.id) }));
   return decisions.map(item => ({ ...item, why: steroidDecisionRationale(item, evidence) }));

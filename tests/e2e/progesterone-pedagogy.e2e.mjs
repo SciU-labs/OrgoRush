@@ -12,7 +12,7 @@ import { reconcileSystematicName } from "../../app/validated-name-derivation.ts"
 import { buildValidatedPriorityReasoning } from "../../app/reasoning-derivation-adapter.ts";
 
 const cases = [{ id: "pubchem", smiles: PROGESTERONE_REFERENCE_SMILES }];
-const output = resolve("reports/steroid-pedagogy-engine/e2e");
+const output = resolve(process.env.ORGORUSH_E2E_OUT_DIR ?? "reports/steroid-pedagogy-engine/e2e");
 const report = { status: "RUNNING", browser: null, cases: [], errors: [], unexpectedRequests: [] };
 let server, browser, base;
 before(async () => {
@@ -44,6 +44,11 @@ async function enterName(page, name) {
   await panel.waitFor({ state: "visible" });
   await page.waitForFunction(() => document.querySelector("#iupac-reasoning-content")?.getAttribute("data-derivation-support") === "FULL");
   assert.equal((await panel.getAttribute("data-derivation-support")), "FULL", `${name} strict FULL`);
+  const coverage = JSON.parse(await panel.getAttribute("data-pedagogical-coverage"));
+  assert.equal(coverage.chemicalStatus, "FULL", `${name} coverage keeps chemical status separate`);
+  assert.equal(coverage.coverage, "complete", `${name} all applicable shared decisions are explained`);
+  assert.ok(coverage.explainedDecisions.includes("steroid.unsaturation.4"));
+  assert.ok(coverage.explainedDecisions.includes("steroid.principal-function"));
   assert.ok((await panel.innerText()).includes(name), `${name} is displayed in the derivation`);
 }
 async function selection(page, semanticId, target) {

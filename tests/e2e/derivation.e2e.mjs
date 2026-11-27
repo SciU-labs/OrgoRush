@@ -17,7 +17,7 @@ const live = process.env.ORGORUSH_E2E_LIVE === '1';
 const generalized = process.env.ORGORUSH_E2E_GENERALIZED === '1';
 const phase6 = process.env.ORGORUSH_E2E_PHASE6 === '1';
 const phase7 = process.env.ORGORUSH_E2E_PHASE7 === '1';
-const output = resolve('outputs/derivation-e2e', phase7?'purine':phase6?'symmetry-fused':generalized ? 'generalized' : 'original', live ? 'live' : 'deterministic');
+const output = process.env.ORGORUSH_E2E_OUT_DIR ?? resolve('outputs/derivation-e2e', phase7?'purine':phase6?'symmetry-fused':generalized ? 'generalized' : 'original', live ? 'live' : 'deterministic');
 const fusedRecords=JSON.parse(await readFile(new URL('../../reports/fused-reference-records.json',import.meta.url),'utf8'));
 const caffeine=fusedRecords.find(f=>f.name==='caffeine');
 const phase6Fixtures=[generalizationCases.find(f=>f.common==='3-methylbutanoic acid'),
@@ -309,6 +309,40 @@ if(phase6)test(`${live?'LIVE':'HTTP FIXTURES'} symmetry choices and safe fused-h
   }catch(error){await page.screenshot({path:resolve(output,'phase6-failure.png'),fullPage:true});await writeFile(resolve(output,'phase6-failure.txt'),await page.locator('body').innerText());throw error;}
   finally{await page.close();}
 },{timeout:180000});
+
+if (phase7) test("purine attachment rationale and fresh carbonyl selections in both views and languages", async () => {
+  const {page, errors} = await pageForRun();
+  try {
+    const f = purineCases.find(item => item.common === "caffeine");
+    await build(page, f.common);
+    const panel = page.locator('#iupac-reasoning-content');
+    const reference = moleculeFromSmiles(f.smiles).molecule;
+    const imported = await page.locator('.molecule-stage').evaluate(node => ({
+      atoms: [...node.querySelectorAll('[data-atom-id]')].map(a=>({id:Number(a.dataset.atomId),element:a.dataset.atomElement,x:0,y:0})),
+      bonds: [...node.querySelectorAll('[data-bond-a]')].map(b=>[Number(b.dataset.bondA),Number(b.dataset.bondB),Number(b.dataset.bondOrder)]),
+    }));
+    const map = mapStructuralRegions(reference, imported, f.parent.map(id=>[id]));
+    assert.ok(map);
+    const edges = f.oxo.map(([locant, oxygen])=>[map.get(f.parent[locant-1]),map.get(oxygen)]);
+    for (const lang of ['English','Español']) {
+      await page.getByRole('button',{name:lang,exact:true}).click();
+      await writeFile(resolve(output, "attachment-" + lang + ".txt"), await panel.innerText());
+      const step = panel.locator('li').filter({has:page.locator('[data-name-fragment="purine-oxo"]')});
+      const details = step.locator('details[data-reasoning-rationale]');
+      if (!(await details.evaluate(el=>el.open))) await details.locator('summary').press('Enter');
+      const detail = await details.innerText();
+      assert.match(detail,/C2=O/); assert.match(detail,/C6=O/);
+      assert.ok(detail.includes(lang === 'English' ? 'N1 and N3' : 'N1 y N3'));
+      for (const index of [0,2]) {
+        await page.locator('.view-mode-switch button').nth(index).click();
+        const actual = await captureRegion(page, step.locator('[data-name-fragment="purine-oxo"]'), true);
+        assert.deepEqual(actual.atoms,edges.flat().sort((a,b)=>a-b));
+        assert.deepEqual(actual.bonds.map(s=>key(...s.split(':'))).sort(),edges.map(([a,b])=>key(a,b)).sort());
+      }
+    }
+    assert.deepEqual(errors, []);
+  } finally { await page.close(); }
+});
 
 if(phase7)test(`${live?'LIVE':'HTTP FIXTURES'} five purine names → FULL → retained locants, H and exact semantic regions`,async()=>{
   const {page,errors,received,consoleErrors,network}=await pageForRun();

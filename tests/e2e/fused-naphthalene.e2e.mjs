@@ -15,6 +15,8 @@ const cases = [
   { id:"1-methyl", en:"1-methylnaphthalene", es:"1-metilnaftaleno", smiles:"Cc1cccc2ccccc12", atoms:11, locants:[1], groupEs:"Hidrocarburo", groupEn:"Hydrocarbon" },
   { id:"1,8-dimethyl", en:"1,8-dimethylnaphthalene", es:"1,8-dimetilnaftaleno", smiles:"Cc1cccc2cccc(C)c12", atoms:12, locants:[1,8], groupEs:"Hidrocarburo", groupEn:"Hydrocarbon" },
   { id:"2-naphthol", en:"naphthalen-2-ol", es:"naftalen-2-ol", smiles:"Oc1ccc2ccccc2c1", atoms:11, locants:[2], groupEs:"Alcohol", groupEn:"Alcohol" },
+  { id:"1-naphthol", en:"naphthalen-1-ol", es:"naftalen-1-ol", smiles:"Oc1cccc2ccccc12", atoms:11, locants:[1], groupEs:"Alcohol", groupEn:"Alcohol" },
+  { id:"1-5-diol", en:"naphthalene-1,5-diol", es:"naftaleno-1,5-diol", smiles:"Oc1cccc2c(O)cccc12", atoms:12, locants:[1,5], groupEs:"Alcohol", groupEn:"Alcohol" },
   { id:"2-carboxylic-acid", en:"naphthalene-2-carboxylic acid", es:"ácido naftaleno-2-carboxílico", smiles:"O=C(O)c1ccc2ccccc2c1", atoms:13, locants:[2], groupEs:"Ácido carboxílico", groupEn:"Carboxylic acid" },
   { id:"2-methyl-ester", en:"methyl naphthalene-2-carboxylate", es:"metil naftaleno-2-carboxilato", smiles:"COC(=O)c1ccc2ccccc2c1", atoms:14, locants:[2], groupEs:"Éster", groupEn:"Ester" },
 ];

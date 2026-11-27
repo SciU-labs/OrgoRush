@@ -1,6 +1,8 @@
 import type { GeneratedMolecule } from "./name-to-molecule.ts";
 import type { ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import type { PedagogicalDecision, PedagogicalStepPlan } from "./pedagogical-decision-model.ts";
+import { numberedAttachmentDecisions } from "./numbered-attachment-decisions.ts";
+import { equivalentNaphthaleneLocantSets } from "./fused-naphthalene-grammar.ts";
 
 export type FusedPedagogicalAdaptation = { decisions: PedagogicalDecision[]; plan: PedagogicalStepPlan[] };
 const bondKey = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
@@ -67,8 +69,18 @@ export function adaptNaphthaleneEvidence(graph: GeneratedMolecule, derivation: V
     .reduce((unique,bond) => unique.set(bondKey(bond[0],bond[1]), [bond[0],bond[1]] as [number,number]), new Map<string,[number,number]>()).values()];
   const peripheral = parent.numbering.filter(([,locant]) => /^\d+$/.test(String(locant)));
   const substituents = derivation.components.filter(item => item.parentId === "parent" && (item.role === "prefix" || item.role === "suffix" || item.role === "substituent"));
-  const suffix = substituents.find(item => item.role === "suffix");
+  const suffixes = substituents.filter(item => item.role === "suffix");
+  const suffix = suffixes[0];
   const detachable = substituents.filter(item => item.role !== "suffix");
+  const attachments = numberedAttachmentDecisions({ graph, derivation, parent, components: substituents,
+    family: "naphthalene", numberingDecisionId: "naphthalene.numbering" });
+  const hydroxylSites = attachments.filter(item => item.result.endsWith("–O"));
+  const diol = derivation.principalGroup === "alcohol" && suffixes.length === 2 && hydroxylSites.length === 2
+    && suffixes.every(item => item.text === "diol");
+  const hydroxylLocants = hydroxylSites.map(item => item.locants[0]).join(",");
+  const singleClass = suffixes.length ? !detachable.length : detachable.filter(c => c.role === "prefix").length === 1;
+  const orientationSets = singleClass ? equivalentNaphthaleneLocantSets(attachments.map(item => Number(item.locants[0]))) : [];
+  const otherSets = orientationSets.slice(1).map(set => set.join(",")).join(" / ");
   const locantIds = substituents.flatMap(item => item.numbering.filter(([,locant]) => /^\d+$/.test(String(locant))).map(([,locant]) => Number(locant)));
   const decisions: PedagogicalDecision[] = [
     { id: "naphthalene.ring-system", kind: "ring-system-recognition", family: "naphthalene", rule: "two-aromatic-six-membered-rings-share-one-edge",
@@ -78,17 +90,23 @@ export function adaptNaphthaleneEvidence(graph: GeneratedMolecule, derivation: V
     { id: "naphthalene.numbering", kind: "conventional-numbering", family: "naphthalene", rule: "fixed-conventional-naphthalene-numbering",
       evidenceSource: "FULL validated parent numbering", atomIds: peripheral.map(([id]) => id), bondIds: [], locants: peripheral.map(([,locant]) => Number(locant)), result: "peripheral 1–8; fusion 4a and 8a",
       explanation: { en: "The fused parent uses conventional naphthalene locants: peripheral positions 1–8 and fusion positions 4a and 8a. These locants belong to this fused skeleton; no steroid numbering or drawing-based renumbering is applied.", es: "El padre fusionado utiliza los localizadores convencionales del naftaleno: posiciones periféricas 1–8 y posiciones de fusión 4a y 8a. Corresponden a este esqueleto; no se usa numeración esteroidea ni se renumera según el dibujo." },
-      why: { en: "The adapter reads the validated parent atom-to-locant map and the substituent locants from the reconciled components.", es: "El adaptador lee el mapa átomo-localizador del padre y los localizadores de sustituyentes desde los componentes conciliados." }, nameFragments: substituents.map(item => item.text), dependsOn: ["naphthalene.ring-system"], verification: "verified" },
-    ...(suffix ? [{ id: "naphthalene.functional-priority", kind: "functional-priority" as const, family: "naphthalene" as const,
+      why: otherSets ? {
+        en: `The symmetry of the fused skeleton also permits ${otherSets}. Comparing the locant sets from left to right gives ${orientationSets[0]!.join(",")} at the first point of difference.`,
+        es: `La simetría del esqueleto fusionado también permite ${otherSets}. Al comparar los conjuntos de izquierda a derecha, se elige ${orientationSets[0]!.join(",")} por el primer punto de diferencia.`,
+      } : { en: "The shared edge fixes the fusion positions 4a and 8a in each equivalent orientation.", es: "En cada orientación equivalente, el enlace compartido fija las posiciones de fusión 4a y 8a." }, nameFragments: substituents.map(item => item.text), dependsOn: ["naphthalene.ring-system"], verification: "verified" },
+    ...attachments,
+    ...(suffix ? [{ id: "naphthalene.functional-priority", kind: diol ? "functional-multiplicity" as const : "functional-priority" as const, family: "naphthalene" as const,
       rule: "validated-principal-group-and-suffix-component", evidenceSource: "FULL principal-group result and mapped suffix component",
-      atomIds: [...suffix.atomIds], bondIds: [...suffix.bondIds], locants: suffix.numbering.map(([,locant]) => locant),
+      atomIds: suffixes.flatMap(item => item.atomIds), bondIds: suffixes.flatMap(item => item.bondIds), locants: suffixes.flatMap(item => item.numbering.map(([,locant]) => locant)),
       result: derivation.principalGroup, explanation: {
-        en: derivation.principalGroup === "carboxylicAcid" ? "The carboxylic acid is the principal group and is expressed by the validated carboxylic-acid ending; the carboxyl carbon remains outside the fused ring skeleton."
+        en: diol ? `Each of the two hydroxyl groups is bonded directly to the same fused parent. Their locants ${hydroxylLocants} precede the shared ending diol, where di- counts the two groups.`
+          : derivation.principalGroup === "carboxylicAcid" ? "The carboxylic acid is the principal group and is expressed by the validated carboxylic-acid ending; the carboxyl carbon remains outside the fused ring skeleton."
           : derivation.principalGroup === "ester" ? "The ring carboxylate ester is the principal group; its suffix and the separate alkyl-on-oxygen component follow the validated ester construction."
             : derivation.principalGroup === "alcohol" ? "The mapped hydroxyl group is expressed by the validated alcohol ending at its naphthalene locant."
               : derivation.principalGroup === "amine" ? "The mapped amino group is the principal group and is expressed by the validated amine ending at its naphthalene locant."
                 : "The validated suffix-bearing group determines the name ending at its mapped naphthalene locant.",
-        es: derivation.principalGroup === "carboxylicAcid" ? "El ácido carboxílico es el grupo principal y se expresa mediante la terminación validada de ácido carboxílico; el carbono carboxílico queda fuera del esqueleto del anillo fusionado."
+        es: diol ? `Los dos hidroxilos están unidos directamente al mismo padre fusionado. Sus localizadores ${hydroxylLocants} preceden a la terminación común diol, donde di- cuenta ambos grupos.`
+          : derivation.principalGroup === "carboxylicAcid" ? "El ácido carboxílico es el grupo principal y se expresa mediante la terminación validada de ácido carboxílico; el carbono carboxílico queda fuera del esqueleto del anillo fusionado."
           : derivation.principalGroup === "ester" ? "El éster carboxilato unido al anillo es el grupo principal; el sufijo y el componente alquilo unido al oxígeno siguen la construcción de éster validada."
             : derivation.principalGroup === "alcohol" ? "El hidroxilo mapeado se expresa mediante la terminación de alcohol validada en su localizador del naftaleno."
               : derivation.principalGroup === "amine" ? "El grupo amino mapeado es el grupo principal y se expresa mediante la terminación de amina validada en su localizador del naftaleno."
@@ -113,8 +131,8 @@ export function adaptNaphthaleneEvidence(graph: GeneratedMolecule, derivation: V
   ];
   return { decisions, plan: [
     { id: "ring-system", title: { en: "Identify the fused aromatic system", es: "Identificar el sistema aromático fusionado" }, decisionIds: ["naphthalene.ring-system"], componentIds: ["parent", ...rings.map((_,i) => `fused-ring:${i+1}`), "fusion-atoms", "fusion-bonds"] },
-    { id: "numbering", title: { en: "Numbering", es: "Numeración" }, decisionIds: ["naphthalene.numbering"], componentIds: ["parent", ...substituents.map(item => item.id)] },
-    ...(suffix ? [{ id: "functional-priority", title: { en: "Identify the principal function", es: "Identificar la función principal" }, decisionIds: ["naphthalene.functional-priority"], componentIds: [suffix.id] }] : []),
+    { id: "numbering", title: { en: "Numbering", es: "Numeración" }, decisionIds: ["naphthalene.numbering"], detailDecisionIds: attachments.map(item => item.id), componentIds: ["parent", ...substituents.map(item => item.id)] },
+    ...(suffix ? [{ id: "functional-priority", title: { en: "Identify the principal function", es: "Identificar la función principal" }, decisionIds: ["naphthalene.functional-priority"], componentIds: suffixes.map(item => item.id) }] : []),
     ...(detachable.length ? [{ id: "substituents", title: { en: "Identify substituents and attachment positions", es: "Identificar sustituyentes y posiciones de unión" }, decisionIds: detachable.map((_,index)=>`naphthalene.substituent.${index+1}`), componentIds: detachable.map(item=>item.id) }] : []),
     { id: "assembly", title: { en: "Build the name", es: "Construir el nombre" }, decisionIds: ["naphthalene.name-assembly"], componentIds: ["parent", ...substituents.map(item => item.id)] },
   ] };
