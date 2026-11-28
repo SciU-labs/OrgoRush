@@ -158,9 +158,10 @@ export function buildPedagogicalNameInventory(derivation: ValidatedNameDerivatio
 }
 
 function addComponentModifiers(component: NameComponent, scope: string, add: (component: ExpectedNameComponent) => void) {
-  const prefix = /^(N|\d+(?:,\d+)*)-/.exec(component.text);
+  const prefix = /^(N(?:,N)*|\d+(?:,\d+)*)-/.exec(component.text);
   if (!prefix) return;
-  const positions = prefix[1] === "N" ? ["N"] : prefix[1]!.split(",").map(Number);
+  const positions = prefix[1]!.startsWith("N") ? [...prefix[1]!.matchAll(/N/g)].map(()=>"N")
+    : prefix[1]!.split(",").map(Number);
   const base = {numberingScope:scope,dependsOn:[component.id],atomIds:component.numbering.filter(([,n])=>positions.some(p=>String(p)===String(n))).map(([id])=>id),
     bondIds:[] as [number,number][],evidence:"available" as const};
   add({...base,id:component.id+".locants",role:"locant",aspect:"locants",text:prefix[1]!,

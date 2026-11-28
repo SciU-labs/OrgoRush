@@ -47,3 +47,41 @@ export function scopedNameAssemblyDecision(derivation: ValidatedNameDerivation, 
       es:`La estructura que lleva el sufijo es «${parent.text}». Cada rama envolvente se cita como un único prefijo en el nivel del padre. ${insideEs} Las unidades externas se ensamblan en el orden ${order}.`,
     }};
 }
+
+/** Explain whole-name composition only after every expected semantic unit has
+ * its own exact, visible, verified decision. Coverage still enforces the same
+ * dependencies independently, so this assertion cannot fill a missing unit. */
+export function completeNameAssemblyDecision(derivation: ValidatedNameDerivation, inventory: PedagogicalNameInventory,
+  graph: GeneratedMolecule, decisions: readonly PedagogicalDecision[], steps: readonly {explanation:string;advancedExplanation?:string;decisionIds?:string[]}[]): PedagogicalDecision | null {
+  const assembly=inventory.components.find(c=>c.aspect==="assembly");
+  const parent=derivation.components.find(c=>c.id==="parent");
+  const suffix=derivation.components.find(c=>c.role==="suffix");
+  if(!assembly || !parent || !suffix || inventory.limitations.length || inventory.name!==derivation.name
+    || inventory.sourceName!==derivation.name || assembly.text!==derivation.name) return null;
+  const explainedUnits=inventory.components.filter(c=>c.aspect!=="assembly");
+  if(!explainedUnits.length || explainedUnits.some(component=>component.evidence!=="available")) return null;
+  const used:PedagogicalDecision[]=[];
+  for(const component of explainedUnits){
+    const decision=decisions.find(candidate=>candidate.verification==="verified" && candidate.kind!=="name-assembly"
+      && candidate.componentBindings?.some(binding=>binding.id===component.id && binding.start===component.start
+        && binding.end===component.end && binding.aspect===component.aspect && binding.numberingScope===component.numberingScope)
+      && steps.some(step=>(step.explanation.trim()||step.advancedExplanation?.trim()) && (step.decisionIds??[]).includes(candidate.id)));
+    if(!decision) return null;
+    used.push(decision);
+  }
+  const branches=derivation.components.filter(c=>c.role==="substituent" && c.parentId==="parent").sort((a,b)=>a.start-b.start);
+  const order=[...branches.map(c=>c.text),parent.text].join(" → ");
+  const nested=branches.flatMap(branch=>derivation.components.filter(c=>c.parentId===branch.id && typeof c.locant==="number")
+    .map(child=>({branch,child})));
+  const nestedEn=nested.map(({branch,child})=>`Within “${branch.text}”, locant ${child.locant} places “${child.text}” in that branch’s own scope.`).join(" ");
+  const nestedEs=nested.map(({branch,child})=>`Dentro de «${branch.text}», el localizador ${child.locant} coloca «${child.text}» en el ámbito de esa rama.`).join(" ");
+  const delimiters=inventory.syntax.some(token=>/[()[\]{}]/.test(token.text));
+  const delimiterEn=delimiters?"The written brackets and parentheses preserve the recorded nested boundaries. ":"";
+  const delimiterEs=delimiters?"Los corchetes y paréntesis escritos conservan los límites anidados registrados. ":"";
+  return {id:"name.complete-assembly",kind:"name-assembly",family:"verified-name-composition",rule:"compose-only-fully-explained-mapped-components",
+    evidenceSource:"exact component intervals, visible verified decisions, reconciled parent-child hierarchy and recorded syntax",
+    atomIds:graph.atoms.map(atom=>atom.id),bondIds:graph.bonds.map(([a,b])=>[a,b]),locants:[],numberingScope:"parent",result:inventory.name,
+    nameFragments:[],componentBindings:[nameComponentBinding(assembly)],dependsOn:[...new Set(used.map(decision=>decision.id))],verification:"verified",
+    explanation:{en:`The parent-level parts occupy the validated written order ${order}; the functional ending ${suffix.text} stays with the suffix-bearing parent ${parent.text}. ${nestedEn} ${delimiterEn}Together, these already explained intervals form the exact active name “${inventory.name}”.`,
+      es:`Las partes del nivel del padre ocupan el orden escrito validado ${order}; la terminación funcional ${suffix.text} permanece con el padre que lleva el sufijo, ${parent.text}. ${nestedEs} ${delimiterEs}En conjunto, estos intervalos ya explicados forman exactamente el nombre activo «${inventory.name}».`}};
+}

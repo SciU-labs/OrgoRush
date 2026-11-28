@@ -75,7 +75,7 @@ test("outer amide N or parent C3 stays distinct from internal aryl C4", () => {
     assert.equal(decision.numberingScope, scope);
     assert.ok(decision.bondIds.every(([a,b]) => graph.bonds.some(([x,y]) => a===x && b===y || a===y && b===x)));
     assert.ok(model.steps.find(s => s.decisionIds?.includes(decision.id)).advancedExplanation.includes(path));
-    assert.equal(model.coverage.coverage, "partial");
+    assert.equal(model.coverage.coverage, "complete");
     assert.equal(model.coverage.chemicalStatus, "FULL");
   }
 });

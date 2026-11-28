@@ -11,7 +11,7 @@ import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
 import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import { buildPedagogicalNameInventory, nameComponentBinding } from "./pedagogical-name-inventory.ts";
-import { parentStemDecision, scopedNameAssemblyDecision } from "./name-construction-pedagogy.ts";
+import { completeNameAssemblyDecision, parentStemDecision, scopedNameAssemblyDecision } from "./name-construction-pedagogy.ts";
 import { presentedComponentDecisions } from "./component-pedagogy-evidence.ts";
 import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
@@ -1261,7 +1261,7 @@ export function buildValidatedPriorityReasoning(input: {
     const nested = nestedAromaticAttachmentDecisions(graph, semanticDerivation);
     if (nested.length) {
       const inventory=buildPedagogicalNameInventory(semanticDerivation,graph,input.activeName ?? derivation.name);
-      const decisions=presentedComponentDecisions(semanticDerivation,inventory,resultSteps,language);
+      const decisions=presentedComponentDecisions(semanticDerivation,inventory,resultSteps,language,graph);
       for (const {componentId, decision} of nested) {
         const step = resultSteps.find(item => item.componentIds.includes(componentId));
         if (!step) continue;
@@ -1283,6 +1283,13 @@ export function buildValidatedPriorityReasoning(input: {
         step.advancedExplanation=[step.advancedExplanation,assembly.explanation[language]].filter(Boolean).join(" ");
         (step.decisionIds ??= []).push(assembly.id);
         decisions.push(assembly);
+      }
+      const completeAssembly=completeNameAssemblyDecision(semanticDerivation,inventory,graph,decisions,resultSteps);
+      if(completeAssembly){
+        const step=resultSteps.find(s=>s.title===(language==="en"?"Constructing the name":"Construcción del nombre")) ?? resultSteps.at(-1)!;
+        step.advancedExplanation=[step.advancedExplanation,completeAssembly.explanation[language]].filter(Boolean).join(" ");
+        (step.decisionIds??=[]).push(completeAssembly.id);
+        decisions.push(completeAssembly);
       }
       const plan=resultSteps.map(step=>({id:step.number,title:{en:step.title,es:step.title},
         decisionIds:step.decisionIds??[],componentIds:step.componentIds}));
