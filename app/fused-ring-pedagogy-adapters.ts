@@ -3,6 +3,7 @@ import type { ValidatedNameDerivation } from "./validated-name-derivation.ts";
 import type { PedagogicalDecision, PedagogicalStepPlan } from "./pedagogical-decision-model.ts";
 import { numberedAttachmentDecisions } from "./numbered-attachment-decisions.ts";
 import { equivalentNaphthaleneLocantSets } from "./fused-naphthalene-grammar.ts";
+import { buildPedagogicalNameInventory, nameComponentBinding } from "./pedagogical-name-inventory.ts";
 
 export type FusedPedagogicalAdaptation = { decisions: PedagogicalDecision[]; plan: PedagogicalStepPlan[] };
 const bondKey = (a: number, b: number) => `${Math.min(a, b)}:${Math.max(a, b)}`;
@@ -129,6 +130,20 @@ export function adaptNaphthaleneEvidence(graph: GeneratedMolecule, derivation: V
       nameFragments: [derivation.name, ...substituents.map(item => item.text)],
       dependsOn: ["naphthalene.numbering", ...(suffix ? ["naphthalene.functional-priority"] : []), ...detachable.map((_,index)=>`naphthalene.substituent.${index+1}`)], verification: "verified" as const },
   ];
+  const inventory = buildPedagogicalNameInventory(derivation,graph);
+  for (const decision of decisions) {
+    const source = detachable[Number(decision.id.split(".").at(-1))-1];
+    const ids = decision.id === "naphthalene.ring-system" ? ["parent"]
+      : decision.id === "naphthalene.functional-priority" ? suffixes.map(c=>c.id)
+      : decision.id.startsWith("naphthalene.substituent.") && source ? [source.id] : [];
+    decision.componentBindings = inventory.components.filter(c=>c.aspect==="identity" && ids.includes(c.id)
+      || decision.id === "naphthalene.numbering" && c.aspect === "locants"
+      || decision.id === "naphthalene.name-assembly" && c.aspect === "assembly").map(nameComponentBinding);
+    if (decision.id === "naphthalene.name-assembly") {
+      decision.atomIds = graph.atoms.map(a=>a.id);
+      decision.bondIds = graph.bonds.map(([a,b])=>[a,b]);
+    }
+  }
   return { decisions, plan: [
     { id: "ring-system", title: { en: "Identify the fused aromatic system", es: "Identificar el sistema aromático fusionado" }, decisionIds: ["naphthalene.ring-system"], componentIds: ["parent", ...rings.map((_,i) => `fused-ring:${i+1}`), "fusion-atoms", "fusion-bonds"] },
     { id: "numbering", title: { en: "Numbering", es: "Numeración" }, decisionIds: ["naphthalene.numbering"], detailDecisionIds: attachments.map(item => item.id), componentIds: ["parent", ...substituents.map(item => item.id)] },

@@ -11,6 +11,7 @@ import { PROGESTERONE_NAMES, PROGESTERONE_CHEBI_SMILES, PROGESTERONE_REFERENCE_S
 import { TESTOSTERONE_NAMES } from "../app/testosterone-stereo-grammar.ts";
 import { TESTOSTERONE_REFERENCE_SMILES } from "../app/testosterone-stereo-structure.ts";
 import { auditPedagogicalCoverage } from "../app/pedagogical-decision-model.ts";
+import { buildPedagogicalNameInventory } from "../app/pedagogical-name-inventory.ts";
 
 function resolve(smiles, name, language = "en") {
   const graph = moleculeFromSmiles(smiles).molecule;
@@ -138,6 +139,7 @@ test("coverage catches applicable decisions missing from presentation", () => {
   const {decisions} = adaptPurineEvidence(graph,derivation);
   const first = decisions[0];
   const coverage = auditPedagogicalCoverage({name:f.name,chemicalStatus:"FULL",decisions,plan:[],
+    inventory:buildPedagogicalNameInventory(derivation,graph),
     steps:[{title:"parent",explanation:first.explanation.en,decisionIds:[first.id],componentIds:["parent"]}],
     componentIds:derivation.components.map(c=>c.id)});
   assert.equal(coverage.coverage,"partial");

@@ -9,7 +9,10 @@ import type { ReasoningNameFragment } from "./reasoning-name-fragments.ts";
 import { reasoningFragmentId } from "./reasoning-visual-targets.ts";
 import type { ReasoningVisualTarget } from "./reasoning-visual-targets.ts";
 import { reconciledParentSelectionEvidence, type ParentSelectionEvidence } from "./reasoning-parent-selection.ts";
-import { presentValidatedSystematicName, validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
+import { presentValidatedSystematicName, reconcileSystematicName, validatedNameTargets, type NameComponent, type ValidatedNameDerivation } from "./validated-name-derivation.ts";
+import { buildPedagogicalNameInventory, nameComponentBinding } from "./pedagogical-name-inventory.ts";
+import { parentStemDecision, scopedNameAssemblyDecision } from "./name-construction-pedagogy.ts";
+import { presentedComponentDecisions } from "./component-pedagogy-evidence.ts";
 import { getPotentialTetrahedralStereoCenterIds, getTetrahedralStereoCenters } from "./tetrahedral-stereochemistry.ts";
 import { inspectTetrahedralCipPriorities } from "./double-bond-stereochemistry.ts";
 import { deriveSteroidPedagogicalDecisions } from "./steroid-pedagogy-engine.ts";
@@ -483,11 +486,21 @@ function renderCommonPedagogyModel(input: { decisions: readonly PedagogicalDecis
   derivation: ValidatedNameDerivation; graph: GeneratedMolecule; language: AppLanguage; activeName?: string;
   extras?: readonly NameComponent[] }): PriorityReasoningModel {
   const name = input.activeName ?? input.derivation.name;
-  const steps = renderCommonPedagogy(input);
-  const coverage = auditPedagogicalCoverage({ name, chemicalStatus: "FULL", decisions: input.decisions, plan: input.plan,
+  const inventory = buildPedagogicalNameInventory(name === input.derivation.name ? input.derivation
+    : reconcileSystematicName(input.graph,name) ?? input.derivation, input.graph, name);
+  const decisions = [...input.decisions], plan = input.plan.map(step=>({...step,detailDecisionIds:[...step.detailDecisionIds??[]]}));
+  const parentDecision = decisions.find(d=>d.kind==="parent-recognition" || d.kind==="ring-system-recognition");
+  const stem = parentDecision && parentStemDecision(inventory,parentDecision.id);
+  const parentStep = plan.find(s=>s.decisionIds.includes(parentDecision?.id ?? ""));
+  if (stem && parentStep) {
+    decisions.push(stem);
+    parentStep.detailDecisionIds.push(stem.id);
+  }
+  const steps = renderCommonPedagogy({...input,decisions,plan});
+  const coverage = auditPedagogicalCoverage({ name, chemicalStatus: "FULL", decisions, plan,
     profile: input.decisions.some(d => d.kind === "retained-identity") ? "common-steroid-name"
       : input.derivation.evidence?.steroidPedagogy ? "conventional-steroid" : input.derivation.parentSystem ?? input.derivation.evidence?.construction,
-    nameSource: "reconciled-active-name",
+    nameSource: "reconciled-active-name", inventory,
     steps: steps.map(step => ({ title: step.title, explanation: step.explanation, componentIds: step.componentIds,
       decisionIds: step.decisionIds ?? [] })), componentIds: input.derivation.components.map(component => component.id) });
   return { name, steps, coverage };
@@ -547,6 +560,7 @@ export function buildValidatedPriorityReasoning(input: {
         result: commonName, nameFragments: [commonName], dependsOn: [], verification: "verified",
         explanation: { en: `The conventional name ${commonName} identifies the structure whose skeleton, functional groups and specified configurations match the audited reference. The corresponding steroid name is ${derivation.name}.`,
           es: `El nombre común ${commonName} identifica la estructura cuyo esqueleto, grupos funcionales y configuraciones especificadas coinciden con la referencia verificada. Su denominación esteroidea es ${derivation.name}.` } };
+      identity.componentBindings = buildPedagogicalNameInventory(derivation,graph,commonName).components.map(nameComponentBinding);
       return renderCommonPedagogyModel({ ...input, decisions: [identity], plan: [{ id: "identity",
         decisionIds: [identity.id], componentIds: parent ? [parent.id] : [],
         title: { en: "Identify the common name", es: "Identificar el nombre común" } }] });
@@ -562,6 +576,19 @@ export function buildValidatedPriorityReasoning(input: {
       result: item.result, explanation: item.explanation, why: item.why, nameFragments: item.nameFragments,
       dependsOn: item.dependsOn, verification: item.verification }));
     const decisionIds = (kind: string) => steroidDecisions.filter(item => item.kind === kind).map(item => item.id);
+    const inventory = buildPedagogicalNameInventory(derivation,graph,input.activeName ?? derivation.name);
+    for (const decision of decisions) {
+      const ids = decision.id === "steroid.parent" ? ["parent"]
+        : decision.kind === "unsaturation" ? ["steroid.ene-locants","steroid.ene"]
+        : decision.id === "steroid.principal-function" ? ["steroid.oxo-locants","steroid.oxo","steroid.oxo-multiplier"]
+        : decision.kind === "name-assembly" ? ["name.assembly"] : [];
+      decision.componentBindings = inventory.components.filter(c=>ids.includes(c.id)).map(nameComponentBinding);
+      if (decision.id === "steroid.parent" && parent) decision.bondIds = parent.bondIds;
+      if (decision.kind === "name-assembly") {
+        decision.atomIds=graph.atoms.map(a=>a.id);
+        decision.bondIds=graph.bonds.map(([a,b])=>[a,b]);
+      }
+    }
     const rings = displayedComponents.filter(component => component.id.startsWith("steroid-ring-")
       || component.id.startsWith("testosterone-ring-"));
     const fusions = displayedComponents.filter(component => component.id.startsWith("steroid-fusion-")
@@ -1229,21 +1256,40 @@ export function buildValidatedPriorityReasoning(input: {
       if(fragment)delete fragment.explanation;
   if (!input.activeName || input.activeName === derivation.name
     || input.activeName === presentValidatedSystematicName(derivation, language).name) {
-    const nested = nestedAromaticAttachmentDecisions(graph, derivation);
+    const semanticDerivation=input.activeName && input.activeName !== derivation.name
+      ? reconcileSystematicName(graph,input.activeName) ?? derivation : derivation;
+    const nested = nestedAromaticAttachmentDecisions(graph, semanticDerivation);
     if (nested.length) {
-      const plan: PedagogicalStepPlan[] = [];
+      const inventory=buildPedagogicalNameInventory(semanticDerivation,graph,input.activeName ?? derivation.name);
+      const decisions=presentedComponentDecisions(semanticDerivation,inventory,resultSteps,language);
       for (const {componentId, decision} of nested) {
         const step = resultSteps.find(item => item.componentIds.includes(componentId));
         if (!step) continue;
         step.advancedExplanation = [step.advancedExplanation, decision.explanation[language]].filter(Boolean).join(" ");
         (step.decisionIds ??= []).push(decision.id);
-        plan.push({id: step.number, title: {en: step.title, es: step.title}, decisionIds: [decision.id], componentIds: [componentId]});
+        decision.componentBindings=inventory.components.filter(c=>c.aspect==="locants"
+          && c.numberingScope===decision.numberingScope && c.locants.every(n=>decision.locants.includes(n))).map(nameComponentBinding);
+        decisions.push(decision);
       }
+      const sourceInventory=inventory.limitations.length ? buildPedagogicalNameInventory(derivation,graph) : inventory;
+      const assembly=scopedNameAssemblyDecision(inventory.limitations.length ? derivation : semanticDerivation,sourceInventory,graph);
+      if (assembly) {
+        if (sourceInventory.name !== inventory.name) {
+          assembly.componentBindings=[];
+          assembly.explanation[language]=(language==="en" ? `The verified source name is “${sourceInventory.name}”. `
+            : `El nombre de origen verificado es «${sourceInventory.name}». `)+assembly.explanation[language];
+        }
+        const step=resultSteps.find(s=>s.title===(language==="en"?"Constructing the name":"Construcción del nombre")) ?? resultSteps.at(-1)!;
+        step.advancedExplanation=[step.advancedExplanation,assembly.explanation[language]].filter(Boolean).join(" ");
+        (step.decisionIds ??= []).push(assembly.id);
+        decisions.push(assembly);
+      }
+      const plan=resultSteps.map(step=>({id:step.number,title:{en:step.title,es:step.title},
+        decisionIds:step.decisionIds??[],componentIds:step.componentIds}));
       const coverage = auditPedagogicalCoverage({name: input.activeName ?? derivation.name, chemicalStatus: "FULL", nameSource: "reconciled-active-name",
-        profile: derivation.evidence?.construction ?? "substitutive", decisions: nested.map(item => item.decision), plan,
-        steps: plan.map(item => ({title: item.title[language], explanation: resultSteps.find(s => s.number === item.id)!.advancedExplanation!,
-          componentIds: item.componentIds, decisionIds: item.decisionIds})), componentIds: derivation.components.map(c => c.id),
-        limitations: ["remaining-steps-use-component-explanations"]});
+        inventory,profile: derivation.evidence?.construction ?? "substitutive", decisions, plan,
+        steps: resultSteps.map(step => ({title:step.title,explanation:step.explanation,
+          componentIds:step.componentIds,decisionIds:step.decisionIds??[]})),componentIds: derivation.components.map(c => c.id)});
       return { name: derivation.name, steps: resultSteps, coverage };
     }
   }

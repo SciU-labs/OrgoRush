@@ -119,6 +119,14 @@ test("six naphthalene cases retain exact graph selections across both languages 
         assert.equal(await page.locator(".analysis-group strong").innerText(),language==="es"?item.groupEs:item.groupEn,`${item.id}: principal group`);
         const proof=reconcileSystematicName(graph,name);assert.equal(proof?.status,"FULL");
         const reasoning=buildValidatedPriorityReasoning({derivation:proof,graph,language});
+        if(item.id==="2-naphthol") {
+          const coverage=JSON.parse(await panel.getAttribute("data-pedagogical-coverage"));
+          assert.equal(coverage.componentCoverage.find(c=>c.componentId==="parent.stem").status,"explained");
+          const detail=panel.locator("details[data-reasoning-rationale]").first();
+          if(!(await detail.evaluate(node=>node.open)))await detail.locator("summary").press("Enter");
+          assert.ok((await detail.innerText()).includes(language==="en"?"naphthalen-":"naftalen-"));
+          assert.match(await detail.innerText(),/-ol/);
+        }
         for(const mode of ["skeletal","semi-developed"]){
           const modeButton=page.locator(".view-mode-switch button").nth(mode==="skeletal"?2:0);
           await modeButton.click();assert.equal(await modeButton.getAttribute("aria-pressed"),"true");

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { before, after, test } from "node:test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { createServer } from "vite";
+import { createServer, preview } from "vite";
 import { chromium } from "playwright";
 import { moleculeFromSmiles } from "../../app/openchemlib-adapter.ts";
 import { mapStructuralRegions } from "../../app/structural-derivation.ts";
@@ -30,18 +30,27 @@ const cases = [
 ];
 const output = resolve(process.env.ORGORUSH_E2E_OUT_DIR ?? "outputs/nested-attachment-pedagogy");
 let server, browser, base;
+const usePreview=process.env.ORGORUSH_E2E_PREVIEW==="1";
 before(async () => {
   if (process.env.ORGORUSH_E2E_BASE_URL) base = process.env.ORGORUSH_E2E_BASE_URL;
   else {
-    server = await createServer({configFile:"vite.pages.config.ts",server:{host:"127.0.0.1",port:0}});
-    await server.listen();
+    server = usePreview
+      ? await preview({configFile:"vite.pages.config.ts",preview:{host:"127.0.0.1",port:0}})
+      : await createServer({configFile:"vite.pages.config.ts",server:{host:"127.0.0.1",port:0}});
+    if(!usePreview)await server.listen();
     base = `http://127.0.0.1:${server.httpServer.address().port}/OrgoRush/en/`;
   }
   browser = await chromium.launch({headless:true,...process.env.ORGORUSH_CHROMIUM_EXECUTABLE
     ? {executablePath:process.env.ORGORUSH_CHROMIUM_EXECUTABLE} : {}});
   await mkdir(output,{recursive:true});
 }, {timeout:45000});
-after(async () => { await browser?.close(); await server?.close(); });
+after(async () => {
+  await browser?.close();
+  if(server) {
+    if(usePreview)await new Promise((resolve,reject)=>server.httpServer.close(error=>error?reject(error):resolve()));
+    else await server.close();
+  }
+});
 const sorted = values => [...new Set(values)].sort((a,b)=>a-b);
 const edgeKey = ([a,b]) => [a,b].sort((a,b)=>a-b).join(":");
 
@@ -90,6 +99,17 @@ for (const f of cases) test(`${f.id} exact nested controls, bilingual rationale 
       if (!(await detail.evaluate(el=>el.open))) await detail.locator("summary").press("Enter");
       assert.ok((await detail.innerText()).includes(f.path));
       assert.match(await detail.innerText(),/4/);
+      const coverage=JSON.parse(await panel.getAttribute("data-pedagogical-coverage"));
+      assert.ok(coverage.explainedDecisions.includes("name.scoped-assembly"));
+      const scopeText=language==="en"?"Each enclosing branch is cited as one prefix":"Cada rama envolvente se cita como un único prefijo";
+      const scopeDetail=panel.locator("details[data-reasoning-rationale]").filter({hasText:scopeText});
+      assert.equal(await scopeDetail.count(),1);
+      if(!(await scopeDetail.evaluate(node=>node.open)))await scopeDetail.locator("summary").press("Enter");
+      assert.ok((await scopeDetail.innerText()).includes(scopeText));
+      if(coverage.inventory.components.length) {
+        assert.equal(coverage.componentCoverage.find(c=>c.componentId==="name.scopes").status,"explained");
+        assert.equal(coverage.componentCoverage.find(c=>c.componentId==="name.assembly").status,"unexplained");
+      } else assert.equal(coverage.coverage,"unverified");
       const stepTitles = await panel.locator("ol > li > div > strong").allTextContents();
       assert.equal(new Set(stepTitles.filter(t=>!t.includes("Nested")&&!t.includes("anidados"))).size,
         stepTitles.filter(t=>!t.includes("Nested")&&!t.includes("anidados")).length,"no repeated explanation stages");
